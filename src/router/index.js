@@ -20,6 +20,12 @@ const routes = [
       import( "@/views/totem/Totem.vue"),
   },
   {
+    path: "/reserve",
+    name: "Reservar",
+    component: () =>
+      import( "@/views/totem/reservation.vue"),
+  },
+  {
     path: "/profesional",
     name: "Profesional",
     component: () =>

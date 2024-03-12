@@ -23,7 +23,7 @@
           <v-row class="mt-6">
             <v-col cols="12" md="4"></v-col>
             <v-col cols="12" md="4" style="text-align: center;">
-              <v-btn block rounded="0" size="x-large"> Cliente</v-btn>
+              <v-btn  block rounded="0" size="x-large" @click="goToReserve"> Cliente</v-btn>
             </v-col>
           </v-row>
           <v-row class="mt-6">
@@ -98,6 +98,7 @@
 
 
 import axios from "axios";
+import router from '@/router/index';
 export default {
 
   data: () => ({
@@ -123,6 +124,10 @@ export default {
   },
 
   methods: {
+
+    goToReserve() {
+      router.push({ name: "Reservar" });
+    },
 
     show(value) {
       this.activated = value
