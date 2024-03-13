@@ -18,6 +18,12 @@ const routes = [
     name: "Totem",
     component: () =>
       import( "@/views/totem/Totem.vue"),
+  },  
+  {
+    path: "/reserve",
+    name: "Reservar",
+    component: () =>
+      import( "@/views/reserve/Reserve.vue"),
   },
   {
     path: "/profesional",
@@ -176,13 +182,6 @@ const routes = [
           import( "@/views/student/Student.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_students"] },
       },
-    /*  
-        path: "/reservation",
-        name: "Reservation",
-        component: () =>
-          import( "@/views/reservation/Reservation.vue"),
-        meta: { requiresAuth: true, requiresPermissions: ["view_reservations"] },
-      },*/
       {
         path: "/card-gifts",
         name: "Tarjeta Regalo",
@@ -197,6 +196,14 @@ const routes = [
           import(
              "@/views/business/Business.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_business"] },
+      },
+      {
+        path: "/associated",
+        name: "Associados",
+        component: () =>
+          import(
+             "@/views/associated/Associated.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_associates"] },
       },
       {
         path: "/branch",
