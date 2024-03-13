@@ -48,6 +48,9 @@
               PROFESIONAL
             </p>
             <p class="text-h4 font-weight-black " :class="{ 'parpadea': parpadeando }"  style="text-align: center;">
+              <v-avatar elevation="3" color="grey-lighten-4" size="large">
+                  <v-img :src="'http://127.0.0.1:8000/api/images/' + image_url" alt="image"></v-img>
+                </v-avatar>
               {{ professional }}
             </p>
           </v-col>
@@ -135,6 +138,9 @@
 
          <v-col cols="12" md="3">
            <p class="text-h5 font-weight-black mb-12 " style="text-align: center;">
+            <v-avatar elevation="3" color="grey-lighten-4" size="large">
+                  <v-img :src="'http://127.0.0.1:8000/api/images/' + image_url" alt="image"></v-img>
+                </v-avatar>
              {{ dupla.trabajador }} 
            </p>           
            
@@ -173,6 +179,7 @@ export default {
 
     client:"",
     professional:"",
+    image_url:"",
     number:"",
     modules:"",
     parpadeando: false,
@@ -277,6 +284,7 @@ export default {
           this.module = reservation.puesto,
           this.numero++,
           this.client = reservation.client_name,
+          this.image_url = reservation.image_url,
           this.professional = reservation.professional_name
           this.iniciarParpadeo();
         // Insertar la nueva dupla en la primera posición
@@ -284,7 +292,8 @@ export default {
           cliente: reservation.client_name,
           trabajador: reservation.professional_name,
           module: reservation.puesto, // Cambiar a 'puesto' en lugar de 'module'
-          number: this.numero
+          number: this.numero,
+          image_url: this.image_url
         });
       }
     //},

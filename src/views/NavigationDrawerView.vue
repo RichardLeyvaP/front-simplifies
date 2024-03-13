@@ -90,7 +90,7 @@ export default {
       { icon: "mdi-list-box-outline", title: "Servicios", to: "service", value: "services", permission: "view_services" },
       { icon: "mdi-store-outline", title: "Almacenes", to: "store", value: "stores", permission: "view_stores" },
       { icon: "mdi-calendar-outline", title: "Agendas", value: "reservation", to: "reservation", permission: "view_calendar" },
-      { icon: "mdi-cart", title: "Carros de compra", to: "box", value: "cash", permission: "view_shopping_carts" },
+      { icon: "mdi-cash-register", title: "Caja", to: "box", value: "cash", permission: "view_shopping_carts" },
       { icon: "mdi-television", title: "Pizarras de Turnos", to: "shift-board", value: "shift-board", permission: "view_shift_boards" },
       { icon: "mdi-gift", title: "Tarjeta Regalo", to: "card-gifts", value: "Tarjeta Regalos", permission: "view_gift_cards" },
     ],
@@ -115,6 +115,7 @@ export default {
       { title: "Permisos del Sistema", icon: "mdi-security", to: "/permission", permission: "view_permissions" },
       { icon: "mdi-account-tie-outline", title: "Profesionales", to: "person", value: "profesionals", permission: "view_professionals" },
       { icon: "mdi-account-star-outline", title: "Clientes", to: "client", value: "clients", permission: "view_clients" },
+      { icon: "mdi-handshake", title: "Associados", to: "associated", value: "associated", permission: "view_associates" },
   
     ],
     allowedPermissions: ["view_dashboard", "view_menu",],
