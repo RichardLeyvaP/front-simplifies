@@ -115,6 +115,7 @@ export default {
       { title: "Permisos del Sistema", icon: "mdi-security", to: "/permission", permission: "view_permissions" },
       { icon: "mdi-account-tie-outline", title: "Profesionales", to: "person", value: "profesionals", permission: "view_professionals" },
       { icon: "mdi-account-star-outline", title: "Clientes", to: "client", value: "clients", permission: "view_clients" },
+      { icon: "mdi-handshake", title: "Associados", to: "associated", value: "associated", permission: "view_associates" },
   
     ],
     allowedPermissions: ["view_dashboard", "view_menu",],
