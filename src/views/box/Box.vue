@@ -600,11 +600,11 @@ data: () => ({
  },
  editedCard: {
    cardGiftUser_id: '',
-   value: '',
+   code: '',
  },
  defaultCard: {
    cardGiftUser_id: '',
-   value: '',
+   code: '',
  },
  defaultCloseBox: {
    id: '',
@@ -708,13 +708,13 @@ created() {
 },
 
 methods: {
- onCardGiftSelected(value) {
+ onCardGiftSelected(code) {
    // Realiza cualquier lógica adicional aquí
-   console.log('Elemento seleccionado:', value.data);
+   console.log('Elemento seleccionado:', code.data);
    axios
      .get('http://127.0.0.1:8000/api/card-gift-user-show-value', {
        params: {
-         code: value.data
+         code: code.data
        }
      })
      .then((response) => {
