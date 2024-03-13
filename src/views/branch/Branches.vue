@@ -148,10 +148,11 @@
           </v-avatar>
           {{ item.name }}
         </template>
-        <template v-slot:item.technical_assistance="{ item }">
+        
+        <template v-slot:item.useTechnical="{ item }">
           <div class="text-end">
-            <v-chip :color="item.technical_assistance ? 'green' : 'red'" :text="item.technical_assistance ? 'Si ' : 'No'"
-              class="text-uppercase" size="small" label></v-chip>
+            <v-chip :color="item.useTechnical ? 'green' : 'red'" :text="item.useTechnical ? 'Si ' : 'No'"
+              class="text-uppercase" size="small" label style="text-align: center;"></v-chip>
           </div>
         </template>
         <template v-slot:item.actions="{ item }">
