@@ -19,12 +19,12 @@
       </v-container>
     </v-toolbar>
     <v-container>
-        <v-row>
-          <v-col cols="12" sm="12" md="4">
-            <v-autocomplete v-model="branch_id" :items="branches" clearable label="Seleccione una Sucursal"
-              prepend-icon="mdi-store" item-title="name" item-value="id" variant="underlined"
-              @update:model-value="initialize()"></v-autocomplete>
-          </v-col>
+      <v-row>
+        <v-col cols="12" sm="12" md="4">
+          <v-autocomplete v-model="branch_id" :items="branches" clearable label="Seleccione una Sucursal"
+            prepend-icon="mdi-store" item-title="name" item-value="id" variant="underlined"
+            @update:model-value="initialize()"></v-autocomplete>
+        </v-col>
       </v-row>
       <v-row>
         <!-- Primera columna -->
@@ -114,12 +114,13 @@ export default {
     editedIndex: 1,
     branch_id: 1,
     results: [],
-    branches:[],
+    branches: [],
     business_id: '',
     headers: [
       { title: 'Profesional', key: 'name', sortable: false },
       { title: 'Monto', key: 'amount', sortable: false },
       { title: 'Propina', key: 'tip', sortable: false },
+      { title: 'Clientes atendidos', key: 'total_cars', sortable: false },
       { title: 'Total', key: 'total', sortable: false }
     ],
     data: {},
@@ -288,15 +289,15 @@ export default {
         .then((response) => {
           this.results = response.data;
         });
-        axios
-      .get('http://127.0.0.1:8000/api/show-business', {
+      axios
+        .get('http://127.0.0.1:8000/api/show-business', {
           params: {
             business_id: this.business_id
           }
         })
-      .then((response) => {
-        this.branches = response.data.branches;
-      });
+        .then((response) => {
+          this.branches = response.data.branches;
+        });
     },
 
   },
