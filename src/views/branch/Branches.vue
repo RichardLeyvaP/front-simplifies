@@ -73,6 +73,9 @@
                           v-model="editedItem.business_type_id" :items="businessTypes" item-title="name" item-value="id"
                           :rules="selectRules">
                         </v-autocomplete>
+                        <v-autocomplete v-model="editedItem.useTechnical" :items="options" clearable label="Técnico"
+                        prepend-inner-icon="mdi-hair-salon" item-title="name" item-value="id" variant="underlined"
+                        ></v-autocomplete>
                       </v-col>
 
                       <v-col cols="12" md="6">
@@ -381,6 +384,7 @@ export default {
       { title: 'Teléfono', value: 'phone' },
       { title: 'Dirección', value: 'address' },
       { title: 'Tipo de Negocio', value: 'business_type.name' },
+      { title: 'Técnico', value: 'useTechnical' },
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
     headers2: [
@@ -415,10 +419,14 @@ export default {
       business_type_id: '',
       image_data: '',
       professional_id: '',
-      store_id: ''
+      store_id: '',
+      useTechnical: 0,
     },
     data: {},
-
+    options: [
+        { name: 'SI', id: 1 },
+        { name: 'NO', id: 0 }
+      ],
     defaultItem: {
       name: '',
       phone: '',
@@ -427,7 +435,8 @@ export default {
       business_type_: '',
       image_data: '',
       professional_id: '',
-      store_id: ''
+      store_id: '',
+      useTechnical: '',
     },
     nameRules: [
       (v) => !!v || "El campo es requerido",
@@ -465,12 +474,12 @@ export default {
     },
   },
 
-  created() {
+  mounted() {
     this.initialize()
   },
 
   methods: {
-
+    
     showAlert(sb_type, sb_message, sb_timeout) {
       this.sb_type = sb_type
 
