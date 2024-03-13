@@ -1,4 +1,6 @@
-<template>
+
+<template >
+    <div class="app-container">
     <v-container>
         <v-stepper prev-text="Anterior"  next-text="Siguiente"   bg-color="" v-model="step" :items="items" show-actions @update:model-value="handleStepChange">
            <!-- SERVICIOS -->
@@ -228,6 +230,32 @@ v-on="on"
            
         </v-stepper>
     </v-container>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+</div>
 </template>
 
 <script>
@@ -684,27 +712,36 @@ axios
         },
 
         //profesionales
-        toggleService2(serviceId2) {
-            if(serviceId2 === -99)
-            {
-                this.barberAleatorie = true;
-            }
-            else{
-                this.barberAleatorie = false;
-                const index = this.professional.indexOf(serviceId2);
-            console.log(this.professional);
-            if (index > -1) {
-                // Si el servicio ya está seleccionado, no hagas nada
-                return;
-            }
+        isProfessional(serviceId2) {
+    // Si barberAleatorie es true, devolver false
+    if (this.barberAleatorie) {
+        return false;
+    }
+    // Si no, realizar la lógica normal
+    return this.professional.length === 1 && this.professional[0] === serviceId2;
+},
+
+toggleService2(serviceId2) {
+    if (serviceId2 === -99) {
+        this.barberAleatorie = true;
+        // Limpiar la selección cuando barberAleatorie es true
+        this.professional = [];
+    } else {
+        this.barberAleatorie = false;
+        const index = this.professional.indexOf(serviceId2);
+        console.log(this.professional);
+        if (index > -1) {
+            // Si el servicio ya está seleccionado, no hagas nada
+            return;
+        }
+
+        // Limpiar la selección anterior y agregar el nuevo servicio seleccionado
+        this.professional = [serviceId2];
+    }
+}
 
 
-            // Limpiar la selección anterior y agregar el nuevo servicio seleccionado
-            this.professional = [serviceId2];
-
-            }
-            
-        },
+,
          //profesionales
          toggleTimer(hour) {
             const index = this.hourSelect.indexOf(hour);
@@ -719,9 +756,9 @@ axios
             this.hourSelect = [hour];
             this.start_time1 = this.hourSelect;
         },
-        isProfessional(serviceId2) {
+      /*  isProfessional(serviceId2) {
             return this.professional.length === 1 && this.professional[0] === serviceId2;
-        },
+        },*/
         isTimer(hour) {
             return this.hourSelect.length === 1 && this.hourSelect[0] === hour;
         },
@@ -784,5 +821,9 @@ console.log(newArrayService);
 .list-item-spacing {
     margin-bottom: 8px;
     /* Ajusta según necesites */
+}
+.app-container {
+    background-color: rgb(241, 130, 84)/* Color de fondo deseado */
+  /* Otros estilos si es necesario */
 }
 </style>
