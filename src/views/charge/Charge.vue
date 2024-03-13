@@ -230,6 +230,7 @@ export default {
     dialogAddPermission: false,
     dialogDeletePermission: false,
     editedIndex: -1,
+    search2: '',
     valid: true,
     editedItem: {
       name: '',

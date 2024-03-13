@@ -117,7 +117,7 @@
 
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-
+          
           <v-dialog v-model="dialogDelete" max-width="600px">
             <v-card>
               <v-toolbar color="red">
@@ -147,6 +147,12 @@
             <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_data" alt="image"></v-img>
           </v-avatar>
           {{ item.name }}
+        </template>
+        <template v-slot:item.technical_assistance="{ item }">
+          <div class="text-end">
+            <v-chip :color="item.technical_assistance ? 'green' : 'red'" :text="item.technical_assistance ? 'Si ' : 'No'"
+              class="text-uppercase" size="small" label></v-chip>
+          </div>
         </template>
         <template v-slot:item.actions="{ item }">
           <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
