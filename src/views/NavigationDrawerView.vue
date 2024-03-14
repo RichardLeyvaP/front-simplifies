@@ -102,7 +102,10 @@ export default {
       { icon: "mdi-finance", title: "Ganancias Negocios", to: "business-winner", value: "business-winner", permission: "view_business_earnings" },
       { icon: "mdi-timer-off", title: "Llegadas Tardes", to: "branch-arriving-late", value: "branch-arriving-late", permission: "view_late_arrivals" },
       { icon: "mdi-timer-off", title: "Profesional Llegadas Tardes", to: "professional-arriving-late", value: "professional-arriving-late", permission: "view_professional_late_arrivals" },
-      { icon: "mdi-timer", title: "Profesionales Mejor Asistencias", to: "professional-arriving", value: "professional-arriving", permission: "view_best_attendance" }
+      { icon: "mdi-timer", title: "Profesionales Mejor Asistencias", to: "professional-arriving", value: "professional-arriving", permission: "view_best_attendance" },
+      { icon: "mdi-account-multiple", title: "Visitas por Clientes", to: "clients-visist", value: "clients-visist", permission: "view_clients_frecuence" },
+      { icon: "mdi-trending-up", title: "Productos más vendidos", to: "product-mostsolt", value: "product-mostsolt", permission: "products_mostsold" },
+      { icon: "mdi-shuffle", title: "Reposición de Productos", to: "product-stock", value: "product-stock", permission: "products_stock" }
     ],
     academias: [
       { icon: "mdi-school", title: "Academia", to: "academy", value: "academy", permission: "view_academy" },

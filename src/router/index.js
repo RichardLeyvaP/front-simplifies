@@ -269,11 +269,32 @@ const routes = [
         meta: { requiresAuth: true, requiresPermissions: ["view_stores"] },
       },
       {
-        path: "/client-History",
+        path: "/client-history",
         name: "Historia de Cliente",
         component: () =>
           import( "@/views/reportes/ClientHistory.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_client_history"] },
+      },
+      {
+        path: "/clients-visist",
+        name: "Visitas por clientes",
+        component: () =>
+          import( "@/views/reportes/ClientsFrecuence.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_clients_frecuence"] },
+      },
+      {
+        path: "/product-mostsolt",
+        name: "Productos más vendidos",
+        component: () =>
+          import( "@/views/reportes/ProductMostSold.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["products_mostsold"] },
+      },
+      {
+        path: "/product-stock",
+        name: "Reposición de Productos",
+        component: () =>
+          import( "@/views/reportes/ReposicionProduct.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["products_stock"] },
       },
     ],
   },

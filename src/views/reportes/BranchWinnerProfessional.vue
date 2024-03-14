@@ -21,7 +21,7 @@
     <v-container>
       <v-row>
         <v-col cols="12" sm="12" md="4">
-          <v-autocomplete v-model="branch_id" :items="branches" clearable label="Seleccione una Sucursal"
+          <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable label="Seleccione una Sucursal"
             prepend-icon="mdi-store" item-title="name" item-value="id" variant="underlined"
             @update:model-value="initialize()"></v-autocomplete>
         </v-col>
@@ -112,6 +112,7 @@ export default {
     input3: null,
     search2: '',
     editedIndex: 1,
+    mostrarFila: false,
     branch_id: 1,
     results: [],
     branches: [],
@@ -187,6 +188,11 @@ export default {
     //this.branch_id = 1;
     this.branch_id = LocalStorageService.getItem("branch_id") ? 1 : LocalStorageService.getItem("branch_id");
     this.business_id = LocalStorageService.getItem("business_id");
+    this.charge_id = LocalStorageService.getItem('charge_id');
+    if (this.charge_id === '4') {
+      // Mostrar la fila con Autocomplete
+      this.mostrarFila = true;
+    }
     console.log(this.branch_id);
     this.initialize();
   },
