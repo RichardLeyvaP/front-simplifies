@@ -33,23 +33,24 @@
                 <v-sheet border>
                     <v-list>
                         <v-list-item-group v-model="professional" active-class="deep-purple--text text--accent-4">
+                            <v-list-item  :prepend-avatar="'http://127.0.0.1:8000/api/images/professionals/barber-aleatore.png' "
+                               
+                                @click="toggleService2(-99)"
+                                :class="{ 'selected-item': barberAleatorie }" class="pt-4 pb-4">
+                                <v-list-item-content>
+                                    <v-list-item-title class="text-h6">Barbero Aleatoriamente (Servicio inmediato)</v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
                             <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + professional.image_url"
                                 v-for="professional in professionals" :key="professional.id"
                                 @click="toggleService2(professional.id)"
                                 :class="{ 'selected-item': isProfessional(professional.id) }" class="pt-4 pb-4">
 
                                 <v-list-item-content>
-                                    <v-list-item-title class="text-h6">{{ professional.name + ' ' + professional.surname + '  '+professional.second_surname }}</v-list-item-title>
+                                    <v-list-item-title class="text-h6">{{ professional.name + ' ' + professional.surname + '  '+professional.second_surname+'    '+'(Libre aproxim - 09:30 AM)' }}</v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
-                            <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/professionals/default_profile.jpg' "
-                               
-                                @click="toggleService2(-99)"
-                                :class="{ 'selected-item': barberAleatorie }" class="pt-4 pb-4">
-                                <v-list-item-content>
-                                    <v-list-item-title class="text-h6">Barbero Aleatorio</v-list-item-title>
-                                </v-list-item-content>
-                            </v-list-item>
+                            
                             
                         </v-list-item-group>
                     </v-list>
@@ -122,9 +123,8 @@
     <v-card title="Datos de Cliente">
         <v-sheet class="mx-auto" width="300">
     <v-form @submit.prevent>
-      <v-text-field v-model="email_client" :rules="emailRules" label="Correo Electrónico" outlined
+      <v-text-field v-model="email_client2"  label="Teléfono ó Correo Electrónico" outlined
          required></v-text-field>
-         <v-text-field  v-model="phone_client" :rules="phoneRules" label="Teléfono" outlined required></v-text-field>
       <v-btn class="mt-2" type="submit"   @click="() => { sendData(); isActive.value = false;  }" block>Aceptar</v-btn>
     </v-form>
   </v-sheet>
@@ -152,7 +152,7 @@
             <v-btn
       v-bind="activatorProps"
       color="surface-variant"
-      text="NO, es mi primera"
+      text="NO, es mi primera vez"
       variant="flat"
       @click="() => { SelectionRadio('ClientNo')  }"
     ></v-btn>
@@ -193,11 +193,11 @@
        <v-text-field :disabled="verificate" v-model="email_client" :rules="emailRules" label="Correo Electrónico" outlined
          required></v-text-field>
        </v-col>
-       <v-col cols="12" md="6" >
+       <!-- <v-col cols="12" md="6" >
        <v-checkbox v-model="checkbox" color="orange lighten-2"
          :rules="[v => !!v || 'You must agree to continue!']" label="Términos y condiciones"
          required></v-checkbox>
-       </v-col>
+       </v-col> -->
        </v-row>
 
      </v-form>
@@ -271,6 +271,7 @@ export default {
     checkbox:false,
     name_client:"",
     email_client:"",
+    email_client2:"",
     phone_client:"",
     selected_interval:"",
     surname_client:"",
@@ -409,16 +410,9 @@ export default {
         },
         sendData()
     {
-      //this.totalTimeServices()
-    console.log('**********************************--------------------');
-    
-
-      console.log('---**********************************---------------------');
-      console.log(this.email_client);
-      console.log(this.phone_client);
-
+   
       // Realiza la solicitud POST Y BUSCO LOS DATOS DEL CLIENTE 
-      axios.get(`http://127.0.0.1:8000/api/client-email-phone?email=${this.email_client}&phone=${this.phone_client}`)
+      axios.get(`http://127.0.0.1:8000/api/client-email-phone?email=${this.email_client2}`)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
         this.clientRegister = response.data.client;

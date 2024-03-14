@@ -29,18 +29,11 @@
           <v-row class="mt-6">
             <v-col cols="12" md="4"></v-col>
             <v-col cols="12" md="4">
-              <v-btn block rounded="0" @click="show(2)" size="x-large"> Profesional</v-btn>
+              <v-btn block rounded="0" @click="goToProfessional" size="x-large"> Profesional</v-btn>
             </v-col>
           </v-row>
         </div>
-        <div v-if="activated == 2">
-          <v-row class="mt-6">
-            <v-col cols="12" md="4"></v-col>
-            <v-col cols="12" md="4" style="text-align: center;">
-              <v-btn block rounded="0" @click="show(3)" size="x-large"> Registrar Entrada</v-btn>
-            </v-col>
-          </v-row>
-        </div>
+      
         <div v-if="activated == 3">
 
           <v-row class="mt-6">
@@ -75,6 +68,51 @@
             </v-col>
           </v-row>
         </div>
+        <!-- seleccionar barbero o tecnico -->
+        <div v-if="activated == 4">
+          <v-row class="mt-6">
+            <v-col cols="12" md="4"></v-col>
+            <v-col cols="12" md="4" style="text-align: center;">
+              <v-btn block rounded="0" @click="show(5)" size="x-large"> TÉCNICO</v-btn>
+              <br>
+              <v-btn block rounded="0" @click="show(6)" size="x-large"> BARBERO</v-btn>
+            </v-col>
+          </v-row>
+        </div>
+        <!-- puesto del tecnico -->
+        <div v-if="activated == 5">
+          <v-row class="mt-6">
+            <v-col cols="12" md="4"></v-col>
+            <v-col cols="12" md="4" style="text-align: center;">
+  <v-btn
+    v-for="index in 3"
+    :key="index"
+    block
+    rounded="5"
+    @click="show(3)"
+    size="x-large"
+  >
+    Puesto{{ index }}
+  </v-btn>
+</v-col>
+          </v-row>
+        </div>
+        <!-- puesto del Barbero -->
+        <div v-if="activated == 6">
+          <v-row class="mt-6">
+            <v-col cols="12" md="4"></v-col>
+            <v-col cols="12" md="4" style="text-align: center;">
+              <v-btn block rounded="0" @click="show(3)" size="x-large"> PuestoB-1</v-btn>
+              <br>
+              <v-btn block rounded="0" @click="show(3)" size="x-large"> PuestoB-2</v-btn>
+              <br>
+              <v-btn block rounded="0" @click="show(3)" size="x-large"> PuestoB-3</v-btn>
+              <br>
+              <v-btn block rounded="0" @click="show(3)" size="x-large"> PuestoB-4</v-btn>
+            </v-col>
+          </v-row>
+        </div>
+        
         <v-row class="mt-10">
           <v-col cols="12" md="12">
             <br><br><br>
@@ -127,6 +165,9 @@ export default {
 
     goToReserve() {
       router.push({ name: "Reservar" });
+    },
+    goToProfessional() {
+      router.push({ name: "toProfessional" });
     },
 
     show(value) {

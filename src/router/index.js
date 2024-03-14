@@ -24,6 +24,12 @@ const routes = [
     name: "Reservar",
     component: () =>
       import( "@/views/reserve/Reserve.vue"),
+  }, 
+  {
+    path: "/toProfessional",
+    name: "toProfessional",
+    component: () =>
+      import( "@/views/totem/enteringWork.vue"),
   },
   {
     path: "/reserve",
