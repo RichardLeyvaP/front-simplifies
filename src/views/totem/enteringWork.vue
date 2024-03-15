@@ -1,0 +1,505 @@
+
+<!-- este es el archivo wue se presentó al cliente -->
+<template >
+    <div class="app-container">
+    <v-container>
+        <v-stepper prev-text="Anterior"  next-text="Siguiente"   bg-color="" v-model="step" :items="items" show-actions @update:model-value="handleStepChange">
+          
+                      <!-- CORREO PARA SABER SI ES TECNICO O BARBERO -->
+                      <template v-slot:item.1>
+                <v-sheet border>
+                <v-row>
+
+                    <v-col cols="12" md="6" class="mt-2">
+       <v-text-field :disabled="verificate" v-model="email_client2" :rules="emailRules" label="Correo Electrónico" outlined
+         required></v-text-field>
+       </v-col>
+   
+
+                </v-row>
+                <h3 class="text-h6 red--text">{{verificate_menssj}}</h3>
+
+                
+                   
+                </v-sheet>
+            </template>
+           
+         
+            <!-- Seleccione Puesto de trabajo -->
+            <template v-slot:item.2>
+                <h3 class="text-h6">Seleccione Puesto de trabajo</h3>
+
+                <v-sheet border>
+                    <v-list>
+                        <v-list-item-group v-model="array_Places" multiple active-class="deep-purple--text text--accent-4">
+                            <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + puestoT.image_puestoT"
+                                v-for="puestoT in puestoTs" :key="puestoT.id" @click="togglepuestoT(puestoT.id)"
+                                :class="{ 'selected-item': isSelected(puestoT.id) }" class="pt-4 pb-4">
+
+                                <v-list-item-content>
+                                    <v-list-item-title class="text-h6">{{ puestoT.name }}</v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-list-item-group>
+                    </v-list>
+                </v-sheet>
+            </template>
+
+            <!-- Generar codigo Qr -->
+            <template v-slot:item.3>
+                <h3 class="text-h6">Generando código Qr de entrada</h3>
+
+                <v-sheet border>
+                   
+          
+          <v-row class="mt-6" v-if="showAlert">
+            <v-col cols="12" md="4"></v-col>
+            <v-col cols="12" md="4">
+              <v-alert closable title="Error" text="Correo Inválido" type="error"></v-alert>
+            </v-col>
+          </v-row>
+          <v-row class="mt-2" v-if="showQR">
+            <v-col cols="12" md="4"></v-col>
+            <v-col cols="12" md="4">
+              <v-img class="mx-auto" height="300" :src="qrCodeBase64" max-width="500">
+                <template v-slot:placeholder v-if="true">
+                  <div class="d-flex align-center justify-center fill-height">
+                    <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
+                  </div>
+                </template>
+              </v-img>
+            </v-col>
+          </v-row>
+                </v-sheet>
+            </template>
+            
+           
+           
+        </v-stepper>
+    </v-container>
+   
+</div>
+</template>
+
+<script>
+import axios from "axios";
+
+export default {
+    data: () => ({
+        // variables referente al codigo Qr
+        array_Places :[],
+        activated: 1,
+    formIn: 0,
+    email: "",
+    loading: false,
+    showAlert: false,
+    qrCode: '',
+    qrCodeBase64: '',
+    showQR: false,
+        // variables referente al codigo Qr
+        tipoProfessional:'',
+        barberAleatorie:false,
+        verificate : false,
+        verificate_menssj : '',
+        clientRegister:[],
+        radios: 'ClientNo',
+        message:"Los datos para realizar la reserva están completos. Se enviará correo electrónico con los datos de la reserva",
+    checkbox:false,
+    name_professional:"",
+    email_client:"",
+    email_client2:"",
+    type_professional:"",
+    selected_interval:"",
+    surname_professional:"",
+    second_surname:"",    
+    dayOK: "",
+    selected_professional: "",
+    date: "",
+    focus: '',
+    start_time1: '',
+    array_puestoTs:[],
+
+    nameRules: [
+        v => !!v || 'El nombre es requerido',
+        v => (v && v.length <= 50) || 'El nombre no debe exceder de 50 caracteres',
+      ],
+
+      surname_professional_Rules: [
+        v => !!v || 'El Apellido Paterno es requerido',
+        v => (v && v.length <= 50) || 'El Apellido Paterno no debe exceder de 50 caracteres',
+      ],
+
+      second_surname_Rules: [
+        v => !!v || 'El Apellido Materno es requerido',
+        v => (v && v.length <= 50) || 'El Apellido Materno no debe exceder de 50 caracteres',
+      ],
+    
+      emailRules: [
+        v => !!v || 'El Correo es requerido',
+        v => /.+@.+\..+/.test(v) || 'Correo electrónico no válido',
+      ],
+
+      phoneRules: [
+        v => !!v || 'El Teléfono es requerido',
+     
+      ],
+
+
+        disabledIntervals: [],
+        intervals: [],
+        countInterval: 0,
+        reservedTime: [],
+        calendars_branches: [],
+        arrayEvents: null,
+        selected_puestoTs: [],
+        puestoTs: [],
+        professionals: [],
+        hourSelect: [],
+        selected: [],
+        professional: [],
+        //
+        //
+        //
+        //
+        dayOfWeek: [],
+        shipping: 0,
+        step: 1,
+        items: [
+            'Correo electrónico',
+            'Puestos de trabajo',
+            'Generar código Qr de entrada',
+        ],
+        products: [
+            {
+                name: 'Product 1',
+                price: 10,
+                quantity: 2,
+            },
+            {
+                name: 'Product 2',
+                price: 15,
+                quantity: 10,
+            },
+        ],
+    }),
+
+   
+
+    methods:
+    {
+        GenerateQr() {
+            //simulando un correo valido
+            //this.email_client2 = 'deylert89@gmail.com';
+      this.loading = true
+      axios
+        .get('http://127.0.0.1:8000/api/qrCode', {
+          params: {
+            branch_id: 1,
+            email: this.email_client2
+          }
+        })
+        .then((response) => {
+          this.qrCode = response.data;
+          let svgData = atob(this.qrCode);
+          this.qrCodeBase64 = 'data:image/svg+xml;base64,' + btoa(svgData);
+          console.log(this.qrCodeBase64);
+        });
+      if (this.qrCode) {
+        this.showAlert = true;
+        setTimeout(() => {
+          this.loading = false;
+          this.showAlert = false;
+        }, 5000);
+      }
+      else {
+        setTimeout(() => {
+          this.loading = false;
+          this.showQR = true
+        }, 2000);
+
+        setTimeout(() => {
+          this.activated = 1
+        }, 8000);
+      }
+
+
+    },
+        changeStep(index) {
+      // Cambiar el valor de step al índice especificado
+        this.step = index;
+    },
+        SelectionRadio(value)
+        {
+         this.radios = value;
+         console.log(this.radios);
+        },
+        clearTextClient()
+        {
+            this.verificate_menssj = '';
+            this.name_professional = '';
+         this.type_professional = '';
+         this.surname_professional = '';
+         this.second_surname = '';
+         this.email_client = '';
+
+        },
+        send()
+    {
+     
+   
+    let request = {};
+    const newArrayPlaces = this.array_Places.map(item => parseInt(item)); 
+    console.log('111111111111111111111111111111111111111111111111111111111111111111111111111111111');
+    console.log(newArrayPlaces[0]);
+  if(this.tipoProfessional === 'tecnico')//es tecnico
+  {
+    
+     request = {
+        professional_id:this.professionalId,
+        workplace_id: newArrayPlaces[0],             
+        places: newArrayPlaces,             
+      }
+  }
+  else//es barbero
+  {
+    request = {
+        professional_id:this.professionalId,
+        workplace_id: newArrayPlaces[0],             
+        places: 0,             
+      }
+  }
+      
+
+      // Realiza la solicitud GET con Axios y pasa los parámetros
+      axios.post('http://127.0.0.1:8000/api/professionalworkplace',  request )
+        .then(response => {
+          // Maneja la respuesta de la solicitud aquí
+        this.message=response.data.msg
+
+              })
+        .catch(error => {
+          // Maneja cualquier error que pueda ocurrir durante la solicitud
+          console.error('Error al hacer la solicitud:', error);
+        });
+
+    },
+        sendData()
+    {
+   
+      // Realiza la solicitud POST Y BUSCO LOS DATOS DEL CLIENTE 
+      axios.get(`http://127.0.0.1:8000/api/verify-tec-prof?email=${this.email_client2}`)
+        .then(response => {
+          // Maneja la respuesta de la solicitud aquí
+        this.clientRegister = response.data.professionals;
+        console.log('-------------------------------clientRegister----------------------------------------');
+        console.log(this.clientRegister);
+        
+        
+
+        const client = this.clientRegister;
+        
+        //ASIGNO A LOS CAMPOS DEL FORMULARIO TDS LOS DATOS
+        if( client.professional_id != 0)
+        {
+            console.log('siiiiiiiiiiiiiiiiiii');
+            this.type_professional = client.type; 
+        this.name_professional = client.name;
+        this.professionalId = client.professional_id;
+        //llamo a la funcio a ver si es tecnico / profesional o /ninguno de los dos
+        this.togglepuestoT2(this.type_professional);
+
+        }
+        else
+        {
+            this.changeStep(1);
+            this.type_professional = 0;
+            console.log("NO COINCIDE EL CORREO");
+        }
+        
+   
+       
+        
+         
+       
+              })
+        .catch(error => {
+            //simulando que diera un tecnico
+          //  this.togglepuestoT2(1);
+          // Maneja cualquier error que pueda ocurrir durante la solicitud
+          console.error('Error al hacer la solicitud:', error);
+        });
+
+    },
+
+       
+     
+        
+ 
+     
+        handleStepChange(newValue) {
+
+            // Verifica si se está pasando del paso 1 al paso 2
+            if (newValue === 2) {
+                // Llama a tu método aquí
+                console.log("--------------Se ha pasado del paso 1 al paso 2");
+                this.sendData();
+            } // Verifica si se está pasando del paso 2 al paso 3
+            if (newValue === 3) {
+                // Llama a tu método aquí
+                console.log("--------------Se ha pasado del paso 2 al paso 3 -divideInterval----------------------------");
+                console.log(this.array_Places);
+                //llamar a insertar los puestos seleccionado
+                this.send();
+                // :loading="loading" @click="GenerateQr()"
+                this.GenerateQr();
+               
+            }
+           
+           
+        },
+
+
+        //servicios
+        togglepuestoT(puestoTId) {
+            this.array_Places.push(puestoTId);
+            const index = this.selected.indexOf(puestoTId);
+            console.log(this.selected);
+            if (index > -1) {
+                this.selected.splice(index, 1);
+            } else {
+                this.selected.push(puestoTId);
+            }
+        },
+        isSelected(puestoTId) {
+            return this.selected.includes(puestoTId);
+        },
+
+        //profesionales
+        isProfessional(puestoTId2) {
+    // Si barberAleatorie es true, devolver false
+    if (this.barberAleatorie) {
+        return false;
+    }
+    // Si no, realizar la lógica normal
+    return this.professional.length === 1 && this.professional[0] === puestoTId2;
+},
+
+togglepuestoT2(puestoTId2) {
+    //simulando q devuelve un tecnico puestoTId2= 1
+
+    if (puestoTId2 === 1) {//es tecnico
+        this.tipoProfessional = 'tecnico';
+        this.chargepuestoTs();
+    } else if (puestoTId2 === 2) {//es barbero
+        this.tipoProfessional = 'barbero';
+        this.chargepuestoTs();
+    }
+    else{
+            //no es ninguno de los dos
+         this.verificate = false;
+         this.verificate_menssj = 'El correo no coincide con ningún profesional';
+         this.clearTextClient();
+         this.changeStep(1);
+         }
+}
+
+
+,
+         //profesionales
+         toggleTimer(hour) {
+            const index = this.hourSelect.indexOf(hour);
+            console.log(this.hourSelect);
+            if (index > -1) {
+                // Si el servicio ya está seleccionado, no hagas nada
+                return;
+            }
+
+
+            // Limpiar la selección anterior y agregar el nuevo servicio seleccionado
+            this.hourSelect = [hour];
+            this.start_time1 = this.hourSelect;
+        },
+      /*  isProfessional(puestoTId2) {
+            return this.professional.length === 1 && this.professional[0] === puestoTId2;
+        },*/
+        isTimer(hour) {
+            return this.hourSelect.length === 1 && this.hourSelect[0] === hour;
+        },
+
+        chargepuestoTs() {
+            
+            let url= ``;
+            if(this.tipoProfessional == 'tecnico')
+            {
+                 url = `http://127.0.0.1:8000/api/branch_workplaces_select?branch_id=1`;
+            }
+            else if(this.tipoProfessional == 'barbero')
+            {
+                 url = `http://127.0.0.1:8000/api/branch_workplaces_busy?branch_id=1`;
+            }
+
+
+
+            axios
+                .get(url)
+                .then((response) => {
+                    console.log(response.data)
+                    this.puestoTs = response.data.workplaces;
+
+
+                })
+                .catch((err) => {
+                    console.log(err, "error");
+
+                });
+        },
+
+        chargeProfessionals(valuepuestoTs) {
+            
+const newArraypuestoT = valuepuestoTs.map(item => parseInt(item)); // Convertir a enteros si es necesario
+console.log(newArraypuestoT);
+      const data = {
+        
+                puestoTs: newArraypuestoT,
+                 branch_id: 1
+                // branch_id: this.selected_branch.id
+            };
+
+            this.array_puestoTs = newArraypuestoT;
+            axios
+        .get(`http://127.0.0.1:8000/api/branch-professionals-puestoT`, {
+            params: data
+        })
+        .then((response) => {
+                    this.professionals = response.data.professionals;
+                    console.log(response.data);
+
+                })
+                .catch((err) => {
+                    console.log(err, "error");
+                    /*  this.displayNotification(
+                        "error",
+                        "Error",
+                        "Error al obtener el calendario de la Sucursal"
+                      );*/
+                });
+        },
+
+    }
+}
+</script>
+<style>
+.selected-item {
+    background-color: orange !important;
+}
+
+/* Espacio entre los items */
+.list-item-spacing {
+    margin-bottom: 8px;
+    /* Ajusta según necesites */
+}
+.app-container {
+    background-color: rgb(241, 130, 84)/* Color de fondo deseado */
+  /* Otros estilos si es necesario */
+}
+</style>

@@ -10,7 +10,7 @@ const routes = [
     path: "/shift-board",
     name: "ShiftBoard",
     component: () =>
-      import( "@/views/shift_board/ShiftBoard.vue"),
+      import( "@/views/shift_board/ShiftBoard-ERRORES.vueESTABIEN.vue"),
     meta: { requiresAuth: true, requiresPermissions: ["view_shift_boards"] }
   },
   {
@@ -24,6 +24,18 @@ const routes = [
     name: "Reservar",
     component: () =>
       import( "@/views/reserve/Reserve.vue"),
+  }, 
+  {
+    path: "/toProfessional",
+    name: "toProfessional",
+    component: () =>
+      import( "@/views/totem/enteringWork.vue"),
+  },
+  {
+    path: "/reserve",
+    name: "Reservar",
+    component: () =>
+      import( "@/views/totem/reservation.vue"),
   },
   {
     path: "/profesional",

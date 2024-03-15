@@ -48,9 +48,6 @@
               PROFESIONAL
             </p>
             <p class="text-h4 font-weight-black " :class="{ 'parpadea': parpadeando }"  style="text-align: center;">
-              <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                  <v-img :src="'http://127.0.0.1:8000/api/images/' + image_url" alt="image"></v-img>
-                </v-avatar>
               {{ professional }}
             </p>
           </v-col>
@@ -138,9 +135,6 @@
 
          <v-col cols="12" md="3">
            <p class="text-h5 font-weight-black mb-12 " style="text-align: center;">
-            <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                  <v-img :src="'http://127.0.0.1:8000/api/images/' + image_url" alt="image"></v-img>
-                </v-avatar>
              {{ dupla.trabajador }} 
            </p>           
            
@@ -154,7 +148,6 @@
      </v-row>
 
         
-       
         
         <v-row class="mt-10">
           <v-col cols="12" md="12">
@@ -180,7 +173,6 @@ export default {
 
     client:"",
     professional:"",
-    image_url:"",
     number:"",
     modules:"",
     parpadeando: false,
@@ -188,6 +180,7 @@ export default {
     numero :0,
       duplas: [],
       reservations: [], // Nuevo arreglo para almacenar las reservas
+      reservationsAux: [], // Nuevo arreglo para almacenar las reservas
     currentReservation: {}, // Nuevo objeto para almacenar la reserva actual
     reservationKeys: [ // Nuevas claves para iterar sobre las reservas
       "reservation_id", "car_id", "from_home", "start_time", "final_hour",
@@ -198,17 +191,10 @@ export default {
 
   mounted() {
     // Establecer un intervalo para mostrar duplas cada 5 segundos
-    setInterval(this.mostrarDupla, 5000);
-    this.branch_id = LocalStorageService.getItem("branch_id") ? 1 : LocalStorageService.getItem("branch_id");
-    axios
-          .get('http://127.0.0.1:8000/api/tail_branch_attended', {
-           params: {
-                 branch_id: this.branch_id
-               }
-          })
-          .then((response) => {
-            this.reservations = response.data.tail;
-          })
+    
+    console.log('ESTOY ENTRANDO AL mounted()')
+    setInterval(this.callForTime, 5000);    
+    // setInterval(this.mostrarDupla, 5000);
   },
 
 
@@ -218,18 +204,65 @@ export default {
   },
 
   methods: {
+    compararYAgregar() {
 
+     
+      const missingReservations = this.reservations.filter(reservation =>
+        !this.reservationsAux.some(aux => aux.reservation_id === reservation.reservation_id)
+      );
+
+      this.reservationsAux = [...this.reservationsAux, ...missingReservations];
+      if(missingReservations.length > 0)
+      {
+        console.log('ENTRE A MOSTRAR AL NUEVO');
+        this.mostrarDupla(missingReservations);
+      }
+    
+     console.log('missingReservations');
+     console.log(missingReservations);
+     console.log(this.reservationsAux);
+    },
+    
+ 
+  
+    callForTime()
+    {
+     console.log('AQUI SI ESTOY ENTRANDO -callForTime()');
+    this.branch_id = LocalStorageService.getItem("branch_id") ? 1 : LocalStorageService.getItem("branch_id");
+    axios
+          .get('http://127.0.0.1:8000/api/tail_branch_attended', {
+           params: {
+                 branch_id: this.branch_id
+               }
+          })
+          .then((response) => {
+            this.reservations = response.data.tail;
+            console.log("Estoy entrando siiii");
+            this.compararYAgregar();
+           /* if(this.reservationsAux != this.reservations)
+            {
+              
+              console.log("Estoy entrando al if() siiii");
+              this.reservationsAux = this.reservations;
+              this.mostrarDupla();
+
+            }*/
+          })
+    },
     iniciarParpadeo() {
+          
       this.parpadeando = true;
       setTimeout(() => {
         this.parpadeando = false;
       }, 3000); // Detener el parpadeo después de 3 segundos
     },
   
-    mostrarDupla() {
-      if (this.reservations.length > 0) {
-        const reservation = this.reservations.shift(); // Seleccionar la primera reserva del arreglo
-        
+    mostrarDupla(missingReservations) {
+      console.log('AQUI SI ESTOY ENTRANDO -mostrarDupla()');
+      if (missingReservations.length > 0) {
+
+        const reservation = missingReservations.shift(); // Seleccionar la primera reserva del arreglo
+         console.log(missingReservations.length);
         if (this.duplas.length >= 5) {
           // Si hay al menos 5 duplas, quitar la última dupla antes de insertar la nueva
           this.duplas.pop();
@@ -238,7 +271,6 @@ export default {
           this.module = reservation.puesto,
           this.numero++,
           this.client = reservation.client_name,
-          this.image_url = reservation.image_url,
           this.professional = reservation.professional_name
           this.iniciarParpadeo();
         // Insertar la nueva dupla en la primera posición
@@ -246,8 +278,7 @@ export default {
           cliente: reservation.client_name,
           trabajador: reservation.professional_name,
           module: reservation.puesto, // Cambiar a 'puesto' en lugar de 'module'
-          number: this.numero,
-          image_url: this.image_url
+          number: this.numero
         });
       }
     //},
@@ -272,8 +303,9 @@ export default {
         this.trabajadores.splice(trabajadorIndex, 1);
       }*/
     },
-  },
-}
+  }}
+
+
 </script>
 
 <style>
@@ -293,4 +325,3 @@ export default {
   }
 }
 </style>
-
