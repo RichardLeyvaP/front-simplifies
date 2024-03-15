@@ -121,7 +121,7 @@ export default {
       { icon: "mdi-handshake", title: "Associados", to: "associated", value: "associated", permission: "view_associates" },
       { icon: "mdi-handshake", title: "Asignar servicios a professional", to: "professional-service", value: "professional-service", permission: "view_dashboard" },
       { icon: "mdi-list-box-outline", title: "Asignar servicios a una Branch", to: "branch-service-professional", value: "branch-service-professional", permission: "view_dashboard" },          
-      { icon: "mdi-handshake", title: "Puestos de Trabajo", to: "workplace", value: "workplace", permission: "view_workplace" },
+      { icon: "mdi mdi-chair-rolling", title: "Puestos de Trabajo", to: "workplace", value: "workplace", permission: "view_workplace" },
   
     ],
     allowedPermissions: ["view_dashboard", "view_menu",],

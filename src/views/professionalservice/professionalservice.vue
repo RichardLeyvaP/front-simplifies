@@ -68,7 +68,22 @@
                             </v-list-item>
                         </v-list-item-group>
                     </v-list>
+
                 </v-card>
+        </v-col>
+        <v-col cols="12" md="6">
+        </v-col>
+        <v-col cols="12" md="6">            
+            <v-text-field v-model="profit_percentaje" clearable label="% Ganancia"
+                        prepend-icon="mdi-percent" variant="underlined">
+                      </v-text-field>
+        </v-col>
+        <v-col cols="12" md="8">
+        </v-col>
+        <v-col cols="12" md="4">            
+            <v-btn color="warning"  variant="flat" @click="save" >
+             Aceptar
+           </v-btn>
         </v-col>
     </v-row>                 
                 
