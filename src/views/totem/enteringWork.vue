@@ -1,4 +1,5 @@
 
+<!-- este es el archivo wue se presentó al cliente -->
 <template >
     <div class="app-container">
     <v-container>
@@ -37,7 +38,6 @@
 
                                 <v-list-item-content>
                                     <v-list-item-title class="text-h6">{{ puestoT.name }}</v-list-item-title>
-                                    <v-list-item-subtitle>Precio: ${{ puestoT.price_puestoT }}</v-list-item-subtitle>
                                 </v-list-item-content>
                             </v-list-item>
                         </v-list-item-group>

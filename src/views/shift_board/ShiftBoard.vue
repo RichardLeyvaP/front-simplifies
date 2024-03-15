@@ -48,16 +48,13 @@
               PROFESIONAL
             </p>
             <p class="text-h4 font-weight-black " :class="{ 'parpadea': parpadeando }"  style="text-align: center;">
-              <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                  <v-img :src="'http://127.0.0.1:8000/api/images/' + image_url" alt="image"></v-img>
-                </v-avatar>
               {{ professional }}
             </p>
           </v-col>
         </v-row>
 
         
-        <!-- <v-row class="mt-10">
+        <v-row class="mt-10">
           <v-col cols="12" md="12">
             <p class="text-h6 font-weight-black mb-2 " style="text-align: center;">
               MÓDULO
@@ -66,7 +63,7 @@
               {{ module }}
             </p>
           </v-col>
-        </v-row> -->
+        </v-row>
 
         <v-row class="mt-10">
           <v-col cols="12" md="12">
@@ -112,12 +109,12 @@
          
           </v-col>
 
-          <!-- <v-col cols="12" md="3">
+          <v-col cols="12" md="3">
             <p class="text-h5 font-weight-black mb-12 " style="text-align: center;">
               MÓDULO
             </p>           
          
-          </v-col> -->
+          </v-col>
 
         </v-row>
 
@@ -138,9 +135,6 @@
 
          <v-col cols="12" md="3">
            <p class="text-h5 font-weight-black mb-12 " style="text-align: center;">
-            <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                  <v-img :src="'http://127.0.0.1:8000/api/images/' + image_url" alt="image"></v-img>
-                </v-avatar>
              {{ dupla.trabajador }} 
            </p>           
            
@@ -179,7 +173,6 @@ export default {
 
     client:"",
     professional:"",
-    image_url:"",
     number:"",
     modules:"",
     parpadeando: false,
@@ -199,6 +192,7 @@ export default {
   mounted() {
     // Establecer un intervalo para mostrar duplas cada 5 segundos
     
+    console.log('ESTOY ENTRANDO AL mounted()')
     setInterval(this.callForTime, 5000);    
     // setInterval(this.mostrarDupla, 5000);
   },
@@ -212,7 +206,7 @@ export default {
   methods: {
     compararYAgregar() {
 
-      
+     
       const missingReservations = this.reservations.filter(reservation =>
         !this.reservationsAux.some(aux => aux.reservation_id === reservation.reservation_id)
       );
@@ -229,15 +223,8 @@ export default {
      console.log(this.reservationsAux);
     },
     
-  //ALERT.mp3
-  playSound() {
-      // Crea un nuevo objeto de audio
-      const audio = new Audio(require('@/assets/ALERT.mp3'));
-      
-      // Reproduce el sonido
-      audio.play().catch(error => console.error("Error playing sound:", error));
-    }
-  },
+ 
+  
     callForTime()
     {
      console.log('AQUI SI ESTOY ENTRANDO -callForTime()');
@@ -263,7 +250,7 @@ export default {
           })
     },
     iniciarParpadeo() {
-      this.playSound();
+          
       this.parpadeando = true;
       setTimeout(() => {
         this.parpadeando = false;
@@ -284,7 +271,6 @@ export default {
           this.module = reservation.puesto,
           this.numero++,
           this.client = reservation.client_name,
-          this.image_url = reservation.image_url,
           this.professional = reservation.professional_name
           this.iniciarParpadeo();
         // Insertar la nueva dupla en la primera posición
@@ -292,8 +278,7 @@ export default {
           cliente: reservation.client_name,
           trabajador: reservation.professional_name,
           module: reservation.puesto, // Cambiar a 'puesto' en lugar de 'module'
-          number: this.numero,
-          image_url: this.image_url
+          number: this.numero
         });
       }
     //},
@@ -318,7 +303,8 @@ export default {
         this.trabajadores.splice(trabajadorIndex, 1);
       }*/
     },
-  }
+  }}
+
 
 </script>
 
@@ -339,4 +325,3 @@ export default {
   }
 }
 </style>
-
