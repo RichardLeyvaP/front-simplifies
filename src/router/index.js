@@ -10,7 +10,7 @@ const routes = [
     path: "/shift-board",
     name: "ShiftBoard",
     component: () =>
-      import( "@/views/shift_board/ShiftBoard-ERRORES.vueESTABIEN.vue"),
+      import( "@/views/shift_board/ShiftBoard.vue"),
     meta: { requiresAuth: true, requiresPermissions: ["view_shift_boards"] }
   },
   {

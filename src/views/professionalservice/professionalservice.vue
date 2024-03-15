@@ -59,7 +59,7 @@
                     <v-list>
                         <v-list-item-group v-model="selected" multiple active-class="deep-purple--text text--accent-4">
                             <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + service.image_service"
-                                v-for="service in services" :key="service.id" @click="toggleService(service.id)"
+                                v-for="service in services" :key="service.id" @click="toggleService3(service)"
                                 :class="{ 'selected-item': isSelected(service.id) }" class="pt-4 pb-4">
 
                                 <v-list-item-content>
@@ -74,15 +74,15 @@
         <v-col cols="12" md="6">
         </v-col>
         <v-col cols="12" md="6">            
-            <v-text-field v-model="profit_percentaje" clearable label="% Ganancia"
+            <v-text-field v-model="profitPercen" :disabled="showPercent" clearable label="% Ganancia"
                         prepend-icon="mdi-percent" variant="underlined">
                       </v-text-field>
         </v-col>
         <v-col cols="12" md="8">
         </v-col>
         <v-col cols="12" md="4">            
-            <v-btn color="warning"  variant="flat" @click="save" >
-             Aceptar
+            <v-btn color="warning"  variant="flat"  @click="asignService" >
+             Asignar
            </v-btn>
         </v-col>
     </v-row>                 
@@ -119,6 +119,11 @@ export default {
     focus: '',
     start_time1: '',
     array_services:[],
+    selectedServiceType:[],
+    profitPercentaje:[],
+    showPercent:false,
+    profitPercen:'',
+
 
     nameRules: [
         v => !!v || 'El nombre es requerido',
@@ -227,6 +232,48 @@ export default {
 
     methods:
     {
+       /* validBooton(){
+           if( this.profitPercen != null && this.professional[0] != null &&  this.selected[0]) 
+           {
+            return true;
+           }
+           else{
+            return false
+           }
+
+        },*/
+        asignService()//todooo
+        {
+            console.log('*********DATOS POARA ENVIAR PARA LA API***************');
+            console.log('this.profitPercen');
+            console.log(this.profitPercen);
+            console.log('this.professional');
+            console.log(this.professional[0]);
+            console.log('this.selected');
+            console.log(this.selected[0]);            
+
+        },
+      typeService(type,porc)
+      {
+       
+        if(type === 'Especial')
+        {
+    //         showPercent:false,
+    // profitPercen:'',
+    this.profitPercen = porc;
+    this.showPercent = true;
+    
+            //desabilitar el campo de texto y mostrar el porciento
+        }
+        else if(type === 'Regular')
+        {
+            this.profitPercen = '';
+            this.showPercent = false;
+            //habilitar y limpiamos el campo
+        }
+
+      },
+
         changeStep(index) {
       // Cambiar el valor de step al índice especificado
       this.step = index;
@@ -560,7 +607,7 @@ toggleService2(serviceId2) {
     } else {
         this.barberAleatorie = false;
         const index = this.professional.indexOf(serviceId2);
-        console.log(this.professional);
+        
         if (index > -1) {
             // Si el servicio ya está seleccionado, no hagas nada
             return;
@@ -568,11 +615,32 @@ toggleService2(serviceId2) {
 
         // Limpiar la selección anterior y agregar el nuevo servicio seleccionado
         this.professional = [serviceId2];
+        console.log(this.professional);
     }
-}
+},
+toggleService3(service) {
+   
+        const index = this.selected.indexOf(service.id);
+        
+        if (index > -1) {
+            // Si el servicio ya está seleccionado, no hagas nada
+            return;
+        }
 
+        // Limpiar la selección anterior y agregar el nuevo servicio seleccionado
+        this.selected = [service.id];
+        this.selectedServiceType = [service.type_service];
+        this.profitPercentaje = [service.profit_percentaje];
+        //
+        //
+        console.log(this.selected);
+        console.log(this.selectedServiceType);
+        console.log(this.profitPercentaje);
 
-,
+        this.typeService(this.selectedServiceType[0],this.profitPercentaje[0]);
+        
+    
+},
          //profesionales
          toggleTimer(hour) {
             const index = this.hourSelect.indexOf(hour);
