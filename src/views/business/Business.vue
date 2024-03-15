@@ -64,7 +64,7 @@
                   <v-btn color="#E7E9E9" variant="flat" @click="close">
                     Cancelar
                   </v-btn>
-                  <v-btn color="primary" variant="flat" @click="save" :disabled="!valid">
+                  <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
                     Aceptar
                   </v-btn>
                 </v-card-actions>
@@ -86,7 +86,7 @@
                 <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
                   Cancelar
                 </v-btn>
-                <v-btn color="primary" variant="flat" @click="deleteItemConfirm">
+                <v-btn color="#F18254" variant="flat" @click="deleteItemConfirm">
                   Aceptar
                 </v-btn>
 

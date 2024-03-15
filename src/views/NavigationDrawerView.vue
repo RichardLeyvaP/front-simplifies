@@ -105,7 +105,7 @@ export default {
       { icon: "mdi-timer", title: "Profesionales Mejor Asistencias", to: "professional-arriving", value: "professional-arriving", permission: "view_best_attendance" },
       { icon: "mdi-account-multiple", title: "Visitas por Clientes", to: "clients-visist", value: "clients-visist", permission: "view_clients_frecuence" },
       { icon: "mdi-trending-up", title: "Productos más vendidos", to: "product-mostsolt", value: "product-mostsolt", permission: "products_mostsold" },
-      { icon: "mdi-shuffle", title: "Reposición de Productos", to: "product-stock", value: "product-stock", permission: "products_stock" }
+      { icon: "mdi-shuffle", title: "Reposición de Productos", to: "product-stock", value: "product-stock", permission: "products_stock" },  
     ],
     academias: [
       { icon: "mdi-school", title: "Academia", to: "academy", value: "academy", permission: "view_academy" },
@@ -119,6 +119,9 @@ export default {
       { icon: "mdi-account-tie-outline", title: "Profesionales", to: "person", value: "profesionals", permission: "view_professionals" },
       { icon: "mdi-account-star-outline", title: "Clientes", to: "client", value: "clients", permission: "view_clients" },
       { icon: "mdi-handshake", title: "Associados", to: "associated", value: "associated", permission: "view_associates" },
+      { icon: "mdi-handshake", title: "Asignar servicios a professional", to: "professional-service", value: "professional-service", permission: "view_dashboard" },
+      { icon: "mdi-list-box-outline", title: "Asignar servicios a una Branch", to: "branch-service-professional", value: "branch-service-professional", permission: "view_dashboard" },          
+      { icon: "mdi-handshake", title: "Puestos de Trabajo", to: "workplace", value: "workplace", permission: "view_workplace" },
   
     ],
     allowedPermissions: ["view_dashboard", "view_menu",],

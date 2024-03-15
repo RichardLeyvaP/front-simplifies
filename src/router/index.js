@@ -213,6 +213,20 @@ const routes = [
         meta: { requiresAuth: true, requiresPermissions: ["view_branches"] },
       },
       {
+        path: "/workplace",
+        name: "Puestos de Trabajo",
+        component: () =>
+          import( "@/views/workplaces/Workplaces.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_workplace"] },
+      },
+      {
+        path: "/branch-service-professional",
+        name: "Servicios se una branch",
+        component: () =>
+          import( "@/views/branchservice/BranchServices.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_dashboard"] },
+      },
+      {
         path: "/business-winner",
         name: "Ganancias Negocios",
         component: () =>
@@ -246,6 +260,13 @@ const routes = [
         component: () =>
           import( "@/views/reportes/BranchWinner.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_branch_earnings"] },
+      },
+      {
+        path: "/professional-service",
+        name: "Asignar Servicio a profesional",
+        component: () =>
+          import( "@/views/professionalservice/professionalservice.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_dashboard"] },
       },
       {
         path: "/company-winner",

@@ -44,7 +44,8 @@
                  <v-autocomplete v-model="editedItem.product_id" :items="products" clearable label="Productos" prepend-inner-icon="mdi-tag" item-title="name" item-value="id" variant="underlined" :rules="selectRules" :disabled="!mover"></v-autocomplete> 
                  <v-text-field v-model="editedItem.product_quantity" clearable label="Cantidad" prepend-inner-icon="mdi-tag-plus"
                    variant="underlined" :disabled="!mover">
-                 </v-text-field>                
+                 </v-text-field>
+               </v-col>                
                 <v-col v-if="mostrarCampos">
                     <v-autocomplete v-model="editedItem.branch_idM" :items="branches" clearable label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id" variant="underlined" @update:model-value="updatedstores()"></v-autocomplete>
                     <v-autocomplete v-model="editedItem.store_idM" :items="stores" clearable label="Almacenes" prepend-inner-icon="mdi-store" item-title="address" item-value="id" variant="underlined" :rules=selectRules></v-autocomplete>
@@ -53,7 +54,6 @@
                  </v-text-field>
                 </v-col>
                  
-               </v-col>
              </v-row>
              <v-divider></v-divider>
            <v-card-actions>
