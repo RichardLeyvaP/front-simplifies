@@ -155,7 +155,7 @@ export default {
         .then((response) => {
           console.log(response);
           if (response.data){
-            this.showAlert("warning", "Contraseña enviada a su correo", 3000)
+            this.showAlert("success", "Contraseña enviada a su correo", 3000)
             this.email2 = '';
           }
         }).catch(error => {
