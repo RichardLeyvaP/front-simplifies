@@ -13,7 +13,7 @@
 
         <v-list color="" density="compact" nav>
           <v-list-item prepend-icon="mdi-view-dashboard-outline" title="Dashboard" to="home" value="home"></v-list-item>
-          <v-list-group value="Administración">
+          <v-list-group value="Administración" v-if="filteredMenuAdministracion.length !== 0">
             <template v-slot:activator="{ props }">
               <v-list-item v-bind="props" prepend-icon="mdi-cog-outline" title="Administración"></v-list-item>
             </template>
@@ -25,7 +25,7 @@
 
           </v-list-group>
 
-          <v-list-group value="Almacenes">
+          <v-list-group value="Almacenes" v-if="filteredMenuAlmacenes.length !== 0">
             <template v-slot:activator="{ props }">
               <v-list-item v-bind="props" prepend-icon="mdi-store-outline" title="Almacenes"></v-list-item>
             </template>
@@ -40,7 +40,7 @@
           <v-list-item v-for="item in filteredMenuItems"   :key="item.title" :prepend-icon="item.icon" :title="item.title"
             :to="item.to" :value="item.value"></v-list-item>
 
-          <v-list-group value="Academias">
+          <v-list-group value="Academias" v-if="filteredMenuAcademia.length !== 0">
             <template v-slot:activator="{ props }">
               <v-list-item v-bind="props" prepend-icon="mdi-school" title="Academias"></v-list-item>
             </template>
@@ -49,7 +49,7 @@
             <v-list-item v-for="item in filteredMenuAcademia" style="padding-left: 20px !important" :key="item.title" :prepend-icon="item.icon" :title="item.title"
             :to="item.to" :value="item.value"></v-list-item> <!-- Filtrado directo usando v-if -->
           </v-list-group>
-          <v-list-group value="Reportes">
+          <v-list-group value="Reportes" v-if="filteredMenuReportes.length !== 0">
             <template v-slot:activator="{ props }">
               <v-list-item v-bind="props" prepend-icon="mdi-file-document-outline" title="Reportes"></v-list-item>
             </template>
@@ -58,7 +58,7 @@
             <v-list-item v-for="item in filteredMenuReportes" style="padding-left: 20px !important" :key="item.title" :prepend-icon="item.icon" :title="item.title"
             :to="item.to" :value="item.value"></v-list-item> <!-- Filtrado directo usando v-if -->
           </v-list-group>
-          <v-list-group value="Mantenedores">
+          <v-list-group value="Mantenedores" v-if="filteredMenuMainteiners.length !== 0">
             <template v-slot:activator="{ props }">
               <v-list-item v-bind="props" prepend-icon="mdi-progress-wrench" title="Mantenedores"></v-list-item>
             </template>
