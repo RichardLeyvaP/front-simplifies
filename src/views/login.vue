@@ -16,17 +16,14 @@
     </v-row>
   </v-snackbar>
   <div style="background-color: #B0BEC5;">
- 
+
     <v-card class="mx-auto mt-12" elevation="12" max-width="448" rounded="lg">
       <v-toolbar color="blue-grey-lighten-5
 " class="pt-12 pb-12" dark>
         <v-img class="mx-auto my-6" max-width="228" src="@/assets/logo_negro.png"></v-img>
       </v-toolbar>
-      <v-progress-linear v-if="loading"
-      color="amber-darken-1"
-      indeterminate
-    ></v-progress-linear>
-      <div class="mx-auto pl-10 mt-8 pr-10 pb-8">   
+      <v-progress-linear v-if="loading" color="amber-darken-1" indeterminate></v-progress-linear>
+      <div class="mx-auto pl-10 mt-8 pr-10 pb-8">
 
         <v-text-field v-model="editedItem.email" label="Correo Electrónico" prepend-inner-icon="mdi-email"
           variant="outlined" persistent-hint></v-text-field>
@@ -39,10 +36,31 @@
         <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
 
           <v-spacer></v-spacer>
-          <a class="text-caption text-decoration-none text-blue mb-3" href="#" rel="noopener noreferrer"
-            target="_blank">
+          <a class="text-caption text-decoration-none text-blue mb-3" href="#" rel="noopener noreferrer" target="_blank" @click.prevent="toggleForm">
             Olvidaste tu Contraseña</a>
+            
         </div>
+              <v-card v-if="formVisible">
+                  <v-card-text>
+                    <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+                    <v-container>                       
+                            <v-text-field v-model="emailpas" clearable label="Correo" prepend-icon="mdi-email-outline"
+                      variant="underlined">
+                    </v-text-field>
+                    </v-container>
+                  <v-divider></v-divider>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="#E7E9E9" variant="flat" @click="toggleForm">
+                      Cancelar
+                    </v-btn>
+                    <v-btn color="#F18254" variant="flat" @click="changePass">
+                      Aceptar
+                    </v-btn>
+                  </v-card-actions>
+                </v-form>
+              </v-card-text>
+              </v-card>
 
         <v-radio-group v-model="selectedOption" inline>
           <v-radio color="amber-darken-1" label="Empresa" value="empresa"></v-radio>
@@ -91,6 +109,8 @@ export default {
     sb_timeout: 2000,
     sb_title: '',
     sb_icon: '',
+    formVisible: false,
+      emailpas: '',
     //step: 1,
     data: {},
     branches: [],
@@ -122,6 +142,26 @@ export default {
     this.initialize()
   },
   methods: {
+    toggleForm() {
+      this.formVisible = !this.formVisible;
+    },
+    changePass (){
+      this.data.email = this.emailpas;
+      console.log(this.data);
+      axios
+        .get('http://127.0.0.1:8000/api/reactive-password', this.data)
+        .then((response) => {
+          console.log(response);
+          if (response.data){
+            this.showAlert("warning", "Contraseña enviada a su correo", 3000)
+            this.email2 = '';
+          }
+        }).catch(error => {
+          this.showAlert("warning", "Correo incorrecto", 3000);
+          this.emailpas = '';
+          this.toggleForm();
+        })
+    },
     showAlert(sb_type, sb_message, sb_timeout) {
       this.sb_type = sb_type
 
@@ -197,12 +237,14 @@ export default {
               console.log(response.data);
               this.showAlert("warning", "No es usuario de este sitio", 3000);
               router.push({ name: "Login" });
+              this.loading = false;
               this.editedItem = Object.assign({}, this.defaultItem);
             }
           }
         }).catch(error => {
           this.showAlert("warning", "Usuario y contraseña incorrectos", 3000)
           this.editedItem = Object.assign({}, this.defaultItem);
+          this.loading = false;
         })
     },
 
