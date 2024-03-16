@@ -92,9 +92,9 @@ export default {
     open: ['Users'],
     mainteiners: [
       { title: "Tipos de Negocio", icon: "mdi-format-list-bulleted-type", to: "/business-type", permission: "view_business_types" },
-      { title: "Cargos", icon: "mdi-family-tree", to: "/charge", permission: "view_charges" },
+      //{ title: "Cargos", icon: "mdi-family-tree", to: "/charge", permission: "view_charges" },
       { title: "Reglas de convivencia", icon: "mdi-ruler", to: "/rule", permission: "view_rules" },
-      { title: "Categorías de Productos", icon: "mdi-tag-check", to: "/product-category", permission: "view_product_categories" },
+      //{ title: "Categorías de Productos", icon: "mdi-tag-check", to: "/product-category", permission: "view_product_categories" },
     ],
     listItems: [
       { icon: "mdi-storefront-outline", title: "Sucursales", to: "branch", value: "surcursal", permission: "view_branches" },
@@ -126,6 +126,7 @@ export default {
     ],
     administracion: [
       { icon: "mdi-domain", title: "Empresa", to: "busines", value: "busines", permission: "view_busines" },
+      { title: "Cargos", icon: "mdi-family-tree", to: "/charge", permission: "view_charges" },
       //{ icon: "mdi-store", title: "Asignar Productos", to: "product-store", value: "product-store", permission: "view_product_store" },
       { icon: "mdi-security", title: "Permisos del Sistema", to: "permission", value: "permission", permission: "view_permissions" },
       { icon: "mdi-account-tie-outline", title: "Profesionales", to: "person", value: "profesionals", permission: "view_professionals" },
@@ -140,6 +141,7 @@ export default {
       { icon: "mdi-store-outline", title: "Almacenes", to: "store", value: "stores", permission: "view_stores" },
       { icon: "mdi-tag-outline", title: "Productos", to: "product", value: "products", permission: "view_products" },
       { icon: "mdi-store", title: "Asignar Productos", to: "product-store", value: "product-store", permission: "view_product_store" },
+      { title: "Categorías de Productos", icon: "mdi-tag-check", to: "/product-category", permission: "view_product_categories" },
     ],
     allowedPermissions: ["view_dashboard", "view_menu",],
 
