@@ -17,18 +17,18 @@
   <v-card elevation="6" class="mx-5" width = 'auto'>
   <v-toolbar color="#F18254">
    <v-row align="center">
-     <v-col cols="12" md="3" class="grow ml-4">
+     <v-col cols="12" md="4" class="grow ml-4">
        <span class="text-subtitle-1"> <strong>Listado de Productos por Almacenes</strong></span>
      </v-col>
-     <v-col cols="12" md="5"></v-col>
-     <v-col cols="12" md="3">
+     <v-col cols="12" md="5"  class="mr-12"></v-col>
+     <v-col cols="12" md="2">
        
        <v-dialog v-model="dialog" max-width="500px">
          <template v-slot:activator="{ props }">
   
            <v-btn v-bind="props" class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2"
              prepend-icon="mdi-plus-circle">
-             Agregar Productos a Almacenes
+             Agregar Productos
            </v-btn>
   
          </template>
