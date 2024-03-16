@@ -81,9 +81,9 @@
   <v-card>
     <v-tabs
       v-model="tabBar"
-      bg-color="primary"
+      bg-color="rgb(241, 130, 84)"
     >
-      <v-tab value="one">Lista de Servicios</v-tab>
+      <v-tab  value="one">Lista de Servicios</v-tab>
       <v-tab value="two">Servicios Asignados</v-tab>
     </v-tabs>
 
