@@ -369,7 +369,9 @@ export default {
       this.dialog = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
+        this.editedIndex = -1;
+        this.imgMiniatura = '';
+        this.file = '';
       })
     },
     closeDelete() {
@@ -401,6 +403,8 @@ export default {
             this.initialize();
            this.showAlert("success","Profesional editado correctamente", 3000);
            this.mostrar = false;
+           this.imgMiniatura = '';
+            this.file = '';
           })
       } else {
         this.valid = false;
@@ -421,7 +425,9 @@ export default {
           .post('http://127.0.0.1:8000/api/register_professional', formData)
           .then(() => {
             this.initialize();
-            this.showAlert("success","Profesional registrado correctamente", 3000)
+            this.showAlert("success","Profesional registrado correctamente", 3000);
+            this.imgMiniatura = '';
+            this.file = '';
           })
       }
       this.close()

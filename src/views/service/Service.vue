@@ -62,13 +62,13 @@
                         :rules="selectRules"></v-select>
                     </v-col>
                     <v-col cols="12" md="4">
-                      <v-text-field v-model="editedItem.profit_percentaje" clearable label="% Ganancia"
-                        prepend-icon="mdi-percent" variant="underlined" :rules="requiredRules">
+                      <v-text-field v-model="editedItem.duration_service" clearable label="Duración"
+                        prepend-icon="mdi-clock-time-eight" variant="underlined" :rules="requiredRules">
                       </v-text-field>
                     </v-col>
                     <v-col cols="12" md="4">
-                      <v-text-field v-model="editedItem.duration_service" clearable label="Duración"
-                        prepend-icon="mdi-clock-time-eight" variant="underlined" :rules="requiredRules">
+                      <v-text-field v-if="editedItem.type_service === 'Especial'" v-model="editedItem.profit_percentaje" clearable label="% Ganancia"
+                        prepend-icon="mdi-percent" variant="underlined" :rules="requiredRules">
                       </v-text-field>
                     </v-col>
                   </v-row>
@@ -161,10 +161,10 @@
         </template>
 
         <template v-slot:item.actions="{ item }">
-          <v-icon size="20px" color="blue" class="me-2" @click="editItem(item)">
+          <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
             mdi-pencil
           </v-icon>
-          <v-icon size="20px" color="red" @click="deleteItem(item)">
+          <v-icon size="25" color="red" @click="deleteItem(item)">
             mdi-delete
           </v-icon>
         </template>

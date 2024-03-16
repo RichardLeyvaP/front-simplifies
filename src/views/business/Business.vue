@@ -76,10 +76,10 @@
             <v-card>
 
               <v-toolbar color="red">
-                <span class="text-subtitle-2 ml-4"> Eliminar Regla de Convivencia</span>
+                <span class="text-subtitle-2 ml-4"> Eliminar Negocio</span>
               </v-toolbar>
 
-              <v-card-text class="mt-2 mb-2"> ¿Desea eliminar la regla?</v-card-text>
+              <v-card-text class="mt-2 mb-2"> ¿Desea eliminar el negocio?</v-card-text>
               <v-divider></v-divider>
               <v-card-actions>
                 <v-spacer></v-spacer>

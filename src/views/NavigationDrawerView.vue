@@ -115,12 +115,12 @@ export default {
     administracion: [
       { icon: "mdi-domain", title: "Empresa", to: "busines", value: "busines", permission: "view_busines" },
       { icon: "mdi-store", title: "Asignar Productos", to: "product-store", value: "product-store", permission: "view_product_store" },
-      { title: "Permisos del Sistema", icon: "mdi-security", to: "/permission", permission: "view_permissions" },
+      { title: "Permisos del Sistema", icon: "mdi-security", to: "permission", value: "permission", permission: "view_permissions" },
       { icon: "mdi-account-tie-outline", title: "Profesionales", to: "person", value: "profesionals", permission: "view_professionals" },
       { icon: "mdi-account-star-outline", title: "Clientes", to: "client", value: "clients", permission: "view_clients" },
       { icon: "mdi-handshake", title: "Associados", to: "associated", value: "associated", permission: "view_associates" },
       { icon: "mdi-list-box-outline", title: "Asignar servicios a professional", to: "professional-service", value: "professional-service", permission: "view_dashboard" },
-      { icon: "mdi-list-box-outline", title: "Asignar servicios a una Branch", to: "branch-service-professional", value: "branch-service-professional", permission: "view_dashboard" },          
+      { icon: "mdi-list-box-outline", title: "Asignar servicios a una Sucursal", to: "branch-service-professional", value: "branch-service-professional", permission: "view_dashboard" },          
       { icon: "mdi mdi-chair-rolling", title: "Puestos de Trabajo", to: "workplace", value: "workplace", permission: "view_workplace" },
   
     ],

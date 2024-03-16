@@ -336,7 +336,9 @@ close() {
  this.dialog = false
  this.$nextTick(() => {
    this.editedItem = Object.assign({}, this.defaultItem)
-   this.editedIndex = -1
+   this.editedIndex = -1;
+   this.imgMiniatura = '';
+        this.file = '';
  })
 },
 closeDelete() {
@@ -357,7 +359,9 @@ save() {
      .post('http://127.0.0.1:8000/api/product-update', formData)
      .then(() => {
        this.initialize();
-      this.showAlert("success","Producto editado correctamente", 3000)
+      this.showAlert("success","Producto editado correctamente", 3000);
+      this.imgMiniatura = '';
+        this.file = '';
      })
  } else {
    this.valid = false;
@@ -369,7 +373,9 @@ save() {
      .post('http://127.0.0.1:8000/api/product', formData)
      .then(() => {
        this.initialize();
-       this.showAlert("success","Producto registrado correctamente", 3000)
+       this.showAlert("success","Producto registrado correctamente", 3000);
+       this.imgMiniatura = '';
+        this.file = '';
      })
  }
  this.close()
