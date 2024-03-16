@@ -17,7 +17,7 @@ export const UserTokenStore = defineStore("UserTokenStore", {
     };
   },
   actions: {
-    setUserUser_id(user_id: string){
+    setUserUserId(user_id: string){
       this.user_id = user_id;
     },
     setUserToken(userToken: string){

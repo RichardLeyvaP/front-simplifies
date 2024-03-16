@@ -229,7 +229,7 @@ export default {
               LocalStorageService.setItem("business_id", this.user.business_id);
               LocalStorageService.setItem("permissionsUser", this.user.permissions);
               LocalStorageService.setItem("authenticateUser", true);
-              LocalStorageService.setItem("id", this.user.id);
+              LocalStorageService.setItem("user_id", this.user.id);
               this.editedItem = Object.assign({}, this.defaultItem);
               setTimeout(() => {
                 router.push({ name: "Home" });
