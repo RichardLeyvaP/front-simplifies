@@ -50,7 +50,7 @@
                 label="Fecha inicial"></v-text-field>
             </template>
             <v-locale-provider locale="es">
-              <v-date-picker color="orange lighten-2" :modelValue=input @update:model-value="updateDate"
+              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input @update:model-value="updateDate"
                 format="yyyy-MM-dd"></v-date-picker>
             </v-locale-provider>
           </v-menu>
@@ -64,7 +64,7 @@
                 append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
             </template>
             <v-locale-provider locale="es">
-              <v-date-picker color="orange lighten-2" :modelValue="getDate2" @update:model-value="updateDate2"
+              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" @update:model-value="updateDate2"
                 format="yyyy-MM-dd"></v-date-picker>
             </v-locale-provider>
           </v-menu>
@@ -78,7 +78,7 @@
                 append-inner-icon="mdi-calendar" label="Mes"></v-text-field>
             </template>
             <v-locale-provider locale="es">
-              <v-date-picker color="orange lighten-2" :modelValue="getDate3" @update:model-value="updateDate3"
+              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate3" @update:model-value="updateDate3"
                 format="yyyy-MM" scrollable></v-date-picker>
             </v-locale-provider>
           </v-menu>

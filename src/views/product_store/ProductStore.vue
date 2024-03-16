@@ -28,7 +28,7 @@
   
            <v-btn v-bind="props" class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2"
              prepend-icon="mdi-plus-circle">
-             Agregar Productos
+             Asignar Productos
            </v-btn>
   
          </template>
