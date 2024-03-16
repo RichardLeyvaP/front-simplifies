@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/valid-v-slot -->
 
 <!-- este es el archivo wue se presentó al cliente -->
 <template >
