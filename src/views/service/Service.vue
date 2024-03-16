@@ -355,7 +355,9 @@ export default {
       this.dialog = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
+        this.editedIndex = -1;
+        this.imgMiniatura = '';
+        this.file = '';
       })
     },
     closeDelete() {
@@ -376,7 +378,9 @@ export default {
           .post('http://127.0.0.1:8000/api/service-update', formData)
           .then(() => {
             this.initialize();
-            this.showAlert("success", "Servicio editado correctamente", 3000)
+            this.showAlert("success", "Servicio editado correctamente", 3000);
+            this.imgMiniatura = '';
+        this.file = '';
           })
       } else {
         this.valid = false;
@@ -389,7 +393,9 @@ export default {
           .post('http://127.0.0.1:8000/api/service', formData)
           .then(() => {
             this.initialize();
-            this.showAlert("success", "Servicio registrado correctamente", 3000)
+            this.showAlert("success", "Servicio registrado correctamente", 3000);
+            this.imgMiniatura = '';
+        this.file = '';
           })
       }
       this.close()
