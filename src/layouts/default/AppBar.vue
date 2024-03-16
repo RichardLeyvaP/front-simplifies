@@ -50,7 +50,7 @@ export default {
     items: [
       { title: 'Mi Perfil', icon: "mdi-account-tie-outline" },     
       { title: 'Cambiar Contraseña', icon: "mdi-form-textbox-password" },
-      { title: 'Cerrar Sesión', icon: "mdi-exit-to-app", to:"/login"},
+      { title: 'Cerrar Sesión', icon: "mdi-exit-to-app", to:"/"},
 
     ],
   }),

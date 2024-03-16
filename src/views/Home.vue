@@ -256,6 +256,7 @@ export default {
   mounted() {
     this.branch_id = LocalStorageService.getItem("branch_id") ? LocalStorageService.getItem("branch_id") : 0;
     this.business_id = LocalStorageService.getItem("business_id");
+    console.log(this.business_id);
     const today = new Date();
     this.formattedDate = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
     this.formattedDateMonth = (today.getMonth() + 1) + '-' + today.getFullYear();

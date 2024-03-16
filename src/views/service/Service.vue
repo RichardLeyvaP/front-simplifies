@@ -87,7 +87,7 @@
 
 
                       <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
-                        <img v-if="imgedit" :src="imgedit" height="120" width="210">
+                        <img v-if="imgedit" :src="imgedit" height="120" width="120">
                       </v-card>
                     </v-col>
                   </v-row>

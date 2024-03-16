@@ -258,6 +258,27 @@ export default {
 
     methods:
     {
+      showAlert(sb_type, sb_message, sb_timeout) {
+      this.sb_type = sb_type
+
+      if (sb_type == "success") {
+        this.sb_title = 'Éxito'
+        this.sb_icon = 'mdi-check-circle'
+      }
+
+      if (sb_type == "error") {
+        this.sb_title = 'Error'
+        this.sb_icon = 'mdi-check-circle'
+      }
+
+      if (sb_type == "warning") {
+        this.sb_title = 'Advertencia'
+        this.sb_icon = 'mdi-alert-circle'
+      }
+      this.sb_message = sb_message
+      this.sb_timeout = sb_timeout
+      this.snackbar = true
+    },
         initialize(){
             axios
       .get('http://127.0.0.1:8000/api/show-business', {

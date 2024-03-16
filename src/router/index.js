@@ -49,12 +49,12 @@ const routes = [
     component: () =>
       import( "@/views/login.vue"),
   },
-  {
+  /*{
     path: "/login",
     name: "Prueba",
     component: () =>
       import( "@/views/login.vue"),
-  },
+  },*/
  
   {
     path: "/dashboard",

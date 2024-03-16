@@ -19,7 +19,7 @@
       <v-toolbar color="#F18254">
         <v-row align="center">
           <v-col cols="12" md="4" class="grow ml-4 t">
-            <span class="text-subtitle-1"> <strong>Negocios</strong></span>
+            <span class="text-subtitle-1"> <strong>Puesto de Trabajo</strong></span>
           </v-col>
            <v-col cols="12" md="5" class="mr-12"></v-col>
           <v-col cols="12" md="2">
@@ -177,6 +177,27 @@
     },
   
     methods: {
+      showAlert(sb_type, sb_message, sb_timeout) {
+      this.sb_type = sb_type
+
+      if (sb_type == "success") {
+        this.sb_title = 'Éxito'
+        this.sb_icon = 'mdi-check-circle'
+      }
+
+      if (sb_type == "error") {
+        this.sb_title = 'Error'
+        this.sb_icon = 'mdi-check-circle'
+      }
+
+      if (sb_type == "warning") {
+        this.sb_title = 'Advertencia'
+        this.sb_icon = 'mdi-alert-circle'
+      }
+      this.sb_message = sb_message
+      this.sb_timeout = sb_timeout
+      this.snackbar = true
+    },
   
       initialize() {
 
@@ -245,6 +266,7 @@
             .put('http://127.0.0.1:8000/api/workplace', this.data)
             .then(() => {
               this.initialize();
+              this.showAlert("success", "Puesto de trabajo creado correctamente", 3000);
             })
         } else {
           this.valid = false;
@@ -255,6 +277,7 @@
             .post('http://127.0.0.1:8000/api/workplace', this.data)
             .then(() => {
               this.initialize();
+              this.showAlert("success", "Puesto de trabajo editado correctamente", 3000);
             })
         }
         this.close()

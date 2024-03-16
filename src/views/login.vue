@@ -1,7 +1,20 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 
 <template>
+  <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24" :multi-line="true"
+    vertical v-model="snackbar">
+    <v-row>
+      <v-col md="2">
+        <v-avatar :icon="sb_icon" color="sb_type" size="40"></v-avatar>
+      </v-col>
+      <v-col md="10">
+        <h4>{{ sb_title }}</h4>
+        {{ sb_message }}
 
+      </v-col>
+
+    </v-row>
+  </v-snackbar>
   <div style="background-color: #B0BEC5;">
  
     <v-card class="mx-auto mt-12" elevation="12" max-width="448" rounded="lg">
@@ -138,12 +151,17 @@ export default {
       this.loading = true;
       this.data.email = this.editedItem.email;
       this.data.password = this.editedItem.password;
+      this.data.branch_id = this.editedItem.branch_id;
+
+      console.log(this.data);
       axios
         .post('http://127.0.0.1:8000/api/login', this.data)
         .then((response) => {
           if (response.data) {
             if (this.editedItem.branch_id === response.data.branch_id || this.selectedOption === "empresa") {
               this.user = response.data;
+              console.log('this.user-------');
+              console.log(this.user);
               userTokenStore.setUserToken(this.user.token);
               userTokenStore.setUserName(this.user.name);
               userTokenStore.setBranchId(this.user.branch_id);
@@ -175,8 +193,10 @@ export default {
 
             }
             else {
+              console.log('response.data--------');
+              console.log(response.data);
               this.showAlert("warning", "No es usuario de este sitio", 3000);
-              router.push({ name: "/" });
+              router.push({ name: "Login" });
               this.editedItem = Object.assign({}, this.defaultItem);
             }
           }
