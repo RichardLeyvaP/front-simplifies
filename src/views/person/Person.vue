@@ -402,7 +402,7 @@ export default {
           .then(() => {
             this.initialize();
            this.showAlert("success","Profesional editado correctamente", 3000);
-           this.mostrar = false;
+           this.mostrar = true;
            this.imgMiniatura = '';
             this.file = '';
           })
