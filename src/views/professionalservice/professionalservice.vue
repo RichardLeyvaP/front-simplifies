@@ -76,9 +76,24 @@
                     </v-list>
                 </v-card>
         </v-col>
-        <v-col cols="12" md="6">
-            <p>Lista de Servicios</p>
-            <v-card>
+
+
+  <v-card>
+    <v-tabs
+      v-model="tabBar"
+      bg-color="primary"
+    >
+      <v-tab value="one">Lista de Servicios</v-tab>
+      <v-tab value="two">Servicios Asignados</v-tab>
+    </v-tabs>
+
+    <v-card-text>
+      <v-window v-model="tabBar">
+        <v-window-item value="one">
+           
+           
+            <!-- SERVICIOS DISPONIBLES -->
+           
                     <v-list>
                         <v-list-item-group v-model="selected" active-class="deep-purple--text text--accent-4">
                             <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + service.image_service"
@@ -91,10 +106,7 @@
                             </v-list-item>
                         </v-list-item-group>
                     </v-list>
-
-                </v-card>
-        </v-col>
-        <v-col cols="12" md="6">
+                    <v-col cols="12" md="6">
         </v-col>
         <v-col cols="12" md="6">            
             <v-text-field v-model="profitPercen" :disabled="showPercent" clearable label="% Ganancia"
@@ -108,6 +120,39 @@
              Asignar
            </v-btn>
         </v-col>
+
+                
+        
+        </v-window-item>
+
+<!--          
+        SERVICIOS ASIGNADOS -->
+        <v-window-item value="two">
+          <v-list>
+                        <v-list-item-group v-model="selected" active-class="deep-purple--text text--accent-4">
+                            <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + serviceA.image_service"
+                                v-for="serviceA in services" :key="serviceA.id" @click="toggleService3(serviceA)"
+                                :class="{ 'selected-item': isSelected(serviceA.id) }" class="pt-4 pb-4">
+
+                                <v-list-item-content>
+                                    <v-list-item-title class="text-h6">{{ serviceA.name }}</v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-list-item-group>
+                    </v-list>
+                    <v-col cols="12" md="4">            
+            <v-btn color="warning"  variant="flat"  @click="desasignService" >
+             Eliminar
+           </v-btn>
+        </v-col>
+        </v-window-item>
+
+      </v-window>
+    </v-card-text>
+  </v-card>
+
+        
+      
     </v-row>                 
                 
                 
@@ -124,6 +169,7 @@ import LocalStorageService from "@/LocalStorageService";
 
 export default {
     data: () => ({
+      tabBar: null,
         barberAleatorie:false,
         verificate : false,
         clientRegister:[],
@@ -194,6 +240,7 @@ export default {
         arrayEvents: null,
         selected_services: [],
         services: [],
+        servicesAsig: [],
         professionals: [],
         hourSelect: [],
         selected: [],
@@ -303,6 +350,32 @@ export default {
            }
 
         },*/
+        desasignService()
+        {
+
+          console.log('*********DATOS POARA ENVIAR PARA LA API***************');
+            console.log('this.professional');
+            console.log(this.professional[0]);
+            console.log('this.selected');
+            console.log(this.selected[0]); 
+
+            //CAMBIAR ESTA RUTA POR LA RUTA CORRECTA DE DESASIGNAR SERVICIO AL PROFESIONAL
+            axios
+        .post('http://127.0.0.1:8000/api/professionalservice', request)
+        .then(() => {
+          this.showAlert("success", "Servicio asignado correctamente", 3000);
+          this.profitPercen = '';
+          this.professional = '';
+          this.selected = '';
+          this.initialize();
+        }).catch(error => {
+          // Maneja cualquier error que pueda ocurrir durante la solicitud
+          console.log(error);
+          this.showAlert("warning", "Error al hacer la asignación".error, 3000);
+
+        });
+
+        },
         asignService()//todooo
         {
             console.log('*********DATOS POARA ENVIAR PARA LA API***************');
@@ -684,11 +757,7 @@ axios
 },
 
 toggleService2(serviceId2) {
-    if (serviceId2 === -99) {
-        this.barberAleatorie = true;
-        // Limpiar la selección cuando barberAleatorie es true
-        this.professional = [];
-    } else {
+    
         this.barberAleatorie = false;
         const index = this.professional.indexOf(serviceId2);
         
@@ -700,7 +769,62 @@ toggleService2(serviceId2) {
         // Limpiar la selección anterior y agregar el nuevo servicio seleccionado
         this.professional = [serviceId2];
         console.log(this.professional);
-    }
+        //HACER LLAMADA A BUSCAR LOS SERVICIOS DISPONIBLES Y SERVICIOS ASIGNADOS
+        this.getServicesProfessional();
+    
+},
+
+getServicesProfessional()
+{
+  //LLAMAR AL METODO
+  //DADO EL ID DEL PROFESSIONAL Y LA BRANCH
+
+  const idProfessional = this.professional[0];
+  const idBranch = this.branch_id;
+
+  //AXIOS
+  axios
+                .get(`http://127.0.0.1:8000/api/professionalservice-show`, {
+                    params: {
+                        branch_id: idBranch,
+                        professional_id: idProfessional,
+                    }
+                })
+                .then((response) => {
+                    console.log(response.data)
+                    this.services = response.data.branchServices;
+                })
+                .catch((err) => {
+                    console.log(err, "error");
+
+                });
+
+},
+getServicesProfessionalSelect()
+{
+  //LLAMAR AL METODO
+  //DADO EL ID DEL PROFESSIONAL Y LA BRANCH
+
+  const idProfessional = this.professional[0];
+  const idBranch = this.branch_id;
+
+  //AXIOS
+  axios
+                .get(`http://127.0.0.1:8000/api/professionalservice-show`, {
+                    params: {
+                        branch_id: idBranch,
+                        professional_id: idProfessional,
+                    }
+                })
+                .then((response) => {
+                    console.log(response.data)
+                    this.servicesAsig = response.data.branchServices;
+                })
+                .catch((err) => {
+                    console.log(err, "error");
+
+                });
+
 },
 toggleService3(service) {
    
