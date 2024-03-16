@@ -97,7 +97,7 @@
       </v-row>
     </v-toolbar>
     <v-card-text>
-      <v-data-table :headers="headers" :items="results" class="elevation-1" no-results-text="No hay datos disponibles">
+      <v-data-table :headers="headers" :items="results" class="elevation-1" :locale="locale" no-results-text="No hay datos disponibles">
         <template v-slot:item.actions="{ item }">
           <v-icon size="small" color="blue" class="me-2" @click="editItem(item)">
             mdi-pencil
@@ -134,6 +134,11 @@ export default {
       { title: 'Propietario', value: 'professional.name' },
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
+    locale: {
+        itemsPerPageText: 'Elementos por página:',
+        pageText: '{0}-{1} de {2}',
+        noDataText: 'No hay datos disponibles',
+      },
     results: [],
 
     professionals: [],

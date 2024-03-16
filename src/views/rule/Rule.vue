@@ -40,7 +40,7 @@
                   <v-container>
                     <v-row>
                       <v-col cols="12" md="12">
-                        <v-text-field v-model="editedItem.name" clearable label="Nombre de la Regla"
+                        <v-text-field v-model="editedItem.name" clearable label="Nombre de la Regla de convivencia"
                           prepend-icon="mdi-ruler" variant="underlined" :rules="nameRules">
                         </v-text-field>
                       </v-col>
@@ -81,7 +81,7 @@
                 <span class="text-subtitle-2 ml-4"> Eliminar Regla de Convivencia</span>
               </v-toolbar>
 
-              <v-card-text class="mt-2 mb-2"> ¿Desea eliminar la regla?</v-card-text>
+              <v-card-text class="mt-2 mb-2"> ¿Desea eliminar la regla  de convivencia?</v-card-text>
               <v-divider></v-divider>
               <v-card-actions>
                 <v-spacer></v-spacer>

@@ -120,10 +120,10 @@
                 <template v-slot:item.actions="{ item }">
                     <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
          mdi-pencil
-       </v-icon>-->
+       </v-icon>
                     <v-icon size="25" color="green" @click="showProfessionals(item)">
                         mdi-account-tie-outline
-                    </v-icon>
+                    </v-icon>-->
                     <v-icon size="25" color="red" @click="deleteItem(item)">
                         mdi-delete
                     </v-icon>
