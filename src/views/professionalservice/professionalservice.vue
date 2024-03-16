@@ -1,4 +1,17 @@
 <template>
+     <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type"
+     elevation="24"  :multi-line="true"  vertical v-model="snackbar">
+     <v-row>
+       <v-col md="2">
+         <v-avatar :icon="sb_icon" color="sb_type" size="40"></v-avatar>
+       </v-col>
+       <v-col md="10">
+         <h4>{{ sb_title }}</h4>
+         {{ sb_message }}
+  
+       </v-col>
+    </v-row>
+   </v-snackbar>
     <v-container>
     <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type"
      elevation="24"  :multi-line="true"  vertical v-model="snackbar">
@@ -32,6 +45,16 @@
 
  <v-card-text>  
     <v-row>
+    <v-container>
+          <v-col cols="12" sm="12" md="6">
+            <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable label="Seleccione una Sucursal"
+              prepend-icon="mdi-store" item-title="name" item-value="id" variant="underlined"
+              @update:model-value="initialize()"></v-autocomplete>
+          </v-col>
+          
+    </v-container>
+      </v-row>
+    <v-row>
         <v-col cols="12" md="6">
             <p>Lista de Trabajadores</p>
             <v-card>
@@ -57,7 +80,7 @@
             <p>Lista de Servicios</p>
             <v-card>
                     <v-list>
-                        <v-list-item-group v-model="selected" multiple active-class="deep-purple--text text--accent-4">
+                        <v-list-item-group v-model="selected" active-class="deep-purple--text text--accent-4">
                             <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + service.image_service"
                                 v-for="service in services" :key="service.id" @click="toggleService3(service)"
                                 :class="{ 'selected-item': isSelected(service.id) }" class="pt-4 pb-4">
@@ -75,7 +98,7 @@
         </v-col>
         <v-col cols="12" md="6">            
             <v-text-field v-model="profitPercen" :disabled="showPercent" clearable label="% Ganancia"
-                        prepend-icon="mdi-percent" variant="underlined">
+                        prepend-icon="mdi-percent" variant="underlined" :rules="requiredRules">
                       </v-text-field>
         </v-col>
         <v-col cols="12" md="8">
@@ -97,6 +120,7 @@
 
 <script>
 import axios from "axios";
+import LocalStorageService from "@/LocalStorageService";
 
 export default {
     data: () => ({
@@ -123,6 +147,16 @@ export default {
     profitPercentaje:[],
     showPercent:false,
     profitPercen:'',
+    mostrarFila: false,
+    branch_id: '',
+    charge_id: '',
+    business_id: '',
+    snackbar: false,
+    sb_type: '',
+    sb_message: '',
+    sb_timeout: 2000,
+    sb_title:'',
+    sb_icon:'',
 
 
     nameRules: [
@@ -149,23 +183,9 @@ export default {
         v => !!v || 'El Teléfono es requerido',
      
       ],
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      requiredRules: [
+      (v) => !!v || "El campo es requerido",
+    ],
         disabledIntervals: [],
         intervals: [],
         countInterval: 0,
@@ -178,6 +198,7 @@ export default {
         hourSelect: [],
         selected: [],
         professional: [],
+        branches: [],
         //
         //
         //
@@ -216,9 +237,14 @@ export default {
         },
     },
     mounted() {
-        this.chargeServices();
-        this.chargeCalendarsBranches();
-        this. chargeProfessionals();
+        this.business_id = LocalStorageService.getItem('business_id');
+    this.charge_id = LocalStorageService.getItem('charge_id');
+  this.branch_id = LocalStorageService.getItem('branch_id') ? 1 : LocalStorageService.getItem('branch_id');
+  if (this.charge_id === '4') {
+      // Mostrar la fila con Autocomplete
+      this.mostrarFila = true;
+    }
+        this.initialize();
 
         this.arrayEvents = [...Array(1)].map(() => {
             const day = Math.floor(Math.random() * 30)
@@ -232,6 +258,20 @@ export default {
 
     methods:
     {
+        initialize(){
+            axios
+      .get('http://127.0.0.1:8000/api/show-business', {
+          params: {
+            business_id: this.business_id
+          }
+        })
+      .then((response) => {
+        this.branches = response.data.branches;
+      });
+      this.chargeServices();
+        this.chargeCalendarsBranches();
+        this. chargeProfessionals();
+        },
        /* validBooton(){
            if( this.profitPercen != null && this.professional[0] != null &&  this.selected[0]) 
            {
@@ -250,7 +290,30 @@ export default {
             console.log('this.professional');
             console.log(this.professional[0]);
             console.log('this.selected');
-            console.log(this.selected[0]);            
+            console.log(this.selected[0]); 
+            
+            let request = {
+        professional_id: this.professional[0],
+        branch_service_id: this.selected[0],
+        percent: this.profitPercen,
+      }
+
+      axios
+        .post('http://127.0.0.1:8000/api/professionalservice', request)
+        .then(() => {
+          this.showAlert("success", "Servicio asignado correctamente", 3000);
+          this.profitPercen = '';
+          this.professional = '';
+          this.selected = '';
+          this.initialize();
+        }).catch(error => {
+          // Maneja cualquier error que pueda ocurrir durante la solicitud
+          this.showAlert("warning", "Error al hacer la asignación".error, 3000);
+
+        });
+      
+      console.log('request');
+            console.log(request); 
 
         },
       typeService(type,porc)
@@ -663,19 +726,21 @@ toggleService3(service) {
         },
 
         chargeServices() {
-            axios
-                .get(`http://127.0.0.1:8000/api/branchservice-show?branch_id=1`)
+                axios
+                .get(`http://127.0.0.1:8000/api/professionalservice-show`, {
+                    params: {
+                        branch_id: this.branch_id
+                    }
+                })
                 .then((response) => {
                     console.log(response.data)
-                    this.services = response.data.services;
-
-
+                    this.services = response.data.branchServices;
                 })
                 .catch((err) => {
                     console.log(err, "error");
 
                 });
-        },
+         },
 
         chargeProfessionals() {
             
@@ -684,13 +749,13 @@ toggleService3(service) {
       const data = {
         
                 //services: newArrayService,
-                 branch_id: 1
+                 branch_id: this.branch_id
                 // branch_id: this.selected_branch.id
             };
 
             //this.array_services = newArrayService;
             axios
-        .get(`http://127.0.0.1:8000/api/branch-professionals`, {
+        .get(`http://127.0.0.1:8000/api/branch-professionals-barber`, {
             params: data
         })
         .then((response) => {
