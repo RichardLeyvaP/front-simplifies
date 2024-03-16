@@ -137,6 +137,7 @@
 
 import axios from "axios";
 import router from '@/router/index';
+import LocalStorageService from "@/LocalStorageService";
 export default {
 
   data: () => ({
@@ -148,9 +149,13 @@ export default {
     qrCode: '',
     qrCodeBase64: '',
     showQR: false,
+    branch_id: '',
   }),
 
   mounted() {
+    //this.business_id = LocalStorageService.getItem('business_id');
+    //this.charge_id = LocalStorageService.getItem('charge_id');
+  this.branch_id = LocalStorageService.getItem('branch_id') ? 1 : LocalStorageService.getItem('branch_id');
     // Establecer un intervalo para mostrar duplas cada 5 segundos
     setInterval(this.mostrarDupla, 5000);
   },
@@ -190,7 +195,7 @@ export default {
       axios
         .get('http://127.0.0.1:8000/api/qrCode', {
           params: {
-            branch_id: 1,
+            branch_id: this.branch_id,
             email: this.email
           }
         })

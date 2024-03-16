@@ -260,6 +260,7 @@ v-on="on"
 
 <script>
 import axios from "axios";
+import LocalStorageService from "@/LocalStorageService";
 
 export default {
     data: () => ({
@@ -336,6 +337,7 @@ export default {
         hourSelect: [],
         selected: [],
         professional: [],
+        branch_id: '',
         //
         //
         //
@@ -374,6 +376,9 @@ export default {
         },
     },
     mounted() {
+      //this.business_id = LocalStorageService.getItem('business_id');
+    //this.charge_id = LocalStorageService.getItem('charge_id');
+  this.branch_id = LocalStorageService.getItem('branch_id') ? 1 : LocalStorageService.getItem('branch_id');
         this.chargeServices();
         this.chargeCalendarsBranches();
         // this. chargeProfessionals();
@@ -459,7 +464,7 @@ let formattedDate = `${year}-${month}-${day}`;
       let request = {
         start_time:hourString,
         data: formattedDate,
-        branch_id: 1,
+        branch_id: this.branch_id,
         professional_id: this.professional[0],
         email_client: this.email_client,
         phone_client: this.phone_client,
@@ -588,7 +593,7 @@ let formattedDate = currentDate.toISOString().split('T')[0];
 
 let request = {
   professional_id: this.professional[0],
-  branch_id: 1,
+  branch_id: this.branch_id,
   data: formattedDate
 
 }
@@ -626,7 +631,7 @@ axios
 },
         chargeCalendarsBranches() {
             axios
-                .get(`http://127.0.0.1:8000/api/schedule-show?branch_id=1`)
+                .get(`http://127.0.0.1:8000/api/schedule-show?branch_id=${this.branch_id}`)
                 .then((response) => {
                     this.calendars_branches = response.data.Schedules;
                     this.dayOfWeek = response.data.Schedules;
@@ -759,7 +764,7 @@ toggleService2(serviceId2) {
 
         chargeServices() {
             axios
-                .get(`http://127.0.0.1:8000/api/branchservice-show?branch_id=1`)
+                .get(`http://127.0.0.1:8000/api/branchservice-show?branch_id=${this.branch_id}`)
                 .then((response) => {
                     console.log(response.data)
                     this.services = response.data.services;
@@ -779,7 +784,7 @@ console.log(newArrayService);
       const data = {
         
                 services: newArrayService,
-                 branch_id: 1
+                 branch_id: this.branch_id
                 // branch_id: this.selected_branch.id
             };
 

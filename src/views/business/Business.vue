@@ -21,13 +21,13 @@
         <v-col cols="12" md="4" class="grow ml-4 t">
           <span class="text-subtitle-1"> <strong>Negocios</strong></span>
         </v-col>
-         <v-col cols="12" md="5" class="mr-12"></v-col>
+         <v-col cols="12" md="5" class="mr-6"></v-col>
         <v-col cols="12" md="2">
 
           <v-dialog v-model="dialog" max-width="800px">
             <template v-slot:activator="{ props }">
               <v-btn v-bind="props" class="text-subtitle-1  ml-12 " color="#E7E9E9" variant="flat" elevation="2"
-                prepend-icon="mdi-plus-circle">
+                prepend-icon="mdi-plus-circle" :disabled="mostrar">
                 Nuevo Negocio
               </v-btn>
             </template>
@@ -123,6 +123,7 @@ export default {
     sb_timeout: 2000,
     sb_title:'',
     sb_icon:'',
+    mostrar: false,
 
     dialog: false,
     dialogDelete: false,
@@ -184,8 +185,11 @@ export default {
     },
   },
 
-  created() {
-    this.initialize()
+  mounted() {
+    this.initialize();
+    if (!this.result) {
+      this.mostrar = true;
+    }
   },
 
   methods: {
