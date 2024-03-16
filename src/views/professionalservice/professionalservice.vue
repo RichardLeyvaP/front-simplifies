@@ -95,7 +95,7 @@
             <!-- SERVICIOS DISPONIBLES -->
            
                     <v-list>
-                        <v-list-item-group v-model="selected" active-class="deep-purple--text text--accent-4">
+                        <v-list-item-group v-model="selectedA" active-class="deep-purple--text text--accent-4">
                             <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + service.image_service"
                                 v-for="service in services" :key="service.id" @click="toggleService3(service)"
                                 :class="{ 'selected-item': isSelected(service.id) }" class="pt-4 pb-4">
@@ -131,7 +131,7 @@
           <v-list>
                         <v-list-item-group v-model="selected" active-class="deep-purple--text text--accent-4">
                             <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + serviceA.image_service"
-                                v-for="serviceA in services" :key="serviceA.id" @click="toggleService3(serviceA)"
+                                v-for="serviceA in servicesAsig" :key="serviceA.id" @click="toggleService3(serviceA)"
                                 :class="{ 'selected-item': isSelected(serviceA.id) }" class="pt-4 pb-4">
 
                                 <v-list-item-content>
@@ -244,6 +244,7 @@ export default {
         professionals: [],
         hourSelect: [],
         selected: [],
+        selectedA: [],
         professional: [],
         branches: [],
         //
@@ -336,7 +337,7 @@ export default {
       .then((response) => {
         this.branches = response.data.branches;
       });
-      this.chargeServices();
+      //this.chargeServices();
         this.chargeCalendarsBranches();
         this. chargeProfessionals();
         },
@@ -358,12 +359,15 @@ export default {
             console.log(this.professional[0]);
             console.log('this.selected');
             console.log(this.selected[0]); 
-
+            let request = {
+        professional_id: this.professional[0],
+        branch_service_id: this.selected[0]
+      }
             //CAMBIAR ESTA RUTA POR LA RUTA CORRECTA DE DESASIGNAR SERVICIO AL PROFESIONAL
             axios
-        .post('http://127.0.0.1:8000/api/professionalservice', request)
+        .post('http://127.0.0.1:8000/api/professionalservice-destroy', request)
         .then(() => {
-          this.showAlert("success", "Servicio asignado correctamente", 3000);
+          this.showAlert("success", "Desasignado correctamente", 3000);
           this.profitPercen = '';
           this.professional = '';
           this.selected = '';
@@ -449,7 +453,7 @@ export default {
          this.email_client = '';
 
         },
-        sendData()
+        /*sendData()
     {
    
       // Realiza la solicitud POST Y BUSCO LOS DATOS DEL CLIENTE 
@@ -479,8 +483,8 @@ export default {
           console.error('Error al hacer la solicitud:', error);
         });
 
-    },
-        send()
+    },*/
+        /*send()
     {
       //this.totalTimeServices()
     console.log('**********************************--------------------');
@@ -530,14 +534,14 @@ let formattedDate = `${year}-${month}-${day}`;
 
 
 
-    },
+    },*/
 
         isIntervalDisabled(time) {
     // Aquí puedes agregar la lógica para desactivar ciertos horarios.
     // Por ejemplo, si deseas desactivar los horarios '10:00' y '11:00':
     return this.disabledIntervals.includes(time);
   },
-        divideInterval() {
+        /*divideInterval() {
             this.countInterval = 0
             this.intervals = []
             this.getDayOfWeekOK()
@@ -617,45 +621,41 @@ let formattedDate = `${year}-${month}-${day}`;
             
 
             console.log('sssssssssssssss' + this.intervals);
-        },
+        },*/
         
-    timeReservated() {
-        
-console.log('****************************this.professional[0]*************');
-console.log(this.professional[0]);
+                /*timeReservated() {
+                    
+                  console.log('****************************this.professional[0]*************');
+                  console.log(this.professional[0]);
 
-let currentDate = new Date();
-let formattedDate = currentDate.toISOString().split('T')[0];
+                  let currentDate = new Date();
+                  let formattedDate = currentDate.toISOString().split('T')[0];
 
-let request = {
-  professional_id: this.professional[0],
-  branch_id: 1,
-  data: formattedDate
+                  let request = {
+                    professional_id: this.professional[0],
+                    branch_id: 1,
+                    data: formattedDate
 
-}
+                  }
 
 
-axios
-  .get('http://127.0.0.1:8000/api/professional-reservations-time' , {
-            params: request
-        })
-        .then((response) => {
-    this.reservedTime = response.data.reservations;
-    this.disabledIntervals = response.data.reservations;
-    console.log('---------------response.data.reservations-------------------');
-    console.log(response.data.reservations);
-    console.log('---------------response.data.reservations-------------------');
+                  axios
+                  .get('http://127.0.0.1:8000/api/professional-reservations-time' , {
+                            params: request
+                        })
+                        .then((response) => {
+                    this.reservedTime = response.data.reservations;
+                    this.disabledIntervals = response.data.reservations;
+                    console.log('---------------response.data.reservations-------------------');
+                    console.log(response.data.reservations);
+                    console.log('---------------response.data.reservations-------------------');
 
-  })
-  .catch((err) => {
-    console.log(err, "error");
-    /*  this.displayNotification(
-        "error",
-        "Error",
-        "Error al obtener el calendario de la Sucursal"
-      );*/
-  });
-},
+                  })
+                  .catch((err) => {
+                    console.log(err, "error");
+                
+                  });
+  },*/
         getDayOfWeekOK() {
   var Xmas95 = new Date();
   console.log('Este es new Date '+Xmas95);
@@ -681,7 +681,8 @@ axios
                       );*/
                 });
         },
-        handleStepChange(newValue) {
+        handleStepChange(newValue) 
+        {
 
             // Verifica si se está pasando del paso 1 al paso 2
             if (newValue === 2) {
@@ -771,6 +772,7 @@ toggleService2(serviceId2) {
         console.log(this.professional);
         //HACER LLAMADA A BUSCAR LOS SERVICIOS DISPONIBLES Y SERVICIOS ASIGNADOS
         this.getServicesProfessional();
+        this.getServicesProfessionalSelect();
     
 },
 
@@ -784,7 +786,7 @@ getServicesProfessional()
 
   //AXIOS
   axios
-                .get(`http://127.0.0.1:8000/api/professionalservice-show`, {
+                .get(`http://127.0.0.1:8000/api/services-professional-branch-free`, {
                     params: {
                         branch_id: idBranch,
                         professional_id: idProfessional,
@@ -802,15 +804,15 @@ getServicesProfessional()
 },
 getServicesProfessionalSelect()
 {
-  //LLAMAR AL METODO
-  //DADO EL ID DEL PROFESSIONAL Y LA BRANCH
+    //LLAMAR AL METODO
+    //DADO EL ID DEL PROFESSIONAL Y LA BRANCH
 
-  const idProfessional = this.professional[0];
-  const idBranch = this.branch_id;
+    const idProfessional = this.professional[0];
+    const idBranch = this.branch_id;
 
-  //AXIOS
-  axios
-                .get(`http://127.0.0.1:8000/api/professionalservice-show`, {
+    //AXIOS
+    axios
+                .get(`http://127.0.0.1:8000/api/services-professional-branch`, {
                     params: {
                         branch_id: idBranch,
                         professional_id: idProfessional,
@@ -826,8 +828,8 @@ getServicesProfessionalSelect()
                 });
 
 },
-toggleService3(service) {
-   
+toggleService3(service) 
+{   
         const index = this.selected.indexOf(service.id);
         
         if (index > -1) {
@@ -850,7 +852,7 @@ toggleService3(service) {
     
 },
          //profesionales
-         toggleTimer(hour) {
+         /*toggleTimer(hour) {
             const index = this.hourSelect.indexOf(hour);
             console.log(this.hourSelect);
             if (index > -1) {
@@ -862,13 +864,13 @@ toggleService3(service) {
             // Limpiar la selección anterior y agregar el nuevo servicio seleccionado
             this.hourSelect = [hour];
             this.start_time1 = this.hourSelect;
-        },
+        },*/
       /*  isProfessional(serviceId2) {
             return this.professional.length === 1 && this.professional[0] === serviceId2;
         },*/
-        isTimer(hour) {
+        /*isTimer(hour) {
             return this.hourSelect.length === 1 && this.hourSelect[0] === hour;
-        },
+        },*/
 
         chargeServices() {
                 axios
