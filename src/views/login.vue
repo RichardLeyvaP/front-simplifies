@@ -146,10 +146,12 @@ export default {
       this.formVisible = !this.formVisible;
     },
     changePass (){
-      this.data.email = this.emailpas;
-      console.log(this.data);
       axios
-        .get('http://127.0.0.1:8000/api/reactive-password', this.data)
+        .get('http://127.0.0.1:8000/api/reactive-password', {
+                    params: {
+                        email: this.emailpas,
+                    }
+                })
         .then((response) => {
           console.log(response);
           if (response.data){
