@@ -81,7 +81,7 @@ export default {
     mainteiners: [
       { title: "Tipos de Negocio", icon: "mdi-format-list-bulleted-type", to: "/business-type", permission: "view_business_types" },
       { title: "Cargos", icon: "mdi-family-tree", to: "/charge", permission: "view_charges" },
-      { title: "Reglas", icon: "mdi-ruler", to: "/rule", permission: "view_rules" },
+      { title: "Reglas de convivencia", icon: "mdi-ruler", to: "/rule", permission: "view_rules" },
       { title: "Categorías de Productos", icon: "mdi-tag-check", to: "/product-category", permission: "view_product_categories" },
     ],
     listItems: [

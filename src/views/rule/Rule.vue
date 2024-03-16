@@ -28,7 +28,7 @@
             <template v-slot:activator="{ props }">
               <v-btn v-bind="props" class="text-subtitle-1  ml-12 " color="#E7E9E9" variant="flat" elevation="2"
                 prepend-icon="mdi-plus-circle">
-                Nueva Regla
+                Nueva Regla de convivencia
               </v-btn>
             </template>
             <v-card>
@@ -54,7 +54,7 @@
                     </v-row>
                     <v-row>
                       <v-col cols="12" md="12">
-                        <v-text-field v-model="editedItem.type" clearable label="Tipo de Regla"
+                        <v-text-field v-model="editedItem.type" clearable label="Tipo de Regla de convivencia"
                           prepend-icon="mdi-ruler" variant="underlined" :rules="nameRules">
                         </v-text-field>
                       </v-col>
@@ -131,9 +131,9 @@ export default {
 
     headers: [
 
-      { title: 'Regla', key: 'name' },
+      { title: 'Regla de convivencia', key: 'name' },
      
-      { title: 'Tipo de Regla', key: 'type' },
+      { title: 'Tipo de Regla de convivencia', key: 'type' },
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
     results: [],
@@ -169,7 +169,7 @@ export default {
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? 'Nueva Regla' : 'Editar Regla'
+      return this.editedIndex === -1 ? 'Nueva Regla convivencia' : 'Editar Regla convivencia'
     },
   },
 
@@ -238,9 +238,9 @@ export default {
         .post('http://127.0.0.1:8000/api/rule-destroy', request)
         .then(() => {
           this.initialize();
-          this.showAlert("success", "Regla eliminada correctamente", 3000)
+          this.showAlert("success", "Regla de convivencia eliminada correctamente", 3000)
         }).catch(() => {
-          this.showAlert("error", "No se puede Eliminar la Regla", 3000)
+          this.showAlert("error", "No se puede Eliminar la Regla de convivencia", 3000)
         })
       this.closeDelete()
     },
@@ -269,7 +269,7 @@ export default {
           .put('http://127.0.0.1:8000/api/rule', this.data)
           .then(() => {
             this.initialize();
-            this.showAlert("success", "Regla editada correctamente", 3000)
+            this.showAlert("success", "Regla de convivencia editada correctamente", 3000)
           })
       } else {
         this.valid = false;
@@ -280,7 +280,7 @@ export default {
           .post('http://127.0.0.1:8000/api/rule', this.data)
           .then(() => {
             this.initialize();
-            this.showAlert("success", "Regla registrada correctamente", 3000)
+            this.showAlert("success", "Regla de convivencia registrada correctamente", 3000)
           })
       }
       this.close()
