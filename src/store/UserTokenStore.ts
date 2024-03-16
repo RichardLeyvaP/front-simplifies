@@ -11,11 +11,15 @@ export const UserTokenStore = defineStore("UserTokenStore", {
       nameBusiness: "",
       image: "",
       business_id: "",
+      user_id: "",
       permissionsUser: [] as string[],
       authenticateUser: ""
     };
   },
   actions: {
+    setUserUser_id(user_id: string){
+      this.user_id = user_id;
+    },
     setUserToken(userToken: string){
       this.userToken = userToken;
     },
@@ -61,6 +65,7 @@ export const UserTokenStore = defineStore("UserTokenStore", {
       this.business_id = "";
       this.permissionsUser= [];
       this.authenticateUser = "";
+      this.user_id = "";
     },
   },
   persist: {    

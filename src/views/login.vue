@@ -157,6 +157,7 @@ export default {
           if (response.data){
             this.showAlert("success", "Contraseña enviada a su correo", 3000)
             this.email2 = '';
+            this.toggleForm();
           }
         }).catch(error => {
           this.showAlert("warning", "Correo incorrecto", 3000);
@@ -228,6 +229,7 @@ export default {
               LocalStorageService.setItem("business_id", this.user.business_id);
               LocalStorageService.setItem("permissionsUser", this.user.permissions);
               LocalStorageService.setItem("authenticateUser", true);
+              LocalStorageService.setItem("id", this.user.id);
               this.editedItem = Object.assign({}, this.defaultItem);
               setTimeout(() => {
                 router.push({ name: "Home" });
