@@ -25,6 +25,18 @@
 
           </v-list-group>
 
+          <v-list-group value="Almacenes">
+            <template v-slot:activator="{ props }">
+              <v-list-item v-bind="props" prepend-icon="mdi-store-outline" title="Almacenes"></v-list-item>
+            </template>
+
+            <v-list-item v-for="item in filteredMenuAlmacenes" style="padding-left: 20px !important;" :key="item.title" :prepend-icon="item.icon" :title="item.title"
+            :to="item.to" :value="item.value"> <!-- Filtrado directo usando v-if -->
+  
+            </v-list-item>
+
+          </v-list-group>
+
           <v-list-item v-for="item in filteredMenuItems"   :key="item.title" :prepend-icon="item.icon" :title="item.title"
             :to="item.to" :value="item.value"></v-list-item>
 
@@ -86,9 +98,9 @@ export default {
     ],
     listItems: [
       { icon: "mdi-storefront-outline", title: "Sucursales", to: "branch", value: "surcursal", permission: "view_branches" },
-      { icon: "mdi-tag-outline", title: "Productos", to: "product", value: "products", permission: "view_products" },
+      //{ icon: "mdi-tag-outline", title: "Productos", to: "product", value: "products", permission: "view_products" },
       { icon: "mdi-list-box-outline", title: "Servicios", to: "service", value: "services", permission: "view_services" },
-      { icon: "mdi-store-outline", title: "Almacenes", to: "store", value: "stores", permission: "view_stores" },
+      //{ icon: "mdi-store-outline", title: "Almacenes", to: "store", value: "stores", permission: "view_stores" },
       { icon: "mdi-calendar-outline", title: "Agendas", value: "reservation", to: "reservation", permission: "view_calendar" },
       { icon: "mdi-cash-register", title: "Caja", to: "box", value: "cash", permission: "view_shopping_carts" },
       { icon: "mdi-television", title: "Pizarras de Turnos", to: "shift-board", value: "shift-board", permission: "view_shift_boards" },
@@ -114,8 +126,8 @@ export default {
     ],
     administracion: [
       { icon: "mdi-domain", title: "Empresa", to: "busines", value: "busines", permission: "view_busines" },
-      { icon: "mdi-store", title: "Asignar Productos", to: "product-store", value: "product-store", permission: "view_product_store" },
-      { title: "Permisos del Sistema", icon: "mdi-security", to: "permission", value: "permission", permission: "view_permissions" },
+      //{ icon: "mdi-store", title: "Asignar Productos", to: "product-store", value: "product-store", permission: "view_product_store" },
+      { icon: "mdi-security", title: "Permisos del Sistema", to: "permission", value: "permission", permission: "view_permissions" },
       { icon: "mdi-account-tie-outline", title: "Profesionales", to: "person", value: "profesionals", permission: "view_professionals" },
       { icon: "mdi-account-star-outline", title: "Clientes", to: "client", value: "clients", permission: "view_clients" },
       { icon: "mdi-handshake", title: "Associados", to: "associated", value: "associated", permission: "view_associates" },
@@ -123,6 +135,11 @@ export default {
       { icon: "mdi-list-box-outline", title: "Asignar servicios a una Sucursal", to: "branch-service-professional", value: "branch-service-professional", permission: "view_dashboard" },          
       { icon: "mdi mdi-chair-rolling", title: "Puestos de Trabajo", to: "workplace", value: "workplace", permission: "view_workplace" },
   
+    ],
+    almacenes: [      
+      { icon: "mdi-store-outline", title: "Almacenes", to: "store", value: "stores", permission: "view_stores" },
+      { icon: "mdi-tag-outline", title: "Productos", to: "product", value: "products", permission: "view_products" },
+      { icon: "mdi-store", title: "Asignar Productos", to: "product-store", value: "product-store", permission: "view_product_store" },
     ],
     allowedPermissions: ["view_dashboard", "view_menu",],
 
@@ -148,6 +165,10 @@ export default {
     filteredMenuMainteiners() {
       console.log(this.permissionsUser);
       return this.mainteiners.filter(item => this.permissionsUser.includes(item.permission));
+    },
+    filteredMenuAlmacenes() {
+      console.log(this.permissionsUser);
+      return this.almacenes.filter(item => this.permissionsUser.includes(item.permission));
     }
 },
   created() {
