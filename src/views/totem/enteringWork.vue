@@ -83,6 +83,7 @@
 
 <script>
 import axios from "axios";
+import LocalStorageService from "@/LocalStorageService";
 
 export default {
     data: () => ({
@@ -118,6 +119,7 @@ export default {
     focus: '',
     start_time1: '',
     array_puestoTs:[],
+    branch_id: '',
 
     nameRules: [
         v => !!v || 'El nombre es requerido',
@@ -183,7 +185,12 @@ export default {
         ],
     }),
 
-   
+    mounted() {
+        //this.business_id = LocalStorageService.getItem('business_id');
+    //this.charge_id = LocalStorageService.getItem('charge_id');
+  this.branch_id = LocalStorageService.getItem('branch_id') ? 1 : LocalStorageService.getItem('branch_id');
+
+    },
 
     methods:
     {
@@ -194,7 +201,7 @@ export default {
       axios
         .get('http://127.0.0.1:8000/api/qrCode', {
           params: {
-            branch_id: 1,
+            branch_id: this.branch_id,
             email: this.email_client2
           }
         })
@@ -431,11 +438,11 @@ togglepuestoT2(puestoTId2) {
             let url= ``;
             if(this.tipoProfessional == 'tecnico')
             {
-                 url = `http://127.0.0.1:8000/api/branch_workplaces_select?branch_id=1`;
+                 url = `http://127.0.0.1:8000/api/branch_workplaces_select?branch_id=${this.branch_id}`;
             }
             else if(this.tipoProfessional == 'barbero')
             {
-                 url = `http://127.0.0.1:8000/api/branch_workplaces_busy?branch_id=1`;
+                 url = `http://127.0.0.1:8000/api/branch_workplaces_busy?branch_id=${this.branch_id}`;
             }
 
 
@@ -461,7 +468,7 @@ console.log(newArraypuestoT);
       const data = {
         
                 puestoTs: newArraypuestoT,
-                 branch_id: 1
+                 branch_id: this.branch_id
                 // branch_id: this.selected_branch.id
             };
 
