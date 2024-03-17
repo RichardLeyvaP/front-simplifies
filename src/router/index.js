@@ -172,6 +172,13 @@ const routes = [
           import( "@/views/rule/Rule.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_rules"] },
       },
+      {
+        path: "/branch-rule",
+        name: "Rule",
+        component: () =>
+          import( "@/views/branch_rule/BranchRule.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_branch_rules"] },
+      },
 
       {
         path: "/person",

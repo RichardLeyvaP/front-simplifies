@@ -99,11 +99,17 @@
       </v-row>
     </v-toolbar>
     <v-card-text>
-      <v-data-table :headers="headers" :items="results" class="elevation-1" no-results-text="No hay datos disponibles">
+      <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
+              hide-details>
+            </v-text-field>
+      <v-data-table :headers="headers" :items="results" :search="search" class="elevation-1" no-results-text="No hay datos disponibles">
         <template v-slot:item.actions="{ item }">
           <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
             mdi-pencil
           </v-icon>
+          <!--<v-icon size="25" color="green" @click="showPermission(item)">
+            mdi-storefront-outline
+          </v-icon>-->
           <v-icon size="25" color="red" @click="deleteItem(item)">
             mdi-delete
           </v-icon>
@@ -125,7 +131,7 @@ export default {
     sb_timeout: 2000,
     sb_title: '',
     sb_icon: '',
-
+    search: '',
     dialog: false,
     dialogDelete: false,
 

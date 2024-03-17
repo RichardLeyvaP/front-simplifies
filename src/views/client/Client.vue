@@ -20,8 +20,8 @@
         <v-col cols="12" md="4" class="grow ml-4">
           <span class="text-subtitle-1"> <strong>Listado de Clientes</strong></span>
         </v-col>
-        <v-col cols="12" md="4" class="mr-12"></v-col>
-        <v-col cols="12" md="3" class="mr-2 ">
+        <v-col cols="12" md="5"></v-col>
+        <v-col cols="12" md="2">
           
           <v-dialog v-model="dialog" max-width="1000px">
             <template v-slot:activator="{ props }">
