@@ -87,7 +87,7 @@
         <v-col cols="12">
           <v-text-field
             v-model="confirmPassword"
-            label="Confirmar Nueva Contraseña"
+            label="Nueva Contraseña"
             :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
             :type="showConfirmPassword ? 'text' : 'password'"
             @click:append="showConfirmPassword = !showConfirmPassword"

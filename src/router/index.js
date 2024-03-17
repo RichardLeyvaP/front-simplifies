@@ -236,7 +236,7 @@ const routes = [
         name: "Servicios se una branch",
         component: () =>
           import( "@/views/branchservice/BranchServices.vue"),
-        meta: { requiresAuth: true, requiresPermissions: ["view_dashboard"] },
+        meta: { requiresAuth: true, requiresPermissions: ["view_service_branch"] },
       },
       {
         path: "/business-winner",
@@ -278,7 +278,7 @@ const routes = [
         name: "Asignar Servicio a profesional",
         component: () =>
           import( "@/views/professionalservice/professionalservice.vue"),
-        meta: { requiresAuth: true, requiresPermissions: ["view_dashboard"] },
+        meta: { requiresAuth: true, requiresPermissions: ["view_service_professional"] },
       },
       {
         path: "/company-winner",
