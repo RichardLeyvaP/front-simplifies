@@ -359,6 +359,17 @@ export default {
     imgedit() {
       return this.imgMiniatura;
     },
+    /*dateFormatted() {
+      const date = this.input ? new Date(this.input) : new Date();
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const year = date.getFullYear();
+      return `${year}-${month}-${day}`;
+
+      getDate() {
+      return this.input ? new Date(this.input) : new Date();
+    },
+    },*/
     dateFormatted() {
       const date = this.editedCardGiftUser.expiration_date ? new Date(this.editedCardGiftUser.expiration_date) : new Date();
       const day = date.getDate().toString().padStart(2, '0');
@@ -495,7 +506,9 @@ export default {
         this.dialogAddStore = false,
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
+          this.editedIndex = -1;
+        this.imgMiniatura = '';
+        this.file = '';
         })
     },
     closeDelete() {
@@ -549,7 +562,10 @@ export default {
           .post('http://127.0.0.1:8000/api/card-gift-update', formData)
           .then(() => {
             this.initialize();
-            this.showAlert("success", "Tarjeta de Regalo editada correctamente", 3000)
+            this.showAlert("success", "Tarjeta de Regalo editada correctamente", 3000);
+        this.imgMiniatura = '';
+        this.file = '';
+            
           })
       } else {
         this.valid = false;
@@ -561,7 +577,9 @@ export default {
           .post('http://127.0.0.1:8000/api/card-gift', formData)
           .then(() => {
             this.initialize();
-            this.showAlert("success", "Tarjeta de Regalo registrada correctamente", 3000)
+            this.showAlert("success", "Tarjeta de Regalo registrada correctamente", 3000);
+        this.imgMiniatura = '';
+        this.file = '';
           })
       }
       this.close()
