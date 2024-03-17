@@ -149,7 +149,7 @@
             <span class="text-h6 ml-6"> Asignar Gift Card</span>
             <v-spacer></v-spacer>
             <v-btn class="ml-4" color="#E7E9E9" variant="flat" @click="this.dialogAddCardGift = true">
-              Asignar a Usuario
+              Asignar a Cliente
             </v-btn>
           </v-toolbar>
 
@@ -371,14 +371,14 @@ export default {
     },
     },*/
     dateFormatted() {
-      const date = this.editedCardGiftUser.expiration_date ? new Date(this.editedCardGiftUser.expiration_date) : new Date();
+      const date = this.input ? new Date(this.input) : new Date();
       const day = date.getDate().toString().padStart(2, '0');
       const month = (date.getMonth() + 1).toString().padStart(2, '0');
       const year = date.getFullYear();
       return `${year}-${month}-${day}`;
     },
     getDate() {
-      return this.editedCardGiftUser.expiration_date ? new Date(this.editedCardGiftUser.expiration_date) : new Date();
+      return this.input ? new Date(this.input) : new Date();
     },
   },
 
@@ -577,9 +577,7 @@ export default {
           .post('http://127.0.0.1:8000/api/card-gift', formData)
           .then(() => {
             this.initialize();
-            this.showAlert("success", "Tarjeta de Regalo registrada correctamente", 3000);
-        this.imgMiniatura = '';
-        this.file = '';
+            this.showAlert("success", "Tarjeta de Regalo registrada correctamente", 3000)
           })
       }
       this.close()
@@ -600,7 +598,9 @@ export default {
       this.valid = false,
         this.data.card_gift_id = this.cardSelect.id;
       this.data.user_id = this.editedCardGiftUser.user_id;
-      this.data.expiration_date = this.editedCardGiftUser.expiration_date ? this.editedCardGiftUser.expiration_date : format(new Date(), "yyyy-MM-dd");
+      this.data.expiration_date = this.editedCardGiftUser.expiration_date ? this.editedCardGiftUser.expiration_date :format(new Date(), "yyyy-MM-dd") ;/*this.input ? format(new Date(this.input), "") : new Date();*/
+      console.log('this.editedCardGiftUser.expiration_date');
+      console.log(this.data.expiration_date);
       axios
         .post('http://127.0.0.1:8000/api/card-gift-user', this.data)
         .then(() => {
