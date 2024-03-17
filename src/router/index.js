@@ -174,7 +174,7 @@ const routes = [
       },
       {
         path: "/branch-rule",
-        name: "Rule",
+        name: "Rule Branch",
         component: () =>
           import( "@/views/branch_rule/BranchRule.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_branch_rules"] },

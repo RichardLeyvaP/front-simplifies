@@ -123,7 +123,7 @@
 
 
  <v-card-text>
-   <v-data-table :headers="headers"  :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
+   <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'"  :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
      no-results-text="No hay datos disponibles">
      <template v-slot:top>
 

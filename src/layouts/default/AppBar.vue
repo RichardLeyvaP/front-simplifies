@@ -100,7 +100,7 @@
           <v-text-field
             v-model="confirmNewPassword"
             label="Confirmar Nueva Contraseña"
-            :append-icon="'mdi-lock'"
+            :append-icon="showConfirmNewPassword ? 'mdi-eye' : 'mdi-eye-off'"
             :type="showConfirmNewPassword ? 'text' : 'password'"
             @click:append="showConfirmNewPassword = !showConfirmNewPassword"
             hint="Haz clic en el ícono para mostrar/ocultar la contraseña"

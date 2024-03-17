@@ -97,7 +97,7 @@
         </v-row>
       </v-toolbar>
       <v-card-text>
-        <v-data-table :headers="headers" :items="results" class="elevation-1" no-results-text="No hay datos disponibles">
+        <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
           <template v-slot:item.actions="{ item }">
             <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
               mdi-pencil
@@ -115,9 +115,9 @@
   
   import axios from "axios";
   import LocalStorageService from "@/LocalStorageService";
-  import { UserTokenStore } from "@/store/UserTokenStore";
+  //import { UserTokenStore } from "@/store/UserTokenStore";
 
-const userTokenStore = UserTokenStore();
+//const userTokenStore = UserTokenStore();
   export default {
     data: () => ({
       valid: true,

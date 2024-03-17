@@ -129,7 +129,7 @@
   <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details>
             </v-text-field>
- <v-data-table :headers="headers"  :search="search " :items="results" class="elevation-1" no-data-text="No hay datos disponibles">
+ <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'"  :search="search " :items="results" class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
    <template v-slot:top>
 
      <v-divider class="mx-4" inset vertical></v-divider>
@@ -143,10 +143,10 @@
    {{ item.name }}
    </template>
    <template v-slot:item.actions="{ item }">
-     <v-icon size="20px" color="blue" class="me-2" @click="editItem(item)">
+     <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
        mdi-pencil
      </v-icon>
-     <v-icon size="20px" color="red" @click="deleteItem(item)">
+     <v-icon size="25" color="red" @click="deleteItem(item)">
        mdi-delete
      </v-icon>
    </template>

@@ -134,7 +134,7 @@
       <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details>
             </v-text-field>
-      <v-data-table :headers="headers"  :search="search " :items="results" class="elevation-1" no-data-text="No hay datos disponibles">
+      <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'"  :search="search " :items="results" class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
         <template v-slot:top>
 
           <v-divider class="mx-4" inset vertical></v-divider>

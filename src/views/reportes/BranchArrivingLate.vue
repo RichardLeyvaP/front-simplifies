@@ -93,7 +93,7 @@
             <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details>
             </v-text-field>
-            <v-data-table :headers="headers" :items="results" :search="search2" class="elevation-2">
+            <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search2" class="elevation-2"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
             </v-data-table>
           </v-card-text>
         </v-col>

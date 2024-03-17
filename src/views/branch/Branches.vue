@@ -112,7 +112,7 @@
 
     <v-card-text>
 
-      <v-data-table :headers="headers" :items="results" class="elevation-1">
+      <v-data-table :headers="headers" :items="results" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
         <template v-slot:top>
 
           <v-divider class="mx-4" inset vertical></v-divider>
@@ -186,7 +186,7 @@
             <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details></v-text-field>
 
-            <v-data-table :headers="headers2" :items="branchProfessionals" :search="search2" class="elevation-1">
+            <v-data-table :headers="headers2" :items="branchProfessionals" :search="search2" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
 
               <template v-slot:item.name="{ item }">
 
@@ -278,7 +278,7 @@
           <v-card-text class="mt-2 mb-2">
             <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details></v-text-field>
-            <v-data-table :headers="headers3" :items="branchStores" :search="search3" class="elevation-1">
+            <v-data-table :headers="headers3" :items="branchStores" :search="search3" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
 
               <!--<template v-slot:item.name="{ item }">
 

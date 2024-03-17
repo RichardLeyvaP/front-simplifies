@@ -80,9 +80,10 @@
 </template>
   
 <script>
-import { UserTokenStore } from "@/store/UserTokenStore";
+  import LocalStorageService from "@/LocalStorageService";
+//import { UserTokenStore } from "@/store/UserTokenStore";
 
-const userTokenStore = UserTokenStore();
+//const userTokenStore = UserTokenStore();
 import axios from "axios";
 import { format } from "date-fns";
 export default {
@@ -163,10 +164,10 @@ export default {
       return this.input3 ? new Date(this.input3) : new Date();
     },
   },
-  created() {
+  mounted() {
     // Recuperar datos del localStorage al cargar la aplicación
-    this.branch_id = userTokenStore.branch_id;
-    this.professional_id = userTokenStore.professional_id;
+    this.branch_id = LocalStorageService.getItem('branch_id') ? 1 : LocalStorageService.getItem('branch_id');
+    this.professional_id = LocalStorageService.getItem('professional_id');
     this.initialize();
   },
   methods: {
