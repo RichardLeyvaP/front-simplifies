@@ -1,8 +1,6 @@
 <template>
- 
-    <v-container>
+  <v-container>
     <v-row>
-     
       <v-col cols="12" md="6" lg="3">
         <v-flex>
           <v-card elevation="6">
@@ -146,14 +144,14 @@
           </v-card>
         </v-flex>
       </v-col>
-
-
+    </v-row>
+<v-row>
 <v-col cols="6">
 <v-card class="mx-auto  overflow-visible">  
       <Bar class="pa-6"
     id="my-chart-id"
     :options="chartOptions"
-    :data="chartData"
+    :data="chartData3"
     padding="16"
   />
       
@@ -177,10 +175,10 @@
 
 <v-col cols="6">
 <v-card class="mx-auto  overflow-visible">  
-      <LineChart class="pa-6"
+  <Bar class="pa-6"
     id="my-chart-id"
     :options="chartOptions"
-    :data="chartData2"
+    :data="chartData4"
     padding="16"
   />
       
@@ -204,10 +202,7 @@
 </v-row>
     
     <br><br>
-
-    
   </v-container>
-
 </template>
 
 <script>
@@ -239,7 +234,12 @@ export default {
         labels: [ 'Lunes', 'Martes', 'Miércoles' , 'Jueves' , 'Viernes', 'Sábado', 'Domingo' ],
         datasets: [ { label: 'Reservas',
         backgroundColor:  ["#FFB300", "#FF7043", "#00796B", "#B0BEC5", "#C0CA33", "#8D6E63", "#616161"], data: this.reservationWeek } ]
-      },
+      },/*
+      chartData: {
+        labels: [ 'Lunes', 'Martes', 'Miércoles' , 'Jueves' , 'Viernes', 'Sábado', 'Domingo' ],
+        datasets: [ { label: 'Reservas',
+        backgroundColor:  ["#FFB300", "#FF7043", "#00796B", "#B0BEC5", "#C0CA33", "#8D6E63", "#616161"], data: [40, 20, 12, 10, 35, 22, 0]}]
+      },*/
       chartOptions: {
         responsive: true
       },
@@ -253,6 +253,15 @@ export default {
 
     };
   },
+  computed: {
+    // Usando computed para asegurar reactividad
+    chartData3() {
+      return this.generateChartData();
+},
+chartData4() {
+      return this.generateChartData1();
+}
+},
   mounted() {
     this.branch_id = LocalStorageService.getItem("branch_id") ? LocalStorageService.getItem("branch_id") : 0;
     this.business_id = LocalStorageService.getItem("business_id");
@@ -264,7 +273,46 @@ export default {
    // this.renderChart(this.chartData, { responsive: true, maintainAspectRatio: false })
   },
 methods: {
+  //ganancias en la semana
+  generateChartData1() {
+      return {
+        labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
+        datasets: [
+          {
+            label: 'Ingresos',
+            backgroundColor: ["#FFB300", "#FF7043", "#00796B", "#B0BEC5", "#C0CA33", "#8D6E63", "#616161"],
+            data: this.winnerWeek
+          }
+        ]
+};
+},
+//reservas en la semana
+  generateChartData() {
+      return {
+        labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
+        datasets: [
+          {
+            label: 'Reservas',
+            backgroundColor: ["#FFB300", "#FF7043", "#00796B", "#B0BEC5", "#C0CA33", "#8D6E63", "#616161"],
+            data: this.reservationWeek
+          }
+        ]
+};
+},
+  datacollection: {
+        // Data to be passed to the chart
+        labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
+        datasets: [
+          {
+            label: 'Reservas',
+            backgroundColor: '#f87979',
+            data: [40, 20, 12, 39, 10, 40, 39] // Ejemplo de datos de reservas
+          }
+      ]
+      },
   initialize() {
+    
+    //this.reservationWeek = [40, 20, 12, 10, 35, 22, 0];
       this.editedIndex = 1;
       axios
         .get('http://127.0.0.1:8000/api/cars-winner-day', {
@@ -318,7 +366,7 @@ methods: {
           }
         })
         .then((response) => {
-          this.winnerWeek = response.data.amount;
+          this.winnerWeek = response.data;
           console.log(this.winnerWeek);
         });
         axios
@@ -330,8 +378,7 @@ methods: {
         })
         .then((response) => {
           this.reservationWeek = response.data;
-          this.reservationWeek = this.reservationWeek.split(',').map(Number);
-          console.log(this.reservationWeek);
+          //console.log(this.reservationWeek);
         });
     },
     },

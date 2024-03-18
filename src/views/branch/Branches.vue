@@ -156,16 +156,16 @@
           </div>
         </template>
         <template v-slot:item.actions="{ item }">
-          <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
+          <v-icon size="25" color="blue" class="me-2" @click="editItem(item)" title="Editar Sucursal">
             mdi-pencil
           </v-icon>
-          <v-icon size="25" color="primary" @click="showProfessionals(item)">
-            mdi-account-box-multiple
+          <v-icon size="25" color="green" @click="showProfessionals(item)" title="Asignar Professional">
+            mdi-account-tie
           </v-icon>
-          <v-icon size="25" color="primary" @click="showStores(item)">
+          <v-icon size="25" color="primary" @click="showStores(item)" title="Asignar Almacén">
             mdi-store-outline
           </v-icon>          
-          <v-icon size="25" color="red" @click="deleteItem(item)">
+          <v-icon size="25" color="red" @click="deleteItem(item)" title="Eliminar Sucursal">
             mdi-delete
           </v-icon>
         </template>

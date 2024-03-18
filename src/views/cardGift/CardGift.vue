@@ -28,13 +28,13 @@
 
               <v-btn v-bind="props" class="text-subtitle-1  ml-12  " color="#E7E9E9" variant="flat" elevation="2"
                 prepend-icon="mdi-plus-circle">
-                Crear Gift Card
+                Crear Tarjeta
               </v-btn>
 
             </template>
             <v-card>
               <v-toolbar color="#F18254">
-                <span class="text-subtitle-1 ml-4">Tarjeta de Regalo</span>
+                <span class="text-subtitle-1 ml-4">Crear Tarjeta de Regalo</span>
               </v-toolbar>
               <v-card-text>
                 <v-form v-model="valid" enctype="multipart/form-data">
@@ -146,7 +146,7 @@
       <v-dialog v-model="dialogCardGitfUser" fullscreen transition="dialog-bottom-transition">
         <v-card>
           <v-toolbar color="#F18254">
-            <span class="text-h6 ml-6"> Asignar Gift Card</span>
+            <span class="text-h6 ml-6"> Asignar Tarjeta de Regalo</span>
             <v-spacer></v-spacer>
             <v-btn class="ml-4" color="#E7E9E9" variant="flat" @click="this.dialogAddCardGift = true">
               Asignar a Cliente

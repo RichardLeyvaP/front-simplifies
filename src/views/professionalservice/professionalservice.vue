@@ -54,10 +54,18 @@
           
     </v-container>
       </v-row>
+      <v-container>
     <v-row>
-        <v-col cols="12" md="6">
-            <p>Lista de Trabajadores</p>
+        <v-col cols="12" md="5">
+
             <v-card>
+              <v-toolbar color="#F18254">
+      
+      <v-toolbar-title>Lista de Trabajadores</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+    </v-toolbar>
                     <v-list>
                         <v-list-item-group v-model="professional" active-class="deep-purple--text text--accent-4">
 
@@ -77,8 +85,8 @@
                 </v-card>
         </v-col>
 
-
-  <v-card>
+        <v-col cols="12" md="7">
+  <v-card >
     <v-tabs
       v-model="tabBar"
       bg-color="rgb(241, 130, 84)"
@@ -94,7 +102,8 @@
            
             <!-- SERVICIOS DISPONIBLES -->
            
-                    <v-list>
+                    <v-list lines="three"
+      item-props>
                         <v-list-item-group v-model="selectedA" active-class="deep-purple--text text--accent-4">
                             <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + service.image_service"
                                 v-for="service in services" :key="service.id" @click="toggleService3(service)"
@@ -113,13 +122,15 @@
                         prepend-icon="mdi-percent" variant="underlined" :rules="requiredRules">
                       </v-text-field>
         </v-col>
-        <v-col cols="12" md="8">
-        </v-col>
-        <v-col cols="12" md="4">            
-            <v-btn color="warning"  variant="flat"  @click="asignService" >
+        <v-divider></v-divider>
+                    
+                    <v-card-actions>   
+                      <v-spacer></v-spacer> 
+                      <v-btn color="#F18254"  variant="flat"  @click="asignService" >
              Asignar
            </v-btn>
-        </v-col>
+  </v-card-actions>
+        
 
                 
         
@@ -128,7 +139,8 @@
 <!--          
         SERVICIOS ASIGNADOS -->
         <v-window-item value="two">
-          <v-list>
+          <v-list lines="three"
+      item-props>
                         <v-list-item-group v-model="selected" active-class="deep-purple--text text--accent-4">
                             <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + serviceA.image_service"
                                 v-for="serviceA in servicesAsig" :key="serviceA.id" @click="toggleService3(serviceA)"
@@ -138,22 +150,28 @@
                                     <v-list-item-title class="text-h6">{{ serviceA.name }}</v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
+                            <v-divider></v-divider>
                         </v-list-item-group>
                     </v-list>
-                    <v-col cols="12" md="4">            
-            <v-btn color="warning"  variant="flat"  @click="desasignService" >
+                    <v-divider></v-divider>
+                    
+                    <v-card-actions>   
+                      <v-spacer></v-spacer> 
+                      <v-btn color="#F18254"  variant="flat"  @click="desasignService" >
              Eliminar
            </v-btn>
-        </v-col>
+  </v-card-actions>
         </v-window-item>
 
       </v-window>
     </v-card-text>
   </v-card>
+</v-col>
 
         
       
-    </v-row>                 
+    </v-row>  
+</v-container>               
                 
                 
  </v-card-text>
@@ -926,7 +944,7 @@ toggleService3(service)
 </script>
 <style>
 .selected-item {
-    background-color: orange !important;
+    background-color: #F18254 !important;
 }
 
 /* Espacio entre los items */

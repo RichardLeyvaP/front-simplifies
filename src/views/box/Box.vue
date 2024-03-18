@@ -240,7 +240,7 @@
    <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
      hide-details></v-text-field>
 
-
+   <v-container>
    <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search" class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
 
      <template v-slot:item.professionalName="{ item }">
@@ -500,6 +500,7 @@
        </v-icon>
      </template>
    </v-data-table>
+  </v-container>
 
  </v-card-text>
 
@@ -799,20 +800,20 @@ methods: {
  totalMount() {
    console.log("boxxxxxx");
    console.log(this.results.id);
-   if (!this.results) {    
+   //if (!this.results) {    
    this.editedCloseBox.totalMount = this.results.reduce((total, item) => total + item.amount, 0);   
    return this.results.reduce((total, item) => total + item.amount, 0) + " CLP";
-   }
-   else{
-    return "CPL";
-   }
+   //}
+   //else{
+    //return "CPL";
+   //}
  },
 
  totalMountPendientes() {
-  if (this.results) {
-    return " CPL"
-  }
-  else{
+  //if (this.results) {
+    //return " CPL"
+  //}
+  //else{
    // Filtrar elementos con estado "Pendiente" y calcular la sumatoria
    const montosPendientes = this.results
      .filter(item => item.pay === 0)
@@ -827,7 +828,7 @@ methods: {
      this.ejecutado = false;
    }
    return montosPendientes + " CLP";
-  }
+  //}
  },
 
  totalMountServices() {
@@ -922,17 +923,17 @@ methods: {
 
  totalMountPagado() {
    // Filtrar elementos con estado "Pendiente" y calcular la sumatoria
-   if (this.results) {
-    return " CPL"
-   }
-   else{
+   ///if (this.results) {
+    ///return " CPL"
+   //}
+   //else{
       
    const montosPagados = this.results
      .filter(item => item.pay === 1)
      .reduce((total, item) => total + item.amount, 0);
 
    return montosPagados ? montosPagados + " CLP" : " CPL";
-   }
+   //}
  },
 
  showAlert(sb_type, sb_message, sb_timeout) {

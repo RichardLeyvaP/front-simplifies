@@ -28,7 +28,7 @@
 
                             <v-btn v-bind="props" class="text-subtitle-1  ml-12  " color="#E7E9E9" variant="flat"
                                 elevation="2" prepend-icon="mdi-plus-circle">
-                                Asignar regla de convivencia
+                                Asignar regla
                             </v-btn>
 
                         </template>
