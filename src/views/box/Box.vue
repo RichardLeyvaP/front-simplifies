@@ -15,7 +15,7 @@
 
    </v-row>
  </v-snackbar>
-<v-card elevation="6" class="mx-5">
+ <v-card elevation="6" class="mx-5" width = 'auto'>
  <v-toolbar color="#F18254">
    <v-row>
      <v-col cols="12" md="8" class="mt-4">
@@ -41,7 +41,7 @@
              <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
            </v-toolbar>
            <v-card-text>
-             <v-container>
+             
                <v-row class="mb-4 mt-1">
                  <v-col cols="4">
                    <v-card class="mx-auto" max-width="344" title="Total" :subtitle="totalMount()"
@@ -161,7 +161,7 @@
                    </v-card>
                  </v-col>
                </v-row>
-             </v-container>
+             
            </v-card-text>
            <v-divider></v-divider>
            <v-card-actions>
@@ -240,7 +240,7 @@
    <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
      hide-details></v-text-field>
 
-   <v-container>
+   
    <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search" class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
 
      <template v-slot:item.professionalName="{ item }">
@@ -489,18 +489,18 @@
      </template>
 
      <template v-slot:item.actions="{ item }">
-       <v-icon size="25" title="Mostrar Detalles Carro" color="primary" @click="showDetails(item)">
+       <v-icon size="35" class="pr-3" title="Mostrar Detalles Carro" color="primary" @click="showDetails(item)">
          mdi-eye
        </v-icon>
-       <v-icon :disabled="item.pay === 1" title="Pagar Carro" size="25" color="green" @click="payItem(item)">
+       <v-icon :disabled="item.pay === 1" title="Pagar Carro" size="35" color="green" @click="payItem(item)">
          mdi-credit-card
        </v-icon>
-       <v-icon size="25" title="Eliminar Carro" color="red" @click="deleteItem(item)">
+       <v-icon size="35" title="Eliminar Carro" color="red" @click="deleteItem(item)">
          mdi-delete
        </v-icon>
      </template>
    </v-data-table>
-  </v-container>
+  
 
  </v-card-text>
 
