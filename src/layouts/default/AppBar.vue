@@ -152,7 +152,7 @@ export default {
       confirmNewPassword: '',
       showConfirmNewPassword: false,
     items: [
-      { title: 'Mi Perfil', icon: "mdi-account-tie-outline" },     
+      //{ title: 'Mi Perfil', icon: "mdi-account-tie-outline" },     
       { title: 'Cambiar Contraseña', icon: "mdi-form-textbox-password"},
       { title: 'Cerrar Sesión', icon: "mdi-exit-to-app", to:"/"},
     ],
@@ -229,7 +229,8 @@ export default {
                     }
                 })
         .then((response) => {
-          this.results = response.data.enrollments;
+          this.results = response.data.professional;
+          console.log(this.results);
           /*console.log(response);
             this.showAlert("success", "Contraseña modificada correctamente", 3000)
             this.confirmPassword = '';
