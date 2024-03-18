@@ -46,7 +46,7 @@
                                 :class="{ 'selected-item': isProfessional(professional.id) }" class="pt-4 pb-4">
 
                                 <v-list-item-content>
-                                    <v-list-item-title class="text-h6">{{ professional.name + ' ' + professional.surname + '  '+professional.second_surname+'    '+'(Libre aproxim - 09:30 AM)' }}</v-list-item-title>
+                                    <v-list-item-title class="text-h6">{{ professional.name + ' ' + professional.surname + '  '+professional.second_surname}}</v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
                             
@@ -111,7 +111,7 @@
   <template  v-slot:activator="{ props: activatorProps }">
     <v-btn
       v-bind="activatorProps"
-      color="surface-variant"
+      color="#F18254"
       text="Si, soy cliente"
       variant="flat"
       @click="() => { SelectionRadio('ClientSi');isActive.value = false;  }"
@@ -150,7 +150,7 @@
         <template v-slot:label>
             <v-btn
       v-bind="activatorProps"
-      color="surface-variant"
+      color="#F18254"
       text="NO, es mi primera vez"
       variant="flat"
       @click="() => { SelectionRadio('ClientNo')  }"
@@ -384,7 +384,8 @@ export default {
     mounted() {
       //this.business_id = LocalStorageService.getItem('business_id');
     //this.charge_id = LocalStorageService.getItem('charge_id');
-  this.branch_id = LocalStorageService.getItem('branch_id') ? 1 : LocalStorageService.getItem('branch_id');
+  this.branch_id = LocalStorageService.getItem('branch_id');
+  console.log(this.branch_id);
         this.chargeServices();
         this.chargeCalendarsBranches();
         // this. chargeProfessionals();

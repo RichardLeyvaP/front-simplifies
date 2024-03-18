@@ -228,7 +228,7 @@ export default {
     callForTime()
     {
      console.log('AQUI SI ESTOY ENTRANDO -callForTime()');
-    this.branch_id = LocalStorageService.getItem("branch_id") ? 1 : LocalStorageService.getItem("branch_id");
+    this.branch_id = LocalStorageService.getItem("branch_id");
     axios
           .get('http://127.0.0.1:8000/api/tail_branch_attended', {
            params: {

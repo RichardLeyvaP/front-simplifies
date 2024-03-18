@@ -173,7 +173,8 @@ export default {
   mounted() {
     //this.business_id = LocalStorageService.getItem('business_id');
     //this.charge_id = LocalStorageService.getItem('charge_id');
-  this.branch_id = LocalStorageService.getItem('branch_id') ? 1 : LocalStorageService.getItem('branch_id');
+  this.branch_id = LocalStorageService.getItem('branch_id');
+  console.log(this.branch_id);
     // Establecer un intervalo para mostrar duplas cada 5 segundos
     setInterval(this.mostrarDupla, 5000);
   },

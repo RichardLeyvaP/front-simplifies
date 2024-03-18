@@ -498,8 +498,9 @@
       this.nameBranch = userTokenStore.nameBranch;*/
       this.business_id = LocalStorageService.getItem('business_id');
       this.charge_id = LocalStorageService.getItem('charge_id');
-    this.branch_id = LocalStorageService.getItem('branch_id') ? 1 : LocalStorageService.getItem('branch_id');
+    this.branch_id = LocalStorageService.getItem('branch_id');
     this.nameBranch = LocalStorageService.getItem('nameBranch');
+    console.log(this.branch_id);
     if (this.charge_id === '4') {
         // Mostrar la fila con Autocomplete
         this.mostrarFila = true;

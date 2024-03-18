@@ -18,6 +18,7 @@ const routes = [
     name: "Totem",
     component: () =>
       import( "@/views/totem/Totem.vue"),
+      meta: { requiresAuth: true, requiresPermissions: ["view_totem"] }
   },  
   /*{
     path: "/reserve",
