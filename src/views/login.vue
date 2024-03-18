@@ -42,6 +42,9 @@
         </div>
         <v-dialog v-model="dialog" max-width="500">
           <v-card>
+            <v-toolbar color="#F18254">
+                <span class="text-subtitle-2 ml-4">Recuparar contraseña</span>
+              </v-toolbar>
               <v-card-text>
                     <v-form ref="form" v-model="valid" enctype="multipart/form-data">
                     <v-container>                       
