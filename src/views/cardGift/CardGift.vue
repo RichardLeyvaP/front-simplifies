@@ -34,7 +34,7 @@
             </template>
             <v-card>
               <v-toolbar color="#F18254">
-                <span class="text-subtitle-2 ml-4">Tarjeta de Regalo</span>
+                <span class="text-subtitle-1 ml-4">Tarjeta de Regalo</span>
               </v-toolbar>
               <v-card-text>
                 <v-form v-model="valid" enctype="multipart/form-data">
@@ -497,9 +497,10 @@ export default {
         .then(() => {
           this.initialize();
           this.message_delete = true
-          this.showAlert("success", "Tarjeta de regalo eliminada correctamente", 3000)
-        })
+          this.showAlert("success", "Tarjeta de regalo eliminada correctamente", 3000);
+          
       this.dialogDelete = false;
+        })
     },
     close() {
       this.dialog = false,
@@ -546,7 +547,8 @@ export default {
           })
           console.log(this.courseSelect);
           this.showCardGifts(this.cardSelect)
-          this.showAlert("success", "Asignacion eliminada correctamente", 3000)
+          this.showAlert("success", "Asignacion eliminada correctamente", 3000);
+          this.dialogRequestStore = false;
         })
     },
     save() {

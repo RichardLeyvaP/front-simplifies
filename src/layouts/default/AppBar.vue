@@ -143,6 +143,8 @@ export default {
     imageUrl: '',
     password: '',
     user_id:'',
+    professional_id: '',
+    results: [],
     showPasswordForm: false,
     showPassword: false,
     confirmPassword: '',    
@@ -162,6 +164,7 @@ export default {
     this.name = JSON.parse(LocalStorageService.getItem('name'));
     this.charge = JSON.parse(LocalStorageService.getItem('charge'));
     this.user_id = JSON.parse(LocalStorageService.getItem('user_id'));
+    this.professional_id = JSON.parse(LocalStorageService.getItem('professional_id'));
     const image = LocalStorageService.getItem('image');
     const cleanedImage = image.replace(/"/g, '');
     this.imageUrl = `http://127.0.0.1:8000/api/images/${cleanedImage}`;
@@ -214,6 +217,25 @@ export default {
     handleItemClick(item) {
       if (item.title === 'Cambiar Contraseña') {
         console.log('Cambiar contraseña')
+        // Aquí puedes mostrar el modal
+        this.showPasswordForm = true; // Reemplaza 'modal' con la referencia a tu modal
+      }
+      if (item.title === 'Mi Perfil') {
+        console.log('Mi Perfil')
+        axios
+        .get('http://127.0.0.1:8000/api/professional-show', {
+                    params: {
+                        id: this.professional_id,
+                    }
+                })
+        .then((response) => {
+          this.results = response.data.enrollments;
+          /*console.log(response);
+            this.showAlert("success", "Contraseña modificada correctamente", 3000)
+            this.confirmPassword = '';
+            this.confirmNewPassword = '';
+            this.showPasswordForm = false;*/
+        });
         // Aquí puedes mostrar el modal
         this.showPasswordForm = true; // Reemplaza 'modal' con la referencia a tu modal
       }

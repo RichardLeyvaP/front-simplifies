@@ -317,10 +317,10 @@
        <v-dialog v-model="dialogPay" max-width="800px">
          <v-card>
            <v-toolbar color="#F18254">
-             <span class="text-subtitle-2  ml-2">Pagar Carro</span>
+             <span class="text-subtitle-1  ml-2">Pagar Carro</span>
              <v-spacer></v-spacer>
-             <span class="text-subtitle-2 mr-2">
-               Monto a pagar({{this.editedItem.amount}})</span>
+             <span class="text-subtitle-1 mr-3">
+               Monto a pagar {{this.editedItem.amount}} </span>
            </v-toolbar>
 
            <v-card-text>
@@ -799,12 +799,20 @@ methods: {
  totalMount() {
    console.log("boxxxxxx");
    console.log(this.results.id);
-   this.editedCloseBox.totalMount = this.results.reduce((total, item) => total + item.amount, 0);
+   if (!this.results) {    
+   this.editedCloseBox.totalMount = this.results.reduce((total, item) => total + item.amount, 0);   
    return this.results.reduce((total, item) => total + item.amount, 0) + " CLP";
+   }
+   else{
+    return "CPL";
+   }
  },
 
  totalMountPendientes() {
-
+  if (this.results) {
+    return " CPL"
+  }
+  else{
    // Filtrar elementos con estado "Pendiente" y calcular la sumatoria
    const montosPendientes = this.results
      .filter(item => item.pay === 0)
@@ -819,6 +827,7 @@ methods: {
      this.ejecutado = false;
    }
    return montosPendientes + " CLP";
+  }
  },
 
  totalMountServices() {
@@ -913,11 +922,17 @@ methods: {
 
  totalMountPagado() {
    // Filtrar elementos con estado "Pendiente" y calcular la sumatoria
+   if (this.results) {
+    return " CPL"
+   }
+   else{
+      
    const montosPagados = this.results
      .filter(item => item.pay === 1)
      .reduce((total, item) => total + item.amount, 0);
 
    return montosPagados ? montosPagados + " CLP" : " CPL";
+   }
  },
 
  showAlert(sb_type, sb_message, sb_timeout) {
@@ -952,7 +967,11 @@ methods: {
        }
      })
      .then((response) => {
+      if (response.data.cars === null) {
+        this.results = [];
+      }else{
        this.results = response.data.cars;
+      }
        console.log('imprime sucursales');
        console.log(this.results);
      });

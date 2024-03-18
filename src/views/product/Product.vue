@@ -1,7 +1,20 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <!-- eslint-disable vue/valid-v-slot -->
 <template >
-
+<v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24" :multi-line="true"
+      vertical v-model="snackbar">
+      <v-row>
+        <v-col md="2">
+          <v-avatar :icon="sb_icon" color="sb_type" size="40"></v-avatar>
+        </v-col>
+        <v-col md="10">
+          <h4>{{ sb_title }}</h4>
+          {{ sb_message }}
+  
+        </v-col>
+  
+      </v-row>
+    </v-snackbar>
  <v-card elevation="6" class="mx-5">
 <v-toolbar color="#F18254">
  <v-row>
@@ -175,9 +188,9 @@ editando: false,
 message_delete: true,
 dialogDelete: false,
 headers: [
-{ title: 'Code', key: 'code' },
+{ title: 'Referencia', key: 'reference' },
  { title: 'Nombre', key: 'name' },
- { title: 'Code', key: 'code' },
+ { title: 'Código', key: 'code' },
  { title: 'Descripción', key: 'description' },
  { title: 'Estado', key: 'status_product' },
  { title: 'Precio compra', align: 'start', value: 'purchase_price' },
@@ -188,7 +201,7 @@ headers: [
 results: [],
 productCategories: [],
 editedIndex: -1,
-file: null,
+file: '',
 imgMiniatura: '',
 search: '',
 editedItem: {
@@ -248,6 +261,7 @@ dialogDelete(val) {
 },
 
 created() {
+  
 this.initialize()
 },
 
@@ -329,6 +343,8 @@ deleteItemConfirm() {
      this.initialize();
      this.message_delete = true
      this.showAlert("success","Product eliminado correctamente", 3000)
+     this.imgMiniatura = '';
+        this.file = '';
    })
  this.closeDelete()
 },

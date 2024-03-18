@@ -192,10 +192,34 @@
     created() {
       this.business_id = LocalStorageService.getItem('business_id');
       //this.business_id = userTokenStore.business_id;
+      this.editedItem.business_id = this.business_id;
       this.initialize();
     },
   
     methods: {
+      
+      showAlert(sb_type, sb_message, sb_timeout) {
+   this.sb_type = sb_type
+
+   if (sb_type == "success") {
+     this.sb_title = 'Éxito'
+     this.sb_icon = 'mdi-check-circle'
+   }
+
+   if (sb_type == "error") {
+     this.sb_title = 'Error'
+     this.sb_icon = 'mdi-check-circle'
+   }
+
+   if (sb_type == "warning") {
+     this.sb_title = 'Advertencia'
+     this.sb_icon = 'mdi-alert-circle'
+   }
+
+   this.sb_message = sb_message
+   this.sb_timeout = sb_timeout
+   this.snackbar = true
+ },
   
       initialize() {
         axios
@@ -237,6 +261,7 @@
           .post('http://127.0.0.1:8000/api/enrollment-destroy', request)
           .then(() => {
             this.initialize();
+            this.showAlert("success","Academia eliminada correctamente", 3000)
           })
         this.closeDelete()
       },
@@ -265,6 +290,7 @@
             .put('http://127.0.0.1:8000/api/enrollment', this.data)
             .then(() => {
               this.initialize();
+              this.showAlert("success","Academia actualizada correctamente", 3000)
             })
         } else {
           this.valid = false;
@@ -276,6 +302,7 @@
             .post('http://127.0.0.1:8000/api/enrollment', this.data)
             .then(() => {
               this.initialize();
+              this.showAlert("success","Academia creada correctamente", 3000)
             })
         }
         this.close()
