@@ -234,7 +234,7 @@ export default {
               this.user = response.data;
               console.log('this.user-------');
               console.log(this.user);
-              userTokenStore.setUserToken(this.user.token);
+              /*userTokenStore.setUserToken(this.user.token);
               userTokenStore.setUserName(this.user.name);
               userTokenStore.setBranchId(this.user.branch_id);
               userTokenStore.setProfessionalId(this.user.professional_id);
@@ -244,7 +244,7 @@ export default {
               userTokenStore.setImage(this.user.image);
               userTokenStore.setBusinessId(this.user.business_id);
               userTokenStore.setPermissionsUser(this.user.permissions);
-              userTokenStore.setAuthenticateUser(true);
+              userTokenStore.setAuthenticateUser(true);*/
               //localStorage
               LocalStorageService.setItem("token", this.user.token);
               LocalStorageService.setItem("name", this.user.name);
