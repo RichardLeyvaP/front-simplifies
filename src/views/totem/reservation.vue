@@ -1,4 +1,3 @@
-
 <template >
     <div class="app-container">
     <v-container>
@@ -229,6 +228,13 @@ v-on="on"
             </template>
            
         </v-stepper>
+        <br>
+        <br>
+        <v-row>  
+          <v-spacer></v-spacer>        
+        <v-btn to="totem" >Volver a inicio</v-btn>
+        <v-spacer></v-spacer>  
+        </v-row>
     </v-container>
     <br>
     <br>

@@ -1,10 +1,17 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <v-row>
-    <v-col cols="12" md="2" class="pr-0"></v-col>
-    <v-col cols="12" md="8" class="pr-0">
+  <div>
+  <v-row style="background-color: #F18254">
+    <v-col cols="12" md="12" class="pr-0">
+      <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
       <v-card color="#F18254">
         <v-row class="mt-6">
+          <br>
 
           <v-col cols="12" md="12" style="text-align: center;">
             <v-avatar size="80">
@@ -127,10 +134,21 @@
         </v-row>
 
       </v-card>
+      <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
     </v-col>
 
 
+  <br>
+  <br>
+  <br>
+  <br>
   </v-row>
+</div>
 </template>
 <script>
 

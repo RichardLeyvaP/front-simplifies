@@ -67,7 +67,7 @@
           <v-toolbar color="#F18254">
             <span class="text-subtitle-2 ml-4">Cambiar Contraseña</span>
           </v-toolbar>
-          
+
           <v-card-text class="mt-2 mb-2">
             <v-form ref="form" v-model="valid" enctype="multipart/form-data">
               <v-container>

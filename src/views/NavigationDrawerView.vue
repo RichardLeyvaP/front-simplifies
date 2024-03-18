@@ -117,6 +117,7 @@ export default {
       { icon: "mdi-cash-register", title: "Caja", to: "box", value: "cash", permission: "view_shopping_carts" },
       { icon: "mdi-television", title: "Pizarras de Turnos", to: "shift-board", value: "shift-board", permission: "view_shift_boards" },
       { icon: "mdi-gift", title: "Tarjeta Regalo", to: "card-gifts", value: "Tarjeta Regalos", permission: "view_gift_cards" },
+      { icon: "mdi-gift", title: "Totem", to: "totem", value: "Totem", permission: "view_shift_boards" },
     ],
     reportes: [
       { icon: "mdi-finance", title: "Ganancias Sucursales del Negocio", to: "branch-winner", value: "branch-winners", permission: "view_branch_earnings" },

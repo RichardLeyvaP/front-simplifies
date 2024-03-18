@@ -19,12 +19,12 @@ const routes = [
     component: () =>
       import( "@/views/totem/Totem.vue"),
   },  
-  {
+  /*{
     path: "/reserve",
     name: "Reservar",
     component: () =>
       import( "@/views/reserve/Reserve.vue"),
-  }, 
+  }, */
   {
     path: "/toProfessional",
     name: "toProfessional",
@@ -37,12 +37,12 @@ const routes = [
     component: () =>
       import( "@/views/totem/reservation.vue"),
   },
-  {
+  /*{
     path: "/profesional",
     name: "Profesional",
     component: () =>
       import( "@/views/totem/Profesional.vue"),
-  },
+  },*/
   {
     path: "/",
     name: "Login",
@@ -194,13 +194,13 @@ const routes = [
           import( "@/views/client/Client.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_clients"] },
       },
-      {
+      /*{
         path: "/student",
         name: "Student",
         component: () =>
           import( "@/views/student/Student.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_students"] },
-      },
+      },*/
       {
         path: "/card-gifts",
         name: "Tarjeta Regalo",
