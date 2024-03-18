@@ -237,7 +237,7 @@ export default {
             this.showPasswordForm = false;*/
         });
         // Aquí puedes mostrar el modal
-        this.showPasswordForm = true; // Reemplaza 'modal' con la referencia a tu modal
+        //this.showPasswordForm = true; // Reemplaza 'modal' con la referencia a tu modal
       }
     },
     close() {
