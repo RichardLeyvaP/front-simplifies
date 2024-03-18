@@ -40,7 +40,31 @@
             Olvidaste tu Contraseña</a>
             
         </div>
-              <v-card v-if="formVisible">
+        <v-dialog v-model="dialog" max-width="500">
+          <v-card>
+              <v-card-text>
+                    <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+                    <v-container>                       
+                            <v-text-field v-model="emailpas" clearable label="Correo" prepend-icon="mdi-email-outline"
+                      variant="underlined">
+                    </v-text-field>
+                    </v-container>
+                  <v-divider></v-divider>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="#E7E9E9" variant="flat" @click="toggleForm">
+                      Cancelar
+                    </v-btn>
+                    <v-btn color="#F18254" variant="flat" @click="changePass">
+                      Aceptar
+                    </v-btn>
+                  </v-card-actions>
+                </v-form>
+              </v-card-text>
+            </v-card>
+            </v-dialog>
+
+              <!--<v-card v-if="formVisible">
                   <v-card-text>
                     <v-form ref="form" v-model="valid" enctype="multipart/form-data">
                     <v-container>                       
@@ -60,7 +84,7 @@
                   </v-card-actions>
                 </v-form>
               </v-card-text>
-              </v-card>
+              </v-card>-->
 
         <v-radio-group v-model="selectedOption" inline>
           <v-radio color="amber-darken-1" label="Empresa" value="empresa"></v-radio>
@@ -109,6 +133,7 @@ export default {
     sb_timeout: 2000,
     sb_title: '',
     sb_icon: '',
+    dialog: false,
     formVisible: false,
       emailpas: '',
     //step: 1,
@@ -143,7 +168,8 @@ export default {
   },
   methods: {
     toggleForm() {
-      this.formVisible = !this.formVisible;
+      //this.formVisible = !this.formVisible;
+      this.dialog = !this.dialog ;
     },
     changePass (){
       axios
