@@ -18,17 +18,17 @@
     <v-card elevation="6" class="mx-5">
       <v-toolbar color="#F18254">
         <v-row align="center">
-          <v-col cols="12" md="4" class="grow ml-4 t">
+          <v-col cols="12" md="5" class="grow ml-4 t">
             <span class="text-subtitle-1"> <strong>Puesto de Trabajo</strong></span>
           </v-col>
-           <v-col cols="12" md="5" class="mr-12"></v-col>
+           <v-col cols="12" md="4"></v-col>
           <v-col cols="12" md="2">
   
             <v-dialog v-model="dialog" max-width="800px">
               <template v-slot:activator="{ props }">
                 <v-btn v-bind="props" class="text-subtitle-1  ml-12 " color="#E7E9E9" variant="flat" elevation="2"
                   prepend-icon="mdi-plus-circle">
-                  Nuevo Puesto de trabajo
+                  Nuevo Puesto
                 </v-btn>
               </template>
               <v-card>

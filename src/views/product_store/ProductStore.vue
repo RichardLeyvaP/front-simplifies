@@ -42,7 +42,7 @@
                <v-col cols="12" md="12">
                  <v-autocomplete v-model="editedItem.store_id" :items="stores" clearable label="Almacenes" prepend-inner-icon="mdi-store" item-title="address" item-value="id" variant="underlined" :rules="selectRules" :disabled="!mover"></v-autocomplete>
                  <v-autocomplete v-model="editedItem.product_id" :items="products" clearable label="Productos" prepend-inner-icon="mdi-tag" item-title="name" item-value="id" variant="underlined" :rules="selectRules" :disabled="!mover"></v-autocomplete> 
-                 <v-text-field v-model="editedItem.product_quantity" clearable label="Cantidad" prepend-inner-icon="mdi-tag-plus"
+                 <v-text-field v-model="editedItem.product_quantity" clearable :label="this.texttitle" prepend-inner-icon="mdi-tag-plus"
                    variant="underlined" :disabled="!mover">
                  </v-text-field>
                </v-col>                
@@ -165,6 +165,7 @@
   
   export default {
   data: () => ({
+  texttitle: 'Cantidad',
   valid: true,
   mover: true,
   mostrarFila: false,
@@ -348,8 +349,10 @@
     this.mover = false;
    this.editedIndex = 2;
    this.editedItem = Object.assign({}, item);
+   this.editedItem.product_quantity = item.product_exit;
    this.dialog = true;
    this.mostrarCampos = true;
+   this.texttitle = 'Existencia';
   },
   deleteItem(item) {
    this.editedItem = Object.assign({}, item);
@@ -378,7 +381,9 @@
    this.$nextTick(() => {
      this.editedItem = Object.assign({}, this.defaultItem)
      this.editedIndex = -1
-     this.mostrarCampos = false
+     this.mostrarCampos = false;
+     this.mover = true;
+     this.texttitle = 'Cantidad';
    })
   },
   closeDelete() {
@@ -418,6 +423,8 @@
        .then(() => {
          this.initialize();
          this.showAlert("success","Producto asignado correctamente", 3000)
+         this.mover = true;
+         this.texttitle = 'Cantidad';
        });
    }
    if (this.editedIndex === -1) {
