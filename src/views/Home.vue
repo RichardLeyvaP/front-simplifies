@@ -175,7 +175,13 @@
 
 <v-col cols="6">
 <v-card class="mx-auto  overflow-visible">  
-  <Bar class="pa-6"
+  <!--<Bar class="pa-6"
+    id="my-chart-id"
+    :options="chartOptions"
+    :data="chartData4"
+    padding="16"
+  />-->
+  <LineChart class="pa-6"
     id="my-chart-id"
     :options="chartOptions"
     :data="chartData4"
