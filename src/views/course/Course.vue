@@ -109,7 +109,7 @@
                               prepend-icon="mdi-calendar" label="Fecha inicial"></v-text-field>
                           </template>
                           <v-locale-provider locale="es">
-                            <v-date-picker color="orange lighten-2" :model-value=input1
+                            <v-date-picker color="orange lighten-2" :model-value=input1  header="Calendario" title="Seleccione la fecha"
                               @update:model-value="updateDate1" format="yyyy-MM-dd"></v-date-picker>
                           </v-locale-provider>
                         </v-menu>
@@ -122,7 +122,7 @@
                               prepend-icon="mdi-calendar" label="Fecha final"></v-text-field>
                           </template>
                           <v-locale-provider locale="es">
-                            <v-date-picker color="orange lighten-2" :model-value=input @update:model-value="updateDate"
+                            <v-date-picker color="orange lighten-2" :model-value=input  header="Calendario" title="Seleccione la fecha" @update:model-value="updateDate"
                               format="yyyy-MM-dd"></v-date-picker>
                           </v-locale-provider>
                         </v-menu>

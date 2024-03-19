@@ -363,6 +363,7 @@
 <script>
 
 import axios from "axios";
+import LocalStorageService from "@/LocalStorageService";
 export default {
   data: () => ({
     valid: true,
@@ -374,6 +375,7 @@ export default {
     sb_title: '',
     sb_icon: '',
     search3: '',
+    business_id: '',
     search2: '',
     editando: false,
     dialog: false,
@@ -482,7 +484,12 @@ export default {
   },
 
   mounted() {
-    this.initialize()
+    this.business_id = LocalStorageService.getItem('business_id');
+
+      //this.editedItem.business_id = this.business_id; // Establecer el primer negocio como valor predeterminado
+      //console.log('this.editedItem.business_id');
+      //console.log(this.editedItem.business_id);
+    this.initialize();
   },
 
   methods: {
@@ -530,6 +537,11 @@ export default {
         .get('http://127.0.0.1:8000/api/business')
         .then((response) => {
           this.business = response.data.business;
+          if (this.business.length > 0) {
+      this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
+    }        
+    console.log('this.editedItem.business_id');
+      console.log(this.editedItem.business_id);
         })
       axios
         .get('http://127.0.0.1:8000/api/professional-show-autocomplete')

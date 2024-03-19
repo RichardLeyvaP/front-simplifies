@@ -54,7 +54,7 @@
                       </v-row>
                       <v-row>
                         <v-col cols="12" md="12">
-                          <v-autocomplete v-model="editedItem.business_id" :items="business" clearable label="Negocio" prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
+                          <v-autocomplete v-model="editedItem.business_id" :items="business" clearable label="Negocio" prepend-icon="mdi-domain" item-title="name" item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
                         </v-col>
                       </v-row>
                     </v-container>
@@ -192,7 +192,6 @@
     created() {
       this.business_id = LocalStorageService.getItem('business_id');
       //this.business_id = userTokenStore.business_id;
-      this.editedItem.business_id = this.business_id;
       this.initialize();
     },
   
@@ -239,6 +238,11 @@
           .then((response) => {
             console.log(response.data);
             this.business = response.data.business;
+            if (this.business.length > 0) {
+      this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
+    }        
+    console.log('this.editedItem.business_id');
+      console.log(this.editedItem.business_id);
           });
   
       },

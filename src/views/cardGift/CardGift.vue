@@ -41,7 +41,7 @@
                   <v-row>
                     <v-col cols="12" md="12">
                       <v-autocomplete clearable v-model="editedItem.business_id" :items="business" label="Negocio"
-                        prepend-icon="mdi-office-building" item-title="name" item-value="id" variant="underlined"
+                        prepend-icon="mdi-domain" item-title="name" item-value="id" variant="underlined"
                         :rules="selectRules"></v-autocomplete>
                     </v-col>
                     <v-col cols="12" md="6">
@@ -295,6 +295,7 @@ export default {
     dialogRequestStore: false,
     dialogAddStore: false,
     branch_id: '',
+    business_id: '',
     headers: [
       { title: 'Nombre', key: 'name' },
       { title: 'Imagen', key: 'image_cardgift' },
@@ -429,6 +430,11 @@ export default {
         .get('http://127.0.0.1:8000/api/business')
         .then((response) => {
           this.business = response.data.business;
+          if (this.business.length > 0) {
+      this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
+    }        
+    console.log('this.editedItem.business_id');
+      console.log(this.editedItem.business_id);
         });
       axios
         .get('http://127.0.0.1:8000/api/client-autocomplete')
