@@ -337,6 +337,13 @@ const routes = [
           import( "@/views/reportes/ReposicionProduct.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["products_stock"] },
       },
+      {
+        path: "/expense",
+        name: "Gastos",
+        component: () =>
+          import( "@/views/expense/Expense.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_expenses"] },
+      },
     ],
   },
 ];

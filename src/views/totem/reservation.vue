@@ -46,7 +46,7 @@
                                 :class="{ 'selected-item': isProfessional(professional.id) }" class="pt-4 pb-4">
 
                                 <v-list-item-content>
-                                    <v-list-item-title class="text-h6">{{ professional.name + ' ' + professional.surname + '  '+professional.second_surname}}</v-list-item-title>
+                                    <v-list-item-title class="text-h6">{{ professional.name + ' ' + professional.surname + '  '+professional.second_surname+ 'Horario apróximado disponible '+ professional.start_time}}</v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
                             
