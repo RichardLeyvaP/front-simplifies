@@ -104,9 +104,10 @@ export default {
     open: ['Users'],
     mainteiners: [
       { title: "Tipos de Negocio", icon: "mdi-format-list-bulleted-type", to: "/business-type", permission: "view_business_types" },
-      //{ title: "Cargos", icon: "mdi-family-tree", to: "/charge", permission: "view_charges" },
+      //{ title: "Operaciones de Ingreso", icon: "mdi-family-tree", to: "/charge", permission: "view_charges" },
       { title: "Reglas de convivencia", icon: "mdi-ruler", to: "/rule", permission: "view_rules" },
-      { title: "Operaciones de Gastos", icon: "mdi-tag-check", to: "/expense", permission: "view_expenses" },
+      { title: "Operaciones de Gastos", icon: "mdi-cash-minus", to: "/expense", permission: "view_expenses" },
+      { title: "Operaciones de Ingreso", icon: "mdi-cash-plus", to: "/revenue", permission: "view_revenues" },
     ],
     listItems: [
       { icon: "mdi-storefront-outline", title: "Sucursales", to: "branch", value: "surcursal", permission: "view_branches" },

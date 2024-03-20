@@ -53,10 +53,19 @@
                       </v-col>
                     </v-row>
                     <v-row>
-                      <v-col cols="12" md="12">
+                      <v-col cols="12" md="8">
                         <v-text-field v-model="editedItem.type" clearable label="Tipo de Regla de convivencia"
                           prepend-icon="mdi-ruler" variant="underlined" :rules="nameRules">
                         </v-text-field>
+                      </v-col>
+                      <v-col cols="12" md="4">
+                        <v-switch
+                        v-model="editedItem.automatic"
+                        label="Automática"
+                        hide-details
+                        inset
+                      ></v-switch>
+
                       </v-col>
                     </v-row>
                   </v-container>
@@ -103,6 +112,13 @@
               hide-details>
             </v-text-field>
       <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search" class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+        
+        <template v-slot:item.automatic="{ item }">
+          <div class="text-end">
+            <v-chip :color="item.automatic ? 'green' : 'red'" :text="item.automatic ? 'Si ' : 'No'"
+              class="text-uppercase" size="small" label></v-chip>
+          </div>
+        </template>
         <template v-slot:item.actions="{ item }">
           <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
             mdi-pencil
@@ -138,8 +154,8 @@ export default {
     headers: [
 
       { title: 'Regla de convivencia', key: 'name' },
-     
-      { title: 'Tipo de Regla de convivencia', key: 'type' },
+      { title: 'Tipo de Regla de convivencia', key: 'type' },      
+      { title: 'Automática', key: 'automatic' },
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
     results: [],
@@ -149,14 +165,16 @@ export default {
       name: '',
       description: '',
       type: '',
-      id: ''
+      id: '',
+      automatic: '',
     },
     data: {},
 
     defaultItem: {
       name: '',
       description: '',
-      type: ''
+      type: '',
+      automatic: '',
     },
     nameRules: [
       (v) => !!v || "El campo es requerido",
@@ -271,6 +289,9 @@ export default {
         this.data.name = this.editedItem.name;
         this.data.description = this.editedItem.description;
         this.data.type = this.editedItem.type;
+        this.data.automatic = this.editedItem.automatic;
+        console.log('this.editedItem.automatic');
+        console.log(this.editedItem.automatic);
         axios
           .put('http://127.0.0.1:8000/api/rule', this.data)
           .then(() => {
@@ -282,6 +303,8 @@ export default {
         this.data.name = this.editedItem.name;
         this.data.description = this.editedItem.description;
         this.data.type = this.editedItem.type;
+        this.data.automatic = this.editedItem.automatic;
+        console.log(this.editedItem.automatic);
         axios
           .post('http://127.0.0.1:8000/api/rule', this.data)
           .then(() => {

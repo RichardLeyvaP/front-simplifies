@@ -16,7 +16,7 @@
    <v-toolbar color="#F18254">
      <v-row align="center">
        <v-col cols="12" md="4" class="grow ml-4">
-         <span class="text-subtitle-1"> <strong>Operaciones de Gastos</strong></span>
+         <span class="text-subtitle-1"> <strong>Operaciones de Ingresos</strong></span>
        </v-col>
         <v-col cols="12" md="5" class="mr-12"></v-col>
        <v-col cols="12" md="2">          
@@ -117,7 +117,7 @@ export default {
 
    headers: [
 
-     { title: 'Nombre del Ingrso', key: 'name' },
+     { title: 'Nombre del Ingreso', key: 'name' },
      { title: 'Acciones', key: 'actions', sortable: false },
    ],
    results: [],
@@ -137,15 +137,15 @@ export default {
 
    nameRules: [
      (v) => !!v || "El campo es requerido",
-     (v) =>
+     /*(v) =>
        (v && v.length <= 40) ||
        "El campo debe tener menos de 41 caracteres",
-     (v) => /^[a-zA-ZáÁéÉíÍóÓúÚñÑ\s']+$/.test(v) || "El campo no es válido",],
+(v) => /^[a-zA-ZáÁéÉíÍóÓúÚñÑ\s']+$/.test(v) || "El campo no es válido",*/],
  }),
 
  computed: {
    formTitle() {
-     return this.editedIndex === -1 ? 'Nuevo Gasto' : 'Editar Gasto'
+     return this.editedIndex === -1 ? 'Nueva opción de Ingreso' : 'Editar opción de Ingreso'
    },
  },
 
@@ -193,7 +193,7 @@ export default {
 
    initialize() {
      axios
-       .get('http://127.0.0.1:8000/api/revenues')
+       .get('http://127.0.0.1:8000/api/revenue')
        .then((response) => {
          this.results = response.data.revenues;
        })
@@ -219,7 +219,7 @@ export default {
          this.initialize();
          this.showAlert("success","Operación de Ingreso eliminada correctamente", 3000)
        }).catch(()=>{
-         this.showAlert("error","No se puede Eliminar la operación de ingreso", 3000)
+         this.showAlert("error","No se puede Eliminar la operación de Ingreso", 3000)
        })
      this.closeDelete()
    },
@@ -252,7 +252,7 @@ export default {
          this.valid = false,
          this.data.name = this.editedItem.name;
          axios
-           .post('http://127.0.0.1:8000/api/renevue', this.data)
+           .post('http://127.0.0.1:8000/api/revenue', this.data)
            .then(() => {
              this.initialize();
              this.showAlert("success","Ingreso registrado correctamente", 3000)

@@ -344,6 +344,13 @@ const routes = [
           import( "@/views/expense/Expense.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_expenses"] },
       },
+      {
+        path: "/revenue",
+        name: "Ingreo",
+        component: () =>
+          import( "@/views/revenue/Revenue.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_revenues"] },
+      },
     ],
   },
 ];
