@@ -75,7 +75,7 @@
                </v-file-input>
              </v-col>
              <v-col cols="12" md="6">
-               <img v-if="imgedit" :src="imgedit" height="70" width="70">
+               <img v-if="imagenDisponible()" :src="imgedit" height="70" width="70">
              </v-col>
            </v-row>
          <v-divider></v-divider>
@@ -243,7 +243,15 @@ this.initialize()
 },
 
 methods: {
-
+  imagenDisponible() {
+        if (this.imgedit !== undefined && this.imgedit !== '') {
+            // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
+            let img = new Image();
+            img.src = this.imgedit;
+            return img.complete; // Devuelve true si la imagen está disponible
+        }
+        return false; // Si la URL de la imagen no está definida o está vacía, devuelve false
+    },
 showAlert(sb_type,sb_message, sb_timeout)
 {    
  this.sb_type= sb_type

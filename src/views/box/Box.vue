@@ -648,7 +648,7 @@ data: () => ({
    cardGif: ''
  },
 
- pago: [
+pago : [
    //(value) => !!value || 'Campo requerido',
    (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
  selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],

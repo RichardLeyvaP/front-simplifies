@@ -150,6 +150,7 @@ export default {
       //{ icon: "mdi-list-box-outline", title: "Asignar servicios a una Sucursal", to: "branch-service-professional", value: "branch-service-professional", permission: "view_dashboard" },          
       { icon: "mdi mdi-chair-rolling", title: "Puestos de Trabajo", to: "workplace", value: "workplace", permission: "view_workplace" },
       { icon: "mdi-view-list", title: "Asignar Regla de convivencia a Sucursal", to: "branch-rule", value: "branch-rule", permission: "view_branch_rules" },
+      { icon: "mdi-cash-multiple", title: "Registro de Gastos e Ingresos", to: "finance", value: "finance", permission: "view_finances" },
 
   
     ],

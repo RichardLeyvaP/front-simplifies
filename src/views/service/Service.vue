@@ -87,7 +87,7 @@
 
 
                       <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
-                        <img v-if="imgedit" :src="imgedit" height="120" width="120">
+                        <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
                       </v-card>
                     </v-col>
                   </v-row>
@@ -151,7 +151,6 @@
               class="text-uppercase" size="small" label></v-chip>
           </div>
         </template>
-
         <template v-slot:item.name="{ item }">
 
           <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
@@ -281,6 +280,15 @@ export default {
   },
 
   methods: {
+    imagenDisponible() {
+        if (this.imgedit !== undefined && this.imgedit !== '') {
+            // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
+            let img = new Image();
+            img.src = this.imgedit;
+            return img.complete; // Devuelve true si la imagen está disponible
+        }
+        return false; // Si la URL de la imagen no está definida o está vacía, devuelve false
+    },
 
     showAlert(sb_type, sb_message, sb_timeout) {
       this.sb_type = sb_type
@@ -370,6 +378,8 @@ export default {
     save() {
       if (this.editedIndex > -1) {
         this.valid = false;
+        this.editedItem.profit_percentaje = this.editedItem.profit_percentaje ? this.editedItem.profit_percentaje : '';
+        console.log(this.editedItem.profit_percentaje);
         const formData = new FormData();
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
