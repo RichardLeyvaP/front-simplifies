@@ -68,7 +68,7 @@
                                         </v-col>
                                         <v-col cols="12" md="6">
                                             <v-text-field v-model="editedItem.control" clearable label="No.Control"
-                                                prepend-icon="mdi-security" variant="underlined" :disabled="editedItem.control !== null && editedItem.control !== 0" :rules="pago">
+                                                prepend-icon="mdi-security" variant="underlined" :disabled="true">
                                             </v-text-field>
                                         </v-col>
                                     </v-row>
@@ -348,7 +348,7 @@ export default {
                     console.log('this.results');
                     //console.log(this.results);
                                         
-                    this.editedItem.control = this.results.length !== 0 ? this.results[0].control + 1: 0;
+                    this.editedItem.control = this.results.length !== 0 ? this.results[0].control + 1: 1;
                         //this.visibility = !this.editedItem.control ? false : true;
                     
                     //this.editedItem.control = !this.results ? 0 : this.results[0].control + 1 ;// Obtener el numero de control realizado

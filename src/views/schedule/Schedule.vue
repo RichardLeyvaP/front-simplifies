@@ -41,62 +41,41 @@
                                     <v-row>
                                         <v-col cols="12" md="12">
                                             <v-select label="Día de la semana" v-model="editedItem.day"
-                                                :items="['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']" item-value="['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']"
+                                                :items="['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']"
+                                                item-value="['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']"
                                                 variant="underlined" density="compact" :rules="selectRules"
                                                 prepend-icon="mdi-calendar"></v-select>
                                         </v-col>
                                     </v-row>
                                     <v-row>
-    <v-col cols="12"  md="6">
-      <v-select
-        :items="hours"
-        label="Hora"
-        v-model="selectedHour"
-        variant="underlined"
-        @update:model-value="updateFormattedTime"
-      ></v-select>
-      
-    </v-col>
-    <v-col cols="12"  md="6">
-      <v-select
-        :items="hours"
-        label="Hora"
-        v-model="selectedHour1"
-        variant="underlined"
-        @update:model-value="updateFormattedTime1"
-      ></v-select>      
-    </v-col>
-    </v-row>
-    <v-row>
-    <v-col cols="12"  md="6">
-      <v-select
-        :items="minutes"
-        label="Minutos"
-        v-model="selectedMinute"
-        variant="underlined"
-        @update:model-value="updateFormattedTime"
-      ></v-select>
-    </v-col>
-    <v-col cols="12"  md="6">
-      <v-select
-        :items="minutes"
-        label="Minutos"
-        v-model="selectedMinute1"
-        variant="underlined"
-        @update:model-value="updateFormattedTime1"
-      ></v-select>
-    </v-col>
-  </v-row>
-  
-  <v-row>
-                                        <v-col cols="12" md="6">
+                                        <v-col cols="12" md="4">
+                                            <v-select :items="hours" label="Hora" v-model="selectedHour"
+                                                variant="underlined" @update:model-value="updateFormattedTime"></v-select>
+                                        </v-col>
+                                        <v-col cols="12" md="4">
+                                            <v-select :items="minutes" label="Minutos" v-model="selectedMinute"
+                                                variant="underlined" @update:model-value="updateFormattedTime"></v-select>
+                                        </v-col>
+                                        <v-col cols="12" md="4">
                                             <v-text-field v-model="editedItem.start_time" clearable label="Hora de inicio"
-                                                prepend-icon="mdi-timer-outline" variant="underlined" :rules="nameRules" :disabled="true">
+                                                prepend-icon="mdi-timer-outline" variant="underlined" :rules="nameRules"
+                                                :disabled="true">
                                             </v-text-field>
                                         </v-col>
-                                        <v-col cols="12" md="6">
+                                    </v-row>
+                                    <v-row>
+                                        <v-col cols="12" md="4">
+                                            <v-select :items="hours" label="Hora" v-model="selectedHour1"
+                                                variant="underlined" @update:model-value="updateFormattedTime1"></v-select>
+                                        </v-col>
+                                        <v-col cols="12" md="4">
+                                            <v-select :items="minutes" label="Minutos" v-model="selectedMinute1"
+                                                variant="underlined" @update:model-value="updateFormattedTime1"></v-select>
+                                        </v-col>
+                                        <v-col cols="12" md="4">
                                             <v-text-field v-model="editedItem.closing_time" clearable label="Hora de cierre"
-                                                prepend-icon="mdi-timer-off-outline" variant="underlined" :rules="nameRules" :disabled="true">
+                                                prepend-icon="mdi-timer-off-outline" variant="underlined" :rules="nameRules"
+                                                :disabled="true">
                                             </v-text-field>
                                         </v-col>
                                     </v-row>
@@ -221,9 +200,9 @@ export default {
         branches: [],
         editedIndex: -1,
         selectedHour: '',
-      selectedMinute: '',
+        selectedMinute: '',
         selectedHour1: '',
-      selectedMinute1: '',
+        selectedMinute1: '',
         editedItem: {
             day: '',
             start_time: '',
@@ -242,24 +221,24 @@ export default {
         },
         selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
         nameRules: [
-     (v) => !!v || "El campo es requerido"],
+            (v) => !!v || "El campo es requerido"],
 
-      hours: Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0')),
-      minutes: Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, '0')),
+        hours: Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0')),
+        minutes: Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, '0')),
 
     }),
 
     computed: {
         formattedTime() {
-      // Comprueba si ambos, la hora y los minutos, han sido seleccionados
-      if (this.selectedHour !== null && this.selectedMinute !== null) {
-        this.editedItem.start_time == `${this.selectedHour}:${this.selectedMinute}`
-        console.log('`${this.selectedHour}:${this.selectedMinute}`');
-        console.log(this.editedItem.start_time);
-        return `${this.selectedHour}:${this.selectedMinute}`
-      }
-      return ''; // Retorna una cadena vacía si la hora o los minutos no han sido seleccionados aún
-    },
+            // Comprueba si ambos, la hora y los minutos, han sido seleccionados
+            if (this.selectedHour !== null && this.selectedMinute !== null) {
+                this.editedItem.start_time == `${this.selectedHour}:${this.selectedMinute}`
+                console.log('`${this.selectedHour}:${this.selectedMinute}`');
+                console.log(this.editedItem.start_time);
+                return `${this.selectedHour}:${this.selectedMinute}`
+            }
+            return ''; // Retorna una cadena vacía si la hora o los minutos no han sido seleccionados aún
+        },
 
         formTitle() {
             if (this.editedIndex === -1) {
@@ -309,15 +288,15 @@ export default {
     methods: {
 
         updateFormattedTime() {
-      if (this.selectedHour && this.selectedMinute) {
-        this.editedItem.start_time = `${this.selectedHour}:${this.selectedMinute}`;
-      }
-    },
-    updateFormattedTime1() {
-      if (this.selectedHour1 && this.selectedMinute1) {
-        this.editedItem.closing_time = `${this.selectedHour1}:${this.selectedMinute1}`;
-      }
-    },
+            if (this.selectedHour && this.selectedMinute) {
+                this.editedItem.start_time = `${this.selectedHour}:${this.selectedMinute}`;
+            }
+        },
+        updateFormattedTime1() {
+            if (this.selectedHour1 && this.selectedMinute1) {
+                this.editedItem.closing_time = `${this.selectedHour1}:${this.selectedMinute1}`;
+            }
+        },
         editItem(item) {
             this.editedIndex = 1;
             this.editedItem = Object.assign({}, item);
@@ -358,7 +337,7 @@ export default {
                     console.log('this.results');
                     console.log(this.results);
                 });
-            },
+        },
 
         deleteItem(item) {
             this.editedItem.id = item.id;
@@ -420,7 +399,7 @@ export default {
                     })
             } else {
                 this.valid = false;
-                
+
                 this.data.day = this.editedItem.day;
                 this.data.start_time = this.editedItem.start_time;
                 this.data.closing_time = this.editedItem.closing_time;
@@ -434,17 +413,17 @@ export default {
                         this.showAlert("success", "Registro de operación creado correctamente", 3000);
                         this.file = '';
                         this.selectedHour = '';
-            this.selectedMinute = '';
-            this.selectedHour1 = '';
-            this.selectedMinute1 = '';
+                        this.selectedMinute = '';
+                        this.selectedHour1 = '';
+                        this.selectedMinute1 = '';
                     }).catch(error => {
-        // Manejo del error
-        if (error.response.status === 400) {
-            this.showAlert("error", "Los dás de la semana no se pueden repetir", 3000);
-        } else {
-            this.showAlert("error", "Ocurrió un error al procesar la solicitud", 3000);
-        }
-    });
+                        // Manejo del error
+                        if (error.response.status === 400) {
+                            this.showAlert("error", "Los dás de la semana no se pueden repetir", 3000);
+                        } else {
+                            this.showAlert("error", "Ocurrió un error al procesar la solicitud", 3000);
+                        }
+                    });
             }
             this.close()
         },
