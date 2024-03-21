@@ -920,7 +920,7 @@ toggleService3(service)
 
             //this.array_services = newArrayService;
             axios
-        .get(`http://127.0.0.1:8000/api/branch-professionals-barber`, {
+        .get(`http://127.0.0.1:8000/api/branch-professionals-barber-totem`, {
             params: data
         })
         .then((response) => {
