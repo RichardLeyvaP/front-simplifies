@@ -123,6 +123,62 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
+
+          <!--Actualizar contraseña-->
+          <v-dialog v-model="showPasswordForm" width="500">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-2 ml-4">Cambiar Contraseña</span>
+          </v-toolbar>
+
+          <v-card-text class="mt-2 mb-2">
+            <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+              <v-container>
+                <v-row>
+      </v-row>
+      <v-row>
+        <v-col cols="12">
+          <v-text-field
+            v-model="confirmPassword"
+            label="Nueva Contraseña"
+            :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            :type="showConfirmPassword ? 'text' : 'password'"
+            @click:append="showConfirmPassword = !showConfirmPassword"
+            hint="Haz clic en el ícono para mostrar/ocultar la contraseña"
+            variant="underlined"
+          ></v-text-field>
+          
+        </v-col>
+        <v-col cols="12">
+          <v-text-field
+            v-model="confirmNewPassword"
+            label="Confirmar Nueva Contraseña"
+            :append-icon="showConfirmNewPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            :type="showConfirmNewPassword ? 'text' : 'password'"
+            @click:append="showConfirmNewPassword = !showConfirmNewPassword"
+            hint="Haz clic en el ícono para mostrar/ocultar la contraseña"
+            variant="underlined"
+          ></v-text-field>
+          <v-alert v-if="confirmPassword !== confirmNewPassword" type="error">
+            Las contraseñas no coinciden.
+          </v-alert>
+        </v-col>
+                </v-row>
+              </v-container>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="#E7E9E9" variant="flat" @click="closedialogPas">
+                  Cancelar
+                </v-btn>
+                <v-btn color="#F18254" variant="flat" @click="shangePassword" :disabled="confirmPassword !== confirmNewPassword">
+                  Aceptar
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
         </v-col>
 
       </v-row>
@@ -150,6 +206,9 @@
         <template v-slot:item.actions="{ item }">
           <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
             mdi-pencil
+          </v-icon>
+          <v-icon size="25" color="green" class="me-2" @click="changePass(item)">
+            mdi-lock-reset
           </v-icon>
           <v-icon size="25" color="red" @click="deleteItem(item)">
             mdi-delete
@@ -184,6 +243,7 @@ export default {
     editando: false,
     message_delete: true,
     dialogDelete: false,
+    showPasswordForm: false,
     headers: [
       { title: 'Nombre', key: 'name' },
       { title: 'Primer Apellido', key: 'surname' },
@@ -240,7 +300,11 @@ export default {
       charge_id: '',
       image_url: '',
       state: '',
-    },    
+    },   
+    confirmPassword: '',    
+    showConfirmPassword: false,
+      confirmNewPassword: '',
+      showConfirmNewPassword: false, 
     nameRules: [
         (v) => !!v || "El campo es requerido",
         (v) => (v && v.length <= 50) ||
@@ -279,6 +343,23 @@ export default {
   },
 
   methods: {
+    shangePassword(){
+      console.log(this.editedItem.user_id)
+      axios
+        .get('http://127.0.0.1:8000/api/change_password', {
+                    params: {
+                        id: this.editedItem.user_id,
+                        password: this.confirmPassword,
+                    }
+                })
+        .then((response) => {
+          console.log(response);
+            this.showAlert("success", "Contraseña modificada correctamente", 3000)
+            this.confirmPassword = '';
+            this.confirmNewPassword = '';
+            this.showPasswordForm = false;
+        });
+    },
     imagenDisponible() {
         if (this.imgedit !== undefined && this.imgedit !== '') {
             // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
@@ -354,6 +435,12 @@ export default {
       this.editando = true;
       this.mostrar = false;
     },
+    changePass(item) {
+      this.editedItem = Object.assign({}, item);
+      console.log('this.editedItem');
+      console.log(this.editedItem);
+      this.showPasswordForm = true;
+    },
     deleteItem(item) {
       this.editedIndex = -1;
       this.editedItem.id = item.id;
@@ -382,6 +469,13 @@ export default {
         this.imgMiniatura = '';
         this.file = '';
       })
+    },
+    closedialogPas(){
+      this.showPasswordForm = false
+      this.$nextTick(() => {
+        this.password = '';
+        this.password_new = '';
+      });
     },
     closeDelete() {
       this.dialogDelete = false
