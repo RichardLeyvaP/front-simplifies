@@ -246,7 +246,7 @@ export default {
            .put('http://127.0.0.1:8000/api/revenue', this.data)
            .then(() => {
              this.initialize();
-             this.showAlert("success","Ingreso editado correctamente", 3000)
+             this.showAlert("success","Ingreso actualizado correctamente", 3000)
            })
        } else {
          this.valid = false,

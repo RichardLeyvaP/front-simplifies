@@ -145,7 +145,7 @@ export default {
 
  computed: {
    formTitle() {
-     return this.editedIndex === -1 ? 'Nueva operación Gasto' : 'Editar operación de Gasto'
+     return this.editedIndex === -1 ? 'Nueva operación de Gasto' : 'Editar operación de Gasto'
    },
  },
 
@@ -246,7 +246,7 @@ export default {
            .put('http://127.0.0.1:8000/api/expense', this.data)
            .then(() => {
              this.initialize();
-             this.showAlert("success","Gasto editado correctamente", 3000)
+             this.showAlert("success","Gasto actualizado correctamente", 3000)
            })
        } else {
          this.valid = false,
