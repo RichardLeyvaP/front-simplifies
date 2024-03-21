@@ -63,10 +63,10 @@
              <v-card>
               
              <v-toolbar color="red">
-               <span class="text-subtitle-2 ml-4"> Eliminar operación de Ingreso</span>
+               <span class="text-subtitle-2 ml-4"> Eliminar operación de Gasto</span>
              </v-toolbar>        
 
-               <v-card-text class="mt-2 mb-2"> ¿Desea eliminar la esta operación de Ingreso?</v-card-text>
+               <v-card-text class="mt-2 mb-2"> ¿Desea eliminar la esta operación de Gasto?</v-card-text>
              <v-divider></v-divider>
              <v-card-actions>
                <v-spacer></v-spacer>
@@ -117,7 +117,7 @@ export default {
 
    headers: [
 
-     { title: 'Nombre del Ingreso', key: 'name' },
+     { title: 'Nombre del Gasto', key: 'name' },
      { title: 'Acciones', key: 'actions', sortable: false },
    ],
    results: [],
@@ -193,9 +193,9 @@ export default {
 
    initialize() {
      axios
-       .get('http://127.0.0.1:8000/api/revenues')
+       .get('http://127.0.0.1:8000/api/expense')
        .then((response) => {
-         this.results = response.data.revenues;
+         this.results = response.data.expenses;
        })
    },
    editItem(item) {
@@ -214,12 +214,12 @@ export default {
        id: this.editedItem.id
      };
      axios
-       .post('http://127.0.0.1:8000/api/revenue-destroy', request)
+       .post('http://127.0.0.1:8000/api/expense-destroy', request)
        .then(() => {
          this.initialize();
-         this.showAlert("success","Operación de Ingreso eliminada correctamente", 3000)
+         this.showAlert("success","Operación de Gasto eliminada correctamente", 3000)
        }).catch(()=>{
-         this.showAlert("error","No se puede Eliminar la operación de ingreso", 3000)
+         this.showAlert("error","No se puede Eliminar la operación de Gasto", 3000)
        })
      this.closeDelete()
    },
@@ -243,19 +243,19 @@ export default {
          this.data.id = this.editedItem.id;
          this.data.name = this.editedItem.name;
          axios
-           .put('http://127.0.0.1:8000/api/revenue', this.data)
+           .put('http://127.0.0.1:8000/api/expense', this.data)
            .then(() => {
              this.initialize();
-             this.showAlert("success","Ingreso editado correctamente", 3000)
+             this.showAlert("success","Gasto editado correctamente", 3000)
            })
        } else {
          this.valid = false,
          this.data.name = this.editedItem.name;
          axios
-           .post('http://127.0.0.1:8000/api/renevue', this.data)
+           .post('http://127.0.0.1:8000/api/expense', this.data)
            .then(() => {
              this.initialize();
-             this.showAlert("success","Ingreso registrado correctamente", 3000)
+             this.showAlert("success","Gasto registrado correctamente", 3000)
            })
        }
        this.close()

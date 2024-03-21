@@ -38,7 +38,7 @@
                      <v-row>
                        <v-col cols="12" md="10">
                       
-                           <v-text-field v-model="editedItem.name" clearable label="Nombre del Gasto" prepend-icon="mdi-format-list-bulleted-type"
+                           <v-text-field v-model="editedItem.name" clearable label="Nombre del ingreso" prepend-icon="mdi-format-list-bulleted-type"
                      variant="underlined" :rules="nameRules">
                    </v-text-field>
 
