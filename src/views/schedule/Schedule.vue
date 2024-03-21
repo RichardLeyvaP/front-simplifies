@@ -18,17 +18,17 @@
         <v-toolbar color="#F18254">
             <v-row align="center">
                 <v-col cols="12" md="5" class="grow ml-4">
-                    <span class="text-subtitle-1"> <strong>Detalles de operaciones por Sucursal</strong></span>
+                    <span class="text-subtitle-1"> <strong>Horario de trabajo por Sucursal</strong></span>
                 </v-col>
                 <v-col cols="12" md="4"></v-col>
                 <v-col cols="12" md="2">
 
-                    <v-dialog v-model="dialog" max-width="500px">
+                    <v-dialog v-model="dialog" max-width="600px">
                         <template v-slot:activator="{ props }">
 
                             <v-btn v-bind="props" class="text-subtitle-1  ml-12  " color="#E7E9E9" variant="flat"
                                 elevation="2" prepend-icon="mdi-plus-circle">
-                                Agregar operación
+                                Agregar horario
                             </v-btn>
 
                         </template>
@@ -40,51 +40,67 @@
                                 <v-form v-model="valid" enctype="multipart/form-data">
                                     <v-row>
                                         <v-col cols="12" md="12">
-                                            <v-select label="Tipo de operación" v-model="editedItem.operation"
-                                                :items="['Ingreso', 'Gasto']" item-value="['Ingreso', 'Gasto']"
+                                            <v-select label="Día de la semana" v-model="editedItem.day"
+                                                :items="['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']" item-value="['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']"
                                                 variant="underlined" density="compact" :rules="selectRules"
-                                                prepend-icon="mdi-cash-multiple"></v-select>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row v-if="editedItem.operation === 'Ingreso'">
-                                        <v-col>
-                                            <v-autocomplete v-model="editedItem.revenue_id" :items="revenues" clearable
-                                                label="Ingresos" prepend-inner-icon="mdi-cash-plus" item-title="name"
-                                                item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row v-if="editedItem.operation === 'Gasto'">
-                                        <v-col>
-                                            <v-autocomplete v-model="editedItem.expense_id" :items="expenses" clearable
-                                                label="Gastos" prepend-inner-icon="mdi-cash-plus" item-title="name"
-                                                item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
+                                                prepend-icon="mdi-calendar"></v-select>
                                         </v-col>
                                     </v-row>
                                     <v-row>
+    <v-col cols="12"  md="6">
+      <v-select
+        :items="hours"
+        label="Hora"
+        v-model="selectedHour"
+        variant="underlined"
+        @update:model-value="updateFormattedTime"
+      ></v-select>
+      
+    </v-col>
+    <v-col cols="12"  md="6">
+      <v-select
+        :items="hours"
+        label="Hora"
+        v-model="selectedHour1"
+        variant="underlined"
+        @update:model-value="updateFormattedTime1"
+      ></v-select>      
+    </v-col>
+    </v-row>
+    <v-row>
+    <v-col cols="12"  md="6">
+      <v-select
+        :items="minutes"
+        label="Minutos"
+        v-model="selectedMinute"
+        variant="underlined"
+        @update:model-value="updateFormattedTime"
+      ></v-select>
+    </v-col>
+    <v-col cols="12"  md="6">
+      <v-select
+        :items="minutes"
+        label="Minutos"
+        v-model="selectedMinute1"
+        variant="underlined"
+        @update:model-value="updateFormattedTime1"
+      ></v-select>
+    </v-col>
+  </v-row>
+  
+  <v-row>
                                         <v-col cols="12" md="6">
-                                            <v-text-field v-model="editedItem.amount" clearable label="Monto"
-                                                prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago">
+                                            <v-text-field v-model="editedItem.start_time" clearable label="Hora de inicio"
+                                                prepend-icon="mdi-timer-outline" variant="underlined" :rules="nameRules" :disabled="true">
                                             </v-text-field>
                                         </v-col>
                                         <v-col cols="12" md="6">
-                                            <v-text-field v-model="editedItem.control" clearable label="No.Control"
-                                                prepend-icon="mdi-security" variant="underlined" :disabled="editedItem.control !== null && editedItem.control !== 0" :rules="pago">
+                                            <v-text-field v-model="editedItem.closing_time" clearable label="Hora de cierre"
+                                                prepend-icon="mdi-timer-off-outline" variant="underlined" :rules="nameRules" :disabled="true">
                                             </v-text-field>
                                         </v-col>
                                     </v-row>
-                                    <v-row>
-                                        <v-col cols="12" md="12">
-                                            <v-text-field v-model="editedItem.comment" clearable label="Comentario"
-                                                prepend-icon="mdi-information" variant="underlined" :rules="nameRules">
-                                            </v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" md="12">
-                                            <v-file-input clearable v-model="file" ref="fileInput" label="Comprobante"
-                                                variant="underlined" density="compact" name="file"
-                                                accept=".docx, .doc, .pdf" @change="onFileSelected">
-                                            </v-file-input>
-                                        </v-col>
-                                    </v-row>
+
                                     <v-divider></v-divider>
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
@@ -104,10 +120,10 @@
                     <v-dialog v-model="dialogDelete" max-width="500px">
                         <v-card>
                             <v-toolbar color="red">
-                                <span class="text-subtitle-2 ml-4"> Eliminar operación</span>
+                                <span class="text-subtitle-2 ml-4"> Eliminar horario de trabajo de la sucursal</span>
                             </v-toolbar>
 
-                            <v-card-text class="mt-2 mb-2"> ¿Desea deshacer la operación?</v-card-text>
+                            <v-card-text class="mt-2 mb-2"> ¿Desea deshacer el horario?</v-card-text>
                             <v-divider></v-divider>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
@@ -145,12 +161,6 @@
             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
                 :search="search" class="elevation-1" no-data-text="No hay datos disponibles"
                 no-results-text="No hay datos disponibles">
-                <template v-slot:item.file="{ item }">
-                        <v-icon v-if="item.file" @click="openDoc(item)" color="green">mdi-file-document-outline</v-icon>
-                    <!--<v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                        <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_product" alt="image"></v-img>
-                    </v-avatar>-->
-                </template>
                 <template v-slot:top>
 
                     <v-divider class="mx-4" inset vertical></v-divider>
@@ -184,7 +194,7 @@ import LocalStorageService from "@/LocalStorageService";
 export default {
     data: () => ({
         valid: true,
-        //visibility: true,
+        mover: true,
         file: '',
         mostrarFila: false,
         snackbar: false,
@@ -197,64 +207,66 @@ export default {
         branch_id: '',
         business_id: '',
         search: '',
+        search2: '',
         message_delete: true,
         dialogDelete: false,
         headers: [
             //{ title: 'Almacén', align: 'start', value: 'direccionStore' },
-            { title: 'No. Control', key: 'control' },
-            { title: 'Fecha Registro', key: 'data' },
-            { title: 'Tipo de Operación', key: 'operation' },
-            { title: 'Detalle de Operación', key: 'nameDetalle' },
-            { title: 'Ingreso', key: 'revenue' },
-            { title: 'Gasto', key: 'expense' },
-            { title: 'Comentario', key: 'comment' },
-            { title: 'Archivo', key: 'file' },
+            { title: 'Dia', key: 'day' },
+            { title: 'Hora de apertura', key: 'start_time' },
+            { title: 'Hora de cierre', key: 'closing_time' },
             { title: 'Acciones', key: 'actions', sortable: false },
         ],
         results: [],
-        expenses: [],
-        revenues: [],
         branches: [],
         editedIndex: -1,
+        selectedHour: '',
+      selectedMinute: '',
+        selectedHour1: '',
+      selectedMinute1: '',
         editedItem: {
-            control: '',
-            operation: 'Ingreso',
-            amount: '',
-            comment: '',
-            file: '',
-            expense_id: '',
-            revenue_id: '',
+            day: '',
+            start_time: '',
+            closing_time: '',
             branch_id: '',
             id: ''
         },
         data: {},
 
         defaultItem: {
-            control: '',
-            operation: 'Ingreso',
-            amount: '',
-            comment: '',
-            file: '',
-            expense_id: '',
-            revenue_id: '',
+            day: '',
+            start_time: '',
+            closing_time: '',
             branch_id: '',
-            id: '',
+            id: ''
         },
-        pago: [
-            (value) => !isNaN(parseFloat(value)) || 'Debe ser un número'],
         selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
         nameRules: [
      (v) => !!v || "El campo es requerido"],
+
+      hours: Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0')),
+      minutes: Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, '0')),
+
     }),
 
     computed: {
+        formattedTime() {
+      // Comprueba si ambos, la hora y los minutos, han sido seleccionados
+      if (this.selectedHour !== null && this.selectedMinute !== null) {
+        this.editedItem.start_time == `${this.selectedHour}:${this.selectedMinute}`
+        console.log('`${this.selectedHour}:${this.selectedMinute}`');
+        console.log(this.editedItem.start_time);
+        return `${this.selectedHour}:${this.selectedMinute}`
+      }
+      return ''; // Retorna una cadena vacía si la hora o los minutos no han sido seleccionados aún
+    },
 
         formTitle() {
             if (this.editedIndex === -1) {
-                return 'Registrar Operación';
+                return 'Crear Horario';
             }
             if (this.editedIndex === 1) {
-                return 'Editar Operacion';
+                return 'Editar Horario';
             }
             else {
                 return 'Trasladar producto de un almacén a otro'
@@ -295,22 +307,20 @@ export default {
     },
 
     methods: {
-        openDoc(item){
-            const url = 'http://127.0.0.1:8000/api/images/' +item.file;
-            window.open(url, '_blanK');
-        },
-        onFileSelected(event) {
-            let file = event.target.files[0];
-            this.editedItem.file = file;
-            console.log(this.editedItem.file);
-            //this.cargarImage(file);
-        },
+
+        updateFormattedTime() {
+      if (this.selectedHour && this.selectedMinute) {
+        this.editedItem.start_time = `${this.selectedHour}:${this.selectedMinute}`;
+      }
+    },
+    updateFormattedTime1() {
+      if (this.selectedHour1 && this.selectedMinute1) {
+        this.editedItem.closing_time = `${this.selectedHour1}:${this.selectedMinute1}`;
+      }
+    },
         editItem(item) {
             this.editedIndex = 1;
             this.editedItem = Object.assign({}, item);
-            this.editedItem.revenue_id = item.revenue_id ? item.revenue_id : '';
-            this.editedItem.expense_id = item.expense_id ? item.expense_id : '';
-            this.editedItem.file = this.editedItem.file ? this.editedItem.file : item.file;
             console.log('this.editedItem');
             console.log(this.editedItem);
             this.dialog = true
@@ -338,43 +348,17 @@ export default {
         },
         initialize() {
             axios
-                .get('http://127.0.0.1:8000/api/finance-show', {
+                .get('http://127.0.0.1:8000/api/show_schedule_branch', {
                     params: {
                         branch_id: this.branch_id
                     }
                 })
                 .then((response) => {
-                    this.results = response.data.finances;
-                    console.log('this.results');
-                    //console.log(this.results);
-                                        
-                    this.editedItem.control = this.results.length !== 0 ? this.results[0].control + 1: 0;
-                        //this.visibility = !this.editedItem.control ? false : true;
-                    
-                    //this.editedItem.control = !this.results ? 0 : this.results[0].control + 1 ;// Obtener el numero de control realizado
-                    /*if (!this.editedItem.control) {
-                        console.log('es cero');
-                        this.visibility = true;
-                    }*/
+                    this.results = response.data.Schedules;
                     console.log('this.results');
                     console.log(this.results);
-                    console.log('this.editedItem.control');
-                    console.log(this.editedItem.control);
                 });
-            axios
-                .get('http://127.0.0.1:8000/api/expense')
-                .then((response) => {
-                    this.expenses = response.data.expenses;
-                    console.log('this.expenses');
-                    console.log(this.expenses);
-                });
-            axios
-                .get('http://127.0.0.1:8000/api/revenue')
-                .then((response) => {
-                    this.revenues = response.data.revenues;
-                });
-
-        },
+            },
 
         deleteItem(item) {
             this.editedItem.id = item.id;
@@ -385,9 +369,8 @@ export default {
         deleteItemConfirm() {
             this.data.id = this.editedItem.id;
             axios
-                .post('http://127.0.0.1:8000/api/finance-destroy', this.data)
+                .post('http://127.0.0.1:8000/api/schedule-destroy', this.data)
                 .then(() => {
-                    this.file = '';
                     this.initialize();
                     this.showAlert("success", "Operación eliminada correctamente", 3000)
                 });
@@ -399,6 +382,10 @@ export default {
                 this.editedItem = Object.assign({}, this.defaultItem);
                 this.editedIndex = -1;
             });
+            this.selectedHour = '';
+            this.selectedMinute = '';
+            this.selectedHour1 = '';
+            this.selectedMinute1 = '';
             this.file = '';
             this.initialize();
         },
@@ -408,43 +395,56 @@ export default {
                 this.editedItem = Object.assign({}, this.defaultItem);
                 this.editedIndex = -1;
             });
-            this.file = '';
             this.initialize();
         },
         save() {
             if (this.editedIndex > -1) {
                 this.valid = false;
-                //this.editedItem.branch_id = this.branch_id;  
-                const formData = new FormData();
-                for (let key in this.editedItem) {
-                    formData.append(key, this.editedItem[key]);
-                }
-
+                this.data.id = this.editedItem.id;
+                this.data.day = this.editedItem.day;
+                this.data.start_time = this.editedItem.start_time;
+                this.data.closing_time = this.editedItem.closing_time;
+                this.data.branch_id = this.editedItem.branch_id;
                 console.log('formData');
-                console.log(formData);
+                console.log(this.data);
                 axios
-                    .post('http://127.0.0.1:8000/api/finance-updated', formData)
+                    .put('http://127.0.0.1:8000/api/schedule', this.data)
                     .then(() => {
                         this.initialize();
                         this.showAlert("success", "Operación editada correctamente", 3000);
                         this.file = '';
+                        this.selectedHour = '';
+                        this.selectedMinute = '';
+                        this.selectedHour1 = '';
+                        this.selectedMinute1 = '';
                     })
             } else {
                 this.valid = false;
-                this.editedItem.branch_id = this.branch_id;
-                const formData = new FormData();
-                for (let key in this.editedItem) {
-                    formData.append(key, this.editedItem[key]);
-                }
+                
+                this.data.day = this.editedItem.day;
+                this.data.start_time = this.editedItem.start_time;
+                this.data.closing_time = this.editedItem.closing_time;
+                this.data.branch_id = this.branch_id;
                 console.log('formData');
-                console.log(formData);
+                console.log(this.data);
                 axios
-                    .post('http://127.0.0.1:8000/api/finance', formData)
+                    .post('http://127.0.0.1:8000/api/schedule', this.data)
                     .then(() => {
                         this.initialize();
                         this.showAlert("success", "Registro de operación creado correctamente", 3000);
                         this.file = '';
-                    })
+                        this.selectedHour = '';
+            this.selectedMinute = '';
+            this.selectedHour1 = '';
+            this.selectedMinute1 = '';
+                    }).catch(error => {
+        // Manejo del error
+        if (error.response.status === 400) {
+            this.showAlert("error", "Los dás de la semana no se pueden repetir", 3000);
+        } else {
+            this.showAlert("error", "Ocurrió un error al procesar la solicitud", 3000);
+        }
+    });
             }
             this.close()
         },

@@ -151,6 +151,7 @@ export default {
       { icon: "mdi mdi-chair-rolling", title: "Puestos de Trabajo", to: "workplace", value: "workplace", permission: "view_workplace" },
       { icon: "mdi-view-list", title: "Asignar Regla de convivencia a Sucursal", to: "branch-rule", value: "branch-rule", permission: "view_branch_rules" },
       { icon: "mdi-cash-multiple", title: "Registro de Gastos e Ingresos", to: "finance", value: "finance", permission: "view_finances" },
+      { icon: "mdi-clock-time-four-outline", title: "Asignar Horarios a una Sucursal", to: "schedule", value: "schedule", permission: "view_schedules" },
 
   
     ],

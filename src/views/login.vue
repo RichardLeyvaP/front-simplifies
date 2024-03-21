@@ -275,6 +275,7 @@ export default {
             }
           }
         }).catch(error => {
+          this.valid = true;
           this.showAlert("warning", "Usuario y contraseña incorrectos", 3000)
           this.editedItem = Object.assign({}, this.defaultItem);
           this.loading = false;

@@ -487,11 +487,13 @@ export default {
     },
     editedStudent: {
       student_id: '',
-      course_id: ''
+      course_id: '',
+      id:'',
     },
     defaultStudent: {
       student_id: '',
-      course_id: ''
+      course_id: '',
+      id:'',
     },
     data: {},
 
@@ -502,6 +504,7 @@ export default {
       image_url: '',
       student_id: '',
       course_id: '',
+      id: '',
 
     },
 
@@ -519,6 +522,7 @@ export default {
       duration: '',
       practical_percentage: '',
       theoretical_percentage: '',
+      id:'',
 
     },
     selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
