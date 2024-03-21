@@ -117,7 +117,7 @@ export default {
 
    headers: [
 
-     { title: 'Nombre del Ingrso', key: 'name' },
+     { title: 'Nombre del Ingreso', key: 'name' },
      { title: 'Acciones', key: 'actions', sortable: false },
    ],
    results: [],
