@@ -24,7 +24,19 @@
             </v-list-item>
 
           </v-list-group>
+          <!--Suscursales sub menu-->
+          <v-list-group value="Sucursales" v-if="filteredMenuSucursales.length !== 0">
+            <template v-slot:activator="{ props }">
+              <v-list-item v-bind="props" prepend-icon="mdi-storefront-outline" title="Sucursales"></v-list-item>
+            </template>
 
+            <v-list-item v-for="item in filteredMenuSucursales" style="padding-left: 20px !important;" :key="item.title" :prepend-icon="item.icon" :title="item.title"
+            :to="item.to" :value="item.value"> <!-- Filtrado directo usando v-if -->
+  
+            </v-list-item>
+
+          </v-list-group>
+          <!--Almacenes sub menu-->
           <v-list-group value="Almacenes" v-if="filteredMenuAlmacenes.length !== 0">
             <template v-slot:activator="{ props }">
               <v-list-item v-bind="props" prepend-icon="mdi-store-outline" title="Almacenes"></v-list-item>
@@ -110,7 +122,7 @@ export default {
       { title: "Operaciones de Ingreso", icon: "mdi-cash-plus", to: "/revenue", permission: "view_revenues" },
     ],
     listItems: [
-      { icon: "mdi-storefront-outline", title: "Sucursales", to: "branch", value: "surcursal", permission: "view_branches" },
+      //{ icon: "mdi-storefront-outline", title: "Sucursales", to: "branch", value: "surcursal", permission: "view_branches" },
       //{ icon: "mdi-tag-outline", title: "Productos", to: "product", value: "products", permission: "view_products" },
       //{ icon: "mdi-list-box-outline", title: "Servicios", to: "service", value: "services", permission: "view_services" },
       //{ icon: "mdi-store-outline", title: "Almacenes", to: "store", value: "stores", permission: "view_stores" },
@@ -148,10 +160,10 @@ export default {
       { icon: "mdi-handshake", title: "Associados", to: "associated", value: "associated", permission: "view_associates" },
       //{ icon: "mdi-list-box-outline", title: "Asignar servicios a professional", to: "professional-service", value: "professional-service", permission: "view_dashboard" },
       //{ icon: "mdi-list-box-outline", title: "Asignar servicios a una Sucursal", to: "branch-service-professional", value: "branch-service-professional", permission: "view_dashboard" },          
-      { icon: "mdi mdi-chair-rolling", title: "Puestos de Trabajo", to: "workplace", value: "workplace", permission: "view_workplace" },
-      { icon: "mdi-view-list", title: "Asignar Regla", to: "branch-rule", value: "branch-rule", permission: "view_branch_rules" },
-      { icon: "mdi-cash-multiple", title: "Gastos e Ingresos", to: "finance", value: "finance", permission: "view_finances" },
-      { icon: "mdi-clock-time-four-outline", title: "Horarios", to: "schedule", value: "schedule", permission: "view_schedules" },
+      //{ icon: "mdi mdi-chair-rolling", title: "Puestos de Trabajo", to: "workplace", value: "workplace", permission: "view_workplace" },
+      //{ icon: "mdi-view-list", title: "Asignar Regla", to: "branch-rule", value: "branch-rule", permission: "view_branch_rules" },
+      //{ icon: "mdi-cash-multiple", title: "Gastos e Ingresos", to: "finance", value: "finance", permission: "view_finances" },
+      //{ icon: "mdi-clock-time-four-outline", title: "Horarios", to: "schedule", value: "schedule", permission: "view_schedules" },
 
   
     ],
@@ -166,6 +178,13 @@ export default {
       { icon: "mdi-tag-outline", title: "Productos", to: "product", value: "products", permission: "view_products" },
       { icon: "mdi-store", title: "Asignar Productos", to: "product-store", value: "product-store", permission: "view_product_store" },
       { icon: "mdi-tag-check", title: "Categorías de Productos", to: "/product-category", permission: "view_product_categories" },
+    ],
+    sucursales: [      
+        { icon: "mdi-storefront-outline", title: "Sucursales", to: "branch", value: "surcursal", permission: "view_branches" },
+        { icon: "mdi mdi-chair-rolling", title: "Puestos de Trabajo", to: "workplace", value: "workplace", permission: "view_workplace" },
+        { icon: "mdi-view-list", title: "Asignar Regla", to: "branch-rule", value: "branch-rule", permission: "view_branch_rules" },
+        { icon: "mdi-cash-multiple", title: "Gastos e Ingresos", to: "finance", value: "finance", permission: "view_finances" },
+        { icon: "mdi-clock-time-four-outline", title: "Horarios", to: "schedule", value: "schedule", permission: "view_schedules" },
     ],
     allowedPermissions: ["view_dashboard", "view_menu",],
 
@@ -199,6 +218,10 @@ export default {
     filteredMenuServices() {
       console.log(this.permissionsUser);
       return this.services.filter(item => this.permissionsUser.includes(item.permission));
+    },
+    filteredMenuSucursales() {
+      console.log(this.permissionsUser);
+      return this.sucursales.filter(item => this.permissionsUser.includes(item.permission));
     }
 },
   created() {

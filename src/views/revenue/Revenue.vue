@@ -145,7 +145,7 @@ export default {
 
  computed: {
    formTitle() {
-     return this.editedIndex === -1 ? 'Nueva opción de Ingreso' : 'Editar opción de Ingreso'
+     return this.editedIndex === -1 ? 'Nueva operación de Ingreso' : 'Editar operación de Ingreso'
    },
  },
 
