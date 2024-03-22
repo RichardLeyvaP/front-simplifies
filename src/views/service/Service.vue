@@ -56,18 +56,18 @@
                     </v-col>
                   </v-row>
                   <v-row>
-                    <v-col cols="12" md="4">
+                    <!--<v-col cols="12" md="4">
                       <v-select clearable label="Tipo" v-model="editedItem.type_service"
                         :items="['Especial', 'Regular']" variant="underlined" prepend-icon="mdi-view-grid"
                         :rules="selectRules"></v-select>
-                    </v-col>
+                    </v-col>-->
                     <v-col cols="12" md="4">
                       <v-text-field v-model="editedItem.duration_service" clearable label="Duración"
                         prepend-icon="mdi-clock-time-eight" variant="underlined" :rules="requiredRules">
                       </v-text-field>
                     </v-col>
                     <v-col cols="12" md="4">
-                      <v-text-field v-if="editedItem.type_service === 'Especial'" v-model="editedItem.profit_percentaje" clearable label="% Ganancia"
+                      <v-text-field v-if="editedItem.type_service === 'Regular'" v-model="editedItem.profit_percentaje" clearable label="% Ganancia"
                         prepend-icon="mdi-percent" variant="underlined" :rules="requiredRules">
                       </v-text-field>
                     </v-col>
@@ -87,7 +87,7 @@
 
 
                       <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
-                        <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
+                        <img v-if="imgedit" :src="imgedit" height="120" width="120">
                       </v-card>
                     </v-col>
                   </v-row>
@@ -224,7 +224,7 @@ export default {
       name: '',
       simultaneou: '',
       price_service: '',
-      type_service: '',
+      type_service: 'Regular',
       profit_percentaje: '',
       duration_service: '',
       service_comment: '',
@@ -237,7 +237,7 @@ export default {
       name: '',
       simultaneou: '',
       price_service: '',
-      type_service: '',
+      type_service: 'Regular',
       profit_percentaje: '',
       duration_service: '',
       service_comment: '',
@@ -280,15 +280,23 @@ export default {
   },
 
   methods: {
-    imagenDisponible() {
-        if (this.imgedit !== undefined && this.imgedit !== '') {
+    /*imagenDisponible() {
+      
+      if(this.imgedit !== null)
+      {
+        return true;
+      }
+      else{
+        return false;
+      }
+        /*if (this.imgedit !== undefined && this.imgedit !== '') {
             // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
             let img = new Image();
             img.src = this.imgedit;
             return img.complete; // Devuelve true si la imagen está disponible
         }
-        return false; // Si la URL de la imagen no está definida o está vacía, devuelve false
-    },
+        return false; // Si la URL de la imagen no está definida o está vacía, devuelve false*/
+    /*},*/
 
     showAlert(sb_type, sb_message, sb_timeout) {
       this.sb_type = sb_type
