@@ -193,7 +193,7 @@ export default {
 
    initialize() {
      axios
-       .get('http://127.0.0.1:8000/api/expense')
+       .get('https://api2.simplifies.cl/api/expense')
        .then((response) => {
          this.results = response.data.expenses;
        })
@@ -214,7 +214,7 @@ export default {
        id: this.editedItem.id
      };
      axios
-       .post('http://127.0.0.1:8000/api/expense-destroy', request)
+       .post('https://api2.simplifies.cl/api/expense-destroy', request)
        .then(() => {
          this.initialize();
          this.showAlert("success","Operación de Gasto eliminada correctamente", 3000)
@@ -243,7 +243,7 @@ export default {
          this.data.id = this.editedItem.id;
          this.data.name = this.editedItem.name;
          axios
-           .put('http://127.0.0.1:8000/api/expense', this.data)
+           .put('https://api2.simplifies.cl/api/expense', this.data)
            .then(() => {
              this.initialize();
              this.showAlert("success","Gasto actualizado correctamente", 3000)
@@ -252,7 +252,7 @@ export default {
          this.valid = false,
          this.data.name = this.editedItem.name;
          axios
-           .post('http://127.0.0.1:8000/api/expense', this.data)
+           .post('https://api2.simplifies.cl/api/expense', this.data)
            .then(() => {
              this.initialize();
              this.showAlert("success","Gasto registrado correctamente", 3000)

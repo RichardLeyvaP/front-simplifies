@@ -203,7 +203,7 @@ export default {
 
    initialize() {
      axios
-       .get('http://127.0.0.1:8000/api/associated')
+       .get('https://api2.simplifies.cl/api/associated')
        .then((response) => {
          this.results = response.data.associates;
        })
@@ -224,7 +224,7 @@ export default {
        id: this.editedItem.id
      };
      axios
-       .post('http://127.0.0.1:8000/api/associated-destroy', request)
+       .post('https://api2.simplifies.cl/api/associated-destroy', request)
        .then(() => {
          this.initialize();
          this.showAlert("success","Asociado eliminado correctamente", 3000)
@@ -254,7 +254,7 @@ export default {
          this.data.name = this.editedItem.name;
          this.data.email = this.editedItem.email;
          axios
-           .put('http://127.0.0.1:8000/api/associated', this.data)
+           .put('https://api2.simplifies.cl/api/associated', this.data)
            .then(() => {
              this.initialize();
              this.showAlert("success","Asociado editado correctamente", 3000)
@@ -265,7 +265,7 @@ export default {
          this.data.name = this.editedItem.name;
          this.data.email = this.editedItem.email;
          axios
-           .post('http://127.0.0.1:8000/api/associated', this.data)
+           .post('https://api2.simplifies.cl/api/associated', this.data)
            .then(() => {
              this.initialize();
              this.showAlert("success","Asociado registrado correctamente", 3000)

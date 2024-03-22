@@ -250,7 +250,7 @@ export default {
       console.log(startDate);
       console.log(endDate);
       axios
-        .get('http://127.0.0.1:8000/api/arriving-late-branch-periodo', {
+        .get('https://api2.simplifies.cl/api/arriving-late-branch-periodo', {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id,
@@ -273,7 +273,7 @@ export default {
       const mes = `${month}`;
       const ano = `${year}`;
       axios
-        .get('http://127.0.0.1:8000/api/arriving-late-professional-month', {
+        .get('https://api2.simplifies.cl/api/arriving-late-professional-month', {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id,
@@ -291,7 +291,7 @@ export default {
       this.editedIndex = 1;
       this.state=true;
       axios
-        .get('http://127.0.0.1:8000/api/arriving-late-professional-date', {
+        .get('https://api2.simplifies.cl/api/arriving-late-professional-date', {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id
@@ -301,12 +301,12 @@ export default {
           this.results = response.data;
         });
         axios
-      .get('http://127.0.0.1:8000/api/professional-show-autocomplete')
+      .get('https://api2.simplifies.cl/api/professional-show-autocomplete')
       .then((response) => {
         this.professionals = response.data.professionals;
       });
       axios
-      .get('http://127.0.0.1:8000/api/show-business', {
+      .get('https://api2.simplifies.cl/api/show-business', {
           params: {
             business_id: this.business_id
           }

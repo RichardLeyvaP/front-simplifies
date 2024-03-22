@@ -212,7 +212,7 @@ export default {
     validar() {
       this.loading = true
       axios
-        .get('http://127.0.0.1:8000/api/qrCode', {
+        .get('https://api2.simplifies.cl/api/qrCode', {
           params: {
             branch_id: this.branch_id,
             email: this.email

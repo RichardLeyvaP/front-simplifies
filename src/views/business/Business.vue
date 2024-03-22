@@ -201,13 +201,13 @@ export default {
 
     initialize() {
       axios
-        .get('http://127.0.0.1:8000/api/professional-show-autocomplete')
+        .get('https://api2.simplifies.cl/api/professional-show-autocomplete')
         .then((response) => {
           this.professionals = response.data.professionals;
         });
 
       axios
-        .get('http://127.0.0.1:8000/api/business')
+        .get('https://api2.simplifies.cl/api/business')
         .then((response) => {
           this.results = response.data.business;
         })
@@ -229,7 +229,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('http://127.0.0.1:8000/api/business-destroy', request)
+        .post('https://api2.simplifies.cl/api/business-destroy', request)
         .then(() => {
           this.initialize();
         })
@@ -257,7 +257,7 @@ export default {
         this.data.address = this.editedItem.address;
         this.data.professional_id = this.editedItem.professional_id;
         axios
-          .put('http://127.0.0.1:8000/api/business', this.data)
+          .put('https://api2.simplifies.cl/api/business', this.data)
           .then(() => {
             this.initialize();
           })
@@ -268,7 +268,7 @@ export default {
         this.data.professional_id = this.editedItem.professional_id;
 
         axios
-          .post('http://127.0.0.1:8000/api/business', this.data)
+          .post('https://api2.simplifies.cl/api/business', this.data)
           .then(() => {
             this.initialize();
           })

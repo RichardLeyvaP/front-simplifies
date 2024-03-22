@@ -321,7 +321,7 @@ methods: {
     //this.reservationWeek = [40, 20, 12, 10, 35, 22, 0];
       this.editedIndex = 1;
       axios
-        .get('http://127.0.0.1:8000/api/cars-winner-day', {
+        .get('https://api2.simplifies.cl/api/cars-winner-day', {
           params: {
             branch_id: this.branch_id,
             business_id: this.business_id
@@ -332,7 +332,7 @@ methods: {
           console.log(this.amountDay);
         });
         axios
-        .get('http://127.0.0.1:8000/api/cars-winner-mounth', {
+        .get('https://api2.simplifies.cl/api/cars-winner-mounth', {
           params: {
             branch_id: this.branch_id,
             business_id: this.business_id
@@ -343,7 +343,7 @@ methods: {
           console.log(this.amountMounth);
         });
         axios
-        .get('http://127.0.0.1:8000/api/reservations-count', {
+        .get('https://api2.simplifies.cl/api/reservations-count', {
           params: {
             branch_id: this.branch_id,
             business_id: this.business_id
@@ -354,7 +354,7 @@ methods: {
           console.log(this.reservDay);
         });
         axios
-        .get('http://127.0.0.1:8000/api/client-frecuente', {
+        .get('https://api2.simplifies.cl/api/client-frecuente', {
           params: {
             branch_id: this.branch_id,
             business_id: this.business_id
@@ -365,7 +365,7 @@ methods: {
           console.log(this.clientFrecuente);
         });
         axios
-        .get('http://127.0.0.1:8000/api/cars-winner-week', {
+        .get('https://api2.simplifies.cl/api/cars-winner-week', {
           params: {
             branch_id: this.branch_id,
             business_id: this.business_id
@@ -376,7 +376,7 @@ methods: {
           console.log(this.winnerWeek);
         });
         axios
-        .get('http://127.0.0.1:8000/api/reservations-count-week', {
+        .get('https://api2.simplifies.cl/api/reservations-count-week', {
           params: {
             branch_id: this.branch_id,
             business_id: this.business_id
