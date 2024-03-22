@@ -336,6 +336,8 @@ close() {
  this.$nextTick(() => {
    this.editedItem = Object.assign({}, this.defaultItem)
    this.editedIndex = -1
+   this.imgMiniatura = '';
+        this.file = '';
  })
 },
 closeDelete() {
@@ -357,6 +359,8 @@ save() {
      .then(() => {
        this.initialize();
       this.showAlert("success","Estudiante editado correctamente", 3000)
+      this.imgMiniatura = '';
+        this.file = '';
      })
  } else {
    this.valid = false;
@@ -369,6 +373,8 @@ save() {
      .then(() => {
        this.initialize();
        this.showAlert("success","Estudiante registrado correctamente", 3000)
+       this.imgMiniatura = '';
+        this.file = '';
      })
  }
  this.close()

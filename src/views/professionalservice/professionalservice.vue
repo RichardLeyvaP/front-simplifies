@@ -118,9 +118,17 @@
                     <v-col cols="12" md="6">
         </v-col>
         <v-col cols="12" md="6">            
-            <v-text-field v-model="profitPercen" :disabled="showPercent" clearable label="% Ganancia"
-                        prepend-icon="mdi-percent" variant="underlined" :rules="requiredRules">
+            <v-text-field v-if="especial" v-model="profitPercen" clearable label="% Ganancia"
+                        prepend-icon="mdi-percent" variant="underlined">
                       </v-text-field>
+
+                      <v-switch
+                      color="orange-darken-3"
+    v-model="especial"
+    label="Especial"
+    hide-details
+    inset
+></v-switch>
         </v-col>
         <v-divider></v-divider>
                     
@@ -148,6 +156,8 @@
 
                                 <v-list-item-content>
                                     <v-list-item-title class="text-h6">{{ serviceA.name }}</v-list-item-title>
+                                    <v-list-item-title class="text-h8">% Ganancia: {{ serviceA.profit_percentaje }}</v-list-item-title>
+                                    <v-list-item-title class="text-h8">Tipo: {{ serviceA.type_service }}</v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
                             <v-divider></v-divider>
@@ -211,6 +221,8 @@ export default {
     profitPercentaje:[],
     showPercent:false,
     profitPercen:'',
+    type_service:'',
+    especial: false,
     mostrarFila: false,
     branch_id: '',
     charge_id: '',
@@ -324,7 +336,7 @@ export default {
 
     methods:
     {
-      showAlert(sb_type, sb_message, sb_timeout) {
+    showAlert(sb_type, sb_message, sb_timeout) {
       this.sb_type = sb_type
 
       if (sb_type == "success") {
@@ -378,24 +390,24 @@ export default {
             console.log('this.selected');
             console.log(this.selected[0]); 
             let request = {
-        professional_id: this.professional[0],
-        branch_service_id: this.selected[0]
-      }
+            professional_id: this.professional[0],
+            branch_service_id: this.selected[0]
+          }
             //CAMBIAR ESTA RUTA POR LA RUTA CORRECTA DE DESASIGNAR SERVICIO AL PROFESIONAL
-            axios
-        .post('http://127.0.0.1:8000/api/professionalservice-destroy', request)
-        .then(() => {
-          this.showAlert("success", "Desasignado correctamente", 3000);
-          this.profitPercen = '';
-          this.professional = '';
-          this.selected = '';
-          this.initialize();
-        }).catch(error => {
+              axios
+          .post('http://127.0.0.1:8000/api/professionalservice-destroy', request)
+          .then(() => {
+            this.showAlert("success", "Desasignado correctamente", 3000);
+            this.profitPercen = '';
+            this.professional = '';
+            this.selected = '';
+            this.initialize();
+          }).catch(error => {
           // Maneja cualquier error que pueda ocurrir durante la solicitud
-          console.log(error);
-          this.showAlert("warning", "Error al hacer la asignación".error, 3000);
+              console.log(error);
+              this.showAlert("warning", "Error al hacer la asignación".error, 3000);
 
-        });
+            });
 
         },
         asignService()//todooo
@@ -407,52 +419,45 @@ export default {
             console.log(this.professional[0]);
             console.log('this.selected');
             console.log(this.selected[0]); 
-            
+            console.log('type_service');
+            console.log(this.type_service);
+            console.log('this.especial');
+            console.log(this.especial);
+            if(this.especial === true){
+              this.type_service = 'Especial';
+            }
+            else{
+            this.type_service = 'Regular';
+            }
             let request = {
         professional_id: this.professional[0],
         branch_service_id: this.selected[0],
         percent: this.profitPercen,
-      }
+        type_service: this.type_service
 
-      axios
-        .post('http://127.0.0.1:8000/api/professionalservice', request)
+      }
+      
+      console.log('request');
+            console.log(request); 
+
+      axios.post('http://127.0.0.1:8000/api/professionalservice', request)
         .then(() => {
           this.showAlert("success", "Servicio asignado correctamente", 3000);
           this.profitPercen = '';
           this.professional = '';
           this.selected = '';
+          this.profitPercen = 0;
+              this.especial = false;              
+              this.type_service = '';
           this.initialize();
         }).catch(error => {
           // Maneja cualquier error que pueda ocurrir durante la solicitud
-          this.showAlert("warning", "Error al hacer la asignación".error, 3000);
-
+          this.showAlert("warning", "Error al hacer la asignación", 3000);
+          this.percent = 0;
+              this.especial = false;
         });
-      
-      console.log('request');
-            console.log(request); 
-
         },
-      typeService(type,porc)
-      {
-       
-        if(type === 'Especial')
-        {
-    //         showPercent:false,
-    // profitPercen:'',
-    this.profitPercen = porc;
-    this.showPercent = true;
-    
-            //desabilitar el campo de texto y mostrar el porciento
-        }
-        else if(type === 'Regular')
-        {
-            this.profitPercen = '';
-            this.showPercent = false;
-            //habilitar y limpiamos el campo
-        }
-
-      },
-
+      
         changeStep(index) {
       // Cambiar el valor de step al índice especificado
       this.step = index;
@@ -471,209 +476,13 @@ export default {
          this.email_client = '';
 
         },
-        /*sendData()
-    {
-   
-      // Realiza la solicitud POST Y BUSCO LOS DATOS DEL CLIENTE 
-      axios.get(`http://127.0.0.1:8000/api/client-email-phone?email=${this.email_client2}`)
-        .then(response => {
-          // Maneja la respuesta de la solicitud aquí
-        this.clientRegister = response.data.client;
-        console.log('-------------------------------clientRegister----------------------------------------');
-        console.log(this.clientRegister);
-        
-
-        const client = this.clientRegister[0];
-        //ASIGNO A LOS CAMPOS DEL FORMULARIO TDS LOS DATOS
-         this.name_client = client.name;
-         this.phone_client = client.phone;
-         this.surname_client = client.surname;
-         this.second_surname = client.second_surname;
-         this.email_client = client.email;
-         
-                this.verificate = true;
-         this.changeStep(5);
-         
-       
-              })
-        .catch(error => {
-          // Maneja cualquier error que pueda ocurrir durante la solicitud
-          console.error('Error al hacer la solicitud:', error);
-        });
-
-    },*/
-        /*send()
-    {
-      //this.totalTimeServices()
-    console.log('**********************************--------------------');
-    const newArrayService = this.array_services.map(item => parseInt(item)); 
-
-    //FECHA DE HOY-------------
-    let today = new Date();
-
-// Obtener el año, mes y día por separado
-let year = today.getFullYear();
-let month = String(today.getMonth() + 1).padStart(2, '0'); // El mes se cuenta desde 0, así que agregamos 1
-let day = String(today.getDate()).padStart(2, '0');
-let formattedDate = `${year}-${month}-${day}`;
-    //FECHA DE HOY-------------
-   
-    let hourString = this.hourSelect.toString();
-      let request = {
-        start_time:hourString,
-        data: formattedDate,
-        branch_id: 1,
-        professional_id: this.professional[0],
-        email_client: this.email_client,
-        phone_client: this.phone_client,
-        name_client: this.name_client,
-        surname_client:this.surname_client,
-        second_surname:this.second_surname,
-        services: newArrayService,      
-      }
-
-      console.log('**********************************---------------------');
-
-      // Realiza la solicitud GET con Axios y pasa los parámetros
-      axios.post('http://127.0.0.1:8000/api/reservation_store',  request )
-        .then(response => {
-          // Maneja la respuesta de la solicitud aquí
-        this.message=response.data.msg
-
-        setTimeout(() => {
-        // Redirige a la URL externa deseada
-        window.location.href = 'https://barberiahernandez.com/barber_backend/web/app_dev.php/reservation';
-      }, 3000); 
-              })
-        .catch(error => {
-          // Maneja cualquier error que pueda ocurrir durante la solicitud
-          console.error('Error al hacer la solicitud:', error);
-        });
-
-
-
-    },*/
 
         isIntervalDisabled(time) {
     // Aquí puedes agregar la lógica para desactivar ciertos horarios.
     // Por ejemplo, si deseas desactivar los horarios '10:00' y '11:00':
     return this.disabledIntervals.includes(time);
   },
-        /*divideInterval() {
-            this.countInterval = 0
-            this.intervals = []
-            this.getDayOfWeekOK()
-
-          let cb = this.calendars_branches.find((c) => c.day == this.getDayOfWeekOK());
-
-
-                 
-         let day = (new Date().toISOString().substr(0, 10))  ; 
-
- 
-            // Convertir las horas a objetos Date para facilitar los cálculos
-            const inicio = new Date(`${day}T${cb.start_time}`);
-            const fin = new Date(`${day}T${cb.closing_time}`);
-
-            console.log('este es  inicio')   ;  
-
-            console.log( inicio)   ;      
-            console.log( fin)   ;
-
- 
-            // Array para almacenar los intervals de tiempo
-
-            this.timeReservated();
-            console.log(this.reservedTime);
-
-            // Bucle para generar intervals de media hora
-            let actual = new Date(inicio);
-            
-            
-
-           
-
-            while (actual < fin) {
-                // Obtener la hora y minutos actuales
-                const horaActual = actual.getHours();
-                const minutosActual = actual.getMinutes();
-                console.log('****************actual*******************');
-            console.log(horaActual);
-            console.log(minutosActual);
-
-                
-                // Calcular el próximo intervalo de media hora
-                const proximo = new Date(actual);
-                proximo.setMinutes(minutosActual + 15);
-
-                // Formatear las horas y minutos en formato HH:MM
-                const horaInicioFormato = `${String(horaActual).padStart(2, '0')}:${String(
-                    minutosActual
-                ).padStart(2, '0')}`;
-
-                const horaFinFormato = `${String(proximo.getHours()).padStart(2, '0')}:${String(
-                    proximo.getMinutes()
-                ).padStart(2, '0')}`;
-                //optener los horarios reservados
-                const isIntervalReserved = this.reservedTime.some((reservation) => {
-                    const reservationStart = new Date(`${this.date}T${reservation.start_time}`);
-                    const reservationEnd = new Date(`${this.date}T${reservation.end_time}`);
-                    return actual >= reservationStart && actual < reservationEnd;
-                });
-
-
-                console.log(actual);
-                // Almacenar el intervalo en el array
-                this.countInterval++
-                this.intervals.push({
-                    time_star: horaInicioFormato,
-                    time_final: horaFinFormato,
-                    disable: isIntervalReserved,
-                    id: this.countInterval
-                });
-
-                // Establecer el siguiente intervalo
-                actual = proximo;
-                
-            }
-            
-
-            console.log('sssssssssssssss' + this.intervals);
-        },*/
         
-                /*timeReservated() {
-                    
-                  console.log('****************************this.professional[0]*************');
-                  console.log(this.professional[0]);
-
-                  let currentDate = new Date();
-                  let formattedDate = currentDate.toISOString().split('T')[0];
-
-                  let request = {
-                    professional_id: this.professional[0],
-                    branch_id: 1,
-                    data: formattedDate
-
-                  }
-
-
-                  axios
-                  .get('http://127.0.0.1:8000/api/professional-reservations-time' , {
-                            params: request
-                        })
-                        .then((response) => {
-                    this.reservedTime = response.data.reservations;
-                    this.disabledIntervals = response.data.reservations;
-                    console.log('---------------response.data.reservations-------------------');
-                    console.log(response.data.reservations);
-                    console.log('---------------response.data.reservations-------------------');
-
-                  })
-                  .catch((err) => {
-                    console.log(err, "error");
-                
-                  });
-  },*/
         getDayOfWeekOK() {
   var Xmas95 = new Date();
   console.log('Este es new Date '+Xmas95);
@@ -865,7 +674,7 @@ toggleService3(service)
         console.log(this.selectedServiceType);
         console.log(this.profitPercentaje);
 
-        this.typeService(this.selectedServiceType[0],this.profitPercentaje[0]);
+        //this.typeService(this.selectedServiceType[0],this.profitPercentaje[0]);
         
     
 },
