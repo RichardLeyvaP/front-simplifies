@@ -23,13 +23,12 @@
                     </v-list>
                 </v-sheet>
                 <v-container>
+                  <!-- BOTONES -->
               <v-row class="mt-1">
-               
-                
                 <v-spacer></v-spacer>
-                <v-btn :disabled="advanceReserva1" @click="nextStep">Siguiente</v-btn>
-             
+                <v-btn :disabled="advanceReserva1" @click="nextStep">Siguiente</v-btn>             
               </v-row>
+              
             </v-container>
 
             </template>

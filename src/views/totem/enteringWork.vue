@@ -4,10 +4,10 @@
 <template>
   <div class="app-container">
     <v-container>
-      <v-stepper prev-text="Anterior" next-text="Siguiente" bg-color="" v-model="step" :items="items" show-actions
+      <v-stepper hide-actions  bg-color="" v-model="step" :items="items" 
         @update:model-value="handleStepChange">
 
-        <!-- CORREO PARA SABER SI ES TECNICO O BARBERO -->
+        <!-- CORREO PARA SABER SI ES TECNICO O BARBERO O OTRO PROFESIONAL-->
         <template v-slot:item.1>
           <v-sheet border>
             <v-row>
@@ -21,17 +21,38 @@
             </v-row>
             <h3 class="text-h6 red--text">{{ verificate_menssj }}</h3>
 
-
-
           </v-sheet>
+              <!-- BOTONES -->
+              <v-row class="mt-1">
+                <v-spacer></v-spacer>
+                <v-btn :disabled="!validarEmail()" @click="nextStep">Siguiente</v-btn>             
+              </v-row>
         </template>
 
 
-        <!-- Seleccione Puesto de trabajo -->
+        <!-- Seleccione Puesto de trabajo SI ES BARBERO O TECNICO -->
         <template v-slot:item.2>
           <h3 class="text-h6">Seleccione Puesto de trabajo</h3>
+          
+  <v-sheet border v-if="mostrarSheet">
+    <v-list>
+      <v-list-item-group v-model="array_Places" multiple active-class="deep-purple--text text--accent-4">
+        <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + puestoT.image_puestoT"
+          v-for="puestoT in puestoTs" :key="puestoT.id" @click="togglepuestoT(puestoT.id)"
+          :class="{ 'selected-item': isSelected(puestoT.id) }" class="pt-4 pb-4">
 
-          <v-sheet border>
+          <v-list-item-content>
+            <v-list-item-title class="text-h6">{{ puestoT.name }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+    </v-list>
+  </v-sheet>
+
+
+
+
+          <!-- <v-sheet border>
             <v-list>
               <v-list-item-group v-model="array_Places" multiple active-class="deep-purple--text text--accent-4">
                 <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + puestoT.image_puestoT"
@@ -44,7 +65,36 @@
                 </v-list-item>
               </v-list-item-group>
             </v-list>
-          </v-sheet>
+          </v-sheet> -->
+
+
+
+          <v-sheet border>
+            <v-list>
+  <template v-for="puestoT in puestoTs">
+    <v-list-item :key="puestoT.id" v-if="mostrarPuestoT(this.type_professional)"
+      @click="togglepuestoBarber(puestoT.id)" :class="{ 'selected-item': isSelected(puestoT.id) }" class="pt-4 pb-4">
+
+      <template v-slot:default="{ toggle }">
+        <v-list-item-avatar :src="'https://api2.simplifies.cl/api/images/' + puestoT.image_puestoT"></v-list-item-avatar>
+
+        <v-list-item-content @click="toggle">
+          <v-list-item-title class="text-h6">{{ puestoT.name }}</v-list-item-title>
+        </v-list-item-content>
+      </template>
+
+    </v-list-item>
+  </template>
+</v-list>
+
+</v-sheet>
+          <v-row class="mt-1">
+               
+               <v-btn @click="prevStep">Volver</v-btn>
+               <v-spacer></v-spacer>
+               <v-btn :disabled="advanceReserva2" @click="nextStep">Siguiente</v-btn>
+            
+             </v-row>
         </template>
 
         <!-- Generar codigo Qr -->
@@ -73,13 +123,39 @@
               </v-col>
             </v-row>
           </v-sheet>
+          <v-row class="mt-1">
+               
+               <v-btn @click="prevStep">Volver</v-btn>
+               <v-spacer></v-spacer>
+            
+             </v-row>
         </template>
 
 
 
       </v-stepper>
     </v-container>
-
+    <br>
+    <br>
+    <v-row>  
+          <v-spacer></v-spacer>        
+        <v-btn to="totem" >Volver a inicio</v-btn>
+        <v-spacer></v-spacer>  
+        </v-row>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
   </div>
 </template>
 
@@ -89,6 +165,7 @@ import LocalStorageService from "@/LocalStorageService";
 
 export default {
   data: () => ({
+    mostrarSheet: true,
     // variables referente al codigo Qr
     array_Places: [],
     getProfesional: {},
@@ -140,16 +217,16 @@ export default {
     ],
 
     emailRules: [
-      v => !!v || 'El Correo es requerido',
-      v => /.+@.+\..+/.test(v) || 'Correo electrónico no válido',
-    ],
+        value => !!value || 'El correo electrónico es requerido',
+        value => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) || 'El correo electrónico debe ser válido',
+      ],
 
     phoneRules: [
       v => !!v || 'El Teléfono es requerido',
 
     ],
-
-
+    timeDurationAwait : 25000,//20 segundos despues que genera el Qr
+    redirectToAnotherPage :false,
     disabledIntervals: [],
     intervals: [],
     countInterval: 0,
@@ -194,9 +271,88 @@ export default {
     this.branch_id = LocalStorageService.getItem('branch_id') ? 1 : LocalStorageService.getItem('branch_id');
 
   },
+  computed: {
+      advanceReserva1() {
+      console.log()
+      return !this.selected.length > 0; // Verdadero si hay elementos, falso si está vacío
+    },
+      advanceReserva2() {
+      console.log('this.array_Places.length');
+      console.log(this.selected.length);
+      return this.selected.length === 0; // Verdadero si hay elementos, falso si está vacío
+    },
+
+    },
 
   methods:
   {
+    startTimer() {
+    this.timer = setTimeout(() => {
+      // Redirigir a otra página después de 5 segundos si estás en el último paso
+      if (this.redirectToAnotherPage) {       
+        this.$router.push('/totem');
+      }
+    }, this.timeDurationAwait);
+  },
+  stopTimer() {
+    clearTimeout(this.timer);
+  },
+    validarEmail() {
+      // Comprueba si todas las reglas de validación se cumplen
+      return this.emailRules.every(rule => rule(this.email_client2 || '') === true);
+    },
+    nextStep() {
+    
+    if(this.step < this.items.length) { 
+      this.step++;
+    }
+    console.log('Aqui se muestran los Step');
+    console.log(this.step );
+   this.verificateStep(this.step);
+ 
+},
+prevStep() {
+  if(this.step > 1) {
+    this.step--;
+  }
+  if(this.step === 2)
+  { 
+    //SI NO ES TYPE 1 NI 2
+    console.log(this.type_professional);
+    if(this.type_professional === 0)
+    {
+      //lo mando para el inicio, para el correo
+      this.changeStep(1);
+    }
+    
+  }
+ 
+},
+     
+        verificateStep(newValue) {
+      // Cancelar el temporizador si el usuario cambia de pestaña antes de que se ejecute
+      // Verifica si se está pasando del paso 1 al paso 2
+      if (newValue === 2) {
+        // Llama a tu método aquí
+        console.log("--------------Se ha pasado del paso 1 al paso 2");
+        this.sendData();
+        this.stopTimer();
+      } // Verifica si se está pasando del paso 2 al paso 3
+      if (newValue === 3) {
+        // Llama a tu método aquí
+        console.log("--------------Se ha pasado del paso 2 al paso 3 -divideInterval----------------------------");
+        console.log(this.array_Places);
+        //llamar a insertar los puestos seleccionado
+        this.send();
+        // :loading="loading" @click="GenerateQr()"
+        this.GenerateQr();
+        
+
+      }
+     
+      },
+
+
     GenerateQr() {
       //simulando un correo valido
       //this.email_client2 = 'deylert89@gmail.com';
@@ -214,6 +370,8 @@ export default {
           let svgData = atob(this.qrCode);
           this.qrCodeBase64 = 'data:image/svg+xml;base64,' + btoa(svgData);
           console.log(this.qrCodeBase64);
+          this.redirectToAnotherPage = true;
+          this.startTimer();
         });
       if (this.qrCode) {
         this.showAlert = true;
@@ -306,23 +464,32 @@ export default {
 
           //ASIGNO A LOS CAMPOS DEL FORMULARIO TDS LOS DATOS
           if (client.professional_id != 0) {
-            console.log('siiiiiiiiiiiiiiiiiii');
-            this.type_professional = client.type;
+          console.log('-------client.type-----');
+          
+          this.type_professional = client.type;
+          console.log(client.type);
+            if (client.type != 0) {//es BARBERO O TECNICO
+
             this.name_professional = client.name;
             this.professionalId = client.professional_id;
             //llamo a la funcio a ver si es tecnico / profesional o /ninguno de los dos
             this.togglepuestoT2(this.type_professional);
+            }
+
+          else if (client.type == 0) {//es otro professional                   
+            this.professionalId = client.professional_id;
+            //ESTE ES PARA LOS QUE NO SON NI BARBERO NI TECNICOS
+            this.changeStep(3);
+            this.GenerateQrOtro(this.branch_id,this.email_client2,this.professionalId);
+            
 
           }
+        }
+
           else {
             this.changeStep(1);
-            this.type_professional = 0;
             console.log("NO COINCIDE EL CORREO");
           }
-
-
-
-
 
 
         })
@@ -335,7 +502,46 @@ export default {
 
     },
 
+    GenerateQrOtro(branch_id,email_client2,idProfesional) {
+      //simulando un correo valido
+      //this.email_client2 = 'deylert89@gmail.com';
+      this.loading = true
+      axios
+        .get('https://api2.simplifies.cl/api/qrCode-otros', {
+          params: {
+            branch_id: branch_id,
+            email: email_client2,
+            professional:idProfesional
+          }
+        })
+        .then((response) => {
+          this.qrCode = response.data;
+          let svgData = atob(this.qrCode);
+          this.qrCodeBase64 = 'data:image/svg+xml;base64,' + btoa(svgData);
+          console.log(this.qrCodeBase64);
+          this.redirectToAnotherPage = true;
+          this.startTimer();
+        });
+      if (this.qrCode) {
+        this.showAlert = true;
+        setTimeout(() => {
+          this.loading = false;
+          this.showAlert = false;
+        }, 5000);
+      }
+      else {
+        setTimeout(() => {
+          this.loading = false;
+          this.showQR = true
+        }, 2000);
 
+        setTimeout(() => {
+          this.activated = 1
+        }, 8000);
+      }
+
+
+    },
 
 
 
@@ -374,6 +580,33 @@ export default {
         this.selected.push(puestoTId);
       }
     },
+    mostrarPuestoT(value)//mando si es barbero o tecnico
+    {
+      if(value === 2)//barbero, muestro el seleccionar 1 solo
+      {
+        this.mostrarSheet = false;
+        return true;
+      }
+      else if(value === 1)//tecnico, muestro el seleccionar 1 solo
+      {
+        false
+        this.mostrarSheet = true;
+      }
+
+    },
+    togglepuestoBarber(puestoTId) {
+  // Limpiar la matriz de lugares seleccionados
+  this.array_Places = [];
+
+  // Agregar el puestoTId seleccionado
+  this.array_Places.push(puestoTId);
+
+  // Limpiar la matriz de elementos seleccionados
+  this.selected = [];
+
+  // Agregar el puestoTId seleccionado a la matriz de elementos seleccionados
+  this.selected.push(puestoTId);
+},
     isSelected(puestoTId) {
       return this.selected.includes(puestoTId);
     },
