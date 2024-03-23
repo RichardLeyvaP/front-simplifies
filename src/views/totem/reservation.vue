@@ -84,13 +84,13 @@
       <v-list-item-group v-model="selectedItem" active-class="deep-purple--text text--accent-4">
         <v-list-item :class="{ 'selected-item': selectedItem === 'option1' }"  @click="() => { SelectionRadio('ClientSi'); selectedItem = 'option1' }">
           <v-list-item-content>
-            <v-list-item-title class="text-h6">Si, soy Cliente</v-list-item-title>
+            <v-list-item-title class="text-h6">Soy Cliente</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
         <v-list-item :class="{ 'selected-item': selectedItem === 'option2' }" @click="selectedItem = 'option2'">
           <v-list-item-content>
-            <v-list-item-title class="text-h6">No, soy cliente nuevo</v-list-item-title>
+            <v-list-item-title class="text-h6">Es mi primera vez</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>

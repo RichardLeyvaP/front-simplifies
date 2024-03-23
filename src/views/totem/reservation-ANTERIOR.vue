@@ -112,7 +112,7 @@
     <v-btn
       v-bind="activatorProps"
       color="#F18254"
-      text="Si, soy cliente"
+      text="Soy cliente"
       variant="flat"
       @click="() => { SelectionRadio('ClientSi');isActive.value = false;  }"
     ></v-btn>
@@ -151,7 +151,7 @@
             <v-btn
       v-bind="activatorProps"
       color="#F18254"
-      text="NO, es mi primera vez"
+      text="Es mi primera vez"
       variant="flat"
       @click="() => { SelectionRadio('ClientNo')  }"
     ></v-btn>
