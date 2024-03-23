@@ -92,7 +92,7 @@
                
                <v-btn @click="prevStep">Volver</v-btn>
                <v-spacer></v-spacer>
-               <v-btn :disabled="advanceReserva2" @click="nextStep">Siguiente</v-btn>
+               <v-btn :disabled="advanceReserva2" @click="nextStep">Generar código</v-btn>
             
              </v-row>
         </template>
@@ -315,6 +315,10 @@ prevStep() {
   if(this.step > 1) {
     this.step--;
   }
+  if(this.step === 1)
+  {
+    this.selected = [];
+  }
   if(this.step === 2)
   { 
     //SI NO ES TYPE 1 NI 2
@@ -323,6 +327,8 @@ prevStep() {
     {
       //lo mando para el inicio, para el correo
       this.changeStep(1);
+      this.selected = [];
+
     }
     
   }
