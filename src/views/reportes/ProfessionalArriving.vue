@@ -240,7 +240,7 @@
         console.log(startDate);
         console.log(endDate);
         axios
-          .get('https://api2.simplifies.cl/api/arriving-branch-periodo', {
+          .get('http://127.0.0.1:8000/api/arriving-branch-periodo', {
             params: {
               branch_id: this.branch_id,
               startDate: startDate,
@@ -262,7 +262,7 @@
         const mes = `${month}`;
         const ano = `${year}`;
         axios
-          .get('https://api2.simplifies.cl/api/arriving-branch-month', {
+          .get('http://127.0.0.1:8000/api/arriving-branch-month', {
             params: {
               branch_id: this.branch_id,
               mes: mes,
@@ -279,13 +279,13 @@
         this.editedIndex = 1;
         this.state=true;
         axios
-          .get('https://api2.simplifies.cl/api/arriving-branch-date', {
+          .get('http://127.0.0.1:8000/api/arriving-branch-date', {
             params: {
               branch_id: this.branch_id
             }
           });
           axios
-      .get('https://api2.simplifies.cl/api/show-business', {
+      .get('http://127.0.0.1:8000/api/show-business', {
           params: {
             business_id: this.business_id
           }

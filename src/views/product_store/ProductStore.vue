@@ -134,7 +134,7 @@
      <template v-slot:item.name="{ item }">
   
      <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-       <v-img :src="'https://api2.simplifies.cl/api/images/'+item.image_product" alt="image"></v-img>
+       <v-img :src="'http://127.0.0.1:8000/api/images/'+item.image_product" alt="image"></v-img>
      </v-avatar>
      {{ item.name }}
      </template>
@@ -294,7 +294,7 @@
   },
   updatedstores(){
     axios
-     .get('https://api2.simplifies.cl/api/store-show', {
+     .get('http://127.0.0.1:8000/api/store-show', {
       params: {
         branch_id: this.editedItem.branch_idM
       }
@@ -305,7 +305,7 @@
   },
   initialize() {
    axios
-     .get('https://api2.simplifies.cl/api/productstore-show', {
+     .get('http://127.0.0.1:8000/api/productstore-show', {
       params: {
         branch_id: this.branch_id
       }
@@ -314,7 +314,7 @@
        this.results = response.data.products;
      });
      axios
-     .get('https://api2.simplifies.cl/api/store-show', {
+     .get('http://127.0.0.1:8000/api/store-show', {
       params: {
         branch_id: this.branch_id
       }
@@ -323,12 +323,12 @@
        this.stores = response.data.stores;
      });
      axios
-     .get('https://api2.simplifies.cl/api/product')
+     .get('http://127.0.0.1:8000/api/product')
      .then((response) => {
        this.products = response.data.products;
      });
      axios
-      .get('https://api2.simplifies.cl/api/show-business', {
+      .get('http://127.0.0.1:8000/api/show-business', {
           params: {
             business_id: this.business_id
           }
@@ -368,7 +368,7 @@
     this.data.product_id = this.editedItem.product_id;
     this.data.store_id = this.editedItem.store_id;
    axios
-     .post('https://api2.simplifies.cl/api/productstore-destroy', this.data)
+     .post('http://127.0.0.1:8000/api/productstore-destroy', this.data)
      .then(() => {
        this.initialize();
        this.message_delete = true
@@ -403,7 +403,7 @@
     console.log(this.data);
     console.log('editar');
      axios
-       .put('https://api2.simplifies.cl/api/productstore', this.data)
+       .put('http://127.0.0.1:8000/api/productstore', this.data)
        .then(() => {
          this.initialize();
         this.showAlert("success","Asignacion editada correctamente", 3000)
@@ -419,7 +419,7 @@
      this.data.product_quantity = this.editedItem.product_quantityM;
      this.data.branch_id = this.branch_id;
      axios
-       .post('https://api2.simplifies.cl/api/move-product-store', this.data)
+       .post('http://127.0.0.1:8000/api/move-product-store', this.data)
        .then(() => {
          this.initialize();
          this.showAlert("success","Producto asignado correctamente", 3000)
@@ -435,7 +435,7 @@
      this.data.product_quantity = this.editedItem.product_quantity;
      this.data.branch_id = this.branch_id;
      axios
-       .post('https://api2.simplifies.cl/api/productstore', this.data)
+       .post('http://127.0.0.1:8000/api/productstore', this.data)
        .then(() => {
          this.initialize();
          this.showAlert("success","Producto asignado correctamente", 3000)

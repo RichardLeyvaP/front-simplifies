@@ -113,7 +113,7 @@
                 <template v-slot:item.name="{ item }">
 
                     <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                        <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_service" alt="image"></v-img>
+                        <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_service" alt="image"></v-img>
                     </v-avatar>
                     {{ item.name }}
                 </template>
@@ -150,7 +150,7 @@
                         <template v-slot:item.name="{ item }">
 
                             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+                                <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url" alt="image"></v-img>
                             </v-avatar>
                             {{ item.name }}
                         </template>
@@ -353,7 +353,7 @@ export default {
         },
         initialize() {
             axios
-                .get('https://api2.simplifies.cl/api/professionalservice-show', {
+                .get('http://127.0.0.1:8000/api/professionalservice-show', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -362,7 +362,7 @@ export default {
                     this.results = response.data.branchServices;
                 });
             axios
-                .get('https://api2.simplifies.cl/api/branch-service-show', {
+                .get('http://127.0.0.1:8000/api/branch-service-show', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -371,7 +371,7 @@ export default {
                     this.services = response.data.services;
                 });
             axios
-                .get('https://api2.simplifies.cl/api/show-business', {
+                .get('http://127.0.0.1:8000/api/show-business', {
                     params: {
                         business_id: this.business_id
                     }
@@ -390,7 +390,7 @@ export default {
             this.data.branch_id = this.branch_id;
             this.data.service_id = this.editedItem.service_id;
             axios
-                .post('https://api2.simplifies.cl/api/branchservice-destroy', this.data)
+                .post('http://127.0.0.1:8000/api/branchservice-destroy', this.data)
                 .then(() => {
                     this.initialize();
                     this.message_delete = true
@@ -421,7 +421,7 @@ export default {
                 this.data.branch_id = this.branch_id;
                 this.data.service_id = this.editedItem.service_id;
                 axios
-                    .post('https://api2.simplifies.cl/api/branchservice', this.data)
+                    .post('http://127.0.0.1:8000/api/branchservice', this.data)
                     .then(() => {
                         this.initialize();
                         this.showAlert("success", "Producto asignado correctamente", 3000)
@@ -439,7 +439,7 @@ export default {
             this.branch_service_id = item.id;
             console.log(item.id);
             axios
-                .get('https://api2.simplifies.cl/api/branch-service-professionals', {
+                .get('http://127.0.0.1:8000/api/branch-service-professionals', {
                     params: {
                         branch_service_id: item.id
                     }
@@ -449,7 +449,7 @@ export default {
                     console.log('imprime permissions');
                 });
                 axios
-                .get('https://api2.simplifies.cl/api/professionals-branch-service', {
+                .get('http://127.0.0.1:8000/api/professionals-branch-service', {
                     params: {
                         branch_service_id: item.id
                     }
@@ -469,7 +469,7 @@ export default {
         this.data.professional_id = this.professional_id;
       this.data.branch_service_id = this.branch_service_id;
       axios
-        .post('https://api2.simplifies.cl/api/professionalservice', this.data)
+        .post('http://127.0.0.1:8000/api/professionalservice', this.data)
         .then(() => {
          this.professional_id = '',
           this.dialogAddProfessionals = false;
@@ -496,7 +496,7 @@ export default {
         branch_service_id: this.branch_service_id
       };
       axios
-        .post('https://api2.simplifies.cl/api/professionalservice-destroy', request)
+        .post('http://127.0.0.1:8000/api/professionalservice-destroy', request)
         .then(() => {
           this.dialogDeleteProfessional = false
           this.charge_id = '',

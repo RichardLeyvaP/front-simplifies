@@ -258,7 +258,7 @@ export default {
       console.log(startDate);
       console.log(endDate);
       axios
-        .get('https://api2.simplifies.cl/api/arriving-late-branch-periodo', {
+        .get('http://127.0.0.1:8000/api/arriving-late-branch-periodo', {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,
@@ -280,7 +280,7 @@ export default {
       const mes = `${month}`;
       const ano = `${year}`;
       axios
-        .get('https://api2.simplifies.cl/api/arriving-late-branch-month', {
+        .get('http://127.0.0.1:8000/api/arriving-late-branch-month', {
           params: {
             branch_id: this.branch_id,
             mes: mes,
@@ -297,7 +297,7 @@ export default {
       this.editedIndex = 1;
       this.state=true;
       axios
-        .get('https://api2.simplifies.cl/api/arriving-late-branch-date', {
+        .get('http://127.0.0.1:8000/api/arriving-late-branch-date', {
           params: {
             branch_id: this.branch_id
           }
@@ -305,7 +305,7 @@ export default {
           this.results = response.data;
         })
         axios
-      .get('https://api2.simplifies.cl/api/show-business', {
+      .get('http://127.0.0.1:8000/api/show-business', {
           params: {
             business_id: this.business_id
           }
