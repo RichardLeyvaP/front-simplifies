@@ -156,8 +156,6 @@
 
                                 <v-list-item-content>
                                     <v-list-item-title class="text-h6">{{ serviceA.name }}</v-list-item-title>
-                                    <v-list-item-title class="text-h8">% Ganancia: {{ serviceA.profit_percentaje }}</v-list-item-title>
-                                    <v-list-item-title class="text-h8">Tipo: {{ serviceA.type_service }}</v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
                             <v-divider></v-divider>
