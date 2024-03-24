@@ -173,10 +173,20 @@ export default {
     },
   },
   mounted() {    
-    this.branch_id = LocalStorageService.getItem("branch_id") ? 1 : LocalStorageService.getItem("branch_id"); 
     this.business_id = LocalStorageService.getItem("business_id");
-    console.log(this.business_id);
+    this.branch_id = LocalStorageService.getItem("branch_id"); 
+    axios
+      .get('http://127.0.0.1:8000/api/show-business', {
+          params: {
+            business_id: this.business_id
+          }
+        })
+      .then((response) => {
+        this.branches = response.data.branches;
+        this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
     this.initialize();
+      });
+    console.log(this.business_id);
   },
 
   methods: {
@@ -237,15 +247,7 @@ export default {
           this.results = response.data;
           console.log(this.results);
         });
-        axios
-      .get('http://127.0.0.1:8000/api/show-business', {
-          params: {
-            business_id: this.business_id
-          }
-        })
-      .then((response) => {
-        this.branches = response.data.branches;
-      });
+        
     },
 
   },
