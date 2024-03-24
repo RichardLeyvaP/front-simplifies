@@ -130,8 +130,7 @@
 <script>
 
 import axios from "axios";
-import { Bar } from 'vue-chartjs'
-import { Line as LineChart } from 'vue-chartjs'
+import { Bar } from 'vue-chartjs';
 
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js'
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement,)
@@ -140,7 +139,7 @@ import * as XLSX from 'xlsx';
 import LocalStorageService from "@/LocalStorageService";
 export default {
     name: 'LoginPage',
-    components: { Bar, LineChart },
+    components: { Bar},
     props: {
         value: {
             type: String
@@ -242,7 +241,7 @@ export default {
         this.branch_id = LocalStorageService.getItem("branch_id");
         this.business_id = LocalStorageService.getItem("business_id");
         this.charge_id = LocalStorageService.getItem('charge_id');
-        this.charge = LocalStorageService.getItem('charge');
+        this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         console.log('this.charge')
         console.log(this.charge)
         axios
@@ -257,7 +256,7 @@ export default {
 
                 this.initialize()
             });
-        if (this.charge_id === '4') {
+        if (this.charge === 'Administrador') {
             // Mostrar la fila con Autocomplete
             this.mostrarFila = true;
         }

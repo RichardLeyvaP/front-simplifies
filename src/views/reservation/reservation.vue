@@ -500,8 +500,9 @@
       this.charge_id = LocalStorageService.getItem('charge_id');
     this.branch_id = LocalStorageService.getItem('branch_id');
     this.nameBranch = LocalStorageService.getItem('nameBranch');
+    this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     console.log(this.branch_id);
-    if (this.charge_id === '4') {
+    if (this.charge === 'Administrador') {
         // Mostrar la fila con Autocomplete
         this.mostrarFila = true;
       }
