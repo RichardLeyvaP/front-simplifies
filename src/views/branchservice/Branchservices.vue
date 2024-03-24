@@ -103,8 +103,9 @@
             <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
                 hide-details>
             </v-text-field>
-            <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search" class="elevation-1"
-                no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles" >
+            <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
+                :search="search" class="elevation-1" no-data-text="No hay datos disponibles"
+                no-results-text="No hay datos disponibles">
                 <template v-slot:top>
 
                     <v-divider class="mx-4" inset vertical></v-divider>
@@ -146,7 +147,8 @@
                     <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
                         hide-details></v-text-field>
                     <v-data-table :headers="headers2" :items="branchServiceProfessionals" :search="search2"
-                        class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+                        class="elevation-1" :items-per-page-text="'Elementos por páginas'"
+                        no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
                         <template v-slot:item.name="{ item }">
 
                             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
@@ -173,56 +175,56 @@
         </v-dialog>
 
         <v-dialog v-model="dialogAddProfessionals" width="500">
-        <v-card>
-          <v-toolbar color="#F18254">
-            <span class="text-subtitle-2 ml-4">Asignar Trabajador</span>
-          </v-toolbar>
-          <v-card-text class="mt-2 mb-2">
-            <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-              <v-container>
-                <v-row>
-                  <v-col cols="12" md="12">
-                    <v-autocomplete v-model="professional_id" :items="professionals" label="Profesional"
-                      prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined"
-                      :rules="selectRules"></v-autocomplete>
-                  </v-col>
-                </v-row>
-              </v-container>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="#E7E9E9" variant="flat" @click="closeProfessional">
-                  Cancelar
-                </v-btn>
-                <v-btn color="#F18254" variant="flat" @click="saveProfessional" :disabled="!valid">
-                  Aceptar
-                </v-btn>
-              </v-card-actions>
-            </v-form>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
-      <v-dialog v-model="dialogDeleteProfessional" width="500">
-        <v-card>
+            <v-card>
+                <v-toolbar color="#F18254">
+                    <span class="text-subtitle-2 ml-4">Asignar Trabajador</span>
+                </v-toolbar>
+                <v-card-text class="mt-2 mb-2">
+                    <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="12">
+                                    <v-autocomplete v-model="professional_id" :items="professionals" label="Profesional"
+                                        prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id"
+                                        variant="underlined" :rules="selectRules"></v-autocomplete>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                        <v-divider></v-divider>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="#E7E9E9" variant="flat" @click="closeProfessional">
+                                Cancelar
+                            </v-btn>
+                            <v-btn color="#F18254" variant="flat" @click="saveProfessional" :disabled="!valid">
+                                Aceptar
+                            </v-btn>
+                        </v-card-actions>
+                    </v-form>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialogDeleteProfessional" width="500">
+            <v-card>
 
-          <v-toolbar color="red">
-            <span class="text-subtitle-2 ml-4"> Eliminar Servicio asignado a profesional</span>
-          </v-toolbar>
+                <v-toolbar color="red">
+                    <span class="text-subtitle-2 ml-4"> Eliminar Servicio asignado a profesional</span>
+                </v-toolbar>
 
-          <v-card-text class="mt-2 mb-2"> ¿Desea eliminar este servicio a este professional?</v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="#E7E9E9" variant="flat" @click="closerequestProfessional">
-              Cancelar
-            </v-btn>
-            <v-btn color="#F18254" variant="flat" @click="professionalsDelete">
-              Aceptar
-            </v-btn>
+                <v-card-text class="mt-2 mb-2"> ¿Desea eliminar este servicio a este professional?</v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="#E7E9E9" variant="flat" @click="closerequestProfessional">
+                        Cancelar
+                    </v-btn>
+                    <v-btn color="#F18254" variant="flat" @click="professionalsDelete">
+                        Aceptar
+                    </v-btn>
 
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-card>
 
 
@@ -261,7 +263,7 @@ export default {
         headers: [
             //{ title: 'Almacén', align: 'start', value: 'direccionStore' },
             { title: 'Nombre', key: 'name' },
-            { title: 'Tipo Servicio', key: 'type_service' },
+            //{ title: 'Tipo Servicio', key: 'type_service' },
             { title: 'Duración', key: 'duration_service' },
             { title: 'Descripción', key: 'service_comment' },
             { title: 'Precio', align: 'start', value: 'price_service' },
@@ -319,13 +321,24 @@ export default {
     mounted() {
         this.business_id = LocalStorageService.getItem('business_id');
         this.charge_id = LocalStorageService.getItem('charge_id');
-        this.branch_id = LocalStorageService.getItem('branch_id') ? 1 : LocalStorageService.getItem('branch_id');
+        this.branch_id = LocalStorageService.getItem('branch_id');
+        axios
+            .get('http://127.0.0.1:8000/api/show-business', {
+                params: {
+                    business_id: this.business_id
+                }
+            })
+            .then((response) => {
+                this.branches = response.data.branches;
+                this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+
+                this.initialize();
+            });
         if (this.charge_id === '4') {
             // Mostrar la fila con Autocomplete
             this.mostrarFila = true;
         }
         console.log(this.charge_id);
-        this.initialize()
     },
 
     methods: {
@@ -370,16 +383,6 @@ export default {
                 .then((response) => {
                     this.services = response.data.services;
                 });
-            axios
-                .get('http://127.0.0.1:8000/api/show-business', {
-                    params: {
-                        business_id: this.business_id
-                    }
-                })
-                .then((response) => {
-                    this.branches = response.data.branches;
-                });
-
         },
 
         deleteItem(item) {
@@ -448,7 +451,7 @@ export default {
                     this.branchServiceProfessionals = response.data.professionals;
                     console.log('imprime permissions');
                 });
-                axios
+            axios
                 .get('http://127.0.0.1:8000/api/professionals-branch-service', {
                     params: {
                         branch_service_id: item.id
@@ -460,52 +463,52 @@ export default {
             this.dialogProfessionals = true;
         },
         closeProfessional() {
-      this.dialogAddProfessionals = false;
-      this.branch_service_id = '';
-      this.showProfessionals(this.branchServiceSelect);
-    },
-    saveProfessional() {
-      this.valid = false,
-        this.data.professional_id = this.professional_id;
-      this.data.branch_service_id = this.branch_service_id;
-      axios
-        .post('http://127.0.0.1:8000/api/professionalservice', this.data)
-        .then(() => {
-         this.professional_id = '',
-          this.dialogAddProfessionals = false;
-          this.showProfessionals(this.branchServiceSelect);
-          this.showAlert("success", "Permiso asignado correctamente", 3000);
-        })
-    },
-    closeProfessionalRequest(item) {
-      console.log(item);
-      this.dialogDeleteProfessional = true
-      //this.editedItem.branch_id=item.id
-      this.professional_id = item.professional_id;
-      this.branch_service_id = item.branch_service_id;
-    },
-    closerequestProfessional() {
-      this.dialogDeleteProfessional = false;
-      this.branch_service_id = '',
-         this.professional_id_id = '',
-      this.showPermission(this.branchServiceSelect)
-    },
-    professionalsDelete() {
-      let request = {
-        professional_id: this.professional_id,
-        branch_service_id: this.branch_service_id
-      };
-      axios
-        .post('http://127.0.0.1:8000/api/professionalservice-destroy', request)
-        .then(() => {
-          this.dialogDeleteProfessional = false
-          this.charge_id = '',
-         this.permission_id = '',
-          console.log(this.branchServiceSelect);
-          this.showProfessionals(this.branchServiceSelect)
-          this.showAlert("success", "Asignación de profesional a servicio hecha correctamente", 3000)
-        })
-    },
+            this.dialogAddProfessionals = false;
+            this.branch_service_id = '';
+            this.showProfessionals(this.branchServiceSelect);
+        },
+        saveProfessional() {
+            this.valid = false,
+                this.data.professional_id = this.professional_id;
+            this.data.branch_service_id = this.branch_service_id;
+            axios
+                .post('http://127.0.0.1:8000/api/professionalservice', this.data)
+                .then(() => {
+                    this.professional_id = '',
+                        this.dialogAddProfessionals = false;
+                    this.showProfessionals(this.branchServiceSelect);
+                    this.showAlert("success", "Permiso asignado correctamente", 3000);
+                })
+        },
+        closeProfessionalRequest(item) {
+            console.log(item);
+            this.dialogDeleteProfessional = true
+            //this.editedItem.branch_id=item.id
+            this.professional_id = item.professional_id;
+            this.branch_service_id = item.branch_service_id;
+        },
+        closerequestProfessional() {
+            this.dialogDeleteProfessional = false;
+            this.branch_service_id = '',
+                this.professional_id_id = '',
+                this.showPermission(this.branchServiceSelect)
+        },
+        professionalsDelete() {
+            let request = {
+                professional_id: this.professional_id,
+                branch_service_id: this.branch_service_id
+            };
+            axios
+                .post('http://127.0.0.1:8000/api/professionalservice-destroy', request)
+                .then(() => {
+                    this.dialogDeleteProfessional = false
+                    this.charge_id = '',
+                        this.permission_id = '',
+                        console.log(this.branchServiceSelect);
+                    this.showProfessionals(this.branchServiceSelect)
+                    this.showAlert("success", "Asignación de profesional a servicio hecha correctamente", 3000)
+                })
+        },
     },
 }
 </script>

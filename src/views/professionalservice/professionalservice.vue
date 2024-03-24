@@ -123,6 +123,7 @@
                       </v-text-field>
 
                       <v-switch
+                      v-if="mostrarSwitch"
                       color="orange-darken-3"
     v-model="especial"
     label="Especial"
@@ -198,6 +199,7 @@ export default {
       tabBar: null,
         barberAleatorie:false,
         verificate : false,
+        mostrarSwitch: false,
         clientRegister:[],
         radios: 'ClientNo',
         message:"Los datos para realizar la reserva están completos. Se enviará correo electrónico con los datos de la reserva",
@@ -315,12 +317,22 @@ export default {
     mounted() {
         this.business_id = LocalStorageService.getItem('business_id');
     this.charge_id = LocalStorageService.getItem('charge_id');
-  this.branch_id = LocalStorageService.getItem('branch_id') ? 1 : LocalStorageService.getItem('branch_id');
+  this.branch_id = LocalStorageService.getItem('branch_id');
+  axios
+      .get('http://127.0.0.1:8000/api/show-business', {
+          params: {
+            business_id: this.business_id
+          }
+        })
+      .then((response) => {
+        this.branches = response.data.branches;
+        this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+        this.initialize();
+      });
   if (this.charge_id === '4') {
       // Mostrar la fila con Autocomplete
       this.mostrarFila = true;
     }
-        this.initialize();
 
         this.arrayEvents = [...Array(1)].map(() => {
             const day = Math.floor(Math.random() * 30)
@@ -356,15 +368,6 @@ export default {
       this.snackbar = true
     },
         initialize(){
-            axios
-      .get('http://127.0.0.1:8000/api/show-business', {
-          params: {
-            business_id: this.business_id
-          }
-        })
-      .then((response) => {
-        this.branches = response.data.branches;
-      });
       //this.chargeServices();
         this.chargeCalendarsBranches();
         this. chargeProfessionals();
@@ -605,7 +608,6 @@ getServicesProfessional()
 {
   //LLAMAR AL METODO
   //DADO EL ID DEL PROFESSIONAL Y LA BRANCH
-
   const idProfessional = this.professional[0];
   const idBranch = this.branch_id;
 
@@ -620,6 +622,15 @@ getServicesProfessional()
                 .then((response) => {
                     console.log(response.data)
                     this.services = response.data.branchServices;
+                    if (this.services && this.services.length > 0) {
+    this.mostrarSwitch = true;
+    console.log('this.mostrarSwitch');
+    console.log(this.mostrarSwitch);
+} else {
+    this.mostrarSwitch = false;
+    console.log('this.mostrarSwitch');
+    console.log(this.mostrarSwitch);
+}
                 })
                 .catch((err) => {
                     console.log(err, "error");
@@ -707,6 +718,7 @@ toggleService3(service)
                 .then((response) => {
                     console.log(response.data)
                     this.services = response.data.branchServices;
+                    
                 })
                 .catch((err) => {
                     console.log(err, "error");

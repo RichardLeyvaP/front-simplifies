@@ -365,6 +365,13 @@ const routes = [
           import( "@/views/schedule/Schedule.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_schedules"] },
       },
+      {
+        path: "/finance-branches",
+        name: "Finanzas por sucursales",
+        component: () =>
+          import( "@/views/reportes/FinanceBranches.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_finance_branches"] },
+      },
     ],
   },
 ];

@@ -143,7 +143,8 @@ export default {
       { icon: "mdi-timer", title: "Profesionales Mejor Asistencias", to: "professional-arriving", value: "professional-arriving", permission: "view_best_attendance" },
       { icon: "mdi-account-multiple", title: "Visitas por Clientes", to: "clients-visist", value: "clients-visist", permission: "view_clients_frecuence" },
       { icon: "mdi-trending-up", title: "Productos más vendidos", to: "product-mostsolt", value: "product-mostsolt", permission: "products_mostsold" },
-      { icon: "mdi-shuffle", title: "Reposición de Productos", to: "product-stock", value: "product-stock", permission: "products_stock" },  
+      { icon: "mdi-shuffle", title: "Reposición de Productos", to: "product-stock", value: "product-stock", permission: "products_stock" },
+      { icon: "mdi-currency-usd", title: "Finanzas por Sucursales", to: "finance-branches", value: "finance-branches", permission: "view_finance_branches" },    
     ],
     academias: [
       { icon: "mdi-school", title: "Academia", to: "academy", value: "academy", permission: "view_academy" },

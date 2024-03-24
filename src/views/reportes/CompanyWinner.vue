@@ -174,7 +174,7 @@ export default {
     },
   },
 
-  created() {
+  mounted() {
     
     this.business_id = LocalStorageService.getItem("business_id");
     this.initialize();

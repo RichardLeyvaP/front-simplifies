@@ -166,9 +166,20 @@ export default {
   },
   mounted() {
     // Recuperar datos del localStorage al cargar la aplicación
-    this.branch_id = LocalStorageService.getItem('branch_id') ? 1 : LocalStorageService.getItem('branch_id');
+    this.branch_id = LocalStorageService.getItem('branch_id');
     this.professional_id = LocalStorageService.getItem('professional_id');
-    this.initialize();
+    axios
+            .get('http://127.0.0.1:8000/api/show-business', {
+                params: {
+                    business_id: this.business_id
+                }
+            })
+            .then((response) => {
+                this.branches = response.data.branches;
+                this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+
+                this.initialize()
+            });
   },
   methods: {
     updateDate(val) {
