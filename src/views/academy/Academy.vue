@@ -189,7 +189,7 @@
       },
     },
   
-    created() {
+    mounted() {
       this.business_id = LocalStorageService.getItem('business_id');
       //this.business_id = userTokenStore.business_id;
       this.initialize();

@@ -186,15 +186,27 @@ export default {
 
   mounted() {
     //this.branch_id = 1;
-    this.branch_id = LocalStorageService.getItem("branch_id") ? 1 : LocalStorageService.getItem("branch_id");
+    this.branch_id = LocalStorageService.getItem("branch_id");
     this.business_id = LocalStorageService.getItem("business_id");
     this.charge_id = LocalStorageService.getItem('charge_id');
-    if (this.charge_id === '4') {
+    this.charge = JSON.parse(LocalStorageService.getItem("charge"));
+    axios
+            .get('http://127.0.0.1:8000/api/show-business', {
+                params: {
+                    business_id: this.business_id
+                }
+            })
+            .then((response) => {
+                this.branches = response.data.branches;
+                this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+
+                this.initialize()
+            });
+    if (this.charge === 'Administrador') {
       // Mostrar la fila con Autocomplete
       this.mostrarFila = true;
     }
     console.log(this.branch_id);
-    this.initialize();
   },
 
   methods: {
@@ -287,15 +299,6 @@ export default {
     initialize() {
       this.editedIndex = 1;
       axios
-        .get('http://127.0.0.1:8000/api/branch_professionals_winner', {
-          params: {
-            branch_id: this.branch_id
-          }
-        })
-        .then((response) => {
-          this.results = response.data;
-        });
-      axios
         .get('http://127.0.0.1:8000/api/show-business', {
           params: {
             business_id: this.business_id
@@ -304,6 +307,7 @@ export default {
         .then((response) => {
           this.branches = response.data.branches;
         });
+      
     },
 
   },
