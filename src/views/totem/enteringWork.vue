@@ -362,6 +362,7 @@ prevStep() {
     GenerateQr() {
       //simulando un correo valido
       //this.email_client2 = 'deylert89@gmail.com';
+      
       this.loading = true
       axios
         .get('http://127.0.0.1:8000/api/qrCode', {
@@ -372,12 +373,29 @@ prevStep() {
           }
         })
         .then((response) => {
+          const statusCode = response.status;
+          
+          if(statusCode == 400)
+          {
+            this.changeStep(1);
+            console.log("NO ES DE LA BRANCH SELECCIONADA");
+
+          }
+
+
+
+          else if(statusCode == 200)
+          {
+
+
           this.qrCode = response.data;
           let svgData = atob(this.qrCode);
           this.qrCodeBase64 = 'data:image/svg+xml;base64,' + btoa(svgData);
           console.log(this.qrCodeBase64);
           this.redirectToAnotherPage = true;
           this.startTimer();
+          }
+
         });
       if (this.qrCode) {
         this.showAlert = true;
@@ -509,6 +527,7 @@ prevStep() {
     },
 
     GenerateQrOtro(branch_id,email_client2,idProfesional) {
+    
       //simulando un correo valido
       //this.email_client2 = 'deylert89@gmail.com';
       this.loading = true
@@ -522,13 +541,31 @@ prevStep() {
         })
         .then((response) => {
           this.qrCode = response.data;
-          let svgData = atob(this.qrCode);
+          // verifico si coincide la branch
+          const statusCode = response.status;
+          
+          if(statusCode == 400)
+          {
+            this.changeStep(1);
+            console.log("NO ES DE LA BRANCH SELECCIONADA");
+
+          }
+          else if(statusCode == 200)
+          {
+            let svgData = atob(this.qrCode);
           this.qrCodeBase64 = 'data:image/svg+xml;base64,' + btoa(svgData);
           console.log(this.qrCodeBase64);
           this.redirectToAnotherPage = true;
           this.startTimer();
+
+          }
+         
+         
         });
-      if (this.qrCode) {
+      
+        if(this.qrCode != 400 && this.qrCode != 500 && this.qrCode != '')
+        {
+          if (this.qrCode) {
         this.showAlert = true;
         setTimeout(() => {
           this.loading = false;
@@ -545,6 +582,15 @@ prevStep() {
           this.activated = 1
         }, 8000);
       }
+
+        }
+        else
+        {
+          this.changeStep(1);
+            console.log("NO ES DE LA BRANCH SELECCIONADA");
+
+        }
+     
 
 
     },
