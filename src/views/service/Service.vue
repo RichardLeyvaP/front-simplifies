@@ -200,7 +200,7 @@ export default {
       { title: 'Nombre', key: 'name' },
       { title: 'Simultaneo', key: 'simultaneou' },
       { title: 'Precio', key: 'price_service' },
-      { title: 'Tipo', key: 'type_service' },
+      //{ title: 'Tipo', key: 'type_service' },
       { title: '% Ganancia', key: 'profit_percentaje' },
       { title: 'Duración', align: 'start', value: 'duration_service' },
       { title: 'Comentario', align: 'start', value: 'service_comment' },
