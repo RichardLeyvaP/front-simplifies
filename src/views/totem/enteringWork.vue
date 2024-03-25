@@ -360,6 +360,7 @@ prevStep() {
 
 
     GenerateQr() {
+      alert('estoy mandando aqyui es barbero ni tecnico'); 
       //simulando un correo valido
       //this.email_client2 = 'deylert89@gmail.com';
       this.loading = true
@@ -455,9 +456,11 @@ prevStep() {
 
     },
     sendData() {
+      console.log('-------------------this.branch_id-----------------');
+      console.log(this.branch_id);
 
       // Realiza la solicitud POST Y BUSCO LOS DATOS DEL CLIENTE 
-      axios.get(`http://127.0.0.1:8000/api/verify-tec-prof?email=${this.email_client2}`)
+      axios.get(`http://127.0.0.1:8000/api/verify-tec-prof?email=${this.email_client2}&branch_id=${this.branch_id}`)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.clientRegister = response.data.professionals;
@@ -482,7 +485,8 @@ prevStep() {
             this.togglepuestoT2(this.type_professional);
             }
 
-          else if (client.type == 0) {//es otro professional                   
+          else if (client.type == 0) {//es otro professional    
+            alert('estoy mandando aqyui no es barbero ni tecnico');               
             this.professionalId = client.professional_id;
             //ESTE ES PARA LOS QUE NO SON NI BARBERO NI TECNICOS
             this.changeStep(3);
