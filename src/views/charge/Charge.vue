@@ -41,7 +41,7 @@
                     <v-row>
                       <v-col cols="12" md="6">
                         <v-text-field v-model="editedItem.name" clearable label="Nombre del Cargo"
-                          prepend-icon="mdi-family-tree" variant="underlined" :rules="nameRules">
+                          prepend-icon="mdi-family-tree" variant="underlined" :rules="nameRules" :disabled="(editedItem.name === 'Barbero' || editedItem.name === 'Encargado' || editedItem.name === 'Tecnico' || editedItem.name === 'Coordinador')">
                         </v-text-field>
                       </v-col>
 
@@ -184,9 +184,13 @@
           <v-icon size="25" color="green" @click="showPermission(item)">
             mdi-lock
           </v-icon>
-          <v-icon size="25" color="red" @click="deleteItem(item)">
+          <v-icon size="25" :color="(item.name === 'Barbero' || item.name === 'Encargado' || item.name === 'Tecnico' || item.name === 'Coordinador') ? 'grey' : 'red'"
+        @click="!(item.name === 'Barbero' || item.name === 'Encargado' || item.name === 'Tecnico' || item.name === 'Coordinador') && deleteItem(item)">
+  mdi-delete
+</v-icon>
+          <!--<v-icon size="25" color="red" @click="deleteItem(item)">
             mdi-delete
-          </v-icon>
+          </v-icon>-->
         </template>
       </v-data-table>
     </v-card-text>

@@ -41,7 +41,7 @@
                     <v-row>
                       <v-col cols="12" md="12">
                         <v-text-field v-model="editedItem.name" clearable label="Nombre de la Regla de convivencia"
-                          prepend-icon="mdi-ruler" variant="underlined" :rules="nameRules" :disabled="editedItem.automatic === 1">
+                          prepend-icon="mdi-ruler" variant="underlined" :rules="nameRules">
                         </v-text-field>
                       </v-col>
                     </v-row>
