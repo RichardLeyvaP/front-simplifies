@@ -1,16 +1,15 @@
 <template >
     <div class="app-container">
     <v-container>
-        <v-stepper   bg-color="" v-model="step" :items="items" hide-actions @update:model-value="handleStepChange">
-         
-          <!-- SERVICIOS -->
+        <v-stepper prev-text="Anterior"  next-text="Siguiente"   bg-color="" v-model="step" :items="items" show-actions @update:model-value="handleStepChange">
+           <!-- SERVICIOS -->
             <template v-slot:item.1>
                 <h3 class="text-h6">Servicios</h3>
 
                 <v-sheet border>
                     <v-list>
                         <v-list-item-group v-model="selected" multiple active-class="deep-purple--text text--accent-4">
-                            <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + service.image_service"
+                            <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + service.image_service"
                                 v-for="service in services" :key="service.id" @click="toggleService(service.id)"
                                 :class="{ 'selected-item': isSelected(service.id) }" class="pt-4 pb-4">
 
@@ -22,15 +21,6 @@
                         </v-list-item-group>
                     </v-list>
                 </v-sheet>
-                <v-container>
-                  <!-- BOTONES -->
-              <v-row class="mt-1">
-                <v-spacer></v-spacer>
-                <v-btn :disabled="advanceReserva1" @click="nextStep">Siguiente</v-btn>             
-              </v-row>
-              
-            </v-container>
-
             </template>
             
             <!-- BARBEROS -->
@@ -42,17 +32,17 @@
                 <v-sheet border>
                     <v-list>
                         <v-list-item-group v-model="professional" active-class="deep-purple--text text--accent-4">
-                            <v-list-item  :prepend-avatar="'http://127.0.0.1:8000/api/images/professionals/barber-aleatore.png' "
+                            <v-list-item  :prepend-avatar="'https://api2.simplifies.cl/api/images/professionals/barber-aleatore.png' "
                                
                                 @click="toggleService2(-99)"
-                                :class="{ 'selected-item': this.barberAleatorie }" class="pt-4 pb-4">
+                                :class="{ 'selected-item': barberAleatorie }" class="pt-4 pb-4">
                                 <v-list-item-content>
                                     <v-list-item-title class="text-h6">Barbero Aleatoriamente (Servicio inmediato)</v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
-                            <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + professional.image_url"
+                            <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + professional.image_url"
                                 v-for="professional in professionals" :key="professional.id"
-                                @click="toggleService2(professional)"
+                                @click="toggleService2(professional.id)"
                                 :class="{ 'selected-item': isProfessional(professional.id) }" class="pt-4 pb-4">
 
                                 <v-list-item-content>
@@ -64,76 +54,118 @@
                         </v-list-item-group>
                     </v-list>
                 </v-sheet>
-                <v-container>
-              <v-row class="mt-1">
-               
-                <v-btn @click="prevStep">Volver</v-btn>
-                <v-spacer></v-spacer>
-                <v-btn :disabled="advanceReserva2" @click="nextStep">Siguiente</v-btn>
-             
-              </v-row>
-            </v-container>
             </template>
 
-         
-
+           <!-- HORARIOS DISPONIBLES -->
             <template v-slot:item.3>
-  <h3 class="text-h6">Opciones disponibles</h3>
-  <v-sheet border>
-    <v-list>
-      <v-list-item-group v-model="selectedItem" active-class="deep-purple--text text--accent-4">
-        <v-list-item :class="{ 'selected-item': selectedItem === 'option1' }"  @click="() => { SelectionRadio('ClientSi'); selectedItem = 'option1' }">
-          <v-list-item-content>
-            <v-list-item-title class="text-h6">Soy Cliente</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+                <v-sheet border>
+                <v-row>
 
-        <v-list-item :class="{ 'selected-item': selectedItem === 'option2' }" @click="selectedItem = 'option2'">
-          <v-list-item-content>
-            <v-list-item-title class="text-h6">Es mi primera vez</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
-    <v-dialog v-model="showDialog" max-width="400px">
-      <v-card title="Datos de Cliente">
-  <v-sheet class="mx-auto" width="300">
+                    <v-col cols="12" sm="8" v-if="intervals.length > 0">
+                  <v-card elevation="4">
+
+
+                    <h5 class="mt-5 pt-2 pl-3"> A continuación se muestran los horarios disponibles para hoy
+                      {{ date }}</h5>
+
+
+                    <v-card-text>
+                      <v-chip-group v-model="selected_interval" active-class="orange lighten-2 white--text" column>
+        <v-chip label v-for="inter in intervals" 
+        @click="toggleTimer(inter.time_star)"
+                                :class="{ 'selected-item': isTimer(inter.time_star) }"
+        :key="inter.id" 
+        :disabled="isIntervalDisabled(inter.time_star)">
+          {{ inter.time_star }}
+        </v-chip>
+      </v-chip-group>
+                    </v-card-text>
+
+                  </v-card>
+                </v-col>
+
+                </v-row>
+
+                
+                   
+                </v-sheet>
+            </template>
+ <!-- SELECCIONAR SI ES USUARIO O NO  -->
+ <template v-slot:item.4>
+                <h3 class="text-h6">Selecciones si es cliente de Simplifies</h3>
+
+                <br>
+
+                <v-sheet border>
+                    <v-container fluid>
+    <v-radio-group v-model="radios">
+        
+
+
+
+
+
+      <v-radio value="ClientSi">
+        <template v-slot:label>
+            <v-dialog max-width="500">
+  <template  v-slot:activator="{ props: activatorProps }">
+    <v-btn
+      v-bind="activatorProps"
+      color="#F18254"
+      text="Soy cliente"
+      variant="flat"
+      @click="() => { SelectionRadio('ClientSi');isActive.value = false;  }"
+    ></v-btn>
+  </template>
+
+  <template v-slot:default="{ isActive }">
+    <v-card title="Datos de Cliente">
+        <v-sheet class="mx-auto" width="300">
     <v-form @submit.prevent>
-      <v-text-field v-model="email_client2" label="Teléfono ó Correo Electrónico" outlined required></v-text-field>
-      <v-btn color="orange lighten-2" class="mt-2" type="submit"   @click="() => { sendData(); isActive.value = false;  }" block>Aceptar</v-btn>
-      
+      <v-text-field v-model="email_client2"  label="Teléfono ó Correo Electrónico" outlined
+         required></v-text-field>
+      <v-btn class="mt-2" type="submit"   @click="() => { sendData(); isActive.value = false;  }" block>Aceptar</v-btn>
     </v-form>
   </v-sheet>
 
-  <v-card-actions>
-    <v-spacer></v-spacer>
-    <!-- Establece isActive como false al hacer clic en Cancelar -->
-    <v-btn
+      <v-card-actions>
+        <v-spacer></v-spacer>
+
+        <v-btn
           text="Cancelar"
-          @click="() => {this.selectedItem = 'option2'; this.radios = 'ClientNo'; showDialog = false; }"
+          @click="() => { this.radios = 'ClientNo'; isActive.value = false; }"
         ></v-btn>
+      </v-card-actions>
+    </v-card>
+  </template>
+</v-dialog>
+        </template>
+      </v-radio>
 
-  </v-card-actions>
-</v-card>
-    </v-dialog>
-  </v-sheet>
- 
-  
 
-  <v-container>
-    <v-row class="mt-1">
-      <v-btn @click="prevStep">Volver</v-btn>
-      <v-spacer></v-spacer>
-      <v-btn :disabled="advanceReserva2" @click="nextStep">Siguiente</v-btn>
-    </v-row>
+      <br>
+
+      
+      <v-radio value="ClientNo">
+        <template v-slot:label>
+            <v-btn
+      v-bind="activatorProps"
+      color="#F18254"
+      text="Es mi primera vez"
+      variant="flat"
+      @click="() => { SelectionRadio('ClientNo')  }"
+    ></v-btn>
+        </template>
+      </v-radio>
+    </v-radio-group>
   </v-container>
-
-  
-</template>
+                </v-sheet>
+            </template>
 
             
             
-            <template v-slot:item.4>
+            
+            <template v-slot:item.5>
                  <v-sheet border>       
      <v-form ref="form" lazy-validation>
        <v-row>
@@ -192,12 +224,6 @@ v-on="on"
 </v-dialog>
 
 </v-sheet>
-<v-row class="mt-1">
-               
-               <v-btn @click="prevStep">Volver</v-btn>
-               <v-spacer></v-spacer>
-            
-             </v-row>
 
             </template>
            
@@ -242,23 +268,8 @@ v-on="on"
 import axios from "axios";
 import LocalStorageService from "@/LocalStorageService";
 
-
 export default {
- 
     data: () => ({
-      horarioDisponibleActual:'',
-      idProfesionalListo:'',
-      showDialog: false,
-      selectedItem: null,
-      redirectToAnotherPage: false,
-      timerId1 : null,
-      timerId2 : null,
-      timerId3 : null,
-      timerId4 : null,
-      timer: null,
-
-      professionalHorario:'',
-      
         barberAleatorie:false,
         verificate : false,
         clientRegister:[],
@@ -343,6 +354,7 @@ export default {
         items: [
             'Servicios',
             'Profesionales',
+            'Horario Disponible',
             'Seleccione si es Cliente',
             'Datos Personales',
         ],
@@ -359,27 +371,8 @@ export default {
             },
         ],
     }),
-    watch: {
-    showDialog(newValue, oldValue) {
-      // Ejecutar código en respuesta al cambio en showDialog
-      if (!newValue && oldValue) {
-        // El modal se ha cerrado
-        console.log('El modal se ha cerrado');
-        this.selectedItem = 'option2';
-        // Realizar cualquier otra acción necesaria
-      }
-    }}
-  ,
 
     computed: {
-      advanceReserva1() {
-      console.log()
-      return !this.selected.length > 0; // Verdadero si hay elementos, falso si está vacío
-    },
-      advanceReserva2() {
-      console.log()
-      return this.professional.length === 0 && !this.barberAleatorie; // Verdadero si hay elementos, falso si está vacío
-    },
 
         subtotal() {
             return this.products.reduce((acc, product) => acc + product.quantity * product.price, 0)
@@ -389,7 +382,6 @@ export default {
         },
     },
     mounted() {
-     
       //this.business_id = LocalStorageService.getItem('business_id');
     //this.charge_id = LocalStorageService.getItem('charge_id');
   this.branch_id = LocalStorageService.getItem('branch_id');
@@ -408,23 +400,8 @@ export default {
         })
     },
 
-
     methods:
     {
-    
-     
-  
-  // handleStepChange(step) {
-  //   this.step = step;
-   
-  // },
-  //     changeStep(index) {
-   
-  //   this.step = index;
-  // },
-
-
-
         changeStep(index) {
       // Cambiar el valor de step al índice especificado
       this.step = index;
@@ -433,11 +410,6 @@ export default {
         {
          this.radios = value;
          console.log(this.radios);
-         if( value === 'ClientSi')
-         {
-          this.showDialog = true; 
-         }
-         
         },
         clearTextClient()
         {
@@ -450,46 +422,26 @@ export default {
         },
         sendData()
     {
-      console.log('-------------------------------sendData()----------------------------------------');
-      console.log(this.email_client2);
-      
-
+   
       // Realiza la solicitud POST Y BUSCO LOS DATOS DEL CLIENTE 
-      axios.get(`http://127.0.0.1:8000/api/client-email-phone?email=${this.email_client2}`)
+      axios.get(`https://api2.simplifies.cl/api/client-email-phone?email=${this.email_client2}`)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
         this.clientRegister = response.data.client;
         console.log('-------------------------------clientRegister----------------------------------------');
-        console.log('this.clientRegister.length');
-        console.log(this.clientRegister.length);
-        if(this.clientRegister.length > 0)
-        {
-          const client = this.clientRegister[0];
-        console.log(this.clientRegister[0]);
+        console.log(this.clientRegister);
+        
+
+        const client = this.clientRegister[0];
         //ASIGNO A LOS CAMPOS DEL FORMULARIO TDS LOS DATOS
          this.name_client = client.name;
          this.phone_client = client.phone;
          this.surname_client = client.surname;
          this.second_surname = client.second_surname;
          this.email_client = client.email;
-         this.showDialog = false;
+         
                 this.verificate = true;
-         this.changeStep(4);
-
-        }
-        else
-        {
-          this.selectedItem = 'option2';
-          this.showDialog = false;
-          this.radios = 'ClientNo';
-          this.verificate = false;
-         this.changeStep(3);
-        }
-        
-        
-
-
-        
+         this.changeStep(5);
          
        
               })
@@ -501,11 +453,8 @@ export default {
     },
         send()
     {
-   
-    console.log('***************console.log(this.professionalHorario[0]);*******************');
-    console.log(this.horarioDisponibleActual);
-    console.log('***************console.log(this.idProfesionalListo);*******************');
-    console.log(this.idProfesionalListo);
+      //this.totalTimeServices()
+    console.log('**********************************--------------------');
     const newArrayService = this.array_services.map(item => parseInt(item)); 
 
     //FECHA DE HOY-------------
@@ -516,33 +465,11 @@ let year = today.getFullYear();
 let month = String(today.getMonth() + 1).padStart(2, '0'); // El mes se cuenta desde 0, así que agregamos 1
 let day = String(today.getDate()).padStart(2, '0');
 let formattedDate = `${year}-${month}-${day}`;
-
-let request = {};
-
-
-
     //FECHA DE HOY-------------
-    if(this.barberAleatorie === true)
-    {
-    
-       request = {
-        start_time:this.horarioDisponibleActual,//aqui va el menor horario
-        data: formattedDate,
-        branch_id: this.branch_id,
-        professional_id: this.idProfesionalListo,//id del que tiene el menor horario
-        email_client: this.email_client,
-        phone_client: this.phone_client,
-        name_client: this.name_client,
-        surname_client:this.surname_client,
-        second_surname:this.second_surname,
-        services: newArrayService,      
-      }
-
-    }
-    else{
-       // let hourString = this.hourSelect.toString();
-        request = {
-        start_time:this.professionalHorario[0],
+   
+    let hourString = this.hourSelect.toString();
+      let request = {
+        start_time:hourString,
         data: formattedDate,
         branch_id: this.branch_id,
         professional_id: this.professional[0],
@@ -554,14 +481,10 @@ let request = {};
         services: newArrayService,      
       }
 
-    }
-   
-  
-
       console.log('**********************************---------------------');
 
       // Realiza la solicitud GET con Axios y pasa los parámetros
-      axios.post('http://127.0.0.1:8000/api/reservation_store',  request )
+      axios.post('https://api2.simplifies.cl/api/reservation_store',  request )
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
         this.message=response.data.msg
@@ -585,8 +508,87 @@ let request = {};
     // Por ejemplo, si deseas desactivar los horarios '10:00' y '11:00':
     return this.disabledIntervals.includes(time);
   },
-       
-       
+        divideInterval() {
+            this.countInterval = 0
+            this.intervals = []
+            this.getDayOfWeekOK()
+
+          let cb = this.calendars_branches.find((c) => c.day == this.getDayOfWeekOK());
+
+
+                 
+         let day = (new Date().toISOString().substr(0, 10))  ; 
+
+ 
+            // Convertir las horas a objetos Date para facilitar los cálculos
+            const inicio = new Date(`${day}T${cb.start_time}`);
+            const fin = new Date(`${day}T${cb.closing_time}`);
+
+            console.log('este es  inicio')   ;  
+
+            console.log( inicio)   ;      
+            console.log( fin)   ;
+
+ 
+            // Array para almacenar los intervals de tiempo
+
+            this.timeReservated();
+            console.log(this.reservedTime);
+
+            // Bucle para generar intervals de media hora
+            let actual = new Date(inicio);
+            
+            
+
+           
+
+            while (actual < fin) {
+                // Obtener la hora y minutos actuales
+                const horaActual = actual.getHours();
+                const minutosActual = actual.getMinutes();
+                console.log('****************actual*******************');
+            console.log(horaActual);
+            console.log(minutosActual);
+
+                
+                // Calcular el próximo intervalo de media hora
+                const proximo = new Date(actual);
+                proximo.setMinutes(minutosActual + 15);
+
+                // Formatear las horas y minutos en formato HH:MM
+                const horaInicioFormato = `${String(horaActual).padStart(2, '0')}:${String(
+                    minutosActual
+                ).padStart(2, '0')}`;
+
+                const horaFinFormato = `${String(proximo.getHours()).padStart(2, '0')}:${String(
+                    proximo.getMinutes()
+                ).padStart(2, '0')}`;
+                //optener los horarios reservados
+                const isIntervalReserved = this.reservedTime.some((reservation) => {
+                    const reservationStart = new Date(`${this.date}T${reservation.start_time}`);
+                    const reservationEnd = new Date(`${this.date}T${reservation.end_time}`);
+                    return actual >= reservationStart && actual < reservationEnd;
+                });
+
+
+                console.log(actual);
+                // Almacenar el intervalo en el array
+                this.countInterval++
+                this.intervals.push({
+                    time_star: horaInicioFormato,
+                    time_final: horaFinFormato,
+                    disable: isIntervalReserved,
+                    id: this.countInterval
+                });
+
+                // Establecer el siguiente intervalo
+                actual = proximo;
+                
+            }
+            
+
+            console.log('sssssssssssssss' + this.intervals);
+        },
         
     timeReservated() {
         
@@ -605,7 +607,7 @@ let request = {
 
 
 axios
-  .get('http://127.0.0.1:8000/api/professional-reservations-time' , {
+  .get('https://api2.simplifies.cl/api/professional-reservations-time' , {
             params: request
         })
         .then((response) => {
@@ -636,7 +638,7 @@ axios
 },
         chargeCalendarsBranches() {
             axios
-                .get(`http://127.0.0.1:8000/api/schedule-show?branch_id=${this.branch_id}`)
+                .get(`https://api2.simplifies.cl/api/schedule-show?branch_id=${this.branch_id}`)
                 .then((response) => {
                     this.calendars_branches = response.data.Schedules;
                     this.dayOfWeek = response.data.Schedules;
@@ -650,77 +652,55 @@ axios
                       );*/
                 });
         },
+        handleStepChange(newValue) {
 
-        nextStep() {
-    
-    if(this.step < this.items.length) { 
-      this.step++;
-    }
-    console.log('Aqui se muestran los Step');
-    console.log(this.step );
-   this.verificateStep(this.step);
- 
-},
+            // Verifica si se está pasando del paso 1 al paso 2
+            if (newValue === 2) {
+                // Llama a tu método aquí
+                console.log("--------------Se ha pasado del paso 1 al paso 2");
+                console.log('---------' + this.selected);
+                this.chargeProfessionals(this.selected);
+            } // Verifica si se está pasando del paso 1 al paso 2
+            if (newValue === 3) {
+                // Llama a tu método aquí
+                console.log("--------------Se ha pasado del paso 2 al paso 3 -divideInterval");
 
-prevStep() {
-  if(this.step > 1) {
-    this.step--;
-  }
-  if(this.step === 3)
-  {
-    this.selectedItem = 'option2';
-    this.clearTextClient();
-    this.verificate = false;
-  }
-},
-     
-        verificateStep(newValue) {
-      // Cancelar el temporizador si el usuario cambia de pestaña antes de que se ejecute
-      
-    
-      if (newValue === 2) {
-        //cancelo los demas timer
-       
-        console.log("--------------Se ha pasado del paso 1 al paso 2");
-        console.log('---------' + this.selected);
-        this.chargeProfessionals(this.selected);
-      }
+                this.divideInterval();
+            }
+            if (newValue === 4) {
+                // Llama a tu método aquí
+                console.log("--------------Se ha pasado del paso 3 al paso 4 -RECIVIENDO LA HORA");
 
-      if (newValue === 3) {
-        this.selectedItem = 'option2';
-        console.log("--------------Se ha pasado del paso 3 al paso 4 -RECIVIENDO LA HORA");
-        if(this.radios === 'ClientNo') {
-          this.clearTextClient();
-          this.verificate = false;
-        }
-        console.log(this.hourSelect);
-      }
+                  //aqui verificar si dijo que no es cliente
+                  if(this.radios === 'ClientNo')
+                {
+                    this.clearTextClient();
+                    this.verificate = false;
+                }
 
-      if (newValue === 4) {
-//          //cancelo los demas timer
-//          clearTimeout(this.timerId1);
-//         clearTimeout(this.timerId2);
-//         clearTimeout(this.timerId3);
+                
+                
+                console.log(this.hourSelect);
+            }
+            
+            if (newValue === 5) {
+                // Llama a tu método aquí
+                console.log("--------------Se ha pasado del paso 4 al paso 4 -RECIVIENDO LA SELECCION DEL RADIO");
 
-//         this.timerId4 = setTimeout(() => {
-//     this.$router.push('/totem');
-// }, 20000);
-        console.log("--------------Se ha pasado del paso 4 al paso 4 -RECIVIENDO LA SELECCION DEL RADIO");
-        console.log(this.radios);
-        if(this.radios === 'ClientSi') {
-          // le muestro un dialogo para que ponga correo y teefono
-          //hago la busqueda en la dd si esta le llevo tds los datos al formulario y le enavilito los campos que no pueda editarlos
-          //solo le quedaria reservar
-        } else {
-          // normal que pase a llenar todos los datos
-          this.clearTextClient();
-          this.verificate = false;
-        }
-      }
-  
-     
-     
-      },
+                console.log(this.radios);
+                if(this.radios === 'ClientSi')
+                {
+                    // le muestro un dialogo para que ponga correo y teefono
+                    //hago la busqueda en la dd si esta le llevo tds los datos al formulario y le enavilito los campos que no pueda editarlos
+                    //solo le quedaria reservar
+                }
+                else{
+                     // normal que pase a llenar todos los datos
+                     this.clearTextClient();
+                    this.verificate = false;
+                }
+            }
+        },
 
 
         //servicios
@@ -748,15 +728,13 @@ prevStep() {
 },
 
 toggleService2(serviceId2) {
-  //console.log(this.serviceId2.id);
-  
     if (serviceId2 === -99) {
         this.barberAleatorie = true;
         // Limpiar la selección cuando barberAleatorie es true
         this.professional = [];
     } else {
         this.barberAleatorie = false;
-        const index = this.professional.indexOf(serviceId2.id);
+        const index = this.professional.indexOf(serviceId2);
         console.log(this.professional);
         if (index > -1) {
             // Si el servicio ya está seleccionado, no hagas nada
@@ -764,10 +742,8 @@ toggleService2(serviceId2) {
         }
 
         // Limpiar la selección anterior y agregar el nuevo servicio seleccionado
-        this.professional = [serviceId2.id];
-        this.professionalHorario = [serviceId2.start_time];
+        this.professional = [serviceId2];
     }
-    console.log(this.barberAleatorie);
 }
 
 
@@ -795,7 +771,7 @@ toggleService2(serviceId2) {
 
         chargeServices() {
             axios
-                .get(`http://127.0.0.1:8000/api/branchservice-show?branch_id=${this.branch_id}`)
+                .get(`https://api2.simplifies.cl/api/branchservice-show?branch_id=${this.branch_id}`)
                 .then((response) => {
                     console.log(response.data)
                     this.services = response.data.services;
@@ -821,50 +797,12 @@ console.log(newArrayService);
 
             this.array_services = newArrayService;
             axios
-        .get(`http://127.0.0.1:8000/api/branch-professionals-service`, {
+        .get(`https://api2.simplifies.cl/api/branch-professionals-service`, {
             params: data
         })
         .then((response) => {
                     this.professionals = response.data.professionals;
-                    // Obtener la menor hora disponible
-  //  this.horarioDisponibleActual = this.professionals
-         // Filtrar profesionales con horarios disponibles y obtener la menor hora
-    const horariosDisponibles = this.professionals
-      .filter(professional => professional.start_time !== "No tiene horario disponible")
-      .map(professional => professional.start_time);
-
-    // Verificar si hay algún horario disponible
-    if (horariosDisponibles.length > 0) {
-      // Obtener la menor hora disponible
-      this.horarioDisponibleActual = horariosDisponibles.reduce((minHora, hora) => (hora < minHora ? hora : minHora));
-    } else {
-      // No hay horarios disponibles, establecer horarioDisponibleActual como null u otro valor predeterminado según tus necesidades
-      this.horarioDisponibleActual = null; // o cualquier otro valor predeterminado
-    }
-
-    const professionalListo = this.professionals
-  .filter(professional => professional.start_time === this.horarioDisponibleActual)
-  .map(professional => professional.id);
-
-// Verificar si se encontró algún profesional con la hora disponible actual
-if (professionalListo.length > 0) {
-  // Obtener el primer ID encontrado
-   this.idProfesionalListo = professionalListo[0];
-  // Hacer lo que necesites con el ID del profesional listo
-} else {
-  this.idProfesionalListo = '';
-  // No se encontró ningún profesional con la hora disponible actual
-  // Aquí puedes manejar este caso según tus necesidades
-}
-if(this.horarioDisponibleActual === null && this.idProfesionalListo === '')
-{
-  console.log('NO HAY DISPONIBILIDAD');
-  this.changeStep(1);
-}
-                      
                     console.log(response.data);
-                    console.log('this.horarioDisponibleActual');
-                    console.log(this.horarioDisponibleActual);
 
                 })
                 .catch((err) => {
