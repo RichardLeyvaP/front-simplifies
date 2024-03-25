@@ -203,7 +203,7 @@ export default {
         this.business_id = LocalStorageService.getItem('business_id');
         this.charge_id = LocalStorageService.getItem('charge_id');
         this.branch_id = LocalStorageService.getItem('branch_id');
-        this.charge = LocalStorageService.getItem('charge');
+        this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         axios
                 .get('http://127.0.0.1:8000/api/show-business', {
                     params: {
@@ -216,7 +216,7 @@ export default {
         this.initialize()
                 });
 
-        if (this.charge_id === '4') {
+        if (this.charge === 'Administrador') {
             // Mostrar la fila con Autocomplete
             this.mostrarFila = true;
         }
