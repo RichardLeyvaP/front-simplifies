@@ -372,6 +372,13 @@ const routes = [
           import( "@/views/reportes/FinanceBranches.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_finance_branches"] },
       },
+      {
+        path: "/finance-branches-details",
+        name: "Finanzas por sucursales Detalladas",
+        component: () =>
+          import( "@/views/reportes/FinanceBranchesDetails.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_finance_branches_details"] },
+      },
     ],
   },
 ];

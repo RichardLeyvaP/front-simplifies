@@ -69,7 +69,7 @@
                     <v-list>
                         <v-list-item-group v-model="professional" active-class="deep-purple--text text--accent-4">
 
-                            <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + professional.image_url"
+                            <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + professional.image_url"
                                 v-for="professional in professionals" :key="professional.id"
                                 @click="toggleService2(professional.id)"
                                 :class="{ 'selected-item': isProfessional(professional.id) }" class="pt-4 pb-4">
@@ -105,7 +105,7 @@
                     <v-list lines="three"
       item-props>
                         <v-list-item-group v-model="selectedA" active-class="deep-purple--text text--accent-4">
-                            <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + service.image_service"
+                            <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + service.image_service"
                                 v-for="service in services" :key="service.id" @click="toggleService3(service)"
                                 :class="{ 'selected-item': isSelected(service.id) }" class="pt-4 pb-4">
 
@@ -115,21 +115,20 @@
                             </v-list-item>
                         </v-list-item-group>
                     </v-list>
-                    <v-col cols="12" md="6">
+                    <v-col cols="12" md="4">
         </v-col>
         <v-col cols="12" md="6">            
-            <v-text-field v-if="especial" v-model="profitPercen" clearable label="% Ganancia"
-                        prepend-icon="mdi-percent" variant="underlined">
-                      </v-text-field>
-
-                      <v-switch
+                    <v-switch
                       v-if="mostrarSwitch"
                       color="orange-darken-3"
     v-model="especial"
     label="Especial"
     hide-details
     inset
-></v-switch>
+></v-switch>         
+            <v-text-field v-model="this.profitPercen" clearable label="% Ganancia"
+                        prepend-icon="mdi-percent" variant="underlined" :disabled="!especial" :rules="requiredRules">
+                      </v-text-field>
         </v-col>
         <v-divider></v-divider>
                     
@@ -151,7 +150,7 @@
           <v-list lines="three"
       item-props>
                         <v-list-item-group v-model="selected" active-class="deep-purple--text text--accent-4">
-                            <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + serviceA.image_service"
+                            <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + serviceA.image_service"
                                 v-for="serviceA in servicesAsig" :key="serviceA.id" @click="toggleService3(serviceA)"
                                 :class="{ 'selected-item': isSelected(serviceA.id) }" class="pt-4 pb-4">
 
@@ -312,6 +311,16 @@ export default {
         },
         total() {
             return this.subtotal + Number(this.shipping ?? 0)
+        },
+    },
+    watch: {
+        especial: function(val) {
+            if (val) {
+              this.profitPercen = '';
+            }
+            else{
+              this.profitPercen = this.profitPercentaje;
+            }
         },
     },
     mounted() {
@@ -482,7 +491,7 @@ export default {
     {
    
       // Realiza la solicitud POST Y BUSCO LOS DATOS DEL CLIENTE 
-      axios.get(`https://api2.simplifies.cl/api/client-email-phone?email=${this.email_client2}`)
+      axios.get(`http://127.0.0.1:8000/api/client-email-phone?email=${this.email_client2}`)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
         this.clientRegister = response.data.client;
@@ -542,7 +551,7 @@ let formattedDate = `${year}-${month}-${day}`;
       console.log('**********************************---------------------');
 
       // Realiza la solicitud GET con Axios y pasa los parámetros
-      axios.post('https://api2.simplifies.cl/api/reservation_store',  request )
+      axios.post('http://127.0.0.1:8000/api/reservation_store',  request )
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
         this.message=response.data.msg
@@ -575,10 +584,10 @@ let formattedDate = `${year}-${month}-${day}`;
   console.log("esto devuelve el metodo");
   console.log(day ? day.day.toString().trim() : "");
   return day ? day.day.toString().trim() : "";
-},
+          },
         chargeCalendarsBranches() {
             axios
-                .get(`https://api2.simplifies.cl/api/schedule-show?branch_id=1`)
+                .get(`http://127.0.0.1:8000/api/schedule-show?branch_id=1`)
                 .then((response) => {
                     this.calendars_branches = response.data.Schedules;
                     this.dayOfWeek = response.data.Schedules;
@@ -696,7 +705,7 @@ getServicesProfessional()
 
   //AXIOS
   axios
-                .get(`https://api2.simplifies.cl/api/services-professional-branch-free`, {
+                .get(`http://127.0.0.1:8000/api/services-professional-branch-free`, {
                     params: {
                         branch_id: idBranch,
                         professional_id: idProfessional,
@@ -731,7 +740,7 @@ getServicesProfessionalSelect()
 
     //AXIOS
     axios
-                .get(`https://api2.simplifies.cl/api/services-professional-branch`, {
+                .get(`http://127.0.0.1:8000/api/services-professional-branch`, {
                     params: {
                         branch_id: idBranch,
                         professional_id: idProfessional,
@@ -762,9 +771,11 @@ toggleService3(service)
         this.profitPercentaje = [service.profit_percentaje];
         //
         //
+        console.log('this.profitPercentaje');
         console.log(this.selected);
         console.log(this.selectedServiceType);
         console.log(this.profitPercentaje);
+        this.profitPercen = this.profitPercentaje;
 
         //this.typeService(this.selectedServiceType[0],this.profitPercentaje[0]);
         
@@ -793,7 +804,7 @@ toggleService3(service)
 
         chargeServices() {
                 axios
-                .get(`https://api2.simplifies.cl/api/professionalservice-show`, {
+                .get(`http://127.0.0.1:8000/api/professionalservice-show`, {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -822,7 +833,7 @@ toggleService3(service)
 
             //this.array_services = newArrayService;
             axios
-        .get(`https://api2.simplifies.cl/api/branch-professionals-barber-totem`, {
+        .get(`http://127.0.0.1:8000/api/branch-professionals-barber-totem`, {
             params: data
         })
         .then((response) => {
