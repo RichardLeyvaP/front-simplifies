@@ -1,20 +1,18 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div>
-  <v-row style="background-color: #F18254">
+  <v-row >
     <v-col cols="12" md="12" class="pr-0">
       <br>
   <br>
   <br>
   <br>
-  <br>
-  <br>
-      <v-card color="#F18254">
+      <v-card elevation="0">
         <v-row class="mt-6">
           <br>
 
           <v-col cols="12" md="12" style="text-align: center;">
-            <v-avatar size="80">
+            <v-avatar size="120">
               <v-img src="@/assets/hernandez_big.png" alt="John"></v-img>
             </v-avatar>
           </v-col>
@@ -24,13 +22,14 @@
             <p class="text-h6 white-text text-uppercase" color="white" style="text-align: center;">
               Bienvenido a Barberías Hernández
             </p>
+            <br>
           </v-col>
         </v-row>
         <div v-if="activated == 1">
           <v-row class="mt-6">
             <v-col cols="12" md="4"></v-col>
             <v-col cols="12" md="4" style="text-align: center;">
-              <v-btn  block rounded="0" size="x-large" @click="goToReserve"> Cliente</v-btn>
+              <v-btn class="orange-border blink"  block rounded="0" size="x-large" @click="goToReserve"> Cliente</v-btn>
             </v-col>
           </v-row>
           <v-row class="mt-6">
@@ -248,6 +247,24 @@ export default {
   },
 }
 </script>
+<style>
+.orange-border {
+  border-color: orange !important;
+  color: orange !important; /* Cambiar el color del texto si lo deseas */
+  border-width: 2px !important; /* Ajusta el ancho del borde según tus preferencias */
+  border-style: solid !important;
+  animation: blink-animation 1s infinite; /* Define la animación */
+}
+
+@keyframes blink-animation {
+  0%, 49% {
+    border-color: orange;
+  }
+  50%, 100% {
+    border-color: transparent;
+  }
+}
+</style>
 
 
 
