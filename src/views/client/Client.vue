@@ -66,9 +66,9 @@
                       variant="underlined" :rules="mobileRules">
                     </v-text-field>
                   </v-col>
-                  <v-col cols="12" md="6">
+                  <!--<v-col cols="12" md="6">
                     <v-autocomplete clearable v-model="editedItem.user_id" :items="users" label="Usuario" prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
-                  </v-col>
+                  </v-col>-->
                   <v-col cols="12" md="6">
                     <v-file-input clearable v-model="file" ref="fileInput" label="Avatar Cliente" variant="underlined" density="compact" name="file" accept=".png, .jpg, .jpeg" @change="onFileSelected">
                     </v-file-input>
@@ -178,7 +178,7 @@ export default {
       { title: 'Segundo Apellido', key: 'second_surname' },
       { title: 'Correo', key: 'email' },
       { title: 'Teléfono', key: 'phone' },
-      { title: 'Usuario', align: 'start', value: 'user.name' },
+      //{ title: 'Usuario', align: 'start', value: 'user.name' },
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
     results: [],
@@ -192,7 +192,7 @@ export default {
       second_surname: '',
       email: '',
       phone: '',
-      user_id: '',
+      //user_id: '',
       client_image: '',
       id: ''
     },
@@ -204,7 +204,7 @@ export default {
       second_surname: '',
       email: '',
       phone: '',
-      user_id: '',
+      //user_id: '',
       client_image: '',
     },   
     nameRules: [
@@ -383,7 +383,10 @@ export default {
           .then(() => {
             this.initialize();
             this.showAlert("success","Cliente registrado correctamente", 3000)
-          })
+          }).catch(error => {
+            if(error.response.status == '400')
+          this.showAlert("warning", 'Correo ya existe', 3000);
+        })
       }
       this.close()
     },

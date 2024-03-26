@@ -1,6 +1,5 @@
 <!-- eslint-disable vue/no-use-computed-property-like-method -->
 <!-- eslint-disable vue/valid-v-slot -->
-<!-- eslint-disable vue/return-in-computed-property -->
 <template>
     <v-card elevation="6" class="mx-5">
         <v-toolbar color="#F18254">
@@ -19,16 +18,31 @@
         </v-toolbar>
         <v-container>
             <v-row>
-                <v-col cols="12" md="4">
-                    <v-select v-model="selectedYear" :items="years" label="Selecciona un año"
-                        variant="underlined" prepend-icon="mdi-calendar" @update:model-value="initialize()"></v-select>
-                </v-col>
-            </v-row>
-            <v-row>
                 <v-col cols="12" sm="12" md="4">
                     <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
                         label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
                         variant="underlined" @update:model-value="initialize()"></v-autocomplete>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col cols="12" md="4">
+                    <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="underlined"
+                        prepend-icon="mdi-calendar" @update:model-value="initialize()"></v-select>
+                </v-col>
+
+                <v-col cols="12" md="4">
+                    <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
+                        offset-y min-width="290px">
+                        <template v-slot:activator="{ props }">
+                            <v-text-field v-bind="props" :modelValue="dateFormatted3" variant="underlined"
+                                append-inner-icon="mdi-calendar" label="Mes"></v-text-field>
+                        </template>
+                        <v-locale-provider locale="es">
+                            <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                                :modelValue="getDate3"  format="yyyy-MM"
+                                scrollable></v-date-picker>
+                        </v-locale-provider>
+                    </v-menu>
                 </v-col>
             </v-row>
             <v-row>
@@ -80,16 +94,17 @@
                             <span class="text-h6">{{ formTitle }}</span>
                         </v-alert>
                     </v-container>
-                    </v-col>
-                    <v-col cols="12" md="12">
-                        <v-card class="mx-auto  overflow-visible">
-                    <v-card-text>
-                        <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search2" class="elevation-2"
-                            no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
-                            
-                        </v-data-table>
-                    </v-card-text>                    
-                </v-card>
+                </v-col>
+                <v-col cols="12" md="12">
+                    <v-card class="mx-auto  overflow-visible">
+                        <v-card-text>
+                            <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
+                                :search="search2" class="elevation-2" no-results-text="No hay datos disponibles"
+                                no-data-text="No hay datos disponibles">
+
+                            </v-data-table>
+                        </v-card-text>
+                    </v-card>
                 </v-col>
                 <!--<v-col cols="12" md="6">
                     <v-card class="mx-auto  overflow-visible">
@@ -115,15 +130,11 @@
 <script>
 
 import axios from "axios";
-//import { Bar } from 'vue-chartjs';
-
-/*import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js'
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement,)*/
 import { format } from "date-fns";
 import * as XLSX from 'xlsx';
 import LocalStorageService from "@/LocalStorageService";
 export default {
-    name: 'LoginPage',
+    //name: 'LoginPage',
     //components: { Bar},
     props: {
         value: {
@@ -195,21 +206,21 @@ export default {
           const month = (date.getMonth() + 1).toString().padStart(2, '0');
           const year = date.getFullYear();
           return `${year}-${month}-${day}`;
-        },
+        },*/
         dateFormatted3() {
-          const date = this.input3 ? new Date(this.input3) : new Date();
-          const month = (date.getMonth() + 1).toString().padStart(2, '0');
-          const year = date.getFullYear();
-          return `${year}-${month}`;
+            const date = this.input3 ? new Date(this.input3) : new Date();
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            return `${year}-${month}`;
         },
-        getDate() {
+        getDate3() {
+            return this.input3 ? new Date(this.input3) : new Date();
+        },
+        /*getDate() {
           return this.input ? new Date(this.input) : new Date();
         },
         getDate2() {
           return this.input2 ? new Date(this.input2) : new Date();
-        },
-        getDate3() {
-          return this.input3 ? new Date(this.input3) : new Date();
         },*/
     },
 
@@ -283,7 +294,7 @@ export default {
                     data: this.reservationWeek
                   }
                 ]*/
-            //};
+        //};
         //},*/
         exportToExcel() {
             // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
