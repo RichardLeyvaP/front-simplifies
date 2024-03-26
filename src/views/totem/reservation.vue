@@ -185,6 +185,7 @@ color="orange lighten-2"
 v-bind="attrs"
 v-on="on"
 @click="send()"
+:loading="loading"
 >Reservar</v-btn>
 </template>
 
@@ -246,6 +247,7 @@ import LocalStorageService from "@/LocalStorageService";
 export default {
  
     data: () => ({
+      loading : false,
       horarioDisponibleActual:'',
       idProfesionalListo:'',
       showDialog: false,
@@ -501,6 +503,7 @@ export default {
     },
         send()
     {
+      this.loading = true;
    
     console.log('***************console.log(this.professionalHorario[0]);*******************');
     console.log(this.horarioDisponibleActual);
@@ -565,13 +568,18 @@ let request = {};
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
         this.message=response.data.msg
-
-        setTimeout(() => {
+        this.loading = false;
+        // setTimeout(() => {
         // Redirige a la URL externa deseada
-        window.location.href = 'https://barberiahernandez.com/barber_backend/web/app_dev.php/reservation';
-      }, 3000); 
+      //   window.location.href = 'https://barberiahernandez.com/barber_backend/web/app_dev.php/reservation';
+      // }, 3000);  
+      setTimeout(() => {
+        // Redirige a la URL externa deseada
+        this.$router.push('/totem');
+      }, 2000); 
               })
         .catch(error => {
+          this.loading = false;
           // Maneja cualquier error que pueda ocurrir durante la solicitud
           console.error('Error al hacer la solicitud:', error);
         });
