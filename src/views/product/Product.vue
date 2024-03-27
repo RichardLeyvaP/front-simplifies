@@ -68,7 +68,7 @@
                  </v-text-field>
                </v-col>
                <v-col cols="12" md="4">
-                 <v-text-field v-model="editedItem.sale_price" clearable label="Precio de Venta" prepend-icon="mdi-currency-usd"
+                 <v-text-field v-if="editedItem.status_product === 'En Venta'" v-model="editedItem.sale_price" clearable label="Precio de Venta" prepend-icon="mdi-currency-usd"
                    variant="underlined" :rules="requiredRules">
                  </v-text-field>
                </v-col>
@@ -354,7 +354,7 @@
      .then(() => {
        this.initialize();
        this.message_delete = true
-       this.showAlert("success","Product eliminado correctamente", 3000)
+       this.showAlert("success","Producto eliminado correctamente", 3000)
        this.imgMiniatura = '';
           this.file = '';
      })
@@ -379,6 +379,7 @@
   save() {
    if (this.editedIndex > -1) {
      this.valid = false;
+     this.editedItem.sale_price = this.editedItem.sale_price ? this.editedItem.sale_price : '';
      const formData = new FormData();
        for (let key in this.editedItem) {
          formData.append(key, this.editedItem[key]);
