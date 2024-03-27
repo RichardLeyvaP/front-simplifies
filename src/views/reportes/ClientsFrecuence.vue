@@ -89,7 +89,7 @@
                             <template v-slot:item.frecuence="{ item }">
                                 <v-chip :color="item.frecuence != 'No Frecuente' ? 'green' : 'red'" :text="item.pay"
                                     class="text-uppercase" label size="small">
-                                    {{ item.frecuence === 'No Frecuente' ? 'No Frecuente' : 'Frecuente' }}
+                                    {{ item.frecuence}}
                                 </v-chip>
                             </template>
                         </v-data-table>
