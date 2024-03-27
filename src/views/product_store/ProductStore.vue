@@ -216,6 +216,7 @@ export default {
       product_quantity: '',
       product_quantityM: '',
       product_exit: '',
+      address: '',
       id: ''
     },
     data: {},
@@ -227,6 +228,7 @@ export default {
       product_id: '',
       product_quantity: '',
       product_quantityM: '',
+      address: '',
       product_exit: '',
     },
     requiredRules: [
