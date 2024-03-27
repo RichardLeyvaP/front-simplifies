@@ -2,7 +2,7 @@
 
 <!-- este es el archivo wue se presentó al cliente -->
 <template>
-  <div class="app-container">
+  <div >
     <v-container>
       <v-stepper hide-actions  bg-color="" v-model="step" :items="items" 
         @update:model-value="handleStepChange">
@@ -20,13 +20,21 @@
 
             </v-row>
             <h3 class="text-h6 red--text">{{ verificate_menssj }}</h3>
+           
 
           </v-sheet>
               <!-- BOTONES -->
-              <v-row class="mt-1">
-                <v-spacer></v-spacer>
-                <v-btn :disabled="!validarEmail()" @click="nextStep">Siguiente</v-btn>             
-              </v-row>
+            
+              <v-container>
+                <!-- BOTONES -->
+            <v-row class="mt-1">
+              <v-spacer></v-spacer>
+              <v-btn size="x-large" :disabled="!validarEmail()" @click="nextStep">Siguiente</v-btn>            
+            </v-row>
+            
+          </v-container>
+              
+             
         </template>
 
 
@@ -88,13 +96,17 @@
 </v-list>
 
 </v-sheet>
-          <v-row class="mt-1">
-               
-               <v-btn @click="prevStep">Volver</v-btn>
-               <v-spacer></v-spacer>
-               <v-btn :disabled="advanceReserva2" @click="nextStep">Generar código</v-btn>
+         
+             
+             <v-container>
+                <!-- BOTONES -->
+            <v-row class="mt-1">
+              <v-btn size="x-large" @click="prevStep">Volver</v-btn>
+              <v-spacer></v-spacer>
+              <v-btn size="x-large" :disabled="advanceReserva2" @click="nextStep">Generar código</v-btn>           
+            </v-row>
             
-             </v-row>
+          </v-container>
         </template>
 
         <!-- Generar codigo Qr -->
@@ -123,12 +135,15 @@
               </v-col>
             </v-row>
           </v-sheet>
-          <v-row class="mt-1">
-               
-               <v-btn @click="prevStep">Volver</v-btn>
-               <v-spacer></v-spacer>
+         
+             <v-container>
+                <!-- BOTONES -->
+            <v-row class="mt-1">
+              <v-btn size="x-large" @click="prevStep">Volver</v-btn>
+              <v-spacer></v-spacer>           
+            </v-row>
             
-             </v-row>
+          </v-container>
         </template>
 
 
@@ -139,7 +154,7 @@
     <br>
     <v-row>  
           <v-spacer></v-spacer>        
-        <v-btn to="totem" >Volver a inicio</v-btn>
+        <v-btn size="x-large" to="totem" >Volver a inicio</v-btn>
         <v-spacer></v-spacer>  
         </v-row>
         <br>
@@ -360,7 +375,7 @@ prevStep() {
 
 
     GenerateQr() {
-      alert('estoy mandando aqyui es barbero ni tecnico'); 
+     
       //simulando un correo valido
       //this.email_client2 = 'deylert89@gmail.com';
       this.loading = true
@@ -485,8 +500,7 @@ prevStep() {
             this.togglepuestoT2(this.type_professional);
             }
 
-          else if (client.type == 0) {//es otro professional    
-            alert('estoy mandando aqyui no es barbero ni tecnico');               
+          else if (client.type == 0) {//es otro professional                   
             this.professionalId = client.professional_id;
             //ESTE ES PARA LOS QUE NO SON NI BARBERO NI TECNICOS
             this.changeStep(3);
@@ -744,9 +758,4 @@ prevStep() {
   /* Ajusta según necesites */
 }
 
-.app-container {
-  background-color: rgb(241, 130, 84)
-    /* Color de fondo deseado */
-    /* Otros estilos si es necesario */
-}
 </style>
