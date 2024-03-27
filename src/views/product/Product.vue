@@ -68,7 +68,7 @@
                  </v-text-field>
                </v-col>
                <v-col cols="12" md="4">
-                 <v-text-field v-if="mostrarVenta" v-model="editedItem.sale_price" clearable label="Precio de Venta" prepend-icon="mdi-currency-usd"
+                 <v-text-field v-if="mostrarVenta || editedItem.status_product === 'En Venta'" v-model="editedItem.sale_price" clearable label="Precio de Venta" prepend-icon="mdi-currency-usd"
                    variant="underlined" :rules="requiredRules">
                  </v-text-field>
                </v-col>
