@@ -5,7 +5,7 @@
             <v-container>
                 <v-row align="center">
                     <v-col cols="12" md="8" class="grow ml-4">
-                        <span class="text-h8"> <strong>Visiats por clientes</strong></span>
+                        <span class="text-h8"> <strong>Visitas por clientes</strong></span>
                     </v-col>
                     <v-spacer></v-spacer>
                     <v-col cols="12" md="3">
@@ -139,7 +139,7 @@ export default {
     }),
     computed: {
         formTitle() {
-            return 'Visiatas de clientes';
+            return 'Visitas de clientes';
         },
         /*dateFormatted() {
           const date = this.input ? new Date(this.input) : new Date();
