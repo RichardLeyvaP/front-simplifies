@@ -314,7 +314,7 @@ export default {
 
     initialize() {
       axios
-        .get('http://127.0.0.1:8000/api/charge')
+        .get('https://api2.simplifies.cl/api/charge')
         .then((response) => {
           console.log("entra a Buscar cargos")
           this.results = response.data.charges;
@@ -336,7 +336,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('http://127.0.0.1:8000/api/charge-destroy', request)
+        .post('https://api2.simplifies.cl/api/charge-destroy', request)
         .then(() => {
           this.initialize();
           this.showAlert("success", "Cargo eliminado correctamente", 3000)
@@ -368,7 +368,7 @@ export default {
         this.data.description = this.editedItem.description;
 
         axios
-          .put('http://127.0.0.1:8000/api/charge', this.data)
+          .put('https://api2.simplifies.cl/api/charge', this.data)
           .then(() => {
             this.initialize();
             this.showAlert("success", "Cargo editado correctamente", 3000)
@@ -378,7 +378,7 @@ export default {
         this.data.name = this.editedItem.name;
         this.data.description = this.editedItem.description;
         axios
-          .post('http://127.0.0.1:8000/api/charge', this.data)
+          .post('https://api2.simplifies.cl/api/charge', this.data)
           .then(() => {
             this.initialize();
             this.showAlert("success", "Cargo registrado correctamente", 3000)
@@ -397,7 +397,7 @@ export default {
       this.charge_id = item.id;
       console.log(item.id);
       axios
-        .get('http://127.0.0.1:8000/api/charge-permission-show', {
+        .get('https://api2.simplifies.cl/api/charge-permission-show', {
           params: {
             charge_id: item.id
           }
@@ -407,7 +407,7 @@ export default {
           console.log('imprime permissions');
         });
         axios
-        .get('http://127.0.0.1:8000/api/charge-permission-NOTIN', {
+        .get('https://api2.simplifies.cl/api/charge-permission-NOTIN', {
           params: {
             charge_id: item.id
           }
@@ -422,7 +422,7 @@ export default {
         this.data.charge_id = this.charge_id;
       this.data.permission_id = this.permission_id;
       axios
-        .post('http://127.0.0.1:8000/api/charge-permission', this.data)
+        .post('https://api2.simplifies.cl/api/charge-permission', this.data)
         .then(() => {
          this.charge_id = '',
          this.permission_id = '',
@@ -444,7 +444,7 @@ export default {
         permission_id: this.permission_id
       };
       axios
-        .post('http://127.0.0.1:8000/api/charge-permission-destroy', request)
+        .post('https://api2.simplifies.cl/api/charge-permission-destroy', request)
         .then(() => {
           this.dialogDeletePermission = false
           this.charge_id = '',

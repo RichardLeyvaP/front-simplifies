@@ -169,7 +169,7 @@ export default {
     this.branch_id = LocalStorageService.getItem('branch_id');
     this.professional_id = LocalStorageService.getItem('professional_id');
     axios
-            .get('http://127.0.0.1:8000/api/show-business', {
+            .get('https://api2.simplifies.cl/api/show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -192,7 +192,7 @@ export default {
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = format(val, "yyyy-MM-dd");
       axios
-        .get('http://127.0.0.1:8000/api/professionals_ganancias_branch', {
+        .get('https://api2.simplifies.cl/api/professionals_ganancias_branch', {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id,
@@ -215,7 +215,7 @@ export default {
       const mes = `${month}`;
       const ano = `${year}`;
       axios
-        .get('http://127.0.0.1:8000/api/professionals_ganancias_branch', {
+        .get('https://api2.simplifies.cl/api/professionals_ganancias_branch', {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id,
@@ -232,7 +232,7 @@ export default {
     initialize() {
       this.editedIndex = 1;
       axios
-        .get('http://127.0.0.1:8000/api/professionals_ganancias_branch', {
+        .get('https://api2.simplifies.cl/api/professionals_ganancias_branch', {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id
@@ -242,7 +242,7 @@ export default {
           this.results = response.data.earningPeriodo;
         });
       axios
-        .get('http://127.0.0.1:8000/api/professional-show-autocomplete')
+        .get('https://api2.simplifies.cl/api/professional-show-autocomplete')
         .then((response) => {
           this.professionals = response.data.professionals;
         });

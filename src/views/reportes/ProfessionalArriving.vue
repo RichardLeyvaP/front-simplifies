@@ -185,7 +185,7 @@
     this.branch_id = LocalStorageService.getItem("branch_id");
     this.business_id = LocalStorageService.getItem("business_id");
     axios
-            .get('http://127.0.0.1:8000/api/show-business', {
+            .get('https://api2.simplifies.cl/api/show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -251,7 +251,7 @@
         console.log(startDate);
         console.log(endDate);
         axios
-          .get('http://127.0.0.1:8000/api/arriving-branch-periodo', {
+          .get('https://api2.simplifies.cl/api/arriving-branch-periodo', {
             params: {
               branch_id: this.branch_id,
               startDate: startDate,
@@ -273,7 +273,7 @@
         const mes = `${month}`;
         const ano = `${year}`;
         axios
-          .get('http://127.0.0.1:8000/api/arriving-branch-month', {
+          .get('https://api2.simplifies.cl/api/arriving-branch-month', {
             params: {
               branch_id: this.branch_id,
               mes: mes,
@@ -290,7 +290,7 @@
         this.editedIndex = 1;
         this.state=true;
         axios
-          .get('http://127.0.0.1:8000/api/arriving-branch-date', {
+          .get('https://api2.simplifies.cl/api/arriving-branch-date', {
             params: {
               branch_id: this.branch_id
             }

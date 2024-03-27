@@ -135,7 +135,7 @@
         <template v-slot:item.name="{ item }">
 
         <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-          <v-img :src="'http://127.0.0.1:8000/api/images/'+item.client_image" alt="image"></v-img>
+          <v-img :src="'https://api2.simplifies.cl/api/images/'+item.client_image" alt="image"></v-img>
         </v-avatar>
         {{ item.name }}
         </template>
@@ -286,12 +286,12 @@ export default {
     },
     initialize() {
       axios
-        .get('http://127.0.0.1:8000/api/client')
+        .get('https://api2.simplifies.cl/api/client')
         .then((response) => {
           this.results = response.data.clients;
         });
         axios
-        .get('http://127.0.0.1:8000/api/usuario')
+        .get('https://api2.simplifies.cl/api/usuario')
         .then((response) => {
           this.users = response.data.users;
         });
@@ -311,7 +311,7 @@ export default {
       },
     editItem(item) {
       this.file = '';
-      this.imgMiniatura = 'http://127.0.0.1:8000/api/images/'+item.client_image;
+      this.imgMiniatura = 'https://api2.simplifies.cl/api/images/'+item.client_image;
       this.editedIndex = 1;
       this.editedItem = Object.assign({}, item)
       this.dialog = true;
@@ -329,7 +329,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('http://127.0.0.1:8000/api/client-destroy', request)
+        .post('https://api2.simplifies.cl/api/client-destroy', request)
         .then(() => {
           this.initialize();
           this.message_delete = true
@@ -365,7 +365,7 @@ export default {
             formData.append(key, this.editedItem[key]);
           }  
         axios
-          .post('http://127.0.0.1:8000/api/client-update', formData)
+          .post('https://api2.simplifies.cl/api/client-update', formData)
           .then(() => {
             this.initialize();
            this.showAlert("success","Cliente editado correctamente", 3000)
@@ -383,7 +383,7 @@ export default {
             formData.append(key, this.editedItem[key]);
           } 
         axios
-          .post('http://127.0.0.1:8000/api/client', formData)
+          .post('https://api2.simplifies.cl/api/client', formData)
           .then(() => {
             this.initialize();
             this.showAlert("success","Cliente registrado correctamente", 3000)

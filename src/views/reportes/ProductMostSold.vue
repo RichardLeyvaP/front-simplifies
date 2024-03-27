@@ -40,7 +40,7 @@
                             <template v-slot:item.name="{ item }">
 
                                 <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                                    <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_product" alt="image"></v-img>
+                                    <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
                                 </v-avatar>
                                 {{ item.name }}
                             </template>
@@ -110,7 +110,7 @@ export default {
         this.charge_id = LocalStorageService.getItem('charge_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         axios
-            .get('http://127.0.0.1:8000/api/show-business', {
+            .get('https://api2.simplifies.cl/api/show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -172,7 +172,7 @@ export default {
         initialize() {
             this.editedIndex = 1;
             axios
-                .get('http://127.0.0.1:8000/api/product-mostSold', {
+                .get('https://api2.simplifies.cl/api/product-mostSold', {
                     params: {
                         branch_id: this.branch_id,
                         business_id: this.business_id
