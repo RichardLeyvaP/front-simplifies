@@ -111,8 +111,10 @@
     </v-toolbar>
 
     <v-card-text>
-
-      <v-data-table :headers="headers" :items="results" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+      <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
+                hide-details>
+            </v-text-field>
+      <v-data-table :headers="headers" :search="search" :items="results" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
         <template v-slot:top>
 
           <v-divider class="mx-4" inset vertical></v-divider>
@@ -377,6 +379,7 @@ export default {
     search3: '',
     business_id: '',
     search2: '',
+    search:'',
     editando: false,
     dialog: false,
     dialogDelete: false,

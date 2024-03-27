@@ -425,10 +425,10 @@ export default {
         axios
           .post('http://127.0.0.1:8000/api/move-product-store', this.data)
           .then(() => {
-            this.initialize();
             this.showAlert("success", "Producto asignado correctamente", 3000)
             this.mover = true;
             this.texttitle = 'Cantidad';
+            this.initialize();
           });
       }
       if (this.editedIndex === -1) {
@@ -441,8 +441,8 @@ export default {
         axios
           .post('http://127.0.0.1:8000/api/productstore', this.data)
           .then(() => {
+            this.showAlert("success", "Producto asignado correctamente", 3000);
             this.initialize();
-            this.showAlert("success", "Producto asignado correctamente", 3000)
           });
       }
       this.close()

@@ -122,7 +122,10 @@
 
 
     <v-card-text>
-      <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'"  :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
+      <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
+                hide-details>
+            </v-text-field>
+      <v-data-table :headers="headers" :search="search" :items-per-page-text="'Elementos por páginas'"  :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
         no-results-text="No hay datos disponibles">
         <template v-slot:top>
 
@@ -170,6 +173,7 @@ export default {
     sb_icon:'',
     editando: false,
     dialog: false,
+    search: '',
     message_delete: true,
     dialogDelete: false,
     headers: [
