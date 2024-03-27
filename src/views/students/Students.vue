@@ -133,7 +133,7 @@
    <template v-slot:item.name="{ item }">
 
    <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-     <v-img :src="'https://api2.simplifies.cl/api/images/'+item.student_image" alt="image"></v-img>
+     <v-img :src="'http://127.0.0.1:8000/api/images/'+item.student_image" alt="image"></v-img>
    </v-avatar>
    {{ item.name }}
    </template>
@@ -279,12 +279,12 @@ showAlert(sb_type,sb_message, sb_timeout)
 },
 initialize() {
  axios
-   .get('https://api2.simplifies.cl/api/student')
+   .get('http://127.0.0.1:8000/api/student')
    .then((response) => {
      this.results = response.data.clients;
    });
    /*axios
-   .get('https://api2.simplifies.cl/api/usuario')
+   .get('http://127.0.0.1:8000/api/usuario')
    .then((response) => {
      this.users = response.data.users;
    });*/
@@ -305,7 +305,7 @@ onFileSelected(event) {
  },
 editItem(item) {
  this.file = '';
- this.imgMiniatura = 'https://api2.simplifies.cl/api/images/'+item.student_image;
+ this.imgMiniatura = 'http://127.0.0.1:8000/api/images/'+item.student_image;
  this.editedIndex = 1;
  this.editedItem = Object.assign({}, item)
  this.dialog = true;
@@ -323,7 +323,7 @@ deleteItemConfirm() {
    id: this.editedItem.id
  };
  axios
-   .post('https://api2.simplifies.cl/api/student-destroy', request)
+   .post('http://127.0.0.1:8000/api/student-destroy', request)
    .then(() => {
      this.initialize();
      this.message_delete = true
@@ -355,7 +355,7 @@ save() {
        formData.append(key, this.editedItem[key]);
      }  
    axios
-     .post('https://api2.simplifies.cl/api/student-update', formData)
+     .post('http://127.0.0.1:8000/api/student-update', formData)
      .then(() => {
        this.initialize();
       this.showAlert("success","Estudiante editado correctamente", 3000)
@@ -369,7 +369,7 @@ save() {
        formData.append(key, this.editedItem[key]);
      } 
    axios
-     .post('https://api2.simplifies.cl/api/student', formData)
+     .post('http://127.0.0.1:8000/api/student', formData)
      .then(() => {
        this.initialize();
        this.showAlert("success","Estudiante registrado correctamente", 3000)

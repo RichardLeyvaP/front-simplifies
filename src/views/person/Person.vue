@@ -199,7 +199,7 @@
         <template v-slot:item.name="{ item }">
 
         <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-          <v-img :src="'https://api2.simplifies.cl/api/images/'+item.image_url" alt="image"></v-img>
+          <v-img :src="'http://127.0.0.1:8000/api/images/'+item.image_url" alt="image"></v-img>
         </v-avatar>
         {{ item.name }}
         </template>
@@ -346,7 +346,7 @@ export default {
     shangePassword(){
       console.log(this.editedItem.user_id)
       axios
-        .get('https://api2.simplifies.cl/api/change_password', {
+        .get('http://127.0.0.1:8000/api/change_password', {
                     params: {
                         id: this.editedItem.user_id,
                         password: this.confirmPassword,
@@ -397,17 +397,17 @@ export default {
     },
     initialize() {
       axios
-        .get('https://api2.simplifies.cl/api/professional')
+        .get('http://127.0.0.1:8000/api/professional')
         .then((response) => {
           this.results = response.data.professionals;
         });
         axios
-        .get('https://api2.simplifies.cl/api/usuario')
+        .get('http://127.0.0.1:8000/api/usuario')
         .then((response) => {
           this.users = response.data.users;
         });
         axios
-        .get('https://api2.simplifies.cl/api/charge')
+        .get('http://127.0.0.1:8000/api/charge')
         .then((response) => {
           this.charges = response.data.charges;
         });
@@ -428,7 +428,7 @@ export default {
       },
     editItem(item) {
       this.file = '';
-      this.imgMiniatura = 'https://api2.simplifies.cl/api/images/'+item.image_url;
+      this.imgMiniatura = 'http://127.0.0.1:8000/api/images/'+item.image_url;
       this.editedIndex = 1;
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
@@ -453,7 +453,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('https://api2.simplifies.cl/api/professional-destroy', request)
+        .post('http://127.0.0.1:8000/api/professional-destroy', request)
         .then(() => {
           this.initialize();
           this.message_delete = true
@@ -501,7 +501,7 @@ export default {
             formData.append(key, this.editedItem[key]);
           }   
         axios
-          .post('https://api2.simplifies.cl/api/professional-update', formData)
+          .post('http://127.0.0.1:8000/api/professional-update', formData)
           .then(() => {
             this.initialize();
            this.showAlert("success","Profesional editado correctamente", 3000);
@@ -525,7 +525,7 @@ export default {
             formData.append(key, this.editedItem[key]);
           } 
         axios
-          .post('https://api2.simplifies.cl/api/register_professional', formData)
+          .post('http://127.0.0.1:8000/api/register_professional', formData)
           .then(() => {
             this.initialize();
             this.showAlert("success","Profesional registrado correctamente", 3000);

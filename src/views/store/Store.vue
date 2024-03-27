@@ -218,7 +218,7 @@ export default {
 
     initialize() {
       axios
-        .get('https://api2.simplifies.cl/api/store')
+        .get('http://127.0.0.1:8000/api/store')
         .then((response) => {
           console.log("entra a Buscar almacenes")
           this.results = response.data.stores;
@@ -240,7 +240,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('https://api2.simplifies.cl/api/store-destroy', request)
+        .post('http://127.0.0.1:8000/api/store-destroy', request)
         .then(() => {
           this.initialize();
           this.showAlert("success", "Almacén eliminado correctamente", 3000)
@@ -271,7 +271,7 @@ export default {
         this.data.description = this.editedItem.description;
         this.data.address = this.editedItem.address;
         axios
-          .put('https://api2.simplifies.cl/api/store', this.data)
+          .put('http://127.0.0.1:8000/api/store', this.data)
           .then(() => {
             this.initialize();
             this.showAlert("success", "Almacén editado correctamente", 3000)
@@ -282,7 +282,7 @@ export default {
         this.data.description = this.editedItem.description;
         this.data.address = this.editedItem.address;
         axios
-          .post('https://api2.simplifies.cl/api/store', this.data)
+          .post('http://127.0.0.1:8000/api/store', this.data)
           .then(() => {
             this.initialize();
             this.showAlert("success", "Almacén registrado correctamente", 3000)
