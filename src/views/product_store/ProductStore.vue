@@ -373,12 +373,13 @@ export default {
     deleteItemConfirm() {
       this.data.product_id = this.editedItem.product_id;
       this.data.store_id = this.editedItem.store_id;
+      this.data.branch_id = this.branch_id;
       axios
         .post('http://127.0.0.1:8000/api/productstore-destroy', this.data)
         .then(() => {
+          this.message_delete = true;
+          this.showAlert("success", "Asignación eliminada correctamente", 3000);       
           this.initialize();
-          this.message_delete = true
-          this.showAlert("success", "Asignación eliminada correctamente", 3000)
         })
       this.closeDelete()
     },

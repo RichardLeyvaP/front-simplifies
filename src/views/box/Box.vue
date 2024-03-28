@@ -270,8 +270,22 @@
 
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
+        </template>
 
-          <v-dialog v-model="dialogRequest" width="500">
+        <template v-slot:item.actions="{ item }">
+          <v-icon size="35" class="pr-3" title="Mostrar Detalles Carro" color="primary" @click="showDetails(item)">
+            mdi-eye
+          </v-icon>
+          <v-icon :disabled="item.pay === 1" title="Pagar Carro" size="35" color="green" @click="payItem(item)">
+            mdi-credit-card
+          </v-icon>
+          <v-icon size="35" title="Eliminar Carro" color="red" @click="deleteItem(item)">
+            mdi-delete
+          </v-icon>
+        </template>
+      </v-data-table>
+
+      <v-dialog v-model="dialogRequest" width="500">
             <v-card>
               <v-toolbar color="#F18254">
                 <span class="text-subtitle-2 ml-4"> Solicitud de Eliminación de producto / servicio</span>
@@ -286,9 +300,12 @@
               </v-card-text>
               <v-divider></v-divider>
               <v-card-actions>
-
-                <v-btn color="default" @click="closeDeleteP">Cancelar</v-btn>
-                <v-btn color="warning" :loading="loading" @click="requestDelete">Aceptar</v-btn>
+                <v-spacer></v-spacer>
+                <v-spacer></v-spacer>
+                <v-spacer></v-spacer>
+                <v-spacer></v-spacer>
+                <v-btn color="default" variant="flat" @click="closeDeleteP">Cancelar</v-btn>
+                <v-btn color="warning" variant="flat" :loading="loading" @click="requestDelete">Aceptar</v-btn>
                 <v-spacer></v-spacer>
               </v-card-actions>
 
@@ -403,7 +420,22 @@
           <v-dialog v-model="dialogDetallesCar" fullscreen transition="dialog-bottom-transition">
             <v-card>
               <v-toolbar color="#F18254">
-                <span class="text-subtitle-2 ml-4"> Detalles del Carro</span>
+                <v-row>
+                  <v-col cols="12" md="9">
+                    <span class="text-subtitle-2 ml-4"> Detalles del Carro</span>
+                  </v-col>
+                  <v-spacer></v-spacer>
+                  <v-col cols="12" md="3">
+                    <v-btn color="#E7E9E9" variant="flat" @click="showService(this.car_ref)"
+                      prepend-icon="mdi-list-box-outline">
+                      Agregar Servicio
+                    </v-btn>
+                    <v-btn color="#E7E9E9" variant="flat" @click="showProduct(this.car_ref)"
+                      prepend-icon="mdi-tag-outline">
+                      Agregar Producto
+                    </v-btn>
+                  </v-col>
+                </v-row>
               </v-toolbar>
 
               <v-card-text class="mt-2 mb-2">
@@ -423,13 +455,15 @@
                   </template>
 
                   <template v-slot:item.actions="{ item }">
-                    <v-icon v-if="(item.request_delete)" :disabled="!(item.pay)" size="25" color="blue"
-                      @click="deleteOrder(item)">
-                      mdi-check
-                    </v-icon>
-                    <v-icon v-if="(item.request_delete)" :disabled="item.request_delete" size="25" color="red"
-                      @click="requestCancel(item)">
+                    <v-icon :disabled="!(item.pay) && item.request_delete" size="25"
+                      :color="(item.request_delete && !this.car_ref.pay) ? 'red' : 'grey'" title="Eliminar solicitud"
+                      @click="(item.request_delete && !this.car_ref.pay) && deleteOrder(item)">
                       mdi-cancel
+                    </v-icon>
+                    <v-icon size="25" :color="(item.request_delete && !this.car_ref.pay) ? 'blue' : 'grey'"
+                      title="Denegar solicitud"
+                      @click="(item.request_delete && !this.car_ref.pay) && requestCancel(item)">
+                      mdi-check
                     </v-icon>
                   </template>
 
@@ -448,6 +482,70 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
+          <!--AddProducts-->
+          <v-dialog v-model="showAddProducts" max-width="500px">
+
+            <v-card>
+              <v-toolbar color="#F18254">
+                <span class="text-subtitle-2 ml-4"> Agergar Producto</span>
+              </v-toolbar>
+              <v-card-text>
+                <v-form v-model="valid" enctype="multipart/form-data">
+                  <v-row>
+                    <v-col cols="12" md="12">
+                      <v-autocomplete v-model="product_store_id" :items="products" clearable label="Productos"
+                        prepend-inner-icon="mdi-tag-outline" item-title="name" item-value="id" variant="underlined"
+                        :rules="selectRules"></v-autocomplete>
+                    </v-col>
+                  </v-row>
+                  <v-divider></v-divider>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn color="#E7E9E9" variant="flat" @click="closeAddProduct">
+                      Cancelar
+                    </v-btn>
+                    <v-btn color="#F18254" variant="flat" @click="saveAddProduct" :disabled="!valid">
+                      Aceptar
+                    </v-btn>
+                  </v-card-actions>
+                </v-form>
+              </v-card-text>
+            </v-card>
+          </v-dialog>
+          <!--EndAddProducts-->
+          <!--AddServices-->
+          <v-dialog v-model="showAddServices" max-width="500px">
+
+            <v-card>
+              <v-toolbar color="#F18254">
+                <span class="text-subtitle-2 ml-4"> Agergar Servicio</span>
+              </v-toolbar>
+              <v-card-text>
+                <v-form v-model="valid" enctype="multipart/form-data">
+                  <v-row>
+                    <v-col cols="12" md="12">
+                      <v-autocomplete v-model="branch_service_professional_id" :items="services" clearable
+                        label="Servicios" prepend-inner-icon="mdi-list-box-outline" item-title="name" item-value="id"
+                        variant="underlined" :rules="selectRules"></v-autocomplete>
+                    </v-col>
+                  </v-row>
+                  <v-divider></v-divider>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn color="#E7E9E9" variant="flat" @click="closeAddService">
+                      Cancelar
+                    </v-btn>
+                    <v-btn color="#F18254" variant="flat" @click="saveAddServie" :disabled="!valid">
+                      Aceptar
+                    </v-btn>
+                  </v-card-actions>
+                </v-form>
+              </v-card-text>
+            </v-card>
+          </v-dialog>
+          <!--EndAddServices-->
           <v-dialog v-model="dialogBox" max-width="600px">
             <v-card>
               <v-toolbar color="#F18254">
@@ -489,21 +587,6 @@
               </v-card-text>
             </v-card>
           </v-dialog>
-        </template>
-
-        <template v-slot:item.actions="{ item }">
-          <v-icon size="35" class="pr-3" title="Mostrar Detalles Carro" color="primary" @click="showDetails(item)">
-            mdi-eye
-          </v-icon>
-          <v-icon :disabled="item.pay === 1" title="Pagar Carro" size="35" color="green" @click="payItem(item)">
-            mdi-credit-card
-          </v-icon>
-          <v-icon size="35" title="Eliminar Carro" color="red" @click="deleteItem(item)">
-            mdi-delete
-          </v-icon>
-        </template>
-      </v-data-table>
-
 
     </v-card-text>
 
@@ -538,7 +621,7 @@ export default {
     dialogPay: false,
     dialogBox: false,
     loading: false,
-    branch_id:'',
+    branch_id: '',
     charge_id: '',
     business_id: '',
     nameBranch: '',
@@ -551,6 +634,12 @@ export default {
     mostrarOtroCampo: false,
     ejecutado: false,
     closed_box: true,
+    showAddServices: false,
+    services: [],
+    branch_service_professional_id: '',
+    showAddProducts: false,
+    products: [],
+    product_store_id: '',
 
     headers: [
       { title: 'No', value: 'id' },
@@ -571,7 +660,7 @@ export default {
       { title: 'Nombre', value: 'name' },
       { title: 'Categoría', value: 'category' },
       { title: 'Precio', value: 'price' },
-      // { title: 'Solicitud de Eliminar', key: 'actions', sortable: false },
+      { title: 'Acciones', key: 'actions', sortable: false },
     ],
     editedIndex: -1,
 
@@ -585,6 +674,7 @@ export default {
       creditCard: '',
       debit: '',
       transfer: '',
+      professional_id: '',
       other: '',
       amount: '',
       cardGif: ''
@@ -646,6 +736,7 @@ export default {
       creditCard: '',
       debit: '',
       transfer: '',
+      professional_id: '',
       other: '',
       amount: '',
       cardGif: ''
@@ -791,9 +882,9 @@ export default {
       axios
         .put('http://127.0.0.1:8000/api/order', request)
         .then(() => {
+          this.showAlert("success", "Orden denegada para ser eliminada correctamente", 3000);
           this.initialize();
           this.showDetails(this.car_ref)
-          this.showAlert("success", "Orden denegada para ser eliminada correctamente", 3000)
         })
       this.dialogRequest = false
       this.$nextTick(() => {
@@ -1003,15 +1094,6 @@ export default {
         .then((response) => {
           this.box = response.data.box;
         });
-      /*axios
-        .get('http://127.0.0.1:8000/api/show-business', {
-          params: {
-            business_id: this.business_id
-          }
-        })
-        .then((response) => {
-          this.branches = response.data.branches;
-        });*/
     },
     editItem(item) {
       this.editedIndex = 1;
@@ -1211,6 +1293,94 @@ export default {
         this.editedIndex = -1
       })
     },
+
+    //addServices
+    showService(car) {
+      console.log('imprime Carro');
+      console.log(car);
+
+      axios
+        .get('http://127.0.0.1:8000/api/services-professional-branch-web', {
+          params: {
+            branch_id: this.branch_id,
+            professional_id: car.professional_id
+          }
+        })
+        .then((response) => {
+          this.services = response.data.branchServicesPro;
+
+          console.log('imprime Servicios');
+          console.log(this.services);
+        });
+      this.showAddServices = true;
+
+      console.log(car);
+    },
+    closeAddService() {
+      this.showAddServices = false;
+      this.branch_service_professional_id = '';
+    },
+    saveAddServie() {
+      this.data.car_id = this.car_ref.id;
+      this.data.service_id = this.branch_service_professional_id;
+      this.data.product_id = 0;
+      this.data.type = 'service';
+      console.log('Datos servicios agregar');
+      console.log(this.data);
+      axios
+        .post('http://127.0.0.1:8000/api/order', this.data)
+        .then(() => {
+          this.showAlert("success", "Servicio agregado correctamente", 3000);
+          this.initialize();
+          this.showDetails(this.car_ref);
+          this.showAddServices = false;
+          this.branch_service_professional_id = '';
+        });
+    },
+    //endAddService
+    //addProduct
+    showProduct(car) {
+      console.log('imprime Carro');
+      console.log(car);
+
+      axios
+        .get('http://127.0.0.1:8000/api/productstore-show-web', {
+          params: {
+            branch_id: this.branch_id
+          }
+        })
+        .then((response) => {
+          this.products = response.data.products;
+
+          console.log('imprime Productos');
+          console.log(this.products);
+        });
+      this.showAddProducts = true;
+
+      console.log(car);
+    },
+    closeAddProduct() {
+      this.showAddProducts = false;
+      this.product_store_id = '';
+    },
+    saveAddProduct() {
+      this.data.car_id = this.car_ref.id;
+      this.data.service_id = 0;
+      this.data.product_id = this.product_store_id;
+      this.data.type = 'product';
+      console.log('Datos producto agregar');
+      console.log(this.data);
+      axios
+        .post('http://127.0.0.1:8000/api/order', this.data)
+        .then(() => {
+          this.showAlert("success", "Producto agregado correctamente", 3000);
+          this.initialize();
+          this.showDetails(this.car_ref);
+          this.showAddProducts = false;
+          this.product_store_id = '';
+        });
+    },
+    //endAddProduct
   },
 }
 </script>
