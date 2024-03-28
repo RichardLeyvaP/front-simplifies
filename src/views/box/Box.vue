@@ -273,15 +273,20 @@
         </template>
 
         <template v-slot:item.actions="{ item }">
+          <v-btn density="comfortable" icon="mdi-eye" @click="showDetails(item)" color="primary" variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Mostrar detalles del carro"></v-btn>
+          <v-btn density="comfortable" icon="mdi-credit-card" @click="payItem(item)" color="green-darken-1" variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Pagar el carro"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal" elevation="1" title="Eliminar el carro"></v-btn>
+          <!--<v-btn density="comfortable">
           <v-icon size="35" class="pr-3" title="Mostrar Detalles Carro" color="primary" @click="showDetails(item)">
             mdi-eye
           </v-icon>
+        </v-btn>
           <v-icon :disabled="item.pay === 1" title="Pagar Carro" size="35" color="green" @click="payItem(item)">
             mdi-credit-card
           </v-icon>
           <v-icon size="35" title="Eliminar Carro" color="red" @click="deleteItem(item)">
             mdi-delete
-          </v-icon>
+          </v-icon>-->
         </template>
       </v-data-table>
 
@@ -427,7 +432,7 @@
                   <v-spacer></v-spacer>
                   <v-col cols="12" md="3">
                     <v-btn color="#E7E9E9" variant="flat" @click="showService(this.car_ref)"
-                      prepend-icon="mdi-list-box-outline">
+                      prepend-icon="mdi-list-box-outline" class="mr-2">
                       Agregar Servicio
                     </v-btn>
                     <v-btn color="#E7E9E9" variant="flat" @click="showProduct(this.car_ref)"

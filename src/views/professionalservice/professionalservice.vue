@@ -457,14 +457,13 @@ export default {
           this.profitPercen = '';
           this.professional = '';
           this.selected = '';
-          this.profitPercen = 0;
               this.especial = false;              
               this.type_service = '';
           this.initialize();
         }).catch(error => {
           // Maneja cualquier error que pueda ocurrir durante la solicitud
           this.showAlert("warning", "Error al hacer la asignación", 3000);
-          this.percent = 0;
+          this.profitPercen = '';
               this.especial = false;
         });
         },
@@ -768,7 +767,7 @@ toggleService3(service)
         // Limpiar la selección anterior y agregar el nuevo servicio seleccionado
         this.selected = [service.id];
         this.selectedServiceType = [service.type_service];
-        this.profitPercentaje = [service.profit_percentaje];
+        this.profitPercentaje = service.profit_percentaje;
         //
         //
         console.log('this.profitPercentaje');
