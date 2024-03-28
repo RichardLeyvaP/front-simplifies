@@ -13,22 +13,20 @@
 
       </v-col>
     </v-row>
+    
   </v-snackbar>
-    <v-container>
-      <v-card elevation="6">
-        
-    <v-container>
-        <div>
-    <v-toolbar color="#F18254">
-        <v-row align="center">
-            <v-col cols="12" md="5" class="grow ml-4">
-                <span class="text-subtitle-1"> <strong>Horario de trabajo por Sucursal</strong></span>
-            </v-col>
-            <v-col cols="12" md="4"></v-col>
-        </v-row>
+  <v-container>
+    <v-card elevation="6" class="mx-5">
+            <v-toolbar color="#F18254">
+      <v-row align="center">
+        <v-col cols="12" md="4" class="grow ml-4">
+          <span class="text-subtitle-1"> <strong>Horarios de Trabajo por Sucursales</strong></span>
+        </v-col>
+        <v-col cols="12" md="5" class="mr-12"></v-col>
+        </v-row>        
     </v-toolbar>
-</div>
     <br>
+    <v-container>
         <v-row>
             <v-col cols="12" md="6">
                     <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
@@ -87,6 +85,8 @@
         </v-table>
     </v-col>
     </v-row>
+</v-container>
+<v-container>
     <v-row>
         <br>
         <v-spacer></v-spacer>
@@ -94,12 +94,11 @@
         <v-col cols="12" md="2">
         <v-btn @click="save" class="text-subtitle-1  ml-12  " color="warning" variant="flat"
                                 elevation="2" prepend-icon="mdi-plus-circle">
-                                Actualizar horario
+                                Actualizar
                             </v-btn>
                         </v-col>
                         </v-row>
-
-    </v-container>
+                    </v-container>
       </v-card>
     </v-container>
   </template>
@@ -174,7 +173,7 @@ import LocalStorageService from "@/LocalStorageService";
       this.sb_timeout = sb_timeout
       this.snackbar = true
     },
-        initialize() {
+    initialize() {
             axios
                 .get('http://127.0.0.1:8000/api/show_schedule_branch', {
                     params: {
@@ -185,11 +184,11 @@ import LocalStorageService from "@/LocalStorageService";
                     this.results = response.data;
                     this.dias = this.results.Schedules.map(schedule => ({
       nombre: schedule.day,
-      esLaboral: schedule.start_time !== null && schedule.closing_time !== null,
-      entradaHora: schedule.start_time !== null ? schedule.start_time.split(':')[0] : '',
-      entradaMinuto: schedule.start_time !== null ? schedule.start_time.split(':')[1] : '',
-      salidaHora: schedule.closing_time !== null ? schedule.closing_time.split(':')[0] : '',
-      salidaMinuto: schedule.closing_time !== null ? schedule.closing_time.split(':')[1] : ''
+      esLaboral: schedule.start_time !== null || schedule.closing_time !== null,
+      entradaHora: schedule.start_time !== null ? schedule.start_time.split(':')[0] : '00',
+      entradaMinuto: schedule.start_time !== null ? schedule.start_time.split(':')[1] : '00',
+      salidaHora: schedule.closing_time !== null ? schedule.closing_time.split(':')[0] : '00',
+      salidaMinuto: schedule.closing_time !== null ? schedule.closing_time.split(':')[1] : '00'
     }));
                     console.log('this.results');
                     console.log(this.results);
@@ -197,14 +196,38 @@ import LocalStorageService from "@/LocalStorageService";
         },
 
         save() {
+            //const start_time;
+            //const closing_time;
+            
             const updatedData = this.dias.map(dia => {
-            const start_time = (dia.entradaHora || dia.entradaMinuto) ? `${dia.entradaHora}:${dia.entradaMinuto}` : '';
-            const closing_time = (dia.salidaHora || dia.salidaMinuto) ? `${dia.salidaHora}:${dia.salidaMinuto}` : '';
-
+                /*const start_time = null;
+                    const closing_time = null;
+                    console.log('dia.esLaboral');
+                console.log(dia.esLaboral);
+                if(dia.esLaboral === false){
+                    const start_time = null;
+                    const closing_time = null;
+                }
+                else{
+                    const start_time = (dia.entradaHora || dia.entradaMinuto) ? `${dia.entradaHora}:${dia.entradaMinuto}` : null;
+                    const closing_time = (dia.salidaHora || dia.salidaMinuto) ? `${dia.salidaHora}:${dia.salidaMinuto}` : null;
+                }*/
+                /*console.log('start_time');
+                console.log(start_time);
+                console.log('closing_time');
+                console.log(closing_time);*/
+                console.log('`${dia.entradaHora}:${dia.entradaMinuto}`');
+                console.log(`${dia.entradaHora}:${dia.entradaMinuto}`);
+                console.log('`${dia.salidaHora}:${dia.salidaMinuto}`');
+                console.log(`${dia.salidaHora}:${dia.salidaMinuto}`);
+                //console.log('${dia.salidaMinuto}');
+                //console.log(dia.salidaMinuto);
+                const start_time = (dia.entradaHora || dia.entradaMinuto) ? `${dia.entradaHora}:${dia.entradaMinuto}` : null;
+                    const closing_time = (dia.salidaHora || dia.salidaMinuto) ? `${dia.salidaHora}:${dia.salidaMinuto}` : null;
             return {
                 day: dia.nombre,
-                start_time: start_time,
-                closing_time: closing_time
+                start_time: dia.esLaboral === false ? null : start_time === '00:00' ? null : start_time,
+                closing_time: dia.esLaboral === false ? null : closing_time === '00:00' ? null : closing_time,
             };
         });
         let request = {
@@ -236,7 +259,7 @@ import LocalStorageService from "@/LocalStorageService";
                 // Maneja cualquier error que ocurra al enviar los datos al servidor
                 console.error('Error al actualizar datos en el servidor:', error);
             });*/
-    }
+    }  
     },
   };
   </script>

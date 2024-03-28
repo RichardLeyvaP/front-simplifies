@@ -60,7 +60,7 @@
              </v-row>
              <v-row>
                <v-col cols="12" md="4">
-                <v-select label="Estado" v-model="editedItem.status_product" :items="['En Venta',' No en Venta']" item-value="['En Venta', 'No en venta']" variant="underlined" density="compact" :rules="selectRules" prepend-icon="mdi-check-circle"></v-select>
+                <v-select label="Estado" v-model="editedItem.status_product" :items="['En Venta',' No en Venta']" :item-value="editedItem.status_product" variant="underlined" density="compact" :rules="selectRules" prepend-icon="mdi-check-circle"></v-select>
                </v-col>
                <v-col cols="12" md="4">
                  <v-text-field v-model="editedItem.purchase_price" clearable label="Precio de Compra" prepend-icon="mdi-cash"
@@ -68,7 +68,7 @@
                  </v-text-field>
                </v-col>
                <v-col cols="12" md="4">
-                 <v-text-field v-model="editedItem.sale_price" clearable label="Precio de Venta" prepend-icon="mdi-currency-usd"
+                 <v-text-field v-if="mostrarVenta || editedItem.status_product === 'En Venta'" v-model="editedItem.sale_price" clearable label="Precio de Venta" prepend-icon="mdi-currency-usd"
                    variant="underlined" :rules="requiredRules">
                  </v-text-field>
                </v-col>
@@ -205,6 +205,7 @@
   productCategories: [],
   editedIndex: -1,
   file: '',
+  mostrarVenta: false,
   imgMiniatura: '',
   search: '',
   editedItem: {
@@ -263,7 +264,7 @@
   },
   },
   
-  created() {
+  mounted() {
     
   this.initialize()
   },
@@ -331,6 +332,11 @@
      reader.readAsDataURL(file);
    },
   editItem(item) {
+    if (item.status_product === 'En venta') {
+      this.mostrarVenta = true;
+} else {
+    this.mostrarVenta = false;
+}
    this.file = '';
    this.imgMiniatura = 'http://127.0.0.1:8000/api/images/'+item.image_product;
    this.editedIndex = 1;
@@ -354,7 +360,7 @@
      .then(() => {
        this.initialize();
        this.message_delete = true
-       this.showAlert("success","Product eliminado correctamente", 3000)
+       this.showAlert("success","Producto eliminado correctamente", 3000)
        this.imgMiniatura = '';
           this.file = '';
      })
@@ -379,6 +385,7 @@
   save() {
    if (this.editedIndex > -1) {
      this.valid = false;
+     this.editedItem.sale_price = this.editedItem.sale_price ? this.editedItem.sale_price : '';
      const formData = new FormData();
        for (let key in this.editedItem) {
          formData.append(key, this.editedItem[key]);
@@ -409,5 +416,6 @@
    this.close()
   },
   },
+  
   }
   </script>

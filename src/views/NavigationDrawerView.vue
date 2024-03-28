@@ -145,7 +145,8 @@ export default {
       { icon: "mdi-account-multiple", title: "Visitas por Clientes", to: "clients-visist", value: "clients-visist", permission: "view_clients_frecuence" },
       { icon: "mdi-trending-up", title: "Productos más vendidos", to: "product-mostsolt", value: "product-mostsolt", permission: "products_mostsold" },
       { icon: "mdi-shuffle", title: "Reposición de Productos", to: "product-stock", value: "product-stock", permission: "products_stock" },
-      { icon: "mdi-currency-usd", title: "Finanzas por Sucursales", to: "finance-branches", value: "finance-branches", permission: "view_finance_branches" },    
+      { icon: "mdi-currency-usd", title: "Finanzas por Sucursales", to: "finance-branches", value: "finance-branches", permission: "view_finance_branches" },
+      { icon: "mdi-currency-usd", title: "Finanzas por Sucursales detalladas", to: "finance-branches-details", value: "finance-branches-details", permission: "view_finance_branches_details" },
     ],
     academias: [
       { icon: "mdi-school", title: "Academia", to: "academy", value: "academy", permission: "view_academy" },

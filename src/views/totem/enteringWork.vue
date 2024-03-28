@@ -2,7 +2,7 @@
 
 <!-- este es el archivo wue se presentó al cliente -->
 <template>
-  <div class="app-container">
+  <div >
     <v-container>
       <v-stepper hide-actions  bg-color="" v-model="step" :items="items" 
         @update:model-value="handleStepChange">
@@ -20,13 +20,21 @@
 
             </v-row>
             <h3 class="text-h6 red--text">{{ verificate_menssj }}</h3>
+           
 
           </v-sheet>
               <!-- BOTONES -->
-              <v-row class="mt-1">
-                <v-spacer></v-spacer>
-                <v-btn :disabled="!validarEmail()" @click="nextStep">Siguiente</v-btn>             
-              </v-row>
+            
+              <v-container>
+                <!-- BOTONES -->
+            <v-row class="mt-1">
+              <v-spacer></v-spacer>
+              <v-btn size="x-large" :disabled="!validarEmail()" @click="nextStep">Siguiente</v-btn>            
+            </v-row>
+            
+          </v-container>
+              
+             
         </template>
 
 
@@ -88,13 +96,17 @@
 </v-list>
 
 </v-sheet>
-          <v-row class="mt-1">
-               
-               <v-btn @click="prevStep">Volver</v-btn>
-               <v-spacer></v-spacer>
-               <v-btn :disabled="advanceReserva2" @click="nextStep">Generar código</v-btn>
+         
+             
+             <v-container>
+                <!-- BOTONES -->
+            <v-row class="mt-1">
+              <v-btn size="x-large" @click="prevStep">Volver</v-btn>
+              <v-spacer></v-spacer>
+              <v-btn size="x-large" :disabled="advanceReserva2" @click="nextStep">Generar código</v-btn>           
+            </v-row>
             
-             </v-row>
+          </v-container>
         </template>
 
         <!-- Generar codigo Qr -->
@@ -123,12 +135,15 @@
               </v-col>
             </v-row>
           </v-sheet>
-          <v-row class="mt-1">
-               
-               <v-btn @click="prevStep">Volver</v-btn>
-               <v-spacer></v-spacer>
+         
+             <v-container>
+                <!-- BOTONES -->
+            <v-row class="mt-1">
+              <v-btn size="x-large" @click="prevStep">Volver</v-btn>
+              <v-spacer></v-spacer>           
+            </v-row>
             
-             </v-row>
+          </v-container>
         </template>
 
 
@@ -139,7 +154,7 @@
     <br>
     <v-row>  
           <v-spacer></v-spacer>        
-        <v-btn to="totem" >Volver a inicio</v-btn>
+        <v-btn size="x-large" to="totem" >Volver a inicio</v-btn>
         <v-spacer></v-spacer>  
         </v-row>
         <br>
@@ -268,7 +283,7 @@ export default {
   mounted() {
     //this.business_id = LocalStorageService.getItem('business_id');
     //this.charge_id = LocalStorageService.getItem('charge_id');
-    this.branch_id = LocalStorageService.getItem('branch_id') ? 1 : LocalStorageService.getItem('branch_id');
+    this.branch_id = LocalStorageService.getItem('branch_id');
 
   },
   computed: {
@@ -360,6 +375,7 @@ prevStep() {
 
 
     GenerateQr() {
+     
       //simulando un correo valido
       //this.email_client2 = 'deylert89@gmail.com';
       
@@ -473,9 +489,11 @@ prevStep() {
 
     },
     sendData() {
+      console.log('-------------------this.branch_id-----------------');
+      console.log(this.branch_id);
 
       // Realiza la solicitud POST Y BUSCO LOS DATOS DEL CLIENTE 
-      axios.get(`http://127.0.0.1:8000/api/verify-tec-prof?email=${this.email_client2}`)
+      axios.get(`http://127.0.0.1:8000/api/verify-tec-prof?email=${this.email_client2}&branch_id=${this.branch_id}`)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.clientRegister = response.data.professionals;
@@ -509,7 +527,6 @@ prevStep() {
 
           }
         }
-
           else {
             this.changeStep(1);
             console.log("NO COINCIDE EL CORREO");
@@ -786,9 +803,4 @@ prevStep() {
   /* Ajusta según necesites */
 }
 
-.app-container {
-  background-color: rgb(241, 130, 84)
-    /* Color de fondo deseado */
-    /* Otros estilos si es necesario */
-}
 </style>

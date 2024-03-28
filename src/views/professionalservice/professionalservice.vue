@@ -115,21 +115,20 @@
                             </v-list-item>
                         </v-list-item-group>
                     </v-list>
-                    <v-col cols="12" md="6">
+                    <v-col cols="12" md="4">
         </v-col>
         <v-col cols="12" md="6">            
-            <v-text-field v-if="especial" v-model="profitPercen" clearable label="% Ganancia"
-                        prepend-icon="mdi-percent" variant="underlined">
-                      </v-text-field>
-
-                      <v-switch
+                    <v-switch
                       v-if="mostrarSwitch"
                       color="orange-darken-3"
     v-model="especial"
     label="Especial"
     hide-details
     inset
-></v-switch>
+></v-switch>         
+            <v-text-field v-model="this.profitPercen" clearable label="% Ganancia"
+                        prepend-icon="mdi-percent" variant="underlined" :disabled="!especial" :rules="requiredRules">
+                      </v-text-field>
         </v-col>
         <v-divider></v-divider>
                     
@@ -312,6 +311,16 @@ export default {
         },
         total() {
             return this.subtotal + Number(this.shipping ?? 0)
+        },
+    },
+    watch: {
+        especial: function(val) {
+            if (val) {
+              this.profitPercen = '';
+            }
+            else{
+              this.profitPercen = this.profitPercentaje;
+            }
         },
     },
     mounted() {
@@ -575,7 +584,7 @@ let formattedDate = `${year}-${month}-${day}`;
   console.log("esto devuelve el metodo");
   console.log(day ? day.day.toString().trim() : "");
   return day ? day.day.toString().trim() : "";
-},
+          },
         chargeCalendarsBranches() {
             axios
                 .get(`http://127.0.0.1:8000/api/schedule-show?branch_id=1`)
@@ -762,9 +771,11 @@ toggleService3(service)
         this.profitPercentaje = [service.profit_percentaje];
         //
         //
+        console.log('this.profitPercentaje');
         console.log(this.selected);
         console.log(this.selectedServiceType);
         console.log(this.profitPercentaje);
+        this.profitPercen = this.profitPercentaje;
 
         //this.typeService(this.selectedServiceType[0],this.profitPercentaje[0]);
         
