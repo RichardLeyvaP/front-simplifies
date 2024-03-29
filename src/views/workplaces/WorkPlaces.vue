@@ -92,7 +92,9 @@
          variant="underlined" @update:model-value="initialize()"></v-autocomplete>
      </v-col>
    </v-row>
-        <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+   <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
+              hide-details></v-text-field>
+        <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search" :items="results" class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
           <template v-slot:item.actions="{ item }">
             <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar Puesto de Trabajo"></v-btn>
@@ -127,6 +129,7 @@
       charge: '',
       business_id: '',
       branches: '',
+      search: '',
       mostrarFila: false,
       dialog: false,
       dialogDelete: false,

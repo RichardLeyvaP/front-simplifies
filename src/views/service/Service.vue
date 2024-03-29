@@ -138,6 +138,8 @@
 
 
     <v-card-text>
+      <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
+              hide-details></v-text-field>
       <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search" :items="results"
         class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
 
@@ -197,7 +199,7 @@ export default {
     sb_timeout: 2000,
     sb_title: '',
     sb_icon: '',
-
+    search:'',
     dialog: false,
     editando: false,
     message_delete: true,
