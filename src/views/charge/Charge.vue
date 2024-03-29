@@ -103,9 +103,11 @@
               hide-details></v-text-field>
             <v-data-table :headers="headers2" :items="chargePermissions" :search="search2" class="elevation-1" :items-per-page-text="'Elementos por páginas'"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
               <template v-slot:item.actions="{ item }">
-                <v-icon size="25" color="red" @click="closePermissosRequest(item)">
+                <!--<v-icon size="25" color="red" @click="closePermissosRequest(item)">
                   mdi-delete
-                </v-icon>
+                </v-icon>-->
+                <v-btn density="comfortable" icon="mdi-delete" @click="closePermissosRequest(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar asignación"></v-btn>
               </template>
 
             </v-data-table>
@@ -181,19 +183,25 @@
       <v-data-table :headers="headers" :search="search" :items-per-page-text="'Elementos por páginas'" :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
         no-results-text="No hay datos disponibles">
         <template v-slot:item.actions="{ item }">
-          <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
+          <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
             mdi-pencil
           </v-icon>          
           <v-icon size="25" color="green" @click="showPermission(item)">
             mdi-lock
           </v-icon>
-          <v-icon size="25" :color="(item.name === 'Barbero' || item.name === 'Encargado' || item.name === 'Tecnico' || item.name === 'Coordinador') ? 'grey' : 'red'"
-        @click="!(item.name === 'Barbero' || item.name === 'Encargado' || item.name === 'Tecnico' || item.name === 'Coordinador') && deleteItem(item)">
+          <v-icon size="25" :color="(item.name === 'Barbero' || item.name === 'Encargado' || item.name === 'Tecnico' || item.name === 'Coordinador' || item.name === 'Administrador') ? 'grey' : 'red'"
+        @click="!(item.name === 'Barbero' || item.name === 'Encargado' || item.name === 'Tecnico' || item.name === 'Coordinador'  || item.name === 'Administrador') && deleteItem(item)">
   mdi-delete
-</v-icon>
+</v-icon>-->
           <!--<v-icon size="25" color="red" @click="deleteItem(item)">
             mdi-delete
           </v-icon>-->
+          <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar cargo"></v-btn>
+          <v-btn density="comfortable" icon="mdi-lock" @click="showPermission(item)" color="green" variant="tonal"
+            elevation="1" title="Eliminar Puesto de Trabajo"></v-btn>
+            <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" :color="(item.name === 'Barbero' || item.name === 'Encargado' || item.name === 'Tecnico' || item.name === 'Coordinador' || item.name === 'Administrador') ? 'grey' : 'red'" variant="tonal"
+            elevation="1" title="Eliminar Puesto de Trabajo"></v-btn>
         </template>
       </v-data-table>
     </v-card-text>
@@ -283,7 +291,7 @@ export default {
     },
   },
 
-  created() {
+  mounted() {
     this.initialize()
   },
 

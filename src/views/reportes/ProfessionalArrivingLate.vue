@@ -20,20 +20,20 @@
     </v-toolbar>
     <v-container>
       <v-row>
-          <v-col cols="12" sm="12" md="4">
-            <v-autocomplete v-model="professional_id" :items="professionals" clearable label="Seleccione un Professional"
-              prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined"
-              @update:model-value="initialize()"></v-autocomplete>
-          </v-col>
-          <v-col cols="12" sm="12" md="4">
-            <v-autocomplete v-model="branch_id" :items="branches" clearable label="Seleccione una Sucursal"
-              prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined"
-              @update:model-value="initialize()"></v-autocomplete>
-          </v-col>
+        <v-col cols="12" sm="12" md="4">
+          <v-autocomplete v-model="professional_id" :items="professionals" clearable label="Seleccione un Professional"
+            prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined"
+            @update:model-value="initialize()"></v-autocomplete>
+        </v-col>
+        <v-col cols="12" sm="12" md="4">
+          <v-autocomplete v-model="branch_id" :items="branches" clearable label="Seleccione una Sucursal"
+            prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined"
+            @update:model-value="initialize()"></v-autocomplete>
+        </v-col>
       </v-row>
       <v-row>
         <!-- Primera columna -->
-        <v-col cols="12" sm="6" md="4"  v-if="state">
+        <v-col cols="12" sm="6" md="4" v-if="state">
           <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
             min-width="290px">
             <template v-slot:activator="{ props }">
@@ -41,13 +41,13 @@
                 label="Fecha inicial"></v-text-field>
             </template>
             <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input @update:model-value="updateDate"
-                format="yyyy-MM-dd"></v-date-picker>
+              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input
+                @update:model-value="updateDate" format="yyyy-MM-dd"></v-date-picker>
             </v-locale-provider>
           </v-menu>
         </v-col>
         <!-- Segunda columna -->
-        <v-col cols="12" sm="6" md="4"  v-if="state">
+        <v-col cols="12" sm="6" md="4" v-if="state">
           <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
             min-width="290px">
             <template v-slot:activator="{ props }">
@@ -55,13 +55,13 @@
                 append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
             </template>
             <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" @update:model-value="updateDate2"
-                format="yyyy-MM-dd"></v-date-picker>
+              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                :modelValue="getDate2" @update:model-value="updateDate2" format="yyyy-MM-dd"></v-date-picker>
             </v-locale-provider>
           </v-menu>
         </v-col>
         <!-- Tercera columna -->
-        <v-col cols="12" sm="6" md="4"  v-if="state">
+        <v-col cols="12" sm="6" md="4" v-if="state">
           <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
             min-width="290px">
             <template v-slot:activator="{ props }">
@@ -69,8 +69,8 @@
                 append-inner-icon="mdi-calendar" label="Mes"></v-text-field>
             </template>
             <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate3" @update:model-value="updateDate3"
-                format="yyyy-MM" scrollable></v-date-picker>
+              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                :modelValue="getDate3" @update:model-value="updateDate3" format="yyyy-MM" scrollable></v-date-picker>
             </v-locale-provider>
           </v-menu>
         </v-col>
@@ -84,7 +84,9 @@
             <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details>
             </v-text-field>
-            <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search2" class="elevation-2"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+            <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
+              :search="search2" class="elevation-2" no-results-text="No hay datos disponibles"
+              no-data-text="No hay datos disponibles">
             </v-data-table>
           </v-card-text>
         </v-col>
@@ -116,6 +118,7 @@ export default {
     input2: null,
     input3: null,
     search2: '',
+    charge: '',
     editedIndex: 1,
     branch_id: '',
     professional_id: '',
@@ -193,18 +196,21 @@ export default {
   mounted() {
     this.branch_id = LocalStorageService.getItem("branch_id");
     this.business_id = LocalStorageService.getItem("business_id");
+    this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
-            .get('http://127.0.0.1:8000/api/show-business', {
-                params: {
-                    business_id: this.business_id
-                }
-            })
-            .then((response) => {
-                this.branches = response.data.branches;
-                this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-
-                this.initialize()
-            });
+      .get('http://127.0.0.1:8000/api/show-business', {
+        params: {
+          business_id: this.business_id
+        }
+      })
+      .then((response) => {
+        this.branches = response.data.branches;
+        //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+        if (this.charge === 'Administrador') {
+          this.branch_id = this.branches[0].id;
+        }
+        this.initialize()
+      });
   },
 
   methods: {
@@ -300,7 +306,7 @@ export default {
     },
     initialize() {
       this.editedIndex = 1;
-      this.state=true;
+      this.state = true;
       axios
         .get('http://127.0.0.1:8000/api/arriving-late-professional-date', {
           params: {
@@ -311,11 +317,11 @@ export default {
         .then((response) => {
           this.results = response.data;
         });
-        axios
-      .get('http://127.0.0.1:8000/api/professional-show-autocomplete')
-      .then((response) => {
-        this.professionals = response.data.professionals;
-      });
+      axios
+        .get('http://127.0.0.1:8000/api/professional-show-autocomplete')
+        .then((response) => {
+          this.professionals = response.data.professionals;
+        });
     },
 
   },

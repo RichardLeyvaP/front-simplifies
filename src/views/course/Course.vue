@@ -133,7 +133,7 @@
                           @change="onFileSelected">
                         </v-file-input>
                         <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                          <img v-if="imgedit" :src="imgedit" height="70" width="70">
+                          <img v-if="imagenDisponible()" :src="imgedit" height="70" width="70">
                         </v-avatar>
                       </v-col>
                     </v-row>
@@ -197,7 +197,7 @@
             {{ item.name }}
           </template>
           <template v-slot:item.actions="{ item }">
-            <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
+            <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
               mdi-pencil
             </v-icon>
             <v-icon size="25" color="green" @click="showStudents(item)">
@@ -205,7 +205,13 @@
             </v-icon>
             <v-icon size="25" color="red" @click="deleteItem(item)">
               mdi-delete
-            </v-icon>
+            </v-icon>-->
+            <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar Curso"></v-btn>
+            <v-btn density="comfortable" icon="mdi-account-school"  @click="showStudents(item)" color="green" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Estudiantes inscritos"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar Curso"></v-btn>
           </template>
         </v-data-table>
 
@@ -250,7 +256,7 @@
                   </v-col>
                   <v-col cols="12" md="12">
                     <v-card elevation="6" class="mx-auto" max-width="210" max-height="120">
-                      <img v-if="imgedit" :src="editedItemS.image_url" height="120" width="210">
+                      <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
                     </v-card>
 
 
@@ -301,9 +307,11 @@
 
                 <template v-slot:item.image_url="{ item }">
         <!-- Verifica si image_url cumple las condiciones -->
-        <v-icon color="green" v-if="item.image_url && item.image_url !== 'image/default.png'" @click="openModal(item.image_url)">
+        <!--<v-icon color="green" v-if="item.image_url && item.image_url !== 'image/default.png'" @click="openModal(item.image_url)">
           mdi-eye
-        </v-icon>
+        </v-icon>-->
+        <v-btn density="comfortable" icon="mdi-eye" color="green" v-if="item.image_url && item.image_url !== 'image/default.png'" @click="openModal(item.image_url)" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Ver detalles"></v-btn>
       </template>
 
                 <template v-slot:item.enrollment_confirmed="{ item }">
@@ -315,12 +323,16 @@
                 </template>
 
                 <template v-slot:item.actions="{ item }">
-                  <v-icon size="25" color="primary" @click="editS(item)">
+                 <!--<v-icon size="25" color="primary" @click="editS(item)">
                     mdi-pencil
                   </v-icon>
                   <v-icon size="25" color="red" @click="deleteS(item)">
                     mdi-delete
-                  </v-icon>
+                  </v-icon>-->
+                  <v-btn density="comfortable" icon="mdi-pencil"  @click="editS(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar Aignación"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="deleteS(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar asignación"></v-btn>
                 </template>
 
               </v-data-table>
@@ -438,7 +450,6 @@ export default {
     dialogRequest: false,
     course_id: '',
     search2: '',
-
     isDatePickerOpen: false,
     selectedDate: null,
     headers: [
@@ -467,7 +478,7 @@ export default {
     courseStudents: [],
     editedIndex: -1,
     users: [],
-    file: null,
+    file: '',
     imgMiniatura: '',
     editedItem: {
       name: '',
@@ -567,12 +578,21 @@ export default {
     },
   },
 
-  created() {
+  mounted() {
     this.business_id = localStorage.getItem('business_id');
     this.initialize()
   },
 
   methods: {
+    imagenDisponible() {
+        if (this.imgedit !== undefined && this.imgedit !== '') {
+            // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
+            let img = new Image();
+            img.src = this.imgedit;
+            return img.complete; // Devuelve true si la imagen está disponible
+        }
+        return false; // Si la URL de la imagen no está definida o está vacía, devuelve false
+    },
 
     openModal(imageUrl) {
       
@@ -791,9 +811,9 @@ export default {
       axios
         .post('http://127.0.0.1:8000/api/course-destroy', request)
         .then(() => {
-          this.initialize();
           this.message_delete = true
-          this.showAlert("success", "Curso eliminado correctamente", 3000)
+          this.showAlert("success", "Curso eliminado correctamente", 3000);
+          this.initialize();
         })
       this.closeDelete()
     },
@@ -802,6 +822,8 @@ export default {
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
+        this.imgMiniatura = '';
+        this.file = '';
       })
     },
     closeUpdateS() {
@@ -815,7 +837,8 @@ export default {
       this.dialogStudents = false;
       this.dialogDelete = false;
       this.dialogRequest = false;
-
+      this.imgMiniatura = '';
+      this.file = '';
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedStudent = Object.assign({}, this.defaultStudent)
@@ -838,8 +861,10 @@ export default {
         axios
           .post('http://127.0.0.1:8000/api/course-update', formData)
           .then(() => {
+            this.showAlert("success", "Curso editado correctamente", 3000);
             this.initialize();
-            this.showAlert("success", "Curso editado correctamente", 3000)
+            this.imgMiniatura = '';
+            this.file = '';
           })
       } else {
         this.valid = false;
@@ -856,8 +881,10 @@ export default {
         axios
           .post('http://127.0.0.1:8000/api/course', formData)
           .then(() => {
+            this.showAlert("success", "Curso registrado correctamente", 3000);
             this.initialize();
-            this.showAlert("success", "Curso registrado correctamente", 3000)
+            this.imgMiniatura = '';
+            this.file = '';
           })
       }
       this.close()

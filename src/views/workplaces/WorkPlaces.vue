@@ -94,12 +94,16 @@
    </v-row>
         <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
           <template v-slot:item.actions="{ item }">
-            <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
+            <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar Puesto de Trabajo"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar Puesto de Trabajo"></v-btn>
+            <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
               mdi-pencil
             </v-icon>
             <v-icon size="25" color="red" @click="deleteItem(item)">
               mdi-delete
-            </v-icon>
+            </v-icon>-->
           </template>
         </v-data-table>
       </v-card-text>
@@ -120,6 +124,7 @@
       sb_title:'',
       sb_icon:'',
       branch_id:'',
+      charge: '',
       business_id: '',
       branches: '',
       mostrarFila: false,
@@ -179,7 +184,9 @@
             .then((response) => {
                 this.branches = response.data.branches;
                 this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-
+                if (this.charge === 'Administrador') {
+          this.branch_id = this.branches[0].id;
+        }
                 this.initialize()
             });
         if (this.charge === 'Administrador') {

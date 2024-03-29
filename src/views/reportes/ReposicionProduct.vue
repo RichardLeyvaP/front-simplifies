@@ -26,7 +26,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                    <v-col cols="12">
+                <v-col cols="12">
                     <v-container>
                         <v-alert border type="warning" variant="outlined" prominent>
                             <span class="text-h6">{{ formTitle }}</span>
@@ -36,11 +36,14 @@
                         <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar"
                             single-line hide-details>
                         </v-text-field>
-                        <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search2" class="elevation-2"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+                        <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
+                            :search="search2" class="elevation-2" no-results-text="No hay datos disponibles"
+                            no-data-text="No hay datos disponibles">
                             <template v-slot:item.name="{ item }">
 
                                 <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                                    <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_product" alt="image"></v-img>
+                                    <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_product"
+                                        alt="image"></v-img>
                                 </v-avatar>
                                 {{ item.name }}
                             </template>
@@ -75,6 +78,7 @@ export default {
         input2: null,
         input3: null,
         search2: '',
+        charge: '',
         editedIndex: 1,
         mostrarFila: false,
         branch_id: '',
@@ -119,8 +123,10 @@ export default {
             })
             .then((response) => {
                 this.branches = response.data.branches;
-                this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-
+                //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+                if (this.charge === 'Administrador') {
+                    this.branch_id = this.branches[0].id;
+                }
                 this.initialize()
             });
         if (this.charge === 'Administrador') {

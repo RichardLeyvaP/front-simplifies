@@ -43,7 +43,7 @@
                                             <v-autocomplete v-model="editedItem.rule_id" :items="rules" clearable
                                                 label="Reglas de convivencia" prepend-inner-icon="mdi-ruler"
                                                 item-title="name" item-value="id" variant="underlined"
-                                                :rules="selectRules"></v-autocomplete>  
+                                                :rules="selectRules"></v-autocomplete>
                                         </v-col>
                                     </v-row>
                                     <v-divider></v-divider>
@@ -104,8 +104,9 @@
             <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
                 hide-details>
             </v-text-field>
-            <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search" class="elevation-1"
-                no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles" >
+            <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
+                :search="search" class="elevation-1" no-data-text="No hay datos disponibles"
+                no-results-text="No hay datos disponibles">
                 <template v-slot:top>
 
                     <v-divider class="mx-4" inset vertical></v-divider>
@@ -114,9 +115,11 @@
 
                 <template v-slot:item.actions="{ item }">
 
-                    <v-icon size="25" color="red" @click="deleteItem(item)">
+                    <!--<v-icon size="25" color="red" @click="deleteItem(item)">
                         mdi-delete
-                    </v-icon>
+                    </v-icon>-->
+                    <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Agergar Trabajdor"></v-btn>
                 </template>
             </v-data-table>
         </v-card-text>
@@ -147,6 +150,7 @@ export default {
         sb_icon: '',
         dialog: false,
         branch_id: '',
+        charge: '',
         business_id: '',
         search: '',
         search2: '',
@@ -202,19 +206,23 @@ export default {
     mounted() {
         this.business_id = LocalStorageService.getItem('business_id');
         this.charge_id = LocalStorageService.getItem('charge_id');
+        this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         this.branch_id = LocalStorageService.getItem('branch_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         axios
-                .get('http://127.0.0.1:8000/api/show-business', {
-                    params: {
-                        business_id: this.business_id
-                    }
-                })
-                .then((response) => {
-                    this.branches = response.data.branches;
-                    this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-        this.initialize()
-                });
+            .get('http://127.0.0.1:8000/api/show-business', {
+                params: {
+                    business_id: this.business_id
+                }
+            })
+            .then((response) => {
+                this.branches = response.data.branches;
+                if (this.charge === 'Administrador') {
+                    this.branch_id = this.branches[0].id;
+                }
+                //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+                this.initialize()
+            });
 
         if (this.charge === 'Administrador') {
             // Mostrar la fila con Autocomplete

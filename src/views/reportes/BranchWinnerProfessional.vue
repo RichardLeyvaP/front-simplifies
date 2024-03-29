@@ -21,9 +21,9 @@
     <v-container>
       <v-row>
         <v-col cols="12" sm="12" md="4">
-          <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable label="Seleccione una Sucursal"
-            prepend-icon="mdi-store" item-title="name" item-value="id" variant="underlined"
-            @update:model-value="initialize()"></v-autocomplete>
+          <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
+            label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
+            variant="underlined" @update:model-value="initialize()"></v-autocomplete>
         </v-col>
       </v-row>
       <v-row>
@@ -36,8 +36,8 @@
                 label="Fecha inicial"></v-text-field>
             </template>
             <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input @update:modelValue="updateDate"
-                format="yyyy-MM-dd"></v-date-picker>
+              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input
+                @update:modelValue="updateDate" format="yyyy-MM-dd"></v-date-picker>
             </v-locale-provider>
           </v-menu>
         </v-col>
@@ -50,8 +50,8 @@
                 append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
             </template>
             <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" @update:modelValue="updateDate2"
-                format="yyyy-MM-dd"></v-date-picker>
+              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                :modelValue="getDate2" @update:modelValue="updateDate2" format="yyyy-MM-dd"></v-date-picker>
             </v-locale-provider>
           </v-menu>
         </v-col>
@@ -64,8 +64,8 @@
                 append-inner-icon="mdi-calendar" label="Mes"></v-text-field>
             </template>
             <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate3" @update:modelValue="updateDate3"
-                format="yyyy-MM" scrollable></v-date-picker>
+              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                :modelValue="getDate3" @update:modelValue="updateDate3" format="yyyy-MM" scrollable></v-date-picker>
             </v-locale-provider>
           </v-menu>
         </v-col>
@@ -79,7 +79,9 @@
             <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details>
             </v-text-field>
-            <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search2" class="elevation-2"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+            <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
+              :search="search2" class="elevation-2" no-results-text="No hay datos disponibles"
+              no-data-text="No hay datos disponibles">
             </v-data-table>
           </v-card-text>
         </v-col>
@@ -191,17 +193,20 @@ export default {
     this.charge_id = LocalStorageService.getItem('charge_id');
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
-            .get('http://127.0.0.1:8000/api/show-business', {
-                params: {
-                    business_id: this.business_id
-                }
-            })
-            .then((response) => {
-                this.branches = response.data.branches;
-                this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+      .get('http://127.0.0.1:8000/api/show-business', {
+        params: {
+          business_id: this.business_id
+        }
+      })
+      .then((response) => {
+        this.branches = response.data.branches;
+        //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+        if (this.charge === 'Administrador') {
+          this.branch_id = this.branches[0].id;
+        }
 
-                this.initialize()
-            });
+        this.initialize()
+      });
     if (this.charge === 'Administrador') {
       // Mostrar la fila con Autocomplete
       this.mostrarFila = true;
@@ -307,7 +312,7 @@ export default {
         .then((response) => {
           this.branches = response.data.branches;
         });
-      
+
     },
 
   },

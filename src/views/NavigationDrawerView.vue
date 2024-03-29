@@ -160,7 +160,7 @@ export default {
       { icon: "mdi-security", title: "Permisos del Sistema", to: "permission", value: "permission", permission: "view_permissions" },
       { icon: "mdi-account-tie-outline", title: "Profesionales", to: "person", value: "profesionals", permission: "view_professionals" },
       { icon: "mdi-account-star-outline", title: "Clientes", to: "client", value: "clients", permission: "view_clients" },
-      { icon: "mdi-handshake", title: "Associados", to: "associated", value: "associated", permission: "view_associates" },
+      { icon: "mdi-handshake", title: "Asociados", to: "associated", value: "associated", permission: "view_associates" },
       //{ icon: "mdi-list-box-outline", title: "Asignar servicios a professional", to: "professional-service", value: "professional-service", permission: "view_dashboard" },
       //{ icon: "mdi-list-box-outline", title: "Asignar servicios a una Sucursal", to: "branch-service-professional", value: "branch-service-professional", permission: "view_dashboard" },          
       //{ icon: "mdi mdi-chair-rolling", title: "Puestos de Trabajo", to: "workplace", value: "workplace", permission: "view_workplace" },

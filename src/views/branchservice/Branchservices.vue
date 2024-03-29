@@ -124,10 +124,12 @@
        </v-icon>
                     <v-icon size="25" color="green" @click="showProfessionals(item)">
                         mdi-account-tie-outline
-                    </v-icon>-->
+                    </v-icon>
                     <v-icon size="25" color="red" @click="deleteItem(item)">
                         mdi-delete
-                    </v-icon>
+                    </v-icon>-->
+                    <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar asignación"></v-btn>
                 </template>
             </v-data-table>
         </v-card-text>
@@ -157,9 +159,11 @@
                             {{ item.name }}
                         </template>
                         <template v-slot:item.actions="{ item }">
-                            <v-icon size="25" color="red" @click="closeProfessionalRequest(item)">
+                            <!--<v-icon size="25" color="red" @click="closeProfessionalRequest(item)">
                                 mdi-delete
-                            </v-icon>
+                            </v-icon>-->
+                            <v-btn density="comfortable" icon="mdi-delete" @click="closeProfessionalRequest(item)"
+                                color="red-darken-4" variant="tonal" elevation="1" title="Eliminar asignación"></v-btn>
                         </template>
 
                     </v-data-table>
@@ -248,6 +252,7 @@ export default {
         sb_timeout: 2000,
         sb_title: '',
         sb_icon: '',
+        charge: '',
         dialog: false,
         branch_id: '',
         business_id: '',
@@ -323,6 +328,7 @@ export default {
         this.charge_id = LocalStorageService.getItem('charge_id');
         this.branch_id = LocalStorageService.getItem('branch_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
+        this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         axios
             .get('http://127.0.0.1:8000/api/show-business', {
                 params: {
@@ -331,8 +337,10 @@ export default {
             })
             .then((response) => {
                 this.branches = response.data.branches;
-                this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-
+                //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+                if (this.charge === 'Administrador') {
+                    this.branch_id = this.branches[0].id;
+                }
                 this.initialize();
             });
         if (this.charge === 'Administrador') {

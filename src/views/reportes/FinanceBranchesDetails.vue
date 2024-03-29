@@ -39,8 +39,7 @@
                         </template>
                         <v-locale-provider locale="es">
                             <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
-                                :modelValue="getDate3"  format="yyyy-MM"
-                                scrollable></v-date-picker>
+                                :modelValue="getDate3" format="yyyy-MM" scrollable></v-date-picker>
                         </v-locale-provider>
                     </v-menu>
                 </v-col>
@@ -248,7 +247,10 @@ export default {
             })
             .then((response) => {
                 this.branches = response.data.branches;
-                this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+                if (this.charge === 'Administrador') {
+                    this.branch_id = this.branches[0].id;
+                }
+                //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
 
                 this.initialize()
             });

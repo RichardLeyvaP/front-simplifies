@@ -273,9 +273,12 @@
         </template>
 
         <template v-slot:item.actions="{ item }">
-          <v-btn density="comfortable" icon="mdi-eye" @click="showDetails(item)" color="primary" variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Mostrar detalles del carro"></v-btn>
-          <v-btn density="comfortable" icon="mdi-credit-card" @click="payItem(item)" color="green-darken-1" variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Pagar el carro"></v-btn>
-          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal" elevation="1" title="Eliminar el carro"></v-btn>
+          <v-btn density="comfortable" icon="mdi-eye" @click="showDetails(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Mostrar detalles del carro"></v-btn>
+          <v-btn density="comfortable" icon="mdi-credit-card" @click="payItem(item)" color="green-darken-1"
+            variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Pagar el carro"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar el carro"></v-btn>
           <!--<v-btn density="comfortable">
           <v-icon size="35" class="pr-3" title="Mostrar Detalles Carro" color="primary" @click="showDetails(item)">
             mdi-eye
@@ -291,307 +294,303 @@
       </v-data-table>
 
       <v-dialog v-model="dialogRequest" width="500">
-            <v-card>
-              <v-toolbar color="#F18254">
-                <span class="text-subtitle-2 ml-4"> Solicitud de Eliminación de producto / servicio</span>
-              </v-toolbar>
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-2 ml-4"> Solicitud de Eliminación de producto / servicio</span>
+          </v-toolbar>
 
-              <v-card-text class="mt-2 mb-2">
+          <v-card-text class="mt-2 mb-2">
 
 
-                <v-alert variant="outlined" type="warning" prominent border="top">
-                  Solicitud de eliminación en espera de aprobación
-                </v-alert>
-              </v-card-text>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-spacer></v-spacer>
-                <v-spacer></v-spacer>
-                <v-spacer></v-spacer>
-                <v-btn color="default" variant="flat" @click="closeDeleteP">Cancelar</v-btn>
-                <v-btn color="warning" variant="flat" :loading="loading" @click="requestDelete">Aceptar</v-btn>
-                <v-spacer></v-spacer>
-              </v-card-actions>
+            <v-alert variant="outlined" type="warning" prominent border="top">
+              Solicitud de eliminación en espera de aprobación
+            </v-alert>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
+            <v-btn color="default" variant="flat" @click="closeDeleteP">Cancelar</v-btn>
+            <v-btn color="warning" variant="flat" :loading="loading" @click="requestDelete">Aceptar</v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
 
-            </v-card>
-          </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="600px">
-            <v-card>
-              <v-toolbar color="red">
-                <span class="text-subtitle-2 ml-4"> Eliminar Carro</span>
-              </v-toolbar>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="dialogDelete" max-width="600px">
+        <v-card>
+          <v-toolbar color="red">
+            <span class="text-subtitle-2 ml-4"> Eliminar Carro</span>
+          </v-toolbar>
 
-              <v-card-text class="mt-2 mb-2"> ¿Desea eliminar el carro seleccionado?</v-card-text>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
-                  Cancelar
-                </v-btn>
-                <v-btn color="#F18254" variant="flat" @click="deleteItemConfirm">
-                  Aceptar
-                </v-btn>
+          <v-card-text class="mt-2 mb-2"> ¿Desea eliminar el carro seleccionado?</v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
+              Cancelar
+            </v-btn>
+            <v-btn color="#F18254" variant="flat" @click="deleteItemConfirm">
+              Aceptar
+            </v-btn>
 
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
-          <v-dialog v-model="dialogPay" max-width="800px">
-            <v-card>
-              <v-toolbar color="#F18254">
-                <span class="text-subtitle-1  ml-2">Pagar Carro</span>
-                <v-spacer></v-spacer>
-                <span class="text-subtitle-1 mr-3">
-                  Monto a pagar {{ this.editedItem.amount }} </span>
-              </v-toolbar>
+      <v-dialog v-model="dialogPay" max-width="800px">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-1  ml-2">Pagar Carro</span>
+            <v-spacer></v-spacer>
+            <span class="text-subtitle-1 mr-3">
+              Monto a pagar {{ this.editedItem.amount }} </span>
+          </v-toolbar>
 
-              <v-card-text>
-                <v-form v-model="valid" enctype="multipart/form-data">
-                  <v-container>
-                    <v-row>
-                      <v-col cols="12" md="6">
-                        <v-text-field v-model="editedItem.cash" clearable label="Efectivo" prepend-icon="mdi-cash"
-                          variant="underlined" :rules="pago">
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="12" md="6">
-                        <v-text-field v-model="editedItem.creditCard" clearable label="Tarjeta de Crédito"
-                          prepend-icon="mdi-credit-card" variant="underlined" :rules="pago">
-                        </v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col cols="12" md="6">
-                        <v-text-field v-model="editedItem.debit" clearable label="Debito"
-                          prepend-icon="mdi-credit-card-outline" variant="underlined" :rules="pago">
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="12" md="6">
-                        <v-text-field v-model="editedItem.transfer" clearable label="Transferencia"
-                          prepend-icon="mdi-bank-transfer" variant="underlined" :rules="pago">
-                        </v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col cols="12" md="6">
-                        <v-text-field v-model="editedItem.other" clearable label="Otro Método" prepend-icon="mdi-check"
-                          variant="underlined" :rules="pago">
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="12" md="6">
-                        <v-text-field v-model="editedItem.tip" clearable label="Propina" prepend-icon="mdi-currency-usd"
-                          variant="underlined" :rules="pago">
-                        </v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col cols="12" md="4">
-                        <v-text-field v-model="editedItem.cardGif" clearable label="Tarjeta de Regalo"
-                          prepend-icon="mdi-gift" variant="underlined" :rules="pago">
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="12" md="4">
-                        <v-text-field v-if="mostrarCode" clearable v-model="editedCard.cardGiftUser_id" label="Código"
-                          prepend-icon="mdi-code" variant="underlined" @input="onCardGiftSelected"></v-text-field>
+          <v-card-text>
+            <v-form v-model="valid" enctype="multipart/form-data">
+              <v-container>
+                <v-row>
+                  <v-col cols="12" md="6">
+                    <v-text-field v-model="editedItem.cash" clearable label="Efectivo" prepend-icon="mdi-cash"
+                      variant="underlined" :rules="pago">
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field v-model="editedItem.creditCard" clearable label="Tarjeta de Crédito"
+                      prepend-icon="mdi-credit-card" variant="underlined" :rules="pago">
+                    </v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" md="6">
+                    <v-text-field v-model="editedItem.debit" clearable label="Debito"
+                      prepend-icon="mdi-credit-card-outline" variant="underlined" :rules="pago">
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field v-model="editedItem.transfer" clearable label="Transferencia"
+                      prepend-icon="mdi-bank-transfer" variant="underlined" :rules="pago">
+                    </v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" md="6">
+                    <v-text-field v-model="editedItem.other" clearable label="Otro Método" prepend-icon="mdi-check"
+                      variant="underlined" :rules="pago">
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field v-model="editedItem.tip" clearable label="Propina" prepend-icon="mdi-currency-usd"
+                      variant="underlined" :rules="pago">
+                    </v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" md="4">
+                    <v-text-field v-model="editedItem.cardGif" clearable label="Tarjeta de Regalo" prepend-icon="mdi-gift"
+                      variant="underlined" :rules="pago">
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="4">
+                    <v-text-field v-if="mostrarCode" clearable v-model="editedCard.cardGiftUser_id" label="Código"
+                      prepend-icon="mdi-code" variant="underlined" @input="onCardGiftSelected"></v-text-field>
 
-                        <!--<v-autocomplete v-if="mostrarCode" clearable v-model="editedCard.cardGift_id"
+                    <!--<v-autocomplete v-if="mostrarCode" clearable v-model="editedCard.cardGift_id"
                        :items="filteredCardGifts" label="Código" prepend-icon="mdi-code" item-title="code"
                        item-value="id" variant="underlined" :rules="selectRules"
                        @update:model-value="cardGifts"></v-autocomplete>-->
-                      </v-col>
-                      <v-col cols="12" md="4">
-                        <v-text-field v-if="mostrarOtroCampo" v-model="editedCard.value" clearable label="Valor"
-                          prepend-icon="mdi-currency-usd" variant="underlined" :disabled="true">
-                        </v-text-field>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                  <v-divider></v-divider>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="#E7E9E9" variant="flat" @click="closeDialogPay">
-                      Cancelar
-                    </v-btn>
-                    <v-btn color="#F18254" variant="flat" @click="savePay" :disabled="!valid">
-                      Aceptar
-                    </v-btn>
-                  </v-card-actions>
-                </v-form>
-              </v-card-text>
-            </v-card>
-          </v-dialog>
-
-          <v-dialog v-model="dialogDetallesCar" fullscreen transition="dialog-bottom-transition">
-            <v-card>
-              <v-toolbar color="#F18254">
-                <v-row>
-                  <v-col cols="12" md="9">
-                    <span class="text-subtitle-2 ml-4"> Detalles del Carro</span>
                   </v-col>
-                  <v-spacer></v-spacer>
-                  <v-col cols="12" md="3">
-                    <v-btn color="#E7E9E9" variant="flat" @click="showService(this.car_ref)"
-                      prepend-icon="mdi-list-box-outline" class="mr-2">
-                      Agregar Servicio
-                    </v-btn>
-                    <v-btn color="#E7E9E9" variant="flat" @click="showProduct(this.car_ref)"
-                      prepend-icon="mdi-tag-outline">
-                      Agregar Producto
-                    </v-btn>
+                  <v-col cols="12" md="4">
+                    <v-text-field v-if="mostrarOtroCampo" v-model="editedCard.value" clearable label="Valor"
+                      prepend-icon="mdi-currency-usd" variant="underlined" :disabled="true">
+                    </v-text-field>
                   </v-col>
                 </v-row>
-              </v-toolbar>
-
-              <v-card-text class="mt-2 mb-2">
-                <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
-                  hide-details></v-text-field>
-
-                <v-data-table :headers="headers2" :items="orders" :search="search2" class="elevation-1"
-                  :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
-                  no-data-text="No hay datos disponibles">
-
-                  <template v-slot:item.image="{ item }">
-
-                    <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                      <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image" alt="image"></v-img>
-                    </v-avatar>
-
-                  </template>
-
-                  <template v-slot:item.actions="{ item }">
-                    <v-icon :disabled="!(item.pay) && item.request_delete" size="25"
-                      :color="(item.request_delete && !this.car_ref.pay) ? 'red' : 'grey'" title="Eliminar solicitud"
-                      @click="(item.request_delete && !this.car_ref.pay) && deleteOrder(item)">
-                      mdi-cancel
-                    </v-icon>
-                    <v-icon size="25" :color="(item.request_delete && !this.car_ref.pay) ? 'blue' : 'grey'"
-                      title="Denegar solicitud"
-                      @click="(item.request_delete && !this.car_ref.pay) && requestCancel(item)">
-                      mdi-check
-                    </v-icon>
-                  </template>
-
-                </v-data-table>
-              </v-card-text>
+              </v-container>
               <v-divider></v-divider>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
-                  Volver
+                <v-btn color="#E7E9E9" variant="flat" @click="closeDialogPay">
+                  Cancelar
                 </v-btn>
-
-                <v-btn color="#F18254" variant="flat" :disabled="this.car_ref.pay" @click="payItem(this.car_ref)">
-                  Marcar como Pagado
+                <v-btn color="#F18254" variant="flat" @click="savePay" :disabled="!valid">
+                  Aceptar
                 </v-btn>
               </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <!--AddProducts-->
-          <v-dialog v-model="showAddProducts" max-width="500px">
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
 
-            <v-card>
-              <v-toolbar color="#F18254">
-                <span class="text-subtitle-2 ml-4"> Agergar Producto</span>
-              </v-toolbar>
-              <v-card-text>
-                <v-form v-model="valid" enctype="multipart/form-data">
-                  <v-row>
-                    <v-col cols="12" md="12">
-                      <v-autocomplete v-model="product_store_id" :items="products" clearable label="Productos"
-                        prepend-inner-icon="mdi-tag-outline" item-title="name" item-value="id" variant="underlined"
-                        :rules="selectRules"></v-autocomplete>
-                    </v-col>
-                  </v-row>
-                  <v-divider></v-divider>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
+      <v-dialog v-model="dialogDetallesCar" fullscreen transition="dialog-bottom-transition">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <v-row>
+              <v-col cols="12" md="9">
+                <span class="text-subtitle-2 ml-4"> Detalles del Carro</span>
+              </v-col>
+              <v-spacer></v-spacer>
+              <v-col cols="12" md="3">
+                <v-btn color="#E7E9E9" variant="flat" @click="showService(this.car_ref)"
+                  prepend-icon="mdi-list-box-outline" class="mr-2">
+                  Agregar Servicio
+                </v-btn>
+                <v-btn color="#E7E9E9" variant="flat" @click="showProduct(this.car_ref)" prepend-icon="mdi-tag-outline">
+                  Agregar Producto
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-toolbar>
 
-                    <v-btn color="#E7E9E9" variant="flat" @click="closeAddProduct">
-                      Cancelar
-                    </v-btn>
-                    <v-btn color="#F18254" variant="flat" @click="saveAddProduct" :disabled="!valid">
-                      Aceptar
-                    </v-btn>
-                  </v-card-actions>
-                </v-form>
-              </v-card-text>
-            </v-card>
-          </v-dialog>
-          <!--EndAddProducts-->
-          <!--AddServices-->
-          <v-dialog v-model="showAddServices" max-width="500px">
+          <v-card-text class="mt-2 mb-2">
+            <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
+              hide-details></v-text-field>
 
-            <v-card>
-              <v-toolbar color="#F18254">
-                <span class="text-subtitle-2 ml-4"> Agergar Servicio</span>
-              </v-toolbar>
-              <v-card-text>
-                <v-form v-model="valid" enctype="multipart/form-data">
-                  <v-row>
-                    <v-col cols="12" md="12">
-                      <v-autocomplete v-model="branch_service_professional_id" :items="services" clearable
-                        label="Servicios" prepend-inner-icon="mdi-list-box-outline" item-title="name" item-value="id"
-                        variant="underlined" :rules="selectRules"></v-autocomplete>
-                    </v-col>
-                  </v-row>
-                  <v-divider></v-divider>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
+            <v-data-table :headers="headers2" :items="orders" :search="search2" class="elevation-1"
+              :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
+              no-data-text="No hay datos disponibles">
 
-                    <v-btn color="#E7E9E9" variant="flat" @click="closeAddService">
-                      Cancelar
-                    </v-btn>
-                    <v-btn color="#F18254" variant="flat" @click="saveAddServie" :disabled="!valid">
-                      Aceptar
-                    </v-btn>
-                  </v-card-actions>
-                </v-form>
-              </v-card-text>
-            </v-card>
-          </v-dialog>
-          <!--EndAddServices-->
-          <v-dialog v-model="dialogBox" max-width="600px">
-            <v-card>
-              <v-toolbar color="#F18254">
-                <span class="text-subtitle-2 ml-4">Actualizar Caja</span>
-              </v-toolbar>
+              <template v-slot:item.image="{ item }">
 
-              <v-card-text>
-                <v-form v-model="valid" enctype="multipart/form-data">
-                  <v-container>
-                    <v-row>
-                      <v-col cols="12" md="4">
-                        <v-text-field v-model="editedBox.cashFound" clearable label="Fondo en Caja"
-                          prepend-icon="mdi-safe" variant="underlined" :rules="pago">
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="12" md="4">
-                        <v-text-field v-model="editedBox.existence" clearable label="Existencia"
-                          prepend-icon="mdi-check-circle" variant="underlined" :rules="pago" :disabled="true">
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="12" md="4">
-                        <v-text-field v-model="editedBox.extraction" clearable label="Extracción"
-                          prepend-icon="mdi-arrow-down-bold" variant="underlined" :rules="pago">
-                        </v-text-field>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                  <v-divider></v-divider>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="#E7E9E9" variant="flat" @click="closeDialogBox">
-                      Cancelar
-                    </v-btn>
-                    <v-btn color="#F18254" variant="flat" @click="saveBox" :disabled="!valid">
-                      Aceptar
-                    </v-btn>
-                  </v-card-actions>
-                </v-form>
-              </v-card-text>
-            </v-card>
-          </v-dialog>
+                <v-avatar elevation="3" color="grey-lighten-4" size="large">
+                  <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image" alt="image"></v-img>
+                </v-avatar>
+
+              </template>
+
+              <template v-slot:item.actions="{ item }">
+                <v-btn :disabled="!(item.pay) && item.request_delete" density="comfortable" icon="mdi-cancel"
+                  :color="(item.request_delete && !this.car_ref.pay) ? 'red' : 'grey'" title="Eliminar solicitud"
+                  @click="(item.request_delete && !this.car_ref.pay) && deleteOrder(item)" elevation="1" class="mr-1 mt-1 mb-1"></v-btn>
+
+                <v-btn :color="(item.request_delete && !this.car_ref.pay) ? 'blue' : 'grey'" density="comfortable" icon="mdi-check"
+                  title="Denegar solicitud" @click="(item.request_delete && !this.car_ref.pay) && requestCancel(item)" elevation="1" class="mr-1 mt-1 mb-1"></v-btn>
+
+              </template>
+
+            </v-data-table>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
+              Volver
+            </v-btn>
+
+            <v-btn color="#F18254" variant="flat" :disabled="this.car_ref.pay" @click="payItem(this.car_ref)">
+              Marcar como Pagado
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!--AddProducts-->
+      <v-dialog v-model="showAddProducts" max-width="500px">
+
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-2 ml-4"> Agergar Producto</span>
+          </v-toolbar>
+          <v-card-text>
+            <v-form v-model="valid" enctype="multipart/form-data">
+              <v-row>
+                <v-col cols="12" md="12">
+                  <v-autocomplete v-model="product_store_id" :items="products" clearable label="Productos"
+                    prepend-inner-icon="mdi-tag-outline" item-title="name" item-value="id" variant="underlined"
+                    :rules="selectRules"></v-autocomplete>
+                </v-col>
+              </v-row>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+
+                <v-btn color="#E7E9E9" variant="flat" @click="closeAddProduct">
+                  Cancelar
+                </v-btn>
+                <v-btn color="#F18254" variant="flat" @click="saveAddProduct" :disabled="!valid">
+                  Aceptar
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+      <!--EndAddProducts-->
+      <!--AddServices-->
+      <v-dialog v-model="showAddServices" max-width="500px">
+
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-2 ml-4"> Agergar Servicio</span>
+          </v-toolbar>
+          <v-card-text>
+            <v-form v-model="valid" enctype="multipart/form-data">
+              <v-row>
+                <v-col cols="12" md="12">
+                  <v-autocomplete v-model="branch_service_professional_id" :items="services" clearable label="Servicios"
+                    prepend-inner-icon="mdi-list-box-outline" item-title="name" item-value="id" variant="underlined"
+                    :rules="selectRules"></v-autocomplete>
+                </v-col>
+              </v-row>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+
+                <v-btn color="#E7E9E9" variant="flat" @click="closeAddService">
+                  Cancelar
+                </v-btn>
+                <v-btn color="#F18254" variant="flat" @click="saveAddServie" :disabled="!valid">
+                  Aceptar
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+      <!--EndAddServices-->
+      <v-dialog v-model="dialogBox" max-width="600px">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-2 ml-4">Actualizar Caja</span>
+          </v-toolbar>
+
+          <v-card-text>
+            <v-form v-model="valid" enctype="multipart/form-data">
+              <v-container>
+                <v-row>
+                  <v-col cols="12" md="4">
+                    <v-text-field v-model="editedBox.cashFound" clearable label="Fondo en Caja" prepend-icon="mdi-safe"
+                      variant="underlined" :rules="pago">
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="4">
+                    <v-text-field v-model="editedBox.existence" clearable label="Existencia"
+                      prepend-icon="mdi-check-circle" variant="underlined" :rules="pago" :disabled="true">
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="4">
+                    <v-text-field v-model="editedBox.extraction" clearable label="Extracción"
+                      prepend-icon="mdi-arrow-down-bold" variant="underlined" :rules="pago">
+                    </v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="#E7E9E9" variant="flat" @click="closeDialogBox">
+                  Cancelar
+                </v-btn>
+                <v-btn color="#F18254" variant="flat" @click="saveBox" :disabled="!valid">
+                  Aceptar
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
 
     </v-card-text>
 
@@ -808,7 +807,7 @@ export default {
       })
       .then((response) => {
         this.branches = response.data.branches;
-        if (this.charge === 'Administrador'){
+        if (this.charge === 'Administrador') {
           this.branch_id = this.branches[0].id;
         }
         //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
@@ -821,8 +820,6 @@ export default {
       // Mostrar la fila con Autocomplete
       this.mostrarFila = true;
     }
-    console.log(this.charge_id);
-    this.initialize()
   },
 
   methods: {
@@ -1077,7 +1074,7 @@ export default {
     },
 
     initialize() {
-      
+
       axios
         .get('http://127.0.0.1:8000/api/branch-cars', {
           params: {

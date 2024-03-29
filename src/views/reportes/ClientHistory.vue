@@ -133,6 +133,7 @@ export default {
       branch_id: '',
       client_id: '',
       business_id: '',
+      charge: '',
       results: [],
       clients: [],
       branches: [],
@@ -144,18 +145,22 @@ export default {
     // Recuperar datos del localStorage al cargar la aplicación
     this.branch_id = LocalStorageService.getItem("branch_id");
     this.business_id = LocalStorageService.getItem("business_id");
+    this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
-            .get('http://127.0.0.1:8000/api/show-business', {
-                params: {
-                    business_id: this.business_id
-                }
-            })
-            .then((response) => {
-                this.branches = response.data.branches;
-                this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+      .get('http://127.0.0.1:8000/api/show-business', {
+        params: {
+          business_id: this.business_id
+        }
+      })
+      .then((response) => {
+        this.branches = response.data.branches;
+        //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+        if (this.charge === 'Administrador') {
+          this.branch_id = this.branches[0].id;
+        }
 
-                this.initialize()
-            });
+        this.initialize()
+      });
   },
   methods: {
     initialize() {

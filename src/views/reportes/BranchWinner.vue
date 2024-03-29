@@ -17,7 +17,7 @@
               prepend-icon="mdi-store" item-title="name" item-value="id" variant="underlined"
               @update:model-value="initialize()"></v-autocomplete>
           </v-col>
-      </v-row>
+        </v-row>
         <v-row>
           <!-- Primera columna -->
           <v-col cols="12" sm="6" md="4">
@@ -28,8 +28,8 @@
                   append-inner-icon="mdi-calendar" label="Fecha inicial"></v-text-field>
               </template>
               <v-locale-provider locale="es">
-                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input @update:modelValue="updateDate"
-                  format="yyyy-MM-dd" scrollable></v-date-picker>
+                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input
+                  @update:modelValue="updateDate" format="yyyy-MM-dd" scrollable></v-date-picker>
               </v-locale-provider>
             </v-menu>
           </v-col>
@@ -42,8 +42,8 @@
                   append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
               </template>
               <v-locale-provider locale="es">
-                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" @update:modelValue="updateDate2"
-                  format="yyyy-MM-dd" scrollable></v-date-picker>
+                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                  :modelValue="getDate2" @update:modelValue="updateDate2" format="yyyy-MM-dd" scrollable></v-date-picker>
               </v-locale-provider>
             </v-menu>
           </v-col>
@@ -56,8 +56,8 @@
                   append-inner-icon="mdi-calendar" label="Mes"></v-text-field>
               </template>
               <v-locale-provider locale="es">
-                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-1" locale="es-Es" :modelValue="getDate3"
-                  @update:modelValue="updateDate3" format="yyyy-MM" scrollable></v-date-picker>
+                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-1" locale="es-Es"
+                  :modelValue="getDate3" @update:modelValue="updateDate3" format="yyyy-MM" scrollable></v-date-picker>
               </v-locale-provider>
             </v-menu>
           </v-col>
@@ -76,7 +76,7 @@
                         <v-icon color="white">{{ item.icon }}</v-icon>
                       </v-avatar>
                     </template>
-               
+
                   </v-list-item>
                 </v-card>
               </v-col>
@@ -117,6 +117,7 @@ export default {
     input: null,
     input2: null,
     input3: null,
+    charge: '',
     editedIndex: 1,
     branch_id: 1,
     business_id: '',
@@ -172,19 +173,23 @@ export default {
       return this.input3 ? new Date(this.input3) : new Date();
     },
   },
-  mounted() {    
+  mounted() {
     this.business_id = LocalStorageService.getItem("business_id");
-    this.branch_id = LocalStorageService.getItem("branch_id"); 
+    this.branch_id = LocalStorageService.getItem("branch_id");
+    this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
       .get('http://127.0.0.1:8000/api/show-business', {
-          params: {
-            business_id: this.business_id
-          }
-        })
+        params: {
+          business_id: this.business_id
+        }
+      })
       .then((response) => {
         this.branches = response.data.branches;
-        this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-    this.initialize();
+        //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+        if (this.charge === 'Administrador') {
+          this.branch_id = this.branches[0].id;
+        }
+        this.initialize();
       });
     console.log(this.business_id);
   },
@@ -247,7 +252,7 @@ export default {
           this.results = response.data;
           console.log(this.results);
         });
-        
+
     },
 
   },

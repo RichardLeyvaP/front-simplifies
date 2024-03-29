@@ -75,6 +75,7 @@ export default {
         input2: null,
         input3: null,
         search2: '',
+        charge: '',
         editedIndex: 1,
         mostrarFila: false,
         branch_id: '',
@@ -117,8 +118,10 @@ export default {
             })
             .then((response) => {
                 this.branches = response.data.branches;
-                this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-
+                //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+                if (this.charge === 'Administrador'){
+          this.branch_id = this.branches[0].id;
+        }
                 this.initialize()
             });
         if (this.charge === 'Administrador') {

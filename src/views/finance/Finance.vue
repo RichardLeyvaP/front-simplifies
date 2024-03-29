@@ -146,7 +146,7 @@
                 :search="search" class="elevation-1" no-data-text="No hay datos disponibles"
                 no-results-text="No hay datos disponibles">
                 <template v-slot:item.file="{ item }">
-                        <v-icon v-if="item.file" @click="openDoc(item)" color="green">mdi-file-document-outline</v-icon>
+                    <v-icon v-if="item.file" @click="openDoc(item)" color="green">mdi-file-document-outline</v-icon>
                     <!--<v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
                         <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_product" alt="image"></v-img>
                     </v-avatar>-->
@@ -158,12 +158,16 @@
                 </template>
 
                 <template v-slot:item.actions="{ item }">
-                    <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
+                    <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
                         mdi-pencil
                     </v-icon>
                     <v-icon size="25" color="red" @click="deleteItem(item)">
                         mdi-delete
-                    </v-icon>
+                    </v-icon>-->
+                    <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar Finanza"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar Finanza"></v-btn>
                 </template>
             </v-data-table>
         </v-card-text>
@@ -197,6 +201,7 @@ export default {
         branch_id: '',
         business_id: '',
         search: '',
+        charge: '',
         message_delete: true,
         dialogDelete: false,
         headers: [
@@ -244,7 +249,7 @@ export default {
             (value) => !isNaN(parseFloat(value)) || 'Debe ser un número'],
         selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
         nameRules: [
-     (v) => !!v || "El campo es requerido"],
+            (v) => !!v || "El campo es requerido"],
     }),
 
     computed: {
@@ -284,8 +289,10 @@ export default {
             })
             .then((response) => {
                 this.branches = response.data.branches;
-                this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-
+                //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+                if (this.charge === 'Administrador') {
+                    this.branch_id = this.branches[0].id;
+                }
                 this.initialize()
             });
         if (this.charge === 'Administrador') {
@@ -296,8 +303,8 @@ export default {
     },
 
     methods: {
-        openDoc(item){
-            const url = 'http://127.0.0.1:8000/api/images/' +item.file;
+        openDoc(item) {
+            const url = 'http://127.0.0.1:8000/api/images/' + item.file;
             window.open(url, '_blanK');
         },
         onFileSelected(event) {
@@ -348,10 +355,10 @@ export default {
                     this.results = response.data.finances;
                     console.log('this.results');
                     //console.log(this.results);
-                                        
-                    this.editedItem.control = this.results.length !== 0 ? this.results[0].control + 1: 1;
-                        //this.visibility = !this.editedItem.control ? false : true;
-                    
+
+                    this.editedItem.control = this.results.length !== 0 ? this.results[0].control + 1 : 1;
+                    //this.visibility = !this.editedItem.control ? false : true;
+
                     //this.editedItem.control = !this.results ? 0 : this.results[0].control + 1 ;// Obtener el numero de control realizado
                     /*if (!this.editedItem.control) {
                         console.log('es cero');

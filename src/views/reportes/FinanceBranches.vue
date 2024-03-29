@@ -20,8 +20,8 @@
         <v-container>
             <v-row>
                 <v-col cols="12" md="4">
-                    <v-select v-model="selectedYear" :items="years" label="Selecciona un año"
-                        variant="underlined" prepend-icon="mdi-calendar" @update:model-value="initialize()"></v-select>
+                    <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="underlined"
+                        prepend-icon="mdi-calendar" @update:model-value="initialize()"></v-select>
                 </v-col>
             </v-row>
             <v-row>
@@ -87,28 +87,29 @@
                             <span class="text-h6">{{ formTitle }}</span>
                         </v-alert>
                     </v-container>
-                    </v-col>
-                    <v-col cols="12" md="6">
-                        <v-card class="mx-auto  overflow-visible">
-                    <v-card-text>
-                        <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items-per-page="13"
-                            :items="results" :search="search2" class="elevation-2"
-                            no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
-                            <template v-slot:item.difference="{ item }">
-                                <td>
-                                    <div class="d-flex justify-center">
-                                        <v-chip :color="item.difference > 0 ? 'green' : '#FF7043'" :text="item.difference"
-                                            class="text-uppercase" size="small" label></v-chip>
-                                    </div>
-                                </td>
-                            </template>
-                        </v-data-table>
-                    </v-card-text>                    
-                </v-card>
                 </v-col>
                 <v-col cols="12" md="6">
                     <v-card class="mx-auto  overflow-visible">
-                        <Bar class="pa-6 elevation=2" id="my-chart-id" :options="chartOptions" :data="chartData3" padding="16" />
+                        <v-card-text>
+                            <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'"
+                                :items-per-page="13" :items="results" :search="search2" class="elevation-2"
+                                no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+                                <template v-slot:item.difference="{ item }">
+                                    <td>
+                                        <div class="d-flex justify-center">
+                                            <v-chip :color="item.difference > 0 ? 'green' : '#FF7043'"
+                                                :text="item.difference" class="text-uppercase" size="small" label></v-chip>
+                                        </div>
+                                    </td>
+                                </template>
+                            </v-data-table>
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+                <v-col cols="12" md="6">
+                    <v-card class="mx-auto  overflow-visible">
+                        <Bar class="pa-6 elevation=2" id="my-chart-id" :options="chartOptions" :data="chartData3"
+                            padding="16" />
 
                         <v-card-text class="pt-0">
 
@@ -139,7 +140,7 @@ import * as XLSX from 'xlsx';
 import LocalStorageService from "@/LocalStorageService";
 export default {
     name: 'LoginPage',
-    components: { Bar},
+    components: { Bar },
     props: {
         value: {
             type: String
@@ -252,8 +253,10 @@ export default {
             })
             .then((response) => {
                 this.branches = response.data.branches;
-                this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-
+                //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+                if (this.charge === 'Administrador') {
+                    this.branch_id = this.branches[0].id;
+                }
                 this.initialize()
             });
         if (this.charge === 'Administrador') {

@@ -2,8 +2,8 @@
 <!-- eslint-disable vue/valid-v-slot -->
 
 <template>
-  <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24"
-    :multi-line="true" vertical v-model="snackbar">
+  <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24" :multi-line="true"
+    vertical v-model="snackbar">
     <v-row>
       <v-col md="2">
         <v-avatar :icon="sb_icon" color="sb_type" size="40"></v-avatar>
@@ -41,13 +41,14 @@
                 <v-form v-model="valid" enctype="multipart/form-data">
                   <v-row>
                     <v-col cols="12" md="4">
-                      <v-text-field v-model="editedItem.name" clearable label="Nombre" prepend-icon="mdi-form-textbox"         variant="underlined" :rules="nameRules">
+                      <v-text-field v-model="editedItem.name" clearable label="Nombre" prepend-icon="mdi-form-textbox"
+                        variant="underlined" :rules="nameRules">
                       </v-text-field>
                     </v-col>
                     <v-col cols="12" md="4">
                       <v-autocomplete v-model="editedItem.simultaneou" :items="options" clearable label="Simultaneo"
-                        prepend-inner-icon="mdi-format-list-bulleted-square" item-title="name" item-value="id" variant="underlined"
-                        ></v-autocomplete>
+                        prepend-inner-icon="mdi-format-list-bulleted-square" item-title="name" item-value="id"
+                        variant="underlined"></v-autocomplete>
                     </v-col>
                     <v-col cols="12" md="4">
                       <v-text-field v-model="editedItem.price_service" clearable label="Precio"
@@ -67,8 +68,9 @@
                       </v-text-field>
                     </v-col>
                     <v-col cols="12" md="4">
-                      <v-text-field v-if="editedItem.type_service === 'Regular'" v-model="editedItem.profit_percentaje" clearable label="% Ganancia"
-                        prepend-icon="mdi-percent" variant="underlined" :rules="requiredRules">
+                      <v-text-field v-model="editedItem.profit_percentaje"
+                        clearable label="% Ganancia" prepend-icon="mdi-percent" variant="underlined"
+                        :rules="requiredRules">
                       </v-text-field>
                     </v-col>
                   </v-row>
@@ -87,7 +89,7 @@
 
 
                       <v-card v-if="imagenDisponible()" elevation="6" class="mx-auto" max-width="120" max-height="120">
-                        <img  :src="imgedit" height="120" width="120"  @error="handleImageError">
+                        <img :src="imgedit" height="120" width="120" @error="handleImageError">
                       </v-card>
                     </v-col>
                   </v-row>
@@ -136,8 +138,8 @@
 
 
     <v-card-text>
-      <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search" :items="results" class="elevation-1"
-      no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+      <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search" :items="results"
+        class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
 
         <template v-slot:top>
 
@@ -160,12 +162,16 @@
         </template>
 
         <template v-slot:item.actions="{ item }">
-          <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
+          <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
             mdi-pencil
           </v-icon>
           <v-icon size="25" color="red" @click="deleteItem(item)">
             mdi-delete
-          </v-icon>
+          </v-icon>-->
+          <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar servicio"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar servicio"></v-btn>
         </template>
       </v-data-table>
     </v-card-text>
@@ -276,18 +282,18 @@ export default {
 
   mounted() {
     this.initialize()
-    
+
   },
 
   methods: {
-   imagenDisponible() {
-          if (this.imgedit !== undefined && this.imgedit !== '') {
-            // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
-            let img = new Image();
-            img.src = this.imgedit;
-            return img.complete; // Devuelve true si la imagen está disponible
-        }
-        return false; // Si la URL de la imagen no está definida o está vacía, devuelve false*/
+    imagenDisponible() {
+      if (this.imgedit !== undefined && this.imgedit !== '') {
+        // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
+        let img = new Image();
+        img.src = this.imgedit;
+        return img.complete; // Devuelve true si la imagen está disponible
+      }
+      return false; // Si la URL de la imagen no está definida o está vacía, devuelve false*/
     },
 
     showAlert(sb_type, sb_message, sb_timeout) {
@@ -390,7 +396,7 @@ export default {
             this.initialize();
             this.showAlert("success", "Servicio editado correctamente", 3000);
             this.imgMiniatura = '';
-        this.file = '';
+            this.file = '';
           })
       } else {
         this.valid = false;
@@ -405,7 +411,7 @@ export default {
             this.initialize();
             this.showAlert("success", "Servicio registrado correctamente", 3000);
             this.imgMiniatura = '';
-        this.file = '';
+            this.file = '';
           })
       }
       this.close()

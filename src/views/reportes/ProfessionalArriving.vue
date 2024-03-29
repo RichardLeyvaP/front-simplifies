@@ -111,6 +111,7 @@
       input2: null,
       input3: null,
       search2: '',
+      charge: '',
       editedIndex: 1,
       branch_id: '',
       business_id: '',
@@ -181,9 +182,10 @@
       },
     },
   
-    created() {
+    mounted() {
     this.branch_id = LocalStorageService.getItem("branch_id");
     this.business_id = LocalStorageService.getItem("business_id");
+    this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
             .get('http://127.0.0.1:8000/api/show-business', {
                 params: {
@@ -192,8 +194,10 @@
             })
             .then((response) => {
                 this.branches = response.data.branches;
-                this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-
+                //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+                if (this.charge === 'Administrador'){
+          this.branch_id = this.branches[0].id;
+        }
                 this.initialize()
             });
     },

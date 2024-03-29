@@ -120,16 +120,20 @@
           </div>
         </template>
         <template v-slot:item.actions="{ item }">
-          <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
+          <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
             mdi-pencil
           </v-icon>
-          <!--<v-icon size="25" color="green" @click="showPermission(item)">
+          <v-icon size="25" color="green" @click="showPermission(item)">
             mdi-storefront-outline
-          </v-icon>-->
+          </v-icon>
           <v-icon size="25" :color="item.automatic === 1 ? 'grey' : 'red'"
         @click="item.automatic !== 1 && deleteItem(item)">
   mdi-delete
-</v-icon>
+</v-icon>-->
+<v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar Rega de convivencia"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="item.automatic !== 1 && deleteItem(item)" :color="item.automatic === 1 ? 'grey' : 'red'" variant="tonal"
+            elevation="1" title="Eliminar Regla de convivencia"></v-btn>
         </template>
       </v-data-table>
     </v-card-text>
@@ -208,7 +212,7 @@ export default {
     },
   },
 
-  created() {
+  mounted() {
     this.initialize()
   },
 
@@ -241,8 +245,9 @@ export default {
       axios
         .get('http://127.0.0.1:8000/api/rule')
         .then((response) => {
-          console.log("entra a Buscar almacenes")
+          console.log("entra a Buscar las reglas")
           this.results = response.data.rules;
+          console.log(this.results);
         })
     },
     editItem(item) {

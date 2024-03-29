@@ -130,7 +130,7 @@
           </v-card>
         </template>
         <template v-slot:item.actions="{ item }">
-          <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
+          <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
             mdi-pencil
           </v-icon>
           <v-icon size="25" color="green" class="me-2" @click="showCardGifts(item)">
@@ -138,7 +138,13 @@
           </v-icon>
           <v-icon size="25" color="red" @click="deleteItem(item)">
             mdi-delete
-          </v-icon>
+          </v-icon>-->
+          <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar tarjeta"></v-btn>
+            <v-btn density="comfortable" icon="mdi-gift"  @click="showCardGifts(item)" color="green" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Asignar tarjeta de regalo"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar Puesto de Trabajo"></v-btn>
         </template>
       </v-data-table>
 
@@ -177,9 +183,11 @@
               </template>
 
               <template v-slot:item.actions="{ item }">
-                <v-icon size="25" color="red" @click="deleteS(item)">
+                <!--<v-icon size="25" color="red" @click="deleteS(item)">
                   mdi-delete
-                </v-icon>
+                </v-icon>-->
+          <v-btn density="comfortable" icon="mdi-delete" @click="deleteS(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar asignación"></v-btn>
               </template>
 
             </v-data-table>
