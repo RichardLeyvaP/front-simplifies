@@ -808,9 +808,13 @@ export default {
       })
       .then((response) => {
         this.branches = response.data.branches;
-        this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-        this.nameBranch = !this.nameBranch ? this.nameBranch : this.branches[0].name;
-
+        if (this.charge === 'Administrador'){
+          this.branch_id = this.branches[0].id;
+        }
+        //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+        //this.nameBranch = !this.nameBranch ? this.nameBranch : this.branches[0].name;
+        console.log('this.branch_id');
+        console.log(this.branch_id);
         this.initialize()
       });
     if (this.charge === 'Administrador') {
@@ -1073,7 +1077,7 @@ export default {
     },
 
     initialize() {
-
+      
       axios
         .get('http://127.0.0.1:8000/api/branch-cars', {
           params: {

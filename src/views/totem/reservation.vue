@@ -874,6 +874,8 @@ console.log(newArrayService);
       })
       .then((response) => {
                   this.professionals = response.data.professionals;
+                  console.log('this.professionals------');
+                  console.log(this.professionals);
                   // Obtener la menor hora disponible
 //  this.horarioDisponibleActual = this.professionals
        // Filtrar profesionales con horarios disponibles y obtener la menor hora
