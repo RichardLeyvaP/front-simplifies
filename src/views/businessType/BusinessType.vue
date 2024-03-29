@@ -85,7 +85,9 @@
           </v-row>
           </v-toolbar>
           <v-card-text>
-    <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
+            <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
+              hide-details></v-text-field>
+    <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search" :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
       no-results-text="No hay datos disponibles">
       <template v-slot:item.actions="{ item }">
         <!--<v-icon size="small" color="blue" class="me-2" @click="editItem(item)">
@@ -116,7 +118,7 @@ export default {
     sb_timeout: 2000,
     sb_title:'',
     sb_icon:'',
-
+    search: '',
     dialog: false,
     dialogDelete: false,
 
