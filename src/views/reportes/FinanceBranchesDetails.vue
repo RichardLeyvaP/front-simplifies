@@ -25,11 +25,14 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col cols="12" md="4">
+                <v-col cols="12" md="3">
                     <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="underlined"
                         prepend-icon="mdi-calendar" @update:model-value="initialize()"></v-select>
                 </v-col>
-
+                <v-col cols="12" md="3">
+                    <v-select v-model="selectedMounth" :items="months" label="Selecciona un mes" variant="underlined"
+                        prepend-icon="mdi-calendar" @update:model-value="operationDetails()"></v-select>
+                </v-col>
                 <!--<v-col cols="12" md="4">
                     <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
                         offset-y min-width="290px">
@@ -149,6 +152,7 @@ export default {
         input2: null,
         input3: null,
         selectedYear: null,
+        selectedMounth: '',
         years: [],
         branch_id: '',
         business_id: '',
@@ -159,6 +163,21 @@ export default {
         search: '',
         editedIndex: -1,
         results: [],
+        months: [
+        {value: '', title: ''},
+        { value: 1, title: 'Enero' },
+        { value: 2, title: 'Febrero' },
+        { value: 3, title: 'Marzo' },
+        { value: 4, title: 'Abril' },
+        { value: 5, title: 'Mayo' },
+        { value: 6, title: 'Junio' },
+        { value: 7, title: 'Julio' },
+        { value: 8, title: 'Agosto' },
+        { value: 9, title: 'Septiembre' },
+        { value: 10, title: 'Octubre' },
+        { value: 11, title: 'Noviembre' },
+        { value: 12, title: 'Diciembre' }
+      ],
         headers: [
             { title: 'Tipo de operación', key: 'operation', sortable: false },
             { title: 'Fecha Registro', key: 'data', sortable: false },
@@ -179,8 +198,7 @@ export default {
         formTitle() {
             if (this.editedIndex === 2) {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-                this.fecha = format(this.input, "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
-                return 'Monto generado por Negocios en el período  ' + format(this.input, "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
+                return 'Reporte de Ingresos y Gastos detallados en el mes '+ this.selectedMounth+'-'+this.selectedYear;
             }
             else if (this.editedIndex === 3) {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -190,7 +208,7 @@ export default {
             else {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
                 this.fecha = format(new Date(), "yyyy-MM-dd");
-                return 'Reporte de Ingresos y Gastos detallados ' + this.selectedYear;
+                return 'Reporte de Ingresos y Gastos detallados en el año' + this.selectedYear;
             }
         },
         /*dateFormatted() {
@@ -271,34 +289,7 @@ export default {
     },
 
     methods: {
-        /*generateChartData() {
-            const labels = this.results.map(item => item.month);
-            const expensesData = this.results.map(item => parseFloat(item.total_expenses));
-            const revenuesData = this.results.map(item => parseFloat(item.total_revenues));
-            return {
-                labels: labels,
-                datasets: [
-                    {
-                        label: 'Total Gastos',
-                        backgroundColor: "#FF7043",
-                        data: expensesData
-                    },
-                    {
-                        label: 'Total Ingresos',
-                        backgroundColor: "#FFB300",
-                        data: revenuesData
-                    }
-                ]
-                /*labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
-                datasets: [
-                  {
-                    label: 'Reservas',
-                    backgroundColor: ["#FFB300", "#FF7043", "#00796B", "#B0BEC5", "#C0CA33", "#8D6E63", "#616161"],
-                    data: this.reservationWeek
-                  }
-                ]*/
-        //};
-        //},*/
+        
         exportToExcel() {
             // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
             let rows = [];
@@ -389,7 +380,25 @@ export default {
                 .get('http://127.0.0.1:8000/api/revenue-expense-details', {
                     params: {
                         branch_id: this.branch_id,
-                        year: this.selectedYear
+                        year: this.selectedYear,
+                        mounth: this.selectedMounth
+                    }
+                })
+                .then((response) => {
+                    this.results = response.data.finances;
+                    //this.saldoInicial = response.data.last_year_difference;
+                    console.log('this.results');
+                    console.log(this.results);
+                })
+        },
+        operationDetails() {
+            this.editedIndex = 2;
+            axios
+                .get('http://127.0.0.1:8000/api/revenue-expense-details', {
+                    params: {
+                        branch_id: this.branch_id,
+                        year: this.selectedYear,
+                        mounth: this.selectedMounth
                     }
                 })
                 .then((response) => {
