@@ -182,7 +182,10 @@
 
 
       <v-card-text>
-        <v-data-table :headers="headers" :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
+        <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar"
+                                single-line hide-details>
+                            </v-text-field>
+        <v-data-table :headers="headers" :items="results" :search="search" class="elevation-1" no-data-text="No hay datos disponibles"
           no-results-text="No hay datos disponibles">
           <template v-slot:top>
 
@@ -440,6 +443,7 @@ export default {
     sb_timeout: 2000,
     sb_title: '',
     sb_icon: '',
+    search: '',
     editando: false,
     dialog: false,
     message_delete: true,

@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
     <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type"
@@ -88,7 +89,10 @@
          </v-row>
          </v-toolbar>
          <v-card-text>
-   <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+          <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar"
+                                single-line hide-details>
+                            </v-text-field>
+   <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search" class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
      <template v-slot:item.actions="{ item }">
       <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar Asociados"></v-btn>
@@ -118,7 +122,7 @@ export default {
    sb_timeout: 2000,
    sb_title:'',
    sb_icon:'',
-
+   search: '',
    dialog: false,
    dialogDelete: false,
 

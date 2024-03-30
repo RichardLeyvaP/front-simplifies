@@ -116,8 +116,10 @@
 
 
     <v-card-text>
-      <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
-        no-results-text="No hay datos disponibles">
+      <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details>
+      </v-text-field>
+      <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search" class="elevation-1"
+        no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles">
         <template v-slot:top>
 
           <v-divider class="mx-4" inset vertical></v-divider>
@@ -139,9 +141,9 @@
           <v-icon size="25" color="red" @click="deleteItem(item)">
             mdi-delete
           </v-icon>-->
-          <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
+          <v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar tarjeta"></v-btn>
-            <v-btn density="comfortable" icon="mdi-gift"  @click="showCardGifts(item)" color="green" variant="tonal"
+          <v-btn density="comfortable" icon="mdi-gift" @click="showCardGifts(item)" color="green" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Asignar tarjeta de regalo"></v-btn>
           <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
             elevation="1" title="Eliminar Puesto de Trabajo"></v-btn>
@@ -164,7 +166,9 @@
             <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details></v-text-field>
 
-            <v-data-table :headers="headers2" :items="cardgiftUser" :search="search2" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+            <v-data-table :headers="headers2" :items="cardgiftUser" :search="search2" class="elevation-1"
+              :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
+              no-data-text="No hay datos disponibles">
 
               <template v-slot:item.name="{ item }">
 
@@ -186,8 +190,8 @@
                 <!--<v-icon size="25" color="red" @click="deleteS(item)">
                   mdi-delete
                 </v-icon>-->
-          <v-btn density="comfortable" icon="mdi-delete" @click="deleteS(item)" color="red-darken-4" variant="tonal"
-            elevation="1" title="Eliminar asignación"></v-btn>
+                <v-btn density="comfortable" icon="mdi-delete" @click="deleteS(item)" color="red-darken-4" variant="tonal"
+                  elevation="1" title="Eliminar asignación"></v-btn>
               </template>
 
             </v-data-table>
@@ -224,8 +228,8 @@
                           append-inner-icon="mdi-calendar" label="Fecha de Expiración"></v-text-field>
                       </template>
                       <v-locale-provider locale="es">
-                        <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :model-value=input @update:model-value="updateDate"
-                          format="yyyy-MM-dd"></v-date-picker>
+                        <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                          :model-value=input @update:model-value="updateDate" format="yyyy-MM-dd"></v-date-picker>
                       </v-locale-provider>
                     </v-menu>
                   </v-col>
@@ -293,6 +297,7 @@ export default {
     sb_timeout: 2000,
     sb_title: '',
     sb_icon: '',
+    search: '',
     editando: false,
     dialog: false,
     dialogCardGift: false,
@@ -407,13 +412,13 @@ export default {
 
   methods: {
     imagenDisponible() {
-        if (this.imgedit !== undefined && this.imgedit !== '') {
-            // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
-            let img = new Image();
-            img.src = this.imgedit;
-            return img.complete; // Devuelve true si la imagen está disponible
-        }
-        return false; // Si la URL de la imagen no está definida o está vacía, devuelve false
+      if (this.imgedit !== undefined && this.imgedit !== '') {
+        // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
+        let img = new Image();
+        img.src = this.imgedit;
+        return img.complete; // Devuelve true si la imagen está disponible
+      }
+      return false; // Si la URL de la imagen no está definida o está vacía, devuelve false
     },
 
     showAlert(sb_type, sb_message, sb_timeout) {
@@ -448,10 +453,10 @@ export default {
         .then((response) => {
           this.business = response.data.business;
           if (this.business.length > 0) {
-      this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
-    }        
-    console.log('this.editedItem.business_id');
-      console.log(this.editedItem.business_id);
+            this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
+          }
+          console.log('this.editedItem.business_id');
+          console.log(this.editedItem.business_id);
         });
       axios
         .get('http://127.0.0.1:8000/api/client-autocomplete')
@@ -521,8 +526,8 @@ export default {
           this.initialize();
           this.message_delete = true
           this.showAlert("success", "Tarjeta de regalo eliminada correctamente", 3000);
-          
-      this.dialogDelete = false;
+
+          this.dialogDelete = false;
         })
     },
     close() {
@@ -531,8 +536,8 @@ export default {
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1;
-        this.imgMiniatura = '';
-        this.file = '';
+          this.imgMiniatura = '';
+          this.file = '';
         })
     },
     closeDelete() {
@@ -588,9 +593,9 @@ export default {
           .then(() => {
             this.initialize();
             this.showAlert("success", "Tarjeta de Regalo editada correctamente", 3000);
-        this.imgMiniatura = '';
-        this.file = '';
-            
+            this.imgMiniatura = '';
+            this.file = '';
+
           })
       } else {
         this.valid = false;
@@ -623,7 +628,7 @@ export default {
       this.valid = false,
         this.data.card_gift_id = this.cardSelect.id;
       this.data.user_id = this.editedCardGiftUser.user_id;
-      this.data.expiration_date = this.editedCardGiftUser.expiration_date ? this.editedCardGiftUser.expiration_date :format(new Date(), "yyyy-MM-dd") ;/*this.input ? format(new Date(this.input), "") : new Date();*/
+      this.data.expiration_date = this.editedCardGiftUser.expiration_date ? this.editedCardGiftUser.expiration_date : format(new Date(), "yyyy-MM-dd");/*this.input ? format(new Date(this.input), "") : new Date();*/
       console.log('this.editedCardGiftUser.expiration_date');
       console.log(this.data.expiration_date);
       axios
