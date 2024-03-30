@@ -161,7 +161,6 @@
                             <v-divider></v-divider>
                         </v-list-item-group>
                     </v-list>
-                    <v-divider></v-divider>
                     
                     <v-card-actions>   
                       <v-spacer></v-spacer> 
@@ -382,19 +381,10 @@ export default {
     },
         initialize(){
       //this.chargeServices();
-        this.chargeCalendarsBranches();
+        //this.chargeCalendarsBranches();
         this. chargeProfessionals();
         },
-       /* validBooton(){
-           if( this.profitPercen != null && this.professional[0] != null &&  this.selected[0]) 
-           {
-            return true;
-           }
-           else{
-            return false
-           }
 
-        },*/
         desasignService()
         {
 
@@ -489,172 +479,6 @@ export default {
          this.email_client = '';
 
         },
-        /*sendData()
-    {
-   
-      // Realiza la solicitud POST Y BUSCO LOS DATOS DEL CLIENTE 
-      axios.get(`http://127.0.0.1:8000/api/client-email-phone?email=${this.email_client2}`)
-        .then(response => {
-          // Maneja la respuesta de la solicitud aquí
-        this.clientRegister = response.data.client;
-        console.log('-------------------------------clientRegister----------------------------------------');
-        console.log(this.clientRegister);
-        
-
-        const client = this.clientRegister[0];
-        //ASIGNO A LOS CAMPOS DEL FORMULARIO TDS LOS DATOS
-         this.name_client = client.name;
-         this.phone_client = client.phone;
-         this.surname_client = client.surname;
-         this.second_surname = client.second_surname;
-         this.email_client = client.email;
-         
-                this.verificate = true;
-         this.changeStep(5);
-         
-       
-              })
-        .catch(error => {
-          // Maneja cualquier error que pueda ocurrir durante la solicitud
-          console.error('Error al hacer la solicitud:', error);
-        });
-
-    },*/
-        /*send()
-    {
-      //this.totalTimeServices()
-    console.log('**********************************--------------------');
-    const newArrayService = this.array_services.map(item => parseInt(item)); 
-
-    //FECHA DE HOY-------------
-    let today = new Date();
-
-// Obtener el año, mes y día por separado
-let year = today.getFullYear();
-let month = String(today.getMonth() + 1).padStart(2, '0'); // El mes se cuenta desde 0, así que agregamos 1
-let day = String(today.getDate()).padStart(2, '0');
-let formattedDate = `${year}-${month}-${day}`;
-    //FECHA DE HOY-------------
-   
-    let hourString = this.hourSelect.toString();
-      let request = {
-        start_time:hourString,
-        data: formattedDate,
-        branch_id: 1,
-        professional_id: this.professional[0],
-        email_client: this.email_client,
-        phone_client: this.phone_client,
-        name_client: this.name_client,
-        surname_client:this.surname_client,
-        second_surname:this.second_surname,
-        services: newArrayService,      
-      }
-
-      console.log('**********************************---------------------');
-
-      // Realiza la solicitud GET con Axios y pasa los parámetros
-      axios.post('http://127.0.0.1:8000/api/reservation_store',  request )
-        .then(response => {
-          // Maneja la respuesta de la solicitud aquí
-        this.message=response.data.msg
-
-        setTimeout(() => {
-        // Redirige a la URL externa deseada
-        window.location.href = 'https://barberiahernandez.com/barber_backend/web/app_dev.php/reservation';
-      }, 3000); 
-              })
-        .catch(error => {
-          // Maneja cualquier error que pueda ocurrir durante la solicitud
-          console.error('Error al hacer la solicitud:', error);
-        });
-
-
-
-    },*/
-
-        isIntervalDisabled(time) {
-    // Aquí puedes agregar la lógica para desactivar ciertos horarios.
-    // Por ejemplo, si deseas desactivar los horarios '10:00' y '11:00':
-    return this.disabledIntervals.includes(time);
-  },
-        
-        getDayOfWeekOK() {
-  var Xmas95 = new Date();
-  console.log('Este es new Date '+Xmas95);
-  var weekday = Xmas95.getDay();
-  var day = this.dayOfWeek.find((item) => item.id == weekday);
-  console.log("esto devuelve el metodo");
-  console.log(day ? day.day.toString().trim() : "");
-  return day ? day.day.toString().trim() : "";
-          },
-        chargeCalendarsBranches() {
-            axios
-                .get(`http://127.0.0.1:8000/api/schedule-show?branch_id=1`)
-                .then((response) => {
-                    this.calendars_branches = response.data.Schedules;
-                    this.dayOfWeek = response.data.Schedules;
-                })
-                .catch((err) => {
-                    console.log(err, "error");
-                    /*  this.displayNotification(
-                        "error",
-                        "Error",
-                        "Error al obtener el calendario de la Sucursal"
-                      );*/
-                });
-        },
-        handleStepChange(newValue) 
-        {
-
-            // Verifica si se está pasando del paso 1 al paso 2
-            if (newValue === 2) {
-                // Llama a tu método aquí
-                console.log("--------------Se ha pasado del paso 1 al paso 2");
-                console.log('---------' + this.selected);
-                //this.chargeProfessionals(this.selected);
-            } // Verifica si se está pasando del paso 1 al paso 2
-            if (newValue === 3) {
-                // Llama a tu método aquí
-                console.log("--------------Se ha pasado del paso 2 al paso 3 -divideInterval");
-
-                this.divideInterval();
-            }
-            if (newValue === 4) {
-                // Llama a tu método aquí
-                console.log("--------------Se ha pasado del paso 3 al paso 4 -RECIVIENDO LA HORA");
-
-                  //aqui verificar si dijo que no es cliente
-                  if(this.radios === 'ClientNo')
-                {
-                    this.clearTextClient();
-                    this.verificate = false;
-                }
-
-                
-                
-                console.log(this.hourSelect);
-            }
-            
-            if (newValue === 5) {
-                // Llama a tu método aquí
-                console.log("--------------Se ha pasado del paso 4 al paso 4 -RECIVIENDO LA SELECCION DEL RADIO");
-
-                console.log(this.radios);
-                if(this.radios === 'ClientSi')
-                {
-                    // le muestro un dialogo para que ponga correo y teefono
-                    //hago la busqueda en la dd si esta le llevo tds los datos al formulario y le enavilito los campos que no pueda editarlos
-                    //solo le quedaria reservar
-                }
-                else{
-                     // normal que pase a llenar todos los datos
-                     this.clearTextClient();
-                    this.verificate = false;
-                }
-            }
-        },
-
-
         //servicios
         toggleService(serviceId) {
             const index = this.selected.indexOf(serviceId);
@@ -783,27 +607,6 @@ toggleService3(service)
         
     
 },
-         //profesionales
-         /*toggleTimer(hour) {
-            const index = this.hourSelect.indexOf(hour);
-            console.log(this.hourSelect);
-            if (index > -1) {
-                // Si el servicio ya está seleccionado, no hagas nada
-                return;
-            }
-
-
-            // Limpiar la selección anterior y agregar el nuevo servicio seleccionado
-            this.hourSelect = [hour];
-            this.start_time1 = this.hourSelect;
-        },*/
-      /*  isProfessional(serviceId2) {
-            return this.professional.length === 1 && this.professional[0] === serviceId2;
-        },*/
-        /*isTimer(hour) {
-            return this.hourSelect.length === 1 && this.hourSelect[0] === hour;
-        },*/
-
         chargeServices() {
                 axios
                 .get(`http://127.0.0.1:8000/api/professionalservice-show`, {
