@@ -514,7 +514,10 @@ export default {
            this.mostrar = true;
            this.imgMiniatura = '';
             this.file = '';
-          })
+          }).catch(error => {
+            if(error.response.status === 400)
+          this.showAlert("warning", 'Usuario ya existe', 3000);
+        })
       } else {
         this.valid = false;
         /*this.data.name = this.editedItem.name;
@@ -537,7 +540,11 @@ export default {
             this.showAlert("success","Profesional registrado correctamente", 3000);
             this.imgMiniatura = '';
             this.file = '';
-          })
+          }).catch(error => {
+            console.log(error.response);
+            if(error.response.status === 400)
+          this.showAlert("warning", 'Usuario ya existe', 3000);
+        })
       }
       this.close()
     },

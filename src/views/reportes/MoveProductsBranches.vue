@@ -5,7 +5,7 @@
         <v-toolbar color="#F18254">
             <v-row align="center">
                 <v-col cols="12" md="8" class="grow ml-4">
-                    <span class="text-subtitle-1"> <strong>Reporte de Ingresos y Gastos detallados</strong></span>
+                    <span class="text-subtitle-1"> <strong>Reporte de Movimiento de Productos</strong></span>
                 </v-col>
                 <v-spacer></v-spacer>
                 <v-col cols="12" md="3">
@@ -28,6 +28,10 @@
                 <v-col cols="12" md="4">
                     <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="underlined"
                         prepend-icon="mdi-calendar" @update:model-value="initialize()"></v-select>
+                </v-col>
+                <v-col cols="12" md="4">
+                    <v-select v-model="selectedMounth" :items="months" label="Selecciona un mes" variant="underlined"
+                        prepend-icon="mdi-calendar" @update:model-value="moveProductsMounth()"></v-select>
                 </v-col>
 
                 <!--<v-col cols="12" md="4">
@@ -88,18 +92,20 @@
             </v-menu>
           </v-col>-->
                 <v-col cols="12" md="12">
+                    <v-container>
                         <v-alert border type="warning" variant="outlined" prominent>
                             <span class="text-h6">{{ formTitle }}</span>
                         </v-alert>
+                    </v-container>
                 </v-col>
                 <v-col cols="12" md="12">
                     <v-card class="mx-auto  overflow-visible">
                         <v-card-text>
-                            <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
-              hide-details>
-            </v-text-field>
+                            <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar"
+                                single-line hide-details>
+                            </v-text-field>
                             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
-                                :search="search"  no-results-text="No hay datos disponibles"
+                                :search="search" no-results-text="No hay datos disponibles"
                                 no-data-text="No hay datos disponibles">
 
                             </v-data-table>
@@ -149,7 +155,23 @@ export default {
         input2: null,
         input3: null,
         selectedYear: null,
+        selectedMounth: '',
         years: [],
+        months: [
+        {value: '', title: ''},
+        { value: 1, title: 'Enero' },
+        { value: 2, title: 'Febrero' },
+        { value: 3, title: 'Marzo' },
+        { value: 4, title: 'Abril' },
+        { value: 5, title: 'Mayo' },
+        { value: 6, title: 'Junio' },
+        { value: 7, title: 'Julio' },
+        { value: 8, title: 'Agosto' },
+        { value: 9, title: 'Septiembre' },
+        { value: 10, title: 'Octubre' },
+        { value: 11, title: 'Noviembre' },
+        { value: 12, title: 'Diciembre' }
+      ],
         branch_id: '',
         business_id: '',
         charge_id: '',
@@ -160,11 +182,25 @@ export default {
         editedIndex: -1,
         results: [],
         headers: [
-            { title: 'Tipo de operación', key: 'operation', sortable: false },
-            { title: 'Fecha Registro', key: 'data', sortable: false },
-            { title: 'Detalle de operación', key: 'detailOperation', sortable: false },
-            { title: 'Ingreso', key: 'ingreso', sortable: false },
-            { title: 'Gasto', key: 'gasto', sortable: false },
+            { title: 'Fecha Movimiento', key: 'data', sortable: false },
+            { title: 'Producto', key: 'nameProduct', sortable: false },
+            {
+                title: 'Almacén Saliente',
+                align: 'center',
+                children: [
+                    { title: 'Sucursal', key: 'branchOut', sortable: false },
+                    { title: 'Almacén', key: 'storeOut', sortable: false },
+                ],
+            },
+            { title: 'Cantidad', key: 'cant', sortable: false },
+            {
+                title: 'Almacén Entrante',
+                align: 'center',
+                children: [
+                    { title: 'Sucursal', key: 'branchInt', sortable: false },
+                    { title: 'Almacén', key: 'storeInt', sortable: false },
+                ],
+            },
         ],
         tableData: [],
         data: {},
@@ -190,7 +226,7 @@ export default {
             else {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
                 this.fecha = format(new Date(), "yyyy-MM-dd");
-                return 'Reporte de Ingresos y Gastos detallados ' + this.selectedYear;
+                return 'Reporte de Movimiento de Productos ' + this.selectedYear;
             }
         },
         /*dateFormatted() {
@@ -267,6 +303,7 @@ export default {
         }
         // Establecer el año actual como el seleccionado por defecto
         this.selectedYear = currentYear;
+
         this.initialize();
     },
 
@@ -383,17 +420,35 @@ export default {
             })
           this.menu3 = false;
         },*/
-        initialize() {
+        moveProductsMounth() {
             this.editedIndex = 1;
             axios
-                .get('http://127.0.0.1:8000/api/revenue-expense-details', {
+                .get('http://127.0.0.1:8000/api/move-products', {
                     params: {
                         branch_id: this.branch_id,
-                        year: this.selectedYear
+                        year: this.selectedYear,
+                        mounth: this.selectedMounth
                     }
                 })
                 .then((response) => {
-                    this.results = response.data.finances;
+                    this.results = response.data.movimientos;
+                    //this.saldoInicial = response.data.last_year_difference;
+                    console.log('this.results');
+                    console.log(this.results);
+                })
+        },
+        initialize() {
+            this.editedIndex = 1;
+            axios
+                .get('http://127.0.0.1:8000/api/move-products', {
+                    params: {
+                        branch_id: this.branch_id,
+                        year: this.selectedYear,
+                        mounth: this.selectedMounth
+                    }
+                })
+                .then((response) => {
+                    this.results = response.data.movimientos;
                     //this.saldoInicial = response.data.last_year_difference;
                     console.log('this.results');
                     console.log(this.results);

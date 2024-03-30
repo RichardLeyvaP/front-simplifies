@@ -331,6 +331,13 @@ const routes = [
         meta: { requiresAuth: true, requiresPermissions: ["products_mostsold"] },
       },
       {
+        path: "/move-product",
+        name: "Movimiento de productos",
+        component: () =>
+          import( "@/views/reportes/MoveProductsBranches.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_move_products"] },
+      },
+      {
         path: "/product-stock",
         name: "Reposición de Productos",
         component: () =>
@@ -378,6 +385,13 @@ const routes = [
         component: () =>
           import( "@/views/reportes/FinanceBranchesDetails.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_finance_branches_details"] },
+      },
+      {
+        path: "/details-operations",
+        name: "Finanzas por sucursales por operación",
+        component: () =>
+          import( "@/views/reportes/DetailsOperations.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_details_operations"] },
       },
     ],
   },

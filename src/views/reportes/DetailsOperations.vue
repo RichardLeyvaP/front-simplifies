@@ -5,7 +5,8 @@
         <v-toolbar color="#F18254">
             <v-row align="center">
                 <v-col cols="12" md="8" class="grow ml-4">
-                    <span class="text-subtitle-1"> <strong>Reporte de Ingresos y Gastos detallados</strong></span>
+                    <span class="text-subtitle-1"> <strong>Reporte de Ingresos y Gastos detallados por
+                            operaciones</strong></span>
                 </v-col>
                 <v-spacer></v-spacer>
                 <v-col cols="12" md="3">
@@ -88,19 +89,35 @@
             </v-menu>
           </v-col>-->
                 <v-col cols="12" md="12">
+                    <v-container>
                         <v-alert border type="warning" variant="outlined" prominent>
                             <span class="text-h6">{{ formTitle }}</span>
                         </v-alert>
+                    </v-container>
                 </v-col>
                 <v-col cols="12" md="12">
                     <v-card class="mx-auto  overflow-visible">
                         <v-card-text>
-                            <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
-              hide-details>
-            </v-text-field>
+                            <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar"
+                                single-line hide-details>
+                            </v-text-field>
                             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
-                                :search="search"  no-results-text="No hay datos disponibles"
-                                no-data-text="No hay datos disponibles">
+                                :group-by="groupBy" :search="search" no-results-text="No hay datos disponibles"
+                                no-data-text="No hay datos disponibles" :hide-default-footer="true">
+                                <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
+                                    <tr>
+                                        <td>
+                                            <v-btn size="small" variant="text"
+                                                :icon="isGroupOpen(item) ? 'mdi-minus' : 'mdi-plus'"
+                                                @click="toggleGroup(item)"></v-btn>
+                                            {{ item.value }}
+                                        </td>
+                                        <!-- Mostrar los totales para el grupo actual -->
+                                        <td v-for="(header, index) in columns.slice(1)" :key="index">
+                                            {{ calculateGroupTotal(item.value, header.value) }}
+                                        </td>
+                                    </tr>
+                                </template>
 
                             </v-data-table>
                         </v-card-text>
@@ -159,12 +176,25 @@ export default {
         search: '',
         editedIndex: -1,
         results: [],
+        groupBy: [
+            {
+                key: 'tipo',
+            },
+        ],
         headers: [
-            { title: 'Tipo de operación', key: 'operation', sortable: false },
-            { title: 'Fecha Registro', key: 'data', sortable: false },
-            { title: 'Detalle de operación', key: 'detailOperation', sortable: false },
-            { title: 'Ingreso', key: 'ingreso', sortable: false },
-            { title: 'Gasto', key: 'gasto', sortable: false },
+            { title: 'Detalle de Operación', align: 'start', value: 'operacion' },
+            { title: 'Enero', value: 'Enero' },
+            { title: 'Febrero', value: 'Febrero' },
+            { title: 'Marzo', value: 'Marzo' },
+            { title: 'Abril', value: 'Abril' },
+            { title: 'Mayo', value: 'Mayo' },
+            { title: 'Junio', value: 'Junio' },
+            { title: 'Julio', value: 'Julio' },
+            { title: 'Agosto', value: 'Agosto' },
+            { title: 'Septiembre', value: 'Septiembre' },
+            { title: 'Octubre', value: 'Octubre' },
+            { title: 'Noviembre', value: 'Noviembre' },
+            { title: 'Diciembre', value: 'Diciembre' },
         ],
         tableData: [],
         data: {},
@@ -190,7 +220,7 @@ export default {
             else {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
                 this.fecha = format(new Date(), "yyyy-MM-dd");
-                return 'Reporte de Ingresos y Gastos detallados ' + this.selectedYear;
+                return 'Reporte de Ingresos y Gastos detallados por operaciones ' + this.selectedYear;
             }
         },
         /*dateFormatted() {
@@ -271,6 +301,20 @@ export default {
     },
 
     methods: {
+        getTotalRowForGroup(groupKey) {
+            // Filtrar los resultados para incluir solo los elementos del grupo actual con operación "Total"
+            const groupResults = this.results.filter(item => item.tipo === groupKey && item.operacion === "Total");
+
+            // Retornar la primera fila encontrada que cumpla con los criterios
+            return groupResults.length > 0 ? groupResults[0] : null;
+        },
+        calculateGroupTotal(groupKey, columnKey) {
+            // Obtener los totales para el grupo actual
+            const totalRow = this.getTotalRowForGroup(groupKey);
+
+            // Retornar el valor correspondiente a la columna
+            return totalRow ? totalRow[columnKey] : 0;
+        },
         /*generateChartData() {
             const labels = this.results.map(item => item.month);
             const expensesData = this.results.map(item => parseFloat(item.total_expenses));
@@ -306,7 +350,7 @@ export default {
             // Construye un objeto para los encabezados basado en la estructura de 'headers'
             let headerRow = {};
             this.headers.forEach(header => {
-                headerRow[header.key] = header.title; // Usa 'key' para el mapeo y 'title' para el texto del encabezado
+                headerRow[header.key] = header.value; // Usa 'key' para el mapeo y 'title' para el texto del encabezado
             });
             rows.push(headerRow);
 
@@ -321,11 +365,11 @@ export default {
 
             let nameReport = {
                 // eslint-disable-next-line vue/no-use-computed-property-like-method
-                name: this.formTitle, // Asume que 'name' es una de tus claves; ajusta según sea necesario
-                tip: '', // Deja vacíos los demás campos para esta fila especial
-                earnings: '',
-                technical_assistance: '',
-                total: '' // Usa 'total' para mostrar la fecha; ajusta las claves según corresponda a tu estructura
+                tipo: this.formTitle, // Asume que 'name' es una de tus claves; ajusta según sea necesario
+                operation: '', // Deja vacíos los demás campos para esta fila especial
+                Enero: '',
+                Febrero: '',
+                Marzo: '' // Usa 'total' para mostrar la fecha; ajusta las claves según corresponda a tu estructura
             };
             rows.push(nameReport);
 
@@ -386,14 +430,14 @@ export default {
         initialize() {
             this.editedIndex = 1;
             axios
-                .get('http://127.0.0.1:8000/api/revenue-expense-details', {
+                .get('http://127.0.0.1:8000/api/details-operations', {
                     params: {
                         branch_id: this.branch_id,
                         year: this.selectedYear
                     }
                 })
                 .then((response) => {
-                    this.results = response.data.finances;
+                    this.results = response.data;
                     //this.saldoInicial = response.data.last_year_difference;
                     console.log('this.results');
                     console.log(this.results);
