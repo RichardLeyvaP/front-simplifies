@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
      <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type"
      elevation="24"  :multi-line="true"  vertical v-model="snackbar">
