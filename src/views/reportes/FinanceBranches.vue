@@ -2,22 +2,22 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <!-- eslint-disable vue/return-in-computed-property -->
 <template>
-    <v-card elevation="6" class="mx-5">
-        <v-toolbar color="#F18254">
-            <v-row align="center">
-                <v-col cols="12" md="8" class="grow ml-4">
-                    <span class="text-subtitle-1"> <strong>Reporte de análisis de Ingresos y Gastos</strong></span>
-                </v-col>
-                <v-spacer></v-spacer>
-                <v-col cols="12" md="3">
-                    <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" elevation="2"
-                        prepend-icon="mdi-file-excel" @click="exportToExcel">
-                        Exportar a Excel
-                    </v-btn>
-                </v-col>
-            </v-row>
-        </v-toolbar>
-        <v-container>
+    <v-container>
+        <v-card elevation="6" class="mx-5">
+            <v-toolbar color="#F18254">
+                <v-row align="center">
+                    <v-col cols="12" md="8" class="grow ml-4">
+                        <span class="text-subtitle-1"> <strong>Reporte de análisis de Ingresos y Gastos</strong></span>
+                    </v-col>
+                    <v-spacer></v-spacer>
+                    <v-col cols="12" md="3">
+                        <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" elevation="2"
+                            prepend-icon="mdi-file-excel" @click="exportToExcel">
+                            Exportar a Excel
+                        </v-btn>
+                    </v-col>
+                </v-row>
+            </v-toolbar>
             <v-row>
                 <v-col cols="12" md="4">
                     <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="underlined"
@@ -125,8 +125,8 @@
                     </v-card>
                 </v-col>
             </v-row>
-        </v-container>
-    </v-card>
+        </v-card>
+    </v-container>
 </template>
 <script>
 
