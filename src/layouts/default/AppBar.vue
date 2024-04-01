@@ -168,7 +168,7 @@ export default {
     this.professional_id = JSON.parse(LocalStorageService.getItem('professional_id'));
     const image = LocalStorageService.getItem('image');
     const cleanedImage = image.replace(/"/g, '');
-    this.imageUrl = `https://api2.simplifies.cl/api/images/${cleanedImage}`;
+    this.imageUrl = `http://127.0.0.1:8000/api/images/${cleanedImage}`;
     console.log(this.imageUrl);
     // Otros datos que hayas almacenado
   },
@@ -201,7 +201,7 @@ export default {
     shangePassword(){
       console.log(this.user_id)
       axios
-        .get('https://api2.simplifies.cl/api/change_password', {
+        .get('http://127.0.0.1:8000/api/change_password', {
                     params: {
                         id: this.user_id,
                         password: this.confirmPassword,
@@ -224,7 +224,7 @@ export default {
       if (item.title === 'Mi Perfil') {
         console.log('Mi Perfil')
         axios
-        .get('https://api2.simplifies.cl/api/professional-show', {
+        .get('http://127.0.0.1:8000/api/professional-show', {
                     params: {
                         id: this.professional_id,
                     }

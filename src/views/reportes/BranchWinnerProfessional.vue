@@ -193,7 +193,7 @@ export default {
     this.charge_id = LocalStorageService.getItem('charge_id');
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
-      .get('https://api2.simplifies.cl/api/show-business', {
+      .get('http://127.0.0.1:8000/api/show-business', {
         params: {
           business_id: this.business_id
         }
@@ -266,7 +266,7 @@ export default {
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = format(val, "yyyy-MM-dd");
       axios
-        .get('https://api2.simplifies.cl/api/branch_professionals_winner', {
+        .get('http://127.0.0.1:8000/api/branch_professionals_winner', {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,
@@ -275,8 +275,8 @@ export default {
         })
         .then((response) => {
           this.results = response.data;
-          this.input2 = new Date();
-          this.input = new Date()
+          //this.input2 = new Date();
+          //this.input = new Date()
         })
       this.menu2 = false;
     },
@@ -288,7 +288,7 @@ export default {
       const mes = `${month}`;
       const ano = `${year}`;
       axios
-        .get('https://api2.simplifies.cl/api/branch_professionals_winner', {
+        .get('http://127.0.0.1:8000/api/branch_professionals_winner', {
           params: {
             branch_id: this.branch_id,
             mes: mes,
@@ -297,21 +297,22 @@ export default {
         })
         .then((response) => {
           this.results = response.data;
-          this.input3 = new Date();
+          //this.input3 = new Date();
         })
       this.menu3 = false;
     },
     initialize() {
       this.editedIndex = 1;
       axios
-        .get('https://api2.simplifies.cl/api/show-business', {
+        .get('http://127.0.0.1:8000/api/branch_professionals_winner', {
           params: {
-            business_id: this.business_id
+            branch_id: this.branch_id,
           }
         })
         .then((response) => {
-          this.branches = response.data.branches;
-        });
+          this.results = response.data;
+          //this.input3 = new Date();
+        })
 
     },
 

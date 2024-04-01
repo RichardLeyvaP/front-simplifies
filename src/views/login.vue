@@ -176,7 +176,7 @@ export default {
     },
     changePass (){
       axios
-        .get('https://api2.simplifies.cl/api/reactive-password', {
+        .get('http://127.0.0.1:8000/api/reactive-password', {
                     params: {
                         email: this.emailpas,
                     }
@@ -227,7 +227,7 @@ export default {
 
       console.log(this.data);
       axios
-        .post('https://api2.simplifies.cl/api/login', this.data)
+        .post('http://127.0.0.1:8000/api/login', this.data)
         .then((response) => {
           if (response.data) {
             if (this.editedItem.branch_id === response.data.branch_id || this.selectedOption === "empresa") {
@@ -284,12 +284,12 @@ export default {
 
     initialize() {
       axios
-        .get('https://api2.simplifies.cl/api/branch')
+        .get('http://127.0.0.1:8000/api/branch')
         .then((response) => {
           this.branches = response.data.branches;
         });
       axios
-        .get('https://api2.simplifies.cl/api/business')
+        .get('http://127.0.0.1:8000/api/business')
         .then((response) => {
           this.business = response.data.business;
         });

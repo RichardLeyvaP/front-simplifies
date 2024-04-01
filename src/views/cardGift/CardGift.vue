@@ -128,7 +128,7 @@
         <template v-slot:item.image_cardgift="{ item }">
 
           <v-card class="my-2" rounded elevation="10" width="100">
-            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_cardgift" alt="image" cover></v-img>
+            <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_cardgift" alt="image" cover></v-img>
           </v-card>
         </template>
         <template v-slot:item.actions="{ item }">
@@ -173,7 +173,7 @@
               <template v-slot:item.name="{ item }">
 
                 <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_cardgift" alt="image"></v-img>
+                  <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_cardgift" alt="image"></v-img>
                 </v-avatar>
                 {{ item.name }}
               </template>
@@ -181,7 +181,7 @@
               <template v-slot:item.userName="{ item }">
 
                 <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+                  <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url" alt="image"></v-img>
                 </v-avatar>
                 {{ item.userName }}
               </template>
@@ -444,12 +444,12 @@ export default {
     },
     initialize() {
       axios
-        .get('https://api2.simplifies.cl/api/card-gift')
+        .get('http://127.0.0.1:8000/api/card-gift')
         .then((response) => {
           this.results = response.data.cardGifts;
         });
       axios
-        .get('https://api2.simplifies.cl/api/business')
+        .get('http://127.0.0.1:8000/api/business')
         .then((response) => {
           this.business = response.data.business;
           if (this.business.length > 0) {
@@ -459,7 +459,7 @@ export default {
           console.log(this.editedItem.business_id);
         });
       axios
-        .get('https://api2.simplifies.cl/api/client-autocomplete')
+        .get('http://127.0.0.1:8000/api/client-autocomplete')
         .then((response) => {
           this.users = response.data.clients;
         });
@@ -478,7 +478,7 @@ export default {
       this.editedCardGiftUser.card_gift_id = item.id
       this.data.card_gift_id = item.id
       axios
-        .get('https://api2.simplifies.cl/api/card-gift-user-show', {
+        .get('http://127.0.0.1:8000/api/card-gift-user-show', {
           params: {
             card_gift_id: item.id
           }
@@ -503,7 +503,7 @@ export default {
     },
     editItem(item) {
       this.file = '';
-      this.imgMiniatura = 'https://api2.simplifies.cl/api/images/' + item.image_cardgift;
+      this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.image_cardgift;
       this.editedIndex = 1;
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
@@ -521,7 +521,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('https://api2.simplifies.cl/api/card-gift-destroy', request)
+        .post('http://127.0.0.1:8000/api/card-gift-destroy', request)
         .then(() => {
           this.initialize();
           this.message_delete = true
@@ -567,7 +567,7 @@ export default {
         id: this.editedCardGiftUser.id
       };
       axios
-        .post('https://api2.simplifies.cl/api/card-gift-user-destroy', request)
+        .post('http://127.0.0.1:8000/api/card-gift-user-destroy', request)
         .then(() => {
           this.dialogRequest = false
           this.$nextTick(() => {
@@ -589,7 +589,7 @@ export default {
         }
 
         axios
-          .post('https://api2.simplifies.cl/api/card-gift-update', formData)
+          .post('http://127.0.0.1:8000/api/card-gift-update', formData)
           .then(() => {
             this.initialize();
             this.showAlert("success", "Tarjeta de Regalo editada correctamente", 3000);
@@ -604,7 +604,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios
-          .post('https://api2.simplifies.cl/api/card-gift', formData)
+          .post('http://127.0.0.1:8000/api/card-gift', formData)
           .then(() => {
             this.initialize();
             this.showAlert("success", "Tarjeta de Regalo registrada correctamente", 3000)
@@ -632,7 +632,7 @@ export default {
       console.log('this.editedCardGiftUser.expiration_date');
       console.log(this.data.expiration_date);
       axios
-        .post('https://api2.simplifies.cl/api/card-gift-user', this.data)
+        .post('http://127.0.0.1:8000/api/card-gift-user', this.data)
         .then(() => {
           this.$nextTick(() => {
             this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser)

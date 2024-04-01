@@ -179,7 +179,7 @@
         this.charge_id = LocalStorageService.getItem('charge_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         axios
-            .get('https://api2.simplifies.cl/api/show-business', {
+            .get('http://127.0.0.1:8000/api/show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -225,7 +225,7 @@
       initialize() {
 
         axios
-          .get('https://api2.simplifies.cl/api/branch-show', {
+          .get('http://127.0.0.1:8000/api/branch-show', {
             params:{
                 branch_id: this.branch_id
             }
@@ -234,7 +234,7 @@
             this.results = response.data.workplaces;
           });
           /*axios
-     .get('https://api2.simplifies.cl/api/show-business', {
+     .get('http://127.0.0.1:8000/api/show-business', {
        params: {
          business_id: this.business_id
        }
@@ -260,7 +260,7 @@
           id: this.editedItem.id
         };
         axios
-          .post('https://api2.simplifies.cl/api/workplace-destroy', request)
+          .post('http://127.0.0.1:8000/api/workplace-destroy', request)
           .then(() => {
             this.initialize();
           })
@@ -286,7 +286,7 @@
           this.data.id = this.editedItem.id;
           this.data.name = this.editedItem.name;
           axios
-            .put('https://api2.simplifies.cl/api/workplace', this.data)
+            .put('http://127.0.0.1:8000/api/workplace', this.data)
             .then(() => {
               this.initialize();
               this.showAlert("success", "Puesto de trabajo creado correctamente", 3000);
@@ -297,7 +297,7 @@
           this.data.branch_id = this.branch_id
   
           axios
-            .post('https://api2.simplifies.cl/api/workplace', this.data)
+            .post('http://127.0.0.1:8000/api/workplace', this.data)
             .then(() => {
               this.initialize();
               this.showAlert("success", "Puesto de trabajo editado correctamente", 3000);

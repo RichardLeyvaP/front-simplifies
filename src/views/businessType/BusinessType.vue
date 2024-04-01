@@ -200,7 +200,7 @@ export default {
 
     initialize() {
       axios
-        .get('https://api2.simplifies.cl/api/business-type')
+        .get('http://127.0.0.1:8000/api/business-type')
         .then((response) => {
           this.results = response.data.businessTypes;
         })
@@ -221,7 +221,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('https://api2.simplifies.cl/api/business-type-destroy', request)
+        .post('http://127.0.0.1:8000/api/business-type-destroy', request)
         .then(() => {
           this.initialize();
           this.showAlert("success","Tipo de Negocio eliminado correctamente", 3000)
@@ -250,7 +250,7 @@ export default {
           this.data.id = this.editedItem.id;
           this.data.name = this.editedItem.name;
           axios
-            .put('https://api2.simplifies.cl/api/business-type', this.data)
+            .put('http://127.0.0.1:8000/api/business-type', this.data)
             .then(() => {
               this.initialize();
               this.showAlert("success","Tipo de Negocio editado correctamente", 3000)
@@ -259,7 +259,7 @@ export default {
           this.valid = false,
           this.data.name = this.editedItem.name;
           axios
-            .post('https://api2.simplifies.cl/api/business-type', this.data)
+            .post('http://127.0.0.1:8000/api/business-type', this.data)
             .then(() => {
               this.initialize();
               this.showAlert("success","Tipo de Negocio registrado correctamente", 3000)

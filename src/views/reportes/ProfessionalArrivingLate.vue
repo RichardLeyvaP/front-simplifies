@@ -62,6 +62,14 @@
         </v-col>
         <!-- Tercera columna -->
         <v-col cols="12" sm="6" md="4" v-if="state">
+          <!--<v-date-picker
+          v-model="selectedMonth"
+          view-mode="months"
+          label="Seleccione un mes"
+          color="primary"
+          scrollable
+          no-stepper
+        ></v-date-picker>-->
           <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
             min-width="290px">
             <template v-slot:activator="{ props }">
@@ -69,8 +77,8 @@
                 append-inner-icon="mdi-calendar" label="Mes"></v-text-field>
             </template>
             <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
-                :modelValue="getDate3" @update:model-value="updateDate3" format="yyyy-MM" scrollable></v-date-picker>
+              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" view-mode="months"
+                :modelValue="getDate3" @update:model-value="updateDate3" scrollable></v-date-picker>
             </v-locale-provider>
           </v-menu>
         </v-col>
@@ -198,7 +206,7 @@ export default {
     this.business_id = LocalStorageService.getItem("business_id");
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
-      .get('https://api2.simplifies.cl/api/show-business', {
+      .get('http://127.0.0.1:8000/api/show-business', {
         params: {
           business_id: this.business_id
         }
@@ -264,10 +272,13 @@ export default {
       this.editedIndex = 2;
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = format(val, "yyyy-MM-dd");
+      console.log('');
+      console.log(this.branch_id);
+      console.log(this.professional_id);
       console.log(startDate);
       console.log(endDate);
       axios
-        .get('https://api2.simplifies.cl/api/arriving-late-branch-periodo', {
+        .get('http://127.0.0.1:8000/api/arriving-late-professional-periodo', {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id,
@@ -277,8 +288,8 @@ export default {
         })
         .then((response) => {
           this.results = response.data;
-          this.input2 = new Date();
-          this.input = new Date()
+          //this.input2 = new Date();
+          //this.input = new Date()
         })
       this.menu2 = false;
     },
@@ -289,8 +300,11 @@ export default {
       const year = val.getFullYear();
       const mes = `${month}`;
       const ano = `${year}`;
+      console.log('mes y año');
+      console.log(mes);
+      console.log(ano);
       axios
-        .get('https://api2.simplifies.cl/api/arriving-late-professional-month', {
+        .get('http://127.0.0.1:8000/api/arriving-late-professional-month', {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id,
@@ -300,15 +314,19 @@ export default {
         })
         .then((response) => {
           this.results = response.data;
-          this.input3 = new Date();
+          console.log('this.results');
+          console.log(this.results);
+          //this.input3 = new Date();
         })
       this.menu3 = false;
     },
     initialize() {
       this.editedIndex = 1;
       this.state = true;
+      this.input2 = new Date();
+      this.input3 = new Date();
       axios
-        .get('https://api2.simplifies.cl/api/arriving-late-professional-date', {
+        .get('http://127.0.0.1:8000/api/arriving-late-professional-date', {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id
@@ -318,7 +336,7 @@ export default {
           this.results = response.data;
         });
       axios
-        .get('https://api2.simplifies.cl/api/professional-show-autocomplete')
+        .get('http://127.0.0.1:8000/api/professional-show-autocomplete')
         .then((response) => {
           this.professionals = response.data.professionals;
         });

@@ -187,7 +187,7 @@
     this.business_id = LocalStorageService.getItem("business_id");
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
-            .get('https://api2.simplifies.cl/api/show-business', {
+            .get('http://127.0.0.1:8000/api/show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -255,7 +255,7 @@
         console.log(startDate);
         console.log(endDate);
         axios
-          .get('https://api2.simplifies.cl/api/arriving-branch-periodo', {
+          .get('http://127.0.0.1:8000/api/arriving-branch-periodo', {
             params: {
               branch_id: this.branch_id,
               startDate: startDate,
@@ -264,8 +264,8 @@
           })
           .then((response) => {
             this.results = response.data;
-            this.input2 = new Date();
-            this.input = new Date()
+            //this.input2 = new Date();
+            //this.input = new Date()
           })
         this.menu2 = false;
       },
@@ -277,7 +277,7 @@
         const mes = `${month}`;
         const ano = `${year}`;
         axios
-          .get('https://api2.simplifies.cl/api/arriving-branch-month', {
+          .get('http://127.0.0.1:8000/api/arriving-branch-month', {
             params: {
               branch_id: this.branch_id,
               mes: mes,
@@ -286,18 +286,24 @@
           })
           .then((response) => {
             this.results = response.data;
-            this.input3 = new Date();
+            //this.input3 = new Date();
           })
         this.menu3 = false;
       },
       initialize() {
         this.editedIndex = 1;
         this.state=true;
+          this.input2 = new Date();
+          this.input3 = new Date()
         axios
-          .get('https://api2.simplifies.cl/api/arriving-branch-date', {
+          .get('http://127.0.0.1:8000/api/arriving-branch-date', {
             params: {
               branch_id: this.branch_id
             }
+          }).then((response) => {
+            this.results = response.data;
+            //this.input2 = new Date();
+            //this.input = new Date()
           });
       },
   

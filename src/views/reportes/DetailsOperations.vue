@@ -271,7 +271,7 @@ export default {
         console.log('this.charge')
         console.log(this.charge)
         axios
-            .get('https://api2.simplifies.cl/api/show-business', {
+            .get('http://127.0.0.1:8000/api/show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -394,7 +394,7 @@ export default {
           const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
           const endDate = format(val, "yyyy-MM-dd");
           axios
-            .get('https://api2.simplifies.cl/api/business-winner', {
+            .get('http://127.0.0.1:8000/api/business-winner', {
               params: {
                 startDate: startDate,
                 endDate: endDate
@@ -415,7 +415,7 @@ export default {
           const mes = `${month}`;
           const ano = `${year}`;
           axios
-            .get('https://api2.simplifies.cl/api/business-winner', {
+            .get('http://127.0.0.1:8000/api/business-winner', {
               params: {
                 mes: mes,
                 year: ano
@@ -430,7 +430,7 @@ export default {
         initialize() {
             this.editedIndex = 1;
             axios
-                .get('https://api2.simplifies.cl/api/details-operations', {
+                .get('http://127.0.0.1:8000/api/details-operations', {
                     params: {
                         branch_id: this.branch_id,
                         year: this.selectedYear
