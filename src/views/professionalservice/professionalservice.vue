@@ -70,7 +70,7 @@
                     <v-list>
                         <v-list-item-group v-model="professional" active-class="deep-purple--text text--accent-4">
 
-                            <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + professional.image_url"
+                            <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + professional.image_url"
                                 v-for="professional in professionals" :key="professional.id"
                                 @click="toggleService2(professional.id)"
                                 :class="{ 'selected-item': isProfessional(professional.id) }" class="pt-4 pb-4">
@@ -106,7 +106,7 @@
                     <v-list lines="three"
       item-props>
                         <v-list-item-group v-model="selectedA" active-class="deep-purple--text text--accent-4">
-                            <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + service.image_service"
+                            <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + service.image_service"
                                 v-for="service in services" :key="service.id" @click="toggleService3(service)"
                                 :class="{ 'selected-item': isSelected(service.id) }" class="pt-4 pb-4">
 
@@ -151,7 +151,7 @@
           <v-list lines="three"
       item-props>
                         <v-list-item-group v-model="selected" active-class="deep-purple--text text--accent-4">
-                            <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + serviceA.image_service"
+                            <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + serviceA.image_service"
                                 v-for="serviceA in servicesAsig" :key="serviceA.id" @click="toggleService3(serviceA)"
                                 :class="{ 'selected-item': isSelected(serviceA.id) }" class="pt-4 pb-4">
 
@@ -329,7 +329,7 @@ export default {
   this.branch_id = LocalStorageService.getItem('branch_id');
   this.charge = JSON.parse(LocalStorageService.getItem("charge"));
   axios
-      .get('http://127.0.0.1:8000/api/show-business', {
+      .get('https://api2.simplifies.cl/api/show-business', {
           params: {
             business_id: this.business_id
           }
@@ -400,7 +400,7 @@ export default {
           }
             //CAMBIAR ESTA RUTA POR LA RUTA CORRECTA DE DESASIGNAR SERVICIO AL PROFESIONAL
               axios
-          .post('http://127.0.0.1:8000/api/professionalservice-destroy', request)
+          .post('https://api2.simplifies.cl/api/professionalservice-destroy', request)
           .then(() => {
             this.showAlert("success", "Desasignado correctamente", 3000);
             this.profitPercen = '';
@@ -445,7 +445,7 @@ export default {
       console.log('request');
             console.log(request); 
 
-      axios.post('http://127.0.0.1:8000/api/professionalservice', request)
+      axios.post('https://api2.simplifies.cl/api/professionalservice', request)
         .then(() => {
           this.showAlert("success", "Servicio asignado correctamente", 3000);
           this.profitPercen = '';
@@ -532,7 +532,7 @@ getServicesProfessional()
 
   //AXIOS
   axios
-                .get(`http://127.0.0.1:8000/api/services-professional-branch-free`, {
+                .get(`https://api2.simplifies.cl/api/services-professional-branch-free`, {
                     params: {
                         branch_id: idBranch,
                         professional_id: idProfessional,
@@ -567,7 +567,7 @@ getServicesProfessionalSelect()
 
     //AXIOS
     axios
-                .get(`http://127.0.0.1:8000/api/services-professional-branch`, {
+                .get(`https://api2.simplifies.cl/api/services-professional-branch`, {
                     params: {
                         branch_id: idBranch,
                         professional_id: idProfessional,
@@ -610,7 +610,7 @@ toggleService3(service)
 },
         chargeServices() {
                 axios
-                .get(`http://127.0.0.1:8000/api/professionalservice-show`, {
+                .get(`https://api2.simplifies.cl/api/professionalservice-show`, {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -639,7 +639,7 @@ toggleService3(service)
 
             //this.array_services = newArrayService;
             axios
-        .get(`http://127.0.0.1:8000/api/branch-professionals-barber-totem`, {
+        .get(`https://api2.simplifies.cl/api/branch-professionals-barber-totem`, {
             params: data
         })
         .then((response) => {

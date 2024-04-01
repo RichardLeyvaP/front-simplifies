@@ -195,7 +195,7 @@
           <template v-slot:item.name="{ item }">
 
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'http://127.0.0.1:8000/api/images/' + item.course_image" alt="image"></v-img>
+              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.course_image" alt="image"></v-img>
             </v-avatar>
             {{ item.name }}
           </template>
@@ -303,7 +303,7 @@
 
                 <template v-slot:item.name="{ item }">
                   <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                    <v-img :src="'http://127.0.0.1:8000/api/images/' + item.student_image" alt="image"></v-img>
+                    <v-img :src="'https://api2.simplifies.cl/api/images/' + item.student_image" alt="image"></v-img>
                   </v-avatar>
                   {{ item.name + ' ' + item.surname + ' ' + item.second_surname }}
                 </template>
@@ -600,7 +600,7 @@ export default {
 
     openModal(imageUrl) {
       
-      this.selectedImageUrl = "http://127.0.0.1:8000/api/images/"+imageUrl; 
+      this.selectedImageUrl = "https://api2.simplifies.cl/api/images/"+imageUrl; 
      // alert(this.selectedImageUrl)// Establece la imagen seleccionada
       this.dialogPhoto = true; // Abre el modal
     },
@@ -620,7 +620,7 @@ export default {
       this.course_id = item.id;
       console.log(item.id);
       axios
-        .get('http://127.0.0.1:8000/api/course-student-show', {
+        .get('https://api2.simplifies.cl/api/course-student-show', {
           params: {
             course_id: item.id
           }
@@ -670,7 +670,7 @@ export default {
       this.data.student_id = this.editedStudent.student_id;
       console.log(this.data);
       axios
-        .post('http://127.0.0.1:8000/api/course-student', this.data)
+        .post('https://api2.simplifies.cl/api/course-student', this.data)
         .then(() => {
           this.$nextTick(() => {
             this.editedStudent = Object.assign({}, this.defaultStudent)
@@ -697,7 +697,7 @@ export default {
          formData.append(key, this.editedItemS[key]);
       }
       axios
-        .post('http://127.0.0.1:8000/api/course-student-update', formData)
+        .post('https://api2.simplifies.cl/api/course-student-update', formData)
         .then(() => {
 
           this.dialogAddStudent = false;
@@ -720,7 +720,7 @@ export default {
         student_id: this.editedStudent.student_id
       };
       axios
-        .post('http://127.0.0.1:8000/api/course-student-destroy', request)
+        .post('https://api2.simplifies.cl/api/course-student-destroy', request)
         .then(() => {
           this.dialogRequest = false
           this.$nextTick(() => {
@@ -757,7 +757,7 @@ export default {
     },
     initialize() {
       axios
-        .get('http://127.0.0.1:8000/api/course-show', {
+        .get('https://api2.simplifies.cl/api/course-show', {
           params: {
             business_id: this.business_id
           }
@@ -766,7 +766,7 @@ export default {
           this.results = response.data.courses;
         });
       axios
-        .get('http://127.0.0.1:8000/api/enrollment-show', {
+        .get('https://api2.simplifies.cl/api/enrollment-show', {
           params: {
             business_id: this.business_id
           }
@@ -775,7 +775,7 @@ export default {
           this.enrollments = response.data.enrollments;
         });
       axios
-        .get('http://127.0.0.1:8000/api/student-show')
+        .get('https://api2.simplifies.cl/api/student-show')
         .then((response) => {
           this.students = response.data.students;
         })
@@ -795,7 +795,7 @@ export default {
     },
     editItem(item) {
       this.file = '';
-      this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.course_image;
+      this.imgMiniatura = 'https://api2.simplifies.cl/api/images/' + item.course_image;
       this.editedIndex = 1;
       this.editedItem = Object.assign({}, item)
       this.dialog = true;
@@ -813,7 +813,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('http://127.0.0.1:8000/api/course-destroy', request)
+        .post('https://api2.simplifies.cl/api/course-destroy', request)
         .then(() => {
           this.message_delete = true
           this.showAlert("success", "Curso eliminado correctamente", 3000);
@@ -863,7 +863,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios
-          .post('http://127.0.0.1:8000/api/course-update', formData)
+          .post('https://api2.simplifies.cl/api/course-update', formData)
           .then(() => {
             this.showAlert("success", "Curso editado correctamente", 3000);
             this.initialize();
@@ -883,7 +883,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios
-          .post('http://127.0.0.1:8000/api/course', formData)
+          .post('https://api2.simplifies.cl/api/course', formData)
           .then(() => {
             this.showAlert("success", "Curso registrado correctamente", 3000);
             this.initialize();

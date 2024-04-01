@@ -229,7 +229,7 @@
   
       initialize() {
         axios
-          .get('http://127.0.0.1:8000/api/enrollment-show', {
+          .get('https://api2.simplifies.cl/api/enrollment-show', {
             params: {
                 business_id: this.business_id
             }
@@ -241,7 +241,7 @@
           });
   
         axios
-          .get('http://127.0.0.1:8000/api/business')
+          .get('https://api2.simplifies.cl/api/business')
           .then((response) => {
             console.log(response.data);
             this.business = response.data.business;
@@ -255,7 +255,8 @@
       },
       editItem(item) {
         this.editedIndex = 1;
-        this.editedItem = Object.assign({}, item)
+        this.editedItem = Object.assign({}, item);
+        this.editedItem.business_id = parseInt(item.business_id);
         this.dialog = true
       },
       deleteItem(item) {
@@ -269,7 +270,7 @@
           id: this.editedItem.id
         };
         axios
-          .post('http://127.0.0.1:8000/api/enrollment-destroy', request)
+          .post('https://api2.simplifies.cl/api/enrollment-destroy', request)
           .then(() => {
             this.initialize();
             this.showAlert("success","Academia eliminada correctamente", 3000)
@@ -298,7 +299,7 @@
           this.data.description = this.editedItem.description;
           this.data.business_id = this.editedItem.business_id;
           axios
-            .put('http://127.0.0.1:8000/api/enrollment', this.data)
+            .put('https://api2.simplifies.cl/api/enrollment', this.data)
             .then(() => {
               this.showAlert("success","Academia actualizada correctamente", 3000);
               this.initialize();
@@ -310,7 +311,7 @@
           this.data.business_id = this.editedItem.business_id;
   
           axios
-            .post('http://127.0.0.1:8000/api/enrollment', this.data)
+            .post('https://api2.simplifies.cl/api/enrollment', this.data)
             .then(() => {
               this.showAlert("success","Academia creada correctamente", 3000);
               this.initialize();

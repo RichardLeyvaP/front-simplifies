@@ -146,7 +146,7 @@
         <template v-slot:item.name="{ item }">
 
           <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-            <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_data" alt="image"></v-img>
+            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_data" alt="image"></v-img>
           </v-avatar>
           {{ item.name }}
         </template>
@@ -201,7 +201,7 @@
               <template v-slot:item.name="{ item }">
 
                 <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                  <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url" alt="image"></v-img>
+                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
                 </v-avatar>
                 {{ item.name + ' ' + item.surname + ' ' + item.second_surname }}
               </template>
@@ -295,7 +295,7 @@
               <!--<template v-slot:item.name="{ item }">
 
                     <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                      <v-img :src="'http://127.0.0.1:8000/api/images/'+item.image_url" alt="image"></v-img>
+                      <v-img :src="'https://api2.simplifies.cl/api/images/'+item.image_url" alt="image"></v-img>
                     </v-avatar>
                     {{ item.name+' '+item.surname+' '+item.second_surname}}
                   </template>-->
@@ -535,7 +535,7 @@ export default {
     initialize() {
 
       axios
-        .get('http://127.0.0.1:8000/api/branch')
+        .get('https://api2.simplifies.cl/api/branch')
         .then((response) => {
           this.results = response.data.branches;
           console.log('imprime sucursales');
@@ -543,13 +543,13 @@ export default {
         })
 
       axios
-        .get('http://127.0.0.1:8000/api/business-type')
+        .get('https://api2.simplifies.cl/api/business-type')
         .then((response) => {
           this.businessTypes = response.data.businessTypes;
         })
 
       axios
-        .get('http://127.0.0.1:8000/api/business')
+        .get('https://api2.simplifies.cl/api/business')
         .then((response) => {
           this.business = response.data.business;
           if (this.business.length > 0) {
@@ -559,12 +559,12 @@ export default {
       console.log(this.editedItem.business_id);
         })
       axios
-        .get('http://127.0.0.1:8000/api/professional-show-autocomplete')
+        .get('https://api2.simplifies.cl/api/professional-show-autocomplete')
         .then((response) => {
           this.professionals = response.data.professionals;
         })
       axios
-        .get('http://127.0.0.1:8000/api/store')
+        .get('https://api2.simplifies.cl/api/store')
         .then((response) => {
           this.stores = response.data.stores;
         })
@@ -584,7 +584,7 @@ export default {
     },
     editItem(item) {
       this.file = '';
-      this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.image_data;
+      this.imgMiniatura = 'https://api2.simplifies.cl/api/images/' + item.image_data;
       this.editedIndex = 1;
       this.editedItem = Object.assign({}, item)
       this.dialog = true;
@@ -601,7 +601,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('http://127.0.0.1:8000/api/branch-destroy', request)
+        .post('https://api2.simplifies.cl/api/branch-destroy', request)
         .then(() => {
           this.initialize();
           this.showAlert("success", "Sucursal eliminada correctamente", 3000)
@@ -654,7 +654,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios
-          .post('http://127.0.0.1:8000/api/branch-update', formData)
+          .post('https://api2.simplifies.cl/api/branch-update', formData)
           .then(() => {
 
             this.initialize();
@@ -673,7 +673,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios
-          .post('http://127.0.0.1:8000/api/branch', formData)
+          .post('https://api2.simplifies.cl/api/branch', formData)
           .then(() => {
             this.initialize();
             this.showAlert("success", "Sucursal creada correctamente", 3000)
@@ -687,7 +687,7 @@ export default {
       this.branch_id = item.id;
       console.log(item.id);
       axios
-        .get('http://127.0.0.1:8000/api/branch-professionals', {
+        .get('https://api2.simplifies.cl/api/branch-professionals', {
           params: {
             branch_id: item.id
           }
@@ -705,7 +705,7 @@ export default {
       this.branch_id = item.id;
       console.log(item.id);
       axios
-        .get('http://127.0.0.1:8000/api/store-show', {
+        .get('https://api2.simplifies.cl/api/store-show', {
           params: {
             branch_id: item.id
           }
@@ -721,7 +721,7 @@ export default {
         this.data.branch_id = this.branch_id;
       this.data.professional_id = this.editedItem.professional_id;
       axios
-        .post('http://127.0.0.1:8000/api/branchprofessional', this.data)
+        .post('https://api2.simplifies.cl/api/branchprofessional', this.data)
         .then(() => {
           this.$nextTick(() => {
             this.editedItem = Object.assign({}, this.defaultItem)
@@ -736,7 +736,7 @@ export default {
         this.data.branch_id = this.branch_id;
       this.data.store_id = this.editedItem.store_id;
       axios
-        .post('http://127.0.0.1:8000/api/branchstore', this.data)
+        .post('https://api2.simplifies.cl/api/branchstore', this.data)
         .then(() => {
           this.$nextTick(() => {
             this.editedItem = Object.assign({}, this.defaultItem)
@@ -762,7 +762,7 @@ export default {
         professional_id: this.editedItem.professional_id
       };
       axios
-        .post('http://127.0.0.1:8000/api/branchprofessional-destroy', request)
+        .post('https://api2.simplifies.cl/api/branchprofessional-destroy', request)
         .then(() => {
           this.dialogRequest = false
           this.$nextTick(() => {
@@ -779,7 +779,7 @@ export default {
         store_id: this.editedItem.store_id
       };
       axios
-        .post('http://127.0.0.1:8000/api/branchstore-destroy', request)
+        .post('https://api2.simplifies.cl/api/branchstore-destroy', request)
         .then(() => {
           this.dialogRequestStore = false
           this.$nextTick(() => {

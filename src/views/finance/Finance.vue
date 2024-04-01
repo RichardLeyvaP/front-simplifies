@@ -148,7 +148,7 @@
                 <template v-slot:item.file="{ item }">
                     <v-icon v-if="item.file" @click="openDoc(item)" color="green">mdi-file-document-outline</v-icon>
                     <!--<v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                        <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_product" alt="image"></v-img>
+                        <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
                     </v-avatar>-->
                 </template>
                 <template v-slot:top>
@@ -259,7 +259,7 @@ export default {
                 return 'Registrar Operación';
             }
             if (this.editedIndex === 1) {
-                return 'Editar Operacion';
+                return 'Editar Operación';
             }
             else {
                 return 'Trasladar producto de un almacén a otro'
@@ -282,7 +282,7 @@ export default {
         this.branch_id = LocalStorageService.getItem('branch_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         axios
-            .get('http://127.0.0.1:8000/api/show-business', {
+            .get('https://api2.simplifies.cl/api/show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -304,7 +304,7 @@ export default {
 
     methods: {
         openDoc(item) {
-            const url = 'http://127.0.0.1:8000/api/images/' + item.file;
+            const url = 'https://api2.simplifies.cl/api/images/' + item.file;
             window.open(url, '_blanK');
         },
         onFileSelected(event) {
@@ -316,8 +316,8 @@ export default {
         editItem(item) {
             this.editedIndex = 1;
             this.editedItem = Object.assign({}, item);
-            this.editedItem.revenue_id = item.revenue_id ? item.revenue_id : '';
-            this.editedItem.expense_id = item.expense_id ? item.expense_id : '';
+            this.editedItem.revenue_id = item.revenue_id ? parseInt(item.revenue_id) : '';
+            this.editedItem.expense_id = item.expense_id ? parseInt(item.expense_id) : '';
             this.editedItem.file = this.editedItem.file ? this.editedItem.file : item.file;
             console.log('this.editedItem');
             console.log(this.editedItem);
@@ -346,7 +346,7 @@ export default {
         },
         initialize() {
             axios
-                .get('http://127.0.0.1:8000/api/finance-show', {
+                .get('https://api2.simplifies.cl/api/finance-show', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -370,14 +370,14 @@ export default {
                     console.log(this.editedItem.control);
                 });
             axios
-                .get('http://127.0.0.1:8000/api/expense')
+                .get('https://api2.simplifies.cl/api/expense')
                 .then((response) => {
                     this.expenses = response.data.expenses;
                     console.log('this.expenses');
                     console.log(this.expenses);
                 });
             axios
-                .get('http://127.0.0.1:8000/api/revenue')
+                .get('https://api2.simplifies.cl/api/revenue')
                 .then((response) => {
                     this.revenues = response.data.revenues;
                 });
@@ -393,7 +393,7 @@ export default {
         deleteItemConfirm() {
             this.data.id = this.editedItem.id;
             axios
-                .post('http://127.0.0.1:8000/api/finance-destroy', this.data)
+                .post('https://api2.simplifies.cl/api/finance-destroy', this.data)
                 .then(() => {
                     this.file = '';
                     this.initialize();
@@ -431,7 +431,7 @@ export default {
                 console.log('formData');
                 console.log(formData);
                 axios
-                    .post('http://127.0.0.1:8000/api/finance-updated', formData)
+                    .post('https://api2.simplifies.cl/api/finance-updated', formData)
                     .then(() => {
                         this.initialize();
                         this.showAlert("success", "Operación editada correctamente", 3000);
@@ -447,7 +447,7 @@ export default {
                 console.log('formData');
                 console.log(formData);
                 axios
-                    .post('http://127.0.0.1:8000/api/finance', formData)
+                    .post('https://api2.simplifies.cl/api/finance', formData)
                     .then(() => {
                         this.initialize();
                         this.showAlert("success", "Registro de operación creado correctamente", 3000);

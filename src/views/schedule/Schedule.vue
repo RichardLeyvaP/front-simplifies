@@ -138,7 +138,7 @@ export default {
         this.branch_id = LocalStorageService.getItem('branch_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         axios
-            .get('http://127.0.0.1:8000/api/show-business', {
+            .get('https://api2.simplifies.cl/api/show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -184,7 +184,7 @@ export default {
         },
         initialize() {
             axios
-                .get('http://127.0.0.1:8000/api/show_schedule_branch', {
+                .get('https://api2.simplifies.cl/api/show_schedule_branch', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -250,7 +250,7 @@ export default {
             }));*/
             console.log('request');
             console.log(request);
-            axios.put('http://127.0.0.1:8000/api/schedule', request)
+            axios.put('https://api2.simplifies.cl/api/schedule', request)
                 .then(() => {
                     this.initialize();
                     this.showAlert("success", "Horario actualizado correctamente", 3000);
@@ -560,7 +560,7 @@ export default {
         this.charge_id = LocalStorageService.getItem('charge_id');
         this.branch_id = LocalStorageService.getItem('branch_id');
         axios
-            .get('http://127.0.0.1:8000/api/show-business', {
+            .get('https://api2.simplifies.cl/api/show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -620,7 +620,7 @@ export default {
         },
         initialize() {
             axios
-                .get('http://127.0.0.1:8000/api/show_schedule_branch', {
+                .get('https://api2.simplifies.cl/api/show_schedule_branch', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -641,7 +641,7 @@ export default {
         deleteItemConfirm() {
             this.data.id = this.editedItem.id;
             axios
-                .post('http://127.0.0.1:8000/api/schedule-destroy', this.data)
+                .post('https://api2.simplifies.cl/api/schedule-destroy', this.data)
                 .then(() => {
                     this.initialize();
                     this.showAlert("success", "Operación eliminada correctamente", 3000)
@@ -680,7 +680,7 @@ export default {
                 console.log('formData');
                 console.log(this.data);
                 axios
-                    .put('http://127.0.0.1:8000/api/schedule', this.data)
+                    .put('https://api2.simplifies.cl/api/schedule', this.data)
                     .then(() => {
                         this.initialize();
                         this.showAlert("success", "Operación editada correctamente", 3000);
@@ -700,7 +700,7 @@ export default {
                 console.log('formData');
                 console.log(this.data);
                 axios
-                    .post('http://127.0.0.1:8000/api/schedule', this.data)
+                    .post('https://api2.simplifies.cl/api/schedule', this.data)
                     .then(() => {
                         this.initialize();
                         this.showAlert("success", "Registro de operación creado correctamente", 3000);

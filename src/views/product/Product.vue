@@ -153,7 +153,7 @@
      <template v-slot:item.name="{ item }">
   
      <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-       <v-img :src="'http://127.0.0.1:8000/api/images/'+item.image_product" alt="image"></v-img>
+       <v-img :src="'https://api2.simplifies.cl/api/images/'+item.image_product" alt="image"></v-img>
      </v-avatar>
      {{ item.name }}
      </template>
@@ -311,12 +311,12 @@
   },
   initialize() {
    axios
-     .get('http://127.0.0.1:8000/api/product')
+     .get('https://api2.simplifies.cl/api/product')
      .then((response) => {
        this.results = response.data.products;
      });
      axios
-     .get('http://127.0.0.1:8000/api/product-category')
+     .get('https://api2.simplifies.cl/api/product-category')
      .then((response) => {
        this.productCategories = response.data.productcategories;
      });
@@ -342,7 +342,7 @@
     this.mostrarVenta = false;
 }
    this.file = '';
-   this.imgMiniatura = 'http://127.0.0.1:8000/api/images/'+item.image_product;
+   this.imgMiniatura = 'https://api2.simplifies.cl/api/images/'+item.image_product;
    this.editedIndex = 1;
    this.editedItem = Object.assign({}, item);
    this.dialog = true;
@@ -360,7 +360,7 @@
      id: this.editedItem.id
    };
    axios
-     .post('http://127.0.0.1:8000/api/product-destroy', request)
+     .post('https://api2.simplifies.cl/api/product-destroy', request)
      .then(() => {
        this.initialize();
        this.message_delete = true
@@ -395,7 +395,7 @@
          formData.append(key, this.editedItem[key]);
        }   
      axios
-       .post('http://127.0.0.1:8000/api/product-update', formData)
+       .post('https://api2.simplifies.cl/api/product-update', formData)
        .then(() => {
          this.initialize();
         this.showAlert("success","Producto editado correctamente", 3000);
@@ -409,7 +409,7 @@
          formData.append(key, this.editedItem[key]);
        } 
      axios
-       .post('http://127.0.0.1:8000/api/product', formData)
+       .post('https://api2.simplifies.cl/api/product', formData)
        .then(() => {
          this.initialize();
          this.showAlert("success","Producto registrado correctamente", 3000);
