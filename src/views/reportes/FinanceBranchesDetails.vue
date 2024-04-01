@@ -91,18 +91,18 @@
             </v-menu>
           </v-col>-->
                 <v-col cols="12" md="12">
-                        <v-alert border type="warning" variant="outlined" prominent>
-                            <span class="text-h6">{{ formTitle }}</span>
-                        </v-alert>
+                    <v-alert border type="warning" variant="outlined" prominent>
+                        <span class="text-h6">{{ formTitle }}</span>
+                    </v-alert>
                 </v-col>
                 <v-col cols="12" md="12">
                     <v-card class="mx-auto  overflow-visible">
                         <v-card-text>
-                            <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
-              hide-details>
-            </v-text-field>
+                            <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar"
+                                single-line hide-details>
+                            </v-text-field>
                             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
-                                :search="search"  no-results-text="No hay datos disponibles"
+                                :search="search" no-results-text="No hay datos disponibles"
                                 no-data-text="No hay datos disponibles">
 
                             </v-data-table>
@@ -164,20 +164,20 @@ export default {
         editedIndex: -1,
         results: [],
         months: [
-        {value: '', title: ''},
-        { value: 1, title: 'Enero' },
-        { value: 2, title: 'Febrero' },
-        { value: 3, title: 'Marzo' },
-        { value: 4, title: 'Abril' },
-        { value: 5, title: 'Mayo' },
-        { value: 6, title: 'Junio' },
-        { value: 7, title: 'Julio' },
-        { value: 8, title: 'Agosto' },
-        { value: 9, title: 'Septiembre' },
-        { value: 10, title: 'Octubre' },
-        { value: 11, title: 'Noviembre' },
-        { value: 12, title: 'Diciembre' }
-      ],
+            { value: '', title: '' },
+            { value: 1, title: 'Enero' },
+            { value: 2, title: 'Febrero' },
+            { value: 3, title: 'Marzo' },
+            { value: 4, title: 'Abril' },
+            { value: 5, title: 'Mayo' },
+            { value: 6, title: 'Junio' },
+            { value: 7, title: 'Julio' },
+            { value: 8, title: 'Agosto' },
+            { value: 9, title: 'Septiembre' },
+            { value: 10, title: 'Octubre' },
+            { value: 11, title: 'Noviembre' },
+            { value: 12, title: 'Diciembre' }
+        ],
         headers: [
             { title: 'Tipo de operación', key: 'operation', sortable: false },
             { title: 'Fecha Registro', key: 'data', sortable: false },
@@ -198,7 +198,7 @@ export default {
         formTitle() {
             if (this.editedIndex === 2) {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-                return 'Reporte de Ingresos y Gastos detallados en el mes '+ this.selectedMounth+'-'+this.selectedYear;
+                return 'Reporte de Ingresos y Gastos detallados en el mes ' + this.selectedMounth + '-' + this.selectedYear;
             }
             else if (this.editedIndex === 3) {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -225,7 +225,7 @@ export default {
           const year = date.getFullYear();
           return `${year}-${month}-${day}`;
         },*/
-        dateFormatted3() {
+        /*dateFormatted3() {
             const date = this.input3 ? new Date(this.input3) : new Date();
             const month = (date.getMonth() + 1).toString().padStart(2, '0');
             const year = date.getFullYear();
@@ -234,7 +234,7 @@ export default {
         getDate3() {
             return this.input3 ? new Date(this.input3) : new Date();
         },
-        /*getDate() {
+        getDate() {
           return this.input ? new Date(this.input) : new Date();
         },
         getDate2() {
@@ -289,11 +289,22 @@ export default {
     },
 
     methods: {
-        
+
         exportToExcel() {
             // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
             let rows = [];
-
+            let titleRow = {};
+            titleRow[this.headers[0].key] = this.formTitle; // Utiliza la primera clave de encabezado para el título
+            rows.push(titleRow);
+            /*let nameReport = {
+                // eslint-disable-next-line vue/no-use-computed-property-like-method
+                name: this.formTitle, // Asume que 'name' es una de tus claves; ajusta según sea necesario
+                tip: '', // Deja vacíos los demás campos para esta fila especial
+                earnings: '',
+                technical_assistance: '',
+                total: '' // Usa 'total' para mostrar la fecha; ajusta las claves según corresponda a tu estructura
+            };
+            rows.push(nameReport);*/
             // Construye un objeto para los encabezados basado en la estructura de 'headers'
             let headerRow = {};
             this.headers.forEach(header => {
@@ -310,7 +321,7 @@ export default {
                 rows.push(rowData);
             });
 
-            let nameReport = {
+            /*let nameReport = {
                 // eslint-disable-next-line vue/no-use-computed-property-like-method
                 name: this.formTitle, // Asume que 'name' es una de tus claves; ajusta según sea necesario
                 tip: '', // Deja vacíos los demás campos para esta fila especial
@@ -318,7 +329,7 @@ export default {
                 technical_assistance: '',
                 total: '' // Usa 'total' para mostrar la fecha; ajusta las claves según corresponda a tu estructura
             };
-            rows.push(nameReport);
+            rows.push(nameReport);*/
 
             // Convierte la matriz de filas en una hoja de trabajo Excel
             const ws = XLSX.utils.json_to_sheet(rows, { skipHeader: true }); // 'skipHeader: true' porque ya agregamos manualmente los encabezados

@@ -158,20 +158,20 @@ export default {
         selectedMounth: '',
         years: [],
         months: [
-        {value: '', title: ''},
-        { value: 1, title: 'Enero' },
-        { value: 2, title: 'Febrero' },
-        { value: 3, title: 'Marzo' },
-        { value: 4, title: 'Abril' },
-        { value: 5, title: 'Mayo' },
-        { value: 6, title: 'Junio' },
-        { value: 7, title: 'Julio' },
-        { value: 8, title: 'Agosto' },
-        { value: 9, title: 'Septiembre' },
-        { value: 10, title: 'Octubre' },
-        { value: 11, title: 'Noviembre' },
-        { value: 12, title: 'Diciembre' }
-      ],
+            { value: '', title: '' },
+            { value: 1, title: 'Enero' },
+            { value: 2, title: 'Febrero' },
+            { value: 3, title: 'Marzo' },
+            { value: 4, title: 'Abril' },
+            { value: 5, title: 'Mayo' },
+            { value: 6, title: 'Junio' },
+            { value: 7, title: 'Julio' },
+            { value: 8, title: 'Agosto' },
+            { value: 9, title: 'Septiembre' },
+            { value: 10, title: 'Octubre' },
+            { value: 11, title: 'Noviembre' },
+            { value: 12, title: 'Diciembre' }
+        ],
         branch_id: '',
         business_id: '',
         charge_id: '',
@@ -215,8 +215,7 @@ export default {
         formTitle() {
             if (this.editedIndex === 2) {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-                this.fecha = format(this.input, "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
-                return 'Monto generado por Negocios en el período  ' + format(this.input, "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
+                return 'Reporte de Ingresos y Gastos detallados en el mes ' + this.selectedMounth + '-' + this.selectedYear;
             }
             else if (this.editedIndex === 3) {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -243,7 +242,7 @@ export default {
           const year = date.getFullYear();
           return `${year}-${month}-${day}`;
         },*/
-        dateFormatted3() {
+        /*dateFormatted3() {
             const date = this.input3 ? new Date(this.input3) : new Date();
             const month = (date.getMonth() + 1).toString().padStart(2, '0');
             const year = date.getFullYear();
@@ -252,7 +251,7 @@ export default {
         getDate3() {
             return this.input3 ? new Date(this.input3) : new Date();
         },
-        /*getDate() {
+        getDate() {
           return this.input ? new Date(this.input) : new Date();
         },
         getDate2() {
@@ -339,11 +338,20 @@ export default {
         exportToExcel() {
             // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
             let rows = [];
+            let titleRow = {};
+            titleRow[this.headers[0].key] = this.formTitle; // Utiliza la primera clave de encabezado para el título
+            rows.push(titleRow);
 
             // Construye un objeto para los encabezados basado en la estructura de 'headers'
             let headerRow = {};
             this.headers.forEach(header => {
-                headerRow[header.key] = header.title; // Usa 'key' para el mapeo y 'title' para el texto del encabezado
+                if (header.children) {
+                    header.children.forEach(childHeader => {
+                        headerRow[childHeader.key] = childHeader.title;
+                    });
+                } else {
+                    headerRow[header.key] = header.title;
+                }
             });
             rows.push(headerRow);
 
@@ -351,30 +359,25 @@ export default {
             this.results.forEach(item => {
                 let rowData = {};
                 this.headers.forEach(header => {
-                    rowData[header.key] = item[header.key] || ''; // Asegura que cada celda se mapee correctamente; usa '' para datos faltantes
+                    if (header.children) {
+                        header.children.forEach(childHeader => {
+                            rowData[childHeader.key] = item[childHeader.key] || '';
+                        });
+                    } else {
+                        rowData[header.key] = item[header.key] || '';
+                    }
                 });
                 rows.push(rowData);
             });
-
-            let nameReport = {
-                // eslint-disable-next-line vue/no-use-computed-property-like-method
-                name: this.formTitle, // Asume que 'name' es una de tus claves; ajusta según sea necesario
-                tip: '', // Deja vacíos los demás campos para esta fila especial
-                earnings: '',
-                technical_assistance: '',
-                total: '' // Usa 'total' para mostrar la fecha; ajusta las claves según corresponda a tu estructura
-            };
-            rows.push(nameReport);
 
             // Convierte la matriz de filas en una hoja de trabajo Excel
             const ws = XLSX.utils.json_to_sheet(rows, { skipHeader: true }); // 'skipHeader: true' porque ya agregamos manualmente los encabezados
 
             // Crea un nuevo libro de trabajo y añade la hoja de trabajo con los datos
             const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Report" + this.fecha);
+            XLSX.utils.book_append_sheet(wb, ws, "Report");
 
             // Escribe el libro de trabajo a un archivo y desencadena la descarga
-            //XLSX.writeFile(wb, "report.xlsx");
             XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
         },
         /*updateDate(val) {
@@ -421,7 +424,7 @@ export default {
           this.menu3 = false;
         },*/
         moveProductsMounth() {
-            this.editedIndex = 1;
+            this.editedIndex = 2;
             axios
                 .get('http://127.0.0.1:8000/api/move-products', {
                     params: {
