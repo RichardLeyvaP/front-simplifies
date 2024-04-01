@@ -269,7 +269,7 @@ chartData4() {
 }
 },
   mounted() {
-    this.branch_id = LocalStorageService.getItem("branch_id") ? LocalStorageService.getItem("branch_id") : 0;
+    this.branch_id = LocalStorageService.getItem("branch_id");
     this.business_id = LocalStorageService.getItem("business_id");
     console.log(this.business_id);
     const today = new Date();
