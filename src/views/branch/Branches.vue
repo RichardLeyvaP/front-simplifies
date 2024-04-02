@@ -167,7 +167,7 @@
             mdi-account-tie
           </v-icon>-->
           <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-account-tie" @click="showProfessionals(item)" color="primary" variant="tonal"
-            elevation="1" title="Agergar Trabajdor"></v-btn> 
+            elevation="1" title="Agregar Trabajdor"></v-btn> 
           <!--<v-icon size="25" color="primary" @click="showStores(item)" title="Asignar Almacén">
             mdi-store-outline
           </v-icon> -->      
