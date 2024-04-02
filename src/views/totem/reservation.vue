@@ -1,4 +1,18 @@
 <template >
+   <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24" :multi-line="true"
+        vertical v-model="snackbar">
+        <v-row>
+          <v-col md="2">
+            <v-avatar :icon="sb_icon" color="sb_type" size="40"></v-avatar>
+          </v-col>
+          <v-col md="10">
+            <h4>{{ sb_title }}</h4>
+            {{ sb_message }}
+    
+          </v-col>
+    
+        </v-row>
+      </v-snackbar>
   <div>
   <v-container>
       <v-stepper elevation="6"   bg-color="" v-model="step" :items="items" hide-actions @update:model-value="handleStepChange">
@@ -279,6 +293,12 @@ import LocalStorageService from "@/LocalStorageService";
 export default {
 
   data: () => ({
+    snackbar: false,
+  sb_type: '',
+  sb_message: '',
+  sb_timeout: 2000,
+  sb_title:'',
+  sb_icon:'',
     loading : false,
     horarioDisponibleActual:'',
     idProfesionalListo:'',
@@ -445,7 +465,31 @@ console.log(this.branch_id);
 
   methods:
   {
+    showAlert(sb_type,sb_message, sb_timeout)
+  {    
+   this.sb_type= sb_type
   
+   if(sb_type=="success")
+   {
+     this.sb_title='Éxito'
+     this.sb_icon='mdi-check-circle'
+   }
+   
+   if(sb_type=="error")
+   {
+     this.sb_title='Error'
+     this.sb_icon='mdi-check-circle'
+   }
+  
+   if(sb_type=="warning")
+   {
+     this.sb_title='Advertencia'
+     this.sb_icon='mdi-alert-circle'
+   }
+   this.sb_message= sb_message
+   this.sb_timeout= sb_timeout
+   this.snackbar= true
+  },
     sumSelectedPrices() {
   let total = 0;
   for (const service of this.services) {
@@ -598,13 +642,11 @@ let request = {};
     }
 
   }
- 
-
 
     console.log('**********************************---------------------');
 
     // Realiza la solicitud GET con Axios y pasa los parámetros
-    axios.post('http://127.0.0.1:8000/api/reservation_store',  request )
+    axios.post('http://127.0.0.1:8000/api/reservatiewon_store',  request )
       .then(response => {
         // Maneja la respuesta de la solicitud aquí
       this.message=response.data.msg
@@ -909,6 +951,7 @@ this.idProfesionalListo = '';
 if(this.horarioDisponibleActual === null && this.idProfesionalListo === '')
 {
 console.log('NO HAY DISPONIBILIDAD');
+this.showAlert("warning","No hay profesional con horario disponible", 3000);
 this.changeStep(1);
 }
                     
