@@ -119,7 +119,7 @@
                         mdi-delete
                     </v-icon>-->
                     <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
-            elevation="1" title="Agergar Trabajdor"></v-btn>
+            elevation="1" title="Eliminar regla de convivencia"></v-btn>
                 </template>
             </v-data-table>
         </v-card-text>

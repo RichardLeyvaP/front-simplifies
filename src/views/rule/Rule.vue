@@ -131,7 +131,7 @@
   mdi-delete
 </v-icon>-->
 <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
-            elevation="1" class="mr-1 mt-1 mb-1" title="Editar Rega de convivencia"></v-btn>
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar Regla de convivencia"></v-btn>
           <v-btn density="comfortable" icon="mdi-delete" @click="item.automatic !== 1 && deleteItem(item)" :color="item.automatic === 1 ? 'grey' : 'red'" variant="tonal"
             elevation="1" title="Eliminar Regla de convivencia"></v-btn>
         </template>
@@ -199,7 +199,7 @@ export default {
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? 'Nueva Regla convivencia' : 'Editar Regla convivencia'
+      return this.editedIndex === -1 ? 'Nueva Regla de convivencia' : 'Editar Regla de convivencia'
     },
   },
 

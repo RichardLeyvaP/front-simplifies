@@ -66,14 +66,14 @@
                <span class="text-subtitle-2 ml-4"> Eliminar operación de Ingreso</span>
              </v-toolbar>        
 
-               <v-card-text class="mt-2 mb-2"> ¿Desea eliminar la esta operación de Ingreso?</v-card-text>
+               <v-card-text class="mt-2 mb-2"> ¿Desea eliminar la operación de ingreso?</v-card-text>
              <v-divider></v-divider>
              <v-card-actions>
                <v-spacer></v-spacer>
                <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
                  Cancelar
                </v-btn>
-               <v-btn color="primary" variant="flat" @click="deleteItemConfirm">
+               <v-btn color="#F18254" variant="flat" @click="deleteItemConfirm">
                  Aceptar
                </v-btn>
 
@@ -96,9 +96,9 @@
          mdi-delete
        </v-icon>-->
        <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
-            elevation="1" class="mr-1 mt-1 mb-1" title="Editar Ingreso"></v-btn>
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar operación de ingreso"></v-btn>
           <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
-            elevation="1" title="Eliminar Ingreso"></v-btn>
+            elevation="1" title="Eliminar operación de ingreso"></v-btn>
      </template>
    </v-data-table>
  </v-card-text>
@@ -151,7 +151,7 @@ export default {
 
  computed: {
    formTitle() {
-     return this.editedIndex === -1 ? 'Nueva operación de Ingreso' : 'Editar operación de Ingreso'
+     return this.editedIndex === -1 ? 'Nueva operación de ingreso' : 'Editar operación de ingreso'
    },
  },
 

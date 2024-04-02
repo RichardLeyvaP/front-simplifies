@@ -99,7 +99,7 @@
         <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar tipo de negocio"></v-btn>
           <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
-            elevation="1" title="Eliminartipo de megocio"></v-btn>
+            elevation="1" title="Eliminar tipo de negocio"></v-btn>
       </template>
     </v-data-table>
   </v-card-text>

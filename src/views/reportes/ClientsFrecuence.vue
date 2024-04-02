@@ -136,7 +136,7 @@ export default {
       { title: 'Profesional', key: 'name', sortable: false },
       { title: 'Correo', key: 'email', sortable: false },
       { title: 'Teléfono', key: 'phone', sortable: false },
-      { title: 'Clasificación', key: 'frecuence', sortable: false },
+      { title: 'Clasificación', key: 'frecuence', sortable: true },
     ],
     data: {},
   }),

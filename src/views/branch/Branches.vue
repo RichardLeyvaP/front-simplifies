@@ -161,22 +161,22 @@
           <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)" title="Editar Sucursal">
             mdi-pencil
           </v-icon>-->
-          <v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary" variant="tonal"
+          <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-pencil" @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" title="Editar Sucursal"></v-btn>
           <!--<v-icon size="25" color="green" @click="showProfessionals(item)" title="Asignar Professional">
             mdi-account-tie
           </v-icon>-->
-          <v-btn density="comfortable" icon="mdi-account-tie" @click="showProfessionals(item)" color="primary" variant="tonal"
+          <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-account-tie" @click="showProfessionals(item)" color="primary" variant="tonal"
             elevation="1" title="Agergar Trabajdor"></v-btn> 
           <!--<v-icon size="25" color="primary" @click="showStores(item)" title="Asignar Almacén">
             mdi-store-outline
           </v-icon> -->      
-          <v-btn density="comfortable" icon="mdi-store-outline" @click="showStores(item)" color="green" variant="tonal"
-            elevation="1" title="Agergar Almacèn"></v-btn>  
+          <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-store-outline" @click="showStores(item)" color="green" variant="tonal"
+            elevation="1" title="Agregar Almacén"></v-btn>  
           <!--<v-icon size="25" color="red" @click="deleteItem(item)" title="Eliminar Sucursal">
             mdi-delete
           </v-icon>-->
-          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
+          <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
             elevation="1" title="Eliminar Sucursal"></v-btn>
         </template>
       </v-data-table>
@@ -208,7 +208,7 @@
 
               <template v-slot:item.actions="{ item }">
                 <v-btn density="comfortable" icon="mdi-delete" @click="deleteP(item)" color="red-darken-4" variant="tonal"
-            elevation="1" title="Eliminar afiliaciòn del trabajador"></v-btn>
+            elevation="1" title="Eliminar afiliación del trabajador"></v-btn>
                 <!--<v-icon size="small" color="red" @click="deleteP(item)">
                   mdi-delete
                 </v-icon>-->
@@ -302,7 +302,7 @@
 
               <template v-slot:item.actions="{ item }">
           <v-btn density="comfortable" icon="mdi-delete" @click="closestoreRequest(item)" color="red-darken-4" variant="tonal"
-            elevation="1" title="Eliminar afiliaciòn almacèn"></v-btn>
+            elevation="1" title="Eliminar afiliación del almacén"></v-btn>
                 <!--<v-icon size="small" color="red" @click="closestoreRequest(item)">
                   mdi-delete
                 </v-icon>-->
