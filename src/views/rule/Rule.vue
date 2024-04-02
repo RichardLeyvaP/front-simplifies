@@ -115,7 +115,7 @@
         
         <template v-slot:item.automatic="{ item }">
           <div class="d-flex justify-content-center">
-            <v-chip :color="item.automatic ? 'green' : 'red'" :text="item.automatic ? 'Si ' : 'No'"
+            <v-chip :color="item.automatic === '1' ? 'green' : 'red'" :text="item.automatic=== '1' ? 'Si ' : 'No'"
               class="text-uppercase" size="small" label></v-chip>
           </div>
         </template>
@@ -132,7 +132,7 @@
 </v-icon>-->
 <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar Regla de convivencia"></v-btn>
-          <v-btn density="comfortable" icon="mdi-delete" @click="item.automatic !== 1 && deleteItem(item)" :color="item.automatic === 1 ? 'grey' : 'red'" variant="tonal"
+          <v-btn density="comfortable" icon="mdi-delete" @click="item.automatic !== '1' && deleteItem(item)" :color="item.automatic === '1' ? 'grey' : 'red'" variant="tonal"
             elevation="1" title="Eliminar Regla de convivencia"></v-btn>
         </template>
       </v-data-table>
@@ -252,7 +252,8 @@ export default {
     },
     editItem(item) {
       this.editedIndex = 1;
-      this.editedItem = Object.assign({}, item)
+      this.editedItem = Object.assign({}, item);
+      this.editedItem.automatic = parseInt(item.automatic);
       this.dialog = true
     },
     deleteItem(item) {
