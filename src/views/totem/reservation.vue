@@ -646,7 +646,7 @@ let request = {};
     console.log('**********************************---------------------');
 
     // Realiza la solicitud GET con Axios y pasa los parámetros
-    axios.post('http://127.0.0.1:8000/api/reservatiewon_store',  request )
+    axios.post('http://127.0.0.1:8000/api/reservation_store',  request )
       .then(response => {
         // Maneja la respuesta de la solicitud aquí
       this.message=response.data.msg
