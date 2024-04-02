@@ -60,7 +60,7 @@
              </v-row>
              <v-row>
                <v-col cols="12" md="4">
-                <v-select label="Estado" v-model="editedItem.status_product" :items="['En Venta',' No en Venta']" :item-value="editedItem.status_product" variant="underlined" density="compact" :rules="selectRules" prepend-icon="mdi-check-circle"></v-select>
+                <v-select label="Estado" v-model="editedItem.status_product" :items="['En venta','No en venta']" :item-value="['En venta','No en venta']" variant="underlined" density="compact" :rules="selectRules" prepend-icon="mdi-check-circle" @update:model-value="showPrice"></v-select>
                </v-col>
                <v-col cols="12" md="4">
                  <v-text-field v-model="editedItem.purchase_price" clearable label="Precio de Compra" prepend-icon="mdi-cash"
@@ -68,7 +68,7 @@
                  </v-text-field>
                </v-col>
                <v-col cols="12" md="4">
-                 <v-text-field v-if="mostrarVenta || editedItem.status_product === 'En Venta'" v-model="editedItem.sale_price" clearable label="Precio de Venta" prepend-icon="mdi-currency-usd"
+                 <v-text-field v-if="mostrarFila" v-model="editedItem.sale_price" clearable label="Precio de Venta" prepend-icon="mdi-currency-usd"
                    variant="underlined" :rules="requiredRules">
                  </v-text-field>
                </v-col>
@@ -209,9 +209,10 @@
   productCategories: [],
   editedIndex: -1,
   file: '',
-  mostrarVenta: false,
+  mostrarFila: false,
   imgMiniatura: '',
   search: '',
+  sale_priceTemp:'',
   editedItem: {
    name: '',
    reference: '',
@@ -274,6 +275,20 @@
   },
   
   methods: {
+    showPrice(){
+      console.log('this.editedItem.status_product');
+      console.log(this.editedItem.status_product);
+      if (this.editedItem.status_product === "En venta") {
+        this.editedItem.sale_price = this.sale_priceTemp;
+        this.mostrarFila = true;
+        console.log('this.mostrarFila---true');
+        console.log(this.mostrarFila);
+      }else{
+        this.mostrarFila = false;
+        this.editedItem.sale_price = '',
+        console.log(this.mostrarFila);
+      }
+    },
     imagenDisponible() {
         if (this.imgedit !== undefined && this.imgedit !== '') {
             // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
@@ -336,11 +351,12 @@
      reader.readAsDataURL(file);
    },
   editItem(item) {
+    this.sale_priceTemp = item.sale_price;
     if (item.status_product === 'En venta') {
-      this.mostrarVenta = true;
-} else {
-    this.mostrarVenta = false;
-}
+        this.mostrarFila = true;
+      }else{
+        this.mostrarFila = false;
+      }
    this.file = '';
    this.imgMiniatura = 'http://127.0.0.1:8000/api/images/'+item.image_product;
    this.editedIndex = 1;
@@ -377,6 +393,7 @@
      this.editedIndex = -1;
      this.imgMiniatura = '';
           this.file = '';
+          this.sale_priceTemp = '';
    })
   },
   closeDelete() {
@@ -401,6 +418,7 @@
         this.showAlert("success","Producto editado correctamente", 3000);
         this.imgMiniatura = '';
           this.file = '';
+          this.sale_priceTemp = '';
        })
    } else {
      this.valid = false;
@@ -415,6 +433,7 @@
          this.showAlert("success","Producto registrado correctamente", 3000);
          this.imgMiniatura = '';
           this.file = '';
+          this.sale_priceTemp = '';
        })
    }
    this.close()
