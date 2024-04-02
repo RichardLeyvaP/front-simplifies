@@ -379,7 +379,7 @@ export default {
       countInterval: 0,
       reservedTime: [],
       calendars_branches: [],
-      arrayEvents: null,
+      //arrayEvents: null,
       selected_services: [],
       services: [],
       professionals: [],
@@ -452,14 +452,14 @@ console.log(this.branch_id);
       this.chargeCalendarsBranches();
       // this. chargeProfessionals();
 
-      this.arrayEvents = [...Array(1)].map(() => {
+      /*this.arrayEvents = [...Array(1)].map(() => {
           const day = Math.floor(Math.random() * 30)
           const d = new Date()
           d.setDate(day)
 
 
           return "2023-11-24"
-      })
+      })*/
   },
 
 
