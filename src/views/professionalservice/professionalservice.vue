@@ -156,7 +156,7 @@
                                 :class="{ 'selected-item': isSelected(serviceA.id) }" class="pt-4 pb-4">
 
                                 <v-list-item-content>
-                                    <v-list-item-title class="text-h6">{{ serviceA.name }}</v-list-item-title>
+                                    <v-list-item-title class="text-h6">{{ serviceA.name }} -> {{ serviceA.profit_percentaje }}% {{ serviceA.type_service }} </v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
                             <v-divider></v-divider>
