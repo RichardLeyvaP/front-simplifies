@@ -18,13 +18,17 @@
   <v-card elevation="6" class="mx-5" width='auto'>
     <v-toolbar color="#F18254">
       <v-row>
-        <v-col cols="12" md="8" class="mt-4">
+        <v-col cols="12" md="7" class="mt-4">
           <span class="ml-4"> <strong>Caja <!--- {{ this.nameBranch }}--></strong></span>
         </v-col>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="5">
           <v-dialog v-model="dialog" max-width="1000px">
             <template v-slot:activator="{ props }">
               <v-col>
+                <v-btn @click="dialogDetallesCarPagado = true" color="#E7E9E9" variant="flat" elevation="2"
+                  prepend-icon="mdi-account-star-outline" :disabled="filteredItemsPay.length !== 0 ? false : true">
+                  Clientes atendidos
+                </v-btn>
                 <v-btn :disabled="closed_box || ejecutado" v-bind="props" color="#E7E9E9" variant="flat" elevation="2"
                   prepend-icon="mdi-plus-circle" class="ml-4 mr-2">
                   Cierre de Caja
@@ -241,7 +245,7 @@
         hide-details></v-text-field>
 
 
-      <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search"
+      <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="filteredItems" :search="search"
         class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
 
         <template v-slot:item.professionalName="{ item }">
@@ -591,6 +595,65 @@
           </v-card-text>
         </v-card>
       </v-dialog>
+      <!--Clientes atendidos crros pagados-->
+      <v-dialog v-model="dialogDetallesCarPagado" fullscreen transition="dialog-bottom-transition">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <v-row>
+              <v-col cols="12" md="9">
+                <span class="text-subtitle-2 ml-4"> Clientes atendidos</span>
+              </v-col>
+            </v-row>
+          </v-toolbar>
+
+          <v-card-text class="mt-2 mb-2">
+            <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar" single-line
+        hide-details></v-text-field>
+
+
+      <v-data-table :headers="headers3" :items-per-page-text="'Elementos por páginas'" :items="filteredItemsPay" :search="search3"
+        class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+
+        <template v-slot:item.professionalName="{ item }">
+
+          <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+            <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url" alt="image"></v-img>
+          </v-avatar>
+          {{ item.professionalName }}
+        </template>
+
+        <template v-slot:item.clientName="{ item }">
+
+          <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+            <v-img :src="'http://127.0.0.1:8000/api/images/' + item.client_image" alt="image"></v-img>
+          </v-avatar>
+          {{ item.clientName }}
+        </template>
+
+        <template v-slot:item.pay="{ item }">
+          <v-chip :color="item.pay != 0 ? 'green' : 'red'" :text="item.pay" class="text-uppercase" label size="small">
+            {{ item.pay === 0 ? 'Pendiente' : 'Pagado' }}
+          </v-chip>
+        </template>
+
+        <template v-slot:top>
+
+          <v-divider class="mx-4" inset vertical></v-divider>
+          <v-spacer></v-spacer>
+        </template>
+
+            </v-data-table>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
+              Volver
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!--End clientes atendidos-->
 
     </v-card-text>
 
@@ -616,8 +679,10 @@ export default {
     sb_timeout: 2000,
     sb_title: '',
     sb_icon: '',
+    dialogDetallesCarPagado: false,
     search: '',
     search2: '',
+    search3: '',
     dialog: false,
     dialogDetallesCar: false,
     dialogRequest: false,
@@ -630,6 +695,7 @@ export default {
     business_id: '',
     nameBranch: '',
     results: [],
+    resultsPagado: [],
     orders: [],
     box: [],
     branches: '',
@@ -656,6 +722,17 @@ export default {
       { title: 'Monto Total', value: 'amount' },
       { title: 'Estado', value: 'pay' },
       { title: 'Acciones', key: 'actions', sortable: false },
+    ],
+    headers3: [
+      { title: 'No', value: 'id' },
+      { title: 'Profesional', value: 'professionalName' },
+      { title: 'Cliente', value: 'clientName' },
+      { title: 'Técnico', value: 'technical_assistance' },
+      { title: 'Productos', value: 'product' },
+      { title: 'Servicios', value: 'service' },
+      { title: 'Propina', value: 'tip' },
+      { title: 'Monto Total', value: 'amount' },
+      { title: 'Estado', value: 'pay' },
     ],
 
     headers2: [
@@ -753,6 +830,12 @@ export default {
   }),
 
   computed: {
+    filteredItems() {
+      return this.results.filter(item => item.pay !== 1);
+    },
+    filteredItemsPay() {
+      return this.results.filter(item => item.pay == 1);
+    },
     formTitle() {
       return 'Cierre de Caja'
     },
@@ -823,6 +906,9 @@ export default {
   },
 
   methods: {
+    formatNumber(value) {
+            return value.toLocaleString('es-ES');
+        },
     onCardGiftSelected(code) {
       // Realiza cualquier lógica adicional aquí
       console.log('Elemento seleccionado:', code.data);
@@ -916,7 +1002,7 @@ export default {
       console.log(this.results.id);
       //if (!this.results) {    
       this.editedCloseBox.totalMount = this.results.reduce((total, item) => total + item.amount, 0);
-      return this.results.reduce((total, item) => total + item.amount, 0) + " CLP";
+      return this.formatNumber(this.results.reduce((total, item) => total + item.amount, 0)) + " CLP";
       //}
       //else{
       //return "CPL";
@@ -941,7 +1027,7 @@ export default {
         this.closed_box = true;
         this.ejecutado = false;
       }
-      return montosPendientes + " CLP";
+      return this.formatNumber(montosPendientes) + " CLP";
       //}
     },
 
@@ -1031,7 +1117,7 @@ export default {
 
       const temp = this.box.reduce((total, item) => total + item.existence, 0);
       console.log(temp);
-      return temp ? temp + "CPL" : " CPL";
+      return temp ? this.formatNumber(temp) + "CPL" : " CPL";
       //return this.results.amount + " CLP";
     },
 
@@ -1046,7 +1132,7 @@ export default {
         .filter(item => item.pay === 1)
         .reduce((total, item) => total + item.amount, 0);
 
-      return montosPagados ? montosPagados + " CLP" : " CPL";
+      return montosPagados ? this.formatNumber(montosPagados) + " CLP" : " CPL";
       //}
     },
 
@@ -1269,6 +1355,7 @@ export default {
     },
     closeDelete() {
       this.dialogDetallesCar = false;
+      this.dialogDetallesCarPagado = false;
       this.dialogDelete = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)

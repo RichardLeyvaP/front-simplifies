@@ -2,7 +2,6 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <!-- eslint-disable vue/return-in-computed-property -->
 <template>
-    <v-container>
         <v-card elevation="6" class="mx-5">
             <v-toolbar color="#F18254">
                 <v-row align="center">
@@ -18,20 +17,17 @@
                     </v-col>
                 </v-row>
             </v-toolbar>
+            <v-container>
             <v-row>
                 <v-col cols="12" md="4">
                     <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="underlined"
                         prepend-icon="mdi-calendar" @update:model-value="initialize()"></v-select>
                 </v-col>
-            </v-row>
-            <v-row>
                 <v-col cols="12" md="4">
                     <v-text-field v-model="saldoInicial" clearable label="Saldo Anterior" prepend-icon="mdi-arrow-left"
                         variant="underlined" :style="{ color: saldoInicial < 0 ? '#FF7043' : '' }">
                     </v-text-field>
                 </v-col>
-            </v-row>
-            <v-row>
                 <v-col cols="12" sm="12" md="4">
                     <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
                         label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
@@ -39,57 +35,25 @@
                 </v-col>
             </v-row>
             <v-row>
-                <!-- Primera columna -->
-                <!--<v-col cols="12" sm="6" md="4">
-            <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-              min-width="290px" multiple>
-              <template v-slot:activator="{ props }">
-                <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined" append-inner-icon="mdi-calendar"
-                  label="Fecha inicial" multiple></v-text-field>
-              </template>
-              <v-locale-provider locale="es">
-                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input @update:modelValue="updateDate"
-                  format="yyyy-MM-dd"></v-date-picker>
-              </v-locale-provider>
-            </v-menu>
-          </v-col>-->
-                <!-- Segunda columna -->
-                <!--<v-col cols="12" sm="6" md="4">
-            <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-              min-width="290px">
-              <template v-slot:activator="{ props }">
-                <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
-                  append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
-              </template>
-              <v-locale-provider locale="es">
-                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" @update:modelValue="updateDate2"
-                  format="yyyy-MM-dd"></v-date-picker>
-              </v-locale-provider>
-            </v-menu>
-          </v-col>-->
-                <!-- Tercera columna -->
-                <!--<v-col cols="12" sm="6" md="4">
-            <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-              min-width="290px">
-              <template v-slot:activator="{ props }">
-                <v-text-field v-bind="props" :modelValue="dateFormatted3" variant="outlined"
-                  append-inner-icon="mdi-calendar" label="Mes"></v-text-field>
-              </template>
-              <v-locale-provider locale="es">
-                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate3" @update:modelValue="updateDate3"
-                  format="yyyy-MM" scrollable></v-date-picker>
-              </v-locale-provider>
-            </v-menu>
-          </v-col>-->
                 <v-col cols="12" md="12">
                     <v-container>
-                        <v-alert border type="warning" variant="outlined" prominent>
-                            <span class="text-h6">{{ formTitle }}</span>
+                        <v-alert border type="info" variant="outlined">
+                            {{ formTitle }}
                         </v-alert>
                     </v-container>
                 </v-col>
-                <v-col cols="12" md="6">
-                    <v-card class="mx-auto  overflow-visible">
+            </v-row>
+                    <v-container>
+                <v-card elevation="4">
+                <v-tabs v-model="tabBar" color="rgb(241, 130, 84)" elevation="6">
+                  <v-tab value="one">Listado de Ingresos y Gastos</v-tab>
+                  <v-tab value="two">Gráfico de Ingresos y Gastos</v-tab>
+                </v-tabs>
+                <v-divider></v-divider>
+                <v-card-text>
+                <v-window v-model="tabBar">
+                    <v-window-item value="one">
+                        <v-card class="mx-auto  overflow-visible">
                         <v-card-text>
                             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'"
                                 :items-per-page="13" :items="results" :search="search2" class="elevation-2"
@@ -98,16 +62,28 @@
                                     <td>
                                         <div class="d-flex justify-center">
                                             <v-chip :color="item.difference > 0 ? 'green' : '#FF7043'"
-                                                :text="item.difference" class="text-uppercase" size="small" label></v-chip>
+                                                class="text-uppercase font-weight-bold" size="small" label>{{formatNumber(item.difference) }}</v-chip>
                                         </div>
                                     </td>
                                 </template>
+                                <template v-slot:item.total_revenues="{ item }">
+                                        <v-chip 
+                                            class="text-uppercase font-weight-bold" size="small" label>{{
+                            formatNumber(item.total_revenues) }}</v-chip>
+                                    </template>
+                                    <template v-slot:item.total_expenses="{ item }">
+                                        <v-chip
+                                            class="text-uppercase font-weight-bold" size="small" label> {{
+                            formatNumber(item.total_expenses)}}</v-chip>
+                                    </template>
                             </v-data-table>
                         </v-card-text>
                     </v-card>
-                </v-col>
-                <v-col cols="12" md="6">
-                    <v-card class="mx-auto  overflow-visible">
+                    </v-window-item>
+                </v-window>
+                <v-window v-model="tabBar">
+                    <v-window-item value="two">
+                        <v-card class="mx-auto  overflow-visible">
                         <Bar class="pa-6 elevation=2" id="my-chart-id" :options="chartOptions" :data="chartData3"
                             padding="16" />
 
@@ -123,10 +99,13 @@
                             <span class="text-caption text-grey font-weight-light">Actualizado Recientemente</span>
                         </v-card-text>
                     </v-card>
-                </v-col>
-            </v-row>
+                    </v-window-item>
+                </v-window>
+            </v-card-text>
+            </v-card>
+            </v-container>
+        </v-container>
         </v-card>
-    </v-container>
 </template>
 <script>
 
@@ -147,6 +126,7 @@ export default {
         },
     },
     data: () => ({
+        tabBar: null,
         menu: false,
         menu2: false,
         menu3: false,
@@ -198,35 +178,6 @@ export default {
                 return 'Reporte de análisis de Ingresos y Gastos ' + this.selectedYear;
             }
         },
-        /*dateFormatted() {
-          const date = this.input ? new Date(this.input) : new Date();
-          const day = date.getDate().toString().padStart(2, '0');
-          const month = (date.getMonth() + 1).toString().padStart(2, '0');
-          const year = date.getFullYear();
-          return `${year}-${month}-${day}`;
-        },
-        dateFormatted2() {
-          const date = this.input2 ? new Date(this.input2) : new Date();
-          const day = date.getDate().toString().padStart(2, '0');
-          const month = (date.getMonth() + 1).toString().padStart(2, '0');
-          const year = date.getFullYear();
-          return `${year}-${month}-${day}`;
-        },
-        dateFormatted3() {
-          const date = this.input3 ? new Date(this.input3) : new Date();
-          const month = (date.getMonth() + 1).toString().padStart(2, '0');
-          const year = date.getFullYear();
-          return `${year}-${month}`;
-        },
-        getDate() {
-          return this.input ? new Date(this.input) : new Date();
-        },
-        getDate2() {
-          return this.input2 ? new Date(this.input2) : new Date();
-        },
-        getDate3() {
-          return this.input3 ? new Date(this.input3) : new Date();
-        },*/
     },
 
     watch: {
@@ -275,6 +226,9 @@ export default {
     },
 
     methods: {
+        formatNumber(value) {
+            return value.toLocaleString('es-ES');
+        },
         generateChartData() {
             const labels = this.results.map(item => item.month);
             const expensesData = this.results.map(item => parseFloat(item.total_expenses));
@@ -325,11 +279,10 @@ export default {
 
             let nameReport = {
                 // eslint-disable-next-line vue/no-use-computed-property-like-method
-                name: this.formTitle, // Asume que 'name' es una de tus claves; ajusta según sea necesario
-                tip: '', // Deja vacíos los demás campos para esta fila especial
-                earnings: '',
-                technical_assistance: '',
-                total: '' // Usa 'total' para mostrar la fecha; ajusta las claves según corresponda a tu estructura
+                month: this.formTitle, // Asume que 'name' es una de tus claves; ajusta según sea necesario
+                total_revenues: '',
+                total_expenses: '',
+                difference: '' // Usa 'total' para mostrar la fecha; ajusta las claves según corresponda a tu estructura
             };
             rows.push(nameReport);
 

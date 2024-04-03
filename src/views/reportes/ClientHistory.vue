@@ -17,12 +17,12 @@
             <!-- Tercera columna -->
             <v-col cols="12" sm="12" md="6">
               <v-autocomplete v-model="client_id" :items="clients" clearable label="Seleccione el Cliente"
-                prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined"
+                prepend-inner-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="outlined"
                 @update:model-value="clientHistory"></v-autocomplete>
             </v-col>
             <v-col cols="12" sm="12" md="6">
               <v-autocomplete v-model="branch_id" :items="branches" clearable label="Seleccione una Sucursal"
-                prepend-icon="mdi-store" item-title="name" item-value="id" variant="underlined"
+                prepend-inner-icon="mdi-store" item-title="name" item-value="id" variant="outlined"
                 @update:model-value="clientHistory"></v-autocomplete>
             </v-col>
           </v-row>

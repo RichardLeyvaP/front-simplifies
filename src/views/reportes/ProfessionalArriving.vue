@@ -20,15 +20,8 @@
       </v-toolbar>
       <v-container>      
       <v-row>
-          <v-col cols="12" sm="12" md="4">
-            <v-autocomplete v-model="branch_id" :items="branches" clearable label="Seleccione una Sucursal"
-              prepend-icon="mdi-store" item-title="name" item-value="id" variant="underlined"
-              @update:model-value="initialize()"></v-autocomplete>
-          </v-col>
-      </v-row>
-        <v-row>
           <!-- Primera columna -->
-          <v-col cols="12" sm="6" md="4" >
+          <v-col cols="12" sm="6" md="3" >
             <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
               min-width="290px">
               <template v-slot:activator="{ props }">
@@ -42,7 +35,7 @@
             </v-menu>
           </v-col>
           <!-- Segunda columna -->
-          <v-col cols="12" sm="6" md="4">
+          <v-col cols="12" sm="6" md="3">
             <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
               min-width="290px">
               <template v-slot:activator="{ props }">
@@ -56,7 +49,7 @@
             </v-menu>
           </v-col>
           <!-- Tercera columna -->
-          <v-col cols="12" sm="6" md="4">
+          <v-col cols="12" sm="6" md="3">
             <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
               min-width="290px">
               <template v-slot:activator="{ props }">
@@ -68,12 +61,17 @@
                   format="yyyy-MM" scrollable></v-date-picker>
               </v-locale-provider>
             </v-menu>
+          </v-col>          
+          <v-col cols="12" sm="12" md="3">
+            <v-autocomplete v-model="branch_id" :items="branches" clearable label="Seleccione una Sucursal"
+              prepend-inner-icon="mdi-store" item-title="name" item-value="id" variant="outlined"
+              @update:model-value="initialize()"></v-autocomplete>
           </v-col>
           <v-col cols="12">
             <v-container>
-              <v-alert border type="warning" variant="outlined" prominent>
-                <span class="text-h6">{{ formTitle }}</span>
-              </v-alert>
+              <v-alert border type="info" variant="outlined">
+                            {{ formTitle }}
+                        </v-alert>
             </v-container>
             <v-card-text>
               <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line

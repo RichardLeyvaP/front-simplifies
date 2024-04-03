@@ -21,15 +21,15 @@
             <v-row>
                 <v-col cols="12" sm="12" md="4">
                     <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
-                        label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
-                        variant="underlined" @update:model-value="initialize()"></v-autocomplete>
+                        label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
+                        variant="outlined" @update:model-value="initialize()"></v-autocomplete>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col cols="12">
                     <v-container>
-                        <v-alert border type="warning" variant="outlined" prominent>
-                            <span class="text-h6">{{ formTitle }}</span>
+                        <v-alert border type="info" variant="outlined">
+                            {{ formTitle }}
                         </v-alert>
                     </v-container>
                     <v-card-text>

@@ -5,8 +5,7 @@
       <v-container>
         <v-row align="center">
           <v-col cols="12" md="8" class="grow ml-4">
-            <span class="text-h8"> <strong>Llegadas tardes por profesional en un (Día, Mes o
-                Período)</strong></span>
+            <span class="text-h8"> <strong>Llegadas tardes por profesional en un (Día, Mes o Período)</strong></span>
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="12" md="3">
@@ -20,20 +19,8 @@
     </v-toolbar>
     <v-container>
       <v-row>
-        <v-col cols="12" sm="12" md="4">
-          <v-autocomplete v-model="professional_id" :items="professionals" clearable label="Seleccione un Professional"
-            prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined"
-            @update:model-value="initialize()"></v-autocomplete>
-        </v-col>
-        <v-col cols="12" sm="12" md="4">
-          <v-autocomplete v-model="branch_id" :items="branches" clearable label="Seleccione una Sucursal"
-            prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined"
-            @update:model-value="initialize()"></v-autocomplete>
-        </v-col>
-      </v-row>
-      <v-row>
         <!-- Primera columna -->
-        <v-col cols="12" sm="6" md="4" v-if="state">
+        <v-col cols="12" sm="6" md="2" v-if="state">
           <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
             min-width="290px">
             <template v-slot:activator="{ props }">
@@ -47,7 +34,7 @@
           </v-menu>
         </v-col>
         <!-- Segunda columna -->
-        <v-col cols="12" sm="6" md="4" v-if="state">
+        <v-col cols="12" sm="6" md="2" v-if="state">
           <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
             min-width="290px">
             <template v-slot:activator="{ props }">
@@ -61,7 +48,7 @@
           </v-menu>
         </v-col>
         <!-- Tercera columna -->
-        <v-col cols="12" sm="6" md="4" v-if="state">
+        <v-col cols="12" sm="6" md="2" v-if="state">
           <!--<v-date-picker
           v-model="selectedMonth"
           view-mode="months"
@@ -82,11 +69,21 @@
             </v-locale-provider>
           </v-menu>
         </v-col>
+        <v-col cols="12" sm="12" md="3">
+          <v-autocomplete v-model="professional_id" :items="professionals" clearable label="Seleccione un Professional"
+            prepend-inner-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="outlined"
+            @update:model-value="initialize()"></v-autocomplete>
+        </v-col>
+        <v-col cols="12" sm="12" md="3">
+          <v-autocomplete v-model="branch_id" :items="branches" clearable label="Seleccione una Sucursal"
+            prepend-inner-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="outlined"
+            @update:model-value="initialize()"></v-autocomplete>
+        </v-col>
         <v-col cols="12">
           <v-container>
-            <v-alert border type="warning" variant="outlined" prominent>
-              <span class="text-h6">{{ formTitle }}</span>
-            </v-alert>
+            <v-alert border type="info" variant="outlined">
+                            {{ formTitle }}
+                        </v-alert>
           </v-container>
           <v-card-text>
             <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line

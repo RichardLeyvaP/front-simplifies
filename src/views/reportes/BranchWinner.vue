@@ -12,15 +12,8 @@
     <v-container>
       <v-container>
         <v-row>
-          <v-col cols="12" sm="12" md="4">
-            <v-autocomplete v-model="branch_id" :items="branches" clearable label="Seleccione una Sucursal"
-              prepend-icon="mdi-store" item-title="name" item-value="id" variant="underlined"
-              @update:model-value="initialize()"></v-autocomplete>
-          </v-col>
-        </v-row>
-        <v-row>
           <!-- Primera columna -->
-          <v-col cols="12" sm="6" md="4">
+          <v-col cols="12" sm="6" md="3">
             <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
               offset-y min-width="290px">
               <template v-slot:activator="{ props }">
@@ -34,7 +27,7 @@
             </v-menu>
           </v-col>
           <!-- Segunda columna -->
-          <v-col cols="12" sm="6" md="4">
+          <v-col cols="12" sm="6" md="3">
             <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
               offset-y min-width="290px">
               <template v-slot:activator="{ props }">
@@ -48,7 +41,7 @@
             </v-menu>
           </v-col>
           <!-- Tercera columna -->
-          <v-col cols="12" sm="6" md="4">
+          <v-col cols="12" sm="6" md="3">
             <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
               offset-y min-width="290px">
               <template v-slot:activator="{ props }">
@@ -61,16 +54,21 @@
               </v-locale-provider>
             </v-menu>
           </v-col>
+          <v-col cols="12" sm="12" md="3">
+            <v-autocomplete v-model="branch_id" :items="branches" clearable label="Seleccione una Sucursal"
+              prepend-inner-icon="mdi-store" item-title="name" item-value="id" variant="outlined"
+              @update:model-value="initialize()"></v-autocomplete>
+          </v-col>
           <v-container>
-            <v-alert border type="warning" variant="outlined" prominent>
-              <span class="text-h6">{{ formTitle }}</span>
-            </v-alert>
+            <v-alert border type="info" variant="outlined">
+                            {{ formTitle }}
+                        </v-alert>
           </v-container>
           <v-container>
             <v-row>
               <v-col cols="12" md="4" v-for="(item, key) in results" :key="key">
                 <v-card class="mx-auto pa-4 pl-0" elevation="4">
-                  <v-list-item :subtitle="item.value" :title="key">
+                  <v-list-item :subtitle="key=='Monto Generado' || key=='Monto Servicios Especiales' ? formatNumber(item.value) : item.value" :title="key">
                     <template v-slot:prepend>
                       <v-avatar :color="item.color">
                         <v-icon color="white">{{ item.icon }}</v-icon>
@@ -118,6 +116,7 @@ export default {
     input2: null,
     input3: null,
     charge: '',
+    fecha: '',
     editedIndex: 1,
     branch_id: 1,
     business_id: '',
@@ -136,12 +135,21 @@ export default {
   }),
   computed: {
     formTitle() {
-      if (this.editedIndex === 2)
-        return 'Ganancias de la Sucursal en el período seleccionado';
-      else if (this.editedIndex === 3)
-        return 'Ganancias de la Sucursal en el mes seleccionado';
-      else
-        return 'Ganancias de la Sucursal en el día ';
+      if (this.editedIndex === 2) {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.fecha = format(this.input, "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
+        return 'Ganancias de la Sucursal en el período ' + format(this.input, "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
+      }
+      else if (this.editedIndex === 3) {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.fecha = format(this.input3, "yyyy-MM");
+        return 'Ganancias de la Sucursal en el mes ' + format(this.input3, "yyyy-MM");
+      }
+      else {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.fecha = format(new Date(), "yyyy-MM-dd");
+        return 'Ganancias de la Sucursal en el día ' + format(new Date(), "yyyy-MM-dd");
+      }
     },
     dateFormatted() {
       const date = this.input ? new Date(this.input) : new Date();
@@ -195,6 +203,9 @@ export default {
   },
 
   methods: {
+    formatNumber(value) {
+            return value.toLocaleString('es-ES');
+        },
     updateDate(val) {
       this.input = val;
       this.menu = false;
@@ -214,8 +225,8 @@ export default {
         })
         .then((response) => {
           this.results = response.data;
-          this.input2 = null;
-          this.input = null
+          //this.input2 = null;
+          //this.input = null
         })
       this.menu2 = false;
     },
@@ -236,7 +247,7 @@ export default {
         })
         .then((response) => {
           this.results = response.data;
-          this.input3 = null;
+          //this.input3 = null;
         })
       this.menu3 = false;
     },

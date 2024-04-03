@@ -654,7 +654,9 @@ let request = {};
       // setTimeout(() => {
       // Redirige a la URL externa deseada
     //   window.location.href = 'https://barberiahernandez.com/barber_backend/web/app_dev.php/reservation';
-    // }, 3000);  
+    // }, 3000);
+    
+    this.showAlert("success","Reserva realizada correctamente", 3000);  
     setTimeout(() => {
       // Redirige a la URL externa deseada
       this.$router.push('/totem');

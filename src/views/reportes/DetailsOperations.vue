@@ -19,79 +19,25 @@
         </v-toolbar>
         <v-container>
             <v-row>
+                <v-col cols="12" md="4">
+                    <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="outlined"
+                        prepend-inner-icon="mdi-calendar" @update:model-value="initialize()"></v-select>
+                </v-col>
+                <v-col cols="12" md="4">
+                    <v-select v-model="selectedMounth" :items="months" label="Selecciona un mes" variant="outlined"
+                        prepend-inner-icon="mdi-calendar" @update:model-value="operationDetailsMonth()"></v-select>
+                </v-col>
                 <v-col cols="12" sm="12" md="4">
                     <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
-                        label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
-                        variant="underlined" @update:model-value="initialize()"></v-autocomplete>
+                        label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
+                        variant="outlined" @update:model-value="initialize()"></v-autocomplete>
                 </v-col>
             </v-row>
             <v-row>
-                <v-col cols="12" md="4">
-                    <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="underlined"
-                        prepend-icon="mdi-calendar" @update:model-value="initialize()"></v-select>
-                </v-col>
-
-                <!--<v-col cols="12" md="4">
-                    <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
-                        offset-y min-width="290px">
-                        <template v-slot:activator="{ props }">
-                            <v-text-field v-bind="props" :modelValue="dateFormatted3" variant="underlined"
-                                append-inner-icon="mdi-calendar" label="Mes"></v-text-field>
-                        </template>
-                        <v-locale-provider locale="es">
-                            <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
-                                :modelValue="getDate3" format="yyyy-MM" scrollable></v-date-picker>
-                        </v-locale-provider>
-                    </v-menu>
-                </v-col>-->
-            </v-row>
-            <v-row>
-                <!-- Primera columna -->
-                <!--<v-col cols="12" sm="6" md="4">
-            <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-              min-width="290px" multiple>
-              <template v-slot:activator="{ props }">
-                <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined" append-inner-icon="mdi-calendar"
-                  label="Fecha inicial" multiple></v-text-field>
-              </template>
-              <v-locale-provider locale="es">
-                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input @update:modelValue="updateDate"
-                  format="yyyy-MM-dd"></v-date-picker>
-              </v-locale-provider>
-            </v-menu>
-          </v-col>-->
-                <!-- Segunda columna -->
-                <!--<v-col cols="12" sm="6" md="4">
-            <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-              min-width="290px">
-              <template v-slot:activator="{ props }">
-                <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
-                  append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
-              </template>
-              <v-locale-provider locale="es">
-                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" @update:modelValue="updateDate2"
-                  format="yyyy-MM-dd"></v-date-picker>
-              </v-locale-provider>
-            </v-menu>
-          </v-col>-->
-                <!-- Tercera columna -->
-                <!--<v-col cols="12" sm="6" md="4">
-            <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-              min-width="290px">
-              <template v-slot:activator="{ props }">
-                <v-text-field v-bind="props" :modelValue="dateFormatted3" variant="outlined"
-                  append-inner-icon="mdi-calendar" label="Mes"></v-text-field>
-              </template>
-              <v-locale-provider locale="es">
-                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate3" @update:modelValue="updateDate3"
-                  format="yyyy-MM" scrollable></v-date-picker>
-              </v-locale-provider>
-            </v-menu>
-          </v-col>-->
                 <v-col cols="12" md="12">
                     <v-container>
-                        <v-alert border type="warning" variant="outlined" prominent>
-                            <span class="text-h6">{{ formTitle }}</span>
+                        <v-alert border type="info" variant="outlined">
+                            {{ formTitle }}
                         </v-alert>
                     </v-container>
                 </v-col>
@@ -113,33 +59,75 @@
                                             {{ item.value }}
                                         </td>
                                         <!-- Mostrar los totales para el grupo actual -->
-                                        <td v-for="(header, index) in columns.slice(1)" :key="index">
-                                            {{ calculateGroupTotal(item.value, header.value) }}
+                                        <td v-for="(header, index) in columns.slice(1)" :key="index" class="text-uppercase font-weight-bold">
+                                            {{ formatNumber(calculateGroupTotal(item.value, header.value)) }}
                                         </td>
                                     </tr>
                                 </template>
-
+                                <template v-slot:item.Enero ="{ item }">
+                                        <v-chip
+                                            class="text-uppercase" size="small" label> {{
+                            formatNumber(item.Enero)}}</v-chip>
+                                    </template>
+                                    <template v-slot:item.Febrero ="{ item }">
+                                        <v-chip
+                                            class="text-uppercase" size="small" label> {{
+                            formatNumber(item.Febrero)}}</v-chip>
+                                    </template>
+                                    <template v-slot:item.Marzo ="{ item }">
+                                        <v-chip
+                                            class="text-uppercase" size="small" label> {{
+                            formatNumber(item.Marzo)}}</v-chip>
+                                    </template>
+                                    <template v-slot:item.Abril ="{ item }">
+                                        <v-chip
+                                            class="text-uppercase" size="small" label> {{
+                            formatNumber(item.Abril)}}</v-chip>
+                                    </template>
+                                    <template v-slot:item.Mayo ="{ item }">
+                                        <v-chip
+                                            class="text-uppercase" size="small" label> {{
+                            formatNumber(item.Mayo)}}</v-chip>
+                                    </template>
+                                    <template v-slot:item.Junio ="{ item }">
+                                        <v-chip
+                                            class="text-uppercase" size="small" label> {{
+                            formatNumber(item.Junio)}}</v-chip>
+                                    </template>
+                                    <template v-slot:item.Julio ="{ item }">
+                                        <v-chip
+                                            class="text-uppercase" size="small" label> {{
+                            formatNumber(item.Julio)}}</v-chip>
+                                    </template>
+                                    <template v-slot:item.Agosto ="{ item }">
+                                        <v-chip
+                                            class="text-uppercase" size="small" label> {{
+                            formatNumber(item.Agosto)}}</v-chip>
+                                    </template>
+                                    <template v-slot:item.Septiembre ="{ item }">
+                                        <v-chip
+                                            class="text-uppercase" size="small" label> {{
+                            formatNumber(item.Septiembre)}}</v-chip>
+                                    </template>
+                                    <template v-slot:item.Octubre ="{ item }">
+                                        <v-chip
+                                            class="text-uppercase" size="small" label> {{
+                            formatNumber(item.Octubre)}}</v-chip>
+                                    </template>
+                                    <template v-slot:item.Noviembre ="{ item }">
+                                        <v-chip
+                                            class="text-uppercase" size="small" label> {{
+                            formatNumber(item.Noviembre)}}</v-chip>
+                                    </template>
+                                    <template v-slot:item.Diciembre ="{ item }">
+                                        <v-chip
+                                            class="text-uppercase" size="small" label> {{
+                            formatNumber(item.Diciembre)}}</v-chip>
+                                    </template>
                             </v-data-table>
                         </v-card-text>
                     </v-card>
                 </v-col>
-                <!--<v-col cols="12" md="6">
-                    <v-card class="mx-auto  overflow-visible">
-                        <Bar class="pa-6 elevation=2" id="my-chart-id" :options="chartOptions" :data="chartData3" padding="16" />
-
-                        <v-card-text class="pt-0">
-
-                            <div class="subheading font-weight-light text-grey">
-                                Reporte de análisis de Ingresos y Gastos
-                            </div>
-                            <v-divider class="my-2"></v-divider>
-                            <v-icon class="me-2" size="small">
-                                mdi-clock
-                            </v-icon>
-                            <span class="text-caption text-grey font-weight-light">Actualizado Recientemente</span>
-                        </v-card-text>
-                    </v-card>
-                </v-col>-->
             </v-row>
         </v-container>
     </v-card>
@@ -166,6 +154,7 @@ export default {
         input2: null,
         input3: null,
         selectedYear: null,
+        selectedMounth: '',
         years: [],
         branch_id: '',
         business_id: '',
@@ -176,6 +165,21 @@ export default {
         search: '',
         editedIndex: -1,
         results: [],
+        months: [
+            { value: '', title: '' },
+            { value: 1, title: 'Enero' },
+            { value: 2, title: 'Febrero' },
+            { value: 3, title: 'Marzo' },
+            { value: 4, title: 'Abril' },
+            { value: 5, title: 'Mayo' },
+            { value: 6, title: 'Junio' },
+            { value: 7, title: 'Julio' },
+            { value: 8, title: 'Agosto' },
+            { value: 9, title: 'Septiembre' },
+            { value: 10, title: 'Octubre' },
+            { value: 11, title: 'Noviembre' },
+            { value: 12, title: 'Diciembre' }
+        ],
         groupBy: [
             {
                 key: 'tipo',
@@ -223,20 +227,6 @@ export default {
                 return 'Reporte de Ingresos y Gastos detallados por operaciones ' + this.selectedYear;
             }
         },
-        /*dateFormatted() {
-          const date = this.input ? new Date(this.input) : new Date();
-          const day = date.getDate().toString().padStart(2, '0');
-          const month = (date.getMonth() + 1).toString().padStart(2, '0');
-          const year = date.getFullYear();
-          return `${year}-${month}-${day}`;
-        },
-        dateFormatted2() {
-          const date = this.input2 ? new Date(this.input2) : new Date();
-          const day = date.getDate().toString().padStart(2, '0');
-          const month = (date.getMonth() + 1).toString().padStart(2, '0');
-          const year = date.getFullYear();
-          return `${year}-${month}-${day}`;
-        },*/
         dateFormatted3() {
             const date = this.input3 ? new Date(this.input3) : new Date();
             const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -301,6 +291,9 @@ export default {
     },
 
     methods: {
+        formatNumber(value) {
+            return value.toLocaleString('es-ES');
+        },
         getTotalRowForGroup(groupKey) {
             // Filtrar los resultados para incluir solo los elementos del grupo actual con operación "Total"
             const groupResults = this.results.filter(item => item.tipo === groupKey && item.operacion === "Total");
@@ -315,34 +308,7 @@ export default {
             // Retornar el valor correspondiente a la columna
             return totalRow ? totalRow[columnKey] : 0;
         },
-        /*generateChartData() {
-            const labels = this.results.map(item => item.month);
-            const expensesData = this.results.map(item => parseFloat(item.total_expenses));
-            const revenuesData = this.results.map(item => parseFloat(item.total_revenues));
-            return {
-                labels: labels,
-                datasets: [
-                    {
-                        label: 'Total Gastos',
-                        backgroundColor: "#FF7043",
-                        data: expensesData
-                    },
-                    {
-                        label: 'Total Ingresos',
-                        backgroundColor: "#FFB300",
-                        data: revenuesData
-                    }
-                ]
-                /*labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
-                datasets: [
-                  {
-                    label: 'Reservas',
-                    backgroundColor: ["#FFB300", "#FF7043", "#00796B", "#B0BEC5", "#C0CA33", "#8D6E63", "#616161"],
-                    data: this.reservationWeek
-                  }
-                ]*/
-        //};
-        //},*/
+       
         exportToExcel() {
             // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
             let rows = [];
@@ -384,49 +350,7 @@ export default {
             //XLSX.writeFile(wb, "report.xlsx");
             XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
         },
-        /*updateDate(val) {
-          this.input = val;
-          this.menu = false;
-        },
-        updateDate2(val) {
-          this.editedIndex = 2;
-          this.input2 = val;
-          const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-          const endDate = format(val, "yyyy-MM-dd");
-          axios
-            .get('http://127.0.0.1:8000/api/business-winner', {
-              params: {
-                startDate: startDate,
-                endDate: endDate
-              }
-            })
-            .then((response) => {
-              this.results = response.data;
-              this.input2 = new Date();
-              this.input = new Date()
-            })
-          this.menu2 = false;
-        },
-        updateDate3(val) {
-          this.editedIndex = 3;
-          this.input3 = val;
-          const month = (val.getMonth() + 1).toString().padStart(2, '0');
-          const year = val.getFullYear();
-          const mes = `${month}`;
-          const ano = `${year}`;
-          axios
-            .get('http://127.0.0.1:8000/api/business-winner', {
-              params: {
-                mes: mes,
-                year: ano
-              }
-            })
-            .then((response) => {
-              this.results = response.data;
-              this.input3 = new Date();
-            })
-          this.menu3 = false;
-        },*/
+        
         initialize() {
             this.editedIndex = 1;
             axios
@@ -434,6 +358,22 @@ export default {
                     params: {
                         branch_id: this.branch_id,
                         year: this.selectedYear
+                    }
+                })
+                .then((response) => {
+                    this.results = response.data;
+                    //this.saldoInicial = response.data.last_year_difference;
+                    console.log('this.results');
+                    console.log(this.results);
+                })
+        },
+        operationDetailsMonth(){
+            axios
+                .get('http://127.0.0.1:8000/api/details-operations-month', {
+                    params: {
+                        branch_id: this.branch_id,
+                        year: this.selectedYear,
+                        month: this.selectedMounth
                     }
                 })
                 .then((response) => {

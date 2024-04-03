@@ -65,14 +65,35 @@
         </v-col>
         <v-col cols="12">
           <v-container>
-            <v-alert border type="warning" variant="outlined" prominent>
-              <span class="text-h6">{{ formTitle }}</span>
-            </v-alert>
+            <v-alert border type="info" variant="outlined">
+                            {{ formTitle }}
+                        </v-alert>
           </v-container>
           <v-card-text>
             <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details></v-text-field>
             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search2" class="elevation-2"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+            
+              <template v-slot:item.tip="{ item }">
+                                        <v-chip
+                                            class="text-uppercase font-weight-bold" size="small" label> {{
+                            formatNumber(item.tip)}}</v-chip>
+                                    </template>
+                                    <template v-slot:item.earnings="{ item }">
+                                        <v-chip
+                                            class="text-uppercase font-weight-bold" size="small" label> {{
+                            formatNumber(item.earnings)}}</v-chip>
+                                    </template>
+                                    <template v-slot:item.technical_assistance="{ item }">
+                                        <v-chip
+                                            class="text-uppercase font-weight-bold" size="small" label> {{
+                            formatNumber(item.technical_assistance)}}</v-chip>
+                                    </template>
+                                    <template v-slot:item.total="{ item }">
+                                        <v-chip
+                                            class="text-uppercase font-weight-bold" size="small" label> {{
+                            formatNumber(item.total)}}</v-chip>
+                                    </template>
             </v-data-table>
           </v-card-text>
         </v-col>
@@ -181,6 +202,9 @@ export default {
   },
 
   methods: {
+    formatNumber(value) {
+            return value.toLocaleString('es-ES');
+        },
     exportToExcel() {
       // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
       let rows = [];

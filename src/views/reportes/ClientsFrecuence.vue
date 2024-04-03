@@ -21,58 +21,16 @@
       <v-row>
         <v-col cols="12" sm="12" md="4">
           <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
-            label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
-            variant="underlined" @update:model-value="initialize()"></v-autocomplete>
+            label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
+            variant="outlined" @update:model-value="initialize()"></v-autocomplete>
         </v-col>
       </v-row>
       <v-row>
-        <!-- Primera columna -->
-        <!--<v-col cols="12" sm="6" md="4">
-            <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-              min-width="290px">
-              <template v-slot:activator="{ props }">
-                <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined" append-inner-icon="mdi-calendar"
-                  label="Fecha inicial"></v-text-field>
-              </template>
-              <v-locale-provider locale="es">
-                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input @update:modelValue="updateDate"
-                  format="yyyy-MM-dd"></v-date-picker>
-              </v-locale-provider>
-            </v-menu>
-          </v-col>-->
-        <!-- Segunda columna -->
-        <!--<v-col cols="12" sm="6" md="4">
-            <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-              min-width="290px">
-              <template v-slot:activator="{ props }">
-                <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
-                  append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
-              </template>
-              <v-locale-provider locale="es">
-                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" @update:modelValue="updateDate2"
-                  format="yyyy-MM-dd"></v-date-picker>
-              </v-locale-provider>
-            </v-menu>
-          </v-col>-->
-        <!-- Tercera columna -->
-        <!--v-col cols="12" sm="6" md="4">
-            <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-              min-width="290px">
-              <template v-slot:activator="{ props }">
-                <v-text-field v-bind="props" :modelValue="dateFormatted3" variant="outlined"
-                  append-inner-icon="mdi-calendar" label="Mes"></v-text-field>
-              </template>
-              <v-locale-provider locale="es">
-                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate3" @update:modelValue="updateDate3"
-                  format="yyyy-MM" scrollable></v-date-picker>
-              </v-locale-provider>
-            </v-menu>
-          </v-col>-->
         <v-col cols="12">
           <v-container>
-            <v-alert border type="warning" variant="outlined" prominent>
-              <span class="text-h6">{{ formTitle }}</span>
-            </v-alert>
+            <v-alert border type="info" variant="outlined">
+                            {{ formTitle }}
+                        </v-alert>
           </v-container>
           <v-card-text>
             <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
@@ -144,35 +102,6 @@ export default {
     formTitle() {
       return 'Visitas de clientes';
     },
-    /*dateFormatted() {
-      const date = this.input ? new Date(this.input) : new Date();
-      const day = date.getDate().toString().padStart(2, '0');
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const year = date.getFullYear();
-      return `${year}-${month}-${day}`;
-    },
-    dateFormatted2() {
-      const date = this.input2 ? new Date(this.input2) : new Date();
-      const day = date.getDate().toString().padStart(2, '0');
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const year = date.getFullYear();
-      return `${year}-${month}-${day}`;
-    },
-    dateFormatted3() {
-      const date = this.input3 ? new Date(this.input3) : new Date();
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const year = date.getFullYear();
-      return `${year}-${month}`;
-    },
-    getDate() {
-      return this.input ? new Date(this.input) : new Date();
-    },
-    getDate2() {
-      return this.input2 ? new Date(this.input2) : new Date();
-    },
-    getDate3() {
-      return this.input3 ? new Date(this.input3) : new Date();
-    },*/
   },
 
   watch: {
@@ -253,51 +182,7 @@ export default {
       //XLSX.writeFile(wb, "report.xlsx");
       XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
     },
-    /*updateDate(val) {
-      this.input = val;
-      this.menu = false;
-    },
-    updateDate2(val) {
-      this.input2 = val;
-      this.editedIndex = 2;
-      const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      const endDate = format(val, "yyyy-MM-dd");
-      axios
-        .get('http://127.0.0.1:8000/api/branch_professionals_winner', {
-          params: {
-            branch_id: this.branch_id,
-            startDate: startDate,
-            endDate: endDate
-          }
-        })
-        .then((response) => {
-          this.results = response.data;
-          this.input2 = new Date();
-          this.input = new Date()
-        })
-      this.menu2 = false;
-    },
-    updateDate3(val) {
-      this.editedIndex = 3;
-      this.input3 = val;
-      const month = (val.getMonth() + 1).toString().padStart(2, '0');
-      const year = val.getFullYear();
-      const mes = `${month}`;
-      const ano = `${year}`;
-      axios
-        .get('http://127.0.0.1:8000/api/branch_professionals_winner', {
-          params: {
-            branch_id: this.branch_id,
-            mes: mes,
-            year: ano
-          }
-        })
-        .then((response) => {
-          this.results = response.data;
-          this.input3 = new Date();
-        })
-      this.menu3 = false;
-    },*/
+   
     initialize() {
       this.editedIndex = 1;
       axios

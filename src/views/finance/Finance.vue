@@ -23,7 +23,7 @@
                 <v-col cols="12" md="4"></v-col>
                 <v-col cols="12" md="2">
 
-                    <v-dialog v-model="dialog" max-width="500px">
+                    <v-dialog v-model="dialog" max-width="800px">
                         <template v-slot:activator="{ props }">
 
                             <v-btn v-bind="props" class="text-subtitle-1  ml-12  " color="#E7E9E9" variant="flat"
@@ -49,14 +49,14 @@
                                     <v-row v-if="editedItem.operation === 'Ingreso'">
                                         <v-col>
                                             <v-autocomplete v-model="editedItem.revenue_id" :items="revenues" clearable
-                                                label="Ingresos" prepend-inner-icon="mdi-cash-plus" item-title="name"
+                                                label="Ingresos" prepend-icon="mdi-cash-plus" item-title="name"
                                                 item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
                                         </v-col>
                                     </v-row>
                                     <v-row v-if="editedItem.operation === 'Gasto'">
                                         <v-col>
                                             <v-autocomplete v-model="editedItem.expense_id" :items="expenses" clearable
-                                                label="Gastos" prepend-inner-icon="mdi-cash-plus" item-title="name"
+                                                label="Gastos" prepend-icon="mdi-cash-plus" item-title="name"
                                                 item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
                                         </v-col>
                                     </v-row>

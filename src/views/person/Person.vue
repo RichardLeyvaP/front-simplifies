@@ -69,15 +69,25 @@
                     <v-text-field v-if="mostrar" v-model="editedItem.password" clearable label="Contraseña"
                       prepend-icon="mdi-form-textbox-password" variant="underlined" >
                     </v-text-field>
-                  </v-col>  
-                  <v-col cols="12" md="6">
+                  </v-col> 
+                  </v-row>
+                  <v-row> 
+                  <v-col cols="12" md="4">
                     <v-text-field v-model="editedItem.phone" clearable label="Teléfono" prepend-icon="mdi-phone-outline"
                       variant="underlined" :rules="mobileRules">
                     </v-text-field>
                   </v-col>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="4">
                     <v-autocomplete v-model="editedItem.charge_id" :items="charges" clearable label="Cargo" prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
                   </v-col>
+                  <v-col cols="12" md="4">
+                      <v-text-field v-model="editedItem.retention"
+                        clearable label="% Impuesto" prepend-icon="mdi-percent" variant="underlined"
+                        :rules="pago">
+                      </v-text-field>
+                    </v-col>
+                </v-row>
+                <v-row>
                   <v-col cols="12" md="6">
                     <v-file-input clearable v-model="file" ref="fileInput" label="Avatar Professionals" variant="underlined" density="compact" name="file" accept=".png, .jpg, .jpeg" @change="onFileSelected">
                     </v-file-input>
@@ -255,10 +265,10 @@ export default {
       { title: 'Primer Apellido', key: 'surname' },
       { title: 'Segundo Apellido', key: 'second_surname' },
       { title: 'Correo', key: 'email' },
-      { title: 'Teléfono', key: 'phone' },
-     
+      { title: 'Teléfono', key: 'phone' },     
       { title: 'Usuario', align: 'start', value: 'user' },
       { title: 'Cargo', align: 'start', value: 'charge' },
+      { title: 'Impuesto', key: 'retention' },  
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
     results: [],
@@ -282,6 +292,7 @@ export default {
       surname: '',
       user:'',
       userName: '',
+      retention: '',
       password:'',
       second_surname: '',
       email: '',
@@ -302,6 +313,7 @@ export default {
       second_surname: '',
       email: '',
       phone: '',
+      retention: '',
       user_id: '',
       charge_id: '',
       image_url: '',
@@ -324,6 +336,8 @@ export default {
       ],
       mobileRules: [(v) => !!v || "El Teléfono es requerido"],
       selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
+      pago: [
+            (value) => !isNaN(parseFloat(value)) || 'Debe ser un número'],
   }),
 
   computed: {

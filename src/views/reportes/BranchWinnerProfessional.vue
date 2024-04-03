@@ -2,7 +2,6 @@
 <template>
   <v-card elevation="6" class="mx-5">
     <v-toolbar color="#F18254">
-      <v-container>
         <v-row align="center">
           <v-col cols="12" md="8" class="grow ml-4">
             <span class="text-h8"> <strong>Monto generado por Profesionales por (Día, Mes o
@@ -16,19 +15,11 @@
             </v-btn>
           </v-col>
         </v-row>
-      </v-container>
     </v-toolbar>
     <v-container>
       <v-row>
-        <v-col cols="12" sm="12" md="4">
-          <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
-            label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
-            variant="underlined" @update:model-value="initialize()"></v-autocomplete>
-        </v-col>
-      </v-row>
-      <v-row>
         <!-- Primera columna -->
-        <v-col cols="12" sm="6" md="4">
+        <v-col cols="12" sm="6" md="3">
           <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
             min-width="290px">
             <template v-slot:activator="{ props }">
@@ -42,7 +33,7 @@
           </v-menu>
         </v-col>
         <!-- Segunda columna -->
-        <v-col cols="12" sm="6" md="4">
+        <v-col cols="12" sm="6" md="3">
           <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
             min-width="290px">
             <template v-slot:activator="{ props }">
@@ -56,7 +47,7 @@
           </v-menu>
         </v-col>
         <!-- Tercera columna -->
-        <v-col cols="12" sm="6" md="4">
+        <v-col cols="12" sm="6" md="3">
           <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
             min-width="290px">
             <template v-slot:activator="{ props }">
@@ -68,13 +59,17 @@
                 :modelValue="getDate3" @update:modelValue="updateDate3" format="yyyy-MM" scrollable></v-date-picker>
             </v-locale-provider>
           </v-menu>
+        </v-col>        
+        <v-col cols="12" sm="12" md="3">
+          <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
+            label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
+            variant="outlined" @update:model-value="initialize()"></v-autocomplete>
         </v-col>
         <v-col cols="12">
-          <v-container>
-            <v-alert border type="warning" variant="outlined" prominent>
-              <span class="text-h6">{{ formTitle }}</span>
-            </v-alert>
-          </v-container>
+            <v-alert border type="info" variant="outlined">
+                            {{ formTitle }}
+                        </v-alert>
+                        <v-card class="mx-auto  overflow-visible">
           <v-card-text>
             <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details>
@@ -82,8 +77,24 @@
             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
               :search="search2" class="elevation-2" no-results-text="No hay datos disponibles"
               no-data-text="No hay datos disponibles">
+              <template v-slot:item.tip="{ item }">
+                                        <v-chip
+                                            class="text-uppercase font-weight-bold" size="small" label> {{
+                            formatNumber(item.tip)}}</v-chip>
+                                    </template>
+                                    <template v-slot:item.amount="{ item }">
+                                        <v-chip
+                                            class="text-uppercase font-weight-bold" size="small" label> {{
+                            formatNumber(item.amount)}}</v-chip>
+                                    </template>
+                                    <template v-slot:item.total="{ item }">
+                                        <v-chip
+                                            class="text-uppercase font-weight-bold" size="small" label> {{
+                            formatNumber(item.total)}}</v-chip>
+                                    </template>
             </v-data-table>
           </v-card-text>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -133,12 +144,12 @@ export default {
       if (this.editedIndex === 2) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.fecha = format(this.input, "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
-        return 'Monto generado por Profesionales en el período seleccionado' + format(this.input, "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
+        return 'Monto generado por Profesionales en el período seleccionado ' + format(this.input, "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
       }
       else if (this.editedIndex === 3) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.fecha = format(this.input3, "yyyy-MM");
-        return 'Monto generado por Profesionales en el mes seleccionado' + format(this.input3, "yyyy-MM");
+        return 'Monto generado por Profesionales en el mes seleccionado ' + format(this.input3, "yyyy-MM");
       }
       else {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -215,7 +226,9 @@ export default {
   },
 
   methods: {
-
+    formatNumber(value) {
+            return value.toLocaleString('es-ES');
+        },
     exportToExcel() {
       // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
       let rows = [];
