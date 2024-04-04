@@ -79,7 +79,7 @@
                       </v-col>
 
                       <v-col cols="12" md="6">
-                        <v-file-input clearable v-model="file" ref="fileInput" label="Avatar Clients" variant="underlined"
+                        <v-file-input clearable v-model="file" ref="fileInput" label="Imagen Sucursal" variant="underlined"
                           density="compact" name="file" accept=".png, .jpg, .jpeg" @change="onFileSelected">
                         </v-file-input>
                         <v-avatar elevation="3" color="grey-lighten-4" size="large">
