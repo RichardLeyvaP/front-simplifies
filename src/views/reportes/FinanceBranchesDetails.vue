@@ -10,7 +10,7 @@
                 <v-spacer></v-spacer>
                 <v-col cols="12" md="3">
                     <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" elevation="2"
-                        prepend-icon="mdi-file-excel" @click="exportToExcel">
+                    prepend-inner-icon="mdi-file-excel" @click="exportToExcel">
                         Exportar a Excel
                     </v-btn>
                 </v-col>
@@ -20,15 +20,15 @@
             <v-row>
                 <v-col cols="12" md="4">
                     <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="outlined"
-                        prepend-icon="mdi-calendar" @update:model-value="initialize()"></v-select>
+                    prepend-inner-icon="mdi-calendar" @update:model-value="initialize()"></v-select>
                 </v-col>
                 <v-col cols="12" md="4">
                     <v-select v-model="selectedMounth" :items="months" label="Selecciona un mes" variant="outlined"
-                        prepend-icon="mdi-calendar" @update:model-value="operationDetails()"></v-select>
+                    prepend-inner-icon="mdi-calendar" @update:model-value="operationDetails()"></v-select>
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
                     <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
-                        label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
+                        label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
                         variant="outlined" @update:model-value="initialize()"></v-autocomplete>
                 </v-col>
                 <v-col cols="12" md="12">

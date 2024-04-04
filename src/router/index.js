@@ -393,6 +393,13 @@ const routes = [
           import( "@/views/reportes/DetailsOperations.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_details_operations"] },
       },
+      {
+        path: "/branch-traces",
+        name: "Operaciones de la caja",
+        component: () =>
+          import( "@/views/reportes/BranchTraces.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_branch_traces"] },
+      },
     ],
   },
 ];

@@ -439,10 +439,10 @@
               <v-spacer></v-spacer>
               <v-col cols="12" md="3">
                 <v-btn color="#E7E9E9" variant="flat" @click="showService(this.car_ref)"
-                  prepend-icon="mdi-list-box-outline" class="mr-2">
+                  prepend-icon="mdi-list-box-outline" class="mr-2" :disabled="this.car_ref.pay == 1 ? true : false">
                   Agregar Servicio
                 </v-btn>
-                <v-btn color="#E7E9E9" variant="flat" @click="showProduct(this.car_ref)" prepend-icon="mdi-tag-outline">
+                <v-btn color="#E7E9E9" variant="flat" @click="showProduct(this.car_ref)" prepend-icon="mdi-tag-outline" :disabled="this.car_ref.pay == 1 ? true : false">
                   Agregar Producto
                 </v-btn>
               </v-col>
@@ -694,6 +694,7 @@ export default {
     charge_id: '',
     business_id: '',
     nameBranch: '',
+    nameProfessional: '',
     results: [],
     resultsPagado: [],
     orders: [],
@@ -881,6 +882,7 @@ export default {
     this.charge_id = LocalStorageService.getItem('charge_id');
     this.branch_id = LocalStorageService.getItem('branch_id');
     this.nameBranch = LocalStorageService.getItem('nameBranch');
+    this.nameProfessional = JSON.parse(LocalStorageService.getItem("name"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
       .get('http://127.0.0.1:8000/api/show-business', {
@@ -949,10 +951,12 @@ export default {
     requestDelete() {
       this.loading = true
       let request = {
-        id: this.editedItem.order_id
+        id: this.editedItem.order_id,
+        nameProfessional: this.nameProfessional,
+        branch_id: this.branch_id,
       };
       axios
-        .post('http://127.0.0.1:8000/api/order-destroy', request)
+        .post('http://127.0.0.1:8000/api/order-destroy-web', request)
         .then(() => {
           this.initialize();
           this.showDetails(this.car_ref)
@@ -969,10 +973,12 @@ export default {
       this.loading = true
       let request = {
         id: item.id,
-        request_delete: 0
+        request_delete: 0,
+        nameProfessional: this.nameProfessional,
+        branch_id: this.branch_id,
       };
       axios
-        .put('http://127.0.0.1:8000/api/order', request)
+        .put('http://127.0.0.1:8000/api/order-web', request)
         .then(() => {
           this.showAlert("success", "Orden denegada para ser eliminada correctamente", 3000);
           this.initialize();
@@ -1248,7 +1254,9 @@ export default {
     },
     deleteItemConfirm() {
       let request = {
-        id: this.editedItem.id
+        id: this.editedItem.id,
+        nameProfessional: this.nameProfessional,
+        branch_id: this.branch_id
       };
       axios
         .post('http://127.0.0.1:8000/api/car-destroy', request)
@@ -1269,7 +1277,8 @@ export default {
         this.data.cardGift = parseFloat(this.editedItem.cardGif) || 0;  // Fix typo here
         this.data.tip = parseFloat(this.editedItem.tip) || 0;
         this.data.code = this.editedCard.cardGiftUser_id || 0;  // Fix typo here
-
+        this.data.nameProfessional = this.nameProfessional;
+        this.data.branch_id = this.branch_id;
         const suma = this.data.cash + this.data.creditCard + this.data.debit + this.data.transfer + this.data.other + this.data.cardGift + this.data.tip;
 
         console.log(suma);
@@ -1312,6 +1321,8 @@ export default {
       this.data.totalProduct = this.editedCloseBox.totalProduct;
       this.data.totalMount = this.editedCloseBox.totalMount;
       this.data.totalCardGif = this.editedCloseBox.totalCardGif;
+      this.data.branch_id = this.branch_id;
+      this.data.nameProfessional = this.nameProfessional;
       console.log(this.data);
       axios
         .post('http://127.0.0.1:8000/api/closebox', this.data)
@@ -1333,6 +1344,7 @@ export default {
         this.data.cashFound = this.editedBox.cashFound;
         this.data.existence = this.editedBox.existence;
         this.data.extraction = this.editedBox.extraction;
+        this.data.nameProfessional = this.nameProfessional;
         axios
           .put('http://127.0.0.1:8000/api/box', this.data)
           .then(() => {
@@ -1418,10 +1430,12 @@ export default {
       this.data.service_id = this.branch_service_professional_id;
       this.data.product_id = 0;
       this.data.type = 'service';
+      this.data.nameProfessional = this.nameProfessional;
+      this.data.branch_id = this.branch_id;
       console.log('Datos servicios agregar');
       console.log(this.data);
       axios
-        .post('http://127.0.0.1:8000/api/order', this.data)
+        .post('http://127.0.0.1:8000/api/order-web', this.data)
         .then(() => {
           this.showAlert("success", "Servicio agregado correctamente", 3000);
           this.initialize();
@@ -1461,10 +1475,12 @@ export default {
       this.data.service_id = 0;
       this.data.product_id = this.product_store_id;
       this.data.type = 'product';
+      this.data.nameProfessional = this.nameProfessional;
+      this.data.branch_id = this.branch_id;
       console.log('Datos producto agregar');
       console.log(this.data);
       axios
-        .post('http://127.0.0.1:8000/api/order', this.data)
+        .post('http://127.0.0.1:8000/api/order-web', this.data)
         .then(() => {
           this.showAlert("success", "Producto agregado correctamente", 3000);
           this.initialize();
