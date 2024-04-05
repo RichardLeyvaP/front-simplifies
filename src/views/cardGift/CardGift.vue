@@ -298,6 +298,7 @@ export default {
     sb_title: '',
     sb_icon: '',
     search: '',
+    search2: '',
     editando: false,
     dialog: false,
     dialogCardGift: false,

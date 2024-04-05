@@ -400,6 +400,13 @@ const routes = [
           import( "@/views/reportes/BranchTraces.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_branch_traces"] },
       },
+      {
+        path: "/vacation",
+        name: "Vacaciones a profesionales",
+        component: () =>
+          import( "@/views/vacation/Vacations.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_vacations"] },
+      },
     ],
   },
 ];
