@@ -264,6 +264,31 @@ export default {
     },
 
     methods: {
+        showAlert(sb_type,sb_message, sb_timeout)
+    {    
+      this.sb_type= sb_type
+
+      if(sb_type=="success")
+      {
+        this.sb_title='Éxito'
+        this.sb_icon='mdi-check-circle'
+      }
+      
+      if(sb_type=="error")
+      {
+        this.sb_title='Error'
+        this.sb_icon='mdi-check-circle'
+      }
+
+      if(sb_type=="warning")
+      {
+        this.sb_title='Advertencia'
+        this.sb_icon='mdi-alert-circle'
+      }
+      this.sb_message= sb_message
+      this.sb_timeout= sb_timeout
+      this.snackbar= true
+    },
         formatDate(date) {
             if (!date) return null;
 
@@ -331,6 +356,7 @@ export default {
             axios
                 .post('http://127.0.0.1:8000/api/vacation-destroy', request)
                 .then(() => {
+                    this.showAlert("success", "Vacaciones eliminadas correctamente", 3000)
                     this.initialize();
                 })
             this.closeDelete()
@@ -360,6 +386,7 @@ export default {
                 axios
                     .put('http://127.0.0.1:8000/api/vacation', this.data)
                     .then(() => {
+                        this.showAlert("success", "Vacaciones actualizadas correctamente", 3000)
                         this.initialize();
                     })
             } else {
@@ -371,6 +398,7 @@ export default {
                 axios
                     .post('http://127.0.0.1:8000/api/vacation', this.data)
                     .then(() => {
+                        this.showAlert("success", "Vacaciones asignadas correctamente", 3000)
                         this.initialize();
                     })
             }
