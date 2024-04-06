@@ -386,7 +386,10 @@ export default {
                 axios
                     .put('http://127.0.0.1:8000/api/vacation', this.data)
                     .then(() => {
-                        this.showAlert("success", "Vacaciones actualizadas correctamente", 3000)
+                        this.professional_id = '',
+                        this.startDate = '',
+                        this.endDate = '',
+                        this.showAlert("success", "Vacaciones actualizadas correctamente", 3000);
                         this.initialize();
                     })
             } else {
@@ -398,7 +401,10 @@ export default {
                 axios
                     .post('http://127.0.0.1:8000/api/vacation', this.data)
                     .then(() => {
-                        this.showAlert("success", "Vacaciones asignadas correctamente", 3000)
+                        this.professional_id = '',
+                        this.startDate = '',
+                        this.endDate = '',
+                        this.showAlert("success", "Vacaciones asignadas correctamente", 3000);
                         this.initialize();
                     })
             }
