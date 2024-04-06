@@ -59,7 +59,7 @@
                                                     <v-locale-provider locale="es">
                                                         <v-date-picker @input="menu = false" header="Calendario"
                                                             title="Seleccione la fecha" color="orange lighten-2"
-                                                            v-model="startDate" format="yyyy-MM-dd"></v-date-picker>
+                                                            v-model="startDate"></v-date-picker>
                                                     </v-locale-provider>
                                                 </v-menu>
                                             </v-col>
@@ -75,7 +75,7 @@
                                                     <v-locale-provider locale="es">
                                                         <v-date-picker @input="menu2 = false" header="Calendario"
                                                             title="Seleccione la fecha" color="orange lighten-2"
-                                                            v-model="endDate" format="yyyy-MM-dd"></v-date-picker>
+                                                            v-model="endDate"></v-date-picker>
                                                     </v-locale-provider>
                                                 </v-menu>
                                             </v-col>
@@ -124,8 +124,8 @@
                 :items="results" class="elevation-1" :locale="locale" no-results-text="No hay datos disponibles"
                 no-data-text="No hay datos disponibles">
                 <template v-slot:item.actions="{ item }">
-                    <!--<v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary"
-                        variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Editar días de vacaciones"></v-btn>-->
+                    <v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary"
+                        variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Editar días de vacaciones"></v-btn>
                     <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4"
                         variant="tonal" elevation="1" title="Eliminar días de vacaciones"></v-btn>
                 </template>
@@ -141,9 +141,10 @@
     </v-card>
 </template>
 
-<script>
+<script >
 
 import axios from "axios";
+import { useDate } from 'vuetify';
 import LocalStorageService from "@/LocalStorageService";
 export default {
     data: () => ({
@@ -200,21 +201,41 @@ export default {
                 "El campo debe tener al menos de 3 caracteres",
         ],
         selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
-    }),
+    }),    
+    setup() {
+        const adapter = useDate()
 
+    const parseDate = (dateString) => {
+      return adapter.parseISO(dateString)
+    }
+
+    return {
+     parseDate
+    }
+    },
     computed: {
         formTitle() {
-            return this.editedIndex === -1 ? 'Nuevos dìas de vacaciones' : 'Editar dìas de vacaciones'
+            return this.editedIndex === -1 ? 'Nuevos días de vacaciones' : 'Editar dìas de vacaciones'
         },
         formattedStartDate() {
             if (this.startDate) {
-                const date = new Date(this.startDate);
+                //console.log('this.startDate');
+                //console.log(new Date(this.startDate));
+                //return new Date(this.startDate);
+
+                /*console.log('this.startDate');
+                console.log(this.startDate);*/
+                const date = new Date(this.startDate); //2024-04-06
                 const year = date.getFullYear();
                 const month = String(date.getMonth() + 1).padStart(2, "0");
                 const day = String(date.getDate()).padStart(2, "0");
+                console.log(`${year}-${month}-${day}`);
+                new Date('2018-03-02');
+
                 return `${year}-${month}-${day}`;
             }
             return "";
+            
         },
         formattedEndDate() {
             if (this.endDate) {
@@ -292,12 +313,12 @@ export default {
         formatDate(date) {
             if (!date) return null;
 
-            const dateObject = new Date(date);
+            /*const dateObject = new Date(date);
             const year = dateObject.getFullYear();
             const month = String(dateObject.getMonth() + 1).padStart(2, "0");
             const day = String(dateObject.getDate()).padStart(2, "0");
 
-            return `${year}-${month}-${day}`;
+            return `${year}-${month}-${day}`;*/
         },
         initialize() {
             if (this.charge === 'Administrador') {
@@ -336,11 +357,53 @@ export default {
         },
         editItem(item) {
             this.editedIndex = 1;
-            this.id = item.id,
-                this.professional_id = item.professional_id,
-                this.startDate = item.startDate,
-                this.endDate = item.endDate,
-                //this.editedItem = Object.assign({}, item)
+            this.id = item.id;
+
+            /*let fecha = new Date(item.startDate);
+            console.log('fecha.toLocaleDateString()');
+            console.log(fecha.toISOString().split('T')[0]);
+                        this.startDate = fecha;*/
+                        //let adapter = useDate();;
+            //let date = item.startDate;
+            
+            //let parsedDate = this.parseDate(item.startDate);
+            //console.log('parsedDate.toLocaleString()');
+            //console.log(parsedDate.toLocaleString());
+            this.professional_id = item.professional_id;
+            this.startDate = this.parseDate(item.startDate);
+            this.endDate = this.parseDate(item.endDate);
+            //console.log(new Date(date)) // Wed Nov 29 2023 18:00:00 GMT-0600
+            //console.log(useDate().parseISO(date)); // Thu Nov 30 2023 00:00:00GMT-0600
+            // Añadir 'T00:00:00Z' para forzar la interpretación en UTC
+            /*
+                // Creación de un objeto Date con una fecha en UTC
+                /*let startDateTemp = new Date(item.startDate + 'T00:00:00Z');
+
+                // Obtener los componentes de la fecha en UTC
+                let año = startDateTemp.getUTCFullYear(); // Año en UTC
+                let mes = startDateTemp.getUTCMonth() + 1; // Mes en UTC (getUTCMonth devuelve 0-11, así que sumamos 1 para obtener el mes correcto)
+                let día = startDateTemp.getUTCDate(); // Día del mes en UTC
+
+                // Formatear la fecha para visualización, asegurando que los componentes tengan el formato correcto (por ejemplo, '04' en lugar de '4')
+                let fechaFormateada = año + '-' + 
+                                        mes.toString().padStart(2, '0') + '-' + 
+                                        día.toString().padStart(2, '0');
+                                        this.professional_id = item.professional_id
+                                            this.startDate = startDateTemp.toISOString().split('T')[0];
+                // Mostrar la fecha formateada
+                console.log(new fechaFormateada); // Esto mostrará'2024-04-07'
+                /*console.log('item.startDate+T00:00:00Z');
+                console.log(item.startDate+'T00:00:00Z');
+                
+                /*this.professional_id = item.professional_id,
+                this.startDate = new Date(item.startDate+'T00:00:00Z'), //2024-04-07
+                this.endDate = new Date(item.endDate+'T00:00:00Z'),*/
+                /*console.log('this.endDate');
+                console.log(Date(item.endDate+'T00:00:00Z'));
+                new Date('2018-03-02');
+                console.log('new Date(2018-03-02)');
+                console.log(Date('2024-04-06T00:00:00Z'));
+                //this.editedItem = Object.assign({}, item)*/
                 this.dialog = true
         },
         deleteItem(item) {
@@ -380,9 +443,9 @@ export default {
                 this.valid = false;
                 this.data.id = this.id,
                     this.data.professional_id = this.professional_id;
-                this.data.startDate = this.formatDate(this.startDate);
-                this.data.endDate = this.formatDate(this.endDate);
-                console.log('editar');
+                    this.data.startDate = this.formattedStartDate;
+                this.data.endDate = this.formattedEndDate;
+                console.log(this.data);
                 axios
                     .put('http://127.0.0.1:8000/api/vacation', this.data)
                     .then(() => {
@@ -395,8 +458,8 @@ export default {
             } else {
                 this.valid = false;
                 this.data.professional_id = this.professional_id;
-                this.data.startDate = this.formatDate(this.startDate);
-                this.data.endDate = this.formatDate(this.endDate);
+                this.data.startDate = this.formattedStartDate;
+                this.data.endDate = this.formattedEndDate;
                 console.log(this.data);
                 axios
                     .post('http://127.0.0.1:8000/api/vacation', this.data)
