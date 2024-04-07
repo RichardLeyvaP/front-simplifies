@@ -1154,7 +1154,7 @@ export default {
           .post('http://127.0.0.1:8000/api/productsale', this.data)
           .then(() => {
           this.dialogAddProduct = false;
-          this.student_id_id = '',
+          this.student_id = '',
           this.product_id = '';
           this.showProducts(this.courseSelect);
           this.showAlert("success", "Producto asignado correctamente al estudiante", 3000);
