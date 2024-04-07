@@ -44,7 +44,7 @@
                                                     clearable label="Porfesional"
                                                     prepend-inner-icon="mdi-account-tie-outline" item-title="name"
                                                     item-value="id" variant="underlined"
-                                                    :rules="selectRules"></v-autocomplete>
+                                                    :rules="selectRules" :disabled='edit'></v-autocomplete>
                                             </v-col>
                                         </v-row>
                                         <v-row>
@@ -150,6 +150,7 @@ export default {
     data: () => ({
         valid: true,
         snackbar: false,
+        edit: false,
         sb_type: '',
         sb_message: '',
         sb_timeout: 2000,
@@ -271,7 +272,7 @@ export default {
 
     watch: {
         dialog(val) {
-            val || this.close()
+            val || this.close();
         },
         dialogDelete(val) {
             val || this.closeDelete()
@@ -285,7 +286,7 @@ export default {
     },
 
     methods: {
-        showAlert(sb_type,sb_message, sb_timeout)
+    showAlert(sb_type,sb_message, sb_timeout)
     {    
       this.sb_type= sb_type
 
@@ -310,7 +311,7 @@ export default {
       this.sb_timeout= sb_timeout
       this.snackbar= true
     },
-        formatDate(date) {
+        /*formatDate(date) {
             if (!date) return null;
 
             /*const dateObject = new Date(date);
@@ -319,7 +320,7 @@ export default {
             const day = String(dateObject.getDate()).padStart(2, "0");
 
             return `${year}-${month}-${day}`;*/
-        },
+        //},*/
         initialize() {
             if (this.charge === 'Administrador') {
                 axios
@@ -358,53 +359,11 @@ export default {
         editItem(item) {
             this.editedIndex = 1;
             this.id = item.id;
-
-            /*let fecha = new Date(item.startDate);
-            console.log('fecha.toLocaleDateString()');
-            console.log(fecha.toISOString().split('T')[0]);
-                        this.startDate = fecha;*/
-                        //let adapter = useDate();;
-            //let date = item.startDate;
-            
-            //let parsedDate = this.parseDate(item.startDate);
-            //console.log('parsedDate.toLocaleString()');
-            //console.log(parsedDate.toLocaleString());
             this.professional_id = item.professional_id;
             this.startDate = this.parseDate(item.startDate);
             this.endDate = this.parseDate(item.endDate);
-            //console.log(new Date(date)) // Wed Nov 29 2023 18:00:00 GMT-0600
-            //console.log(useDate().parseISO(date)); // Thu Nov 30 2023 00:00:00GMT-0600
-            // Añadir 'T00:00:00Z' para forzar la interpretación en UTC
-            /*
-                // Creación de un objeto Date con una fecha en UTC
-                /*let startDateTemp = new Date(item.startDate + 'T00:00:00Z');
-
-                // Obtener los componentes de la fecha en UTC
-                let año = startDateTemp.getUTCFullYear(); // Año en UTC
-                let mes = startDateTemp.getUTCMonth() + 1; // Mes en UTC (getUTCMonth devuelve 0-11, así que sumamos 1 para obtener el mes correcto)
-                let día = startDateTemp.getUTCDate(); // Día del mes en UTC
-
-                // Formatear la fecha para visualización, asegurando que los componentes tengan el formato correcto (por ejemplo, '04' en lugar de '4')
-                let fechaFormateada = año + '-' + 
-                                        mes.toString().padStart(2, '0') + '-' + 
-                                        día.toString().padStart(2, '0');
-                                        this.professional_id = item.professional_id
-                                            this.startDate = startDateTemp.toISOString().split('T')[0];
-                // Mostrar la fecha formateada
-                console.log(new fechaFormateada); // Esto mostrará'2024-04-07'
-                /*console.log('item.startDate+T00:00:00Z');
-                console.log(item.startDate+'T00:00:00Z');
-                
-                /*this.professional_id = item.professional_id,
-                this.startDate = new Date(item.startDate+'T00:00:00Z'), //2024-04-07
-                this.endDate = new Date(item.endDate+'T00:00:00Z'),*/
-                /*console.log('this.endDate');
-                console.log(Date(item.endDate+'T00:00:00Z'));
-                new Date('2018-03-02');
-                console.log('new Date(2018-03-02)');
-                console.log(Date('2024-04-06T00:00:00Z'));
-                //this.editedItem = Object.assign({}, item)*/
-                this.dialog = true
+                this.dialog = true;
+                this.edit = true;
         },
         deleteItem(item) {
             this.editedIndex = 1;
@@ -425,11 +384,12 @@ export default {
             this.closeDelete()
         },
         close() {
-            this.dialog = false
-            this.$nextTick(() => {
-                this.editedItem = Object.assign({}, this.defaultItem)
+            this.dialog = false;
+            this.edit = false;
+            this.professional_id = '',
+                        this.startDate = '',
+                        this.endDate = '',
                 this.editedIndex = -1
-            })
         },
         closeDelete() {
             this.dialogDelete = false
@@ -454,6 +414,7 @@ export default {
                         this.endDate = '',
                         this.showAlert("success", "Vacaciones actualizadas correctamente", 3000);
                         this.initialize();
+                        this.edit = false;
                     })
             } else {
                 this.valid = false;
@@ -467,6 +428,7 @@ export default {
                         this.professional_id = '',
                         this.startDate = '',
                         this.endDate = '',
+                        this.edit = false;
                         this.showAlert("success", "Vacaciones asignadas correctamente", 3000);
                         this.initialize();
                     })

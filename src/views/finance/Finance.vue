@@ -1,8 +1,8 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <!-- eslint-disable vue/valid-v-slot -->
-<template >
-    <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24" :multi-line="true"
-        vertical v-model="snackbar">
+<template>
+    <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24"
+        :multi-line="true" vertical v-model="snackbar">
         <v-row>
             <v-col md="2">
                 <v-avatar :icon="sb_icon" color="sb_type" size="40"></v-avatar>
@@ -18,7 +18,7 @@
         <v-toolbar color="#F18254">
             <v-row align="center">
                 <v-col cols="12" md="5" class="grow ml-4">
-                    <span class="text-subtitle-1"> <strong>Detalles de operaciones por Sucursal</strong></span>
+                    <span class="text-subtitle-1"> <strong>Detalles de operaciones</strong></span>
                 </v-col>
                 <v-col cols="12" md="4"></v-col>
                 <v-col cols="12" md="2">
@@ -38,6 +38,7 @@
                             </v-toolbar>
                             <v-card-text>
                                 <v-form v-model="valid" enctype="multipart/form-data">
+
                                     <v-row>
                                         <v-col cols="12" md="12">
                                             <v-select label="Tipo de operación" v-model="editedItem.operation"
@@ -50,14 +51,16 @@
                                         <v-col>
                                             <v-autocomplete v-model="editedItem.revenue_id" :items="revenues" clearable
                                                 label="Ingresos" prepend-icon="mdi-cash-plus" item-title="name"
-                                                item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
+                                                item-value="id" variant="underlined"
+                                                :rules="selectRules"></v-autocomplete>
                                         </v-col>
                                     </v-row>
                                     <v-row v-if="editedItem.operation === 'Gasto'">
                                         <v-col>
                                             <v-autocomplete v-model="editedItem.expense_id" :items="expenses" clearable
                                                 label="Gastos" prepend-icon="mdi-cash-plus" item-title="name"
-                                                item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
+                                                item-value="id" variant="underlined"
+                                                :rules="selectRules"></v-autocomplete>
                                         </v-col>
                                     </v-row>
                                     <v-row>
@@ -130,14 +133,50 @@
 
         <v-row>
             <v-container>
-                <v-col cols="12" sm="12" md="6">
+                <!--<v-col cols="12" sm="12" md="6">
                     <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
                         label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
                         variant="underlined" @update:model-value="initialize()"></v-autocomplete>
-                </v-col>
+                </v-col>-->
+                <v-container>
+                    <v-radio-group v-model="selectedOption" inline v-if="mostrarFila">
+                        <v-radio v-model="selectedOption" :label="options[0]" :value="options[0]"
+                            color="orange-darken-3" />
+                        <v-radio v-model="selectedOption" :label="options[1]" :value="options[1]"
+                            color="orange-darken-3" />
+                        <v-radio v-model="selectedOption" :label="options[2]" :value="options[2]"
+                            color="orange-darken-3" />
+                    </v-radio-group>
+                    <v-row v-if="selectedOption === 'Negocio' && mostrarFila">
+                        <v-col>
+                            <v-autocomplete v-model="editedItem.business_id" :items="business" clearable
+                                label="Negocios" prepend-icon="mdi-briefcase" item-title="name" item-value="id"
+                                variant="underlined" :rules="selectRules"
+                                @update:model-value="selectBusiness"></v-autocomplete>
+                        </v-col>
+                    </v-row>
 
+                    <v-row v-if="selectedOption === 'Sucursal' && mostrarFila">
+                        <v-col>
+                            <v-autocomplete v-model="editedItem.branch_id" :items="branches" clearable
+                                label="Sucursales" prepend-icon="mdi-office-building" item-title="name" item-value="id"
+                                variant="underlined" :rules="selectRules"
+                                @update:model-value="selectBranches"></v-autocomplete>
+                        </v-col>
+                    </v-row>
+
+                    <v-row v-if="selectedOption === 'Academia' && mostrarFila">
+                        <v-col>
+                            <v-autocomplete v-model="editedItem.enrollment_id" :items="enrollments" clearable
+                                label="Academias" prepend-icon="mdi-school" item-title="name" item-value="id"
+                                variant="underlined" :rules="selectRules"
+                                @update:model-value="selectEnrollments"></v-autocomplete>
+                        </v-col>
+                    </v-row>
+                </v-container>
             </v-container>
         </v-row>
+
         <v-card-text>
             <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
                 hide-details>
@@ -164,10 +203,10 @@
                     <v-icon size="25" color="red" @click="deleteItem(item)">
                         mdi-delete
                     </v-icon>-->
-                    <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
-            elevation="1" class="mr-1 mt-1 mb-1" title="Editar operación"></v-btn>
-          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
-            elevation="1" title="Eliminar operación"></v-btn>
+                    <v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary"
+                        variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Editar operación"></v-btn>
+                    <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4"
+                        variant="tonal" elevation="1" title="Eliminar operación"></v-btn>
                 </template>
             </v-data-table>
         </v-card-text>
@@ -189,6 +228,8 @@ export default {
     data: () => ({
         valid: true,
         //visibility: true,
+        selectedOption: null,
+        options: ['Negocio', 'Sucursal', 'Academia'],
         file: '',
         mostrarFila: false,
         snackbar: false,
@@ -199,6 +240,7 @@ export default {
         sb_icon: '',
         dialog: false,
         branch_id: '',
+        enrollment_id: '',
         business_id: '',
         search: '',
         charge: '',
@@ -220,8 +262,14 @@ export default {
         expenses: [],
         revenues: [],
         branches: [],
+        business: [],
+        enrollments: [],
         editedIndex: -1,
         editedItem: {
+            type: '',
+            branch_id: '',
+            business_id: '',
+            enrollment_id: '',
             control: '',
             operation: 'Ingreso',
             amount: '',
@@ -229,12 +277,15 @@ export default {
             file: '',
             expense_id: '',
             revenue_id: '',
-            branch_id: '',
             id: ''
         },
         data: {},
 
         defaultItem: {
+            type: '',
+            branch_id: '',
+            business_id: '',
+            enrollment_id: '',
             control: '',
             operation: 'Ingreso',
             amount: '',
@@ -242,7 +293,6 @@ export default {
             file: '',
             expense_id: '',
             revenue_id: '',
-            branch_id: '',
             id: '',
         },
         pago: [
@@ -274,6 +324,24 @@ export default {
         dialogDelete(val) {
             val || this.closeDelete()
         },
+        /*selectedOption(newOption, oldOption) {
+            // Realizar diferentes operaciones en función de la opción seleccionada
+            switch (newOption) {
+                case this.options[0]:
+
+                    break;
+                case this.options[1]:
+                    console.log(this.options[1]);
+                    // Operaciones para la opción 2
+                    break;
+                case this.options[2]:
+                    // Operaciones para la opción 3
+                    console.log(this.options[2]);
+                    break;
+                default:
+                    break;
+            }
+        }*/
     },
 
     mounted() {
@@ -290,19 +358,89 @@ export default {
             .then((response) => {
                 this.branches = response.data.branches;
                 //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-                if (this.charge === 'Administrador') {
-                    this.branch_id = this.branches[0].id;
+            });
+        axios
+            .get('http://127.0.0.1:8000/api/enrollment-show', {
+                params: {
+                    business_id: this.business_id
                 }
-                this.initialize()
+            })
+            .then((response) => {
+                this.enrollments = response.data.enrollments;
+                console.log('this.enrollments');
+                console.log(this.enrollments);
+
+            });
+        axios
+            .get('http://127.0.0.1:8000/api/business')
+            .then((response) => {
+                this.business = response.data.business;
+                console.log('this.business');
+                console.log(this.business);
+
             });
         if (this.charge === 'Administrador') {
             // Mostrar la fila con Autocomplete
+            this.editedItem.type = 'Negocio';
+            this.editedItem.business_id = parseInt(this.business_id);
+            this.editedItem.branch_id = '';
+            this.editedItem.enrollment_id = '';
+            this.selectedOption = 'Negocio';
             this.mostrarFila = true;
         }
+        else {
+            this.editedItem.type = 'Sucursal';
+            this.editedItem.business_id = '';
+            this.editedItem.branch_id = parseInt(this.branch_id);
+            this.editedItem.enrollment_id = '';
+            this.selectedOption = 'Sucursal';
+            this.mostrarFila = false;
+        }
+        axios
+            .get('http://127.0.0.1:8000/api/expense')
+            .then((response) => {
+                this.expenses = response.data.expenses;
+                console.log('this.expenses');
+                console.log(this.expenses);
+            });
+        axios
+            .get('http://127.0.0.1:8000/api/revenue')
+            .then((response) => {
+                this.revenues = response.data.revenues;
+            });
+
+        this.initialize();
         console.log(this.charge_id);
     },
 
     methods: {
+        selectBusiness() {
+            this.editedItem.type = 'Negocio'
+            this.editedItem.branch_id = '';
+            this.editedItem.enrollment_id = '';
+            console.log(this.editedItem.branch_id);
+            console.log(this.editedItem.enrollment_id);
+            console.log(this.editedItem.business_id);
+            this.initialize();
+        },
+        selectBranches() {
+            this.editedItem.type = 'Sucursal'
+            this.editedItem.business_id = '';
+            this.editedItem.enrollment_id = '';
+            console.log(this.editedItem.branch_id);
+            console.log(this.editedItem.enrollment_id);
+            console.log(this.editedItem.business_id);
+            this.initialize();
+        },
+        selectEnrollments() {
+            this.editedItem.type = 'Academia'
+            this.editedItem.business_id = '';
+            this.editedItem.branch_id = '';
+            console.log(this.editedItem.branch_id);
+            console.log(this.editedItem.enrollment_id);
+            console.log(this.editedItem.business_id);
+            this.initialize();
+        },
         openDoc(item) {
             const url = 'http://127.0.0.1:8000/api/images/' + item.file;
             window.open(url, '_blanK');
@@ -318,8 +456,11 @@ export default {
             this.editedItem = Object.assign({}, item);
             this.editedItem.revenue_id = item.revenue_id ? parseInt(item.revenue_id) : '';
             this.editedItem.expense_id = item.expense_id ? parseInt(item.expense_id) : '';
+            this.editedItem.business_id = item.business_id ? parseInt(item.business_id) : '';
+            this.editedItem.branch_id = item.branch_id ? parseInt(item.branch_id) : '';
+            this.editedItem.enrollment_id = item.enrollment_id ? parseInt(item.enrollment_id) : '';
             this.editedItem.file = this.editedItem.file ? this.editedItem.file : item.file;
-            console.log('this.editedItem');
+            console.log('this.editedItem seleccionado');
             console.log(this.editedItem);
             this.dialog = true
         },
@@ -345,16 +486,19 @@ export default {
             this.snackbar = true
         },
         initialize() {
+            console.log('this.editedItem--------');
+            console.log(this.editedItem);
             axios
                 .get('http://127.0.0.1:8000/api/finance-show', {
                     params: {
-                        branch_id: this.branch_id
+                        branch_id: this.editedItem.branch_id,
+                        business_id: this.editedItem.business_id,
+                        enrollment_id: this.editedItem.enrollment_id,
+                        type: this.editedItem.type
                     }
                 })
                 .then((response) => {
                     this.results = response.data.finances;
-                    console.log('this.results');
-                    //console.log(this.results);
 
                     this.editedItem.control = this.results.length !== 0 ? this.results[0].control + 1 : 1;
                     //this.visibility = !this.editedItem.control ? false : true;
@@ -369,19 +513,6 @@ export default {
                     console.log('this.editedItem.control');
                     console.log(this.editedItem.control);
                 });
-            axios
-                .get('http://127.0.0.1:8000/api/expense')
-                .then((response) => {
-                    this.expenses = response.data.expenses;
-                    console.log('this.expenses');
-                    console.log(this.expenses);
-                });
-            axios
-                .get('http://127.0.0.1:8000/api/revenue')
-                .then((response) => {
-                    this.revenues = response.data.revenues;
-                });
-
         },
 
         deleteItem(item) {
@@ -403,18 +534,19 @@ export default {
         },
         close() {
             this.dialog = false
-            this.$nextTick(() => {
-                this.editedItem = Object.assign({}, this.defaultItem);
-                this.editedIndex = -1;
-            });
             this.file = '';
+            this.editedItem.amount = '',
+            this.editedItem.comment = '',
+            this.editedItem.file = '',
+            this.editedItem.expense_id = '',
+            this.editedItem.revenue_id = '',
+            this.editedItem.id = '',
             this.initialize();
         },
         closeDelete() {
             this.dialogDelete = false
             this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem);
-                this.editedIndex = -1;
             });
             this.file = '';
             this.initialize();
@@ -434,12 +566,24 @@ export default {
                     .post('http://127.0.0.1:8000/api/finance-updated', formData)
                     .then(() => {
                         this.initialize();
+                        this.editedIndex = -1
+                        this.editedItem.amount = '',
+            this.editedItem.comment = '',
+            this.editedItem.file = '',
+            this.editedItem.expense_id = '',
+            this.editedItem.revenue_id = '',
+            this.editedItem.id = '',
+                        /*this.$nextTick(() => {
+                            this.editedItem = Object.assign({}, this.defaultItem);
+                        });*/
                         this.showAlert("success", "Operación editada correctamente", 3000);
                         this.file = '';
                     })
             } else {
                 this.valid = false;
-                this.editedItem.branch_id = this.branch_id;
+                //this.editedItem.branch_id = this.branch_id;
+                console.log('this.editedItem');
+                console.log(this.editedItem);
                 const formData = new FormData();
                 for (let key in this.editedItem) {
                     formData.append(key, this.editedItem[key]);
@@ -450,9 +594,23 @@ export default {
                     .post('http://127.0.0.1:8000/api/finance', formData)
                     .then(() => {
                         this.initialize();
+                        this.editedIndex = -1;
+                        this.editedItem.amount = '',
+            this.editedItem.comment = '',
+            this.editedItem.file = '',
+            this.editedItem.expense_id = '',
+            this.editedItem.revenue_id = '',
+            this.editedItem.id = '',
+                        /*this.$nextTick(() => {
+                            this.editedItem = Object.assign({}, this.defaultItem);
+                        });*/
+                        //this.selectedOption = '';
                         this.showAlert("success", "Registro de operación creado correctamente", 3000);
                         this.file = '';
+                        //this.$nextTick(() => {
+                        //this.editedItem = Object.assign({}, this.defaultItem);
                     })
+                //})
             }
             this.close()
         },
