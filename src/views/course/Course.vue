@@ -105,12 +105,11 @@
                         <v-menu v-model="menu1" :close-on-content-click="false" :nudge-right="40"
                           transition="scale-transition" offset-y min-width="290px">
                           <template v-slot:activator="{ props }">
-                            <v-text-field v-bind="props" :model-value="dateFormatted1" variant="underlined"
+                            <v-text-field v-bind="props" v-model="formattedStartDate" variant="underlined"
                               prepend-icon="mdi-calendar" label="Fecha inicial"></v-text-field>
                           </template>
                           <v-locale-provider locale="es">
-                            <v-date-picker color="orange lighten-2" :model-value=input1  header="Calendario" title="Seleccione la fecha"
-                              @update:model-value="updateDate1" format="yyyy-MM-dd"></v-date-picker>
+                            <v-date-picker color="orange lighten-2" @input="menu1" v-model=editedItem.startDate  header="Calendario" title="Seleccione la fecha"></v-date-picker>
                           </v-locale-provider>
                         </v-menu>
                       </v-col>
@@ -118,12 +117,11 @@
                         <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40"
                           transition="scale-transition" offset-y min-width="290px">
                           <template v-slot:activator="{ props }">
-                            <v-text-field v-bind="props" :model-value="dateFormatted" variant="underlined"
+                            <v-text-field v-bind="props" v-model="formattedEndDate" variant="underlined"
                               prepend-icon="mdi-calendar" label="Fecha final"></v-text-field>
                           </template>
                           <v-locale-provider locale="es">
-                            <v-date-picker color="orange lighten-2" :model-value=input  header="Calendario" title="Seleccione la fecha" @update:model-value="updateDate"
-                              format="yyyy-MM-dd"></v-date-picker>
+                            <v-date-picker color="orange lighten-2" @input="menu" v-model=editedItem.endDate  header="Calendario" title="Seleccione la fecha" ></v-date-picker>
                           </v-locale-provider>
                         </v-menu>
                       </v-col>
@@ -309,13 +307,13 @@
                 </template>
 
                 <template v-slot:item.image_url="{ item }">
-        <!-- Verifica si image_url cumple las condiciones -->
-        <!--<v-icon color="green" v-if="item.image_url && item.image_url !== 'image/default.png'" @click="openModal(item.image_url)">
-          mdi-eye
-        </v-icon>-->
-        <v-btn density="comfortable" icon="mdi-eye" color="green" v-if="item.image_url && item.image_url !== 'image/default.png'" @click="openModal(item.image_url)" variant="tonal"
-            elevation="1" class="mr-1 mt-1 mb-1" title="Ver detalles"></v-btn>
-      </template>
+            <!-- Verifica si image_url cumple las condiciones -->
+            <!--<v-icon color="green" v-if="item.image_url && item.image_url !== 'image/default.png'" @click="openModal(item.image_url)">
+              mdi-eye
+            </v-icon>-->
+              <v-btn density="comfortable" icon="mdi-eye" color="green" v-if="item.image_url && item.image_url !== 'image/default.png'" @click="openModal(item.image_url)" variant="tonal"
+                  elevation="1" class="mr-1 mt-1 mb-1" title="Ver detalles"></v-btn>
+            </template>
 
                 <template v-slot:item.enrollment_confirmed="{ item }">
                   <div class="text-end">
@@ -333,10 +331,10 @@
                     mdi-delete
                   </v-icon>-->
                   <v-btn density="comfortable" icon="mdi-pencil"  @click="editS(item)" color="primary" variant="tonal"
-            elevation="1" class="mr-1 mt-1 mb-1" title="Editar Aignación"></v-btn>
-          <v-btn density="comfortable" icon="mdi-delete" @click="deleteS(item)" color="red-darken-4" variant="tonal"
-            elevation="1" title="Eliminar asignación"></v-btn>
-                </template>
+                  elevation="1" class="mr-1 mt-1 mb-1" title="Editar Asignación"></v-btn>
+                <v-btn density="comfortable" icon="mdi-delete" @click="deleteS(item)" color="red-darken-4" variant="tonal"
+                  elevation="1" title="Eliminar asignación"></v-btn>
+                      </template>
 
               </v-data-table>
             </v-card-text>
@@ -405,25 +403,25 @@
     </v-card>
       <!-- Modal para mostrar la imagen -->
       <v-dialog v-model="dialogPhoto" persistent max-width="600px">
-      <v-card>
-            <v-toolbar color="#F18254">
-              <span class="text-subtitle-2 ml-4"> Comprobante de Transferencia</span> <v-spacer></v-spacer>
-              <v-btn  @click="dialogPhoto = false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-            </v-toolbar>
-       
-        <v-card-text>
-          <v-img :src="selectedImageUrl" aspect-ratio="1.5"></v-img>
-        </v-card-text>
-      </v-card>
+        <v-card>
+              <v-toolbar color="#F18254">
+                <span class="text-subtitle-2 ml-4"> Comprobante de Transferencia</span> <v-spacer></v-spacer>
+                <v-btn  @click="dialogPhoto = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+              </v-toolbar>
+        
+          <v-card-text>
+            <v-img :src="selectedImageUrl" aspect-ratio="1.5"></v-img>
+          </v-card-text>
+        </v-card>
     </v-dialog>
   </v-container>
 </template>
 <script>
 
 import axios from "axios";
-import { format } from "date-fns";
+import { useDate } from 'vuetify';
 
 export default {
   data: () => ({
@@ -444,6 +442,8 @@ export default {
     sb_title: '',
     sb_icon: '',
     search: '',
+    startDate: null,
+    endDate: null,
     editando: false,
     dialog: false,
     message_delete: true,
@@ -488,8 +488,8 @@ export default {
       name: '',
       description: '',
       price: '',
-      startDate: '',
-      endDate: '',
+      startDate: null,
+      endDate: null,
       enrollment_id: '',
       course_image: '',
       total_enrollment: '',
@@ -527,8 +527,8 @@ export default {
       name: '',
       description: '',
       price: '',
-      startDate: '',
-      endDate: '',
+      startDate: null,
+      endDate: null,
       enrollment_id: '',
       course_image: '',
       total_enrollment: '',
@@ -542,6 +542,17 @@ export default {
     },
     selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
   }),
+  setup() {
+        const adapter = useDate()
+
+    const parseDate = (dateString) => {
+      return adapter.parseISO(dateString)
+    }
+
+    return {
+     parseDate
+    }
+    },
 
   computed: {
     imgedit() {
@@ -551,7 +562,7 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? 'Nuevo Curso' : 'Editar Curso'
     },
-    dateFormatted() {
+    /*dateFormatted() {
       const date = this.input ? new Date(this.input) : new Date();
       const day = date.getDate().toString().padStart(2, '0');
       const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -570,7 +581,36 @@ export default {
     },
     getDate1() {
       return this.input1 ? new Date(this.input1) : new Date();
-    },
+    },*/
+    formattedStartDate() {
+            if (this.editedItem.startDate) {
+              console.log('this.editedItem.startDate datos');
+              console.log(this.editedItem.startDate);
+                const date = new Date(this.editedItem.startDate); 
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, "0");
+                const day = String(date.getDate()).padStart(2, "0");
+                console.log(`${year}-${month}-${day}`);
+
+                return `${year}-${month}-${day}`;
+            }
+            return "";
+            
+        },
+        formattedEndDate() {
+            if (this.editedItem.endDate) {
+              console.log('this.editedItem.endDate');
+              console.log(this.editedItem.endDate);
+                const date = new Date(this.editedItem.endDate);
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, "0");
+                const day = String(date.getDate()).padStart(2, "0");
+                console.log(`${year}-${month}-${day}`);
+                return `${year}-${month}-${day}`;
+
+            }
+            return "";
+        },
   },
 
   watch: {
@@ -604,7 +644,7 @@ export default {
      // alert(this.selectedImageUrl)// Establece la imagen seleccionada
       this.dialogPhoto = true; // Abre el modal
     },
-    updateDate(val) {
+    /*updateDate(val) {
       this.input = val;
       this.editedItem.endDate = format(val, "yyyy-MM-dd");
       this.menu = false;
@@ -613,9 +653,10 @@ export default {
       this.input1 = val;
       this.editedItem.startDate = format(val, "yyyy-MM-dd");
       this.menu1 = false;
-    },
+    },*/
     showStudents(item) {
       this.courseSelect = item;
+      console.log('this.courseSelect');
       console.log(this.courseSelect);
       this.course_id = item.id;
       console.log(item.id);
@@ -641,18 +682,19 @@ export default {
 
     editS(item) {
       console.log("Este es el Item")
-      //console.log(item)
-      this.dialogUpdateS = true
+      console.log(item)
+      this.dialogUpdateS = true;
       //this.editedItem.branch_id=item.id
-      this.editedItemS.reservation_payment = item.reservation_payment
-      this.editedItemS.total_payment = item.total_payment
-      this.editedItemS.enrollment_confirmed = item.enrollment_confirmed
-      this.editedItemS.image_url = item.image_url
-      this.editedItemS.student_id = item.id
+      this.editedItemS.reservation_payment = item.reservation_payment;
+      this.editedItemS.total_payment = item.total_payment;
+      this.editedItemS.enrollment_confirmed = item.enrollment_confirmed;
+      //this.editedItemS.image_url = item.image_url;
+      this.editedItemS.student_id = item.id;
+      this.imgMiniatura = 'http://127.0.0.1:8000/api/images/'+item.image_url;
       /*  this.editedItemS.id_course=
       
       
-  */
+      */
 
       this.editedStudent.student_id = item.id
 
@@ -797,7 +839,9 @@ export default {
       this.file = '';
       this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.course_image;
       this.editedIndex = 1;
-      this.editedItem = Object.assign({}, item)
+      this.editedItem = Object.assign({}, item);
+      this.editedItem.startDate = this.parseDate(item.startDate);
+      this.editedItem.endDate = this.parseDate(item.endDate);
       this.dialog = true;
       this.editando = true;
     },
@@ -858,10 +902,13 @@ export default {
         this.data.second_surname = this.editedItem.second_surname;
         this.data.email = this.editedItem.email;
         this.data.phone = this.editedItem.phone;*/
+        this.editedItem.startDate = this.formattedStartDate;
+        this.editedItem.endDate = this.formattedEndDate;
         const formData = new FormData();
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
         }
+        console.log(formData);
         axios
           .post('http://127.0.0.1:8000/api/course-update', formData)
           .then(() => {
@@ -878,6 +925,8 @@ export default {
         this.data.second_surname = this.editedItem.second_surname;
         this.data.email = this.editedItem.email;
         this.data.phone = this.editedItem.phone;*/
+        this.editedItem.startDate = this.formattedStartDate;
+        this.editedItem.endDate = this.formattedEndDate;
         const formData = new FormData();
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);

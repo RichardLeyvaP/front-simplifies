@@ -104,6 +104,10 @@
           <template v-slot:item.actions="{ item }">
             <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar Academia"></v-btn>
+            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-store-outline" @click="showStores(item)" color="green" variant="tonal"
+            elevation="1" title="Agregar Almacén"></v-btn>
+            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-storefront" @click="showProducts(item)" color="orange-darken-1" variant="tonal"
+            elevation="1" title="Agregar productos a Academia"></v-btn>
           <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
             elevation="1" title="Eliminar Academia"></v-btn>
             <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
@@ -114,6 +118,211 @@
             </v-icon>-->
           </template>
         </v-data-table>
+        <!--Sotores-->
+        <!--Store-->
+      <v-dialog v-model="dialogStores" fullscreen transition="dialog-bottom-transition">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-1 ml-4"> Almacenes de la Academia</span>
+            <v-spacer></v-spacer>
+            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="this.dialogAddStore = true">
+              Agregar Almacén
+            </v-btn>
+          </v-toolbar>
+          <v-card-text class="mt-2 mb-2">
+            <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
+              hide-details></v-text-field>
+            <v-data-table :headers="headers2" :items="enrollmentStores" :search="search2" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+
+              <!--<template v-slot:item.name="{ item }">
+
+                    <v-avatar elevation="3" color="grey-lighten-4" size="large">
+                      <v-img :src="'http://127.0.0.1:8000/api/images/'+item.image_url" alt="image"></v-img>
+                    </v-avatar>
+                    {{ item.name+' '+item.surname+' '+item.second_surname}}
+                  </template>-->
+
+              <template v-slot:item.actions="{ item }">
+          <v-btn density="comfortable" icon="mdi-delete" @click="closestoreRequest(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar afiliación del almacén"></v-btn>
+                <!--<v-icon size="small" color="red" @click="closestoreRequest(item)">
+                  mdi-delete
+                </v-icon>-->
+              </template>
+
+            </v-data-table>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
+              Volver
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="dialogAddStore" width="500">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-2 ml-4">Agregar Almacén</span>
+          </v-toolbar>
+          <v-card-text class="mt-2 mb-2">
+            <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+              <v-container>
+                <v-row>
+                  <v-col cols="12" md="12">
+                    <v-autocomplete v-model="store_id" :items="stores" label="Almacén"
+                      prepend-icon="mdi-store-outline" item-title="address" item-value="id" variant="underlined"
+                      :rules="selectRules"></v-autocomplete>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="#E7E9E9" variant="flat" @click="closestore">
+                  Cancelar
+                </v-btn>
+                <v-btn color="#F18254" variant="flat" @click="saveStore" :disabled="!valid">
+                  Aceptar
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="dialogRequestStore" width="500">
+        <v-card>
+
+          <v-toolbar color="red">
+            <span class="text-subtitle-2 ml-4"> Eliminar afiliación del almacén de esta academia</span>
+          </v-toolbar>
+
+          <v-card-text class="mt-2 mb-2"> ¿Desea eliminar esta afiliación del almacén con la academia?</v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="closerequestStore">
+              Cancelar
+            </v-btn>
+            <v-btn color="#F18254" variant="flat" @click="storeDelete">
+              Aceptar
+            </v-btn>
+
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!--endStores-->
+      <!--Products-->
+      <v-dialog v-model="dialogStoresProducts" fullscreen transition="dialog-bottom-transition">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-1 ml-4"> Productos por almacenes de la Academia</span>
+            <v-spacer></v-spacer>
+            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="this.dialogAddProduct = true">
+              Asignar Producto
+            </v-btn>
+          </v-toolbar>
+          <v-card-text class="mt-2 mb-2">
+            <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar" single-line
+              hide-details></v-text-field>
+            <v-data-table :headers="headers3" :items="enrollmentStoresProducts" :search="search3" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles"  :group-by="groupBy">
+              <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
+              <tr>
+                <td :colspan="columns.length">
+                  <VBtn size="small" variant="text" :icon="isGroupOpen(item) ? '$expand' : '$next'"
+                    @click="toggleGroup(item)"></VBtn>
+                  {{ item.value }}
+                </td>
+              </tr>
+            </template>
+            <template v-slot:item.name="{ item }">
+
+            <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+              <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_product" alt="image"></v-img>
+            </v-avatar>
+            {{ item.name }}
+            </template>
+
+              <template v-slot:item.actions="{ item }">
+                <v-btn density="comfortable" icon="mdi-pencil"  @click="editItemProduct(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar existencia"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="closeproductRequest(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar existencia de producto"></v-btn>
+                <!--<v-icon size="small" color="red" @click="closestoreRequest(item)">
+                  mdi-delete
+                </v-icon>-->
+              </template>
+
+            </v-data-table>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
+              Volver
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="dialogAddProduct" width="500">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-2 ml-4">{{formTitle}}</span>
+          </v-toolbar>
+          <v-card-text class="mt-2 mb-2">
+            <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+              <v-container>
+                <v-row>
+                  <v-col cols="12" md="12">
+                    <v-autocomplete v-model="store_id" :items="storesAcademy" label="Almacén"
+                      prepend-icon="mdi-store-outline" item-title="address" item-value="id" variant="underlined"
+                      :rules="selectRules"></v-autocomplete>
+                  <v-autocomplete v-model="product_id" :items="products" clearable label="Productos"
+                        prepend-icon="mdi-tag" item-title="name" item-value="id" variant="underlined"
+                        :rules="selectRules"></v-autocomplete>
+                      <v-text-field v-model="product_quantity" clearable :label="this.texttitle"
+                        prepend-icon="mdi-tag-plus" variant="underlined">
+                      </v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="#E7E9E9" variant="flat" @click="closeproduct">
+                  Cancelar
+                </v-btn>
+                <v-btn color="#F18254" variant="flat" @click="saveProduct" :disabled="!valid">
+                  Aceptar
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="dialogRequestProduct" width="500">
+        <v-card>
+
+          <v-toolbar color="red">
+            <span class="text-subtitle-2 ml-4"> Eliminar asignación de producto</span>
+          </v-toolbar>
+
+          <v-card-text class="mt-2 mb-2"> ¿Desea eliminar la asignación del producto?</v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="closerequestProduct">
+              Cancelar
+            </v-btn>
+            <v-btn color="#F18254" variant="flat" @click="deleteProduct">
+              Aceptar
+            </v-btn>
+
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!--endProducts-->
       </v-card-text>
     </v-card>
   </template>
@@ -138,6 +347,37 @@
       search:'',
       dialog: false,
       dialogDelete: false,
+      //stores
+      dialogStores: false,
+      search2: '',
+      dialogAddStore: false,
+      stores:[],
+      store_id: '',
+      dialogRequestStore: false,
+      //products
+      dialogStoresProducts: false,
+      search3: '',
+      product_id: '',
+      product_quantity: '',
+      dialogAddProduct: false,
+      editar: false,
+      dialogRequestProduct: false,
+      groupBy: [
+      {
+        key: 'direccionStore',
+      },
+    ],
+    headers3: [
+      //{ title: 'Almacén', align: 'start', value: 'direccionStore' },
+      { title: 'Nombre', key: 'name' },
+      { title: 'Referencia', key: 'reference' },
+      { title: 'Código', key: 'code' },
+      { title: 'Estado', key: 'status_product' },
+      { title: 'Precio compra', align: 'start', value: 'purchase_price' },
+      { title: 'Precio venta', align: 'start', value: 'sale_price' },
+      { title: 'Existencia', align: 'start', value: 'product_exit' },
+      { title: 'Acciones', key: 'actions', sortable: false },
+    ],
       headers: [
   
         { title: 'Academia', value: 'name' },
@@ -145,12 +385,23 @@
         { title: 'Negocio', value: 'business.name' },
         { title: 'Acciones', key: 'actions', sortable: false },
       ],
+      headers2: [
+      { title: 'Referencia', value: 'reference' },
+      { title: 'Dirección', value: 'address' },
+      { title: 'Descripción', value: 'description' },
+      { title: 'Acciones', key: 'actions', sortable: false },
+    ],
       results: [],
   
       business: [],
-  
-      editedIndex: -1,
-  
+      enrollmentStores:[],
+      enrollmentStoresProducts: [],
+      storesAcademy: [],
+      products: [],
+      editedIndex: 1,
+      //stores
+      enrollment_id: '',
+      enrollmentSelect: '',
       editedItem: {
         id: '',
         name: '',
@@ -183,7 +434,21 @@
   
     computed: {
       formTitle() {
-        return this.editedIndex === -1 ? 'Nueva Academia' : 'Editar Academia'
+        if(this.editedIndex == 1){
+        return 'Nueva Academia';
+        }
+        if (this.editedIndex == 2) {
+          return 'Editar Academia';
+        }
+        if (this.editedIndex == 3) {
+          return 'Asiganar Producto';
+        }
+        if (this.editedIndex == 4) {
+          return 'Editar Existencia';
+        }
+        else {
+          return 'Asignar Almacén';
+        }
       },
     },
   
@@ -204,30 +469,30 @@
   
     methods: {
       
-      showAlert(sb_type, sb_message, sb_timeout) {
-   this.sb_type = sb_type
+    showAlert(sb_type, sb_message, sb_timeout) {
+      this.sb_type = sb_type
 
-   if (sb_type == "success") {
-     this.sb_title = 'Éxito'
-     this.sb_icon = 'mdi-check-circle'
-   }
+      if (sb_type == "success") {
+        this.sb_title = 'Éxito'
+        this.sb_icon = 'mdi-check-circle'
+      }
 
-   if (sb_type == "error") {
-     this.sb_title = 'Error'
-     this.sb_icon = 'mdi-check-circle'
-   }
+      if (sb_type == "error") {
+        this.sb_title = 'Error'
+        this.sb_icon = 'mdi-check-circle'
+      }
 
-   if (sb_type == "warning") {
-     this.sb_title = 'Advertencia'
-     this.sb_icon = 'mdi-alert-circle'
-   }
+      if (sb_type == "warning") {
+        this.sb_title = 'Advertencia'
+        this.sb_icon = 'mdi-alert-circle'
+      }
 
-   this.sb_message = sb_message
-   this.sb_timeout = sb_timeout
-   this.snackbar = true
- },
+      this.sb_message = sb_message
+      this.sb_timeout = sb_timeout
+      this.snackbar = true
+    },
   
-      initialize() {
+    initialize() {
         axios
           .get('http://127.0.0.1:8000/api/enrollment-show', {
             params: {
@@ -246,15 +511,15 @@
             console.log(response.data);
             this.business = response.data.business;
             if (this.business.length > 0) {
-      this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
-    }        
-    console.log('this.editedItem.business_id');
-      console.log(this.editedItem.business_id);
-          });
+            this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
+            }        
+            console.log('this.editedItem.business_id');
+              console.log(this.editedItem.business_id);
+              });
   
       },
       editItem(item) {
-        this.editedIndex = 1;
+        this.editedIndex = 2;
         this.editedItem = Object.assign({}, item);
         this.editedItem.business_id = parseInt(item.business_id);
         this.dialog = true
@@ -285,14 +550,18 @@
         })
       },
       closeDelete() {
-        this.dialogDelete = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
+        this.dialogDelete = false;
+        this.dialogStores = false;
+        this.dialogStoresProducts = false;
+        this.editedItem.name = '';        
+        this.editedItem.description = '';        
+        this.editedItem.business_id = parseInt(this.business_id);        
+        this.editedIndex = 1;
+        this.enrollmentSelect ='',
+        this.enrollment_id = ';'
       },
       save() {
-        if (this.editedIndex > -1) {
+        if (this.editedIndex == 2) {
           this.valid = false;
           this.data.id = this.editedItem.id;
           this.data.name = this.editedItem.name;
@@ -304,7 +573,7 @@
               this.showAlert("success","Academia actualizada correctamente", 3000);
               this.initialize();
             })
-        } else {
+        } if (this.editedIndex == 1) {
           this.valid = false;
           this.data.name = this.editedItem.name;
           this.data.description = this.editedItem.description;
@@ -319,6 +588,193 @@
         }
         this.close()
       },
+      //Stores logica
+    showStores(item){
+      this.editedIndex = 5;
+        this.enrollmentSelect = item;
+        console.log(this.enrollmentSelect);
+        this.enrollment_id = item.id;
+        console.log(item.id);
+        axios
+          .get('http://127.0.0.1:8000/api/enrollmentstore-show', {
+            params: {
+              enrollment_id: item.id
+            }
+          })
+          .then((response) => {
+            this.enrollmentStores = response.data.enrollmentStores;
+            console.log('imprime stores');
+          });
+        this.dialogStores = true;
+
+        axios
+          .get('http://127.0.0.1:8000/api/store')
+          .then((response) => {
+            this.stores = response.data.stores;
+          });
     },
+    closestore() {
+      this.dialogAddStore = false;
+      this.store_id = '',
+      this.showStores(this.enrollmentSelect)
+    },
+    saveStore() {
+      this.valid = false,
+        this.data.enrollment_id = this.enrollment_id;
+      this.data.store_id = this.store_id;
+      console.log('this.data');
+      console.log(this.data);
+      axios
+        .post('http://127.0.0.1:8000/api/enrollmentstore', this.data)
+        .then(() => {
+          this.dialogAddStore = false;
+          this.store_id = '',
+          this.showStores(this.enrollmentSelect);
+          this.showAlert("success", "Almacén afiliado correctamente a la academia", 3000);
+        })
+    },
+    closestoreRequest(item) {
+      this.dialogRequestStore = true
+      //this.editedItem.branch_id=item.id
+      this.store_id = item.store_id
+    },
+    closerequestStore() {
+      this.dialogRequestStore = false;
+      this.store_id = '';
+      this.showStores(this.enrollmentSelect)
+    },
+    storeDelete() {
+      let request = {
+        enrollment_id: this.enrollment_id,
+        store_id: this.store_id
+      };
+      axios
+        .post('http://127.0.0.1:8000/api/enrollmentstore-destroy', request)
+        .then(() => {
+          this.dialogRequestStore = false
+          this.store_id = '',
+          //console.log(this.branchSelect);
+          this.showStores(this.enrollmentSelect)
+          this.showAlert("success", "Afiliación eliminada correctamente", 3000)
+        })
+    },//endStores
+    //Asignar Productos
+    showProducts(item){
+      this.editedIndex = 3;
+        this.enrollmentSelect = item;
+        console.log(this.enrollmentSelect);
+        this.enrollment_id = item.id;
+        console.log(item.id);
+        axios
+          .get('http://127.0.0.1:8000/api/productstore-academy-show', {
+            params: {
+              enrollment_id: item.id
+            }
+          })
+          .then((response) => {
+            this.enrollmentStoresProducts = response.data.products;
+            console.log('imprime products');
+          });
+        this.dialogStoresProducts = true;
+
+        axios
+        .get('http://127.0.0.1:8000/api/store-academy-show', {
+          params: {
+            enrollment_id: this.enrollment_id
+          }
+        })
+        .then((response) => {
+          this.storesAcademy = response.data.stores;
+        });
+      axios
+        .get('http://127.0.0.1:8000/api/product')
+        .then((response) => {
+          this.products = response.data.products;
+        });
+    },
+    closeproduct() {
+      this.dialogAddProduct = false;
+      this.store_id = '';
+      this.product_id = '';
+      this.product_quantity = '';
+      this.showProducts(this.enrollmentSelect)
+    },
+    saveProduct() {
+      if (this.editedIndex == 3) {
+        this.valid = false,
+        this.data.enrollment_id = this.enrollment_id;
+      this.data.store_id = this.store_id;
+      this.data.product_id = this.product_id;
+      this.data.product_quantity = this.product_quantity;
+      console.log('this.data');
+      console.log(this.data);
+      axios
+          .post('http://127.0.0.1:8000/api/productstore', this.data)
+          .then(() => {
+          this.dialogAddProduct = false;
+          this.store_id = '',
+          this.product_id = '';
+          this.product_quantity = '';
+          this.showProducts(this.enrollmentSelect);
+          this.showAlert("success", "Producto asignado correctamente al almacén", 3000);
+        })
+      }
+      if (this.editedIndex == 4){
+        this.valid = false,
+        this.data.enrollment_id = this.enrollment_id;
+      this.data.store_id = this.store_id;
+      this.data.product_id = this.product_id;
+      this.data.product_quantity = this.product_quantity;
+      console.log('this.data');
+      console.log(this.data);
+      axios
+          .put('http://127.0.0.1:8000/api/productstore', this.data)
+          .then(() => {
+          this.dialogAddProduct = false;
+          this.store_id = '',
+          this.product_id = '';
+          this.product_quantity = '';
+          this.showProducts(this.enrollmentSelect);
+          this.showAlert("success", "Asignacion editada correctamente", 3000);
+        })
+      }
+    },
+    editItemProduct(item) {
+      this.editedIndex = 4;
+      this.dialogAddProduct = true;
+      this.store_id = item.store_id;
+      this.product_id = item.product_id;
+      this.product_quantity = item.product_exit;
+    },
+    closeproductRequest(item) {
+      this.dialogRequestProduct = true
+      //this.editedItem.branch_id=item.id
+      this.store_id = item.store_id;
+      this.product_id = item.product_id;
+
+    },
+    closerequestProduct() {
+      this.dialogRequestProduct = false;
+      this.store_id = '';
+      this.product_id = '';
+      this.showProducts(this.enrollmentSelect)
+    },
+    deleteProduct() {
+      this.data.product_id = this.product_id;
+      this.data.store_id = this.store_id;
+      this.data.enrollment_id = this.enrollment_id;
+      axios
+        .post('http://127.0.0.1:8000/api/productstore-destroy', this.data)
+        .then(() => {
+          this.dialogRequestProduct = false;
+          this.store_id = '',
+          this.product_id = '';
+          console.log('this.enrollmentSelect');
+          console.log(this.enrollmentSelect);
+          this.showProducts(this.enrollmentSelect);
+          this.showAlert("success", "Asignación eliminada correctamente", 3000);    
+        })
+    },
+    },//endMethods
   }
   </script>

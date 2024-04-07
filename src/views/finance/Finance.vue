@@ -18,7 +18,7 @@
         <v-toolbar color="#F18254">
             <v-row align="center">
                 <v-col cols="12" md="5" class="grow ml-4">
-                    <span class="text-subtitle-1"> <strong>Detalles de operaciones</strong></span>
+                    <span class="text-subtitle-1"> <strong>Detalles de operaciones de {{this.editedItem.type}}</strong></span>
                 </v-col>
                 <v-col cols="12" md="4"></v-col>
                 <v-col cols="12" md="2">
@@ -306,10 +306,10 @@ export default {
 
         formTitle() {
             if (this.editedIndex === -1) {
-                return 'Registrar Operación';
+                return 'Registrar Operación de '+this.editedItem.type;
             }
             if (this.editedIndex === 1) {
-                return 'Editar Operación';
+                return 'Editar Operación de '+this.editedItem.type;
             }
             else {
                 return 'Trasladar producto de un almacén a otro'
@@ -324,24 +324,44 @@ export default {
         dialogDelete(val) {
             val || this.closeDelete()
         },
-        /*selectedOption(newOption, oldOption) {
+        selectedOption(newOption, oldOption) {
             // Realizar diferentes operaciones en función de la opción seleccionada
             switch (newOption) {
                 case this.options[0]:
-
+                this.editedItem.type = 'Negocio';
+                this.editedItem.business_id = parseInt(this.business_id);
+                this.editedItem.branch_id = '';
+                this.editedItem.enrollment_id = '';
+                this.selectedOption = 'Negocio';
+                this.initialize();
                     break;
                 case this.options[1]:
                     console.log(this.options[1]);
                     // Operaciones para la opción 2
+                    this.editedItem.type = 'Sucursal'
+                    this.editedItem.business_id = '';
+                    this.editedItem.enrollment_id = '';
+                    this.editedItem.branch_id = parseInt(this.branches[0].id);
+                    console.log(this.editedItem.branch_id);
+                    console.log(this.editedItem.enrollment_id);
+                    console.log(this.editedItem.business_id);
+                    this.initialize();
                     break;
                 case this.options[2]:
                     // Operaciones para la opción 3
-                    console.log(this.options[2]);
+                    this.editedItem.type = 'Academia'
+                    this.editedItem.business_id = '';
+                    this.editedItem.branch_id = '';
+                    this.editedItem.enrollment_id = parseInt(this.enrollments[0].id);
+                    console.log(this.editedItem.branch_id);
+                    console.log(this.editedItem.enrollment_id);
+                    console.log(this.editedItem.business_id);
+                    this.initialize();
                     break;
                 default:
                     break;
             }
-        }*/
+        }
     },
 
     mounted() {
