@@ -407,6 +407,13 @@ const routes = [
           import( "@/views/vacation/Vacations.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_vacations"] },
       },
+      {
+        path: "/couses-winner",
+        name: "Ingresos por cursos",
+        component: () =>
+          import( "@/views/reportes/CourseWinner.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_courses_winner"] },
+      },
     ],
   },
 ];
