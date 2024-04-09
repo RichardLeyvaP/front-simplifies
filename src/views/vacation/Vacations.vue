@@ -59,7 +59,13 @@
                                                     <v-locale-provider locale="es">
                                                         <v-date-picker @input="menu = false" header="Calendario"
                                                             title="Seleccione la fecha" color="orange lighten-2"
-                                                            v-model="startDate"></v-date-picker>
+                                                            v-model="startDate" :min="new Date(
+                        Date.now() -
+                        new Date().getTimezoneOffset() * 60000
+                      )
+                        .toISOString()
+                        .substr(0, 10)
+                        "></v-date-picker>
                                                     </v-locale-provider>
                                                 </v-menu>
                                             </v-col>
@@ -75,7 +81,13 @@
                                                     <v-locale-provider locale="es">
                                                         <v-date-picker @input="menu2 = false" header="Calendario"
                                                             title="Seleccione la fecha" color="orange lighten-2"
-                                                            v-model="endDate"></v-date-picker>
+                                                            v-model="endDate" :min="new Date(
+                        Date.now() -
+                        new Date().getTimezoneOffset() * 60000
+                      )
+                        .toISOString()
+                        .substr(0, 10)
+                        "></v-date-picker>
                                                     </v-locale-provider>
                                                 </v-menu>
                                             </v-col>
@@ -231,7 +243,7 @@ export default {
                 const month = String(date.getMonth() + 1).padStart(2, "0");
                 const day = String(date.getDate()).padStart(2, "0");
                 console.log(`${year}-${month}-${day}`);
-                new Date('2018-03-02');
+                //new Date('2018-03-02');
 
                 return `${year}-${month}-${day}`;
             }
@@ -387,8 +399,8 @@ export default {
             this.dialog = false;
             this.edit = false;
             this.professional_id = '',
-                        this.startDate = '',
-                        this.endDate = '',
+                        this.startDate = null,
+                        this.endDate = null,
                 this.editedIndex = -1
         },
         closeDelete() {
@@ -409,11 +421,11 @@ export default {
                 axios
                     .put('http://127.0.0.1:8000/api/vacation', this.data)
                     .then(() => {
-                        this.professional_id = '',
-                        this.startDate = '',
-                        this.endDate = '',
-                        this.showAlert("success", "Vacaciones actualizadas correctamente", 3000);
                         this.initialize();
+                        this.professional_id = '',
+                        this.startDate = null,
+                        this.endDate = null,
+                        this.showAlert("success", "Vacaciones actualizadas correctamente", 3000);
                         this.edit = false;
                     })
             } else {
@@ -426,8 +438,8 @@ export default {
                     .post('http://127.0.0.1:8000/api/vacation', this.data)
                     .then(() => {
                         this.professional_id = '',
-                        this.startDate = '',
-                        this.endDate = '',
+                        this.startDate = null,
+                        this.endDate = null,
                         this.edit = false;
                         this.showAlert("success", "Vacaciones asignadas correctamente", 3000);
                         this.initialize();

@@ -206,6 +206,10 @@
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
         </template>
+        <template v-slot:item.retention="{ item }">
+          
+        {{ item.retention ? item.retention+'%' : ''}}
+        </template>
         <template v-slot:item.name="{ item }">
 
         <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">

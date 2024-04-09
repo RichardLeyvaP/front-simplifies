@@ -211,8 +211,8 @@
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar Curso"></v-btn>
             <v-btn density="comfortable" icon="mdi-account-school"  @click="showStudents(item)" color="green" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Estudiantes inscritos"></v-btn>
-            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-storefront" @click="showProducts(item)" color="orange-darken-1" variant="tonal"
-            elevation="1" title="Vender productos a estudiantes"></v-btn>
+            <!--<v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-storefront" @click="showProducts(item)" color="orange-darken-1" variant="tonal"
+            elevation="1" title="Vender productos a estudiantes"></v-btn>-->
           <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
             elevation="1" title="Eliminar Curso"></v-btn>
           </template>
@@ -332,6 +332,8 @@
                   </v-icon>-->
                   <v-btn density="comfortable" icon="mdi-pencil"  @click="editS(item)" color="primary" variant="tonal"
                   elevation="1" class="mr-1 mt-1 mb-1" title="Editar Asignación"></v-btn>
+                  <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-storefront" @click="showProducts(item)" color="orange-darken-1" variant="tonal"
+            elevation="1" title="Asignar productos al estudiante"></v-btn>
                 <v-btn density="comfortable" icon="mdi-delete" @click="deleteS(item)" color="red-darken-4" variant="tonal"
                   elevation="1" title="Eliminar asignación"></v-btn>
                       </template>
@@ -384,7 +386,7 @@
               <span class="text-subtitle-2 ml-4"> Eliminar Estudisante del curso</span>
             </v-toolbar>
 
-            <v-card-text class="mt-2 mb-2"> ¿Desea eliminar este cliente del curso?</v-card-text>
+            <v-card-text class="mt-2 mb-2"> ¿Desea eliminar este estudiante del curso?</v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -421,7 +423,7 @@
     <v-dialog v-model="dialogProducts" fullscreen transition="dialog-bottom-transition">
         <v-card>
           <v-toolbar color="#F18254">
-            <span class="text-subtitle-1 ml-4">Productos vendidos a estudiantes del curso</span>
+            <span class="text-subtitle-1 ml-4">Productos asignados al estudiante</span>
             <v-spacer></v-spacer>
             <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="this.dialogAddProduct = true">
               Asignar Producto
@@ -448,13 +450,13 @@
             {{ item.nameProduct }}
             </template>
 
-            <template v-slot:item.nameStudent="{ item }">
+            <!--<template v-slot:item.nameStudent="{ item }">
 
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
               <v-img :src="'http://127.0.0.1:8000/api/images/' + item.student_image" alt="image"></v-img>
             </v-avatar>
             {{ item.nameStudent }}
-            </template>
+            </template>-->
 
               <template v-slot:item.actions="{ item }">
                 <!--<v-btn density="comfortable" icon="mdi-pencil"  @click="editItemProduct(item)" color="primary" variant="tonal"
@@ -471,7 +473,7 @@
           <v-divider></v-divider>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
+            <v-btn color="#E7E9E9" variant="flat" @click="(this.dialogProducts = false) && (this.productSelect = '')">
               Volver
             </v-btn>
           </v-card-actions>
@@ -487,12 +489,15 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" md="12">
-                    <v-autocomplete v-model="student_id" :items="studentsCourse" label="Estudiantes"
+                    <!--<v-autocomplete v-model="student_id" :items="studentsCourse" label="Estudiantes"
                       prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined"
-                      :rules="selectRules"></v-autocomplete>
+                      :rules="selectRules"></v-autocomplete>-->
                   <v-autocomplete v-model="product_id" :items="products" clearable label="Productos"
                         prepend-icon="mdi-tag" item-title="name" item-value="id" variant="underlined"
-                        :rules="selectRules"></v-autocomplete>
+                        :rules="selectRules" @update:model-value="cantExist"></v-autocomplete>
+                    <v-text-field v-model="cant" clearable label="Cantidad"
+                      prepend-icon="mdi-currency-usd" variant="underlined" :rules=[validateCantidad]>
+                    </v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -582,10 +587,14 @@ export default {
     products: [],
     product_id:'',
     productsale_id: '',
+    cant: '',
+    product_exit: '',
+    productSelect: [],
     headers3: [
-      { title: 'Nombre Estudiante', key: 'nameStudent' },
+      //{ title: 'Nombre Estudiante', key: 'nameStudent' },
       { title: 'Nombre Producto', key: 'nameProduct' },
       { title: 'Precio del producto', key: 'price' },
+      { title: 'Cantidad', key: 'cant' },
       { title: 'Fecha de venta', key: 'data' },
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
@@ -774,6 +783,14 @@ export default {
   },
 
   methods: {
+    validateCantidad(value) {
+      return value <= this.product_exit || "La cantidad debe ser menor o igual que la existencia (" + this.product_exit + ")";
+    },
+    cantExist() {
+      let exist = this.products.filter(item => item.id == this.product_id);
+      this.product_exit = exist[0].product_exit;
+      console.log(exist[0].product_exit);
+    },
     imagenDisponible() {
         if (this.imgedit !== undefined && this.imgedit !== '') {
             // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
@@ -865,7 +882,7 @@ export default {
           })
           this.dialogAddStudent = false;
           this.showStudents(this.courseSelect);
-          this.showAlert("success", "Cliente matriculado correctamente al curso", 3000);
+          this.showAlert("success", "Estudiante matriculado correctamente al curso", 3000);
           this.initialize();
         })
     },
@@ -890,7 +907,7 @@ export default {
 
           this.dialogAddStudent = false;
           this.showStudents(this.courseSelect);
-          this.showAlert("success", "Cliente actualizado correctamente", 3000);
+          this.showAlert("success", "Estudiante actualizado correctamente", 3000);
           this.initialize();
           this.closeUpdateS();
         })
@@ -917,7 +934,7 @@ export default {
           this.initialize()
           console.log(this.courseSelect);
           this.showStudents(this.courseSelect)
-          this.showAlert("success", "Cliente  eliminado del curso correctamente", 3000)
+          this.showAlert("success", "Estudiante  eliminado del curso correctamente", 3000)
           this.initialize()
         })
     },
@@ -1092,17 +1109,24 @@ export default {
     },
     //venta productos
     showProducts(item) {
-      this.courseSelect = item;
       console.log('this.courseSelect');
       console.log(this.courseSelect);
-      this.course_id = item.id;
-      this.enrollment_id = item.enrollment_id;
-      console.log(item.id);
+      this.productSelect = item;
+      console.log( 'this.productSelect');
+      console.log( this.productSelect);
+      console.log('this.courseSelect[0].enrollment_confirmed');
+      console.log(this.courseSelect.enrollment_id);
+      this.course_id = this.courseSelect.id;
+      this.enrollment_id = this.courseSelect.enrollment_id;
+      this.student_id = item.id;
+      /*this.courseSelect = item;
+      console.log(item.id);*/
       axios
         .get('http://127.0.0.1:8000/api/productsale-show', {
           params: {
-            course_id: item.id,
-            enrollment_id: item.enrollment_id
+            course_id: item.course_id,
+            enrollment_id: this.courseSelect.enrollment_id,
+            student_id: item.id
           }
         })
         .then((response) => {
@@ -1111,7 +1135,7 @@ export default {
           console.log(response.data.productSales);
 
         });
-        axios
+        /*axios
         .get('http://127.0.0.1:8000/api/course-student-product-show',{
           params: {
             course_id: item.id
@@ -1119,11 +1143,11 @@ export default {
         })
         .then((response) => {
           this.studentsCourse = response.data.students;
-        });
+        });*/
         axios
         .get('http://127.0.0.1:8000/api/products-academy-show', {
           params: {
-            enrollment_id: item.enrollment_id
+            enrollment_id: this.courseSelect.enrollment_id
           }
         })
         .then((response) => {
@@ -1139,6 +1163,7 @@ export default {
       this.dialogAddProduct = false;
       this.product_id = '';
       this.student_id = '';
+      this.cant = '';
       this.showProducts(this.courseSelect)
     },
     saveProduct() {
@@ -1147,7 +1172,7 @@ export default {
         this.data.enrollment_id = this.enrollment_id;
       this.data.student_id = this.student_id;
       this.data.id = this.product_id;
-      this.data.cant = 1;
+      this.data.cant = this.cant;
       console.log('this.data');
       console.log(this.data);
       axios
@@ -1156,7 +1181,8 @@ export default {
           this.dialogAddProduct = false;
           this.student_id = '',
           this.product_id = '';
-          this.showProducts(this.courseSelect);
+          this.cant = '';
+          this.showProducts(this.productSelect);
           this.showAlert("success", "Producto asignado correctamente al estudiante", 3000);
         })
       }
@@ -1189,7 +1215,7 @@ export default {
     closerequestProduct() {
       this.dialogRequestProduct = false;
       this.productsale_id = '';
-      this.showProducts(this.courseSelect)
+      this.showProducts(this.productSelect)
     },
     deleteProduct() {
       let request = {
@@ -1202,7 +1228,7 @@ export default {
           this.productsale_id = '',
           console.log('this.courseSelect');
           console.log(this.courseSelect);
-          this.showProducts(this.courseSelect);
+          this.showProducts(this.productSelect);
           this.showAlert("success", "Asignación eliminada correctamente", 3000);    
         })
     },
