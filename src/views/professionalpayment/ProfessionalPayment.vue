@@ -295,7 +295,7 @@ export default {
             switch (newOption) {
                 case this.options[0]:
                     this.mostrarCars = false;
-                    this.selected = [];
+                    this.selected2 = [];
                     break;
                 case this.options[1]:
                     this.mostrarCars = true;
