@@ -414,6 +414,13 @@ const routes = [
           import( "@/views/reportes/CourseWinner.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_courses_winner"] },
       },
+      {
+        path: "/professional-payment",
+        name: "Pago a Profesionales",
+        component: () =>
+          import( "@/views/professionalpayment/ProfessionalPayment.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_professional_payment"] },
+      },
     ],
   },
 ];

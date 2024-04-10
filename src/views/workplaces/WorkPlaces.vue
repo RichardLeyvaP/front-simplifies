@@ -190,13 +190,13 @@
                 if (this.charge === 'Administrador') {
           this.branch_id = this.branches[0].id;
         }
-                this.initialize()
             });
         if (this.charge === 'Administrador') {
    // Mostrar la fila con Autocomplete
    this.mostrarFila = true;
  }
-      this.initialize()
+ 
+ this.initialize();
     },
   
     methods: {
