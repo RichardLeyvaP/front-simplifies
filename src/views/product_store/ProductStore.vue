@@ -51,10 +51,10 @@
                       </v-text-field>
                     </v-col>
                     <v-col v-if="mostrarCampos">
-                      <v-autocomplete v-model="editedItem.branch_idM" :items="branches" clearable
+                      <!--<v-autocomplete v-model="editedItem.branch_idM" :items="branches" clearable
                         label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
-                        variant="underlined" @update:model-value="updatedstores()"></v-autocomplete>
-                      <v-autocomplete v-model="editedItem.store_idM" :items="stores" clearable label="Almacenes"
+                        variant="underlined" @update:model-value="updatedstores()"></v-autocomplete>-->
+                      <v-autocomplete v-model="editedItem.store_idM" :items="stores1" clearable label="Almacenes"
                         prepend-inner-icon="mdi-store" item-title="address" item-value="id" variant="underlined"
                         :rules=selectRules></v-autocomplete>
                       <v-text-field v-model="editedItem.product_quantityM" clearable label="Cantidad a mover"
@@ -106,7 +106,7 @@
 
     </v-toolbar>
 
-    <v-row>
+    <!--<v-row>
       <v-container>
         <v-col cols="12" sm="12" md="6">
           <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
@@ -115,7 +115,7 @@
         </v-col>
 
       </v-container>
-    </v-row>
+    </v-row>-->
     <v-card-text>
       <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details>
       </v-text-field>
@@ -212,6 +212,7 @@ export default {
     ],
     results: [],
     stores: [],
+    stores1: [],
     products: [],
     branches: [],
     editedIndex: -1,
@@ -316,22 +317,14 @@ export default {
     },
     updatedstores() {
       axios
-        .get('http://127.0.0.1:8000/api/store-show', {
-          params: {
-            branch_id: this.editedItem.branch_idM
-          }
-        })
+        .get('http://127.0.0.1:8000/api/store-show')
         .then((response) => {
           this.stores = response.data.stores;
         });
     },
     initialize() {
       axios
-        .get('http://127.0.0.1:8000/api/productstore-show', {
-          params: {
-            branch_id: this.branch_id
-          }
-        })
+        .get('http://127.0.0.1:8000/api/productstore-show')
         .then((response) => {
           this.results = response.data.products;
         });
@@ -367,6 +360,15 @@ export default {
       this.dialog = true;
       this.mostrarCampos = true;
       this.texttitle = 'Existencia';
+      axios
+        .get('http://127.0.0.1:8000/api/store-show-notin', {
+          params: {
+            store_id: this.editedItem.store_id
+          }
+        })
+        .then((response) => {
+          this.stores1 = response.data.stores;
+        });
     },
     deleteItem(item) {
       this.editedItem = Object.assign({}, item);
@@ -381,7 +383,7 @@ export default {
     deleteItemConfirm() {
       this.data.product_id = this.editedItem.product_id;
       this.data.store_id = this.editedItem.store_id;
-      this.data.branch_id = this.branch_id;
+      //this.data.branch_id = this.branch_id;
       axios
         .post('http://127.0.0.1:8000/api/productstore-destroy', this.data)
         .then(() => {
@@ -414,7 +416,7 @@ export default {
         this.data.product_id = this.editedItem.product_id;
         this.data.store_id = this.editedItem.store_id;
         this.data.product_quantity = this.editedItem.product_quantity;
-        this.data.branch_id = this.branch_id;
+        //this.data.branch_id = this.branch_id;
         console.log(this.data);
         console.log('editar');
         axios
@@ -430,9 +432,9 @@ export default {
         this.data.product_id = this.editedItem.product_id;
         this.data.store_id = this.editedItem.store_id;
         this.data.store_idM = this.editedItem.store_idM;
-        this.data.branch_idM = this.editedItem.branch_idM;
+        //this.data.branch_idM = this.editedItem.branch_idM;
         this.data.product_quantity = this.editedItem.product_quantityM;
-        this.data.branch_id = this.branch_id;
+        //this.data.branch_id = this.branch_id;
         axios
           .post('http://127.0.0.1:8000/api/move-product-store', this.data)
           .then(() => {
@@ -448,7 +450,7 @@ export default {
         this.data.product_id = this.editedItem.product_id;
         this.data.store_id = this.editedItem.store_id;
         this.data.product_quantity = this.editedItem.product_quantity;
-        this.data.branch_id = this.branch_id;
+        //this.data.branch_id = this.branch_id;
         axios
           .post('http://127.0.0.1:8000/api/productstore', this.data)
           .then(() => {

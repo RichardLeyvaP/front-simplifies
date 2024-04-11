@@ -26,11 +26,11 @@
                     <v-select v-model="selectedMounth" :items="months" label="Selecciona un mes" variant="outlined"
                         prepend-inner-icon="mdi-calendar" @update:model-value="moveProductsMounth()"></v-select>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <!--<v-col cols="12" sm="12" md="4">
                     <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
                         label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
                         variant="outlined" @update:model-value="initialize()"></v-autocomplete>
-                </v-col>
+                </v-col>-->
             </v-row>
             <v-row>
                 <v-col cols="12" md="12">
@@ -84,18 +84,18 @@ export default {
         years: [],
         months: [
             { value: '', title: '' },
-            { value: 1, title: 'Enero' },
-            { value: 2, title: 'Febrero' },
-            { value: 3, title: 'Marzo' },
-            { value: 4, title: 'Abril' },
-            { value: 5, title: 'Mayo' },
-            { value: 6, title: 'Junio' },
-            { value: 7, title: 'Julio' },
-            { value: 8, title: 'Agosto' },
-            { value: 9, title: 'Septiembre' },
-            { value: 10, title: 'Octubre' },
-            { value: 11, title: 'Noviembre' },
-            { value: 12, title: 'Diciembre' }
+            { value: '01', title: 'Enero' },
+            { value: '02', title: 'Febrero' },
+            { value: '03', title: 'Marzo' },
+            { value: '04', title: 'Abril' },
+            { value: '05', title: 'Mayo' },
+            { value: '06', title: 'Junio' },
+            { value: '07', title: 'Julio' },
+            { value: '08', title: 'Agosto' },
+            { value: '09', title: 'Septiembre' },
+            { value: '10', title: 'Octubre' },
+            { value: '11', title: 'Noviembre' },
+            { value: '12', title: 'Diciembre' }
         ],
         branch_id: '',
         business_id: '',
@@ -109,20 +109,20 @@ export default {
         headers: [
             { title: 'Fecha Movimiento', key: 'data', sortable: false },
             { title: 'Producto', key: 'nameProduct', sortable: false },
+            { title: 'Cantidad Trasladada', key: 'cant', sortable: false },
             {
                 title: 'Almacén Saliente',
                 align: 'center',
                 children: [
-                    { title: 'Sucursal', key: 'branchOut', sortable: false },
+                    //{ title: 'Sucursal', key: 'branchOut', sortable: false },
                     { title: 'Almacén', key: 'storeOut', sortable: false },
                 ],
             },
-            { title: 'Cantidad', key: 'cant', sortable: false },
             {
                 title: 'Almacén Entrante',
                 align: 'center',
                 children: [
-                    { title: 'Sucursal', key: 'branchInt', sortable: false },
+                    //{ title: 'Sucursal', key: 'branchInt', sortable: false },
                     { title: 'Almacén', key: 'storeInt', sortable: false },
                 ],
             },
@@ -140,12 +140,12 @@ export default {
         formTitle() {
             if (this.editedIndex === 2) {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-                return 'Reporte de Ingresos y Gastos detallados en el mes ' + this.selectedMounth + '-' + this.selectedYear;
+                return 'Reporte de Movimiento de Productos en el mes ' + this.selectedMounth + '-' + this.selectedYear;
             }
             else if (this.editedIndex === 3) {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
                 this.fecha = format(this.input3, "yyyy-MM");
-                return 'Monto generado por Negocios en el mes ' + format(this.input3, "yyyy-MM");
+                return 'Reporte de Movimiento de Productos en el mes ' + format(this.input3, "yyyy-MM");
             }
             else {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -153,35 +153,6 @@ export default {
                 return 'Reporte de Movimiento de Productos ' + this.selectedYear;
             }
         },
-        /*dateFormatted() {
-          const date = this.input ? new Date(this.input) : new Date();
-          const day = date.getDate().toString().padStart(2, '0');
-          const month = (date.getMonth() + 1).toString().padStart(2, '0');
-          const year = date.getFullYear();
-          return `${year}-${month}-${day}`;
-        },
-        dateFormatted2() {
-          const date = this.input2 ? new Date(this.input2) : new Date();
-          const day = date.getDate().toString().padStart(2, '0');
-          const month = (date.getMonth() + 1).toString().padStart(2, '0');
-          const year = date.getFullYear();
-          return `${year}-${month}-${day}`;
-        },*/
-        /*dateFormatted3() {
-            const date = this.input3 ? new Date(this.input3) : new Date();
-            const month = (date.getMonth() + 1).toString().padStart(2, '0');
-            const year = date.getFullYear();
-            return `${year}-${month}`;
-        },
-        getDate3() {
-            return this.input3 ? new Date(this.input3) : new Date();
-        },
-        getDate() {
-          return this.input ? new Date(this.input) : new Date();
-        },
-        getDate2() {
-          return this.input2 ? new Date(this.input2) : new Date();
-        },*/
     },
 
     watch: {
@@ -232,34 +203,7 @@ export default {
     },
 
     methods: {
-        /*generateChartData() {
-            const labels = this.results.map(item => item.month);
-            const expensesData = this.results.map(item => parseFloat(item.total_expenses));
-            const revenuesData = this.results.map(item => parseFloat(item.total_revenues));
-            return {
-                labels: labels,
-                datasets: [
-                    {
-                        label: 'Total Gastos',
-                        backgroundColor: "#FF7043",
-                        data: expensesData
-                    },
-                    {
-                        label: 'Total Ingresos',
-                        backgroundColor: "#FFB300",
-                        data: revenuesData
-                    }
-                ]
-                /*labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
-                datasets: [
-                  {
-                    label: 'Reservas',
-                    backgroundColor: ["#FFB300", "#FF7043", "#00796B", "#B0BEC5", "#C0CA33", "#8D6E63", "#616161"],
-                    data: this.reservationWeek
-                  }
-                ]*/
-        //};
-        //},*/
+        
         exportToExcel() {
             // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
             let rows = [];
@@ -305,55 +249,13 @@ export default {
             // Escribe el libro de trabajo a un archivo y desencadena la descarga
             XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
         },
-        /*updateDate(val) {
-          this.input = val;
-          this.menu = false;
-        },
-        updateDate2(val) {
-          this.editedIndex = 2;
-          this.input2 = val;
-          const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-          const endDate = format(val, "yyyy-MM-dd");
-          axios
-            .get('http://127.0.0.1:8000/api/business-winner', {
-              params: {
-                startDate: startDate,
-                endDate: endDate
-              }
-            })
-            .then((response) => {
-              this.results = response.data;
-              this.input2 = new Date();
-              this.input = new Date()
-            })
-          this.menu2 = false;
-        },
-        updateDate3(val) {
-          this.editedIndex = 3;
-          this.input3 = val;
-          const month = (val.getMonth() + 1).toString().padStart(2, '0');
-          const year = val.getFullYear();
-          const mes = `${month}`;
-          const ano = `${year}`;
-          axios
-            .get('http://127.0.0.1:8000/api/business-winner', {
-              params: {
-                mes: mes,
-                year: ano
-              }
-            })
-            .then((response) => {
-              this.results = response.data;
-              this.input3 = new Date();
-            })
-          this.menu3 = false;
-        },*/
+        
         moveProductsMounth() {
             this.editedIndex = 2;
             axios
                 .get('http://127.0.0.1:8000/api/move-products', {
                     params: {
-                        branch_id: this.branch_id,
+                        //branch_id: this.branch_id,
                         year: this.selectedYear,
                         mounth: this.selectedMounth
                     }
@@ -367,10 +269,11 @@ export default {
         },
         initialize() {
             this.editedIndex = 1;
+            this.selectedMounth = '';
             axios
                 .get('http://127.0.0.1:8000/api/move-products', {
                     params: {
-                        branch_id: this.branch_id,
+                        //branch_id: this.branch_id,
                         year: this.selectedYear,
                         mounth: this.selectedMounth
                     }

@@ -106,8 +106,8 @@
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar Academia"></v-btn>
             <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-store-outline" @click="showStores(item)" color="green" variant="tonal"
             elevation="1" title="Agregar Almacén"></v-btn>
-            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-storefront" @click="showProducts(item)" color="orange-darken-1" variant="tonal"
-            elevation="1" title="Agregar productos a Academia"></v-btn>
+            <!--<v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-storefront" @click="showProducts(item)" color="orange-darken-1" variant="tonal"
+            elevation="1" title="Agregar productos a Academia"></v-btn>-->
           <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
             elevation="1" title="Eliminar Academia"></v-btn>
             <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
