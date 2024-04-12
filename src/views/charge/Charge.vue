@@ -41,7 +41,7 @@
                     <v-row>
                       <v-col cols="12" md="6">
                         <v-text-field v-model="editedItem.name" clearable label="Nombre del Cargo"
-                          prepend-icon="mdi-family-tree" variant="underlined" :rules="nameRules" :disabled="(editedItem.name === 'Barbero' || editedItem.name === 'Encargado' || editedItem.name === 'Tecnico' || editedItem.name === 'Coordinador')">
+                          prepend-icon="mdi-family-tree" variant="underlined" :rules="nameRules" :disabled="(editedItem.name === 'Barbero' || editedItem.name === 'Encargado' || editedItem.name === 'Tecnico' || editedItem.name === 'Coordinador' || editedItem.name === 'Administrador' || editedItem.name === 'Barbero y Encargado')">
                         </v-text-field>
                       </v-col>
 
@@ -200,7 +200,7 @@
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar cargo"></v-btn>
           <v-btn density="comfortable" icon="mdi-lock" @click="showPermission(item)" color="green" variant="tonal"
             elevation="1" title="Mostrar permisos asignados"></v-btn>
-            <v-btn density="comfortable" icon="mdi-delete" @click="(item.name === 'Barbero' || item.name === 'Encargado' || item.name === 'Tecnico' || item.name === 'Coordinador' || item.name === 'Administrador') ? '': deleteItem(item)" :color="(item.name === 'Barbero' || item.name === 'Encargado' || item.name === 'Tecnico' || item.name === 'Coordinador' || item.name === 'Administrador') ? 'grey' : 'red'" variant="tonal"
+            <v-btn density="comfortable" icon="mdi-delete" @click="(item.name === 'Barbero' || item.name === 'Encargado' || item.name === 'Tecnico' || item.name === 'Coordinador' || item.name === 'Administrador' || item.name === 'Barbero y Encargado') ? '': deleteItem(item)" :color="(item.name === 'Barbero' || item.name === 'Encargado' || item.name === 'Tecnico' || item.name === 'Coordinador' || item.name === 'Administrador' || item.name === 'Barbero y Encargado') ? 'grey' : 'red'" variant="tonal"
             elevation="1" title="Eliminar cargo"></v-btn>
         </template>
       </v-data-table>
