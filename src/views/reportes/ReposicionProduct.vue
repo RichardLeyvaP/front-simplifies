@@ -18,13 +18,13 @@
             </v-container>
         </v-toolbar>
         <v-container>
-            <v-row>
+            <!--<v-row>
                 <v-col cols="12" sm="12" md="4">
                     <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
                         label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
                         variant="outlined" @update:model-value="initialize()"></v-autocomplete>
                 </v-col>
-            </v-row>
+            </v-row>-->
             <v-row>
                 <v-col cols="12">
                     <v-container>
@@ -89,7 +89,7 @@ export default {
             { title: 'Producto', key: 'name', sortable: false },
             { title: 'Referencia', key: 'reference', sortable: false },
             { title: 'Existencia', key: 'stock', sortable: false },
-            { title: 'Sucursal', key: 'nameBranch', sortable: true },
+            //{ title: 'Sucursal', key: 'nameBranch', sortable: true },
             { title: 'Almacén', key: 'store', sortable: true },
         ],
         data: {},
@@ -181,12 +181,12 @@ export default {
         initialize() {
             this.editedIndex = 1;
             axios
-                .get('http://127.0.0.1:8000/api/product-stock', {
+                .get('http://127.0.0.1:8000/api/product-stock'/*, {
                     params: {
                         branch_id: this.branch_id,
                         business_id: this.business_id
                     }
-                })
+                }*/)
                 .then((response) => {
                     this.results = response.data;
                 });

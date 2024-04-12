@@ -46,7 +46,10 @@
                       <v-autocomplete v-model="editedItem.product_id" :items="products" clearable label="Productos"
                         prepend-inner-icon="mdi-tag" item-title="name" item-value="id" variant="underlined"
                         :rules="selectRules" :disabled="!mover"></v-autocomplete>
-                      <v-text-field v-model="editedItem.product_quantity" clearable :label="this.texttitle"
+                      <v-text-field v-model="editedItem.stock_depletion" clearable label="Agotando"
+                        prepend-inner-icon="mdi-package-variant-closed" variant="underlined" :rules="pago">
+                      </v-text-field>
+                        <v-text-field v-model="editedItem.product_quantity" clearable :label="this.texttitle"
                         prepend-inner-icon="mdi-tag-plus" variant="underlined" :disabled="!mover">
                       </v-text-field>
                     </v-col>
@@ -208,6 +211,7 @@ export default {
       { title: 'Precio compra', align: 'start', value: 'purchase_price' },
       { title: 'Precio venta', align: 'start', value: 'sale_price' },
       { title: 'Existencia', align: 'start', value: 'product_exit' },
+      { title: 'Estado Agotando', align: 'start', value: 'stock_depletion' },
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
     results: [],
@@ -224,6 +228,7 @@ export default {
       product_quantityM: '',
       product_exit: '',
       address: '',
+      stock_depletion: '',
       id: ''
     },
     data: {},
@@ -236,12 +241,16 @@ export default {
       product_quantity: '',
       product_quantityM: '',
       address: '',
+      stock_depletion: '',
       product_exit: '',
     },
     requiredRules: [
       (v) => v === null || (!isNaN(v) && isFinite(v)) || 'Ingresa un número válido',
     ],
     selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
+    pago: [
+      (value) => !!value || 'Campo requerido',
+      (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
   }),
 
   computed: {
@@ -416,6 +425,7 @@ export default {
         this.data.product_id = this.editedItem.product_id;
         this.data.store_id = this.editedItem.store_id;
         this.data.product_quantity = this.editedItem.product_quantity;
+        this.data.stock_depletion = this.editedItem.stock_depletion;
         //this.data.branch_id = this.branch_id;
         console.log(this.data);
         console.log('editar');
@@ -450,6 +460,7 @@ export default {
         this.data.product_id = this.editedItem.product_id;
         this.data.store_id = this.editedItem.store_id;
         this.data.product_quantity = this.editedItem.product_quantity;
+        this.data.stock_depletion = this.editedItem.stock_depletion;
         //this.data.branch_id = this.branch_id;
         axios
           .post('http://127.0.0.1:8000/api/productstore', this.data)
