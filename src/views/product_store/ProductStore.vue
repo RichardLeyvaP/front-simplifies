@@ -46,7 +46,7 @@
                       <v-autocomplete v-model="editedItem.product_id" :items="products" clearable label="Productos"
                         prepend-inner-icon="mdi-tag" item-title="name" item-value="id" variant="underlined"
                         :rules="selectRules" :disabled="!mover"></v-autocomplete>
-                      <v-text-field v-model="editedItem.stock_depletion" clearable label="Agotando"
+                      <v-text-field v-model="editedItem.stock_depletion" clearable label="Límite de existencia para alerta"
                         prepend-inner-icon="mdi-package-variant-closed" variant="underlined" :rules="pago">
                       </v-text-field>
                         <v-text-field v-model="editedItem.product_quantity" clearable :label="this.texttitle"
@@ -211,7 +211,7 @@ export default {
       { title: 'Precio compra', align: 'start', value: 'purchase_price' },
       { title: 'Precio venta', align: 'start', value: 'sale_price' },
       { title: 'Existencia', align: 'start', value: 'product_exit' },
-      { title: 'Estado Agotando', align: 'start', value: 'stock_depletion' },
+      { title: 'Límite Existencia Alerta', align: 'start', value: 'stock_depletion' },
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
     results: [],
@@ -358,6 +358,7 @@ export default {
       this.mover = true;
       this.editedIndex = 3;
       this.editedItem = Object.assign({}, item);
+      this.editedItem.product_quantity = item.product_exit;
       this.dialog = true;
       this.editando = true;
     },
