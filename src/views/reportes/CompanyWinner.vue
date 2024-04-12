@@ -59,7 +59,7 @@
             </template>
             <v-locale-provider locale="es">
               <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate3" @update:modelValue="updateDate3"
-                format="yyyy-MM" scrollable></v-date-picker>
+                format="yyyy-MM" scrollable no-title></v-date-picker>
             </v-locale-provider>
           </v-menu>
         </v-col>
@@ -265,8 +265,8 @@ export default {
         })
         .then((response) => {
           this.results = response.data;
-          this.input2 = new Date();
-          this.input = new Date()
+          //this.input2 = new Date();
+          //this.input = new Date()
         })
       this.menu2 = false;
     },
@@ -287,7 +287,7 @@ export default {
         })
         .then((response) => {
           this.results = response.data;
-          this.input3 = new Date();
+          //this.input3 = new Date();
         })
       this.menu3 = false;
     },

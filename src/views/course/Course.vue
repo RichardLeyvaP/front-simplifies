@@ -495,6 +495,9 @@
                   <v-autocomplete v-model="product_id" :items="products" clearable label="Productos"
                         prepend-icon="mdi-tag" item-title="name" item-value="id" variant="underlined"
                         :rules="selectRules" @update:model-value="cantExist"></v-autocomplete>
+                        <v-text-field v-model="product_exit" clearable label="Existencia"
+                      prepend-icon="mdi-currency-usd" variant="underlined" disabled="true">
+                    </v-text-field>
                     <v-text-field v-model="cant" clearable label="Cantidad"
                       prepend-icon="mdi-currency-usd" variant="underlined" :rules=[validateCantidad]>
                     </v-text-field>
@@ -717,26 +720,7 @@ export default {
       }
       //return this.editedIndex === -1 ? 'Nuevo Curso' : 'Editar Curso'
     },
-    /*dateFormatted() {
-      const date = this.input ? new Date(this.input) : new Date();
-      const day = date.getDate().toString().padStart(2, '0');
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const year = date.getFullYear();
-      return `${year}-${month}-${day}`;
-    },
-    dateFormatted1() {
-      const date = this.input1 ? new Date(this.input1) : new Date();
-      const day = date.getDate().toString().padStart(2, '0');
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const year = date.getFullYear();
-      return `${year}-${month}-${day}`;
-    },
-    getDate() {
-      return this.input ? new Date(this.input) : new Date();
-    },
-    getDate1() {
-      return this.input1 ? new Date(this.input1) : new Date();
-    },*/
+  
     formattedStartDate() {
             if (this.editedItem.startDate) {
               console.log('this.editedItem.startDate datos');
@@ -789,6 +773,7 @@ export default {
     cantExist() {
       let exist = this.products.filter(item => item.id == this.product_id);
       this.product_exit = exist[0].product_exit;
+
       console.log(exist[0].product_exit);
     },
     imagenDisponible() {
@@ -807,16 +792,7 @@ export default {
      // alert(this.selectedImageUrl)// Establece la imagen seleccionada
       this.dialogPhoto = true; // Abre el modal
     },
-    /*updateDate(val) {
-      this.input = val;
-      this.editedItem.endDate = format(val, "yyyy-MM-dd");
-      this.menu = false;
-    },
-    updateDate1(val) {
-      this.input1 = val;
-      this.editedItem.startDate = format(val, "yyyy-MM-dd");
-      this.menu1 = false;
-    },*/
+    
     showStudents(item) {
       this.courseSelect = item;
       console.log('this.courseSelect');
@@ -1164,7 +1140,9 @@ export default {
       this.product_id = '';
       this.student_id = '';
       this.cant = '';
-      this.showProducts(this.courseSelect)
+      console.log('this.productSelect');
+      console.log(this.productSelect);
+      this.showProducts(this.productSelect)
     },
     saveProduct() {
       if (this.editedIndex == 3) {

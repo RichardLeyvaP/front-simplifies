@@ -236,14 +236,14 @@ const routes = [
         path: "/workplace",
         name: "Puestos de Trabajo",
         component: () =>
-          import( "@/views/workplaces/Workplaces.vue"),
+          import( "@/views/workplaces/WorkPlaces.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_workplace"] },
       },
       {
         path: "/branch-service-professional",
         name: "Servicios se una branch",
         component: () =>
-          import( "@/views/branchservice/BranchServices.vue"),
+          import( "@/views/branchservice/Branchservices.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_service_branch"] },
       },
       {

@@ -334,7 +334,7 @@ export default {
             return `${year}-${month}-${day}`;*/
         //},*/
         initialize() {
-            if (this.charge === 'Administrador') {
+            if (this.charge == 'Administrador') {
                 axios
                     .get('http://127.0.0.1:8000/api/professional-show-autocomplete')
                     .then((response) => {
@@ -346,6 +346,7 @@ export default {
                         this.results = response.data.vacations;
                     });
             } else {
+                console.log('No es administrador');
                 axios
                     .get('http://127.0.0.1:8000/api/professional-show-autocomplete-branch', {
                         params: {

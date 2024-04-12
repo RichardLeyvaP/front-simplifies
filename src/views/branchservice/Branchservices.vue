@@ -297,7 +297,7 @@ export default {
             service_id: '',
         },
 
-        selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
+        selectRules: [(v) => !!v || "Debe seleccionar al menos un elemento"],
     }),
 
     computed: {
