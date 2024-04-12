@@ -90,7 +90,7 @@
             </v-col>
             <v-col cols="12" md="7">
               <v-card elevation="2">
-                <v-tabs v-model="tabBar" color="rgb(241, 130, 84)" elevation="6">
+                <v-tabs v-model="tabBar" color="rgb(241, 130, 84)" elevation="6" @click="handleTabChange">
                   <v-tab value="one">Lista de Servicios</v-tab>
                   <v-tab value="two">Servicios Asignados</v-tab>
                 </v-tabs>
@@ -361,11 +361,22 @@ export default {
 
   methods:
   {
-    isSelected(serviceId) {
+    handleTabChange() {
+      console.log('this.tabBar');
+      console.log(this.tabBar);
+      if (this.professional !== null) {
+      if (this.tabBar === 'one') {
+        this.getServicesProfessional();
+      } else if (this.tabBar === 'two') {
+        this.getServicesProfessionalSelect();
+      }
+    }
+  },
+    /*isSelected(serviceId) {
       console.log('entra a seleccionado');
       console.log(this.selected.id == serviceId);
       return this.selected.id == serviceId;
-    },
+    },*/
     showAlert(sb_type, sb_message, sb_timeout) {
       this.sb_type = sb_type
 
@@ -411,7 +422,9 @@ export default {
           this.initialize();
           this.showAlert("success", "Desasignado correctamente", 3000);
           this.profitPercen = '';
-          this.professional = '';
+          this.getServicesProfessionalSelect();
+          //this.handleTabChange('two');
+          //this.professional = '';
           this.selected = '';
         }).catch(error => {
           // Maneja cualquier error que pueda ocurrir durante la solicitud
@@ -456,7 +469,9 @@ export default {
           this.initialize();
           this.showAlert("success", "Servicio asignado correctamente", 3000);
           this.profitPercen = '';
-          this.professional = '';
+          //this.professional = '';
+          //this.handleTabChange('one');
+          this.getServicesProfessional();
           this.selected = '';
           this.especial = false;
           this.type_service = '';
