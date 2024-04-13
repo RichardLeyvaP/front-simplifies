@@ -74,8 +74,11 @@
                           :rules="selectRules">
                         </v-autocomplete>
                         <v-autocomplete v-model="editedItem.useTechnical" :items="options" clearable label="Técnico"
-                        prepend-inner-icon="mdi-hair-salon" item-title="name" item-value="id" variant="underlined"
+                        prepend-icon="mdi-hair-dryer" item-title="name" item-value="id" variant="underlined"
                         ></v-autocomplete>
+                        <v-text-field v-model="editedItem.location" clearable label="Localización"
+                          prepend-icon="mdi-map-marker" variant="underlined">
+                        </v-text-field>
                       </v-col>
 
                       <v-col cols="12" md="6">
@@ -407,6 +410,7 @@ export default {
       { title: 'Negocio', value: 'business.name' },
       { title: 'Teléfono', value: 'phone' },
       { title: 'Dirección', value: 'address' },
+      { title: 'Localización', value: 'location' },
       { title: 'Tipo de Negocio', value: 'business_type.name' },
       { title: 'Técnico', value: 'useTechnical' },
       { title: 'Acciones', key: 'actions', sortable: false },
@@ -445,6 +449,7 @@ export default {
       professional_id: '',
       store_id: '',
       useTechnical: 0,
+      location: '',
     },
     data: {},
     options: [
@@ -461,6 +466,7 @@ export default {
       professional_id: '',
       store_id: '',
       useTechnical: '',
+      location: '',
     },
     nameRules: [
       (v) => !!v || "El campo es requerido",
@@ -500,8 +506,7 @@ export default {
 
   mounted() {
     this.business_id = LocalStorageService.getItem('business_id');
-
-      //this.editedItem.business_id = this.business_id; // Establecer el primer negocio como valor predeterminado
+    this.editedItem.business_id = this.business_id; // Establecer el primer negocio como valor predeterminado
       //console.log('this.editedItem.business_id');
       //console.log(this.editedItem.business_id);
     this.initialize();
@@ -609,6 +614,8 @@ export default {
       this.closeDelete()
     },
     close() {
+      this.file = '';
+      this.imgMiniatura = '';
       this.dialog = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
@@ -656,10 +663,10 @@ export default {
         axios
           .post('http://127.0.0.1:8000/api/branch-update', formData)
           .then(() => {
-
             this.initialize();
             this.showAlert("success", "Sucursal modificada correctamente", 3000)
-
+            this.file = '';
+            this.imgMiniatura = '';
           })
       } else {
         this.valid = false;
@@ -676,7 +683,9 @@ export default {
           .post('http://127.0.0.1:8000/api/branch', formData)
           .then(() => {
             this.initialize();
-            this.showAlert("success", "Sucursal creada correctamente", 3000)
+            this.showAlert("success", "Sucursal creada correctamente", 3000);
+            this.file = '';
+            this.imgMiniatura = '';
           })
       }
       this.close()

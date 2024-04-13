@@ -36,7 +36,7 @@
                     <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
                   </v-toolbar>
                   <v-card-text>
-                    <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+                    <v-form ref="form" v-model="valid"  enctype="multipart/form-data">
                     <v-container>
                       <v-row>
                         <v-col cols="12" md="12">
@@ -53,9 +53,24 @@
                         </v-col>
                       </v-row>
                       <v-row>
-                        <v-col cols="12" md="12">
+                        <v-col cols="12" md="6">
+                          <v-text-field v-model="editedItem.location" clearable label="Localización"
+                          prepend-icon="mdi-map-marker" variant="underlined">
+                        </v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="6">
                           <v-autocomplete v-model="editedItem.business_id" :items="business" clearable label="Negocio" prepend-icon="mdi-domain" item-title="name" item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
                         </v-col>
+                        <v-col cols="12" md="6">
+                        <v-file-input clearable v-model="file" ref="fileInput" label="Imagen Academia" variant="underlined"
+                          density="compact" name="file" accept=".png, .jpg, .jpeg" @change="onFileSelected">
+                        </v-file-input>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                        <v-avatar elevation="3" color="grey-lighten-4" size="large">
+                          <img v-if="imgedit" :src="imgedit" height="70" width="70">
+                        </v-avatar>
+                      </v-col>
                       </v-row>
                     </v-container>
                   <v-divider></v-divider>
@@ -101,6 +116,13 @@
                                 single-line hide-details>
                             </v-text-field>
         <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search" class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+          <template v-slot:item.name="{ item }">
+
+<v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+  <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_data" alt="image"></v-img>
+</v-avatar>
+{{ item.name }}
+</template>
           <template v-slot:item.actions="{ item }">
             <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar Academia"></v-btn>
@@ -382,6 +404,7 @@
   
         { title: 'Academia', value: 'name' },
         { title: 'Descripción', value: 'description' },
+        { title: 'Localización', value: 'location' },
         { title: 'Negocio', value: 'business.name' },
         { title: 'Acciones', key: 'actions', sortable: false },
       ],
@@ -402,18 +425,25 @@
       //stores
       enrollment_id: '',
       enrollmentSelect: '',
+      file: null,
+      imgMiniatura: '',
       editedItem: {
         id: '',
         name: '',
         description: '',
+        image_data: '',
         business_id: '',
+        location: ''
       },
       data: {},
   
       defaultItem: {
+        id: '',
         name: '',
         description: '',
         business_id: '',
+        image_data: '',
+        location: ''
       },
       nameRules: [
        (v) => !!v || "El campo es requerido",
@@ -433,6 +463,9 @@
     }),
   
     computed: {
+      imgedit() {
+      return this.imgMiniatura;
+    },
       formTitle() {
         if(this.editedIndex == 1){
         return 'Nueva Academia';
@@ -463,7 +496,7 @@
   
     mounted() {
       this.business_id = LocalStorageService.getItem('business_id');
-      //this.business_id = userTokenStore.business_id;
+      this.editItem.business_id = this.business_id;
       this.initialize();
     },
   
@@ -491,7 +524,19 @@
       this.sb_timeout = sb_timeout
       this.snackbar = true
     },
-  
+    onFileSelected(event) {
+      let file = event.target.files[0];
+      this.editedItem.image_data = file;
+      console.log(this.editedItem.image_data);
+      this.cargarImage(file);
+    },
+    cargarImage(file) {
+      let reader = new FileReader();
+      reader.onload = (e) => {
+        this.imgMiniatura = e.target.result;
+      }
+      reader.readAsDataURL(file);
+    },
     initialize() {
         axios
           .get('http://127.0.0.1:8000/api/enrollment-show', {
@@ -519,6 +564,9 @@
   
       },
       editItem(item) {
+        this.file = '';
+        //this.editedItem.id = item.id;
+      this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.image_data;
         this.editedIndex = 2;
         this.editedItem = Object.assign({}, item);
         this.editedItem.business_id = parseInt(item.business_id);
@@ -543,7 +591,9 @@
         this.closeDelete()
       },
       close() {
-        this.dialog = false
+        this.file = '';
+      this.imgMiniatura = '';
+        this.dialog = false;
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
@@ -563,25 +613,38 @@
       save() {
         if (this.editedIndex == 2) {
           this.valid = false;
-          this.data.id = this.editedItem.id;
+          /*this.data.id = this.editedItem.id;
           this.data.name = this.editedItem.name;
           this.data.description = this.editedItem.description;
-          this.data.business_id = this.editedItem.business_id;
+          this.data.business_id = this.editedItem.business_id;*/
+          const formData = new FormData();
+        for (let key in this.editedItem) {
+          formData.append(key, this.editedItem[key]);
+        }
+        console.log('formData');
+        console.log(formData);
           axios
-            .put('http://127.0.0.1:8000/api/enrollment', this.data)
+            .post('http://127.0.0.1:8000/api/enrollment-updated', formData)
             .then(() => {
+              this.file = '';
+            this.imgMiniatura = '';
               this.showAlert("success","Academia actualizada correctamente", 3000);
               this.initialize();
             })
         } if (this.editedIndex == 1) {
           this.valid = false;
-          this.data.name = this.editedItem.name;
+          /*this.data.name = this.editedItem.name;
           this.data.description = this.editedItem.description;
-          this.data.business_id = this.editedItem.business_id;
-  
+          this.data.business_id = this.editedItem.business_id;*/
+          const formData = new FormData();
+        for (let key in this.editedItem) {
+          formData.append(key, this.editedItem[key]);
+        }
           axios
-            .post('http://127.0.0.1:8000/api/enrollment', this.data)
+            .post('http://127.0.0.1:8000/api/enrollment', formData)
             .then(() => {
+              this.file = '';
+            this.imgMiniatura = '';
               this.showAlert("success","Academia creada correctamente", 3000);
               this.initialize();
             })
