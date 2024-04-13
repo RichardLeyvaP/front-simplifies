@@ -246,7 +246,7 @@ export default {
           this.results = response.data.earningPeriodo;
         });
       axios
-        .get('http://127.0.0.1:8000/api/professional-show-autocomplete-rep')
+        .get('http://127.0.0.1:8000/api/professional-show-autocomplete')
         .then((response) => {
           this.professionals = response.data.professionals;
         });

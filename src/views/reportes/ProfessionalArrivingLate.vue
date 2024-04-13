@@ -43,12 +43,12 @@
             </template>
             <v-locale-provider locale="es">
               <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
-                :modelValue="getDate2" @update:model-value="updateDate2" format="yyyy-MM-dd" :min="dateFormatted"></v-date-picker>
+                :modelValue="getDate2" format="yyyy-MM-dd" :min="dateFormatted"></v-date-picker><!-- @update:model-value="updateDate2"-->
             </v-locale-provider>
           </v-menu>
         </v-col>
         <!-- Tercera columna -->
-        <v-col cols="12" sm="6" md="2" v-if="state">
+        <!--<v-col cols="12" sm="6" md="2" v-if="state">-->
           <!--<v-date-picker
           v-model="selectedMonth"
           view-mode="months"
@@ -57,7 +57,7 @@
           scrollable
           no-stepper
         ></v-date-picker>-->
-        <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
+        <!--<v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
               min-width="290px">
               <template v-slot:activator="{ props }">
                 <v-text-field v-bind="props" :modelValue="dateFormatted3" variant="outlined"
@@ -68,16 +68,21 @@
                   format="yyyy-MM" scrollable></v-date-picker>
               </v-locale-provider>
             </v-menu>
-        </v-col>
+        </v-col>-->
+        
         <v-col cols="12" sm="12" md="3">
           <v-autocomplete v-model="professional_id" :items="professionals" clearable label="Seleccione un Professional"
             prepend-inner-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="outlined"
-            @update:model-value="initialize()"></v-autocomplete>
+            x></v-autocomplete><!--@update:model-value="initialize()"-->
         </v-col>
         <v-col cols="12" sm="12" md="3">
           <v-autocomplete v-model="branch_id" :items="branches" clearable label="Seleccione una Sucursal"
-            prepend-inner-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="outlined"
-            @update:model-value="initialize()"></v-autocomplete>
+            prepend-inner-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
+        </v-col>
+        <v-col cols="12" md="1">
+          <v-btn icon @click="updateDate2" color="#F18254" :disabled="!professional_id">
+      <v-icon>mdi-magnify</v-icon>
+    </v-btn>
         </v-col>
         <v-col cols="12">
           <v-container>
@@ -144,8 +149,8 @@ export default {
     formTitle() {
       if (this.editedIndex === 2) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.fecha = format(this.input, "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
-        return 'Llegadas tardes en el período' + format(this.input, "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
+        this.fecha = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
+        return 'Llegadas tardes en el período' + this.fecha;
       }
       else if (this.editedIndex === 3) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -172,21 +177,21 @@ export default {
       const year = date.getFullYear();
       return `${year}-${month}-${day}`;
     },
-    dateFormatted3() {
+    /*dateFormatted3() {
       const date = this.input3 ? new Date(this.input3) : new Date();
       const month = (date.getMonth() + 1).toString().padStart(2, '0');
       const year = date.getFullYear();
       return `${year}-${month}`;
-    },
+    },*/
     getDate() {
       return this.input ? new Date(this.input) : new Date();
     },
     getDate2() {
       return this.input2 ? new Date(this.input2) : new Date();
     },
-    getDate3() {
+    /*getDate3() {
       return this.input3 ? new Date(this.input3) : new Date();
-    },
+    },*/
   },
 
   watch: {
@@ -264,11 +269,11 @@ export default {
       this.input = val;
       this.menu = false;
     },
-    updateDate2(val) {
-      this.input2 = val;
+    updateDate2() {
+      //this.input2 = val;
       this.editedIndex = 2;
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      const endDate = format(val, "yyyy-MM-dd");
+      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       console.log('');
       console.log(this.branch_id);
       console.log(this.professional_id);
@@ -290,7 +295,7 @@ export default {
         })
       this.menu2 = false;
     },
-    updateDate3(val) {
+    /*updateDate3(val) {
       this.editedIndex = 3;
       this.input3 = val;
       const month = (val.getMonth() + 1).toString().padStart(2, '0');
@@ -316,10 +321,11 @@ export default {
           //this.input3 = new Date();
         })
       this.menu3 = false;
-    },
+    },*/
     initialize() {
-      this.editedIndex = 1;
       this.state = true;
+      /*this.editedIndex = 1;
+      
       this.input2 = new Date();
       this.input3 = new Date();
       axios
@@ -331,7 +337,7 @@ export default {
         })
         .then((response) => {
           this.results = response.data;
-        });
+        });*/
       axios
         .get('http://127.0.0.1:8000/api/professional-show-autocomplete')
         .then((response) => {

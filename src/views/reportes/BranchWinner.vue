@@ -36,12 +36,20 @@
               </template>
               <v-locale-provider locale="es">
                 <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
-                  :modelValue="getDate2" @update:modelValue="updateDate2" format="yyyy-MM-dd" scrollable></v-date-picker>
+                  :modelValue="getDate2" @update:modelValue="updateDate2" format="yyyy-MM-dd" scrollable :min="dateFormatted"></v-date-picker>
               </v-locale-provider>
             </v-menu>
           </v-col>
           <!-- Tercera columna -->
-          <v-col cols="12" sm="6" md="3">
+          <!--<v-col cols="12" md="2">
+                    <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="outlined"
+                        prepend-inner-icon="mdi-calendar" @update:model-value="initialize()"></v-select>
+                </v-col>
+                <v-col cols="12" md="2">
+                    <v-select v-model="selectedMounth" :items="months" label="Selecciona un mes" variant="outlined"
+                        prepend-inner-icon="mdi-calendar"></v-select> @update:model-value="updateDate3"-->
+                <!--</v-col>-->
+          <!--<v-col cols="12" sm="6" md="3">
             <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
               offset-y min-width="290px">
               <template v-slot:activator="{ props }">
@@ -53,12 +61,12 @@
                   :modelValue="getDate3" @update:modelValue="updateDate3" format="yyyy-MM" scrollable></v-date-picker>
               </v-locale-provider>
             </v-menu>
-          </v-col>
+          </v-col>-->
           <v-col cols="12" sm="12" md="3">
             <v-autocomplete v-model="branch_id" :items="branches" clearable label="Seleccione una Sucursal"
               prepend-inner-icon="mdi-store" item-title="name" item-value="id" variant="outlined"
               @update:model-value="initialize()"></v-autocomplete>
-          </v-col>
+          </v-col>          
           <v-container>
             <v-alert border type="info" variant="outlined">
                             {{ formTitle }}
@@ -122,7 +130,6 @@ export default {
     business_id: '',
     results: [],
     branches: [],
-
     editedItem: {
       name: '',
       id: ''
@@ -142,8 +149,8 @@ export default {
       }
       else if (this.editedIndex === 3) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.fecha = format(this.input3, "yyyy-MM");
-        return 'Ganancias de la Sucursal en el mes ' + format(this.input3, "yyyy-MM");
+        //this.fecha = format(this.input3, "yyyy-MM");
+        return 'Ganancias de la Sucursal en el mes ' + this.selectedYear+'-'+this.selectedMounth;
       }
       else {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -165,21 +172,21 @@ export default {
       const year = date.getFullYear();
       return `${year}-${month}-${day}`;
     },
-    dateFormatted3() {
+    /*dateFormatted3() {
       const date = this.input3 ? new Date(this.input3) : new Date();
       const month = (date.getMonth() + 1).toString().padStart(2, '0');
       const year = date.getFullYear();
       return `${year}-${month}`;
-    },
+    },*/
     getDate() {
       return this.input ? new Date(this.input) : new Date();
     },
     getDate2() {
       return this.input2 ? new Date(this.input2) : new Date();
     },
-    getDate3() {
+    /*getDate3() {
       return this.input3 ? new Date(this.input3) : new Date();
-    },
+    },*/
   },
   mounted() {
     this.business_id = LocalStorageService.getItem("business_id");
@@ -199,10 +206,42 @@ export default {
         }
         this.initialize();
       });
+
     console.log(this.business_id);
   },
 
   methods: {
+    /*buscar(){
+      /*if(this.input != null){        
+      console.log('startDate');
+      console.log(format(this.input, "yyyy-MM-dd"));
+      }*/
+      /*if(this.input2 != null){     
+        this.input = this.input ? new Date(this.input) : new Date();
+        console.log('startDate');
+      console.log(format(this.input, "yyyy-MM-dd"));   
+      console.log('endDate');
+      console.log(format(this.input2, "yyyy-MM-dd"));
+      }
+      if(this.selectedMounth != null){        
+      console.log('mes');
+      console.log(this.selectedYear+'-'+this.selectedMounth);
+      axios
+        .get('http://127.0.0.1:8000/api/branch_winner_icon', {
+          params: {
+            branch_id: this.branch_id,
+            mes: this.selectedMounth,
+            year: this.selectedYear
+          }
+        })
+        .then((response) => {
+          this.results = response.data;
+         // this.selectedMounth = '';
+        });
+        this.selectedMounth = '';
+      this.menu3 = false;
+      }
+    },*/
     formatNumber(value) {
             return value.toLocaleString('es-ES');
         },
@@ -213,6 +252,7 @@ export default {
     updateDate2(val) {
       this.editedIndex = 2;
       this.input2 = val;
+      this.input = this.input ? new Date(this.input) : new Date();
       const startDate = format(this.input, "yyyy-MM-dd");
       const endDate = format(val, "yyyy-MM-dd");
       axios
@@ -230,27 +270,27 @@ export default {
         })
       this.menu2 = false;
     },
-    updateDate3(val) {
+    /*updateDate3() {
       this.editedIndex = 3;
-      this.input3 = val;
+      /*this.input3 = val;
       const month = (val.getMonth() + 1).toString().padStart(2, '0');
       const year = val.getFullYear();
       const mes = `${month}`;
-      const ano = `${year}`;
-      axios
+      const ano = `${year}`;*/
+      /*axios
         .get('http://127.0.0.1:8000/api/branch_winner_icon', {
           params: {
             branch_id: this.branch_id,
-            mes: mes,
-            year: ano
+            mes: this.selectedMounth,
+            year: this.selectedYear
           }
         })
         .then((response) => {
           this.results = response.data;
-          //this.input3 = null;
+         // this.selectedMounth = '';
         })
       this.menu3 = false;
-    },
+    },*/
     initialize() {
       this.editedIndex = 1;
       axios

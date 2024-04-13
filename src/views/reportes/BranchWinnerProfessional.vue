@@ -47,7 +47,7 @@
           </v-menu>
         </v-col>
         <!-- Tercera columna -->
-        <v-col cols="12" sm="6" md="3">
+        <!--<v-col cols="12" sm="6" md="3">
           <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
             min-width="290px">
             <template v-slot:activator="{ props }">
@@ -59,7 +59,7 @@
                 :modelValue="getDate3" @update:modelValue="updateDate3" format="yyyy-MM" scrollable></v-date-picker>
             </v-locale-provider>
           </v-menu>
-        </v-col>        
+        </v-col> -->       
         <v-col cols="12" sm="12" md="3">
           <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
             label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
@@ -171,21 +171,21 @@ export default {
       const year = date.getFullYear();
       return `${year}-${month}-${day}`;
     },
-    dateFormatted3() {
+    /*dateFormatted3() {
       const date = this.input3 ? new Date(this.input3) : new Date();
       const month = (date.getMonth() + 1).toString().padStart(2, '0');
       const year = date.getFullYear();
       return `${year}-${month}`;
-    },
+    },*/
     getDate() {
       return this.input ? new Date(this.input) : new Date();
     },
     getDate2() {
       return this.input2 ? new Date(this.input2) : new Date();
     },
-    getDate3() {
+    /*getDate3() {
       return this.input3 ? new Date(this.input3) : new Date();
-    },
+    },*/
   },
 
   watch: {
@@ -293,7 +293,7 @@ export default {
         })
       this.menu2 = false;
     },
-    updateDate3(val) {
+    /*updateDate3(val) {
       this.editedIndex = 3;
       this.input3 = val;
       const month = (val.getMonth() + 1).toString().padStart(2, '0');
@@ -313,7 +313,7 @@ export default {
           //this.input3 = new Date();
         })
       this.menu3 = false;
-    },
+    },*/
     initialize() {
       this.editedIndex = 1;
       axios

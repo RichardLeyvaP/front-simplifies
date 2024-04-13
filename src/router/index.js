@@ -303,13 +303,6 @@ const routes = [
         meta: { requiresAuth: true, requiresPermissions: ["view_professional_earnings"] },
       },
       {
-        path: "/professional-branch-winner",
-        name: "Ganancias Profesional",
-        component: () =>
-          import( "@/views/reportes/ProfessionalBranchWinner.vue"),
-        meta: { requiresAuth: true, requiresPermissions: ["view_stores"] },
-      },
-      {
         path: "/client-history",
         name: "Historia de Cliente",
         component: () =>
