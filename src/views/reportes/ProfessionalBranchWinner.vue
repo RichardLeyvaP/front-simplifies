@@ -37,7 +37,7 @@
                 </template>
                 <v-locale-provider locale="es">
                   <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" @update:modelValue="updateDate2"
-                    format="yyyy-MM-dd"></v-date-picker>
+                    format="yyyy-MM-dd" :min="dateFormatted"></v-date-picker>
                 </v-locale-provider>
               </v-menu>
             </v-col>
@@ -246,7 +246,7 @@ export default {
           this.results = response.data.earningPeriodo;
         });
       axios
-        .get('http://127.0.0.1:8000/api/professional-show-autocomplete')
+        .get('http://127.0.0.1:8000/api/professional-show-autocomplete-rep')
         .then((response) => {
           this.professionals = response.data.professionals;
         });

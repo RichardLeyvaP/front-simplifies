@@ -43,7 +43,7 @@
             </template>
             <v-locale-provider locale="es">
               <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
-                :modelValue="getDate2" @update:model-value="updateDate2" format="yyyy-MM-dd"></v-date-picker>
+                :modelValue="getDate2" @update:model-value="updateDate2" format="yyyy-MM-dd" :min="dateFormatted"></v-date-picker>
             </v-locale-provider>
           </v-menu>
         </v-col>
@@ -57,17 +57,17 @@
           scrollable
           no-stepper
         ></v-date-picker>-->
-          <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-            min-width="290px">
-            <template v-slot:activator="{ props }">
-              <v-text-field v-bind="props" :modelValue="dateFormatted3" variant="outlined"
-                append-inner-icon="mdi-calendar" label="Mes"></v-text-field>
-            </template>
-            <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" view-mode="months"
-                :modelValue="getDate3" @update:model-value="updateDate3" scrollable></v-date-picker>
-            </v-locale-provider>
-          </v-menu>
+        <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
+              min-width="290px">
+              <template v-slot:activator="{ props }">
+                <v-text-field v-bind="props" :modelValue="dateFormatted3" variant="outlined"
+                  append-inner-icon="mdi-calendar" label="Mes"></v-text-field>
+              </template>
+              <v-locale-provider locale="es">
+                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate3" @update:model-value="updateDate3"
+                  format="yyyy-MM" scrollable></v-date-picker>
+              </v-locale-provider>
+            </v-menu>
         </v-col>
         <v-col cols="12" sm="12" md="3">
           <v-autocomplete v-model="professional_id" :items="professionals" clearable label="Seleccione un Professional"
