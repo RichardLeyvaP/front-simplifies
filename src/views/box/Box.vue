@@ -1301,7 +1301,7 @@ export default {
           this.valid = true;
         }
         else {
-          this.showAlert("warning", "Monto debe coincidir con el monto total" + suma, 3000);
+          this.showAlert("warning", "Monto debe coincidir con el monto total " + (this.editedItem.amount + this.data.tip), 3000);
         }
         if (this.editedItem.cash || this.editedItem.creditCard || this.editedItem.debit || this.editedItem.transfer || this.editedItem.other || this.editedItem.cardGif || this.editedItem.tip) {
           this.valid = true;

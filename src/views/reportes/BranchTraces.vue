@@ -123,7 +123,7 @@
         { title: 'Cliente', key: 'client', sortable: false },
         { title: 'Fecha', key: 'data', sortable: false },
         { title: 'Operación', key: 'operation', sortable: false },
-        { title: 'Operación', key: 'operation', sortable: false },
+        { title: 'Detalles', key: 'details', sortable: false },
         { title: 'Monto', key: 'amount', sortable: false }
       ],
       data: {},
