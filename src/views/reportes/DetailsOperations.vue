@@ -39,11 +39,9 @@
             </v-row>
             <v-row>
                 <v-col cols="12" md="12">
-                    <v-container>
                         <v-alert border type="info" variant="outlined" density="compact">
                             {{ formTitle }}
                         </v-alert>
-                    </v-container>
                 </v-col>
                 <v-col cols="12" md="12">
                     <v-card class="mx-auto  overflow-visible">
@@ -373,7 +371,8 @@ export default {
         },
         operationDetailsMonth(){
             this.editedIndex = 3;
-            axios
+            if(this.selectedMounth){
+                axios
                 .get('http://127.0.0.1:8000/api/details-operations-month', {
                     params: {
                         branch_id: this.branch_id,
@@ -387,6 +386,9 @@ export default {
                     console.log('this.results');
                     console.log(this.results);
                 })
+            }else{
+                this.initialize();
+            }
         },
 
     },

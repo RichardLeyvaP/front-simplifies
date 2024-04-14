@@ -19,11 +19,13 @@
         </v-toolbar>
         <v-container>
             <v-row>
-                <v-col cols="12" sm="12" md="4">
+                <v-container>
+                <v-col cols="12" md="4">
                     <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
                         label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
                         variant="outlined" @update:model-value="initialize()"></v-autocomplete>
                 </v-col>
+            </v-container>
             </v-row>
             <v-row>
                     <v-col cols="12">

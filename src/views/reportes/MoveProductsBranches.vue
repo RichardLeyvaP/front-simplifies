@@ -34,11 +34,9 @@
             </v-row>
             <v-row>
                 <v-col cols="12" md="12">
-                    <v-container>
                         <v-alert border type="info" variant="outlined" density="compact">
                             <span>{{ formTitle }}</span>
                         </v-alert>
-                    </v-container>
                 </v-col>
                 <v-col cols="12" md="12">
                     <v-card class="mx-auto  overflow-visible">

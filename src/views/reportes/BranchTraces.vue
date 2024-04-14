@@ -63,20 +63,18 @@
           <v-col cols="12" sm="12" md="3">
           <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
             label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
-            variant="outlined" @update:model-value="initialize()"></v-autocomplete>
+            variant="outlined"></v-autocomplete>
         </v-col>
         <v-col cols="12" md="1">
                         <v-btn icon @click="updateDate2" color="#F18254" >
                     <v-icon>mdi-magnify</v-icon></v-btn>
                 </v-col>
           <v-col cols="12">
-            <v-container>
               <v-alert border type="info" variant="outlined" density="compact">
                               {{ formTitle }}
                           </v-alert>  
-            </v-container>
             <v-card-text>
-              <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
+              <v-text-field  v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
                 hide-details></v-text-field>
               <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search2" class="elevation-2"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
                 <template v-slot:item.tip="{ item }">
