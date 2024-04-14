@@ -163,8 +163,8 @@ export default {
   },
   created() {
     // Recuperar datos del localStorage al cargar la aplicación
-    this.branch_id = LocalStorageService.getItem("branch_id");
-    this.business_id = LocalStorageService.getItem("business_id");
+    this.branch_id = parseInt(LocalStorageService.getItem("branch_id"));
+    this.business_id = parseInt(LocalStorageService.getItem("business_id"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     /*axios
       .get('http://127.0.0.1:8000/api/show-business', {

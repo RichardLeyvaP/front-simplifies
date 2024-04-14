@@ -41,7 +41,7 @@
                     <v-row>
                       <v-col cols="12" md="6">
                         <v-text-field v-model="editedItem.name" clearable label="Nombre"
-                          prepend-icon="mdi-pound-box-outline" variant="underlined" :rules="nameRules" :disabled="editedItem.name">
+                          prepend-icon="mdi-pound-box-outline" variant="underlined" :rules="nameRules">
                         </v-text-field>
                       </v-col>
 

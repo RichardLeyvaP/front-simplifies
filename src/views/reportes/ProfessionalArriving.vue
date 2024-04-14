@@ -30,7 +30,7 @@
               </template>
               <v-locale-provider locale="es">
                 <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input @update:model-value="updateDate"
-                  format="yyyy-MM-dd"></v-date-picker>
+                  format="yyyy-MM-dd" :max="dateFormatted2"></v-date-picker>
               </v-locale-provider>
             </v-menu>
           </v-col>
@@ -43,7 +43,7 @@
                   append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
               </template>
               <v-locale-provider locale="es">
-                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" @update:model-value="updateDate2"
+                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" @update:model-value="updateDate1"
                   format="yyyy-MM-dd" :min="dateFormatted"></v-date-picker>
               </v-locale-provider>
             </v-menu>
@@ -65,12 +65,16 @@
           <v-col cols="12" sm="12" md="3">
             <v-autocomplete v-model="branch_id" :items="branches" clearable label="Seleccione una Sucursal"
               prepend-inner-icon="mdi-store" item-title="name" item-value="id" variant="outlined"
-              @update:model-value="initialize()"></v-autocomplete>
+              ></v-autocomplete><!--@update:model-value="initialize()"-->
           </v-col>
+          <v-col cols="12" md="1">
+                        <v-btn icon @click="updateDate2" color="#F18254" >
+                    <v-icon>mdi-magnify</v-icon></v-btn>
+                </v-col>
           <v-col cols="12">
             <v-container>
-              <v-alert border type="info" variant="outlined">
-                            {{ formTitle }}
+              <v-alert border type="info" variant="outlined" density="compact">
+                            <span>{{ formTitle }}</span>
                         </v-alert>
             </v-container>
             <v-card-text>
@@ -126,18 +130,18 @@
       formTitle() {
         if (this.editedIndex === 2) {
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          this.fecha = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
-          return 'Profesionales mejor asistencia en el período' + this.fecha;
+          this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
+          return 'Profesionales con mejor asistencia en el período ' + this.fecha;
         }
-        else if (this.editedIndex === 3) {
+        /*else if (this.editedIndex === 3) {
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           this.fecha = format(this.input3, "yyyy-MM");
-          return 'Profesionales mejor asistencia en el mes ' + format(this.input3, "yyyy-MM");
-        }
+          return 'Profesionales con mejor asistencia en el mes ' + format(this.input3, "yyyy-MM");
+        }*/
         else {
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           this.fecha = format(new Date(), "yyyy-MM-dd");
-          return 'Profesionales mejor asistencia en el día ' + format(new Date(), "yyyy-MM-dd");
+          return 'Profesionales con mejor asistencia en el día ' + format(new Date(), "yyyy-MM-dd");
         }
       },
       dateFormatted() {
@@ -181,8 +185,8 @@
     },
   
     mounted() {
-    this.branch_id = LocalStorageService.getItem("branch_id");
-    this.business_id = LocalStorageService.getItem("business_id");
+    this.branch_id = parseInt(LocalStorageService.getItem("branch_id"));
+    this.business_id = parseInt(LocalStorageService.getItem("business_id"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
             .get('http://127.0.0.1:8000/api/show-business', {
@@ -245,11 +249,15 @@
         this.input = val;
         this.menu = false;
       },
-      updateDate2(val) {
-        this.input2 = val;
+      updateDate1(val) {
+      this.input2 = val;
+      this.menu2 = false;
+    },
+      updateDate2() {
+        //this.input2 = val;
         this.editedIndex = 2;
         const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-        const endDate = format(val, "yyyy-MM-dd");
+      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
         console.log(startDate);
         console.log(endDate);
         axios
@@ -265,7 +273,7 @@
             //this.input2 = new Date();
             //this.input = new Date()
           })
-        this.menu2 = false;
+        //this.menu2 = false;
       },
       /*updateDate3(val) {
         this.editedIndex = 3;
@@ -291,8 +299,8 @@
       initialize() {
         this.editedIndex = 1;
         this.state=true;
-          this.input2 = new Date();
-          this.input3 = new Date()
+          //this.input2 = new Date();
+          //this.input3 = new Date()
         axios
           .get('http://127.0.0.1:8000/api/arriving-branch-date', {
             params: {

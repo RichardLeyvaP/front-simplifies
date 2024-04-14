@@ -28,7 +28,7 @@
               </template>
               <v-locale-provider locale="es">
                 <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input @update:modelValue="updateDate"
-                  format="yyyy-MM-dd"></v-date-picker>
+                  format="yyyy-MM-dd" :max="dateFormatted2"></v-date-picker>
               </v-locale-provider>
             </v-menu>
           </v-col>
@@ -41,7 +41,7 @@
                   append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
               </template>
               <v-locale-provider locale="es">
-                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" @update:modelValue="updateDate2"
+                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" @update:modelValue="updateDate1"
                   format="yyyy-MM-dd" :min="dateFormatted"></v-date-picker>
               </v-locale-provider>
             </v-menu>
@@ -65,9 +65,13 @@
             label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
             variant="outlined" @update:model-value="initialize()"></v-autocomplete>
         </v-col>
+        <v-col cols="12" md="1">
+                        <v-btn icon @click="updateDate2" color="#F18254" >
+                    <v-icon>mdi-magnify</v-icon></v-btn>
+                </v-col>
           <v-col cols="12">
             <v-container>
-              <v-alert border type="info" variant="outlined">
+              <v-alert border type="info" variant="outlined" density="compact">
                               {{ formTitle }}
                           </v-alert>  
             </v-container>
@@ -130,7 +134,7 @@
       formTitle() {
         if (this.editedIndex === 2){
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + format(this.input2, "yyyy-MM-dd");
+          this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
           return 'Operaciones realizadas en la caja en el período  ' + this.fecha;
         }
         else if (this.editedIndex === 3){
@@ -185,9 +189,9 @@
     },
   
     mounted() {
-        this.business_id = LocalStorageService.getItem('business_id');
-    this.charge_id = LocalStorageService.getItem('charge_id');
-    this.branch_id = LocalStorageService.getItem('branch_id');
+        this.business_id = parseInt(LocalStorageService.getItem('business_id'));
+    this.charge_id = parseInt(LocalStorageService.getItem('charge_id'));
+    this.branch_id = parseInt(LocalStorageService.getItem('branch_id'));
     this.nameBranch = JSON.parse(LocalStorageService.getItem("nameBranch"));
     this.nameProfessional = JSON.parse(LocalStorageService.getItem("name"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
@@ -263,11 +267,15 @@
         this.input = val;
         this.menu = false;
       },
-      updateDate2(val) {
+      updateDate1(val) {
+      this.input2 = val;
+      this.menu2 = false;
+    },
+      updateDate2() {
         this.editedIndex = 2;
-        this.input2 = val;
+        //this.input2 = val;
         const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-        const endDate = format(val, "yyyy-MM-dd");
+      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
         console.log('endDate');
         console.log(startDate);
         axios
@@ -281,7 +289,6 @@
           .then((response) => {
             this.results = response.data.traces;
           })
-        this.menu2 = false;
       },
       /*updateDate3(val) {
         this.editedIndex = 3;

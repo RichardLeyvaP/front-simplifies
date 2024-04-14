@@ -32,7 +32,7 @@
         <v-row>
           <v-col cols="12">
             <v-container>
-              <v-alert border type="info" variant="outlined">
+              <v-alert border type="info" variant="outlined" density="compact">
                               Ganancias generadas por cursos
                           </v-alert>
             </v-container>
@@ -107,7 +107,7 @@
   
     mounted() {
       
-      this.business_id = LocalStorageService.getItem("business_id");
+      this.business_id = parseInt(LocalStorageService.getItem("business_id"));
       axios
       .get('http://127.0.0.1:8000/api/enrollment-show', {
           params: {

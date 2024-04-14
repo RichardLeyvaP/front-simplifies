@@ -2,110 +2,112 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <!-- eslint-disable vue/return-in-computed-property -->
 <template>
-        <v-card elevation="6" class="mx-5">
-            <v-toolbar color="#F18254">
-                <v-row align="center">
-                    <v-col cols="12" md="8" class="grow ml-4">
-                        <span class="text-subtitle-1"> <strong>Reporte de análisis de Ingresos y Gastos</strong></span>
-                    </v-col>
-                    <v-spacer></v-spacer>
-                    <v-col cols="12" md="3">
-                        <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" elevation="2"
-                        prepend-inner-icon="mdi-file-excel" @click="exportToExcel">
-                            Exportar a Excel
-                        </v-btn>
-                    </v-col>
-                </v-row>
-            </v-toolbar>
-            <v-container>
-            <v-row>
-                <v-col cols="12" md="4">
-                    <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="underlined"
-                    prepend-inner-icon="mdi-calendar" @update:model-value="initialize()"></v-select>
+    <v-card elevation="6" class="mx-5">
+        <v-toolbar color="#F18254">
+            <v-row align="center">
+                <v-col cols="12" md="8" class="grow ml-4">
+                    <span class="text-subtitle-1"> <strong>Reporte de análisis de Ingresos y Gastos</strong></span>
                 </v-col>
-                <v-col cols="12" md="4">
+                <v-spacer></v-spacer>
+                <v-col cols="12" md="3">
+                    <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" elevation="2"
+                        prepend-inner-icon="mdi-file-excel" @click="exportToExcel">
+                        Exportar a Excel
+                    </v-btn>
+                </v-col>
+            </v-row>
+        </v-toolbar>
+
+        <v-container>
+            <v-row>
+                <v-col cols="12" md="3">
+                    <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="underlined"
+                        prepend-inner-icon="mdi-calendar"></v-select><!--@update:model-value="initialize()"-->
+                </v-col>
+                <v-col cols="12" md="3">
                     <v-text-field v-model="saldoInicial" clearable label="Saldo Anterior" prepend-icon="mdi-arrow-left"
                         variant="underlined" :style="{ color: saldoInicial < 0 ? '#FF7043' : '' }">
                     </v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col cols="12" sm="12" md="3">
                     <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
                         label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
-                        variant="underlined" @update:model-value="initialize()"></v-autocomplete>
+                        variant="underlined"></v-autocomplete><!--@update:model-value="initialize()"-->
+                </v-col>
+                <v-col cols="12" md="1">
+                    <v-btn icon @click="initialize" color="#F18254">
+                        <v-icon>mdi-magnify</v-icon></v-btn>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col cols="12" md="12">
-                    <v-container>
-                        <v-alert border type="info" variant="outlined">
-                            {{ formTitle }}
-                        </v-alert>
-                    </v-container>
+                    <v-alert border type="info" variant="outlined" density="compact">
+                        {{ formTitle }}
+                    </v-alert>
                 </v-col>
             </v-row>
-                    <v-container>
-                <v-card elevation="4">
+            <v-card elevation="4">
                 <v-tabs v-model="tabBar" color="rgb(241, 130, 84)" elevation="6">
-                  <v-tab value="one">Listado de Ingresos y Gastos</v-tab>
-                  <v-tab value="two">Gráfico de Ingresos y Gastos</v-tab>
+                    <v-tab value="one">Listado de Ingresos y Gastos</v-tab>
+                    <v-tab value="two">Gráfico de Ingresos y Gastos</v-tab>
                 </v-tabs>
                 <v-divider></v-divider>
                 <v-card-text>
-                <v-window v-model="tabBar">
-                    <v-window-item value="one">
-                        <v-card class="mx-auto  overflow-visible">
-                        <v-card-text>
-                            <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'"
-                                :items-per-page="13" :items="results" :search="search2" class="elevation-2"
-                                no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
-                                <template v-slot:item.difference="{ item }">
-                                    <td>
-                                        <div class="d-flex justify-center">
-                                            <v-chip :color="item.difference > 0 ? 'green' : '#FF7043'"
-                                                class="text-uppercase font-weight-bold" size="small" label>{{formatNumber(item.difference) }}</v-chip>
-                                        </div>
-                                    </td>
-                                </template>
-                                <template v-slot:item.total_revenues="{ item }">
-                                        <v-chip 
-                                            class="text-uppercase font-weight-bold" size="small" label>{{
+                    <v-window v-model="tabBar">
+                        <v-window-item value="one">
+                            <v-card class="mx-auto  overflow-visible">
+                                <v-card-text>
+                                    <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'"
+                                        :items-per-page="13" :items="results" :search="search2" class="elevation-2"
+                                        no-results-text="No hay datos disponibles"
+                                        no-data-text="No hay datos disponibles">
+                                        <template v-slot:item.difference="{ item }">
+                                            <td>
+                                                <div class="d-flex justify-center">
+                                                    <v-chip :color="item.difference > 0 ? 'green' : '#FF7043'"
+                                                        class="text-uppercase font-weight-bold" size="small"
+                                                        label>{{ formatNumber(item.difference) }}</v-chip>
+                                                </div>
+                                            </td>
+                                        </template>
+                                        <template v-slot:item.total_revenues="{ item }">
+                                            <v-chip class="text-uppercase font-weight-bold" size="small" label>{{
                             formatNumber(item.total_revenues) }}</v-chip>
-                                    </template>
-                                    <template v-slot:item.total_expenses="{ item }">
-                                        <v-chip
-                                            class="text-uppercase font-weight-bold" size="small" label> {{
-                            formatNumber(item.total_expenses)}}</v-chip>
-                                    </template>
-                            </v-data-table>
-                        </v-card-text>
-                    </v-card>
-                    </v-window-item>
-                </v-window>
-                <v-window v-model="tabBar">
-                    <v-window-item value="two">
-                        <v-card class="mx-auto  overflow-visible">
-                        <Bar class="pa-6 elevation=2" id="my-chart-id" :options="chartOptions" :data="chartData3"
-                            padding="16" />
+                                        </template>
+                                        <template v-slot:item.total_expenses="{ item }">
+                                            <v-chip class="text-uppercase font-weight-bold" size="small" label> {{
+                            formatNumber(item.total_expenses) }}</v-chip>
+                                        </template>
+                                    </v-data-table>
+                                </v-card-text>
+                            </v-card>
+                        </v-window-item>
+                    </v-window>
+                    <v-window v-model="tabBar">
+                        <v-window-item value="two">
+                            <v-card class="mx-auto  overflow-visible">
+                                <Bar class="pa-6 elevation=2" id="my-chart-id" :options="chartOptions"
+                                    :data="chartData3" padding="16" />
 
-                        <v-card-text class="pt-0">
+                                <v-card-text class="pt-0">
 
-                            <div class="subheading font-weight-light text-grey">
-                                Reporte de análisis de Ingresos y Gastos
-                            </div>
-                            <v-divider class="my-2"></v-divider>
-                            <v-icon class="me-2" size="small">
-                                mdi-clock
-                            </v-icon>
-                            <span class="text-caption text-grey font-weight-light">Actualizado Recientemente</span>
-                        </v-card-text>
-                    </v-card>
-                    </v-window-item>
-                </v-window>
-            </v-card-text>
+                                    <div class="subheading font-weight-light text-grey">
+                                        Reporte de análisis de Ingresos y Gastos
+                                    </div>
+                                    <v-divider class="my-2"></v-divider>
+                                    <v-icon class="me-2" size="small">
+                                        mdi-clock
+                                    </v-icon>
+                                    <span class="text-caption text-grey font-weight-light">Actualizado
+                                        Recientemente</span>
+                                </v-card-text>
+                            </v-card>
+                        </v-window-item>
+                    </v-window>
+                </v-card-text>
             </v-card>
-            </v-container>
         </v-container>
-        </v-card>
+    </v-card>
 </template>
 <script>
 
@@ -167,11 +169,11 @@ export default {
                 this.fecha = format(this.input, "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
                 return 'Monto generado por Negocios en el período  ' + format(this.input, "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
             }
-            else if (this.editedIndex === 3) {
+            /*else if (this.editedIndex === 3) {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
                 this.fecha = format(this.input3, "yyyy-MM");
                 return 'Monto generado por Negocios en el mes ' + format(this.input3, "yyyy-MM");
-            }
+            }*/
             else {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
                 this.fecha = format(new Date(), "yyyy-MM-dd");
@@ -190,9 +192,9 @@ export default {
     },
 
     mounted() {
-        this.branch_id = LocalStorageService.getItem("branch_id");
-        this.business_id = LocalStorageService.getItem("business_id");
-        this.charge_id = LocalStorageService.getItem('charge_id');
+        this.branch_id = parseInt(LocalStorageService.getItem("branch_id"));
+        this.business_id = parseInt(LocalStorageService.getItem("business_id"));
+        this.charge_id = parseInt(LocalStorageService.getItem('charge_id'));
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         console.log('this.charge')
         console.log(this.charge)

@@ -167,8 +167,8 @@ export default {
   },
   mounted() {
     // Recuperar datos del localStorage al cargar la aplicación
-    this.branch_id = LocalStorageService.getItem('branch_id');
-    this.professional_id = LocalStorageService.getItem('professional_id');
+    this.branch_id = parseInt(LocalStorageService.getItem('branch_id'));
+    this.professional_id = parseInt(LocalStorageService.getItem('professional_id'));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
             .get('http://127.0.0.1:8000/api/show-business', {

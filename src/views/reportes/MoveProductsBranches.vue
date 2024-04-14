@@ -35,8 +35,8 @@
             <v-row>
                 <v-col cols="12" md="12">
                     <v-container>
-                        <v-alert border type="info" variant="outlined">
-                            {{ formTitle }}
+                        <v-alert border type="info" variant="outlined" density="compact">
+                            <span>{{ formTitle }}</span>
                         </v-alert>
                     </v-container>
                 </v-col>
@@ -165,9 +165,9 @@ export default {
     },
 
     mounted() {
-        this.branch_id = LocalStorageService.getItem("branch_id");
-        this.business_id = LocalStorageService.getItem("business_id");
-        this.charge_id = LocalStorageService.getItem('charge_id');
+        this.branch_id = parseInt(LocalStorageService.getItem("branch_id"));
+        this.business_id = parseInt(LocalStorageService.getItem("business_id"));
+        this.charge_id = parseInt(LocalStorageService.getItem('charge_id'));
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         console.log('this.charge')
         console.log(this.charge)
@@ -183,8 +183,6 @@ export default {
                     this.branch_id = this.branches[0].id;
                 }
                 //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-
-                this.initialize()
             });
         if (this.charge === 'Administrador') {
             // Mostrar la fila con Autocomplete

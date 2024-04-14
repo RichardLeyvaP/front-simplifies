@@ -44,7 +44,7 @@
             </template>
             <v-locale-provider locale="es">
               <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input @update:model-value="updateDate"
-                format="yyyy-MM-dd"></v-date-picker>
+                format="yyyy-MM-dd" :max="dateFormatted2"></v-date-picker>
             </v-locale-provider>
           </v-menu>
         </v-col>
@@ -54,11 +54,11 @@
             min-width="290px">
             <template v-slot:activator="{ props }">
               <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
-                append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
+                append-inner-icon="mdi-calendar" label="Fecha final" ></v-text-field>
             </template>
             <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" @update:model-value="updateDate2"
-                format="yyyy-MM-dd" :min="dateFormatted"></v-date-picker>
+              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" 
+                format="yyyy-MM-dd" :min="dateFormatted" @update:model-value="updateDate1"></v-date-picker><!--@update:model-value="updateDate2"-->
             </v-locale-provider>
           </v-menu>
         </v-col>
@@ -81,9 +81,13 @@
               prepend-inner-icon="mdi-store" item-title="name" item-value="id" variant="outlined"
               @update:model-value="onBranchChange"></v-autocomplete>
           </v-col>
+          <v-col cols="12" md="1">
+                        <v-btn icon @click="updateDate2" color="#F18254" >
+                    <v-icon>mdi-magnify</v-icon></v-btn>
+                </v-col>
         <v-col cols="12">
           <v-container>
-            <v-alert border type="info" variant="outlined">
+            <v-alert border type="info" variant="outlined" density="compact">
                             {{ formTitle }}
                         </v-alert>
           </v-container>
@@ -140,14 +144,14 @@ export default {
     formTitle() {
       if (this.editedIndex === 2) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.fecha = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
-        return 'Llegadas tardes en el período' + this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
+        this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
+        return 'Llegadas tardes en el período' + this.fecha;
       }
-      else if (this.editedIndex === 3) {
+      /*else if (this.editedIndex === 3) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.fecha = format(this.input3, "yyyy-MM");
         return 'Llegadas tardes en el mes ' + format(this.input3, "yyyy-MM");
-      }
+      }*/
       else {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.fecha = format(new Date(), "yyyy-MM-dd");
@@ -195,8 +199,8 @@ export default {
   },
 
   mounted() {
-    this.business_id = LocalStorageService.getItem("business_id");
-    this.branch_id = LocalStorageService.getItem("branch_id");
+    this.business_id = parseInt(LocalStorageService.getItem("business_id"));
+    this.branch_id = parseInt(LocalStorageService.getItem("branch_id"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
       .get('http://127.0.0.1:8000/api/show-business', {
@@ -262,12 +266,17 @@ export default {
     updateDate(val) {
       this.input = val;
       this.menu = false;
+      this.menu2 = false;
     },
-    updateDate2(val) {
+    updateDate1(val) {
       this.input2 = val;
+      this.menu2 = false;
+    },
+    updateDate2() {
+      //this.input2 = val;
       this.editedIndex = 2;
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      const endDate = format(val, "yyyy-MM-dd");
+      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       console.log(startDate);
       console.log(endDate);
       axios
@@ -283,7 +292,7 @@ export default {
           //this.input2 = new Date();
           //this.input = new Date()
         })
-      this.menu2 = false;
+      //this.menu2 = false;
     },
     /*updateDate3(val) {
       this.editedIndex = 3;

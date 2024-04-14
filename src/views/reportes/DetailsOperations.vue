@@ -19,24 +19,28 @@
         </v-toolbar>
         <v-container>
             <v-row>
-                <v-col cols="12" md="4">
+                <v-col cols="12" md="3">
                     <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="outlined"
-                        prepend-inner-icon="mdi-calendar" @update:model-value="initialize()"></v-select>
+                        prepend-inner-icon="mdi-calendar" ></v-select><!--@update:model-value="initialize()"-->
                 </v-col>
-                <v-col cols="12" md="4">
+                <v-col cols="12" md="3">
                     <v-select v-model="selectedMounth" :items="months" label="Selecciona un mes" variant="outlined"
-                        prepend-inner-icon="mdi-calendar" @update:model-value="operationDetailsMonth()"></v-select>
+                        prepend-inner-icon="mdi-calendar"></v-select><!--@update:model-value="operationDetailsMonth()"-->
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col cols="12" sm="12" md="3">
                     <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
                         label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
-                        variant="outlined" @update:model-value="initialize()"></v-autocomplete>
+                        variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
+                </v-col>
+                <v-col cols="12" md="1">
+                        <v-btn icon @click="operationDetailsMonth()" color="#F18254" >
+                    <v-icon>mdi-magnify</v-icon></v-btn>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col cols="12" md="12">
                     <v-container>
-                        <v-alert border type="info" variant="outlined">
+                        <v-alert border type="info" variant="outlined" density="compact">
                             {{ formTitle }}
                         </v-alert>
                     </v-container>
@@ -211,15 +215,15 @@ export default {
             return this.generateChartData();
         },*/
         formTitle() {
-            if (this.editedIndex === 2) {
+            /*if (this.editedIndex === 2) {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
                 this.fecha = format(this.input, "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
                 return 'Monto generado por Negocios en el período  ' + format(this.input, "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
             }
-            else if (this.editedIndex === 3) {
+            else */if (this.editedIndex == 3) {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-                this.fecha = format(this.input3, "yyyy-MM");
-                return 'Monto generado por Negocios en el mes ' + format(this.input3, "yyyy-MM");
+                //this.fecha = format(this.input3, "yyyy-MM");
+                return 'Reporte de Ingresos y Gastos detallados por operaciones en el mes ' + this.selectedYear+'-'+this.selectedMounth;
             }
             else {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -254,9 +258,9 @@ export default {
     },
 
     mounted() {
-        this.branch_id = LocalStorageService.getItem("branch_id");
-        this.business_id = LocalStorageService.getItem("business_id");
-        this.charge_id = LocalStorageService.getItem('charge_id');
+        this.branch_id = parseInt(LocalStorageService.getItem("branch_id"));
+        this.business_id = parseInt(LocalStorageService.getItem("business_id"));
+        this.charge_id = parseInt(LocalStorageService.getItem('charge_id'));
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         console.log('this.charge')
         console.log(this.charge)
@@ -368,6 +372,7 @@ export default {
                 })
         },
         operationDetailsMonth(){
+            this.editedIndex = 3;
             axios
                 .get('http://127.0.0.1:8000/api/details-operations-month', {
                     params: {

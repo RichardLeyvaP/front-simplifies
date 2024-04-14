@@ -21,35 +21,36 @@
       <v-row>
         <!-- Primera columna -->
         <v-col cols="12" sm="6" md="2" v-if="state">
-          <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-            min-width="290px">
+          <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
+            offset-y min-width="290px">
             <template v-slot:activator="{ props }">
-              <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined" append-inner-icon="mdi-calendar"
-                label="Fecha inicial"></v-text-field>
+              <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined"
+                append-inner-icon="mdi-calendar" label="Fecha inicial"></v-text-field>
             </template>
             <v-locale-provider locale="es">
               <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input
-                @update:model-value="updateDate" format="yyyy-MM-dd"></v-date-picker>
+                @update:model-value="updateDate" format="yyyy-MM-dd" :max="dateFormatted2"></v-date-picker>
             </v-locale-provider>
           </v-menu>
         </v-col>
         <!-- Segunda columna -->
         <v-col cols="12" sm="6" md="2" v-if="state">
-          <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-            min-width="290px">
+          <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
+            offset-y min-width="290px">
             <template v-slot:activator="{ props }">
               <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
                 append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
             </template>
             <v-locale-provider locale="es">
               <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
-                :modelValue="getDate2" format="yyyy-MM-dd" :min="dateFormatted"></v-date-picker><!-- @update:model-value="updateDate2"-->
+                :modelValue="getDate2" format="yyyy-MM-dd" @update:model-value="updateDate1"
+                :min="dateFormatted"></v-date-picker><!-- @update:model-value="updateDate2"-->
             </v-locale-provider>
           </v-menu>
         </v-col>
         <!-- Tercera columna -->
         <!--<v-col cols="12" sm="6" md="2" v-if="state">-->
-          <!--<v-date-picker
+        <!--<v-date-picker
           v-model="selectedMonth"
           view-mode="months"
           label="Seleccione un mes"
@@ -69,7 +70,7 @@
               </v-locale-provider>
             </v-menu>
         </v-col>-->
-        
+
         <v-col cols="12" sm="12" md="3">
           <v-autocomplete v-model="professional_id" :items="professionals" clearable label="Seleccione un Professional"
             prepend-inner-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="outlined"
@@ -77,17 +78,18 @@
         </v-col>
         <v-col cols="12" sm="12" md="3">
           <v-autocomplete v-model="branch_id" :items="branches" clearable label="Seleccione una Sucursal"
-            prepend-inner-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
+            prepend-inner-icon="mdi-account-tie-outline" item-title="name" item-value="id"
+            variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
         </v-col>
         <v-col cols="12" md="1">
           <v-btn icon @click="updateDate2" color="#F18254" :disabled="!professional_id">
-      <v-icon>mdi-magnify</v-icon>
-    </v-btn>
+            <v-icon>mdi-magnify</v-icon>
+          </v-btn>
         </v-col>
         <v-col cols="12">
           <v-container>
-            <v-alert border type="info" variant="outlined">
-                            {{ formTitle }}
+            <v-alert border type="info" variant="outlined" density="compact">
+                            <span>{{ formTitle }}</span>
                         </v-alert>
           </v-container>
           <v-card-text>
@@ -149,7 +151,7 @@ export default {
     formTitle() {
       if (this.editedIndex === 2) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.fecha = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
+        this.fecha = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd") + '-' + this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
         return 'Llegadas tardes en el período' + this.fecha;
       }
       else if (this.editedIndex === 3) {
@@ -204,8 +206,8 @@ export default {
   },
 
   mounted() {
-    this.branch_id = LocalStorageService.getItem("branch_id");
-    this.business_id = LocalStorageService.getItem("business_id");
+    this.branch_id = parseInt(LocalStorageService.getItem("branch_id"));
+    this.business_id = parseInt(LocalStorageService.getItem("business_id"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
       .get('http://127.0.0.1:8000/api/show-business', {
@@ -268,6 +270,10 @@ export default {
     updateDate(val) {
       this.input = val;
       this.menu = false;
+    },
+    updateDate1(val) {
+      this.input2 = val;
+      this.menu2 = false;
     },
     updateDate2() {
       //this.input2 = val;
