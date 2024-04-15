@@ -137,6 +137,7 @@ export default {
         input3: null,
         selectedYear: null,
         years: [],
+        branches: [],
         branch_id: '',
         saldoInicial: '',
         business_id: '',
@@ -350,6 +351,8 @@ export default {
         },*/
         initialize() {
             this.editedIndex = 1;
+            console.log('this.branch_id');
+            console.log(this.branch_id);
             axios
                 .get('http://127.0.0.1:8000/api/revenue-expense-analysis', {
                     params: {
