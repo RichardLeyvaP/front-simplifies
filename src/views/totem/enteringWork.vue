@@ -12,9 +12,9 @@
           <v-sheet border>
             <v-row>
 
-              <v-col cols="12" md="6" class="mt-2">
-                <v-text-field :disabled="verificate" v-model="email_client2" :rules="emailRules"
-                  label="Correo Electrónico" outlined required></v-text-field>
+              <v-col cols="12" md="4" class="mt-2">
+                <v-text-field :disabled="verificate" v-model="email_client2"
+                  label="Usuario" outlined :rules="nameRules"></v-text-field> <!---->
               </v-col>
 
 
@@ -29,7 +29,7 @@
                 <!-- BOTONES -->
             <v-row class="mt-1">
               <v-spacer></v-spacer>
-              <v-btn size="x-large" :disabled="!validarEmail()" @click="nextStep">Siguiente</v-btn>            
+              <v-btn size="x-large" :disabled="!validarEmail()" @click="nextStep">Siguiente</v-btn>   <!---->         
             </v-row>
             
           </v-container>
@@ -314,7 +314,7 @@ export default {
   },
     validarEmail() {
       // Comprueba si todas las reglas de validación se cumplen
-      return this.emailRules.every(rule => rule(this.email_client2 || '') === true);
+      return this.nameRules.every(rule => rule(this.email_client2 || '') === true);
     },
     nextStep() {
     
