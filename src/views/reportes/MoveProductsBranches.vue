@@ -5,7 +5,7 @@
         <v-toolbar color="#F18254">
             <v-row align="center">
                 <v-col cols="12" md="8" class="grow ml-4">
-                    <span class="text-subtitle-1"> <strong>Reporte de Movimiento de Productos</strong></span>
+                    <span class="text-subtitle-1"> <strong>Movimiento de Productos</strong></span>
                 </v-col>
                 <v-spacer></v-spacer>
                 <v-col cols="12" md="3">
@@ -27,7 +27,7 @@
                         prepend-inner-icon="mdi-calendar" @update:model-value="moveProductsMounth()"></v-select>
                 </v-col>
                 <!--<v-col cols="12" sm="12" md="4">
-                    <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
+                    <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" 
                         label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
                         variant="outlined" @update:model-value="initialize()"></v-autocomplete>
                 </v-col>-->
@@ -35,7 +35,7 @@
             <v-row>
                 <v-col cols="12" md="12">
                         <v-alert border type="info" variant="outlined" density="compact">
-                            <span>{{ formTitle }}</span>
+                            <p v-html="formTitle"></p>
                         </v-alert>
                 </v-col>
                 <v-col cols="12" md="12">
@@ -108,22 +108,8 @@ export default {
             { title: 'Fecha Movimiento', key: 'data', sortable: false },
             { title: 'Producto', key: 'nameProduct', sortable: false },
             { title: 'Cantidad Trasladada', key: 'cant', sortable: false },
-            {
-                title: 'Almacén Saliente',
-                align: 'center',
-                children: [
-                    //{ title: 'Sucursal', key: 'branchOut', sortable: false },
-                    { title: 'Almacén', key: 'storeOut', sortable: false },
-                ],
-            },
-            {
-                title: 'Almacén Entrante',
-                align: 'center',
-                children: [
-                    //{ title: 'Sucursal', key: 'branchInt', sortable: false },
-                    { title: 'Almacén', key: 'storeInt', sortable: false },
-                ],
-            },
+            { title: 'Almacén Saliente', key: 'storeOut', sortable: false },
+            { title: 'Almacén Entrante', key: 'storeInt', sortable: false },
         ],
         tableData: [],
         data: {},
@@ -138,17 +124,19 @@ export default {
         formTitle() {
             if (this.editedIndex === 2) {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-                return 'Reporte de Movimiento de Productos en el mes ' + this.selectedMounth + '-' + this.selectedYear;
+                //return 'Reporte de Movimiento de Productos en el mes ' + this.selectedMounth + '-' + this.selectedYear;
+                return `Reporte de Movimiento de Productos en el período [<strong>${this.selectedYear}</strong> - <strong>${this.selectedMounth}</strong>]`;
             }
-            else if (this.editedIndex === 3) {
+            /*else if (this.editedIndex === 3) {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
                 this.fecha = format(this.input3, "yyyy-MM");
                 return 'Reporte de Movimiento de Productos en el mes ' + format(this.input3, "yyyy-MM");
-            }
+            }*/
             else {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
                 this.fecha = format(new Date(), "yyyy-MM-dd");
-                return 'Reporte de Movimiento de Productos ' + this.selectedYear;
+                //return 'Reporte de Movimiento de Productos ' + this.selectedYear;
+                return `Reporte de Movimiento de Productos  <strong>${this.selectedYear}</strong>`;
             }
         },
     },
@@ -247,7 +235,8 @@ export default {
         },
         
         moveProductsMounth() {
-            this.editedIndex = 2;
+            if(this.selectedMounth){
+                this.editedIndex = 2;
             axios
                 .get('http://127.0.0.1:8000/api/move-products', {
                     params: {
@@ -262,10 +251,13 @@ export default {
                     console.log('this.results');
                     console.log(this.results);
                 })
+            }else{
+                this.initialize();
+            }
+            
         },
         initialize() {
             this.editedIndex = 1;
-            this.selectedMounth = '';
             axios
                 .get('http://127.0.0.1:8000/api/move-products', {
                     params: {

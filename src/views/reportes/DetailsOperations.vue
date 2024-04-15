@@ -28,7 +28,7 @@
                         prepend-inner-icon="mdi-calendar"></v-select><!--@update:model-value="operationDetailsMonth()"-->
                 </v-col>
                 <v-col cols="12" sm="12" md="3">
-                    <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
+                    <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" 
                         label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
                         variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
                 </v-col>
@@ -40,7 +40,7 @@
             <v-row>
                 <v-col cols="12" md="12">
                         <v-alert border type="info" variant="outlined" density="compact">
-                            {{ formTitle }}
+                            <p v-html="formTitle"></p>
                         </v-alert>
                 </v-col>
                 <v-col cols="12" md="12">
@@ -137,7 +137,7 @@
 <script>
 
 import axios from "axios";
-import { format } from "date-fns";
+//import { format } from "date-fns";
 import * as XLSX from 'xlsx';
 import LocalStorageService from "@/LocalStorageService";
 export default {
@@ -221,12 +221,18 @@ export default {
             else */if (this.editedIndex == 3) {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
                 //this.fecha = format(this.input3, "yyyy-MM");
-                return 'Reporte de Ingresos y Gastos detallados por operaciones en el mes ' + this.selectedYear+'-'+this.selectedMounth;
+                //return 'Reporte de Ingresos y Gastos detallados por operaciones en el mes ' + this.selectedYear+'-'+this.selectedMounth;
+                //const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+      //const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
+        return `Reporte de Ingresos y Gastos detallados por operaciones en el mes [<strong>${this.selectedYear}</strong> - <strong>${this.selectedMounth}</strong>]`;		
             }
             else {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-                this.fecha = format(new Date(), "yyyy-MM-dd");
-                return 'Reporte de Ingresos y Gastos detallados por operaciones ' + this.selectedYear;
+                //this.fecha = format(new Date(), "yyyy-MM-dd");
+                //return 'Reporte de Ingresos y Gastos detallados por operaciones ' + this.selectedYear;
+                return `Reporte de Ingresos y Gastos detallados por operaciones del año <strong>${this.selectedYear}</strong>`;
             }
         },
         dateFormatted3() {

@@ -96,7 +96,7 @@ const routes = [
       },
       {
         path: "/busines",
-        name: "Bussiness",
+        name: "Empresa",
         component: () =>
           import( "@/views/business/Business.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_business"] },

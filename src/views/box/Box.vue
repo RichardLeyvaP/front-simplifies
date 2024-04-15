@@ -466,7 +466,7 @@
               </template>
 
               <template v-slot:item.actions="{ item }">
-                <v-btn :disabled="!(item.pay) && item.request_delete" density="comfortable" icon="mdi-cancel"
+                <v-btn density="comfortable" icon="mdi-cancel"
                   :color="(item.request_delete && !this.car_ref.pay) ? 'red' : 'grey'" title="Eliminar solicitud"
                   @click="(item.request_delete && !this.car_ref.pay) && deleteOrder(item)" elevation="1" class="mr-1 mt-1 mb-1"></v-btn>
 
@@ -503,8 +503,16 @@
                 <v-col cols="12" md="12">
                   <v-autocomplete v-model="product_store_id" :items="products" clearable label="Productos"
                     prepend-inner-icon="mdi-tag-outline" item-title="name" item-value="id" variant="underlined"
-                    :rules="selectRules"></v-autocomplete>
+                    :rules="selectRules"  @update:model-value="cantExist"></v-autocomplete>
+                    <v-text-field v-model="product_exit" clearable label="Existencia"
+                      prepend-icon="mdi-currency-usd" variant="underlined" disabled="true">
+                    </v-text-field>
+                    <v-text-field v-model="cant" clearable label="Cantidad"
+                      prepend-icon="mdi-currency-usd" variant="underlined" :rules=[validateCantidad]>
+                    </v-text-field>
                 </v-col>
+                
+                
               </v-row>
               <v-divider></v-divider>
               <v-card-actions>
@@ -710,6 +718,8 @@ export default {
     branch_service_professional_id: '',
     showAddProducts: false,
     products: [],
+    product_exit:'',
+    cant: '',
     product_store_id: '',
 
     headers: [
@@ -826,6 +836,9 @@ export default {
 
     pago: [
       //(value) => !!value || 'Campo requerido',
+      (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
+      pago1: [
+      (value) => !!value || 'Campo requerido',
       (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
     selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
   }),
@@ -1007,7 +1020,7 @@ export default {
       console.log("boxxxxxx");
       console.log(this.results.id);
       //if (!this.results) {    
-      this.editedCloseBox.totalMount = this.results.reduce((total, item) => total + item.amount, 0);
+      this.editedCloseBox.totalMount = this.results.reduce((total, item) => total + item.amount + item.technical_assistance*5000, 0);
       return this.formatNumber(this.results.reduce((total, item) => total + item.amount, 0)) + " CLP";
       //}
       //else{
@@ -1432,6 +1445,7 @@ export default {
       this.data.type = 'service';
       this.data.nameProfessional = this.nameProfessional;
       this.data.branch_id = this.branch_id;
+      this.data.cant = 1;
       console.log('Datos servicios agregar');
       console.log(this.data);
       axios
@@ -1442,10 +1456,30 @@ export default {
           this.showDetails(this.car_ref);
           this.showAddServices = false;
           this.branch_service_professional_id = '';
+          this.cant = '';
         });
     },
     //endAddService
     //addProduct
+    validateCantidad(value) {
+      if (value == 0) {
+    return "El valor no puede ser nulo";
+  } else if (value <= this.product_exit) {
+    return true; // La cantidad es válida
+  } else {
+    return "La cantidad debe ser menor o igual que la existencia (" + this.product_exit + ")";
+  }
+    },
+    cantExist() {
+      console.log('this.product_store_id');
+      console.log(this.product_store_id);
+      let exist = this.products.filter(item => item.id == this.product_store_id);
+      console.log('exist[0]');
+      console.log(exist[0]);
+      this.product_exit = exist[0].product_exit;
+
+      console.log(exist[0].product_exit);
+    },
     showProduct(car) {
       console.log('imprime Carro');
       console.log(car);
@@ -1477,6 +1511,7 @@ export default {
       this.data.type = 'product';
       this.data.nameProfessional = this.nameProfessional;
       this.data.branch_id = this.branch_id;
+      this.data.cant = this.cant;
       console.log('Datos producto agregar');
       console.log(this.data);
       axios
@@ -1487,6 +1522,7 @@ export default {
           this.showDetails(this.car_ref);
           this.showAddProducts = false;
           this.product_store_id = '';
+          this.cant = '';
         });
     },
     //endAddProduct

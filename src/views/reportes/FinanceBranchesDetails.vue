@@ -27,7 +27,7 @@
                     prepend-inner-icon="mdi-calendar"></v-select><!--@update:model-value="operationDetails()"-->
                 </v-col>
                 <v-col cols="12" sm="12" md="3">
-                    <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
+                    <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" 
                         label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
                         variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
                 </v-col>
@@ -37,7 +37,7 @@
                 </v-col>
                 <v-col cols="12" md="12">
                         <v-alert border type="info" variant="outlined" density="compact">
-                            <span>{{ formTitle }}</span>
+                            <p v-html="formTitle"></p>
                         </v-alert>
                 </v-col>
                 <v-col cols="12" md="12">
@@ -122,6 +122,7 @@ export default {
         business_id: '',
         charge_id: '',
         charge: '',
+        branches: [],
         totalIngresos: 0,
         totalGastos: 0,
         mostrarFila: false,
@@ -164,7 +165,12 @@ export default {
         formTitle() {
             if (this.selectedMounth) {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-                return 'Reporte de Ingresos y Gastos detallados en el mes ' + this.selectedMounth + '-' + this.selectedYear;
+                //return 'Reporte de Ingresos y Gastos detallados en el mes ' + this.selectedMounth + '-' + this.selectedYear;
+                //const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+      //const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
+        return `Reporte de Ingresos y Gastos detallados en el mes [<strong>${this.selectedYear}</strong> - <strong>${this.selectedMounth}</strong>]`;		
             }
             /*else if (this.editedIndex === 3) {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -174,7 +180,8 @@ export default {
             else {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
                 this.fecha = format(new Date(), "yyyy-MM-dd");
-                return 'Reporte de Ingresos y Gastos detallados en el año ' + this.selectedYear;
+                //return 'Reporte de Ingresos y Gastos detallados en el año ' + this.selectedYear;
+                return `Reporte de Ingresos y Gastos detallados en el año  <strong>${this.selectedYear}</strong>`;
             }
         },
     },
@@ -193,21 +200,20 @@ export default {
         this.business_id = parseInt(LocalStorageService.getItem("business_id"));
         this.charge_id = parseInt(LocalStorageService.getItem('charge_id'));
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
-        console.log('this.charge')
-        console.log(this.charge)
+        
         axios
-            .get('http://127.0.0.1:8000/api/show-business', {
-                params: {
-                    business_id: this.business_id
-                }
-            })
-            .then((response) => {
-                this.branches = response.data.branches;
-                if (this.charge === 'Administrador') {
-                    this.branch_id = this.branches[0].id;
-                }
-                //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-            });
+      .get('http://127.0.0.1:8000/api/show-business', {
+        params: {
+          business_id: this.business_id
+        }
+      })
+      .then((response) => {
+        this.branches = response.data.branches;
+        //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+        if (this.charge === 'Administrador') {
+          this.branch_id = this.branches[0].id;
+        }
+      });
         if (this.charge === 'Administrador') {
             // Mostrar la fila con Autocomplete
             this.mostrarFila = true;
@@ -261,6 +267,8 @@ export default {
         },
         initialize() {
             this.editedIndex = 1;
+            console.log('this.branch_id')
+        console.log(this.branch_id)
             axios
                 .get('http://127.0.0.1:8000/api/revenue-expense-details', {
                     params: {

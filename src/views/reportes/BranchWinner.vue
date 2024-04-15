@@ -1,3 +1,4 @@
+<!-- eslint-disable no-mixed-spaces-and-tabs -->
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
   <v-card elevation="6" class="mx-5">
@@ -62,7 +63,7 @@
             </v-menu>
           </v-col>-->
           <v-col cols="12" sm="12" md="3">
-            <v-autocomplete v-model="branch_id" :items="branches" clearable label="Seleccione una Sucursal"
+            <v-autocomplete v-model="branch_id" :items="branches"  label="Seleccione una Sucursal"
               prepend-inner-icon="mdi-store" item-title="name" item-value="id" variant="outlined"
               ></v-autocomplete><!--@update:model-value="initialize()"-->
           </v-col>  
@@ -72,7 +73,7 @@
                 </v-col>        
           <v-container>
             <v-alert border type="info" variant="outlined" density="compact">
-                            {{ formTitle }}
+              <p v-html="formTitle"></p>
                         </v-alert>
           </v-container>
           <v-container>
@@ -128,7 +129,7 @@ export default {
     charge: '',
     fecha: '',
     editedIndex: 1,
-    branch_id: 1,
+    branch_id: '',
     business_id: '',
     results: [],
     branches: [],
@@ -146,8 +147,14 @@ export default {
     formTitle() {
       if (this.editedIndex === 2) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
-        return 'Ganancias de la Sucursal en el período ' + this.fecha;
+        //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
+        //return 'Ganancias de la Sucursal en el período ' + this.fecha;
+        const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
+        return `Ganancias de la Sucursal en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;
+		
       }
       /*else if (this.editedIndex === 3) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -157,7 +164,8 @@ export default {
       else {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.fecha = format(new Date(), "yyyy-MM-dd");
-        return 'Ganancias de la Sucursal en el día ' + format(new Date(), "yyyy-MM-dd");
+        return `Ganancias de la Sucursal en el día  <strong>${this.fecha}</strong>`;
+        //return 'Ganancias de la Sucursal en el día ' + format(new Date(), "yyyy-MM-dd");
       }
     },
     dateFormatted() {

@@ -25,12 +25,12 @@
                         prepend-inner-icon="mdi-calendar"></v-select><!--@update:model-value="initialize()"-->
                 </v-col>
                 <v-col cols="12" md="3">
-                    <v-text-field v-model="saldoInicial" clearable label="Saldo Anterior" prepend-icon="mdi-arrow-left"
-                        variant="underlined" :style="{ color: saldoInicial < 0 ? '#FF7043' : '' }">
+                    <v-text-field v-model="saldoInicial"  label="Saldo Anterior" prepend-icon="mdi-arrow-left"
+                        variant="underlined" :style="{ color: saldoInicial < 0 ? '#FF7043' : '' }" disabled="true">
                     </v-text-field>
                 </v-col>
                 <v-col cols="12" sm="12" md="3">
-                    <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
+                    <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" 
                         label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
                         variant="underlined"></v-autocomplete><!--@update:model-value="initialize()"-->
                 </v-col>
@@ -42,7 +42,7 @@
             <v-row>
                 <v-col cols="12" md="12">
                     <v-alert border type="info" variant="outlined" density="compact">
-                        {{ formTitle }}
+                        <p v-html="formTitle"></p>
                     </v-alert>
                 </v-col>
             </v-row>
@@ -166,8 +166,13 @@ export default {
         formTitle() {
             if (this.editedIndex === 2) {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-                this.fecha = format(this.input, "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
-                return 'Monto generado por Negocios en el período  ' + format(this.input, "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
+                //this.fecha = format(this.input, "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
+                //return 'Monto generado por Negocios en el período  ' + format(this.input, "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
+                const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
+        return `Monto generado por Negocios en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;		
             }
             /*else if (this.editedIndex === 3) {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -177,7 +182,8 @@ export default {
             else {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
                 this.fecha = format(new Date(), "yyyy-MM-dd");
-                return 'Reporte de análisis de Ingresos y Gastos ' + this.selectedYear;
+                return `Reporte de análisis de Ingresos y Gastos  <strong>${this.selectedYear}</strong>`;
+                //return 'Reporte de análisis de Ingresos y Gastos ' + this.selectedYear;
             }
         },
     },
@@ -210,7 +216,7 @@ export default {
                 if (this.charge === 'Administrador') {
                     this.branch_id = this.branches[0].id;
                 }
-                this.initialize()
+                //this.initialize()
             });
         if (this.charge === 'Administrador') {
             // Mostrar la fila con Autocomplete

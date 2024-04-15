@@ -63,7 +63,7 @@
             </v-menu>
           </v-col>-->          
           <v-col cols="12" sm="12" md="3">
-            <v-autocomplete v-model="branch_id" :items="branches" clearable label="Seleccione una Sucursal"
+            <v-autocomplete v-model="branch_id" :items="branches"  label="Seleccione una Sucursal"
               prepend-inner-icon="mdi-store" item-title="name" item-value="id" variant="outlined"
               ></v-autocomplete><!--@update:model-value="initialize()"-->
           </v-col>
@@ -74,7 +74,7 @@
           <v-col cols="12">
             <v-container>
               <v-alert border type="info" variant="outlined" density="compact">
-                            <span>{{ formTitle }}</span>
+                <p v-html="formTitle"></p>
                         </v-alert>
             </v-container>
             <v-card-text>
@@ -130,8 +130,14 @@
       formTitle() {
         if (this.editedIndex === 2) {
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
-          return 'Profesionales con mejor asistencia en el período ' + this.fecha;
+          //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
+          //return 'Profesionales con mejor asistencia en el período ' + this.fecha;
+          const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
+        return `Profesionales con mejor asistencia en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;		
+	
         }
         /*else if (this.editedIndex === 3) {
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -141,7 +147,8 @@
         else {
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           this.fecha = format(new Date(), "yyyy-MM-dd");
-          return 'Profesionales con mejor asistencia en el día ' + format(new Date(), "yyyy-MM-dd");
+          //return 'Profesionales con mejor asistencia en el día ' + format(new Date(), "yyyy-MM-dd");
+          return `Profesionales con mejor asistencia en el día  <strong>${this.fecha}</strong>`;
         }
       },
       dateFormatted() {

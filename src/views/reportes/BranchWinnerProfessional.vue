@@ -61,7 +61,7 @@
           </v-menu>
         </v-col> -->       
         <v-col cols="12" sm="12" md="3">
-          <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
+          <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" 
             label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
             variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
         </v-col>
@@ -71,7 +71,7 @@
                 </v-col>
         <v-col cols="12">
             <v-alert border type="info" variant="outlined" density="compact">
-                            {{ formTitle }}
+              <p v-html="formTitle"></p>
                         </v-alert>
                         <v-card class="mx-auto  overflow-visible">
           <v-card-text>
@@ -147,8 +147,13 @@ export default {
     formTitle() {
       if (this.editedIndex === 2) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
-        return 'Monto generado por Profesionales en el período ' + this.fecha;
+        //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
+        //return 'Monto generado por Profesionales en el período ' + this.fecha;
+        const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
+        return `Monto generado por Profesionales en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;
       }
       /*else if (this.editedIndex === 3) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -158,7 +163,8 @@ export default {
       else {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.fecha = format(new Date(), "yyyy-MM-dd");
-        return 'Monto generado por Profesionales el en día ' + format(new Date(), "yyyy-MM-dd");
+        return `Monto generado por Profesionales el en día  <strong>${this.fecha}</strong>`;
+        //return 'Monto generado por Profesionales el en día ' + format(new Date(), "yyyy-MM-dd");
       }
     },
     dateFormatted() {

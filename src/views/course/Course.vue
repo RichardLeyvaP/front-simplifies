@@ -224,7 +224,7 @@
         <v-dialog v-model="dialogUpdateS" max-width="700px">
           <v-card>
             <v-toolbar color="#F18254">
-              <span class="text-subtitle-2 ml-4">Actualizar Datos {{formTitle}}</span>
+              <span class="text-subtitle-2 ml-4">Actualizar Datos</span>
             </v-toolbar>
             <v-card-text>
               <v-form v-model="valid" enctype="multipart/form-data">
@@ -768,7 +768,13 @@ export default {
 
   methods: {
     validateCantidad(value) {
-      return value <= this.product_exit || "La cantidad debe ser menor o igual que la existencia (" + this.product_exit + ")";
+      if (value == 0) {
+    return "El valor no puede ser nulo";
+  } else if (value <= this.product_exit) {
+    return true; // La cantidad es válida
+  } else {
+    return "La cantidad debe ser menor o igual que la existencia (" + this.product_exit + ")";
+  }
     },
     cantExist() {
       let exist = this.products.filter(item => item.id == this.product_id);
@@ -811,6 +817,15 @@ export default {
           console.log(response.data.students);
 
         });
+        axios
+        .get('http://127.0.0.1:8000/api/student-show', {
+          params: {
+            course_id: item.id
+          }
+        })
+        .then((response) => {
+          this.students = response.data.students;
+        })
       this.dialogStudents = true;
     },
     deleteS(item) {
@@ -955,11 +970,6 @@ export default {
         .then((response) => {
           this.enrollments = response.data.enrollments;
         });
-      axios
-        .get('http://127.0.0.1:8000/api/student-show')
-        .then((response) => {
-          this.students = response.data.students;
-        })
     },
     onFileSelected(event) {
       let file = event.target.files[0];

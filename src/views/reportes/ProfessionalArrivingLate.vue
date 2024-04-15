@@ -72,13 +72,13 @@
         </v-col>-->
 
         <v-col cols="12" sm="12" md="3">
-          <v-autocomplete v-model="professional_id" :items="professionals" clearable label="Seleccione un Professional"
+          <v-autocomplete v-model="professional_id" :items="professionals"  label="Seleccione un Professional"
             prepend-inner-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="outlined"
             x></v-autocomplete><!--@update:model-value="initialize()"-->
         </v-col>
         <v-col cols="12" sm="12" md="3">
-          <v-autocomplete v-model="branch_id" :items="branches" clearable label="Seleccione una Sucursal"
-            prepend-inner-icon="mdi-account-tie-outline" item-title="name" item-value="id"
+          <v-autocomplete v-model="branch_id" :items="branches"  label="Seleccione una Sucursal"
+            prepend-inner-icon="mdi-store" item-title="name" item-value="id"
             variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
         </v-col>
         <v-col cols="12" md="1">
@@ -89,7 +89,7 @@
         <v-col cols="12">
           <v-container>
             <v-alert border type="info" variant="outlined" density="compact">
-                            <span>{{ formTitle }}</span>
+              <p v-html="formTitle"></p>
                         </v-alert>
           </v-container>
           <v-card-text>
@@ -151,18 +151,25 @@ export default {
     formTitle() {
       if (this.editedIndex === 2) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.fecha = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd") + '-' + this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-        return 'Llegadas tardes en el período' + this.fecha;
+        //this.fecha = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd") + '-' + this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+        //return 'Llegadas tardes en el período ' + this.fecha;
+        const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
+        return `Llegadas tardes en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;		
+	
       }
-      else if (this.editedIndex === 3) {
+      /*else if (this.editedIndex === 3) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.fecha = format(this.input3, "yyyy-MM");
         return 'Llegadas tardes en el mes ' + format(this.input3, "yyyy-MM");
-      }
+      }*/
       else {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.fecha = format(new Date(), "yyyy-MM-dd");
-        return 'Legada tarde en el día ' + format(new Date(), "yyyy-MM-dd");
+        //return 'Legada tarde en el día ' + format(new Date(), "yyyy-MM-dd");
+        return `Legada tarde en el día  <strong>${this.fecha}</strong>`;
       }
     },
     dateFormatted() {

@@ -20,7 +20,7 @@
         <v-container>
             <!--<v-row>
                 <v-col cols="12" sm="12" md="4">
-                    <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
+                    <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" 
                         label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
                         variant="outlined" @update:model-value="initialize()"></v-autocomplete>
                 </v-col>
@@ -29,7 +29,7 @@
                 <v-col cols="12">
                     <v-container>
                         <v-alert border type="info" variant="outlined" density="compact">
-                            <span>{{ formTitle }}</span>
+                            <p v-html="formTitle"></p>
                         </v-alert>
                     </v-container>
                     <v-card-text>
