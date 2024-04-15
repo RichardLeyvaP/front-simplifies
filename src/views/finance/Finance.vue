@@ -17,16 +17,19 @@
     <v-card elevation="6" class="mx-5" width='auto'>
         <v-toolbar color="#F18254">
             <v-row align="center">
-                <v-col cols="12" md="5" class="grow ml-4">
-                    <span class="text-subtitle-1"> <strong>Detalles de operaciones de {{this.editedItem.type}}</strong></span>
+                <v-col cols="12" md="7" class="grow ml-4">
+                    <span class="text-subtitle-1"> <strong>Detalles de operaciones de
+                            {{ this.editedItem.type }}</strong></span>
                 </v-col>
-                <v-col cols="12" md="4"></v-col>
-                <v-col cols="12" md="2">
+                <v-col cols="12" md="4">
 
                     <v-dialog v-model="dialog" max-width="800px">
                         <template v-slot:activator="{ props }">
-
-                            <v-btn v-bind="props" class="text-subtitle-1  ml-12  " color="#E7E9E9" variant="flat"
+                            <v-btn class="text-subtitle-1  ml-16" color="#E7E9E9" variant="flat" elevation="2"
+                                            prepend-inner-icon="mdi-file-excel" @click="exportToExcel">
+                                                Exportar a Excel
+                                            </v-btn>
+                            <v-btn v-bind="props" class="text-subtitle-1  ml-2  " color="#E7E9E9" variant="flat"
                                 elevation="2" prepend-icon="mdi-plus-circle">
                                 Agregar operación
                             </v-btn>
@@ -37,31 +40,32 @@
                                 <span class="text-subtitle-2 ml-4"> {{ formTitle }}</span>
                             </v-toolbar>
                             <v-card-text>
-                    <v-radio-group v-model="selectedOption" inline v-if="mostrarFila" >
-                        <v-radio v-model="selectedOption" :label="options[0]" :value="options[0]"
-                            color="orange-darken-3" class="mr-10"/>
-                        <v-radio v-model="selectedOption" :label="options[1]" :value="options[1]"
-                            color="orange-darken-3" class="mr-10"/>
-                        <v-radio v-model="selectedOption" :label="options[2]" :value="options[2]"
-                            color="orange-darken-3" class="mr-10"/>
-                    </v-radio-group>
-                     <v-row v-if="selectedOption === 'Sucursal' && mostrarFila">
-                        <v-col>
-                            <v-autocomplete v-model="editedItem.branch_id" :items="branches" clearable
-                                label="Sucursales" prepend-icon="mdi-office-building" item-title="name" item-value="id"
-                                variant="underlined" :rules="selectRules"
-                                @update:model-value="selectBranches"></v-autocomplete>
-                        </v-col>
-                    </v-row>
+                                         <v-radio-group v-model="selectedOption" inline v-if="mostrarFila">
+                                    <v-radio v-model="selectedOption" :label="options[0]" :value="options[0]"
+                                        color="orange-darken-3" class="mr-10" />
+                                    <v-radio v-model="selectedOption" :label="options[1]" :value="options[1]"
+                                        color="orange-darken-3" class="mr-10" />
+                                    <v-radio v-model="selectedOption" :label="options[2]" :value="options[2]"
+                                        color="orange-darken-3" class="mr-10" />
+                                </v-radio-group>
+                               
+                                <v-row v-if="selectedOption === 'Sucursal' && mostrarFila">
+                                    <v-col>
+                                        <v-autocomplete v-model="editedItem.branch_id" :items="branches" clearable
+                                            label="Sucursales" prepend-icon="mdi-office-building" item-title="name"
+                                            item-value="id" variant="underlined" :rules="selectRules"
+                                            @update:model-value="selectBranches"></v-autocomplete>
+                                    </v-col>
+                                </v-row>
 
-                    <v-row v-if="selectedOption === 'Academia' && mostrarFila">
-                        <v-col>
-                            <v-autocomplete v-model="editedItem.enrollment_id" :items="enrollments" clearable
-                                label="Academias" prepend-icon="mdi-school" item-title="name" item-value="id"
-                                variant="underlined" :rules="selectRules"
-                                @update:model-value="selectEnrollments"></v-autocomplete>
-                        </v-col>
-                    </v-row>
+                                <v-row v-if="selectedOption === 'Academia' && mostrarFila">
+                                    <v-col>
+                                        <v-autocomplete v-model="editedItem.enrollment_id" :items="enrollments"
+                                            clearable label="Academias" prepend-icon="mdi-school" item-title="name"
+                                            item-value="id" variant="underlined" :rules="selectRules"
+                                            @update:model-value="selectEnrollments"></v-autocomplete>
+                                    </v-col>
+                                </v-row>
                                 <v-form v-model="valid" enctype="multipart/form-data">
 
                                     <v-row>
@@ -82,7 +86,7 @@
                                                 label="Gastos" prepend-icon="mdi-cash-plus" item-title="name"
                                                 item-value="id" variant="underlined"
                                                 :rules="selectRules"></v-autocomplete>
-                                        </v-col>                                  
+                                        </v-col>
                                     </v-row>
                                     <v-row>
                                         <v-col cols="12" md="6">
@@ -154,20 +158,30 @@
 
         <v-row>
             <v-container>
-                <v-container>
-                    <v-radio-group v-model="selectedOption" inline v-if="mostrarFila">
+                <v-row>
+                    <v-col cols="12" md="7">
+                        <v-radio-group v-model="selectedOption" inline v-if="mostrarFila">
                         <v-radio v-model="selectedOption" :label="options[0]" :value="options[0]"
-                            color="orange-darken-3" class="mr-10"/>
+                            color="orange-darken-3" class="mr-10" />
                         <v-radio v-model="selectedOption" :label="options[1]" :value="options[1]"
-                            color="orange-darken-3" class="mr-10"/>
+                            color="orange-darken-3" class="mr-10" />
                         <v-radio v-model="selectedOption" :label="options[2]" :value="options[2]"
-                            color="orange-darken-3" class="mr-10"/>
-                            <v-radio v-model="selectedOption" :label="options[3]" :value="options[3]"
-                            color="orange-darken-3" class="mr-10"/>
+                            color="orange-darken-3" class="mr-10" />
+                        <v-radio v-model="selectedOption" :label="options[3]" :value="options[3]"
+                            color="orange-darken-3" class="mr-10" />
                     </v-radio-group>
-
+                    </v-col>
+                    <!--<v-col cols="12" md="5">
+                                            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" elevation="2"
+                                            prepend-inner-icon="mdi-file-excel" @click="exportToExcel">
+                                                Exportar a Excel
+                                            </v-btn>
+                                    </v-col>-->
+                </v-row>
+                    
+                   
                     <v-row v-if="selectedOption === 'Sucursal' && mostrarFila">
-                        <v-col>
+                        <v-col cols="12" md="4">
                             <v-autocomplete v-model="editedItem.branch_id" :items="branches" clearable
                                 label="Sucursales" prepend-icon="mdi-office-building" item-title="name" item-value="id"
                                 variant="underlined" :rules="selectRules"
@@ -176,43 +190,42 @@
                     </v-row>
 
                     <v-row v-if="selectedOption === 'Academia' && mostrarFila">
-                        <v-col>
+                        <v-col cols="12" md="4">
                             <v-autocomplete v-model="editedItem.enrollment_id" :items="enrollments" clearable
                                 label="Academias" prepend-icon="mdi-school" item-title="name" item-value="id"
                                 variant="underlined" :rules="selectRules"
                                 @update:model-value="selectEnrollments"></v-autocomplete>
                         </v-col>
                     </v-row>
-                </v-container>
             </v-container>
         </v-row>
         <v-row>
-                            <v-col cols="12" md="8"></v-col>
-                            <v-col cols="12" md="2">
-                                <v-card class="pa-2 pl-0 mb-2" elevation="2">
-                                    <v-list-item :subtitle=" formatNumber(totalIngresos)" title="Ingresos">
-                                        <template v-slot:prepend>
-                                            <v-avatar color="green">
-                                                <v-icon color="white">{{'mdi-plus-circle'}}</v-icon>
-                                            </v-avatar>
-                                        </template>
+            <v-col cols="12" md="8"></v-col>
+            <v-col cols="12" md="2">
+                <v-card class="pa-2 pl-0 mb-2" elevation="2">
+                    <v-list-item :subtitle="formatNumber(totalIngresos)" title="Ingresos">
+                        <template v-slot:prepend>
+                            <v-avatar color="green">
+                                <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
+                            </v-avatar>
+                        </template>
 
-                                    </v-list-item>
-                                </v-card>
-                            </v-col>
-                            <v-col cols="12" md="2">
-                                <v-card class="pa-2 pl-0 mb-2" elevation="2">
-                                    <v-list-item :subtitle="formatNumber(totalGastos)" title="Gastos">
-                                        <template v-slot:prepend>
-                                            <v-avatar color="red">
-                                                <v-icon color="white">{{'mdi-minus-circle'}}</v-icon>
-                                            </v-avatar>
-                                        </template>
+                    </v-list-item>
+                </v-card>
+            </v-col>
+            <v-col cols="12" md="2">
+                <v-card class="pa-2 pl-0 mb-2" elevation="2">
+                    <v-list-item :subtitle="formatNumber(totalGastos)" title="Gastos">
+                        <template v-slot:prepend>
+                            <v-avatar color="red">
+                                <v-icon color="white">{{ 'mdi-minus-circle' }}</v-icon>
+                            </v-avatar>
+                        </template>
 
-                                    </v-list-item>
-                                </v-card>
-                            </v-col>
-                        </v-row>
+                    </v-list-item>
+                </v-card>
+            </v-col>
+        </v-row>
         <v-card-text>
             <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
                 hide-details>
@@ -258,6 +271,7 @@
 <script>
 
 import axios from "axios";
+import * as XLSX from 'xlsx';
 import LocalStorageService from "@/LocalStorageService";
 
 export default {
@@ -344,13 +358,13 @@ export default {
 
         formTitle() {
             if (this.editedIndex === -1) {
-                return 'Registrar Operación de '+this.editedItem.type;
+                return 'Registrar Operación de ' + this.editedItem.type;
             }
             if (this.editedIndex === 1) {
-                return 'Editar Operación de '+this.editedItem.type;
+                return 'Editar Operación de ' + this.editedItem.type;
             }
             else {
-                return 'Trasladar producto de un almacén a otro'
+                return ''
             }
         }
     },
@@ -366,12 +380,12 @@ export default {
             // Realizar diferentes operaciones en función de la opción seleccionada
             switch (newOption) {
                 case this.options[0]:
-                this.editedItem.type = 'Negocio';
-                this.editedItem.business_id = this.business_id;
-                this.editedItem.branch_id = '';
-                this.editedItem.enrollment_id = '';
-                this.selectedOption = 'Negocio';
-                this.initialize();
+                    this.editedItem.type = 'Negocio';
+                    this.editedItem.business_id = this.business_id;
+                    this.editedItem.branch_id = '';
+                    this.editedItem.enrollment_id = '';
+                    this.selectedOption = 'Negocio';
+                    this.initialize();
                     break;
                 case this.options[1]:
                     console.log(this.options[1]);
@@ -396,7 +410,7 @@ export default {
                     console.log(this.editedItem.business_id);
                     this.initialize();
                     break;
-                    case this.options[3]:
+                case this.options[3]:
                     this.editedItem.type = 'Todas'
                     this.initialize();
                     break;
@@ -407,7 +421,7 @@ export default {
     },
 
     mounted() {
-        this.business_id =  parseInt(LocalStorageService.getItem('business_id'));
+        this.business_id = parseInt(LocalStorageService.getItem('business_id'));
         this.charge_id = parseInt(LocalStorageService.getItem('charge_id'));
         this.branch_id = parseInt(LocalStorageService.getItem('branch_id'));
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
@@ -476,6 +490,46 @@ export default {
     },
 
     methods: {
+        exportToExcel() {
+            // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
+            let rows = [];
+
+            // Construye un objeto para los encabezados basado en la estructura de 'headers'
+            let headerRow = {};
+            this.headers.forEach(header => {
+                headerRow[header.key] = header.title; // Usa 'key' para el mapeo y 'title' para el texto del encabezado
+            });
+            rows.push(headerRow);
+
+            // Ahora, mapea los datos de los items para que coincidan con los encabezados
+            this.results.forEach(item => {
+                let rowData = {};
+                this.headers.forEach(header => {
+                    rowData[header.key] = item[header.key] || ''; // Asegura que cada celda se mapee correctamente; usa '' para datos faltantes
+                });
+                rows.push(rowData);
+            });
+
+            let nameReport = {
+                // eslint-disable-next-line vue/no-use-computed-property-like-method
+                name: this.formTitle, // Asume que 'name' es una de tus claves; ajusta según sea necesario
+                amount: '',
+                tip: '', // Deja vacíos los demás campos para esta fila especial
+                total: '' // Usa 'total' para mostrar la fecha; ajusta las claves según corresponda a tu estructura
+            };
+            rows.push(nameReport);
+
+            // Convierte la matriz de filas en una hoja de trabajo Excel
+            const ws = XLSX.utils.json_to_sheet(rows, { skipHeader: true }); // 'skipHeader: true' porque ya agregamos manualmente los encabezados
+
+            // Crea un nuevo libro de trabajo y añade la hoja de trabajo con los datos
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Report" + this.fecha);
+
+            // Escribe el libro de trabajo a un archivo y desencadena la descarga
+            //XLSX.writeFile(wb, "report.xlsx");
+            XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
+        },
         formatNumber(value) {
             return value.toLocaleString('es-ES');
         },
@@ -569,25 +623,25 @@ export default {
 
                     this.editedItem.control = this.results.length !== 0 ? this.results[0].control + 1 : 1;
                     this.totalIngresos = this.results.reduce((total, item) => {
-    // Verifica si el campo "revenue" tiene un valor numérico
-    if (typeof item.revenue === 'number') {
-        // Suma el valor de "revenue" al total
-        return total + item.revenue;
-    } else {
-        // Si el campo "revenue" no es un número, no suma nada
-        return total;
-    }
-}, 0);
+                        // Verifica si el campo "revenue" tiene un valor numérico
+                        if (typeof item.revenue === 'number') {
+                            // Suma el valor de "revenue" al total
+                            return total + item.revenue;
+                        } else {
+                            // Si el campo "revenue" no es un número, no suma nada
+                            return total;
+                        }
+                    }, 0);
                     this.totalGastos = this.results.reduce((total, item) => {
-    // Verifica si el campo "revenue" tiene un valor numérico
-    if (typeof item.expense === 'number') {
-        // Suma el valor de "revenue" al total
-        return total + item.expense;
-    } else {
-        // Si el campo "revenue" no es un número, no suma nada
-        return total;
-    }
-}, 0);
+                        // Verifica si el campo "revenue" tiene un valor numérico
+                        if (typeof item.expense === 'number') {
+                            // Suma el valor de "revenue" al total
+                            return total + item.expense;
+                        } else {
+                            // Si el campo "revenue" no es un número, no suma nada
+                            return total;
+                        }
+                    }, 0);
                     //this.visibility = !this.editedItem.control ? false : true;
 
                     //this.editedItem.control = !this.results ? 0 : this.results[0].control + 1 ;// Obtener el numero de control realizado
@@ -620,23 +674,23 @@ export default {
             this.closeDelete()
         },
         close() {
-            
+
             console.log('this.type');
-                        console.log(this.selectedOption);
+            console.log(this.selectedOption);
             this.dialog = false;
             this.file = '';
             this.editedItem.amount = '',
-            this.editedItem.comment = '',
-            this.editedItem.file = '',
-            this.editedItem.expense_id = '',
-            this.editedItem.revenue_id = '',
-            this.editedItem.id = '',
-            //this.selectedOption = 'Negocio',
-            this.initialize();
+                this.editedItem.comment = '',
+                this.editedItem.file = '',
+                this.editedItem.expense_id = '',
+                this.editedItem.revenue_id = '',
+                this.editedItem.id = '',
+                //this.selectedOption = 'Negocio',
+                this.initialize();
         },
         closeDelete() {
             this.dialogDelete = false;
-            
+
             this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem);
             });
@@ -659,12 +713,12 @@ export default {
                     .then(() => {
                         this.editedIndex = -1
                         this.editedItem.amount = '',
-                        this.editedItem.comment = '',
-                        this.editedItem.file = '',
-                        this.editedItem.expense_id = '',
-                        this.editedItem.revenue_id = '',
-                        this.editedItem.id = '',
-                        this.initialize();
+                            this.editedItem.comment = '',
+                            this.editedItem.file = '',
+                            this.editedItem.expense_id = '',
+                            this.editedItem.revenue_id = '',
+                            this.editedItem.id = '',
+                            this.initialize();
                         /*this.$nextTick(() => {
                             this.editedItem = Object.assign({}, this.defaultItem);
                         });*/
@@ -687,12 +741,12 @@ export default {
                     .then(() => {
                         this.editedIndex = -1;
                         this.editedItem.amount = '',
-                        this.editedItem.comment = '',
-                        this.editedItem.file = '',
-                        this.editedItem.expense_id = '',
-                        this.editedItem.revenue_id = '',
-                        this.editedItem.id = '',
-                        this.initialize();
+                            this.editedItem.comment = '',
+                            this.editedItem.file = '',
+                            this.editedItem.expense_id = '',
+                            this.editedItem.revenue_id = '',
+                            this.editedItem.id = '',
+                            this.initialize();
                         /*this.$nextTick(() => {
                             this.editedItem = Object.assign({}, this.defaultItem);
                         });*/

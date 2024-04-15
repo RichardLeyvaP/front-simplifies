@@ -64,24 +64,26 @@
                 -->
   <v-row>
     <!-- First column -->
-    <v-col cols="6" colspan="2">
+    <v-col cols="12" md="6">
       <v-subheader class="text-h8 text-center mt-3">Última vez atendido</v-subheader>
     </v-col>
-  </v-row>
-  <v-row>
-    <!-- First column -->
-    <v-col cols="6">
-      {{ results.branchName }}
+    <v-col cols="6" md="6"> 
+      <v-subheader class="text-h8 text-center mt-3">{{ results.lastDate }}</v-subheader>
     </v-col>
-
-    <!-- Second column -->
-    <v-col cols="6">
-      <v-avatar elevation="3" class="mx-auto" max-width="60" max-height="60">
+  </v-row>
+    <v-row>
+      <v-col cols="12" md="12">
+      <v-subheader class="text-h8 text-center mt-3">Sucursal: {{ results.branchName }}</v-subheader>
+    </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12" md="12">
+      <v-subheader class="text-h8 text-center mt-3">Profesional: <v-avatar elevation="3" class="mx-auto" max-width="60" max-height="60">
         <v-img :src="'http://127.0.0.1:8000/api/images/' + results.image_url" alt="Imagen"></v-img>
       </v-avatar>
-      {{ results.professionalName }}
+      {{ results.professionalName }}</v-subheader>
     </v-col>
-  </v-row>
+    </v-row>
                   <v-divider></v-divider>
                   <br>
                   <v-textarea label=" Comentario " row-height="25" rows="3" variant="outlined" auto-grow shaped

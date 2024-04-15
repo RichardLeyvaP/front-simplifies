@@ -63,7 +63,7 @@
           <v-col cols="12" sm="12" md="3">
           <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" 
             label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
-            variant="outlined"></v-autocomplete>
+            variant="outlined" @update:modelValue="nameBranchSelect"></v-autocomplete>
         </v-col>
         <v-col cols="12" md="1">
                         <v-btn icon @click="updateDate2" color="#F18254" >
@@ -113,14 +113,15 @@
       branches: '',
       branch_id: '',
       nameBranch: '',
+      branchName: '',
       fecha: '',
       search2: '',
       editedIndex: -1,
       results: [],
       headers: [
-        { title: 'Sucursal', key: 'branch', sortable: false },
         { title: 'Cajera(o)', key: 'cashier', sortable: false },
         { title: 'Cliente', key: 'client', sortable: false },
+        {title: 'Profesional', key: 'description', sortable: false },
         { title: 'Fecha', key: 'data', sortable: false },
         { title: 'Operación', key: 'operation', sortable: false },
         { title: 'Detalles', key: 'details', sortable: false },
@@ -135,7 +136,7 @@
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
-        return `Operaciones realizadas en la caja en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;
+        return `Operaciones realizadas en la caja en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>] `+this.branchName;
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
           //return 'Operaciones realizadas en la caja en el período  ' + this.fecha;
@@ -148,7 +149,7 @@
         else{
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           this.fecha = format(new Date(), "yyyy-MM-dd");
-          return `Operaciones realizadas en la caja en el día  <strong>${this.fecha}</strong>`;
+          return `Operaciones realizadas en la caja en el día  <strong>${this.fecha}</strong> `+this.branchName;
           //return 'Operaciones realizadas en la caja en el día ' + this.fecha;
         }
       },
@@ -209,6 +210,7 @@
         this.branches = response.data.branches;
         if (this.charge === 'Administrador') {
           this.branch_id = this.branches[0].id;
+          this.branchName = this.branches[0].name;
         }
         //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
         //this.nameBranch = !this.nameBranch ? this.nameBranch : this.branches[0].name;
@@ -223,6 +225,12 @@
     },
   
     methods: {
+      nameBranchSelect() {
+      let exist = this.branches.filter(item => item.id == this.branch_id);
+      this.branchName = exist[0].name;
+
+      console.log(this.branchName);
+    },
       formatNumber(value) {
               return value.toLocaleString('es-ES');
           },
