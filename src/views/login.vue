@@ -120,10 +120,10 @@
 <script>
 
 import axios from "axios";
-import { UserTokenStore } from "@/store/UserTokenStore";
+//import { UserTokenStore } from "@/store/UserTokenStore";
 import LocalStorageService from "@/LocalStorageService";
 import router from '@/router/index';
-const userTokenStore = UserTokenStore();
+//const userTokenStore = UserTokenStore();
 export default {
   data: () => ({
     loading: false,
