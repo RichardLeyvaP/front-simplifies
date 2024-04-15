@@ -26,7 +26,7 @@
                     <v-dialog v-model="dialog" max-width="800px">
                         <template v-slot:activator="{ props }">
                             <v-btn class="text-subtitle-1  ml-16" color="#E7E9E9" variant="flat" elevation="2"
-                                            prepend-inner-icon="mdi-file-excel" @click="exportToExcel">
+                            prepend-icon="mdi-file-excel" @click="exportToExcel">
                                                 Exportar a Excel
                                             </v-btn>
                             <v-btn v-bind="props" class="text-subtitle-1  ml-2  " color="#E7E9E9" variant="flat"
