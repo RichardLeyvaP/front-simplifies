@@ -109,7 +109,13 @@
                               prepend-icon="mdi-calendar" label="Fecha inicial"></v-text-field>
                           </template>
                           <v-locale-provider locale="es">
-                            <v-date-picker color="orange lighten-2" @input="menu1" v-model=editedItem.startDate  header="Calendario" title="Seleccione la fecha"></v-date-picker>
+                            <v-date-picker color="orange lighten-2" @input="menu1" v-model=editedItem.startDate  header="Calendario" title="Seleccione la fecha" :min="new Date(
+                        Date.now() -
+                        new Date().getTimezoneOffset() * 60000
+                      )
+                        .toISOString()
+                        .substr(0, 10)
+                        " @update:modelValue="updateDate1"></v-date-picker>
                           </v-locale-provider>
                         </v-menu>
                       </v-col>
@@ -121,7 +127,13 @@
                               prepend-icon="mdi-calendar" label="Fecha final"></v-text-field>
                           </template>
                           <v-locale-provider locale="es">
-                            <v-date-picker color="orange lighten-2" @input="menu" v-model=editedItem.endDate  header="Calendario" title="Seleccione la fecha" ></v-date-picker>
+                            <v-date-picker color="orange lighten-2" @input="menu" v-model=editedItem.endDate  header="Calendario" title="Seleccione la fecha"  :min="new Date(
+                        Date.now() -
+                        new Date().getTimezoneOffset() * 60000
+                      )
+                        .toISOString()
+                        .substr(0, 10)
+                        " @update:modelValue="updateDate"></v-date-picker>
                           </v-locale-provider>
                         </v-menu>
                       </v-col>
@@ -767,6 +779,12 @@ export default {
   },
 
   methods: {
+    updateDate() {
+      this.menu = false;
+    },
+    updateDate1() {
+      this.menu1 = false;
+    },
     validateCantidad(value) {
       if (value == 0) {
     return "El valor no puede ser nulo";

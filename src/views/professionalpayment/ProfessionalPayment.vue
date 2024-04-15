@@ -39,22 +39,41 @@
                                 <v-form ref="form" v-model="valid" enctype="multipart/form-data">
                                     <v-container>
                                         <v-row>
-                                            <v-col cols="12" sm="12" md="6">
+                                            <v-col cols="12" sm="12" md="3">
                                                 <v-autocomplete v-model="branch_id" :items="branches"
                                                     v-if="this.mostrarFila" clearable label="Seleccione una Sucursal"
                                                     prepend-icon="mdi-store" item-title="name" item-value="id"
                                                     variant="underlined"
                                                     @update:model-value="initialize()"></v-autocomplete>
                                             </v-col>
-                                            <v-col cols="12" sm="12" md="6">
+                                            <v-col cols="12" sm="12" md="3">
                                                 <v-autocomplete v-model="professional_id" :items="professionals"
                                                     clearable label="Seleccione un professional"
                                                     prepend-icon="mdi-account-tie-outline" item-title="name"
                                                     item-value="id" variant="underlined"
+                                                    :rules="selectRules"
                                                     @update:model-value="carsEarrings()"></v-autocomplete>
                                             </v-col>
+                                            <v-col cols="12" md="3">
+                                                <v-select label="Tipo de pago" v-model="editedItem.type"
+                                                    :items="['Adelanto', 'Quincena', 'Mes']"
+                                                    :item-value="['Adelanto', 'Quincena', 'Mes']" variant="underlined"
+                                                    :rules="selectRules"
+                                                    prepend-icon="mdi-check-circle"></v-select>
+                                            </v-col>
+                                            <v-col cols="12" md="3">
+                                                <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
+                                                    :subtitle="totalMount()" append-icon="mdi-check">
+
+                                                    <template v-slot:prepend>
+                                                        <v-avatar color="blue-darken-2">
+                                                            <v-icon icon="mdi-currency-usd"></v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                </v-card>
+                                            </v-col>
                                         </v-row>
-                                        <v-row>
+                                        <!--<v-row>
                                             <v-col cols="12" md="6">
                                                 <v-text-field v-model="editedItem.amount" clearable label="Monto"
                                                     prepend-icon="mdi-cash" variant="underlined" :rules="pago">
@@ -74,7 +93,7 @@
                                         <v-row v-if="mostrarCars">
                                             <v-col cols="12" md="8"></v-col>
                                             <v-col cols="12" md="4">
-                                                <v-card class="mx-auto" max-width="344" title="Total"
+                                                <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
                                                     :subtitle="totalMount()" append-icon="mdi-check">
 
                                                     <template v-slot:prepend>
@@ -84,23 +103,31 @@
                                                     </template>
                                                 </v-card>
                                             </v-col>
-                                        </v-row>
+                                        </v-row>-->
                                         <v-row>
-                                            
-                                            <v-col cols="12" md="12" v-if="mostrarCars">
-                                                <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
-                hide-details></v-text-field>
-            <v-data-table v-model="selected2" :headers="headers2" :items-per-page-text="'Elementos por páginas'" :search="search2"
-                :items="cars" class="elevation-1" no-results-text="No hay datos disponibles"
-                no-data-text="No hay datos disponibles" show-select>
-                <template v-slot:item.clientName="{ item }">
 
-                    <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                        <v-img :src="'http://127.0.0.1:8000/api/images/' + item.client_image" alt="image"></v-img>
-                    </v-avatar>
-                    {{ item.clientName }}
-                </template>
-            </v-data-table>
+                                            <v-col cols="12" md="12" v-if="mostrarCars">
+                                                <v-text-field class="mt-1 mb-1" v-model="search2"
+                                                    append-icon="mdi-magnify" label="Buscar" single-line
+                                                    hide-details></v-text-field>
+                                                <v-data-table v-model="selected2" :headers="headers2"
+                                                    :items-per-page-text="'Elementos por páginas'" :search="search2"
+                                                    :items="cars" class="elevation-1"
+                                                    no-results-text="No hay datos disponibles"
+                                                    no-data-text="No hay datos disponibles" show-select>
+                                                    <template v-slot:item.clientName="{ item }">
+
+                                                        <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                                                            <v-img
+                                                                :src="'http://127.0.0.1:8000/api/images/' + item.client_image"
+                                                                alt="image"></v-img>
+                                                        </v-avatar>
+                                                        {{ item.clientName }}
+                                                    </template>
+                                                    <template v-slot:item.pay="{ item }">
+                                                        {{ item.totalServices + item.tip * 0.80 }}
+                                                    </template>
+                                                </v-data-table>
                                                 <!--<v-list v-if="mostrarCars">
                                                     <v-list-item-group v-model="selected" multiple
                                                         active-class="deep-purple--text text--accent-4">
@@ -133,7 +160,8 @@
                                         <v-btn color="#E7E9E9" variant="flat" @click="close">
                                             Cancelar
                                         </v-btn>
-                                        <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
+                                        <v-btn color="#F18254" variant="flat" @click="save"
+                                            :disabled="!this.selected2.length">
                                             Pagar
                                         </v-btn>
                                     </v-card-actions>
@@ -234,7 +262,7 @@ export default {
         ],
         results: [],
         selectedOption: '',
-        options: ['Adelanto', 'Quincena', 'Mes'],
+        //options: ['Adelanto', 'Quincena', 'Mes'],
         professionals: [],
         professional_id: '',
         selected: [],
@@ -263,15 +291,16 @@ export default {
         selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
         selected2: [],
         headers2: [
-          {title: 'ID', align: 'start', value: 'id'},
-          { title: 'Nombre Cliente', align: 'end', value: 'clientName' },
-          { title: 'Fecha', align: 'end', value: 'data' },
-          { title: 'Ganancias Servicios', align: 'end', value: 'totalServices' },
-          { title: 'Cantidad Servicios', align: 'end', value: 'services' },
-          { title: 'Monto Generado', align: 'end', value: 'amountGenerate' },
-          { title: 'Propina (80%)', align: 'end', value: 'tip' },
+            { title: 'ID', align: 'start', value: 'id' },
+            { title: 'Nombre Cliente', align: 'end', value: 'clientName' },
+            { title: 'Fecha', align: 'end', value: 'data' },
+            { title: 'Ganancias Servicios', align: 'end', value: 'totalServices' },
+            { title: 'Cantidad Servicios', align: 'end', value: 'services' },
+            { title: 'Monto Generado', align: 'end', value: 'amountGenerate' },
+            { title: 'Propina (80%)', align: 'end', value: 'tip' },
+            { title: 'Monto a Pagar', align: 'end', value: 'pay' },
         ],
-        search2:'',
+        search2: '',
     }),
 
     computed: {
@@ -279,8 +308,8 @@ export default {
             return this.editedIndex === -1 ? 'Nuevo Pago a profesional' : 'Editar Pago a profesional'
         },
         ironValues() {
-        return this.selected2.map(selection => selection.id);
-      }
+            return this.selected2.map(selection => selection.id);
+        }
     },
 
     watch: {
@@ -290,7 +319,7 @@ export default {
         dialogDelete(val) {
             val || this.closeDelete()
         },
-        selectedOption(newOption) {
+        /*selectedOption(newOption) {
             // Realizar diferentes operaciones en función de la opción seleccionada
             switch (newOption) {
                 case this.options[0]:
@@ -306,7 +335,7 @@ export default {
                     //this.carsEarrings();
                     break;
             }
-        }
+        }*/
     },
 
     mounted() {
@@ -337,21 +366,22 @@ export default {
     methods: {
         totalMount() {
             let selectedItems;
-  if (this.selected2.length === 0) {
-    selectedItems = this.cars;
-  } else {
-    // Mapea los IDs de selected2 a los objetos correspondientes en cars
-    selectedItems = this.selected2.map(selectedId => this.cars.find(car => car.id === selectedId));
-  }
-  
-  // Calcula el total sumando totalServices y tip de los elementos seleccionados
-  return selectedItems.reduce((total, item) => {
-    // Asegúrate de que item.totalServices y item.tip sean números
-    const totalServices = Number(item.totalServices) || 0;
-    const tip = Number(item.tip) || 0;
-    return total + totalServices + tip;
-  }, 0);
-    },
+            if (this.selected2.length === 0) {
+                selectedItems = this.cars;
+            } else {
+                // Mapea los IDs de selected2 a los objetos correspondientes en cars
+                selectedItems = this.selected2.map(selectedId => this.cars.find(car => car.id === selectedId));
+            }
+
+            // Calcula el total sumando totalServices y tip de los elementos seleccionados
+            return selectedItems.reduce((total, item) => {
+                // Asegúrate de que item.totalServices y item.tip sean números
+                const totalServices = Number(item.totalServices) || 0;
+                const tip = Number(item.tip) || 0;
+                this.editedItem.amount = total + totalServices + tip * 0.80;
+                return total + totalServices + tip * 0.80;
+            }, 0);
+        },
         formatNumber(value) {
             return value.toLocaleString('es-ES');
         },
@@ -410,6 +440,7 @@ export default {
                 })
                 .then((response) => {
                     this.cars = response.data;
+                    this.mostrarCars = true;
                     console.log('this.cars');
                     console.log(this.cars);
                 });
@@ -477,45 +508,46 @@ export default {
         },
         save() {
             this.valid = false;
-           /* if (this.editedIndex > -1) {
-                this.data.id = this.editedItem.id;
-                this.data.name = this.editedItem.name;
-                axios
-                    .put('http://127.0.0.1:8000/api/workplace', this.data)
-                    .then(() => {
-                        this.initialize();
-                        this.showAlert("success", "Pago editado correctamente", 3000);
-                    })
-            } else {*/
-                console.log('this.ironValues');
-                console.log(this.selected2);
-                console.log(this.selectedOption);
-                console.log(this.selected);
-                //const newArrayCar = this.selected.map(item => parseInt(item)); // Convertir a enteros si es necesario
-                //console.log('newArrayCar');
-                //console.log(newArrayCar);
-                this.data.professional_id = this.professional_id;
-                this.data.branch_id = this.branch_id;
-                this.data.car_ids = this.selected2;
-                this.data.amount = this.editedItem.amount;
-                this.data.type = this.selectedOption;
+            /* if (this.editedIndex > -1) {
+                 this.data.id = this.editedItem.id;
+                 this.data.name = this.editedItem.name;
+                 axios
+                     .put('http://127.0.0.1:8000/api/workplace', this.data)
+                     .then(() => {
+                         this.initialize();
+                         this.showAlert("success", "Pago editado correctamente", 3000);
+                     })
+             } else {*/
+            console.log('this.ironValues');
+            console.log(this.selected2);
+            //console.log(this.selectedOption);
+            console.log(this.selected);
+            //const newArrayCar = this.selected.map(item => parseInt(item)); // Convertir a enteros si es necesario
+            //console.log('newArrayCar');
+            //console.log(newArrayCar);
+            this.data.professional_id = this.professional_id;
+            this.data.branch_id = this.branch_id;
+            this.data.car_ids = this.selected2;
+            this.data.amount = this.editedItem.amount;
+            this.data.type = this.editedItem.type;
+            console.log('this.data');
+            console.log(this.data);
+            axios
+                .post('http://127.0.0.1:8000/api/professional-payment', this.data)
+                .then(() => {
+                    this.$nextTick(() => {
+                        this.editedItem = Object.assign({}, this.defaultItem);
+                    });
 
-                axios
-                    .post('http://127.0.0.1:8000/api/professional-payment', this.data)
-                    .then(() => {
-                        this.$nextTick(() => {
-                            this.editedItem = Object.assign({}, this.defaultItem);
-                        });
-
-                        this.initialize();
-                        this.editedIndex = -1;
-                        this.selectedOption = null;
-                        this.cars = [];
-                        this.selected2 = [];
-                        this.professional_id = '';
-                        this.mostrarCars = false;
-                        this.showAlert("success", "Pago realizado correctamente", 3000);
-                    })
+                    this.initialize();
+                    this.editedIndex = -1;
+                    this.type = null;
+                    this.cars = [];
+                    this.selected2 = [];
+                    this.professional_id = '';
+                    this.mostrarCars = false;
+                    this.showAlert("success", "Pago realizado correctamente", 3000);
+                })
             //}
             /*this.valid = false;
             this.data.name = this.editedItem.name;

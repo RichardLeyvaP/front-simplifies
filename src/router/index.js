@@ -395,7 +395,7 @@ const routes = [
       },
       {
         path: "/vacation",
-        name: "Vacaciones a profesionales",
+        name: "Permisos Asistencia",
         component: () =>
           import( "@/views/vacation/Vacations.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_vacations"] },

@@ -164,7 +164,7 @@ export default {
       { icon: "mdi-account-tie-outline", title: "Profesionales", to: "person", value: "profesionals", permission: "view_professionals" },
       { icon: "mdi-account-star-outline", title: "Clientes", to: "client", value: "clients", permission: "view_clients" },
       { icon: "mdi-handshake", title: "Asociados", to: "associated", value: "associated", permission: "view_associates" },
-      { icon: "mdi-calendar-check", title: "Vacaciones", to: "vacation", value: "vacation", permission: "view_vacations" },      
+      { icon: "mdi-calendar-check", title: "Permisos Asistencia", to: "vacation", value: "vacation", permission: "view_vacations" },      
       { icon: "mdi-cash-multiple", title: "Gastos e Ingresos", to: "finance", value: "finance", permission: "view_finances" },      
       { icon: "mdi-credit-card", title: "Pago a Profesionales", to: "professional-payment", value: "professional-payment", permission: "view_professional_payment" },
       //{ icon: "mdi-list-box-outline", title: "Asignar servicios a una Sucursal", to: "branch-service-professional", value: "branch-service-professional", permission: "view_dashboard" },          

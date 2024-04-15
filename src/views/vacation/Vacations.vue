@@ -65,7 +65,7 @@
                       )
                         .toISOString()
                         .substr(0, 10)
-                        "></v-date-picker>
+                        " @update:modelValue="updateDate"></v-date-picker>
                                                     </v-locale-provider>
                                                 </v-menu>
                                             </v-col>
@@ -87,9 +87,14 @@
                       )
                         .toISOString()
                         .substr(0, 10)
-                        "></v-date-picker>
+                        " @update:modelValue="updateDate1"></v-date-picker>
                                                     </v-locale-provider>
                                                 </v-menu>
+                                            </v-col>
+                                            <v-col cols="12" md="12">
+                                                <v-text-field v-model="description" clearable label="Descripción"
+                      prepend-inner-icon="mdi-file-document" variant="underlined">
+                    </v-text-field>
                                             </v-col>
                                         </v-row>
                                     </v-container>
@@ -173,6 +178,7 @@ export default {
         menu2: false,
         startDate: null,
         endDate: null,
+        description: '',
         search: '',
         branch_id: '',
         charge: '',
@@ -184,6 +190,7 @@ export default {
             { title: 'Profesional', value: 'name' },
             { title: 'Fecha Entrada', value: 'startDate' },
             { title: 'Fecha Salida', value: 'endDate' },
+            { title: 'Descripción', value: 'description' },
             { title: 'Acciones', key: 'actions', sortable: false },
         ],
         locale: {
@@ -298,6 +305,12 @@ export default {
     },
 
     methods: {
+        updateDate() {
+      this.menu = false;
+    },
+    updateDate1() {
+      this.menu2 = false;
+    },
     showAlert(sb_type,sb_message, sb_timeout)
     {    
       this.sb_type= sb_type
@@ -373,6 +386,7 @@ export default {
             this.editedIndex = 1;
             this.id = item.id;
             this.professional_id = item.professional_id;
+            this.description = item.description;
             this.startDate = this.parseDate(item.startDate);
             this.endDate = this.parseDate(item.endDate);
                 this.dialog = true;
@@ -400,6 +414,7 @@ export default {
             this.dialog = false;
             this.edit = false;
             this.professional_id = '',
+            this.description = '';
                         this.startDate = null,
                         this.endDate = null,
                 this.editedIndex = -1
@@ -415,6 +430,7 @@ export default {
             if (this.editedIndex > -1) {
                 this.valid = false;
                 this.data.id = this.id,
+                this.data.description = this.description;
                     this.data.professional_id = this.professional_id;
                     this.data.startDate = this.formattedStartDate;
                 this.data.endDate = this.formattedEndDate;
@@ -424,6 +440,7 @@ export default {
                     .then(() => {
                         this.initialize();
                         this.professional_id = '',
+                        this.description = '';
                         this.startDate = null,
                         this.endDate = null,
                         this.showAlert("success", "Vacaciones actualizadas correctamente", 3000);
@@ -432,6 +449,7 @@ export default {
             } else {
                 this.valid = false;
                 this.data.professional_id = this.professional_id;
+                this.data.description = this.description;
                 this.data.startDate = this.formattedStartDate;
                 this.data.endDate = this.formattedEndDate;
                 console.log(this.data);
@@ -439,6 +457,7 @@ export default {
                     .post('http://127.0.0.1:8000/api/vacation', this.data)
                     .then(() => {
                         this.professional_id = '',
+                        this.description = '';
                         this.startDate = null,
                         this.endDate = null,
                         this.edit = false;
