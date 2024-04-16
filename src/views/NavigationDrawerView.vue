@@ -157,7 +157,7 @@ export default {
       { icon: "mdi-book", title: "Cursos", to: "course", value: "course", permission: "view_courses" },
     ],
     administracion: [
-      { icon: "mdi-domain", title: "Empresa", to: "busines", value: "busines", permission: "view_busines" },
+      { icon: "mdi-domain", title: "Empresa", to: "busines", value: "busines", permission: "view_business" },
       { icon: "mdi-family-tree", title: "Cargos", to: "charge", permission: "view_charges" },
       //{ icon: "mdi-store", title: "Asignar Productos", to: "product-store", value: "product-store", permission: "view_product_store" },
       { icon: "mdi-security", title: "Permisos del Sistema", to: "permission", value: "permission", permission: "view_permissions" },
