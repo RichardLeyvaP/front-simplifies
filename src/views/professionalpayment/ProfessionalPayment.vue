@@ -378,8 +378,8 @@ export default {
                 // Asegúrate de que item.totalServices y item.tip sean números
                 const totalServices = Number(item.totalServices) || 0;
                 const tip = Number(item.tip) || 0;
-                this.editedItem.amount = total + totalServices + tip * 0.80;
-                return total + totalServices + tip * 0.80;
+                this.editedItem.amount = total + totalServices + tip;
+                return total + totalServices;
             }, 0);
         },
         formatNumber(value) {
