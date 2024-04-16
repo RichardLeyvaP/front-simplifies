@@ -19,7 +19,7 @@
         <v-toolbar color="#F18254">
             <v-row align="center">
                 <v-col cols="12" md="4" class="grow ml-4 t">
-                    <span class="text-subtitle-1"> <strong>Vacaciones</strong></span>
+                    <span class="text-subtitle-1"> <strong>Permisos Asistencia</strong></span>
                 </v-col>
                 <v-col cols="12" md="5" class="mr-6"></v-col>
                 <v-col cols="12" md="2">
@@ -116,10 +116,10 @@
                         <v-card>
 
                             <v-toolbar color="red">
-                                <span class="text-subtitle-2 ml-4"> Eliminar días de vacaciones</span>
+                                <span class="text-subtitle-2 ml-4"> Eliminar días de permisos</span>
                             </v-toolbar>
 
-                            <v-card-text class="mt-2 mb-2"> ¿Desea eliminar los días de vacaciones?</v-card-text>
+                            <v-card-text class="mt-2 mb-2"> ¿Desea eliminar los días de permisos?</v-card-text>
                             <v-divider></v-divider>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
@@ -142,9 +142,9 @@
                 no-data-text="No hay datos disponibles">
                 <template v-slot:item.actions="{ item }">
                     <v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary"
-                        variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Editar días de vacaciones"></v-btn>
+                        variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Editar días de permisos"></v-btn>
                     <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4"
-                        variant="tonal" elevation="1" title="Eliminar días de vacaciones"></v-btn>
+                        variant="tonal" elevation="1" title="Eliminar días de permisos"></v-btn>
                 </template>
                 <template v-slot:item.name="{ item }">
 
@@ -235,7 +235,7 @@ export default {
     },
     computed: {
         formTitle() {
-            return this.editedIndex === -1 ? 'Nuevos días de vacaciones' : 'Editar dìas de vacaciones'
+            return this.editedIndex === -1 ? 'Nuevos días de permisos' : 'Editar dìas de permisos'
         },
         formattedStartDate() {
             if (this.startDate) {
@@ -405,7 +405,7 @@ export default {
             axios
                 .post('http://127.0.0.1:8000/api/vacation-destroy', request)
                 .then(() => {
-                    this.showAlert("success", "Vacaciones eliminadas correctamente", 3000)
+                    this.showAlert("success", "Días de permisos eliminados correctamente", 3000)
                     this.initialize();
                 })
             this.closeDelete()
@@ -443,7 +443,7 @@ export default {
                         this.description = '';
                         this.startDate = null,
                         this.endDate = null,
-                        this.showAlert("success", "Vacaciones actualizadas correctamente", 3000);
+                        this.showAlert("success", "Días de permisos actualizados correctamente", 3000);
                         this.edit = false;
                     })
             } else {
@@ -461,7 +461,7 @@ export default {
                         this.startDate = null,
                         this.endDate = null,
                         this.edit = false;
-                        this.showAlert("success", "Vacaciones asignadas correctamente", 3000);
+                        this.showAlert("success", "Días de permisos asignados correctamente", 3000);
                         this.initialize();
                     })
             }
