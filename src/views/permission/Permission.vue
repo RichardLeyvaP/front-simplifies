@@ -41,7 +41,7 @@
                     <v-row>
                       <v-col cols="12" md="6">
                         <v-text-field v-model="editedItem.name" clearable label="Nombre"
-                          prepend-icon="mdi-pound-box-outline" variant="underlined" :rules="nameRules">
+                          prepend-icon="mdi-pound-box-outline" variant="underlined" :rules="nameRules" :disabled="editFile">
                         </v-text-field>
                       </v-col>
 
@@ -135,7 +135,7 @@ export default {
     cardSelect: '',
     dialog: false,
     dialogDelete: false,
-    dialogCardGitfUser: false,
+    editFile: false,
     search: '',
     headers: [
       { title: 'Módulo', key: 'module' },
@@ -237,7 +237,8 @@ export default {
     editItem(item) {
       this.editedIndex = 1;
       this.editedItem = Object.assign({}, item)
-      this.dialog = true
+      this.dialog = true;
+      this.editFile = true;
     },
     deleteItem(item) {
       this.editedIndex = 1;
@@ -263,7 +264,8 @@ export default {
       this.dialog = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
+        this.editedIndex = -1;
+        this.editFile = false;
       })
     },
     closeDelete() {
@@ -295,7 +297,8 @@ export default {
           .post('http://127.0.0.1:8000/api/permission', this.data)
           .then(() => {
             this.initialize();
-            this.showAlert("success", "Permiso registrado correctamente", 3000)
+            this.showAlert("success", "Permiso registrado correctamente", 3000);
+            this.editFile = true;
           })
       }
       this.close()

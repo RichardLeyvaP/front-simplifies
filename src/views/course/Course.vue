@@ -1175,10 +1175,13 @@ export default {
     saveProduct() {
       if (this.editedIndex == 3) {
         this.valid = false,
+        console.log('this.course_id');
+      console.log(this.course_id);
         this.data.enrollment_id = this.enrollment_id;
       this.data.student_id = this.student_id;
       this.data.id = this.product_id;
       this.data.cant = this.cant;
+      this.data.course_id = this.course_id;
       console.log('this.data');
       console.log(this.data);
       axios
@@ -1187,7 +1190,8 @@ export default {
           this.dialogAddProduct = false;
           this.student_id = '',
           this.product_id = '';
-          this.cant = '';
+          this.cant = ''; 
+          this.product_exit = '';
           this.showProducts(this.productSelect);
           this.showAlert("success", "Producto asignado correctamente al estudiante", 3000);
         })

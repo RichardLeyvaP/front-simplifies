@@ -18,13 +18,16 @@
     <v-toolbar color="#F18254">
       <v-container>
         <v-row align="center">
-          <v-col cols="12" md="8" class="grow ml-4">
-            <span class="text-h8"> <strong>Llegadas tardes por profesional en un (Día, Mes o
-                Período)</strong></span>
+          <v-col cols="12" md="8" class="grow mt-3">
+            <span class="text-h8"> <strong>Llegadas tardes por profesional en un (Día, Mes o Período)</strong></span>
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="12" md="3">
-            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" elevation="2"
+            <v-btn class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat" elevation="2"
+              prepend-icon="mdi-star" @click="showBestAsistance">
+              Mejor Asistencia
+            </v-btn>
+            <v-btn class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat" elevation="2"
               prepend-icon="mdi-file-excel" @click="exportToExcel">
               Exportar a Excel
             </v-btn>
@@ -100,6 +103,93 @@
           </v-card-text>
         </v-col>
       </v-row>
+      <!--Mejores Asistencias-->
+      <v-dialog v-model="dialogBestAsistance" fullscreen transition="dialog-bottom-transition">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <v-container>
+          <v-row align="center">
+            <v-col cols="12" md="8" class="grow ml-4">
+              <span class="text-h8"> <strong>Profesionales con mejor asistencia en un (Día, Mes o
+                  Período)</strong></span>
+            </v-col>
+            <v-spacer></v-spacer>
+            <v-col cols="12" md="3">
+              <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" elevation="2"
+                prepend-icon="mdi-file-excel" @click="exportToExcel1">
+                Exportar a Excel
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-container>
+          </v-toolbar>
+          <v-card-text class="mt-2 mb-2">
+            <v-container>      
+      <v-row>
+          <!-- Primera columna -->
+          <v-col cols="12" sm="6" md="3" >
+            <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
+              min-width="290px">
+              <template v-slot:activator="{ props }">
+                <v-text-field v-bind="props" :modelValue="dateFormatted3" variant="outlined" append-inner-icon="mdi-calendar"
+                  label="Fecha inicial"></v-text-field>
+              </template>
+              <v-locale-provider locale="es">
+                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate3" @update:model-value="updateDate3"
+                  format="yyyy-MM-dd" :max="dateFormatted4"></v-date-picker>
+              </v-locale-provider>
+            </v-menu>
+          </v-col>
+          <!-- Segunda columna -->
+          <v-col cols="12" sm="6" md="3">
+            <v-menu v-model="menu4" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
+              min-width="290px">
+              <template v-slot:activator="{ props }">
+                <v-text-field v-bind="props" :modelValue="dateFormatted4" variant="outlined"
+                  append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
+              </template>
+              <v-locale-provider locale="es">
+                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate4" @update:model-value="updateDate4"
+                  format="yyyy-MM-dd" :min="dateFormatted3"></v-date-picker>
+              </v-locale-provider>
+            </v-menu>
+          </v-col>    
+          <v-col cols="12" sm="12" md="3">
+            <v-autocomplete v-model="branch_id" :items="branches"  label="Seleccione una Sucursal"
+              prepend-inner-icon="mdi-store" item-title="name" item-value="id" variant="outlined"
+              ></v-autocomplete><!--@update:model-value="initialize()"-->
+          </v-col>
+          <v-col cols="12" md="1">
+                        <v-btn icon @click="updateDate5" color="#F18254" >
+                    <v-icon>mdi-magnify</v-icon></v-btn>
+                </v-col>
+          <v-col cols="12">
+            <v-container>
+              <v-alert border type="info" variant="outlined" density="compact">
+                <p v-html="formTitle1"></p>
+                        </v-alert>
+            </v-container>
+            <v-card-text>
+              <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
+                hide-details>
+              </v-text-field>
+              <v-data-table :headers="headers1" :items-per-page-text="'Elementos por páginas'" :items="results1" :search="search" class="elevation-2"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+              </v-data-table>
+            </v-card-text>
+          </v-col>
+        </v-row>
+      </v-container> 
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="closeDialogBestAsistance">
+              Volver
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!--endMejores asistencias-->
     </v-container>
   </v-card>
 </template>
@@ -120,24 +210,37 @@ export default {
   },
   data: () => ({
     fecha: '',
+    fecha1: '',
     menu: false,
     menu2: false,
     menu3: false,
+    menu4: false,
     input: null,
     input2: null,
     input3: null,
+    input4: null,
     search2: '',
+    search: '',
     charge: '',
     editedIndex: 1,
+    editedIndex2: 1,
     branch_id: '',
     business_id: '',
+    //BestAsistance
+    dialogBestAsistance: false,
     results: [],
+    results1: [],
     branches: [],
     headers: [
       { title: 'Profesional', key: 'name', sortable: false },
       { title: 'Cargo', key: 'charge', sortable: false },
       { title: 'Cantidad', key: 'cant', sortable: false }
     ],
+    headers1: [
+        { title: 'Profesional', key: 'name', sortable: false },
+        { title: 'Cargo', key: 'charge', sortable: false },
+        { title: 'Cantidad', key: 'cant', sortable: false }
+      ],
     data: {},
   }),
   computed: {
@@ -164,6 +267,18 @@ export default {
         //return 'Llegada tarde en el día ' + format(new Date(), "yyyy-MM-dd");
       }
     },
+    formTitle1() {
+      if (this.editedIndex2 == 2) {
+        const startDate = this.input3 ? format(this.input3, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+      const endDate = this.input4 ? format(this.input4, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+      return `Profesionales con mejor asistencia en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;
+       }
+      else {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.fecha1 = format(new Date(), "yyyy-MM-dd");
+        return `Profesionales con mejor asistencia en el día  <strong>${this.fecha}</strong>`;
+      }
+    },
     dateFormatted() {
       const date = this.input ? new Date(this.input) : new Date();
       const day = date.getDate().toString().padStart(2, '0');
@@ -178,6 +293,20 @@ export default {
       const year = date.getFullYear();
       return `${year}-${month}-${day}`;
     },
+    dateFormatted3() {
+        const date = this.input3 ? new Date(this.input3) : new Date();
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${year}-${month}-${day}`;
+      },
+      dateFormatted4() {
+        const date = this.input4 ? new Date(this.input4) : new Date();
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${year}-${month}-${day}`;
+      },
     /*dateFormatted3() {
       const date = this.input3 ? new Date(this.input3) : new Date();
       const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -189,6 +318,12 @@ export default {
     },
     getDate2() {
       return this.input2 ? new Date(this.input2) : new Date();
+    },
+    getDate3() {
+      return this.input3 ? new Date(this.input3) : new Date();
+    },
+    getDate4() {
+      return this.input4 ? new Date(this.input4) : new Date();
     },
     /*getDate3() {
       return this.input3 ? new Date(this.input3) : new Date();
@@ -278,6 +413,14 @@ export default {
       this.input2 = val;
       this.menu2 = false;
     },
+    updateDate3(val) {
+        this.input3 = val;
+        this.menu3 = false;
+      },
+      updateDate4(val) {
+      this.input4 = val;
+      this.menu4 = false;
+    },
     updateDate2() {
       //this.input2 = val;
       this.editedIndex = 2;
@@ -300,27 +443,6 @@ export default {
         })
       //this.menu2 = false;
     },
-    /*updateDate3(val) {
-      this.editedIndex = 3;
-      this.input3 = val;
-      const month = (val.getMonth() + 1).toString().padStart(2, '0');
-      const year = val.getFullYear();
-      const mes = `${month}`;
-      const ano = `${year}`;
-      axios
-        .get('http://127.0.0.1:8000/api/arriving-late-branch-month', {
-          params: {
-            branch_id: this.branch_id,
-            mes: mes,
-            year: ano
-          }
-        })
-        .then((response) => {
-          this.results = response.data;
-          //this.input3 = new Date();
-        })
-      this.menu3 = false;
-    },*/
     initialize() {
       this.editedIndex = 1;
       this.state=true;
@@ -334,6 +456,92 @@ export default {
         })
         
     },
+
+    //mejores asistencias
+    showBestAsistance() {      
+      console.log('Entra aqui a mejores aisitencias');
+      this.editedIndex1 = 1;
+        this.state=true;
+          //this.input2 = new Date();
+          //this.input3 = new Date()
+        axios
+          .get('http://127.0.0.1:8000/api/arriving-branch-date', {
+            params: {
+              branch_id: this.branch_id
+            }
+          }).then((response) => {
+            this.results1 = response.data;
+            //this.input2 = new Date();
+            //this.input = new Date()
+          });
+      this.dialogBestAsistance = true;
+    },
+    closeDialogBestAsistance (){
+      this.dialogBestAsistance = false;
+    },
+    updateDate5() {
+      console.log('Entra aqui a mejores aisitencias del periodo');
+        //this.input2 = val;
+        this.editedIndex2 = 2;
+        const startDate = this.input3 ? format(this.input3, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+      const endDate = this.input4 ? format(this.input4, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+        console.log(startDate);
+        console.log(endDate);
+        axios
+          .get('http://127.0.0.1:8000/api/arriving-branch-periodo', {
+            params: {
+              branch_id: this.branch_id,
+              startDate: startDate,
+              endDate: endDate
+            }
+          })
+          .then((response) => {
+            this.results1 = response.data;
+            //this.input2 = new Date();
+            //this.input = new Date()
+          });
+        //this.menu2 = false;
+      },
+      exportToExcel1() {
+        // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
+        let rows = [];
+  
+        // Construye un objeto para los encabezados basado en la estructura de 'headers'
+        let headerRow = {};
+        this.headers1.forEach(header => {
+          headerRow[header.key] = header.title; // Usa 'key' para el mapeo y 'title' para el texto del encabezado
+        });
+        rows.push(headerRow);
+  
+        // Ahora, mapea los datos de los items para que coincidan con los encabezados
+        this.results1.forEach(item => {
+          let rowData = {};
+          this.headers1.forEach(header1 => {
+            rowData[header1.key] = item[header1.key] || ''; // Asegura que cada celda se mapee correctamente; usa '' para datos faltantes
+          });
+          rows.push(rowData);
+        });
+  
+        let nameReport = {
+          // eslint-disable-next-line vue/no-use-computed-property-like-method
+          name: this.formTitle1, // Asume que 'name' es una de tus claves; ajusta según sea necesario
+          charge: '',
+          cantidad: '', // Deja vacíos los demás campos para esta fila especial
+        };
+        rows.push(nameReport);
+  
+        // Convierte la matriz de filas en una hoja de trabajo Excel
+        const ws = XLSX.utils.json_to_sheet(rows, { skipHeader: true }); // 'skipHeader: true' porque ya agregamos manualmente los encabezados
+  
+        // Crea un nuevo libro de trabajo y añade la hoja de trabajo con los datos
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Report" + this.fecha);
+  
+        // Escribe el libro de trabajo a un archivo y desencadena la descarga
+        //XLSX.writeFile(wb, "report.xlsx");
+        XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
+      },
+    //end Mejores asistencias
 
   },
 }
