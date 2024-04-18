@@ -26,7 +26,7 @@
                     <v-select v-model="selectedMounth" :items="months" label="Selecciona un mes" variant="outlined"
                     prepend-inner-icon="mdi-calendar"></v-select><!--@update:model-value="operationDetails()"-->
                 </v-col>
-                <v-col cols="12" sm="12" md="3">
+                <v-col cols="12" md="3">
                     <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" 
                         label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
                         variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
@@ -35,6 +35,8 @@
                         <v-btn icon @click="operationDetails()" color="#F18254">
                     <v-icon>mdi-magnify</v-icon></v-btn>
                 </v-col>
+            </v-row>
+            <v-row>
                 <v-col cols="12" md="12">
                         <v-alert border type="info" variant="outlined" density="compact">
                             <p v-html="formTitle"></p>
@@ -68,7 +70,8 @@
                                 </v-card>
                             </v-col>
                         </v-row>
-                        <v-card class="mx-auto  overflow-visible">
+                        <v-container>
+                            <v-card class="mx-auto  overflow-visible">
                             <v-card-text>
                                 <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify"
                                     label="Buscar" single-line hide-details>
@@ -89,6 +92,7 @@
                                 </v-data-table>
                             </v-card-text>
                         </v-card>
+                        </v-container>
                 </v-col>
             </v-row>
         </v-container>
