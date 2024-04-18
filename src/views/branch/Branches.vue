@@ -88,7 +88,9 @@
                         <!--<v-avatar elevation="3" color="grey-lighten-4" size="large">
                           <img v-if="imgedit" :src="imgedit" height="70" width="70">
                         </v-avatar>-->
-                        <img v-if="imagenDisponible()" :src="imgedit" height="100" width="100">
+                        <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
+                          <img v-if="imagenDisponible()" :src="imgedit+'?$'+Date.now()" height="120" width="120">
+                        </v-card>
                       </v-col>
                     </v-row>
                   </v-container>
@@ -205,7 +207,7 @@
               <template v-slot:item.name="{ item }">
 
                 <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                  <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url" alt="image"></v-img>
+                  <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url+'?$'+Date.now()" alt="image"></v-img>
                 </v-avatar>
                 {{ item.name + ' ' + item.surname + ' ' + item.second_surname }}
               </template>

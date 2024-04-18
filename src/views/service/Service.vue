@@ -156,9 +156,12 @@
           </div>
         </template>
         <template v-slot:item.name="{ item }">
-
+          <!--this.items = data.map(item => ({
+  ...item,
+  imageUrl: ${item.imageUrl}?${Date.now()}
+}));-->
           <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-            <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_service" alt="image"></v-img>
+            <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_service+'?$'+Date.now()" alt="image"></v-img>
           </v-avatar>
           {{ item.name }}
         </template>
@@ -283,7 +286,7 @@ export default {
   },
 
   mounted() {
-    this.initialize()
+    this.initialize();
 
   },
 
@@ -395,25 +398,30 @@ export default {
         axios
           .post('http://127.0.0.1:8000/api/service-update', formData)
           .then(() => {
-            this.initialize();
             this.showAlert("success", "Servicio editado correctamente", 3000);
             this.imgMiniatura = '';
-            this.file = '';
-          })
+            this.file = '';        
+            
+          }).finally(() => {
+            this.initialize();
+          });
+
       } else {
         this.valid = false;
-        this.editedItem.simultaneou = this.editedItem.simultaneou === 'Si' ? 1 : 0;
+        //this.editedItem.simultaneou = this.editedItem.simultaneou === 'Si' ? 1 : 0;
         const formData = new FormData();
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
         }
+        console.log('formData');
+        console.log(formData);
         axios
           .post('http://127.0.0.1:8000/api/service', formData)
           .then(() => {
-            this.initialize();
             this.showAlert("success", "Servicio registrado correctamente", 3000);
             this.imgMiniatura = '';
             this.file = '';
+            this.initialize();
           })
       }
       this.close()

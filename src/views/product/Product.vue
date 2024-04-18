@@ -85,11 +85,11 @@
                </v-row>
                <v-row>
                
-                <v-col cols="12" md="12">
+                <v-col cols="12" md="6">
                  <v-file-input clearable v-model="file" ref="fileInput" label="Imagen del Productos" variant="underlined" density="compact" name="file" accept=".png, .jpg, .jpeg" @change="onFileSelected">
                  </v-file-input>
                </v-col>
-               <v-col cols="12" md="4" align="center">
+               <v-col cols="12" md="6" align="center">
                 <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
                           <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
                         </v-card>
@@ -153,7 +153,7 @@
      <template v-slot:item.name="{ item }">
   
      <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-       <v-img :src="'http://127.0.0.1:8000/api/images/'+item.image_product" alt="image"></v-img>
+       <v-img :src="'http://127.0.0.1:8000/api/images/'+item.image_product+'?$'+Date.now()" alt="image"></v-img>
      </v-avatar>
      {{ item.name }}
      </template>

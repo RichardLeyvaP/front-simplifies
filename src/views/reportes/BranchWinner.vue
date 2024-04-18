@@ -1,6 +1,7 @@
 <!-- eslint-disable no-mixed-spaces-and-tabs -->
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
+  <v-container>
   <v-card elevation="6" class="mx-5">
     <v-toolbar color="#F18254">
       <v-row align="center">
@@ -40,34 +41,12 @@
               </v-locale-provider>
             </v-menu>
           </v-col>
-          <!-- Tercera columna -->
-          <!--<v-col cols="12" md="2">
-                    <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="outlined"
-                        prepend-inner-icon="mdi-calendar" @update:model-value="initialize()"></v-select>
-                </v-col>
-                <v-col cols="12" md="2">
-                    <v-select v-model="selectedMounth" :items="months" label="Selecciona un mes" variant="outlined"
-                        prepend-inner-icon="mdi-calendar"></v-select> @update:model-value="updateDate3"-->
-                <!--</v-col>-->
-          <!--<v-col cols="12" sm="6" md="3">
-            <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
-              offset-y min-width="290px">
-              <template v-slot:activator="{ props }">
-                <v-text-field v-bind="props" :modelValue="dateFormatted3" variant="outlined"
-                  append-inner-icon="mdi-calendar" label="Mes"></v-text-field>
-              </template>
-              <v-locale-provider locale="es">
-                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-1" locale="es-Es"
-                  :modelValue="getDate3" @update:modelValue="updateDate3" format="yyyy-MM" scrollable></v-date-picker>
-              </v-locale-provider>
-            </v-menu>
-          </v-col>-->
           <v-col cols="12" sm="12" md="3">
             <v-autocomplete v-model="branch_id" :items="branches"  label="Seleccione una Sucursal"
               prepend-inner-icon="mdi-store" item-title="name" item-value="id" variant="outlined"
               ></v-autocomplete><!--@update:model-value="initialize()"-->
           </v-col>  
-          <v-col cols="12" md="1">
+          <v-col cols="12" md="3">
                         <v-btn icon @click="updateDate2" color="#F18254" >
                     <v-icon>mdi-magnify</v-icon></v-btn>
                 </v-col>        
@@ -95,6 +74,7 @@
         </v-row>
       </v-container>
   </v-card>
+  </v-container>
 </template>
 <script>
 
