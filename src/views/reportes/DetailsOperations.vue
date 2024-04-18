@@ -42,9 +42,12 @@
                         <v-alert border type="info" variant="outlined" density="compact">
                             <p v-html="formTitle"></p>
                         </v-alert>
-                </v-col>
+                </v-col>                
+            </v-row>
+            <v-row>
                 <v-col cols="12" md="12">
-                    <v-card class="mx-auto  overflow-visible">
+                    
+                    <v-card class="overflow-visible">
                         <v-card-text>
                             <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar"
                                 single-line hide-details>
