@@ -59,11 +59,11 @@
                                                     :items="['Adelanto', 'Quincena', 'Mes']"
                                                     :item-value="['Adelanto', 'Quincena', 'Mes']" variant="underlined"
                                                     :rules="selectRules"
-                                                    prepend-icon="mdi-check-circle"></v-select>
+                                                    prepend-icon="mdi-check-circle"></v-select><!--:disabled="!this.mostrarType"-->
                                             </v-col>
                                             <v-col cols="12" md="3">
                                                 <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
-                                                    :subtitle="totalMount()" append-icon="mdi-check">
+                                                    :subtitle="totalMount()" append-icon="mdi-check" v-if="this.mostrarCars">
 
                                                     <template v-slot:prepend>
                                                         <v-avatar color="blue-darken-2">
@@ -71,39 +71,11 @@
                                                         </v-avatar>
                                                     </template>
                                                 </v-card>
-                                            </v-col>
-                                        </v-row>
-                                        <!--<v-row>
-                                            <v-col cols="12" md="6">
                                                 <v-text-field v-model="editedItem.amount" clearable label="Monto"
-                                                    prepend-icon="mdi-cash" variant="underlined" :rules="pago">
+                                                    prepend-icon="mdi-cash" variant="underlined" :rules="pago" v-if="!this.mostrarCars">
                                                 </v-text-field>
                                             </v-col>
                                         </v-row>
-                                        <v-row>
-                                            <v-radio-group v-model="selectedOption" inline v-if="this.professional_id">
-                                                <v-radio v-model="selectedOption" :label="options[0]"
-                                                    :value="options[0]" color="orange-darken-3" class="mr-10" />
-                                                <v-radio v-model="selectedOption" :label="options[1]"
-                                                    :value="options[1]" color="orange-darken-3" class="mr-10" />
-                                                <v-radio v-model="selectedOption" :label="options[2]"
-                                                    :value="options[2]" color="orange-darken-3" class="mr-10" />
-                                            </v-radio-group>
-                                        </v-row>
-                                        <v-row v-if="mostrarCars">
-                                            <v-col cols="12" md="8"></v-col>
-                                            <v-col cols="12" md="4">
-                                                <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
-                                                    :subtitle="totalMount()" append-icon="mdi-check">
-
-                                                    <template v-slot:prepend>
-                                                        <v-avatar color="blue-darken-2">
-                                                            <v-icon icon="mdi-currency-usd"></v-icon>
-                                                        </v-avatar>
-                                                    </template>
-                                                </v-card>
-                                            </v-col>
-                                        </v-row>-->
                                         <v-row>
 
                                             <v-col cols="12" md="12" v-if="mostrarCars">
@@ -125,32 +97,9 @@
                                                         {{ item.clientName }}
                                                     </template>
                                                     <template v-slot:item.pay="{ item }">
-                                                        {{ item.totalServices + item.tip * 0.80 }}
+                                                        {{ item.totalServices + item.tip}}
                                                     </template>
                                                 </v-data-table>
-                                                <!--<v-list v-if="mostrarCars">
-                                                    <v-list-item-group v-model="selected" multiple
-                                                        active-class="deep-purple--text text--accent-4">
-                                                        <v-list-item
-                                                            :prepend-avatar="'http://127.0.0.1:8000/api/images/' + car.client_image"
-                                                            v-for="car in cars" :key="car.id"
-                                                            @click="toggleService(car.id)"
-                                                            :class="{ 'selected-item': isSelected(car.id) }"
-                                                            class="pt-4 pb-4">
-
-                                                            <v-list-item-content
-                                                                class="d-flex align-center justify-space-between">
-                                                                <div class="text-h6">{{ car.clientName }}</div>
-                                                                <v-btn
-                                                                    :color="!isSelected(car.id) ? 'amber-darken-1' : ''"
-                                                                    :dark="isSelected(car.id)">
-                                                                    ${{ car.totalServices }}
-                                                                </v-btn>
-                                                            </v-list-item-content>
-
-                                                        </v-list-item>
-                                                    </v-list-item-group>
-                                                </v-list>-->
                                             </v-col>
                                         </v-row>
                                     </v-container>
@@ -161,7 +110,7 @@
                                             Cancelar
                                         </v-btn>
                                         <v-btn color="#F18254" variant="flat" @click="save"
-                                            :disabled="!this.selected2.length">
+                                            :disabled="!this.editedItem.amount">
                                             Pagar
                                         </v-btn>
                                     </v-card-actions>
@@ -253,6 +202,7 @@ export default {
         dialog: false,
         mostrarCars: false,
         dialogDelete: false,
+        //mostrarType: true,
         headers: [
             { title: 'Nombre del profesional', value: 'nameProfessional' },
             { title: 'Fecha del pago', value: 'date' },
@@ -361,27 +311,40 @@ export default {
         if (this.charge === 'Administrador') {
             this.mostrarFila = true;
         }
+        
     },
 
     methods: {
         totalMount() {
             let selectedItems;
-            if (this.selected2.length === 0) {
-                selectedItems = this.cars;
+            if (this.selected2.length == 0) {
+                return this.cars.reduce((total, item) => {
+                // Asegúrate de que item.totalServices y item.tip sean números
+                const totalServices = Number(item.totalServices) || 0;
+                const tip = Number(item.tip) || 0;
+                //this.editedItem.amount = total + totalServices + tip;
+                return total + totalServices + tip;
+            }, 0);
             } else {
                 // Mapea los IDs de selected2 a los objetos correspondientes en cars
                 selectedItems = this.selected2.map(selectedId => this.cars.find(car => car.id === selectedId));
-            }
-
-            // Calcula el total sumando totalServices y tip de los elementos seleccionados
+                // Calcula el total sumando totalServices y tip de los elementos seleccionados
             return selectedItems.reduce((total, item) => {
                 // Asegúrate de que item.totalServices y item.tip sean números
                 const totalServices = Number(item.totalServices) || 0;
                 const tip = Number(item.tip) || 0;
                 this.editedItem.amount = total + totalServices + tip;
-                return total + totalServices;
+                return total + totalServices + tip;
             }, 0);
+            }
+            
         },
+        
+        /*professionalChange(){
+            this.chargeProfessional = this.professionals.find(professional => professional.id == this.professional_id);
+            console.log('this.chargeProfessional');
+            console.log(this.chargeProfessional);
+        },*/
         formatNumber(value) {
             return value.toLocaleString('es-ES');
         },
@@ -408,6 +371,8 @@ export default {
         },
 
         initialize() {
+            this.professionals = [];
+            this.professional_id = '';
 
             axios
                 .get('http://127.0.0.1:8000/api/branch-payment-show', {
@@ -431,7 +396,14 @@ export default {
 
         },
         carsEarrings() {
-            axios
+            this.editedItem.amount = '';
+            this.chargeProfessional = this.professionals.find(professional => professional.id == this.professional_id);
+            console.log('this.chargeProfessional');
+            console.log(this.chargeProfessional.charge);
+            this.mostrarCars = true;
+            
+            if(this.chargeProfessional.charge == 'Barbero' || this.chargeProfessional.charge == 'Barbero y Encargado'){
+                axios
                 .get('http://127.0.0.1:8000/api/professional-car-notpay', {
                     params: {
                         branch_id: this.branch_id,
@@ -440,10 +412,24 @@ export default {
                 })
                 .then((response) => {
                     this.cars = response.data;
-                    this.mostrarCars = true;
+                    /*if(this.cars.length == 0){
+                        //this.editedItem.type = 'Adelanto';
+                        this.mostrarCars = false;
+                        //this.mostrarType = false;
+                    }else{
+                        this.mostrarCars = true;
+                        //this.mostrarType = true;
+                    }*/
+
                     console.log('this.cars');
                     console.log(this.cars);
                 });
+            }else{
+                this.mostrarCars = false;
+                //this.mostrarType = true;
+                console.log('es otro cargo');
+            }
+            
         },
         /*toggleService(serviceId) {
             const index = this.selected.indexOf(serviceId);

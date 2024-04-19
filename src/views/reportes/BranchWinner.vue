@@ -11,10 +11,10 @@
         <v-col cols="12" md="4" class="mr-12"></v-col>
       </v-row>
     </v-toolbar>
-    <v-container>
-        <v-row>
-          <!-- Primera columna -->
-          <v-col cols="12" sm="6" md="3">
+      <v-container>
+    <v-row>
+           <!-- Primera columna -->
+           <v-col cols="12" md="3">
             <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
               offset-y min-width="290px">
               <template v-slot:activator="{ props }">
@@ -28,7 +28,7 @@
             </v-menu>
           </v-col>
           <!-- Segunda columna -->
-          <v-col cols="12" sm="6" md="3">
+          <v-col cols="12" md="3">
             <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
               offset-y min-width="290px">
               <template v-slot:activator="{ props }">
@@ -41,23 +41,25 @@
               </v-locale-provider>
             </v-menu>
           </v-col>
-          <v-col cols="12" sm="12" md="3">
+          <v-col cols="12" md="3">
             <v-autocomplete v-model="branch_id" :items="branches"  label="Seleccione una Sucursal"
               prepend-inner-icon="mdi-store" item-title="name" item-value="id" variant="outlined"
               ></v-autocomplete><!--@update:model-value="initialize()"-->
           </v-col>  
-          <v-col cols="12" md="3">
+          <v-col cols="12" md="1">
                         <v-btn icon @click="updateDate2" color="#F18254" >
                     <v-icon>mdi-magnify</v-icon></v-btn>
-                </v-col>        
-          <v-container>
-            <v-alert border type="info" variant="outlined" density="compact">
+                </v-col>  
+    </v-row> 
+    <v-row>
+      <v-container>
+      <v-alert border type="info" variant="outlined" density="compact">
               <p v-html="formTitle"></p>
                         </v-alert>
-          </v-container>
-          <v-container>
-            <v-row>
-              <v-col cols="12" md="4" v-for="(item, key) in results" :key="key">
+                      </v-container>
+    </v-row> 
+    <v-row>
+              <v-col cols="12" md="3" v-for="(item, key) in results" :key="key">
                 <v-card class="mx-auto pa-4 pl-0" elevation="4">
                   <v-list-item :subtitle="key=='Monto Generado' || key=='Monto Servicios Especiales' ? formatNumber(item.value) : item.value" :title="key">
                     <template v-slot:prepend>
@@ -70,11 +72,9 @@
                 </v-card>
               </v-col>
             </v-row>
-          </v-container>
-        </v-row>
       </v-container>
   </v-card>
-  </v-container>
+</v-container>
 </template>
 <script>
 
@@ -303,3 +303,8 @@ export default {
   },
 }
 </script>
+<style>
+.title-size {
+  font-size: 16px; /* Cambia este valor según el tamaño deseado */
+}
+</style>
