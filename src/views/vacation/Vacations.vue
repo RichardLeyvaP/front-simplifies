@@ -40,7 +40,7 @@
                                     <v-container>
                                         <v-row>
                                             <v-col cols="12" md="12">
-                                                <v-autocomplete v-model="professional_id" :items="professionals"
+                                                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id" :items="professionals"
                                                     clearable label="Porfesional"
                                                     prepend-inner-icon="mdi-account-tie-outline" item-title="name"
                                                     item-value="id" variant="underlined"

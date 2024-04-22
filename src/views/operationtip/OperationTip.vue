@@ -43,14 +43,14 @@
                                     <v-container>
                                         <v-row>
                                             <v-col cols="12" sm="12" md="3">
-                                                <v-autocomplete v-model="branch_id" :items="branches"
+                                                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
                                                     v-if="this.mostrarFila" clearable label="Seleccione una Sucursal"
                                                     prepend-icon="mdi-store" item-title="name" item-value="id"
                                                     variant="underlined"
                                                     @update:model-value="initialize()"></v-autocomplete>
                                             </v-col>
                                             <v-col cols="12" sm="12" md="3">
-                                                <v-autocomplete v-model="professional_id" :items="professionals"
+                                                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id" :items="professionals"
                                                     clearable label="Seleccione un cajero (a)"
                                                     prepend-icon="mdi-account-tie-outline" item-title="name"
                                                     item-value="id" variant="underlined"
@@ -144,7 +144,7 @@
         <v-card-text>
             <v-row>
                 <v-col cols="12" sm="12" md="4">
-                    <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
                         label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
                         variant="underlined" @update:model-value="initialize()"></v-autocomplete>
                 </v-col>
@@ -237,7 +237,7 @@
                                     </v-menu>
                                 </v-col>
                                 <v-col cols="12" sm="12" md="3">
-                                    <v-autocomplete v-model="branch_id" :items="branches"
+                                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
                                         label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name"
                                         item-value="id"
                                         variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
@@ -260,6 +260,11 @@
                                             :items="results1" :search="search2" class="elevation-2"
                                             no-results-text="No hay datos disponibles"
                                             no-data-text="No hay datos disponibles">
+                                            <template v-slot:item.nameProfessional="{ item }">
+                                            <span :class="{'bold-row': item.nameProfessional == 'Total'}">
+                                            {{ item.nameProfessional }}
+                                            </span>
+                                        </template>
                                         </v-data-table>
                                     </v-card-text>
                                 </v-col>
@@ -325,6 +330,7 @@ export default {
             { title: 'Fecha del pago', key: 'date' },
             { title: 'Tipo de Pago', key: 'type' },
             { title: 'Monto pagado', key: 'amount' },
+            { title: 'Monto café', key: 'coffe_percent' }
         ],
         results: [],
         selectedOption: '',
@@ -674,10 +680,14 @@ export default {
             //this.state=true;
             //this.input2 = new Date();
             //this.input3 = new Date()
+            const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+            const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
             axios
-                .get('http://127.0.0.1:8000/api/operation-tip-show', {
+                .get('http://127.0.0.1:8000/api/operation-tip-periodo', {
                     params: {
-                        branch_id: this.branch_id
+                        branch_id: this.branch_id,
+                        startDate: startDate,
+                        endDate: endDate
                     }
                 })
                 .then((response) => {
@@ -764,5 +774,9 @@ export default {
 .list-item-spacing {
     margin-bottom: 8px;
     /* Ajusta según necesites */
+}
+
+.bold-row {
+  font-weight: bold;
 }
 </style>

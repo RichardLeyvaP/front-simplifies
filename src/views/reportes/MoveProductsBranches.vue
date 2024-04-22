@@ -35,7 +35,7 @@
                         prepend-inner-icon="mdi-calendar" @update:model-value="moveProductsMounth()"></v-select>
                 </v-col>
                 <!--<v-col cols="12" sm="12" md="4">
-                    <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" 
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" 
                         label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
                         variant="outlined" @update:model-value="initialize()"></v-autocomplete>
                 </v-col>-->
@@ -116,7 +116,7 @@
                                 </v-menu>
                             </v-col>
                             <v-col cols="12" md="3">
-                                <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila"
+                                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila"
                                     label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name"
                                     item-value="id"
                                     variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
@@ -190,7 +190,7 @@
         <v-container>
             <!--<v-row>
                 <v-col cols="12" sm="12" md="4">
-                    <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" 
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" 
                         label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
                         variant="outlined" @update:model-value="initialize()"></v-autocomplete>
                 </v-col>

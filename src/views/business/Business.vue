@@ -54,7 +54,7 @@
                     </v-row>
                     <v-row>
                       <v-col cols="12" md="12">
-                        <v-autocomplete v-model="editedItem.professional_id" :items="professionals" clearable label="Propietario" prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
+                        <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.professional_id" :items="professionals" clearable label="Propietario" prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
                       </v-col>
                     </v-row>
                   </v-container>

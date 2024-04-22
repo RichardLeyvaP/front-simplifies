@@ -67,7 +67,7 @@
                     </v-text-field>
                   </v-col>
                   <!--<v-col cols="12" md="6">
-                    <v-autocomplete clearable v-model="editedItem.user_id" :items="users" label="Usuario" prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" clearable v-model="editedItem.user_id" :items="users" label="Usuario" prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
                   </v-col>-->
                   <v-col cols="12" md="6">
                     <v-file-input clearable v-model="file" ref="fileInput" label="Avatar Cliente" variant="underlined" density="compact" name="file" accept=".png, .jpg, .jpeg" @change="onFileSelected">

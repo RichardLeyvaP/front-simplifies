@@ -30,7 +30,7 @@
                     </v-text-field>
                 </v-col>
                 <v-col cols="12" sm="12" md="3">
-                    <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" 
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" 
                         label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
                         variant="underlined"></v-autocomplete><!--@update:model-value="initialize()"-->
                 </v-col>

@@ -23,7 +23,7 @@
         <v-container>
         <v-row>            
           <v-col cols="12" sm="12" md="3">
-            <v-autocomplete v-model="enrollment_id" :items="enrollments"  label="Seleccione una academía"
+            <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="enrollment_id" :items="enrollments"  label="Seleccione una academía"
               prepend-inner-icon-icon="mdi-school-outline" item-title="name" item-value="id" variant="outlined"
               @update:model-value="onEnrollmetChange"></v-autocomplete>
           </v-col>

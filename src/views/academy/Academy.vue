@@ -59,7 +59,7 @@
                         </v-text-field>
                         </v-col>
                         <v-col cols="12" md="6">
-                          <v-autocomplete v-model="editedItem.business_id" :items="business" clearable label="Negocio" prepend-icon="mdi-domain" item-title="name" item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
+                          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.business_id" :items="business" clearable label="Negocio" prepend-icon="mdi-domain" item-title="name" item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
                         </v-col>
                         <v-col cols="12" md="6">
                         <v-file-input clearable v-model="file" ref="fileInput" label="Imagen Academia" variant="underlined"
@@ -194,7 +194,7 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" md="12">
-                    <v-autocomplete v-model="store_id" :items="stores" label="Almacén"
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="store_id" :items="stores" label="Almacén"
                       prepend-icon="mdi-store-outline" item-title="address" item-value="id" variant="underlined"
                       :rules="selectRules"></v-autocomplete>
                   </v-col>
@@ -298,10 +298,10 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" md="12">
-                    <v-autocomplete v-model="store_id" :items="storesAcademy" label="Almacén"
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="store_id" :items="storesAcademy" label="Almacén"
                       prepend-icon="mdi-store-outline" item-title="address" item-value="id" variant="underlined"
                       :rules="selectRules"></v-autocomplete>
-                  <v-autocomplete v-model="product_id" :items="products" clearable label="Productos"
+                  <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="product_id" :items="products" clearable label="Productos"
                         prepend-icon="mdi-tag" item-title="name" item-value="id" variant="underlined"
                         :rules="selectRules"></v-autocomplete>
                       <v-text-field v-model="product_quantity" clearable :label="this.texttitle"

@@ -51,7 +51,7 @@
                                
                                 <v-row v-if="selectedOption === 'Sucursal' && mostrarFila">
                                     <v-col>
-                                        <v-autocomplete v-model="editedItem.branch_id" :items="branches" clearable
+                                        <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.branch_id" :items="branches" clearable
                                             label="Sucursales" prepend-icon="mdi-office-building" item-title="name"
                                             item-value="id" variant="underlined" :rules="selectRules"
                                             @update:model-value="selectBranches"></v-autocomplete>
@@ -60,7 +60,7 @@
 
                                 <v-row v-if="selectedOption === 'Academia' && mostrarFila">
                                     <v-col>
-                                        <v-autocomplete v-model="editedItem.enrollment_id" :items="enrollments"
+                                        <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.enrollment_id" :items="enrollments"
                                             clearable label="Academias" prepend-icon="mdi-school" item-title="name"
                                             item-value="id" variant="underlined" :rules="selectRules"
                                             @update:model-value="selectEnrollments"></v-autocomplete>
@@ -76,13 +76,13 @@
                                                 prepend-icon="mdi-cash-multiple"></v-select>
                                         </v-col>
                                         <v-col cols="12" md="6" v-if="editedItem.operation === 'Ingreso'">
-                                            <v-autocomplete v-model="editedItem.revenue_id" :items="revenues" clearable
+                                            <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.revenue_id" :items="revenues" clearable
                                                 label="Ingresos" prepend-icon="mdi-cash-plus" item-title="name"
                                                 item-value="id" variant="underlined"
                                                 :rules="selectRules"></v-autocomplete>
                                         </v-col>
                                         <v-col cols="12" md="6" v-if="editedItem.operation === 'Gasto'">
-                                            <v-autocomplete v-model="editedItem.expense_id" :items="expenses" clearable
+                                            <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.expense_id" :items="expenses" clearable
                                                 label="Gastos" prepend-icon="mdi-cash-plus" item-title="name"
                                                 item-value="id" variant="underlined"
                                                 :rules="selectRules"></v-autocomplete>
@@ -182,7 +182,7 @@
                    
                     <v-row v-if="selectedOption === 'Sucursal' && mostrarFila">
                         <v-col cols="12" md="4">
-                            <v-autocomplete v-model="editedItem.branch_id" :items="branches" clearable
+                            <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.branch_id" :items="branches" clearable
                                 label="Sucursales" prepend-icon="mdi-office-building" item-title="name" item-value="id"
                                 variant="underlined" :rules="selectRules"
                                 @update:model-value="selectBranches"></v-autocomplete>
@@ -191,7 +191,7 @@
 
                     <v-row v-if="selectedOption === 'Academia' && mostrarFila">
                         <v-col cols="12" md="4">
-                            <v-autocomplete v-model="editedItem.enrollment_id" :items="enrollments" clearable
+                            <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.enrollment_id" :items="enrollments" clearable
                                 label="Academias" prepend-icon="mdi-school" item-title="name" item-value="id"
                                 variant="underlined" :rules="selectRules"
                                 @update:model-value="selectEnrollments"></v-autocomplete>

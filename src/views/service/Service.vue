@@ -46,7 +46,7 @@
                       </v-text-field>
                     </v-col>
                     <v-col cols="12" md="4">
-                      <v-autocomplete v-model="editedItem.simultaneou" :items="options" clearable label="Simultaneo"
+                      <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.simultaneou" :items="options" clearable label="Simultaneo"
                         prepend-inner-icon="mdi-format-list-bulleted-square" item-title="name" item-value="id"
                         variant="underlined"></v-autocomplete>
                     </v-col>

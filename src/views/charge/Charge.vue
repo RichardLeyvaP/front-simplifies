@@ -132,7 +132,7 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" md="12">
-                    <v-autocomplete v-model="permission_id" :items="permissions" label="Permisos"
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="permission_id" :items="permissions" label="Permisos"
                       prepend-icon="mdi-lock" item-title="name" item-value="id" variant="underlined"
                       :rules="selectRules"></v-autocomplete>
                   </v-col>

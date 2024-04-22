@@ -78,7 +78,7 @@
                     </v-text-field>
                   </v-col>
                   <v-col cols="12" md="4">
-                    <v-autocomplete v-model="editedItem.charge_id" :items="charges" clearable label="Cargo" prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.charge_id" :items="charges" clearable label="Cargo" prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="4">
                       <v-text-field v-model="editedItem.retention"

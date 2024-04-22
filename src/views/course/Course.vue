@@ -41,7 +41,7 @@
                   <v-form v-model="valid" enctype="multipart/form-data">
                     <v-row>
                       <v-col cols="12" md="12">
-                        <v-autocomplete clearable v-model="editedItem.enrollment_id" :items="enrollments"
+                        <v-autocomplete :no-data-text="'No hay datos disponibles'" clearable v-model="editedItem.enrollment_id" :items="enrollments"
                           label="Academia" prepend-icon="mdi-school-outline" item-title="name" item-value="id"
                           variant="underlined" :rules="selectRules"></v-autocomplete>
                       </v-col>
@@ -371,7 +371,7 @@
                 <v-container>
                   <v-row>
                     <v-col cols="12" md="12">
-                      <v-autocomplete v-model="editedStudent.student_id" :items="students" label="Estudiante"
+                      <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedStudent.student_id" :items="students" label="Estudiante"
                         prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined"
                         :rules="selectRules"></v-autocomplete>
                     </v-col>
@@ -501,10 +501,10 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" md="12">
-                    <!--<v-autocomplete v-model="student_id" :items="studentsCourse" label="Estudiantes"
+                    <!--<v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="student_id" :items="studentsCourse" label="Estudiantes"
                       prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined"
                       :rules="selectRules"></v-autocomplete>-->
-                  <v-autocomplete v-model="product_id" :items="products" clearable label="Productos"
+                  <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="product_id" :items="products" clearable label="Productos"
                         prepend-icon="mdi-tag" item-title="name" item-value="id" variant="underlined"
                         :rules="selectRules" @update:model-value="cantExist"></v-autocomplete>
                         <v-text-field v-model="product_exit" clearable label="Existencia"

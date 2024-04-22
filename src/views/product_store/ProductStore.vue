@@ -40,10 +40,10 @@
                 <v-form v-model="valid" enctype="multipart/form-data">
                   <v-row>
                     <v-col cols="12" md="12">
-                      <v-autocomplete v-model="editedItem.store_id" :items="stores" clearable label="Almacenes"
+                      <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.store_id" :items="stores" clearable label="Almacenes"
                         prepend-inner-icon="mdi-store" item-title="address" item-value="id" variant="underlined"
                         :rules="selectRules" :disabled="!mover"></v-autocomplete>
-                      <v-autocomplete v-model="editedItem.product_id" :items="products" clearable label="Productos"
+                      <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.product_id" :items="products" clearable label="Productos"
                         prepend-inner-icon="mdi-tag" item-title="name" item-value="id" variant="underlined"
                         :rules="selectRules" :disabled="!mover"></v-autocomplete>
                       <v-text-field v-model="editedItem.stock_depletion" clearable label="Límite de existencia para alerta"
@@ -54,10 +54,10 @@
                       </v-text-field>
                     </v-col>
                     <v-col v-if="mostrarCampos">
-                      <!--<v-autocomplete v-model="editedItem.branch_idM" :items="branches" clearable
+                      <!--<v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.branch_idM" :items="branches" clearable
                         label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
                         variant="underlined" @update:model-value="updatedstores()"></v-autocomplete>-->
-                      <v-autocomplete v-model="editedItem.store_idM" :items="stores1" clearable label="Almacenes"
+                      <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.store_idM" :items="stores1" clearable label="Almacenes"
                         prepend-inner-icon="mdi-store" item-title="address" item-value="id" variant="underlined"
                         :rules=selectRules></v-autocomplete>
                       <v-text-field v-model="editedItem.product_quantityM" clearable label="Cantidad a mover"
@@ -112,7 +112,7 @@
     <!--<v-row>
       <v-container>
         <v-col cols="12" sm="12" md="6">
-          <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
+          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
             label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
             variant="underlined" @update:model-value="initialize()"></v-autocomplete>
         </v-col>

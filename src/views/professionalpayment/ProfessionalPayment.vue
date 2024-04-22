@@ -40,14 +40,14 @@
                                     <v-container>
                                         <v-row>
                                             <v-col cols="12" sm="12" md="3">
-                                                <v-autocomplete v-model="branch_id" :items="branches"
+                                                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
                                                     v-if="this.mostrarFila" clearable label="Seleccione una Sucursal"
                                                     prepend-icon="mdi-store" item-title="name" item-value="id"
                                                     variant="underlined"
                                                     @update:model-value="initialize()"></v-autocomplete>
                                             </v-col>
                                             <v-col cols="12" sm="12" md="3">
-                                                <v-autocomplete v-model="professional_id" :items="professionals"
+                                                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id" :items="professionals"
                                                     clearable label="Seleccione un professional"
                                                     prepend-icon="mdi-account-tie-outline" item-title="name"
                                                     item-value="id" variant="underlined"
@@ -145,7 +145,7 @@
         <v-card-text>
             <v-row>
                 <v-col cols="12" sm="12" md="4">
-                    <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
                         label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
                         variant="underlined" @update:model-value="initialize()"></v-autocomplete>
                 </v-col>

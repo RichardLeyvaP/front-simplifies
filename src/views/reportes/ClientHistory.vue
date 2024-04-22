@@ -16,12 +16,12 @@
             <!-- Segunda columna -->
             <!-- Tercera columna -->
             <v-col cols="12" sm="12" md="4">
-              <v-autocomplete v-model="client_id" :items="clients"  label="Seleccione el Cliente"
+              <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="client_id" :items="clients"  label="Seleccione el Cliente"
                 prepend-inner-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="outlined"
                 @update:model-value="clientHistory"></v-autocomplete>
             </v-col>
             <!--<v-col cols="12" sm="12" md="6">
-              <v-autocomplete v-model="branch_id" :items="branches"  label="Seleccione una Sucursal"
+              <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"  label="Seleccione una Sucursal"
                 prepend-inner-icon="mdi-store" item-title="name" item-value="id" variant="outlined"
                 @update:model-value="clientHistory"></v-autocomplete>
             </v-col>-->

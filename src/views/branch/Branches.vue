@@ -60,7 +60,7 @@
 
                       <v-col cols="12" md="6">
 
-                        <v-autocomplete clearable label="Negocio" variant="underlined" prepend-icon="mdi-domain"
+                        <v-autocomplete :no-data-text="'No hay datos disponibles'" clearable label="Negocio" variant="underlined" prepend-icon="mdi-domain"
                           v-model="editedItem.business_id" :items="business" item-title="name" item-value="id"
                           :rules="selectRules">
                         </v-autocomplete>
@@ -69,11 +69,11 @@
 
                       <v-col cols="12" md="6">
 
-                        <v-autocomplete clearable label="Tipo de Negocio" variant="underlined" prepend-icon="mdi-domain"
+                        <v-autocomplete :no-data-text="'No hay datos disponibles'" clearable label="Tipo de Negocio" variant="underlined" prepend-icon="mdi-domain"
                           v-model="editedItem.business_type_id" :items="businessTypes" item-title="name" item-value="id"
                           :rules="selectRules">
                         </v-autocomplete>
-                        <v-autocomplete v-model="editedItem.useTechnical" :items="options" clearable label="Técnico"
+                        <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.useTechnical" :items="options" clearable label="Técnico"
                         prepend-icon="mdi-hair-dryer" item-title="name" item-value="id" variant="underlined"
                         ></v-autocomplete>
                         <v-text-field v-model="editedItem.location" clearable label="Localización"
@@ -241,7 +241,7 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" md="12">
-                    <v-autocomplete v-model="editedItem.professional_id" :items="professionals" label="Trabajador"
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.professional_id" :items="professionals" label="Trabajador"
                       prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined"
                       :rules="selectRules"></v-autocomplete>
                   </v-col>
@@ -335,7 +335,7 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" md="12">
-                    <v-autocomplete v-model="editedItem.store_id" :items="stores" label="Almacén"
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.store_id" :items="stores" label="Almacén"
                       prepend-icon="mdi-store-outline" item-title="address" item-value="id" variant="underlined"
                       :rules="selectRules"></v-autocomplete>
                   </v-col>

@@ -236,7 +236,7 @@
 
       <v-row>
         <v-col cols="12" sm="12" md="4">
-          <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
+          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
             label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
             variant="underlined" @update:model-value="initialize()"></v-autocomplete>
         </v-col>
@@ -402,7 +402,7 @@
                     <v-text-field v-if="mostrarCode" clearable v-model="editedCard.cardGiftUser_id" label="Código"
                       prepend-icon="mdi-code" variant="underlined" @input="onCardGiftSelected"></v-text-field>
 
-                    <!--<v-autocomplete v-if="mostrarCode" clearable v-model="editedCard.cardGift_id"
+                    <!--<v-autocomplete :no-data-text="'No hay datos disponibles'" v-if="mostrarCode" clearable v-model="editedCard.cardGift_id"
                        :items="filteredCardGifts" label="Código" prepend-icon="mdi-code" item-title="code"
                        item-value="id" variant="underlined" :rules="selectRules"
                        @update:model-value="cardGifts"></v-autocomplete>-->
@@ -501,7 +501,7 @@
             <v-form v-model="valid" enctype="multipart/form-data">
               <v-row>
                 <v-col cols="12" md="12">
-                  <v-autocomplete v-model="product_store_id" :items="products" clearable label="Productos"
+                  <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="product_store_id" :items="products" clearable label="Productos"
                     prepend-inner-icon="mdi-tag-outline" item-title="name" item-value="id" variant="underlined"
                     :rules="selectRules"  @update:model-value="cantExist"></v-autocomplete>
                     <v-text-field v-model="product_exit" clearable label="Existencia"
@@ -541,7 +541,7 @@
             <v-form v-model="valid" enctype="multipart/form-data">
               <v-row>
                 <v-col cols="12" md="12">
-                  <v-autocomplete v-model="branch_service_professional_id" :items="services" clearable label="Servicios"
+                  <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_service_professional_id" :items="services" clearable label="Servicios"
                     prepend-inner-icon="mdi-list-box-outline" item-title="name" item-value="id" variant="underlined"
                     :rules="selectRules"></v-autocomplete>
                 </v-col>

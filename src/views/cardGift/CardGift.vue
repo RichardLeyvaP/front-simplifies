@@ -40,7 +40,7 @@
                 <v-form v-model="valid" enctype="multipart/form-data">
                   <v-row>
                     <v-col cols="12" md="12">
-                      <v-autocomplete clearable v-model="editedItem.business_id" :items="business" label="Negocio"
+                      <v-autocomplete :no-data-text="'No hay datos disponibles'" clearable v-model="editedItem.business_id" :items="business" label="Negocio"
                         prepend-icon="mdi-domain" item-title="name" item-value="id" variant="underlined"
                         :rules="selectRules"></v-autocomplete>
                     </v-col>
@@ -216,7 +216,7 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" md="6">
-                    <v-autocomplete v-model="editedCardGiftUser.user_id" :items="users" label="Cliente"
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedCardGiftUser.user_id" :items="users" label="Cliente"
                       prepend-icon="mdi-store-outline" item-title="name" item-value="user_id" variant="underlined"
                       :rules="selectRules"></v-autocomplete>
                   </v-col>

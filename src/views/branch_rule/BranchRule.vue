@@ -40,7 +40,7 @@
                                 <v-form v-model="valid" enctype="multipart/form-data">
                                     <v-row>
                                         <v-col cols="12" md="12">
-                                            <v-autocomplete v-model="editedItem.rule_id" :items="rules" clearable
+                                            <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.rule_id" :items="rules" clearable
                                                 label="Reglas de convivencia" prepend-inner-icon="mdi-ruler"
                                                 item-title="name" item-value="id" variant="underlined"
                                                 :rules="selectRules"></v-autocomplete>
@@ -93,7 +93,7 @@
         <v-row>
             <v-container>
                 <v-col cols="12" sm="12" md="6">
-                    <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
                         label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
                         variant="underlined" @update:model-value="initialize()"></v-autocomplete>
                 </v-col>

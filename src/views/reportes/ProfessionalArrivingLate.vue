@@ -72,12 +72,12 @@
         </v-col>-->
 
         <v-col cols="12" sm="12" md="3">
-          <v-autocomplete v-model="professional_id" :items="professionals"  label="Seleccione un Professional"
+          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id" :items="professionals"  label="Seleccione un Professional"
             prepend-inner-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="outlined"
             x></v-autocomplete><!--@update:model-value="initialize()"-->
         </v-col>
         <v-col cols="12" sm="12" md="3">
-          <v-autocomplete v-model="branch_id" :items="branches"  label="Seleccione una Sucursal"
+          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"  label="Seleccione una Sucursal"
             prepend-inner-icon="mdi-store" item-title="name" item-value="id"
             variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
         </v-col>

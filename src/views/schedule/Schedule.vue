@@ -29,7 +29,7 @@
             <v-container>
                 <v-row>
                     <v-col cols="12" md="6">
-                        <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
+                        <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
                             label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
                             variant="underlined" @update:model-value="initialize()"></v-autocomplete>
 
@@ -419,7 +419,7 @@ export default {
         <v-row>
             <v-container>
                 <v-col cols="12" sm="12" md="6">
-                    <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
                         label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
                         variant="underlined" @update:model-value="initialize()"></v-autocomplete>
                 </v-col>
