@@ -575,15 +575,6 @@ export default {
       console.log(this.editedItem.business_id);
         })
       axios
-        .get('http://127.0.0.1:8000/api/professional-show-autocomplete-Notin', {
-          params: {
-            branch_id: this.branch_id
-          }
-        })
-        .then((response) => {
-          this.professionals = response.data.professionals;
-        })
-      axios
         .get('http://127.0.0.1:8000/api/store')
         .then((response) => {
           this.stores = response.data.stores;
@@ -723,7 +714,7 @@ export default {
         axios
         .get('http://127.0.0.1:8000/api/professional-show-autocomplete-Notin', {
           params: {
-            branch_id: this.branch_id
+            branch_id: item.id
           }
         })
         .then((response) => {
