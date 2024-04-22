@@ -18,15 +18,18 @@
     <v-card elevation="6" class="mx-5">
         <v-toolbar color="#F18254">
             <v-row align="center">
-                <v-col cols="12" md="5" class="grow ml-4 t">
-                    <span class="text-subtitle-1"> <strong>Pago a Professionales</strong></span>
+                <v-col cols="12" md="8" class="grow ml-4 t">
+                    <span class="text-subtitle-1"> <strong>Pago a Cajero (a)</strong></span>
                 </v-col>
-                <v-col cols="12" md="4"></v-col>
-                <v-col cols="12" md="2">
+                <v-col cols="12" md="3">
 
+                    <v-btn class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat" elevation="2"
+                        prepend-icon="mdi-account-cash" @click="showPay">
+                        Pagos realizados
+                    </v-btn>
                     <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition">
                         <template v-slot:activator="{ props }">
-                            <v-btn v-bind="props" class="text-subtitle-1  ml-12 " color="#E7E9E9" variant="flat"
+                            <v-btn v-bind="props" class="text-subtitle-1  ml-1 " color="#E7E9E9" variant="flat"
                                 elevation="2" prepend-icon="mdi-plus-circle">
                                 Nuevo Pago
                             </v-btn>
@@ -48,11 +51,10 @@
                                             </v-col>
                                             <v-col cols="12" sm="12" md="3">
                                                 <v-autocomplete v-model="professional_id" :items="professionals"
-                                                    clearable label="Seleccione un professional"
+                                                    clearable label="Seleccione un cajero (a)"
                                                     prepend-icon="mdi-account-tie-outline" item-title="name"
                                                     item-value="id" variant="underlined"
-                                                    :rules="selectRules"
-                                                    @update:model-value="carsEarrings()"></v-autocomplete>
+                                                    :rules="selectRules"></v-autocomplete><!--@update:model-value="carsEarrings()"-->
                                             </v-col>
                                             <v-col cols="12" md="3">
                                                 <v-select label="Tipo de pago" v-model="editedItem.type"
@@ -63,7 +65,7 @@
                                             </v-col>
                                             <v-col cols="12" md="3">
                                                 <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
-                                                    :subtitle="totalMount()" append-icon="mdi-check" v-if="this.mostrarCars">
+                                                    :subtitle="totalMount()" append-icon="mdi-check">
 
                                                     <template v-slot:prepend>
                                                         <v-avatar color="blue-darken-2">
@@ -72,13 +74,14 @@
                                                     </template>
                                                 </v-card>
                                                 <v-text-field v-model="editedItem.amount" clearable label="Monto"
-                                                    prepend-icon="mdi-cash" variant="underlined" :rules="pago" v-show="!this.mostrarCars">
+                                                    v-show="false" prepend-icon="mdi-cash" variant="underlined"
+                                                    :rules="pago">
                                                 </v-text-field>
                                             </v-col>
                                         </v-row>
                                         <v-row>
 
-                                            <v-col cols="12" md="12" v-if="mostrarCars">
+                                            <v-col cols="12" md="12">
                                                 <v-text-field class="mt-1 mb-1" v-model="search2"
                                                     append-icon="mdi-magnify" label="Buscar" single-line
                                                     hide-details></v-text-field>
@@ -96,9 +99,6 @@
                                                         </v-avatar>
                                                         {{ item.clientName }}
                                                     </template>
-                                                    <template v-slot:item.pay="{ item }">
-                                                        {{ item.totalServices + item.tip}}
-                                                    </template>
                                                 </v-data-table>
                                             </v-col>
                                         </v-row>
@@ -109,8 +109,7 @@
                                         <v-btn color="#E7E9E9" variant="flat" @click="close">
                                             Cancelar
                                         </v-btn>
-                                        <v-btn color="#F18254" variant="flat" @click="save"
-                                            :disabled="!valid">
+                                        <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
                                             Pagar
                                         </v-btn>
                                     </v-card-actions>
@@ -155,6 +154,13 @@
             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search"
                 :items="results" class="elevation-1" no-results-text="No hay datos disponibles"
                 no-data-text="No hay datos disponibles">
+                <template v-slot:item.nameClient="{ item }">
+
+                    <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                        <v-img :src="'http://127.0.0.1:8000/api/images/' + item.client_image" alt="image"></v-img>
+                    </v-avatar>
+                    {{ item.nameClient }}
+                </template>
                 <template v-slot:item.nameProfessional="{ item }">
 
                     <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
@@ -175,6 +181,100 @@
             </v-icon>-->
                 </template>
             </v-data-table>
+
+            <!--Pagos realizados-->
+            <v-dialog v-model="dialogPay" fullscreen transition="dialog-bottom-transition">
+                <v-card>
+                    <v-toolbar color="#F18254">
+                        <v-container>
+                            <v-row align="center">
+                                <v-col cols="12" md="8" class="grow ml-4">
+                                    <span class="text-h8"> <strong>Pagos realizados a cajero (a)</strong></span>
+                                </v-col>
+                                <v-spacer></v-spacer>
+                                <v-col cols="12" md="3">
+                                    <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" elevation="2"
+                                        prepend-icon="mdi-file-excel" @click="exportToExcel">
+                                        Exportar a Excel
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-toolbar>
+                    <v-card-text class="mt-2 mb-2">
+                        <v-container>
+                            <v-row>
+                                <!-- Primera columna -->
+                                <v-col cols="12" sm="6" md="3">
+                                    <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40"
+                                        transition="scale-transition" offset-y min-width="290px">
+                                        <template v-slot:activator="{ props }">
+                                            <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined"
+                                                append-inner-icon="mdi-calendar" label="Fecha inicial"></v-text-field>
+                                        </template>
+                                        <v-locale-provider locale="es">
+                                            <v-date-picker header="Calendario" title="Seleccione la fecha"
+                                                color="orange lighten-2" :modelValue="getDate"
+                                                @update:model-value="updateDate" format="yyyy-MM-dd"
+                                                :max="dateFormatted2"></v-date-picker>
+                                        </v-locale-provider>
+                                    </v-menu>
+                                </v-col>
+                                <!-- Segunda columna -->
+                                <v-col cols="12" sm="6" md="3">
+                                    <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40"
+                                        transition="scale-transition" offset-y min-width="290px">
+                                        <template v-slot:activator="{ props }">
+                                            <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
+                                                append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
+                                        </template>
+                                        <v-locale-provider locale="es">
+                                            <v-date-picker header="Calendario" title="Seleccione la fecha"
+                                                color="orange lighten-2" :modelValue="getDate2"
+                                                @update:model-value="updateDate2" format="yyyy-MM-dd"
+                                                :min="dateFormatted"></v-date-picker>
+                                        </v-locale-provider>
+                                    </v-menu>
+                                </v-col>
+                                <v-col cols="12" sm="12" md="3">
+                                    <v-autocomplete v-model="branch_id" :items="branches"
+                                        label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name"
+                                        item-value="id"
+                                        variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
+                                </v-col>
+                                <v-col cols="12" md="1">
+                                    <v-btn icon @click="updateDate3" color="#F18254">
+                                        <v-icon>mdi-magnify</v-icon></v-btn>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-container>
+                                        <v-alert border type="info" variant="outlined" density="compact">
+                                            <p>Pagos Realizados a cajero(a)s</p>
+                                        </v-alert>
+                                    </v-container>
+                                    <v-card-text>
+                                        <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify"
+                                            label="Buscar" single-line hide-details>
+                                        </v-text-field>
+                                        <v-data-table :headers="headers1" :items-per-page-text="'Elementos por páginas'"
+                                            :items="results1" :search="search2" class="elevation-2"
+                                            no-results-text="No hay datos disponibles"
+                                            no-data-text="No hay datos disponibles">
+                                        </v-data-table>
+                                    </v-card-text>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-card-text>
+                    <v-divider></v-divider>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="#E7E9E9" variant="flat" @click="closeDialogPay">
+                            Volver
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
         </v-card-text>
     </v-card>
 </template>
@@ -182,6 +282,8 @@
 <script>
 
 import axios from "axios";
+import { format } from "date-fns";
+import * as XLSX from 'xlsx';
 import LocalStorageService from "@/LocalStorageService";
 export default {
     data: () => ({
@@ -197,18 +299,32 @@ export default {
         business_id: '',
         branches: [],
         cars: [],
+        results1: [],
         search: '',
+        search2: '',
         mostrarFila: false,
         dialog: false,
         mostrarCars: false,
         dialogDelete: false,
+        dialogPay: false,
+        menu: false,
+        menu2: false,
+        menu3: false,
+        input: null,
+        input2: null,
         //mostrarType: true,
         headers: [
-            { title: 'Nombre del profesional', value: 'nameProfessional' },
-            { title: 'Fecha del pago', value: 'date' },
-            { title: 'Tipo de Pago', value: 'type' },
-            { title: 'Monto pagado', value: 'amount' },
-            { title: 'Acciones', value: 'actions' },
+            { title: 'Nombre del profesional', key: 'nameProfessional' },
+            { title: 'Fecha del pago', key: 'date' },
+            { title: 'Tipo de Pago', key: 'type' },
+            { title: 'Monto pagado', key: 'amount' },
+            { title: 'Acciones', key: 'actions' },
+        ],
+        headers1: [
+            { title: 'Nombre del profesional', key: 'nameProfessional' },
+            { title: 'Fecha del pago', key: 'date' },
+            { title: 'Tipo de Pago', key: 'type' },
+            { title: 'Monto pagado', key: 'amount' },
         ],
         results: [],
         selectedOption: '',
@@ -223,6 +339,7 @@ export default {
             nameProfessional: '',
             type: '',
             amount: '',
+            coffe_percent: ''
         },
         data: {},
 
@@ -231,6 +348,7 @@ export default {
             nameProfessional: '',
             type: '',
             amount: '',
+            coffe_percent: ''
         },
         nameRules: [
             (v) => !!v || "El campo es requerido",
@@ -241,57 +359,69 @@ export default {
         selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
         selected2: [],
         headers2: [
-            { title: 'ID', align: 'start', value: 'id' },
-            { title: 'Nombre Cliente', align: 'end', value: 'clientName' },
-            { title: 'Fecha', align: 'end', value: 'data' },
-            { title: 'Ganancias Servicios', align: 'end', value: 'totalServices' },
-            { title: 'Cantidad Servicios', align: 'end', value: 'services' },
-            { title: 'Monto Generado', align: 'end', value: 'amountGenerate' },
-            { title: 'Propina (80%)', align: 'end', value: 'tip' },
-            { title: 'Monto a Pagar', align: 'end', value: 'pay' },
+            { title: 'ID', align: 'start', key: 'id' },
+            { title: 'Nombre Cliente', align: 'end', key: 'clientName' },
+            { title: 'Nombre Profesional', align: 'end', key: 'professionalName' },
+            { title: 'Fecha', align: 'end', key: 'data' },
+            { title: 'Propina', align: 'end', key: 'tip' },
+            { title: 'Propina 10% Cajero (a)', align: 'end', key: 'tipCashier' },
+            { title: 'Propina 10% Café', align: 'end', key: 'tipCoffe' },
         ],
-        search2: '',
     }),
 
     computed: {
         formTitle() {
-            return this.editedIndex === -1 ? 'Nuevo Pago a profesional' : 'Editar Pago a profesional'
+            return this.editedIndex === -1 ? 'Nuevo Pago a cajero (a)' : 'Editar Pago a cajero (a)'
         },
         ironValues() {
             return this.selected2.map(selection => selection.id);
-        }
+        },
+        dateFormatted() {
+            const date = this.input ? new Date(this.input) : new Date();
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            return `${year}-${month}-${day}`;
+        },
+        dateFormatted2() {
+            const date = this.input2 ? new Date(this.input2) : new Date();
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            return `${year}-${month}-${day}`;
+        },
+        getDate() {
+            return this.input ? new Date(this.input) : new Date();
+        },
+        getDate2() {
+            return this.input2 ? new Date(this.input2) : new Date();
+        },
     },
 
     watch: {
         dialog(val) {
-            val || this.close()
+            val || this.close();
+            axios
+                .get('http://127.0.0.1:8000/api/cashier-car-notpay', {
+                    params: {
+                        branch_id: this.branch_id
+                    }
+                })
+                .then((response) => {
+                    this.cars = response.data;
+                    console.log('this.cars');
+                    console.log(this.cars);
+                });
         },
         dialogDelete(val) {
             val || this.closeDelete()
         },
         selected2(newVal) {
-      if (newVal.length == 0) {
-        // Si selected2 cambia a null, establecer editedItem.amount en cero
-        this.editedItem.amount = '';
-      }
-    }
-        /*selectedOption(newOption) {
-            // Realizar diferentes operaciones en función de la opción seleccionada
-            switch (newOption) {
-                case this.options[0]:
-                    this.mostrarCars = false;
-                    this.selected2 = [];
-                    break;
-                case this.options[1]:
-                    this.mostrarCars = true;
-                    //this.carsEarrings();
-                    break;
-                case this.options[2]:
-                    this.mostrarCars = true;
-                    //this.carsEarrings();
-                    break;
+            if (newVal.length == 0) {
+                // Si selected2 cambia a null, establecer editedItem.amount en cero
+                this.editedItem.amount = '';
             }
-        }*/
+        }
     },
 
     mounted() {
@@ -317,35 +447,44 @@ export default {
         if (this.charge === 'Administrador') {
             this.mostrarFila = true;
         }
-        
+
     },
 
     methods: {
+        updateDate(val) {
+            this.input = val;
+            this.menu = false;
+        },
+        updateDate2(val) {
+            this.input2 = val;
+            this.menu2 = false;
+        },
         totalMount() {
             let selectedItems;
             if (this.selected2.length == 0) {
                 return this.cars.reduce((total, item) => {
-                // Asegúrate de que item.totalServices y item.tip sean números
-                const totalServices = Number(item.totalServices) || 0;
-                const tip = Number(item.tip) || 0;
-                //this.editedItem.amount = total + totalServices + tip;
-                return total + totalServices + tip;
-            }, 0);
+                    // Asegúrate de que item.totalServices y item.tip sean números
+                    //const totalServices = Number(item.totalServices) || 0;
+                    const tip = Number(item.tipCashier) || 0;
+                    //this.editedItem.amount = total + totalServices + tip;
+                    return total + tip;
+                }, 0);
             } else {
                 // Mapea los IDs de selected2 a los objetos correspondientes en cars
                 selectedItems = this.selected2.map(selectedId => this.cars.find(car => car.id === selectedId));
                 // Calcula el total sumando totalServices y tip de los elementos seleccionados
-            return selectedItems.reduce((total, item) => {
-                // Asegúrate de que item.totalServices y item.tip sean números
-                const totalServices = Number(item.totalServices) || 0;
-                const tip = Number(item.tip) || 0;
-                this.editedItem.amount = total + totalServices + tip;
-                return total + totalServices + tip;
-            }, 0);
+                return selectedItems.reduce((total, item) => {
+                    // Asegúrate de que item.totalServices y item.tip sean números
+                    //const totalServices = Number(item.totalServices) || 0;
+                    const tip = Number(item.tipCashier) || 0;
+                    this.editedItem.amount = total + tip;
+                    this.editedItem.coffe_percent = total + tip;
+                    return total + tip;
+                }, 0);
             }
-            
+
         },
-        
+
         /*professionalChange(){
             this.chargeProfessional = this.professionals.find(professional => professional.id == this.professional_id);
             console.log('this.chargeProfessional');
@@ -381,7 +520,7 @@ export default {
             this.professional_id = '';
 
             axios
-                .get('http://127.0.0.1:8000/api/branch-payment-show', {
+                .get('http://127.0.0.1:8000/api/operation-tip-show', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -391,7 +530,7 @@ export default {
                 });
 
             axios
-                .get('http://127.0.0.1:8000/api/branch_professionals_web', {
+                .get('http://127.0.0.1:8000/api/branch_professionals_cashier', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -399,57 +538,31 @@ export default {
                 .then((response) => {
                     this.professionals = response.data.professionals;
                 });
-
-        },
-        carsEarrings() {
-            this.editedItem.amount = '';
-            this.chargeProfessional = this.professionals.find(professional => professional.id == this.professional_id);
-            console.log('this.chargeProfessional');
-            console.log(this.chargeProfessional.charge);
-            this.mostrarCars = true;
-            
-            if(this.chargeProfessional.charge == 'Barbero' || this.chargeProfessional.charge == 'Barbero y Encargado'){
-                axios
-                .get('http://127.0.0.1:8000/api/professional-car-notpay', {
+            axios
+                .get('http://127.0.0.1:8000/api/cashier-car-notpay', {
                     params: {
-                        branch_id: this.branch_id,
-                        professional_id: this.professional_id
+                        branch_id: this.branch_id
                     }
                 })
                 .then((response) => {
                     this.cars = response.data;
-                    /*if(this.cars.length == 0){
-                        //this.editedItem.type = 'Adelanto';
-                        this.mostrarCars = false;
-                        //this.mostrarType = false;
-                    }else{
-                        this.mostrarCars = true;
-                        //this.mostrarType = true;
-                    }*/
-
                     console.log('this.cars');
                     console.log(this.cars);
                 });
-            }else{
-                this.mostrarCars = false;
-                //this.mostrarType = true;
-                console.log('es otro cargo');
-            }
-            
+
         },
-        /*toggleService(serviceId) {
-            const index = this.selected.indexOf(serviceId);
-            console.log(this.selected);
-            if (index > -1) {
-                this.selected.splice(index, 1);
-            } else {
-                this.selected.push(serviceId);
-            }
-        },
-        isSelected(serviceId) {
-            return this.selected.includes(serviceId);
-        },*/
         editItem(item) {
+            axios
+                .get('http://127.0.0.1:8000/api/cashier-car-notpay', {
+                    params: {
+                        branch_id: this.branch_id
+                    }
+                })
+                .then((response) => {
+                    this.cars = response.data;
+                    console.log('this.cars');
+                    console.log(this.cars);
+                });
             this.editedIndex = 1;
             this.editedItem = Object.assign({}, item)
             this.dialog = true
@@ -465,10 +578,10 @@ export default {
                 id: this.editedItem.id
             };
             axios
-                .post('http://127.0.0.1:8000/api/professional-payment-destroy', request)
+                .post('http://127.0.0.1:8000/api/operation-tip-destroy', request)
                 .then(() => {
-                    this.initialize();
                     this.showAlert("success", "Pago eliminado correctamente", 3000);
+                    this.initialize();
                 })
             this.closeDelete()
         },
@@ -521,11 +634,12 @@ export default {
             this.data.branch_id = this.branch_id;
             this.data.car_ids = this.selected2;
             this.data.amount = this.editedItem.amount;
+            this.data.coffe_percent = this.editedItem.coffe_percent;
             this.data.type = this.editedItem.type;
             console.log('this.data');
             console.log(this.data);
             axios
-                .post('http://127.0.0.1:8000/api/professional-payment', this.data)
+                .post('http://127.0.0.1:8000/api/operation-tip', this.data)
                 .then(() => {
                     this.$nextTick(() => {
                         this.editedItem = Object.assign({}, this.defaultItem);
@@ -553,7 +667,92 @@ export default {
                 })*/
             this.close();
         },
+        //reporte
+        showPay() {
+            console.log('Entra aqui a pagos realizados');
+            //this.editedIndex1 = 1;
+            //this.state=true;
+            //this.input2 = new Date();
+            //this.input3 = new Date()
+            axios
+                .get('http://127.0.0.1:8000/api/operation-tip-show', {
+                    params: {
+                        branch_id: this.branch_id
+                    }
+                })
+                .then((response) => {
+                    this.results1 = response.data;
+                });
+            this.dialogPay = true;
+        },
+        closeDialogPay() {
+            this.dialogPay = false;
+            this.initialize();
+        },
+        updateDate3() {
+            console.log('Entra aqui a pagos realizados');
+            //this.editedIndex1 = 1;
+            //this.state=true;
+            //this.input2 = new Date();
+            //this.input3 = new Date()
+            const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+            const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+            axios
+                .get('http://127.0.0.1:8000/api/operation-tip-periodo', {
+                    params: {
+                        branch_id: this.branch_id,
+                        startDate: startDate,
+                        endDate: endDate
+                    }
+                })
+                .then((response) => {
+                    this.results1 = response.data;
+                });
+            this.dialogPay = true;
+        },
+        exportToExcel() {
+            console.log('Entra aqui a exportar');
+            // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
+            let rows = [];
+
+            // Construye un objeto para los encabezados basado en la estructura de 'headers'
+            let headerRow = {};
+            this.headers1.forEach(header => {
+                headerRow[header.key] = header.title; // Usa 'key' para el mapeo y 'title' para el texto del encabezado
+            });
+            rows.push(headerRow);
+
+            // Ahora, mapea los datos de los items para que coincidan con los encabezados
+            this.results1.forEach(item => {
+                let rowData = {};
+                this.headers1.forEach(header => {
+                    rowData[header.key] = item[header.key] || ''; // Asegura que cada celda se mapee correctamente; usa '' para datos faltantes
+                });
+                rows.push(rowData);
+            });
+
+            let nameReport = {
+                // eslint-disable-next-line vue/no-use-computed-property-like-method
+                nameProfessional: 'Pagos realizados a cajero(a)s', // Asume que 'name' es una de tus claves; ajusta según sea necesario
+                date: '',
+                type: '',
+                amount: ''
+            };
+            rows.push(nameReport);
+
+            // Convierte la matriz de filas en una hoja de trabajo Excel
+            const ws = XLSX.utils.json_to_sheet(rows, { skipHeader: true }); // 'skipHeader: true' porque ya agregamos manualmente los encabezados
+
+            // Crea un nuevo libro de trabajo y añade la hoja de trabajo con los datos
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Report" + format(new Date(), "yyyy-MM-dd"));
+
+            // Escribe el libro de trabajo a un archivo y desencadena la descarga
+            //XLSX.writeFile(wb, "report.xlsx");
+            XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
+        },
     },
+
 }
 </script>
 <style>

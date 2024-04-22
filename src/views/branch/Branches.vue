@@ -575,7 +575,11 @@ export default {
       console.log(this.editedItem.business_id);
         })
       axios
-        .get('http://127.0.0.1:8000/api/professional-show-autocomplete')
+        .get('http://127.0.0.1:8000/api/professional-show-autocomplete-Notin', {
+          params: {
+            branch_id: this.branch_id
+          }
+        })
         .then((response) => {
           this.professionals = response.data.professionals;
         })
@@ -716,6 +720,15 @@ export default {
           this.branchProfessionals = response.data.professionals;
           console.log('imprime professionals');
         });
+        axios
+        .get('http://127.0.0.1:8000/api/professional-show-autocomplete-Notin', {
+          params: {
+            branch_id: this.branch_id
+          }
+        })
+        .then((response) => {
+          this.professionals = response.data.professionals;
+        })
       this.dialogProfessionals = true;
     },
 

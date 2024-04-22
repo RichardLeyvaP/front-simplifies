@@ -6,7 +6,7 @@
     <v-toolbar color="#F18254">
       <v-row align="center">
         <v-col cols="12" md="4" class="grow ml-4">
-          <span class="text-subtitle-1"> <strong>Ganancias de la Sucursal (Día, Período o Mes)</strong></span>
+          <span class="text-subtitle-1"> <strong>Ganancias de la Sucursal (Día, Período)</strong></span>
         </v-col>
         <v-col cols="12" md="4" class="mr-12"></v-col>
       </v-row>
@@ -50,7 +50,7 @@
                         <v-btn icon @click="updateDate2" color="#F18254" >
                     <v-icon>mdi-magnify</v-icon></v-btn>
                 </v-col>  
-    </v-row> 
+    </v-row>
     <v-row>
       <v-container>
       <v-alert border type="info" variant="outlined" density="compact">
@@ -59,16 +59,13 @@
                       </v-container>
     </v-row> 
     <v-row>
-              <v-col cols="12" md="3" v-for="(item, key) in results" :key="key">
-                <v-card class="mx-auto pa-4 pl-0" elevation="4">
-                  <v-list-item :subtitle="key=='Monto Generado' || key=='Monto Servicios Especiales' ? formatNumber(item.value) : item.value" :title="key">
+              <v-col cols="12" md="4" v-for="(item, key) in results" :key="key">
+                    <v-card class="mx-auto pa-4 ml-0" :subtitle="key=='Monto Generado' || key=='Monto Servicios Especiales' ? formatNumber(item.value) : item.value" :title="key">                  
                     <template v-slot:prepend>
                       <v-avatar :color="item.color">
                         <v-icon color="white">{{ item.icon }}</v-icon>
                       </v-avatar>
-                    </template>
-
-                  </v-list-item>
+                    </template>                
                 </v-card>
               </v-col>
             </v-row>
@@ -201,37 +198,6 @@ export default {
   },
 
   methods: {
-    /*buscar(){
-      /*if(this.input != null){        
-      console.log('startDate');
-      console.log(format(this.input, "yyyy-MM-dd"));
-      }*/
-      /*if(this.input2 != null){     
-        this.input = this.input ? new Date(this.input) : new Date();
-        console.log('startDate');
-      console.log(format(this.input, "yyyy-MM-dd"));   
-      console.log('endDate');
-      console.log(format(this.input2, "yyyy-MM-dd"));
-      }
-      if(this.selectedMounth != null){        
-      console.log('mes');
-      console.log(this.selectedYear+'-'+this.selectedMounth);
-      axios
-        .get('http://127.0.0.1:8000/api/branch_winner_icon', {
-          params: {
-            branch_id: this.branch_id,
-            mes: this.selectedMounth,
-            year: this.selectedYear
-          }
-        })
-        .then((response) => {
-          this.results = response.data;
-         // this.selectedMounth = '';
-        });
-        this.selectedMounth = '';
-      this.menu3 = false;
-      }
-    },*/
     formatNumber(value) {
             return value.toLocaleString('es-ES');
         },
@@ -264,27 +230,6 @@ export default {
         })
       //this.menu2 = false;
     },
-    /*updateDate3() {
-      this.editedIndex = 3;
-      /*this.input3 = val;
-      const month = (val.getMonth() + 1).toString().padStart(2, '0');
-      const year = val.getFullYear();
-      const mes = `${month}`;
-      const ano = `${year}`;*/
-      /*axios
-        .get('http://127.0.0.1:8000/api/branch_winner_icon', {
-          params: {
-            branch_id: this.branch_id,
-            mes: this.selectedMounth,
-            year: this.selectedYear
-          }
-        })
-        .then((response) => {
-          this.results = response.data;
-         // this.selectedMounth = '';
-        })
-      this.menu3 = false;
-    },*/
     initialize() {
       this.editedIndex = 1;
       axios
@@ -305,6 +250,9 @@ export default {
 </script>
 <style>
 .title-size {
-  font-size: 16px; /* Cambia este valor según el tamaño deseado */
+  font-size: 1em; /* Cambia este valor según el tamaño deseado */
+}
+.subtitle-size {
+  font-size: 0.9em; /* Cambia este valor según el tamaño deseado */
 }
 </style>

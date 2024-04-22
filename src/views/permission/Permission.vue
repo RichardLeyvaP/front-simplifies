@@ -178,7 +178,7 @@ export default {
       (v) =>
         (v && v.length <= 251) ||
         "El Nombre debe tener menos de 251 caracteres",
-      (v) => /^[a-zA-ZáÁéÉíÍóÓúÚñÑ_\s']+$/.test(v) || "El Nombre no es válido",],
+      (v) => /^[a-zA-ZáÁéÉíÍóÓúÚñÑ_\s()']+$/.test(v) || "El Nombre no es válido",],
       requiredRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
   }),
 

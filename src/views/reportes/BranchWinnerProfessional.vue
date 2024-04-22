@@ -137,7 +137,9 @@ export default {
     headers: [
       { title: 'Profesional', key: 'name', sortable: false },
       { title: 'Monto', key: 'amount', sortable: false },
+      { title: 'Retención', key: 'retention', sortable: false },
       { title: 'Propina', key: 'tip', sortable: false },
+      { title: 'Propina 80%', key: 'tip80', sortable: false },
       { title: 'Clientes atendidos', key: 'total_cars', sortable: false },
       { title: 'Total', key: 'total', sortable: false }
     ],
@@ -263,6 +265,7 @@ export default {
         // eslint-disable-next-line vue/no-use-computed-property-like-method
         name: this.formTitle, // Asume que 'name' es una de tus claves; ajusta según sea necesario
         amount: '',
+        retention: '',
         tip: '', // Deja vacíos los demás campos para esta fila especial
         total: '' // Usa 'total' para mostrar la fecha; ajusta las claves según corresponda a tu estructura
       };

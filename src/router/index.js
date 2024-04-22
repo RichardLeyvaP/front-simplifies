@@ -414,6 +414,13 @@ const routes = [
           import( "@/views/professionalpayment/ProfessionalPayment.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_professional_payment"] },
       },
+      {
+        path: "/cashier-tip",
+        name: "Pago Propina a Cajeros",
+        component: () =>
+          import( "@/views/operationtip/OperationTip.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_cashier_tip"] },
+      },
     ],
   },
 ];
