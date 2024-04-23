@@ -134,7 +134,7 @@
 
                       <v-card-actions v-if="services.length >0">
                         <v-spacer></v-spacer>
-                        <v-btn color="#F18254" variant="flat" @click="asignService">
+                        <v-btn color="#F18254" variant="flat" :disabled="!selected.length" @click="asignService">
                           Asignar
                         </v-btn>
                       </v-card-actions>
@@ -165,9 +165,9 @@
                         </v-list-item-group>
                       </v-list>
 
-                      <v-card-actions>
+                      <v-card-actions >
                         <v-spacer></v-spacer>
-                        <v-btn color="#F18254" variant="flat" @click="desasignService">
+                        <v-btn color="#F18254" variant="flat" :disabled="!selected.length" @click="desasignService">
                           Eliminar
                         </v-btn>
                       </v-card-actions>

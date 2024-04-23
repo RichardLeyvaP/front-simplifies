@@ -137,6 +137,12 @@ import axios from "axios";
 //const userTokenStore = UserTokenStore();
 export default {
   data: () => ({
+    snackbar: false,
+  sb_type: '',
+  sb_message: '',
+  sb_timeout: 2000,
+  sb_title:'',
+  sb_icon:'',
     nameBranch: '',
     name: '',
     charge: '',
@@ -209,10 +215,10 @@ export default {
                 })
         .then((response) => {
           console.log(response);
-            this.showAlert("success", "Contraseña modificada correctamente", 3000)
             this.confirmPassword = '';
             this.confirmNewPassword = '';
             this.showPasswordForm = false;
+            this.showAlert("success", "Contraseña modificada correctamente", 3000);
         });
     },
     handleItemClick(item) {
