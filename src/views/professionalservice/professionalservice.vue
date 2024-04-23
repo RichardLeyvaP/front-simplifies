@@ -370,7 +370,7 @@ export default {
         this.getServicesProfessional();
       } else if (this.tabBar === 'two') {
         this.selected = [];
-        this.getServicesProfessionalSelect();
+        this.getServicesProfessional();
       }
     }
   },
@@ -424,7 +424,7 @@ export default {
           this.initialize();
           this.showAlert("success", "Desasignado correctamente", 3000);
           this.profitPercen = '';
-          this.getServicesProfessionalSelect();
+          this.getServicesProfessional();
           //this.handleTabChange('two');
           //this.professional = '';
           this.selected = '';
@@ -540,7 +540,7 @@ export default {
       console.log(this.professional);
       //HACER LLAMADA A BUSCAR LOS SERVICIOS DISPONIBLES Y SERVICIOS ASIGNADOS
       this.getServicesProfessional();
-      this.getServicesProfessionalSelect();
+      //this.getServicesProfessional();
 
     },
 
@@ -552,7 +552,7 @@ export default {
 
       //AXIOS
       axios
-        .get(`http://127.0.0.1:8000/api/services-professional-branch-free`, {
+        .get(`http://127.0.0.1:8000/api/services-professional-branch`, {
           params: {
             branch_id: idBranch,
             professional_id: idProfessional,
@@ -560,7 +560,9 @@ export default {
         })
         .then((response) => {
           console.log(response.data)
-          this.services = response.data.branchServices;
+          //this.services = response.data.branchServices;
+          this.servicesAsig = response.data.assignedServices;
+          this.services = response.data.unassignedServices;
           if (this.services && this.services.length > 0) {
             this.mostrarSwitch = true;
             console.log('this.mostrarSwitch');
@@ -577,7 +579,7 @@ export default {
         });
 
     },
-    getServicesProfessionalSelect() {
+    /*getServicesProfessional() {
       //LLAMAR AL METODO
       //DADO EL ID DEL PROFESSIONAL Y LA BRANCH
 
@@ -594,14 +596,15 @@ export default {
         })
         .then((response) => {
           console.log(response.data)
-          this.servicesAsig = response.data.branchServices;
+          this.servicesAsig = response.data.assignedServices;
+          this.services = response.data.unassignedServices;
         })
         .catch((err) => {
           console.log(err, "error");
 
         });
 
-    },
+    },*/
     toggleService3(service) {
       const index = this.selected.indexOf(service.id);
 
