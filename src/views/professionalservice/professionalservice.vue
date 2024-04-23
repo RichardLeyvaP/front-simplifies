@@ -366,8 +366,10 @@ export default {
       console.log(this.tabBar);
       if (this.professional !== null) {
       if (this.tabBar === 'one') {
+        this.selected = [];
         this.getServicesProfessional();
       } else if (this.tabBar === 'two') {
+        this.selected = [];
         this.getServicesProfessionalSelect();
       }
     }
