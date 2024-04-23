@@ -666,7 +666,7 @@ let request = {};
       .catch(error => {
         this.loading = false;
         // Maneja cualquier error que pueda ocurrir durante la solicitud
-        console.error('Error al hacer la solicitud:', error);
+        this.$router.push('/totem');
       });
 
 
