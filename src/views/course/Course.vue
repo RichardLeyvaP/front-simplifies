@@ -24,15 +24,11 @@
           <v-col cols="12" md="5" class="mr-12"></v-col>
           <v-col cols="12" md="2">
 
-            <v-dialog v-model="dialog" transition="dialog-bottom-transition" fullscreen>
-              <template v-slot:activator="{ props }">
-
-                <v-btn v-bind="props" class="text-subtitle-1 " color="#E7E9E9" variant="flat" elevation="2"
-                  prepend-icon="mdi-plus-circle">
+                <v-btn class="text-subtitle-1 " color="#E7E9E9" variant="flat" elevation="2"
+                  prepend-icon="mdi-plus-circle" @click="showAddCurso()">
                   Agregar Curso
                 </v-btn>
-
-              </template>
+            <v-dialog v-model="dialog" transition="dialog-bottom-transition" fullscreen>
               <v-card>
                 <v-toolbar color="#F18254">
                   <span class="text-subtitle-2 ml-4"> {{formTitle}}</span>
@@ -299,7 +295,7 @@
             <v-toolbar color="#F18254">
               <span class="text-h6 ml-6"> Estudiantes del Curso</span>
               <v-spacer></v-spacer>
-              <v-btn color="#E7E9E9" variant="flat" @click="this.dialogAddStudent = true">
+              <v-btn color="#E7E9E9" variant="flat" @click="showAddStudent()">
                 Agregar Estudiante
               </v-btn>
             </v-toolbar>
@@ -437,7 +433,7 @@
           <v-toolbar color="#F18254">
             <span class="text-subtitle-1 ml-4">Productos asignados al estudiante</span>
             <v-spacer></v-spacer>
-            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="this.dialogAddProduct = true">
+            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAddProduct()">
               Asignar Producto
             </v-btn>
           </v-toolbar>
@@ -637,6 +633,7 @@ export default {
 
     results: [],
     courseStudents: [],
+    enrollments : [],
     editedIndex: 1,
     users: [],
     file: '',
@@ -819,10 +816,10 @@ export default {
     
     showStudents(item) {
       this.courseSelect = item;
-      console.log('this.courseSelect');
-      console.log(this.courseSelect);
+      /*console.log('this.courseSelect');
+      console.log(this.courseSelect);*/
       this.course_id = item.id;
-      console.log(item.id);
+      //console.log(item.id);
       axios
         .get('http://127.0.0.1:8000/api/course-student-show', {
           params: {
@@ -831,20 +828,23 @@ export default {
         })
         .then((response) => {
           this.courseStudents = response.data.students;
-          console.log('imprime estudiantes');
-          console.log(response.data.students);
+          /*console.log('imprime estudiantes');
+          console.log(response.data.students);*/
 
         });
-        axios
-        .get('http://127.0.0.1:8000/api/student-show', {
-          params: {
-            course_id: item.id
-          }
-        })
-        .then((response) => {
-          this.students = response.data.students;
-        })
       this.dialogStudents = true;
+    },
+    showAddStudent(){
+          axios
+          .get('http://127.0.0.1:8000/api/student-show', {
+            params: {
+              course_id: this.courseSelect.id
+            }
+          })
+          .then((response) => {
+            this.students = response.data.students;
+          });
+          this.dialogAddStudent = true;
     },
     deleteS(item) {
       this.dialogRequest = true
@@ -890,10 +890,11 @@ export default {
             this.editedStudent = Object.assign({}, this.defaultStudent)
           })
           this.dialogAddStudent = false;
-          this.showStudents(this.courseSelect);
+          //this.initialize();
+        }).finally(() => {
           this.showAlert("success", "Estudiante matriculado correctamente al curso", 3000);
-          this.initialize();
-        })
+          this.showStudents(this.courseSelect);
+          });
     },
 
     saveStatus() {
@@ -913,13 +914,12 @@ export default {
       axios
         .post('http://127.0.0.1:8000/api/course-student-update', formData)
         .then(() => {
-
           this.dialogAddStudent = false;
-          this.showStudents(this.courseSelect);
+        }).finally(() => {
           this.showAlert("success", "Estudiante actualizado correctamente", 3000);
-          this.initialize();
+          this.showStudents(this.courseSelect);
+          });
           this.closeUpdateS();
-        })
     },
     closerequest() {
       this.dialogRequest = false;
@@ -936,16 +936,11 @@ export default {
       axios
         .post('http://127.0.0.1:8000/api/course-student-destroy', request)
         .then(() => {
-          this.dialogRequest = false
-          this.$nextTick(() => {
-            this.editedStudent = Object.assign({}, this.defaultStudent)
-          })
-          this.initialize()
-          console.log(this.courseSelect);
-          this.showStudents(this.courseSelect)
-          this.showAlert("success", "Estudiante  eliminado del curso correctamente", 3000)
-          this.initialize()
-        })
+          this.dialogRequest = false;
+        }).finally(() => {
+          this.showAlert("success", "Estudiante  eliminado del curso correctamente", 3000);
+          this.showStudents(this.courseSelect);
+          });
     },
 
     showAlert(sb_type, sb_message, sb_timeout) {
@@ -979,15 +974,19 @@ export default {
         .then((response) => {
           this.results = response.data.courses;
         });
+      
+    },
+    showAddCurso(){
       axios
-        .get('http://127.0.0.1:8000/api/enrollment-show', {
-          params: {
-            business_id: this.business_id
-          }
-        })
-        .then((response) => {
-          this.enrollments = response.data.enrollments;
-        });
+              .get('http://127.0.0.1:8000/api/enrollment-show', {
+                params: {
+                  business_id: this.business_id
+                }
+              })
+              .then((response) => {
+                this.enrollments = response.data.enrollments;
+              });
+      this.dialog = true;
     },
     onFileSelected(event) {
       let file = event.target.files[0];
@@ -1026,10 +1025,10 @@ export default {
       axios
         .post('http://127.0.0.1:8000/api/course-destroy', request)
         .then(() => {
-          this.message_delete = true
+        }).finally(() => {
           this.showAlert("success", "Curso eliminado correctamente", 3000);
           this.initialize();
-        })
+          });
       this.closeDelete()
     },
     close() {
@@ -1080,12 +1079,12 @@ export default {
         axios
           .post('http://127.0.0.1:8000/api/course-update', formData)
           .then(() => {
+            this.imgMiniatura = '';
+            this.file = '';            
+          }).finally(() => {
             this.showAlert("success", "Curso editado correctamente", 3000);
             this.initialize();
-            this.imgMiniatura = '';
-            this.file = '';
-            
-          })
+          });
       } if (this.editedIndex == 1) {
         this.valid = false;
         /*this.data.name = this.editedItem.name;
@@ -1103,11 +1102,12 @@ export default {
         axios
           .post('http://127.0.0.1:8000/api/course', formData)
           .then(() => {
-            this.showAlert("success", "Curso registrado correctamente", 3000);
-            this.initialize();
             this.imgMiniatura = '';
             this.file = '';
-          })
+          }).finally(() => {
+            this.showAlert("success", "Curso registrado correctamente", 3000);
+            this.initialize();
+          });
       }
       this.close()
     },
@@ -1135,9 +1135,6 @@ export default {
         })
         .then((response) => {
           this.productSales = response.data.productsales;
-          console.log('imprime estudiantes');
-          console.log(response.data.productSales);
-
         });
         /*axios
         .get('http://127.0.0.1:8000/api/course-student-product-show',{
@@ -1148,42 +1145,41 @@ export default {
         .then((response) => {
           this.studentsCourse = response.data.students;
         });*/
-        axios
-        .get('http://127.0.0.1:8000/api/products-academy-show', {
-          params: {
-            enrollment_id: this.courseSelect.enrollment_id
-          }
-        })
-        .then((response) => {
-          this.products = response.data.products;
-          console.log('imprime productos');
-          console.log(response.data.products);
-
-        });
+        
         this.editedIndex = 3;
       this.dialogProducts = true;
+    },
+    showAddProduct(){
+        axios
+                .get('http://127.0.0.1:8000/api/products-academy-show', {
+                  params: {
+                    enrollment_id: this.courseSelect.enrollment_id
+                  }
+                })
+                .then((response) => {
+                  this.products = response.data.products;
+                });
+                this.dialogAddProduct = true;
     },
     closeproduct() {
       this.dialogAddProduct = false;
       this.product_id = '';
       this.student_id = '';
       this.cant = '';
-      console.log('this.productSelect');
-      console.log(this.productSelect);
       this.showProducts(this.productSelect)
     },
     saveProduct() {
       if (this.editedIndex == 3) {
         this.valid = false,
-        console.log('this.course_id');
-      console.log(this.course_id);
+        /*console.log('this.course_id');
+      console.log(this.course_id);*/
         this.data.enrollment_id = this.enrollment_id;
       this.data.student_id = this.student_id;
       this.data.id = this.product_id;
       this.data.cant = this.cant;
       this.data.course_id = this.course_id;
-      console.log('this.data');
-      console.log(this.data);
+      /*console.log('this.data');
+      console.log(this.data);*/
       axios
           .post('http://127.0.0.1:8000/api/productsale', this.data)
           .then(() => {
@@ -1192,9 +1188,10 @@ export default {
           this.product_id = '';
           this.cant = ''; 
           this.product_exit = '';
-          this.showProducts(this.productSelect);
+        }).finally(() => {
           this.showAlert("success", "Producto asignado correctamente al estudiante", 3000);
-        })
+          this.showProducts(this.productSelect);
+          });
       }
       /*if (this.editedIndex == 4){
         this.valid = false,
@@ -1235,12 +1232,11 @@ export default {
         .post('http://127.0.0.1:8000/api/productsale-destroy', request)
         .then(() => {
           this.dialogRequestProduct = false;
-          this.productsale_id = '',
-          console.log('this.courseSelect');
-          console.log(this.courseSelect);
-          this.showProducts(this.productSelect);
-          this.showAlert("success", "Asignación eliminada correctamente", 3000);    
-        })
+          this.productsale_id = '';
+        }).finally(() => {
+          this.showAlert("success", "Asignación eliminada correctamente", 3000);  
+          this.showProducts(this.productSelect); 
+          });
     },
   },//endMethods
 }

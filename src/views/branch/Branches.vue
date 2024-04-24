@@ -24,16 +24,14 @@
           <span class="ml-3"> <strong>Listado de Sucursales</strong></span>
         </v-col>
         
-        <v-col cols="12" md="3">
-          <v-dialog v-model="dialog" max-width="1000px">
-            <template v-slot:activator="{ props }">
-              <v-btn v-bind="props" class="text-subtitle-1  ml-12  " color="#E7E9E9" variant="flat" elevation="2"
-                prepend-icon="mdi-plus-circle">
+        <v-col cols="12" md="3">          
+          <v-btn class="text-subtitle-1  ml-12  " color="#E7E9E9" variant="flat" elevation="2"
+                prepend-icon="mdi-plus-circle" @click="showAddBranch()">
                 Agregar Sucursal
               </v-btn>
-
-            </template>
-
+        </v-col>
+        
+        <v-dialog v-model="dialog" max-width="1000px">
             <v-card>
               <v-toolbar color="#F18254">
                 <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
@@ -110,8 +108,6 @@
             </v-card>
 
           </v-dialog>
-        </v-col>
-
       </v-row>
 
     </v-toolbar>
@@ -193,7 +189,7 @@
           <v-toolbar color="#F18254">
             <span class="text-subtitle-2 ml-4"> Trabajadores de la Sucursal</span>
             <v-spacer></v-spacer>
-            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="this.dialogAddProf = true">
+            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAddProfessionals()">
               Agregar Trabajador
             </v-btn>
           </v-toolbar>
@@ -289,7 +285,7 @@
           <v-toolbar color="#F18254">
             <span class="text-subtitle-1 ml-4"> Almacenes de la Sucursal</span>
             <v-spacer></v-spacer>
-            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="this.dialogAddStore = true">
+            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAddStores()">
               Agregar Almacén
             </v-btn>
           </v-toolbar>
@@ -512,7 +508,16 @@ export default {
     this.editedItem.business_id = this.business_id; // Establecer el primer negocio como valor predeterminado
       //console.log('this.editedItem.business_id');
       //console.log(this.editedItem.business_id);
+      axios
+        .get('http://127.0.0.1:8000/api/business')
+        .then((response) => {
+          this.business = response.data.business;     
+        }).finally(() => {
+          if (this.business.length > 0) {
+      this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
+    } 
     this.initialize();
+          });
   },
 
   methods: {
@@ -556,29 +561,15 @@ export default {
           this.results = response.data.branches;
           console.log('imprime sucursales');
           console.log(this.results);
-        })
-
+        });
+    },
+    showAddBranch(){
       axios
         .get('http://127.0.0.1:8000/api/business-type')
         .then((response) => {
           this.businessTypes = response.data.businessTypes;
-        })
-
-      axios
-        .get('http://127.0.0.1:8000/api/business')
-        .then((response) => {
-          this.business = response.data.business;
-          if (this.business.length > 0) {
-      this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
-    }        
-    console.log('this.editedItem.business_id');
-      console.log(this.editedItem.business_id);
-        })
-      axios
-        .get('http://127.0.0.1:8000/api/store')
-        .then((response) => {
-          this.stores = response.data.stores;
-        })
+        });
+        this.dialog = true;
     },
     onFileSelected(event) {
       let file = event.target.files[0];
@@ -669,11 +660,12 @@ export default {
         axios
           .post('http://127.0.0.1:8000/api/branch-update', formData)
           .then(() => {
-            this.initialize();
-            this.showAlert("success", "Sucursal modificada correctamente", 3000)
             this.file = '';
             this.imgMiniatura = '';
-          })
+          }).finally(() => {
+            this.showAlert("success", "Sucursal modificada correctamente", 3000);
+            this.initialize();
+          });
       } else {
         this.valid = false;
         /*this.data.name = this.editedItem.name;
@@ -688,11 +680,12 @@ export default {
         axios
           .post('http://127.0.0.1:8000/api/branch', formData)
           .then(() => {
-            this.initialize();
-            this.showAlert("success", "Sucursal creada correctamente", 3000);
             this.file = '';
             this.imgMiniatura = '';
-          })
+          }).finally(() => {
+            this.showAlert("success", "Sucursal creada correctamente", 3000);
+            this.initialize();
+          });
       }
       this.close()
     },
@@ -711,18 +704,20 @@ export default {
           this.branchProfessionals = response.data.professionals;
           console.log('imprime professionals');
         });
-        axios
+      this.dialogProfessionals = true;
+    },
+    showAddProfessionals(){
+      axios
         .get('http://127.0.0.1:8000/api/professional-show-autocomplete-Notin', {
           params: {
-            branch_id: item.id
+            branch_id: this.branchSelect.id
           }
         })
         .then((response) => {
           this.professionals = response.data.professionals;
-        })
-      this.dialogProfessionals = true;
+        });
+        this.dialogAddProf = true;
     },
-
     showStores(item) {
       this.branchSelect = item;
       console.log(this.branchSelect);
@@ -740,6 +735,14 @@ export default {
         });
       this.dialogStores = true;
     },
+    showAddStores(){
+      axios
+        .get('http://127.0.0.1:8000/api/store')
+        .then((response) => {
+          this.stores = response.data.stores;
+        });
+      this.dialogAddStore = true;
+    },
     saveP() {
       this.valid = false,
         this.data.branch_id = this.branch_id;
@@ -749,10 +752,11 @@ export default {
         .then(() => {
           this.$nextTick(() => {
             this.editedItem = Object.assign({}, this.defaultItem)
-          })
-          this.dialogAddProf = false;
+          }).finally(() => {
           this.showProfessionals(this.branchSelect);
           this.showAlert("success", "Trabajdor afiliado correctamente a la sucursal", 3000);
+          });
+          this.dialogAddProf = false;
         })
     },
     saveStore() {
@@ -762,12 +766,13 @@ export default {
       axios
         .post('http://127.0.0.1:8000/api/branchstore', this.data)
         .then(() => {
-          this.$nextTick(() => {
-            this.editedItem = Object.assign({}, this.defaultItem)
-          })
           this.dialogAddStore = false;
+          }).finally(() => {
           this.showStores(this.branchSelect);
           this.showAlert("success", "Almacén afiliado correctamente a la sucursal", 3000);
+          this.$nextTick(() => {
+            this.editedItem = Object.assign({}, this.defaultItem)
+          });
         })
     },
     deleteP(item) {
@@ -788,14 +793,14 @@ export default {
       axios
         .post('http://127.0.0.1:8000/api/branchprofessional-destroy', request)
         .then(() => {
-          this.dialogRequest = false
+          this.dialogRequest = false;
+        }).finally(() => {
           this.$nextTick(() => {
-            this.editedItem = Object.assign({}, this.defaultItem)
+            this.editedItem = Object.assign({}, this.defaultItem);
           })
-          console.log(this.branchSelect);
-          this.showProfessionals(this.branchSelect)
-          this.showAlert("success", "Afiliación eliminada correctamente", 3000)
-        })
+          this.showProfessionals(this.branchSelect);
+          this.showAlert("success", "Afiliación eliminada correctamente", 3000);
+          });
     },
     storeDelete() {
       let request = {
@@ -806,13 +811,13 @@ export default {
         .post('http://127.0.0.1:8000/api/branchstore-destroy', request)
         .then(() => {
           this.dialogRequestStore = false
+        }).finally(() => {
           this.$nextTick(() => {
             this.editedItem = Object.assign({}, this.defaultItem)
           })
-          console.log(this.branchSelect);
-          this.showStores(this.branchSelect)
-          this.showAlert("success", "Afiliación eliminada correctamente", 3000)
-        })
+          this.showStores(this.branchSelect);
+          this.showAlert("success", "Afiliación eliminada correctamente", 3000);
+          });
     },
 
     closerequest() {

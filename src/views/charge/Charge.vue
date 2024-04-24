@@ -94,7 +94,7 @@
           <v-toolbar color="#F18254">
             <span class="text-h6 ml-4"> Permisos del cargo</span>
             <v-spacer></v-spacer>
-            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="this.dialogAddPermission = true">
+            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAddPermission()">
               Asignar Permiso
             </v-btn>
           </v-toolbar>
@@ -378,9 +378,10 @@ export default {
         axios
           .put('http://127.0.0.1:8000/api/charge', this.data)
           .then(() => {
+          }).finally(() => {
+            this.showAlert("success", "Cargo editado correctamente", 3000);
             this.initialize();
-            this.showAlert("success", "Cargo editado correctamente", 3000)
-          })
+          });
       } else {
         this.valid = false;
         this.data.name = this.editedItem.name;
@@ -388,9 +389,10 @@ export default {
         axios
           .post('http://127.0.0.1:8000/api/charge', this.data)
           .then(() => {
+          }).finally(() => {
+            this.showAlert("success", "Cargo registrado correctamente", 3000);
             this.initialize();
-            this.showAlert("success", "Cargo registrado correctamente", 3000)
-          })
+          });
       }
       this.close()
     },
@@ -412,18 +414,21 @@ export default {
         })
         .then((response) => {
           this.chargePermissions = response.data.permissions;
-          console.log('imprime permissions');
         });
-        axios
-        .get('http://127.0.0.1:8000/api/charge-permission-NOTIN', {
-          params: {
-            charge_id: item.id
-          }
-        })
-        .then((response) => {
-          this.permissions = response.data.permissions;
-        })
+        
       this.dialogPermissions = true;
+    },
+    showAddPermission(){
+    axios
+            .get('http://127.0.0.1:8000/api/charge-permission-NOTIN', {
+              params: {
+                charge_id: this.chargeSelect.id
+              }
+            })
+            .then((response) => {
+              this.permissions = response.data.permissions;
+            });
+            this.dialogAddPermission = true;
     },
     savePermission() {
       this.valid = false,
@@ -435,9 +440,10 @@ export default {
          this.charge_id = '',
          this.permission_id = '',
           this.dialogAddPermission = false;
-          this.showPermission(this.chargeSelect);
+        }).finally(() => {
           this.showAlert("success", "Permiso asignado correctamente", 3000);
-        })
+          this.showPermission(this.chargeSelect);
+          });
     },
     closePermissosRequest(item) {
       console.log(item);

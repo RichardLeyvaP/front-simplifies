@@ -252,18 +252,20 @@ export default {
           axios
             .put('http://127.0.0.1:8000/api/business-type', this.data)
             .then(() => {
+            }).finally(() => {
+              this.showAlert("success","Tipo de Negocio editado correctamente", 3000);
               this.initialize();
-              this.showAlert("success","Tipo de Negocio editado correctamente", 3000)
-            })
+          });
         } else {
           this.valid = false,
           this.data.name = this.editedItem.name;
           axios
             .post('http://127.0.0.1:8000/api/business-type', this.data)
             .then(() => {
+            }).finally(() => {
+              this.showAlert("success","Tipo de Negocio registrado correctamente", 3000);
               this.initialize();
-              this.showAlert("success","Tipo de Negocio registrado correctamente", 3000)
-            })
+          }); 
         }
         this.close()
      

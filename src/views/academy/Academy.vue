@@ -148,7 +148,7 @@
           <v-toolbar color="#F18254">
             <span class="text-subtitle-1 ml-4"> Almacenes de la Academia</span>
             <v-spacer></v-spacer>
-            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="this.dialogAddStore = true">
+            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAddStores()">
               Agregar Almacén
             </v-btn>
           </v-toolbar>
@@ -237,7 +237,7 @@
       </v-dialog>
       <!--endStores-->
       <!--Products-->
-      <v-dialog v-model="dialogStoresProducts" fullscreen transition="dialog-bottom-transition">
+      <!--<v-dialog v-model="dialogStoresProducts" fullscreen transition="dialog-bottom-transition">
         <v-card>
           <v-toolbar color="#F18254">
             <span class="text-subtitle-1 ml-4"> Productos por almacenes de la Academia</span>
@@ -272,9 +272,9 @@
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar existencia"></v-btn>
           <v-btn density="comfortable" icon="mdi-delete" @click="closeproductRequest(item)" color="red-darken-4" variant="tonal"
             elevation="1" title="Eliminar existencia de producto"></v-btn>
-                <!--<v-icon size="small" color="red" @click="closestoreRequest(item)">
+                <v-icon size="small" color="red" @click="closestoreRequest(item)">
                   mdi-delete
-                </v-icon>-->
+                </v-icon>
               </template>
 
             </v-data-table>
@@ -344,7 +344,7 @@
 
           </v-card-actions>
         </v-card>
-      </v-dialog>
+      </v-dialog>-->
       <!--endProducts-->
       </v-card-text>
     </v-card>
@@ -378,19 +378,19 @@
       store_id: '',
       dialogRequestStore: false,
       //products
-      dialogStoresProducts: false,
+      /*dialogStoresProducts: false,
       search3: '',
       product_id: '',
       product_quantity: '',
       dialogAddProduct: false,
       editar: false,
-      dialogRequestProduct: false,
+      dialogRequestProduct: false,*/
       groupBy: [
       {
         key: 'direccionStore',
       },
     ],
-    headers3: [
+   /* headers3: [
       //{ title: 'Almacén', align: 'start', value: 'direccionStore' },
       { title: 'Nombre', key: 'name' },
       { title: 'Referencia', key: 'reference' },
@@ -400,7 +400,7 @@
       { title: 'Precio venta', align: 'start', value: 'sale_price' },
       { title: 'Existencia', align: 'start', value: 'product_exit' },
       { title: 'Acciones', key: 'actions', sortable: false },
-    ],
+    ],*/
       headers: [
   
         { title: 'Academia', value: 'name' },
@@ -498,7 +498,17 @@
     mounted() {
       this.business_id = LocalStorageService.getItem('business_id');
       this.editItem.business_id = this.business_id;
-      this.initialize();
+      axios
+          .get('http://127.0.0.1:8000/api/business')
+          .then((response) => {
+            console.log(response.data);
+            this.business = response.data.business;      
+              }).finally(() => {
+                if (this.business.length > 0) {
+            this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
+            this.initialize();
+            }  
+          });
     },
   
     methods: {
@@ -555,22 +565,7 @@
           })
           .then((response) => {
             this.results = response.data.enrollments;
-            console.log('academias');
-            console.log(this.results);
-          });
-  
-        axios
-          .get('http://127.0.0.1:8000/api/business')
-          .then((response) => {
-            console.log(response.data);
-            this.business = response.data.business;
-            if (this.business.length > 0) {
-            this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
-            }        
-            console.log('this.editedItem.business_id');
-              console.log(this.editedItem.business_id);
-              });
-  
+          });  
       },
       editItem(item) {
         this.file = '';
@@ -611,7 +606,7 @@
       closeDelete() {
         this.dialogDelete = false;
         this.dialogStores = false;
-        this.dialogStoresProducts = false;
+        //this.dialogStoresProducts = false;
         this.editedItem.name = '';        
         this.editedItem.description = '';        
         this.editedItem.business_id = parseInt(this.business_id);        
@@ -637,10 +632,12 @@
             .then(() => {
               this.file = '';
             this.imgMiniatura = '';
+            }).finally(() => {
               this.showAlert("success","Academia actualizada correctamente", 3000);
               this.initialize();
-            })
-        } if (this.editedIndex == 1) {
+          });
+        } 
+        if (this.editedIndex == 1) {
           this.valid = false;
           /*this.data.name = this.editedItem.name;
           this.data.description = this.editedItem.description;
@@ -654,9 +651,10 @@
             .then(() => {
               this.file = '';
             this.imgMiniatura = '';
+            }).finally(() => {
               this.showAlert("success","Academia creada correctamente", 3000);
               this.initialize();
-            })
+          });
         }
         this.close()
       },
@@ -675,15 +673,17 @@
           })
           .then((response) => {
             this.enrollmentStores = response.data.enrollmentStores;
-            console.log('imprime stores');
           });
         this.dialogStores = true;
-
-        axios
+    },
+    showAddStores(){
+      axios
           .get('http://127.0.0.1:8000/api/store')
           .then((response) => {
             this.stores = response.data.stores;
           });
+
+          this.dialogAddStore = true;
     },
     closestore() {
       this.dialogAddStore = false;
@@ -700,10 +700,11 @@
         .post('http://127.0.0.1:8000/api/enrollmentstore', this.data)
         .then(() => {
           this.dialogAddStore = false;
-          this.store_id = '',
+          this.store_id = '';
+        }).finally(() => {            
           this.showStores(this.enrollmentSelect);
           this.showAlert("success", "Almacén afiliado correctamente a la academia", 3000);
-        })
+          });
     },
     closestoreRequest(item) {
       this.dialogRequestStore = true
@@ -723,14 +724,15 @@
       axios
         .post('http://127.0.0.1:8000/api/enrollmentstore-destroy', request)
         .then(() => {
-          this.dialogRequestStore = false
-          this.store_id = '',
+          this.dialogRequestStore = false;
+          this.store_id = '';
           //console.log(this.branchSelect);
+        }).finally(() => {            
           this.showStores(this.enrollmentSelect)
-          this.showAlert("success", "Afiliación eliminada correctamente", 3000)
-        })
+          this.showAlert("success", "Afiliación eliminada correctamente", 3000);
+          });
     },//endStores
-    //Asignar Productos
+    /*//Asignar Productos
     showProducts(item){
       this.editedIndex = 3;
         this.enrollmentSelect = item;
@@ -846,7 +848,7 @@
           this.showProducts(this.enrollmentSelect);
           this.showAlert("success", "Asignación eliminada correctamente", 3000);    
         })
-    },
+    },*/
     },//endMethods
   }
   </script>

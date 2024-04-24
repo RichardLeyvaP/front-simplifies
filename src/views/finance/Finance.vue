@@ -54,7 +54,7 @@
                                         <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.branch_id" :items="branches" clearable
                                             label="Sucursales" prepend-icon="mdi-office-building" item-title="name"
                                             item-value="id" variant="underlined" :rules="selectRules"
-                                            @update:model-value="selectBranches"></v-autocomplete>
+                                            ></v-autocomplete><!--@update:model-value="selectBranches"-->
                                     </v-col>
                                 </v-row>
 
@@ -63,7 +63,7 @@
                                         <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.enrollment_id" :items="enrollments"
                                             clearable label="Academias" prepend-icon="mdi-school" item-title="name"
                                             item-value="id" variant="underlined" :rules="selectRules"
-                                            @update:model-value="selectEnrollments"></v-autocomplete>
+                                            ></v-autocomplete><!--@update:model-value="selectEnrollments"-->
                                     </v-col>
                                 </v-row>
                                 <v-form v-model="valid" enctype="multipart/form-data">
@@ -78,13 +78,13 @@
                                         <v-col cols="12" md="6" v-if="editedItem.operation === 'Ingreso'">
                                             <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.revenue_id" :items="revenues" clearable
                                                 label="Ingresos" prepend-icon="mdi-cash-plus" item-title="name"
-                                                item-value="id" variant="underlined"
+                                                item-value="id" variant="underlined" density="compact"
                                                 :rules="selectRules"></v-autocomplete>
                                         </v-col>
                                         <v-col cols="12" md="6" v-if="editedItem.operation === 'Gasto'">
                                             <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.expense_id" :items="expenses" clearable
                                                 label="Gastos" prepend-icon="mdi-cash-plus" item-title="name"
-                                                item-value="id" variant="underlined"
+                                                item-value="id" variant="underlined" density="compact"
                                                 :rules="selectRules"></v-autocomplete>
                                         </v-col>
                                     </v-row>
@@ -385,6 +385,7 @@ export default {
                     this.editedItem.branch_id = '';
                     this.editedItem.enrollment_id = '';
                     this.selectedOption = 'Negocio';
+                    this.results = [];
                     this.initialize();
                     break;
                 case this.options[1]:
@@ -397,7 +398,8 @@ export default {
                     console.log(this.editedItem.branch_id);
                     console.log(this.editedItem.enrollment_id);
                     console.log(this.editedItem.business_id);
-                    this.initialize();
+                    this.results = [];
+                    //this.initialize();
                     break;
                 case this.options[2]:
                     // Operaciones para la opción 3
@@ -408,7 +410,8 @@ export default {
                     console.log(this.editedItem.branch_id);
                     console.log(this.editedItem.enrollment_id);
                     console.log(this.editedItem.business_id);
-                    this.initialize();
+                    this.results = [];
+                    //this.initialize();
                     break;
                 case this.options[3]:
                     this.editedItem.type = 'Todas'
@@ -426,6 +429,20 @@ export default {
         this.branch_id = parseInt(LocalStorageService.getItem('branch_id'));
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         axios
+            .get('http://127.0.0.1:8000/api/finance-combined-data', {
+                params: {
+                    business_id: this.business_id
+                }
+            })
+            .then((response) => {
+                this.branches = response.data.branches;                
+                this.enrollments = response.data.enrollments;
+                this.business = response.data.business;
+                this.expenses = response.data.expenses;
+                this.revenues = response.data.revenues;
+                //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+            });
+        /*axios
             .get('http://127.0.0.1:8000/api/show-business', {
                 params: {
                     business_id: this.business_id
@@ -454,7 +471,7 @@ export default {
                 console.log('this.business');
                 console.log(this.business);
 
-            });
+            });*/
         if (this.charge === 'Administrador') {
             // Mostrar la fila con Autocomplete
             this.editedItem.type = 'Negocio';
@@ -471,8 +488,9 @@ export default {
             this.editedItem.enrollment_id = '';
             this.selectedOption = 'Sucursal';
             this.mostrarFila = false;
+            this.initialize();
         }
-        axios
+        /*axios
             .get('http://127.0.0.1:8000/api/expense')
             .then((response) => {
                 this.expenses = response.data.expenses;
@@ -483,9 +501,9 @@ export default {
             .get('http://127.0.0.1:8000/api/revenue')
             .then((response) => {
                 this.revenues = response.data.revenues;
-            });
+            });*/
 
-        this.initialize();
+        //this.initialize();
         console.log(this.charge_id);
     },
 
@@ -649,10 +667,10 @@ export default {
                         console.log('es cero');
                         this.visibility = true;
                     }*/
-                    console.log('this.results');
+                    /*console.log('this.results');
                     console.log(this.results);
                     console.log('this.editedItem.control');
-                    console.log(this.editedItem.control);
+                    console.log(this.editedItem.control);*/
                 });
         },
 
@@ -668,9 +686,10 @@ export default {
                 .post('http://127.0.0.1:8000/api/finance-destroy', this.data)
                 .then(() => {
                     this.file = '';
-                    this.initialize();
-                    this.showAlert("success", "Operación eliminada correctamente", 3000)
-                });
+                }).finally(() => {
+                    this.showAlert("success", "Operación eliminada correctamente", 3000);
+                    //this.initialize();
+          });
             this.closeDelete()
         },
         close() {
@@ -679,14 +698,14 @@ export default {
             console.log(this.selectedOption);
             this.dialog = false;
             this.file = '';
-            this.editedItem.amount = '',
-                this.editedItem.comment = '',
-                this.editedItem.file = '',
-                this.editedItem.expense_id = '',
-                this.editedItem.revenue_id = '',
-                this.editedItem.id = '',
+            this.editedItem.amount = '';
+                this.editedItem.comment = '';
+                this.editedItem.file = '';
+                this.editedItem.expense_id = '';
+                this.editedItem.revenue_id = '';
+                this.editedItem.id = '';
                 //this.selectedOption = 'Negocio',
-                this.initialize();
+                //this.initialize();
         },
         closeDelete() {
             this.dialogDelete = false;
@@ -695,7 +714,7 @@ export default {
                 this.editedItem = Object.assign({}, this.defaultItem);
             });
             this.file = '';
-            this.initialize();
+            //this.initialize();
         },
         save() {
             if (this.editedIndex > -1) {
@@ -718,13 +737,11 @@ export default {
                             this.editedItem.expense_id = '',
                             this.editedItem.revenue_id = '',
                             this.editedItem.id = '',
-                            this.initialize();
-                        /*this.$nextTick(() => {
-                            this.editedItem = Object.assign({}, this.defaultItem);
-                        });*/
-                        this.showAlert("success", "Operación editada correctamente", 3000);
                         this.file = '';
-                    })
+                    }).finally(() => {
+                        this.showAlert("success", "Operación editada correctamente", 3000);
+                            this.initialize();
+                    });
             } else {
                 this.valid = false;
                 //this.editedItem.branch_id = this.branch_id;
@@ -746,16 +763,11 @@ export default {
                             this.editedItem.expense_id = '',
                             this.editedItem.revenue_id = '',
                             this.editedItem.id = '',
-                            this.initialize();
-                        /*this.$nextTick(() => {
-                            this.editedItem = Object.assign({}, this.defaultItem);
-                        });*/
-                        //this.selectedOption = '';
-                        this.showAlert("success", "Registro de operación creado correctamente", 3000);
                         this.file = '';
-                        //this.$nextTick(() => {
-                        //this.editedItem = Object.assign({}, this.defaultItem);
-                    })
+                    }).finally(() => {
+                        this.showAlert("success", "Registro de operación creado correctamente", 3000);
+                            this.initialize();
+          });
                 //})
             }
             this.close()

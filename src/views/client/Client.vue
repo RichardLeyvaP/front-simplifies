@@ -250,7 +250,7 @@ export default {
     },
   },
 
-  created() {
+  mounted() {
     this.initialize()
   },
 
@@ -296,11 +296,11 @@ export default {
         .then((response) => {
           this.results = response.data.clients;
         });
-        axios
+        /*axios
         .get('http://127.0.0.1:8000/api/usuario')
         .then((response) => {
           this.users = response.data.users;
-        });
+        });*/
     },
     onFileSelected(event) {
         let file = event.target.files[0];
@@ -337,10 +337,10 @@ export default {
       axios
         .post('http://127.0.0.1:8000/api/client-destroy', request)
         .then(() => {
+        }).finally(() => {
+          this.showAlert("success","Cliente eliminado correctamente", 3000);
           this.initialize();
-          this.message_delete = true
-          this.showAlert("success","Cliente eliminado correctamente", 3000)
-        })
+          });
       this.closeDelete()
     },
     close() {
@@ -373,9 +373,10 @@ export default {
         axios
           .post('http://127.0.0.1:8000/api/client-update', formData)
           .then(() => {
+          }).finally(() => {
+           this.showAlert("success","Cliente editado correctamente", 3000);
             this.initialize();
-           this.showAlert("success","Cliente editado correctamente", 3000)
-          })
+          });
       } else {
         this.valid = false;
         /*this.data.name = this.editedItem.name;
@@ -392,7 +393,7 @@ export default {
           .post('http://127.0.0.1:8000/api/client', formData)
           .then(() => {
             this.initialize();
-            this.showAlert("success","Cliente registrado correctamente", 3000)
+            this.showAlert("success","Cliente registrado correctamente", 3000);
           }).catch(error => {
             if(error.response.status == '400')
           this.showAlert("warning", 'Correo ya existe', 3000);

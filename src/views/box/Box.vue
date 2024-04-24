@@ -317,7 +317,7 @@
             <v-spacer></v-spacer>
             <v-spacer></v-spacer>
             <v-btn color="default" variant="flat" @click="closeDeleteP">Cancelar</v-btn>
-            <v-btn color="warning" variant="flat" :loading="loading" @click="requestDelete">Aceptar</v-btn>
+            <v-btn color="warning" variant="flat" @click="requestDelete">Aceptar</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
 
@@ -905,19 +905,13 @@ export default {
       })
       .then((response) => {
         this.branches = response.data.branches;
+      }).finally(() => {
         if (this.charge === 'Administrador') {
           this.branch_id = this.branches[0].id;
+          this.mostrarFila = true;
         }
-        //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-        //this.nameBranch = !this.nameBranch ? this.nameBranch : this.branches[0].name;
-        console.log('this.branch_id');
-        console.log(this.branch_id);
-        this.initialize()
-      });
-    if (this.charge === 'Administrador') {
-      // Mostrar la fila con Autocomplete
-      this.mostrarFila = true;
-    }
+        this.initialize();
+          });
   },
 
   methods: {
@@ -952,9 +946,10 @@ export default {
       axios
         .put('http://127.0.0.1:8000/api/car', request)
         .then(() => {
+        }).finally(() => {
           this.initialize();
-          this.showAlert("success", "Carro pagado correctamente", 3000)
-        })
+          this.showAlert("success", "Carro pagado correctamente", 3000);
+          });
     },
     deleteOrder(item) {
       this.dialogRequest = true
@@ -971,10 +966,11 @@ export default {
       axios
         .post('http://127.0.0.1:8000/api/order-destroy-web', request)
         .then(() => {
-          this.initialize();
-          this.showDetails(this.car_ref)
-          this.showAlert("success", "Orden eliminada correctamente", 3000)
-        })
+          //this.initialize();
+        }).finally(() => {
+          this.showDetails(this.car_ref);
+          this.showAlert("success", "Orden eliminada correctamente", 3000);
+          });
       this.dialogRequest = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
@@ -993,10 +989,11 @@ export default {
       axios
         .put('http://127.0.0.1:8000/api/order-web', request)
         .then(() => {
+        }).finally(() => {          
           this.showAlert("success", "Orden denegada para ser eliminada correctamente", 3000);
-          this.initialize();
+          //this.initialize();
           this.showDetails(this.car_ref)
-        })
+          });
       this.dialogRequest = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
@@ -1004,6 +1001,15 @@ export default {
       })
     },
     openDialogBox() {
+      axios
+        .get('http://127.0.0.1:8000/api/box-show', {
+          params: {
+            branch_id: this.branch_id
+          }
+        })
+        .then((response) => {
+          this.box = response.data.box;
+        });
       this.dialogBox = true;
       this.editedBox.id = this.box.id;
       this.editedBox.cashFound = '';
@@ -1186,24 +1192,8 @@ export default {
             branch_id: this.branch_id
           }
         })
-        .then((response) => {
-          if (response.data.cars === null) {
-            this.results = [];
-          } else {
+        .then((response) => {          
             this.results = response.data.cars;
-          }
-          console.log('imprime sucursales');
-          console.log(this.results);
-        });
-
-      axios
-        .get('http://127.0.0.1:8000/api/box-show', {
-          params: {
-            branch_id: this.branch_id
-          }
-        })
-        .then((response) => {
-          this.box = response.data.box;
         });
     },
     editItem(item) {
@@ -1274,9 +1264,10 @@ export default {
       axios
         .post('http://127.0.0.1:8000/api/car-destroy', request)
         .then(() => {
+        }).finally(() => {
           this.initialize();
           this.showAlert("success", "Carro eliminado correctamente", 3000)
-        })
+          });
       this.dialogDelete = false;
     },
     savePay() {
@@ -1301,13 +1292,14 @@ export default {
           axios
             .put('http://127.0.0.1:8000/api/payment', this.data)
             .then(() => {
+              }).finally(() => {
               this.showAlert("success", "Pago efectuado correctamente", 3000);
               this.initialize();
               this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem);
                 this.editedCard = Object.assign({}, this.defaultCard);
                 this.mostrarOtroCampo = false;
-              });
+                });
             });
           this.dialogPay = false;
           this.dialogDetallesCar = false;
@@ -1340,15 +1332,15 @@ export default {
       axios
         .post('http://127.0.0.1:8000/api/closebox', this.data)
         .then(() => {
+        }).finally(() => {
           this.showAlert("success", "Cierre de caja efectuado correctamente", 3000);
           this.initialize();
-
-          this.ejecutado = true;
-        });
+          });
       this.$nextTick(() => {
         this.editedCloseBox = Object.assign({}, this.defaultCloseBox)
 
       });
+          this.ejecutado = true;
       this.dialog = false;
     },
     saveBox() {
@@ -1361,6 +1353,7 @@ export default {
         axios
           .put('http://127.0.0.1:8000/api/box', this.data)
           .then(() => {
+          }).finally(() => {
             this.showAlert("success", "Caja Actualizada correctamente", 3000);
             this.initialize();
           });
@@ -1379,6 +1372,7 @@ export default {
       })
     },
     closeDelete() {
+      this.initialize();
       this.dialogDetallesCar = false;
       this.dialogDetallesCarPagado = false;
       this.dialogDelete = false;
@@ -1426,9 +1420,6 @@ export default {
         })
         .then((response) => {
           this.services = response.data.branchServicesPro;
-
-          console.log('imprime Servicios');
-          console.log(this.services);
         });
       this.showAddServices = true;
 
@@ -1451,13 +1442,14 @@ export default {
       axios
         .post('http://127.0.0.1:8000/api/order-web', this.data)
         .then(() => {
+        }).finally(() => {
           this.showAlert("success", "Servicio agregado correctamente", 3000);
-          this.initialize();
+          //this.initialize();
           this.showDetails(this.car_ref);
           this.showAddServices = false;
           this.branch_service_professional_id = '';
           this.cant = '';
-        });
+          });
     },
     //endAddService
     //addProduct
@@ -1517,13 +1509,14 @@ export default {
       axios
         .post('http://127.0.0.1:8000/api/order-web', this.data)
         .then(() => {
+        }).finally(() => {
           this.showAlert("success", "Producto agregado correctamente", 3000);
-          this.initialize();
+          //this.initialize();
           this.showDetails(this.car_ref);
           this.showAddProducts = false;
           this.product_store_id = '';
           this.cant = '';
-        });
+          });
     },
     //endAddProduct
   },

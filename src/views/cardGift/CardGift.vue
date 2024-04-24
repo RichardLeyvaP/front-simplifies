@@ -156,7 +156,7 @@
           <v-toolbar color="#F18254">
             <span class="text-h6 ml-6"> Asignar Tarjeta de Regalo</span>
             <v-spacer></v-spacer>
-            <v-btn class="ml-4" color="#E7E9E9" variant="flat" @click="this.dialogAddCardGift = true">
+            <v-btn class="ml-4" color="#E7E9E9" variant="flat" @click="showAddClient()">
               Asignar a Cliente
             </v-btn>
           </v-toolbar>
@@ -305,7 +305,6 @@ export default {
     dialogDelete: false,
     dialogCardGitfUser: false,
     dialogAddCardGift: false,
-    message_delete: true,
     dialogRequestStore: false,
     dialogAddStore: false,
     branch_id: '',
@@ -374,17 +373,7 @@ export default {
     imgedit() {
       return this.imgMiniatura;
     },
-    /*dateFormatted() {
-      const date = this.input ? new Date(this.input) : new Date();
-      const day = date.getDate().toString().padStart(2, '0');
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const year = date.getFullYear();
-      return `${year}-${month}-${day}`;
 
-      getDate() {
-      return this.input ? new Date(this.input) : new Date();
-    },
-    },*/
     dateFormatted() {
       const date = this.input ? new Date(this.input) : new Date();
       const day = date.getDate().toString().padStart(2, '0');
@@ -408,7 +397,16 @@ export default {
 
   mounted() {
     this.business_id = LocalStorageService.getItem('business_id');
-    this.initialize()
+    axios
+        .get('http://127.0.0.1:8000/api/business')
+        .then((response) => {
+          this.business = response.data.business;
+        }).finally(() => {
+          if (this.business.length > 0) {
+            this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
+          }
+          this.initialize()
+          });
   },
 
   methods: {
@@ -449,21 +447,6 @@ export default {
         .then((response) => {
           this.results = response.data.cardGifts;
         });
-      axios
-        .get('http://127.0.0.1:8000/api/business')
-        .then((response) => {
-          this.business = response.data.business;
-          if (this.business.length > 0) {
-            this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
-          }
-          console.log('this.editedItem.business_id');
-          console.log(this.editedItem.business_id);
-        });
-      axios
-        .get('http://127.0.0.1:8000/api/client-autocomplete')
-        .then((response) => {
-          this.users = response.data.clients;
-        });
     },
     //Users
     updateDate(val) {
@@ -488,6 +471,14 @@ export default {
           this.cardgiftUser = response.data.cardgiftUser;
         });
       this.dialogCardGitfUser = true;
+    },
+    showAddClient(){
+      axios
+        .get('http://127.0.0.1:8000/api/client-autocomplete')
+        .then((response) => {
+          this.users = response.data.clients;
+        });
+        this.dialogAddCardGift = true;
     },
     onFileSelected(event) {
       let file = event.target.files[0];
@@ -524,12 +515,11 @@ export default {
       axios
         .post('http://127.0.0.1:8000/api/card-gift-destroy', request)
         .then(() => {
-          this.initialize();
-          this.message_delete = true
-          this.showAlert("success", "Tarjeta de regalo eliminada correctamente", 3000);
-
           this.dialogDelete = false;
-        })
+        }).finally(() => {
+          this.showAlert("success", "Tarjeta de regalo eliminada correctamente", 3000);
+          this.initialize();
+          });
     },
     close() {
       this.dialog = false,
@@ -570,15 +560,14 @@ export default {
       axios
         .post('http://127.0.0.1:8000/api/card-gift-user-destroy', request)
         .then(() => {
-          this.dialogRequest = false
+          this.dialogRequestStore = false;
+        }).finally(() => {
+          this.showCardGifts(this.cardSelect);
+          this.showAlert("success", "Asignacion eliminada correctamente", 3000);
           this.$nextTick(() => {
             this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser)
-          })
-          console.log(this.courseSelect);
-          this.showCardGifts(this.cardSelect)
-          this.showAlert("success", "Asignacion eliminada correctamente", 3000);
-          this.dialogRequestStore = false;
-        })
+          });
+          });
     },
     save() {
       if (this.editedIndex > -1) {
@@ -592,12 +581,13 @@ export default {
         axios
           .post('http://127.0.0.1:8000/api/card-gift-update', formData)
           .then(() => {
-            this.initialize();
-            this.showAlert("success", "Tarjeta de Regalo editada correctamente", 3000);
             this.imgMiniatura = '';
             this.file = '';
 
-          })
+          }).finally(() => {
+            this.showAlert("success", "Tarjeta de Regalo editada correctamente", 3000);
+            this.initialize();
+          });
       } else {
         this.valid = false;
         const formData = new FormData();
@@ -607,9 +597,10 @@ export default {
         axios
           .post('http://127.0.0.1:8000/api/card-gift', formData)
           .then(() => {
+          }).finally(() => {
+            this.showAlert("success", "Tarjeta de Regalo registrada correctamente", 3000);
             this.initialize();
-            this.showAlert("success", "Tarjeta de Regalo registrada correctamente", 3000)
-          })
+          });
       }
       this.close()
     },
@@ -639,9 +630,10 @@ export default {
             this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser)
           })
           this.dialogAddCardGift = false;
-          this.showCardGifts(this.cardSelect);
+        }).finally(() => {
           this.showAlert("success", "Tarjeta asignada correctamente al usuario", 3000);
-        })
+          this.showCardGifts(this.cardSelect);
+          });
     },
   },
 }

@@ -1,3 +1,6 @@
+<!-- eslint-disable vue/multi-word-component-names -->
+<!-- eslint-disable vue/valid-v-slot -->
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
     <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type"
        elevation="24"  :multi-line="true"  vertical v-model="snackbar">
@@ -251,18 +254,20 @@ export default {
          axios
            .put('http://127.0.0.1:8000/api/expense', this.data)
            .then(() => {
+           }).finally(() => {
+             this.showAlert("success","Operación de gasto actualizada correctamente", 3000);
              this.initialize();
-             this.showAlert("success","Operación de gasto actualizada correctamente", 3000)
-           })
+          });
        } else {
          this.valid = false,
          this.data.name = this.editedItem.name;
          axios
            .post('http://127.0.0.1:8000/api/expense', this.data)
            .then(() => {
+           }).finally(() => {
+             this.showAlert("success","Operación de gasto registrada correctamente", 3000);
              this.initialize();
-             this.showAlert("success","Operación de gasto registrada correctamente", 3000)
-           })
+          });
        }
        this.close()
     

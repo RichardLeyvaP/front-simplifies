@@ -23,14 +23,11 @@
         </v-col>
          <v-col cols="12" md="5" class="mr-6"></v-col>
         <v-col cols="12" md="2">
-
-          <v-dialog v-model="dialog" max-width="800px">
-            <template v-slot:activator="{ props }">
-              <v-btn v-bind="props" class="text-subtitle-1  ml-12 " color="#E7E9E9" variant="flat" elevation="2"
-                prepend-icon="mdi-plus-circle" :disabled="mostrar">
+              <v-btn class="text-subtitle-1  ml-12 " color="#E7E9E9" variant="flat" elevation="2"
+                prepend-icon="mdi-plus-circle" :disabled="mostrar" @click="showAddProfessional()">
                 Nuevo Negocio
               </v-btn>
-            </template>
+          <v-dialog v-model="dialog" max-width="800px">
             <v-card>
                 <v-toolbar color="#F18254">
                   <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
@@ -204,18 +201,21 @@ export default {
   methods: {
 
     initialize() {
-      axios
-        .get('http://127.0.0.1:8000/api/professional-show-autocomplete')
-        .then((response) => {
-          this.professionals = response.data.professionals;
-        });
 
       axios
         .get('http://127.0.0.1:8000/api/business')
         .then((response) => {
           this.results = response.data.business;
-        })
+        });
 
+    },
+    showAddProfessional(){
+      axios
+        .get('http://127.0.0.1:8000/api/professional-show-autocomplete')
+        .then((response) => {
+          this.professionals = response.data.professionals;
+        });
+        this.dialog = true;
     },
     editItem(item) {
       this.editedIndex = 1;
@@ -235,8 +235,9 @@ export default {
       axios
         .post('http://127.0.0.1:8000/api/business-destroy', request)
         .then(() => {
+        }).finally(() => {
           this.initialize();
-        })
+          });
       this.closeDelete()
     },
     close() {
@@ -263,8 +264,9 @@ export default {
         axios
           .put('http://127.0.0.1:8000/api/business', this.data)
           .then(() => {
+          }).finally(() => {
             this.initialize();
-          })
+          });
       } else {
         this.valid = false;
         this.data.name = this.editedItem.name;
@@ -274,8 +276,9 @@ export default {
         axios
           .post('http://127.0.0.1:8000/api/business', this.data)
           .then(() => {
+          }).finally(() => {
             this.initialize();
-          })
+          });
       }
       this.close()
     },

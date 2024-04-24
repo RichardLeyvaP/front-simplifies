@@ -23,15 +23,11 @@
                 <v-col cols="12" md="4"></v-col>
                 <v-col cols="12" md="2">
 
-                    <v-dialog v-model="dialog" max-width="500px">
-                        <template v-slot:activator="{ props }">
-
-                            <v-btn v-bind="props" class="text-subtitle-1  ml-12  " color="#E7E9E9" variant="flat"
-                                elevation="2" prepend-icon="mdi-plus-circle">
+                            <v-btn class="text-subtitle-1  ml-12  " color="#E7E9E9" variant="flat"
+                                elevation="2" prepend-icon="mdi-plus-circle" @click="showAddRules()">
                                 Asignar regla
                             </v-btn>
-
-                        </template>
+                    <v-dialog v-model="dialog" max-width="500px">
                         <v-card>
                             <v-toolbar color="#F18254">
                                 <span class="text-subtitle-2 ml-4"> {{ formTitle }}</span>
@@ -216,18 +212,18 @@ export default {
                 }
             })
             .then((response) => {
-                this.branches = response.data.branches;
-                if (this.charge === 'Administrador') {
-                    this.branch_id = this.branches[0].id;
-                }
-                //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-                this.initialize()
-            });
+                this.branches = response.data.branches;                
+            }).finally(() => {
+        if (this.charge === 'Administrador') 
+            {
+                this.branch_id = this.branches[0].id;
+                this.mostrarFila = true;
+            }
+                            //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+                            this.initialize()
+          });
+            
 
-        if (this.charge === 'Administrador') {
-            // Mostrar la fila con Autocomplete
-            this.mostrarFila = true;
-        }
         console.log(this.charge_id);
     },
 
@@ -264,6 +260,9 @@ export default {
                 .then((response) => {
                     this.results = response.data.rules;
                 });
+        },
+
+        showAddRules(){
             axios
                 .get('http://127.0.0.1:8000/api/branch-rules-noIn', {
                     params: {
@@ -273,8 +272,8 @@ export default {
                 .then((response) => {
                     this.rules = response.data.rules;
                 });
+                this.dialog = true;
         },
-
         deleteItem(item) {
             this.editedItem.rule_id = item.rule_id;
             this.dialogDelete = true;
@@ -287,10 +286,11 @@ export default {
             axios
                 .post('http://127.0.0.1:8000/api/branchrule-destroy', this.data)
                 .then(() => {
+                    this.message_delete = true;
+                }).finally(() => {
+                    this.showAlert("success", "Asignación eliminada correctamente", 3000);
                     this.initialize();
-                    this.message_delete = true
-                    this.showAlert("success", "Asignación eliminada correctamente", 3000)
-                });
+          });
             this.closeDelete()
         },
         close() {
@@ -318,9 +318,10 @@ export default {
                 axios
                     .post('http://127.0.0.1:8000/api/branchrule', this.data)
                     .then(() => {
+                    }).finally(() => {
+                        this.showAlert("success", "Regla de convivencia asignada correctamente", 3000);
                         this.initialize();
-                        this.showAlert("success", "Regla de convivencia asignada correctamente", 3000)
-                    });
+                });
             }
             this.close();
 

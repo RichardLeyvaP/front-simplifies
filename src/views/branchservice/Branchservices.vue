@@ -22,16 +22,13 @@
                 </v-col>
                 <v-col cols="12" md="4"></v-col>
                 <v-col cols="12" md="2">
-
-                    <v-dialog v-model="dialog" max-width="500px">
-                        <template v-slot:activator="{ props }">
-
-                            <v-btn v-bind="props" class="text-subtitle-1  ml-12  " color="#E7E9E9" variant="flat"
-                                elevation="2" prepend-icon="mdi-plus-circle">
+                            <v-btn class="text-subtitle-1  ml-12  " color="#E7E9E9" variant="flat"
+                                elevation="2" prepend-icon="mdi-plus-circle" @click="showAddService()">
                                 Asignar Servicios
                             </v-btn>
 
-                        </template>
+                    <v-dialog v-model="dialog" max-width="500px">
+
                         <v-card>
                             <v-toolbar color="#F18254">
                                 <span class="text-subtitle-2 ml-4"> {{ formTitle }}</span>
@@ -135,7 +132,7 @@
         </v-card-text>
 
         <!--Professionals-->
-        <v-dialog v-model="dialogProfessionals" fullscreen transition="dialog-bottom-transition">
+        <!--<v-dialog v-model="dialogProfessionals" fullscreen transition="dialog-bottom-transition">
             <v-card>
                 <v-toolbar color="#F18254">
                     <span class="text-h6 ml-4"> Trabajadores que realizan servicio</span>
@@ -159,9 +156,9 @@
                             {{ item.name }}
                         </template>
                         <template v-slot:item.actions="{ item }">
-                            <!--<v-icon size="25" color="red" @click="closeProfessionalRequest(item)">
+                            <v-icon size="25" color="red" @click="closeProfessionalRequest(item)">
                                 mdi-delete
-                            </v-icon>-->
+                            </v-icon>
                             <v-btn density="comfortable" icon="mdi-delete" @click="closeProfessionalRequest(item)"
                                 color="red-darken-4" variant="tonal" elevation="1" title="Eliminar asignación"></v-btn>
                         </template>
@@ -228,7 +225,7 @@
 
                 </v-card-actions>
             </v-card>
-        </v-dialog>
+        </v-dialog>-->
     </v-card>
 
 
@@ -261,10 +258,10 @@ export default {
         search: '',
         search2: '',
         message_delete: true,
-        dialogProfessionals: false,
-        dialogAddProfessionals: false,
+        //dialogProfessionals: false,
+        //dialogAddProfessionals: false,
         dialogDelete: false,
-        dialogDeleteProfessional: false,
+        ///dialogDeleteProfessional: false,
         headers: [
             //{ title: 'Almacén', align: 'start', value: 'direccionStore' },
             { title: 'Nombre', key: 'name' },
@@ -274,18 +271,18 @@ export default {
             { title: 'Precio', align: 'start', value: 'price_service' },
             { title: 'Acciones', key: 'actions', sortable: false },
         ],
-        headers2: [
+        /*headers2: [
             { title: 'Nombre', key: 'name' },
             { title: 'Correo', key: 'email' },
             { title: 'Teléfono', key: 'phone' },
             { title: 'Acciones', key: 'actions', sortable: false },
-        ],
+        ],*/
         results: [],
         services: [],
-        professionals: [],
+        //professionals: [],
         branches: [],
-        branchServiceProfessionals: [],
-        branchServiceSelect: '',
+        //branchServiceProfessionals: [],
+        //branchServiceSelect: '',
         editedIndex: -1,
         editedItem: {
             service_id: '',
@@ -337,16 +334,14 @@ export default {
             })
             .then((response) => {
                 this.branches = response.data.branches;
+            }).finally(() => {
                 //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
                 if (this.charge === 'Administrador') {
                     this.branch_id = this.branches[0].id;
+                    this.mostrarFila = true;
                 }
                 this.initialize();
-            });
-        if (this.charge === 'Administrador') {
-            // Mostrar la fila con Autocomplete
-            this.mostrarFila = true;
-        }
+          });
         console.log(this.charge_id);
     },
 
@@ -383,6 +378,8 @@ export default {
                 .then((response) => {
                     this.results = response.data.branchServices;
                 });
+        },
+        showAddService(){
             axios
                 .get('http://127.0.0.1:8000/api/branch-service-show', {
                     params: {
@@ -392,8 +389,8 @@ export default {
                 .then((response) => {
                     this.services = response.data.services;
                 });
+                this.dialog = true;
         },
-
         deleteItem(item) {
             this.editedItem = Object.assign({}, item);
             this.dialogDelete = true;
@@ -404,10 +401,11 @@ export default {
             axios
                 .post('http://127.0.0.1:8000/api/branchservice-destroy', this.data)
                 .then(() => {
+                    this.message_delete = true;
+                }).finally(() => {
+                    this.showAlert("success", "Asignación eliminada correctamente", 3000);
                     this.initialize();
-                    this.message_delete = true
-                    this.showAlert("success", "Asignación eliminada correctamente", 3000)
-                });
+          });
             this.closeDelete()
         },
         close() {
@@ -435,9 +433,10 @@ export default {
                 axios
                     .post('http://127.0.0.1:8000/api/branchservice', this.data)
                     .then(() => {
+                    }).finally(() => {
+                        this.showAlert("success", "Producto asignado correctamente", 3000);
                         this.initialize();
-                        this.showAlert("success", "Producto asignado correctamente", 3000)
-                    });
+          });
             }
             this.close();
 
@@ -445,7 +444,7 @@ export default {
 
         //professionals
 
-        showProfessionals(item) {
+        /*showProfessionals(item) {
             this.branchServiceSelect = item;
             console.log(this.branchServiceSelect);
             this.branch_service_id = item.id;
@@ -517,7 +516,7 @@ export default {
                     this.showProfessionals(this.branchServiceSelect)
                     this.showAlert("success", "Asignación de profesional a servicio hecha correctamente", 3000)
                 })
-        },
+        },*/
     },
 }
 </script>
