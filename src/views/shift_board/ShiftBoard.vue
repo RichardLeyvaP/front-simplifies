@@ -175,6 +175,7 @@ export default {
     professional: "",
     number: "",
     modules: "",
+    branch_id: '',
     parpadeando: false,
     module: 0,
     numero: 0,
@@ -190,8 +191,8 @@ export default {
   }),
 
   mounted() {
-    // Establecer un intervalo para mostrar duplas cada 5 segundos
-
+    // Establecer un intervalo para mostrar duplas cada 5 segundos    
+    this.branch_id = LocalStorageService.getItem("branch_id");
     console.log('ESTOY ENTRANDO AL mounted()')
     setInterval(this.callForTime, 5000);
     // setInterval(this.mostrarDupla, 5000);
@@ -226,7 +227,6 @@ export default {
 
     callForTime() {
       console.log('AQUI SI ESTOY ENTRANDO -callForTime()');
-      this.branch_id = LocalStorageService.getItem("branch_id");
       axios
         .get('http://127.0.0.1:8000/api/tail_branch_attended', {
           params: {

@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
     <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type"

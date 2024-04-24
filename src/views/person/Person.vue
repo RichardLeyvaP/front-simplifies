@@ -23,15 +23,11 @@
          <v-col cols="12" md="5" class="mr-12"></v-col>
         <v-col cols="12" md="2">
           
-          <v-dialog v-model="dialog" max-width="1000px">
-            <template v-slot:activator="{ props }">
-
-              <v-btn v-bind="props" class="text-subtitle-1 " color="#E7E9E9" variant="flat" elevation="2"
-                prepend-icon="mdi-plus-circle">
+              <v-btn class="text-subtitle-1 " color="#E7E9E9" variant="flat" elevation="2"
+                prepend-icon="mdi-plus-circle" @click="showAddProfessional()">
                 Agregar Profesional
               </v-btn>
-
-            </template>
+          <v-dialog v-model="dialog" max-width="1000px">
             <v-card >
               <v-toolbar color="#F18254">
                 <span class="text-subtitle-2 ml-4"> Profesional</span>
@@ -364,8 +360,14 @@ export default {
     },
   },
 
-  created() {
-    this.initialize()
+  mounted() {
+    axios
+        .get('http://127.0.0.1:8000/api/charge')
+        .then((response) => {
+          this.charges = response.data.charges;
+        }).finally(() => {
+                this.initialize()
+          });
   },
 
   methods: {
@@ -419,7 +421,7 @@ export default {
         .then((response) => {
           this.results = response.data.professionals;
         });
-        axios
+        /*axios
         .get('http://127.0.0.1:8000/api/usuario')
         .then((response) => {
           this.users = response.data.users;
@@ -428,8 +430,12 @@ export default {
         .get('http://127.0.0.1:8000/api/charge')
         .then((response) => {
           this.charges = response.data.charges;
-        });
+        });*/
         
+    },
+    showAddProfessional(){
+        this.dialog = true;
+        this.mostrar = true;
     },
     onFileSelected(event) {
         let file = event.target.files[0];

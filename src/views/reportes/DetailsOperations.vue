@@ -279,19 +279,12 @@ export default {
             })
             .then((response) => {
                 this.branches = response.data.branches;
-                if (this.charge === 'Administrador') {
-                    this.branch_id = this.branches[0].id;
-                }
-                //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-
-                this.initialize()
-            });
+            }).finally(() => {
         if (this.charge === 'Administrador') {
-            // Mostrar la fila con Autocomplete
-            this.mostrarFila = true;
-        }
-        // Obtener el año actual
-        const currentYear = new Date().getFullYear();
+          this.branch_id = this.branches[0].id;
+      this.mostrarFila = true;
+    } 
+    const currentYear = new Date().getFullYear();
         // Llenar el arreglo years con los años, desde 2010 hasta el año actual
         for (let year = 2000; year <= currentYear; year++) {
             this.years.push(year);
@@ -299,6 +292,9 @@ export default {
         // Establecer el año actual como el seleccionado por defecto
         this.selectedYear = currentYear;
         this.initialize();
+          });
+        // Obtener el año actual
+        
     },
 
     methods: {

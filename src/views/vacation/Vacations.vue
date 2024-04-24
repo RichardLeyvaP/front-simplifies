@@ -24,7 +24,7 @@
                 <v-col cols="12" md="5" class="mr-6"></v-col>
                 <v-col cols="12" md="2">
 
-                    <v-dialog v-model="dialog" max-width="600px">
+                    <v-dialog v-model="dialog" max-width="700px">
                         <template v-slot:activator="{ props }">
                             <v-btn v-bind="props" class="text-subtitle-1  ml-12 " color="#E7E9E9" variant="flat"
                                 elevation="2" prepend-icon="mdi-plus-circle" :disabled="mostrar">
@@ -348,19 +348,20 @@ export default {
         //},*/
         initialize() {
             if (this.charge == 'Administrador') {
-                axios
+                /*axios
                     .get('http://127.0.0.1:8000/api/professional-show-autocomplete')
                     .then((response) => {
                         this.professionals = response.data.professionals;
-                    });
+                    });*/
                 axios
                     .get('http://127.0.0.1:8000/api/vacation')
                     .then((response) => {
                         this.results = response.data.vacations;
+                        this.professionals = response.data.professionals;
                     });
             } else {
                 console.log('No es administrador');
-                axios
+                /*axios
                     .get('http://127.0.0.1:8000/api/professional-show-autocomplete-branch', {
                         params: {
                             branch_id: this.branch_id
@@ -368,7 +369,7 @@ export default {
                     })
                     .then((response) => {
                         this.professionals = response.data.professionals;
-                    });
+                    });*/
                 axios
                     .get('http://127.0.0.1:8000/api/vacation-show', {
                         params: {
@@ -377,6 +378,7 @@ export default {
                     })
                     .then((response) => {
                         this.results = response.data.vacations;
+                        this.professionals = response.data.professionals;
                     });
             }
 

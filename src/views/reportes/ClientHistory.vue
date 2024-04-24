@@ -163,11 +163,16 @@ export default {
   },
   computed: {
   },
-  created() {
+  mounted() {
     // Recuperar datos del localStorage al cargar la aplicación
     this.branch_id = parseInt(LocalStorageService.getItem("branch_id"));
     this.business_id = parseInt(LocalStorageService.getItem("business_id"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
+    axios
+        .get('http://127.0.0.1:8000/api/client-index-autocomplete')
+        .then((response) => {
+          this.clients = response.data.clients;
+        });
     /*axios
       .get('http://127.0.0.1:8000/api/show-business', {
         params: {
@@ -184,16 +189,16 @@ export default {
         this.initialize()
       });*/
 
-      this.initialize();
+      //this.initialize();
   },
   methods: {
-    initialize() {
+    /*initialize() {
       axios
         .get('http://127.0.0.1:8000/api/client-index-autocomplete')
         .then((response) => {
           this.clients = response.data.clients;
         });
-    },
+    },*/
     clientHistory() {
       console.log(this.client_id);
       this.results = [];

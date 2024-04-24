@@ -90,7 +90,7 @@
             </v-col>
             <v-col cols="12" md="7">
               <v-card elevation="2">
-                <v-tabs v-model="tabBar" color="rgb(241, 130, 84)" elevation="6" @click="handleTabChange">
+                <v-tabs v-model="tabBar" color="rgb(241, 130, 84)" elevation="6"><!-- @click="handleTabChange"-->
                   <v-tab value="one">Lista de Servicios</v-tab>
                   <v-tab value="two">Servicios Asignados</v-tab>
                 </v-tabs>
@@ -338,16 +338,13 @@ export default {
       })
       .then((response) => {
         this.branches = response.data.branches;
-        if (this.charge === 'Administrador') {
-          this.branch_id = this.branches[0].id;
-        }
-        //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-        this.initialize();
-      });
-    if (this.charge === 'Administrador') {
-      // Mostrar la fila con Autocomplete
-      this.mostrarFila = true;
-    }
+      }).finally(() => {
+            if (this.charge === 'Administrador') {
+                    this.branch_id = this.branches[0].id;
+                    this.mostrarFila = true;
+                }
+                this.initialize();
+          }); 
 
     this.arrayEvents = [...Array(1)].map(() => {
       const day = Math.floor(Math.random() * 30)
@@ -362,17 +359,15 @@ export default {
   methods:
   {
     handleTabChange() {
-      console.log('this.tabBar');
-      console.log(this.tabBar);
-      if (this.professional !== null) {
+      //if (this.professional.length !== 0) {
       if (this.tabBar === 'one') {
         this.selected = [];
-        this.getServicesProfessional();
+        //this.getServicesProfessional();
       } else if (this.tabBar === 'two') {
         this.selected = [];
-        this.getServicesProfessional();
+        //this.getServicesProfessional();
       }
-    }
+    //}
   },
     /*isSelected(serviceId) {
       console.log('entra a seleccionado');
@@ -421,7 +416,6 @@ export default {
       axios
         .post('http://127.0.0.1:8000/api/professionalservice-destroy', request)
         .then(() => {
-          this.initialize();
           this.showAlert("success", "Desasignado correctamente", 3000);
           this.profitPercen = '';
           this.getServicesProfessional();
@@ -468,7 +462,6 @@ export default {
 
       axios.post('http://127.0.0.1:8000/api/professionalservice', request)
         .then(() => {          
-          this.initialize();
           this.showAlert("success", "Servicio asignado correctamente", 3000);
           this.profitPercen = '';
           //this.professional = '';
@@ -629,7 +622,7 @@ export default {
 
 
     },
-    chargeServices() {
+    /*chargeServices() {
       axios
         .get(`http://127.0.0.1:8000/api/professionalservice-show`, {
           params: {
@@ -645,7 +638,7 @@ export default {
           console.log(err, "error");
 
         });
-    },
+    },*/
 
     chargeProfessionals() {
 

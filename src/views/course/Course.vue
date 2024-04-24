@@ -577,6 +577,7 @@ export default {
     endDate: null,
     editando: false,
     dialog: false,
+    business_id: '',
     message_delete: true,
     dialogUpdateS: false,
     dialogDelete: false,

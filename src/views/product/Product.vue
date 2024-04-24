@@ -102,7 +102,7 @@
              <v-btn color="#E7E9E9" variant="flat" @click="close">
                Cancelar
              </v-btn>
-             <v-btn color="warning" variant="flat" @click="save" :disabled="!valid">
+             <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
                Aceptar
              </v-btn>
            </v-card-actions>
@@ -270,8 +270,13 @@
   },
   
   mounted() {
-    
-  this.initialize()
+    axios
+     .get('http://127.0.0.1:8000/api/product-category')
+     .then((response) => {
+       this.productCategories = response.data.productcategories;
+     }).finally(() => {
+                this.initialize()
+          });
   },
   
   methods: {
@@ -329,13 +334,7 @@
      .get('http://127.0.0.1:8000/api/product')
      .then((response) => {
        this.results = response.data.products;
-     });
-     axios
-     .get('http://127.0.0.1:8000/api/product-category')
-     .then((response) => {
-       this.productCategories = response.data.productcategories;
-     });
-     
+     });     
   },
   onFileSelected(event) {
      let file = event.target.files[0];

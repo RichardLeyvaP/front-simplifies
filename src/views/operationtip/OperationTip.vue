@@ -27,13 +27,11 @@
                         prepend-icon="mdi-account-cash" @click="showPay">
                         Pagos realizados
                     </v-btn>
-                    <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition">
-                        <template v-slot:activator="{ props }">
-                            <v-btn v-bind="props" class="text-subtitle-1  ml-1 " color="#E7E9E9" variant="flat"
-                                elevation="2" prepend-icon="mdi-plus-circle">
+                            <v-btn class="text-subtitle-1  ml-1 " color="#E7E9E9" variant="flat"
+                                elevation="2" prepend-icon="mdi-plus-circle" @click="showAddOperationTip()">
                                 Nuevo Pago
                             </v-btn>
-                        </template>
+                    <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition">
                         <v-card>
                             <v-toolbar color="#F18254">
                                 <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
@@ -47,7 +45,7 @@
                                                     v-if="this.mostrarFila" clearable label="Seleccione una Sucursal"
                                                     prepend-icon="mdi-store" item-title="name" item-value="id"
                                                     variant="underlined"
-                                                    @update:model-value="initialize()"></v-autocomplete>
+                                                    @update:model-value="showAddOperationTip()"></v-autocomplete>
                                             </v-col>
                                             <v-col cols="12" sm="12" md="3">
                                                 <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id" :items="professionals"
@@ -243,7 +241,7 @@
                                         variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
                                 </v-col>
                                 <v-col cols="12" md="1">
-                                    <v-btn icon @click="updateDate3" color="#F18254">
+                                    <v-btn icon @click="showPay()" color="#F18254">
                                         <v-icon>mdi-magnify</v-icon></v-btn>
                                 </v-col>
                                 <v-col cols="12">
@@ -333,7 +331,7 @@ export default {
             { title: 'Monto café', key: 'coffe_percent' }
         ],
         results: [],
-        selectedOption: '',
+        //selectedOption: '',
         //options: ['Adelanto', 'Quincena', 'Mes'],
         professionals: [],
         professional_id: '',
@@ -405,20 +403,9 @@ export default {
     },
 
     watch: {
-        dialog(val) {
+        /*dialog(val) {
             val || this.close();
-            axios
-                .get('http://127.0.0.1:8000/api/cashier-car-notpay', {
-                    params: {
-                        branch_id: this.branch_id
-                    }
-                })
-                .then((response) => {
-                    this.cars = response.data;
-                    console.log('this.cars');
-                    console.log(this.cars);
-                });
-        },
+        },*/
         dialogDelete(val) {
             val || this.closeDelete()
         },
@@ -444,15 +431,14 @@ export default {
             .then((response) => {
                 this.branches = response.data.branches;
                 //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-                if (this.charge === 'Administrador') {
+                
+            }).finally(() => {
+            if (this.charge === 'Administrador') {
                     this.branch_id = this.branches[0].id;
+                    this.mostrarFila = true;
                 }
                 this.initialize()
-            });
-
-        if (this.charge === 'Administrador') {
-            this.mostrarFila = true;
-        }
+          });
 
     },
 
@@ -534,8 +520,32 @@ export default {
                 .then((response) => {
                     this.results = response.data;
                 });
+            /*axios
+                .get('http://127.0.0.1:8000/api/cashier-car-notpay', {
+                    params: {
+                        branch_id: this.branch_id
+                    }
+                })
+                .then((response) => {
+                    this.cars = response.data;
+                    console.log('this.cars');
+                    console.log(this.cars);
+                });*/
 
+        },
+        showAddOperationTip(){
             axios
+                .get('http://127.0.0.1:8000/api/cashier-car-notpay', {
+                    params: {
+                        branch_id: this.branch_id
+                    }
+                })
+                .then((response) => {
+                    this.cars = response.data.cars;
+                    this.professionals = response.data.professionals
+                });
+
+                /*axios
                 .get('http://127.0.0.1:8000/api/branch_professionals_cashier', {
                     params: {
                         branch_id: this.branch_id
@@ -543,21 +553,10 @@ export default {
                 })
                 .then((response) => {
                     this.professionals = response.data.professionals;
-                });
-            axios
-                .get('http://127.0.0.1:8000/api/cashier-car-notpay', {
-                    params: {
-                        branch_id: this.branch_id
-                    }
-                })
-                .then((response) => {
-                    this.cars = response.data;
-                    console.log('this.cars');
-                    console.log(this.cars);
-                });
-
+                });*/
+                this.dialog = true;
         },
-        editItem(item) {
+        /*editItem(item) {
             axios
                 .get('http://127.0.0.1:8000/api/cashier-car-notpay', {
                     params: {
@@ -566,13 +565,11 @@ export default {
                 })
                 .then((response) => {
                     this.cars = response.data;
-                    console.log('this.cars');
-                    console.log(this.cars);
                 });
             this.editedIndex = 1;
             this.editedItem = Object.assign({}, item)
             this.dialog = true
-        },
+        },*/
         deleteItem(item) {
             this.editedIndex = -1;
             this.editedItem.id = item.id;
@@ -586,24 +583,25 @@ export default {
             axios
                 .post('http://127.0.0.1:8000/api/operation-tip-destroy', request)
                 .then(() => {
+                }).finally(() => {
                     this.showAlert("success", "Pago eliminado correctamente", 3000);
                     this.initialize();
-                })
+          });
             this.closeDelete()
         },
         close() {
-            this.dialog = false
+            this.dialog = false;
             this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem)
                 this.editedIndex = -1
             });
             this.editedIndex = -1;
-            this.selectedOption = null;
+            //this.selectedOption = null;
             this.cars = [];
             this.selected2 = [];
             this.professional_id = '';
             this.mostrarCars = false;
-
+            this.initialize();
         },
         closeDelete() {
             this.dialogDelete = false
@@ -650,16 +648,16 @@ export default {
                     this.$nextTick(() => {
                         this.editedItem = Object.assign({}, this.defaultItem);
                     });
-
-                    this.initialize();
                     this.editedIndex = -1;
                     this.type = null;
                     this.cars = [];
                     this.selected2 = [];
                     this.professional_id = '';
                     this.mostrarCars = false;
+                }).finally(() => {
                     this.showAlert("success", "Pago realizado correctamente", 3000);
-                })
+                    this.updatedBranch();
+          });
             //}
             /*this.valid = false;
             this.data.name = this.editedItem.name;
@@ -697,9 +695,9 @@ export default {
         },
         closeDialogPay() {
             this.dialogPay = false;
-            this.initialize();
+            //this.initialize();
         },
-        updateDate3() {
+        /*updateDate3() {
             console.log('Entra aqui a pagos realizados');
             //this.editedIndex1 = 1;
             //this.state=true;
@@ -719,7 +717,7 @@ export default {
                     this.results1 = response.data;
                 });
             this.dialogPay = true;
-        },
+        },*/
         exportToExcel() {
             console.log('Entra aqui a exportar');
             // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados

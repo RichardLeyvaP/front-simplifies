@@ -23,7 +23,7 @@
         <v-col cols="12" md="5" class="mr-12"></v-col>
         <v-col cols="12" md="2">
 
-          <v-dialog v-model="dialog" max-width="500px">
+          <v-dialog v-model="dialog" max-width="600px">
             <template v-slot:activator="{ props }">
 
               <v-btn v-bind="props" class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2"
@@ -47,10 +47,10 @@
                         prepend-inner-icon="mdi-tag" item-title="name" item-value="id" variant="underlined"
                         :rules="selectRules" :disabled="!mover"></v-autocomplete>
                       <v-text-field v-model="editedItem.stock_depletion" clearable label="Límite de existencia para alerta"
-                        prepend-inner-icon="mdi-package-variant-closed" variant="underlined" :rules="pago">
+                        prepend-inner-icon="mdi-package-variant-closed" variant="underlined" :rules="pago" :disabled="moverEdit">
                       </v-text-field>
                         <v-text-field v-model="editedItem.product_quantity" clearable :label="this.texttitle"
-                        prepend-inner-icon="mdi-tag-plus" variant="underlined" :disabled="!mover">
+                        prepend-inner-icon="mdi-tag-plus" variant="underlined" :disabled="moverEdit">
                       </v-text-field>
                     </v-col>
                     <v-col v-if="mostrarCampos">
@@ -182,6 +182,7 @@ export default {
     texttitle: 'Cantidad',
     valid: true,
     mover: true,
+    moverEdit : false,
     mostrarFila: false,
     mostrarCampos: false,
     snackbar: false,
@@ -281,7 +282,8 @@ export default {
     this.charge_id = LocalStorageService.getItem('charge_id');
     this.branch_id = LocalStorageService.getItem('branch_id');
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
-    axios
+
+    /*axios
       .get('http://127.0.0.1:8000/api/show-business', {
         params: {
           business_id: this.business_id
@@ -289,16 +291,22 @@ export default {
       })
       .then((response) => {
         this.branches = response.data.branches;
-        if (this.charge === 'Administrador'){
-          this.branch_id = this.branches[0].id;
-        }
-        this.initialize()
-      });
-    if (this.charge === 'Administrador') {
-      // Mostrar la fila con Autocomplete
-      this.mostrarFila = true;
-    }
-    console.log(this.charge_id);
+      }).finally(() => {
+            if (this.charge == 'Administrador') {
+              console.log('Es administrador');
+                    this.branch_id = this.branches[0].id;
+                    this.mostrarFila = true;
+                }
+          });*/
+          axios
+        .get('http://127.0.0.1:8000/api/show-stores-products')
+        .then((response) => {
+          this.products = response.data.products;
+          this.stores = response.data.stores;
+        }).finally(() => {
+                this.initialize();
+          });
+    ///console.log(this.charge_id);
   },
 
   methods: {
@@ -324,20 +332,20 @@ export default {
       this.sb_timeout = sb_timeout
       this.snackbar = true
     },
-    updatedstores() {
+    /*updatedstores() {
       axios
         .get('http://127.0.0.1:8000/api/store-show')
         .then((response) => {
           this.stores = response.data.stores;
         });
-    },
+    },*/
     initialize() {
       axios
         .get('http://127.0.0.1:8000/api/productstore-show')
         .then((response) => {
           this.results = response.data.products;
         });
-      axios
+      /*axios
         .get('http://127.0.0.1:8000/api/store-show', {
           params: {
             branch_id: this.branch_id
@@ -350,12 +358,11 @@ export default {
         .get('http://127.0.0.1:8000/api/product')
         .then((response) => {
           this.products = response.data.products;
-        });
-
-
+        });*/
     },
     editItem(item) {
-      this.mover = true;
+      this.mover = false;
+      this.moverEdit = false;
       this.editedIndex = 3;
       this.editedItem = Object.assign({}, item);
       this.editedItem.product_quantity = item.product_exit;
@@ -364,6 +371,7 @@ export default {
     },
     moverItem(item) {
       this.mover = false;
+      this.moverEdit = true;
       this.editedIndex = 2;
       this.editedItem = Object.assign({}, item);
       this.editedItem.product_quantity = item.product_exit;
@@ -410,6 +418,7 @@ export default {
         this.editedIndex = -1
         this.mostrarCampos = false;
         this.mover = true;
+        this.moverEdit = false;
         this.texttitle = 'Cantidad';
       })
     },
@@ -435,7 +444,9 @@ export default {
           .then(() => {
             this.initialize();
             this.showAlert("success", "Asignacion editada correctamente", 3000)
-          })
+          });
+          this.mover = true;
+          this.moverEdit = true;
       }
       if (this.editedIndex === 2) {
         console.log('mover Producto');
@@ -451,6 +462,7 @@ export default {
           .then(() => {
             this.showAlert("success", "Producto asignado correctamente", 3000)
             this.mover = true;
+            this.moverEdit = true;
             this.texttitle = 'Cantidad';
             this.initialize();
           });
@@ -469,6 +481,8 @@ export default {
             this.showAlert("success", "Producto asignado correctamente", 3000);
             this.initialize();
           });
+          this.mover = true;
+            this.moverEdit = true;
       }
       this.close()
     },

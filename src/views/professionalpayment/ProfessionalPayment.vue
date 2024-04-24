@@ -23,14 +23,11 @@
                 </v-col>
                 <v-col cols="12" md="4"></v-col>
                 <v-col cols="12" md="2">
-
-                    <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition">
-                        <template v-slot:activator="{ props }">
-                            <v-btn v-bind="props" class="text-subtitle-1  ml-12 " color="#E7E9E9" variant="flat"
-                                elevation="2" prepend-icon="mdi-plus-circle">
+                        <v-btn class="text-subtitle-1  ml-12 " color="#E7E9E9" variant="flat"
+                                elevation="2" prepend-icon="mdi-plus-circle" @click="showAddPago()">
                                 Nuevo Pago
                             </v-btn>
-                        </template>
+                    <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition">
                         <v-card>
                             <v-toolbar color="#F18254">
                                 <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
@@ -44,7 +41,7 @@
                                                     v-if="this.mostrarFila" clearable label="Seleccione una Sucursal"
                                                     prepend-icon="mdi-store" item-title="name" item-value="id"
                                                     variant="underlined"
-                                                    @update:model-value="initialize()"></v-autocomplete>
+                                                    @update:model-value="showAddPago()"></v-autocomplete>
                                             </v-col>
                                             <v-col cols="12" sm="12" md="3">
                                                 <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id" :items="professionals"
@@ -307,17 +304,13 @@ export default {
             })
             .then((response) => {
                 this.branches = response.data.branches;
-                //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-                if (this.charge === 'Administrador') {
+            }).finally(() => {
+            if (this.charge === 'Administrador') {
                     this.branch_id = this.branches[0].id;
+                    this.mostrarFila = true;
                 }
-                this.initialize()
-            });
-
-        if (this.charge === 'Administrador') {
-            this.mostrarFila = true;
-        }
-        
+                this.initialize();
+          });        
     },
 
     methods: {
@@ -389,7 +382,8 @@ export default {
                 .then((response) => {
                     this.results = response.data;
                 });
-
+        },
+        showAddPago(){
             axios
                 .get('http://127.0.0.1:8000/api/branch_professionals_web', {
                     params: {
@@ -399,7 +393,7 @@ export default {
                 .then((response) => {
                     this.professionals = response.data.professionals;
                 });
-
+                this.dialog = true;
         },
         carsEarrings() {
             this.editedItem.amount = '';

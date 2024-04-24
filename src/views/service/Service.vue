@@ -364,10 +364,10 @@ export default {
       axios
         .post('http://127.0.0.1:8000/api/service-destroy', request)
         .then(() => {
-          this.initialize();
-          this.message_delete = true
           this.showAlert("success", "Servicio eliminado correctamente", 3000)
-        })
+        }).finally(() => {
+            this.initialize();
+          });
       this.closeDelete()
     },
     close() {

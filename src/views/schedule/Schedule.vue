@@ -145,20 +145,13 @@ export default {
             })
             .then((response) => {
                 this.branches = response.data.branches;
-                //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-                if (this.charge === 'Administrador') {
+            }).finally(() => {
+            if (this.charge === 'Administrador') {
                     this.branch_id = this.branches[0].id;
+                    this.mostrarFila = true;
                 }
-
                 this.initialize()
-            });
-        if (this.charge === 'Administrador') {
-            // Mostrar la fila con Autocomplete
-            this.mostrarFila = true;
-        }
-        console.log(this.charge_id);
-        console.log('this.results');
-        console.log(this.results);
+          });
     },
     methods: {
         showAlert(sb_type, sb_message, sb_timeout) {
@@ -191,6 +184,7 @@ export default {
                 })
                 .then((response) => {
                     this.results = response.data;
+                }).finally(() => {
                     this.dias = this.results.Schedules.map(schedule => ({
                         nombre: schedule.day,
                         esLaboral: schedule.start_time !== null || schedule.closing_time !== null,
@@ -199,9 +193,7 @@ export default {
                         salidaHora: schedule.closing_time !== null ? schedule.closing_time.split(':')[0] : '00',
                         salidaMinuto: schedule.closing_time !== null ? schedule.closing_time.split(':')[1] : '00'
                     }));
-                    console.log('this.results');
-                    console.log(this.results);
-                });
+          });
         },
 
         save() {

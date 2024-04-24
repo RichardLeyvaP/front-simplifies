@@ -224,12 +224,13 @@ export default {
       })
       .then((response) => {
         this.branches = response.data.branches;
-        //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+   
+      }).finally(() => {
         if (this.charge === 'Administrador') {
           this.branch_id = this.branches[0].id;
         }
         this.initialize()
-      });
+              });
   },
 
   methods: {
