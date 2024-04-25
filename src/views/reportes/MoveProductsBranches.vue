@@ -28,17 +28,16 @@
             <v-row>
                 <v-col cols="12" md="4">
                     <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="outlined"
-                        prepend-inner-icon="mdi-calendar" @update:model-value="initialize()"></v-select>
+                        prepend-inner-icon="mdi-calendar"></v-select><!-- @update:model-value="initialize()"-->
                 </v-col>
                 <v-col cols="12" md="4">
                     <v-select v-model="selectedMounth" :items="months" label="Selecciona un mes" variant="outlined"
-                        prepend-inner-icon="mdi-calendar" @update:model-value="moveProductsMounth()"></v-select>
+                        prepend-inner-icon="mdi-calendar" ></v-select><!--@update:model-value="moveProductsMounth()"-->
                 </v-col>
-                <!--<v-col cols="12" sm="12" md="4">
-                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" 
-                        label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
-                        variant="outlined" @update:model-value="initialize()"></v-autocomplete>
-                </v-col>-->
+                <v-col cols="12" md="1">
+                    <v-btn icon @click="moveProductsMounth()" color="#F18254">
+                        <v-icon>mdi-magnify</v-icon></v-btn>
+                </v-col>
             </v-row>
             <v-row>
                 <v-col cols="12" md="12">
@@ -114,12 +113,6 @@
                                             @update:model-value="updateDate1"></v-date-picker><!--@update:model-value="updateDate2"-->
                                     </v-locale-provider>
                                 </v-menu>
-                            </v-col>
-                            <v-col cols="12" md="3">
-                                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila"
-                                    label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name"
-                                    item-value="id"
-                                    variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
                             </v-col>
                             <v-col cols="12" md="1">
                                 <v-btn icon @click="updateDate2" color="#F18254">
@@ -241,6 +234,7 @@
 
 import axios from "axios";
 import { format } from "date-fns";
+import { es } from 'date-fns/locale';
 import * as XLSX from 'xlsx';
 import LocalStorageService from "@/LocalStorageService";
 export default {
@@ -322,7 +316,10 @@ export default {
             if (this.editedIndex === 2) {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
                 //return 'Reporte de Movimiento de Productos en el mes ' + this.selectedMounth + '-' + this.selectedYear;
-                return `Reporte de Movimiento de Productos en el mes [<strong>${this.selectedYear}</strong> - <strong>${this.selectedMounth}</strong>]`;
+
+                // Formatear la fecha en el formato deseado y traducir los nombres de los meses al español
+                //console.log(format(this.selectedMounth, "MMMM", { locale: es }));
+                return `Reporte de Movimiento de Productos en el mes de [<strong>${format(this.selectedMounth, "MMMM", { locale: es })}</strong> de <strong>${this.selectedYear}</strong>]`;
             }
             else {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties

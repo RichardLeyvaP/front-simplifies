@@ -225,7 +225,7 @@
                       offset-y min-width="290px">
                       <template v-slot:activator="{ props }">
                         <v-text-field v-bind="props" :model-value="dateFormatted" variant="underlined"
-                          append-inner-icon="mdi-calendar" label="Fecha de Expiración"></v-text-field>
+                          append-icon="mdi-calendar" label="Fecha de Expiración"></v-text-field>
                       </template>
                       <v-locale-provider locale="es">
                         <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
