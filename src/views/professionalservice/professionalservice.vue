@@ -1,18 +1,5 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24"
-    :multi-line="true" vertical v-model="snackbar">
-    <v-row>
-      <v-col md="2">
-        <v-avatar :icon="sb_icon" color="sb_type" size="40"></v-avatar>
-      </v-col>
-      <v-col md="10">
-        <h4>{{ sb_title }}</h4>
-        {{ sb_message }}
-
-      </v-col>
-    </v-row>
-  </v-snackbar>
   <v-container>
     <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24"
       :multi-line="true" vertical v-model="snackbar">
@@ -542,7 +529,12 @@ export default {
       //DADO EL ID DEL PROFESSIONAL Y LA BRANCH
       const idProfessional = this.professional[0];
       const idBranch = this.branch_id;
-
+      this.servicesAsig = [];
+      this.services = [];
+      console.log('this.servicesAsig');
+      console.log(this.servicesAsig);
+      console.log('this.services');
+      console.log(this.services);
       //AXIOS
       axios
         .get(`http://127.0.0.1:8000/api/services-professional-branch`, {
@@ -644,6 +636,15 @@ export default {
 
       //const newArrayService = valueServices.map(item => parseInt(item)); // Convertir a enteros si es necesario
       //console.log(newArrayService);
+      this.servicesAsig = [];
+      this.services = [];
+      this.professional = [];
+      console.log('this.professional');
+      console.log(this.professional);
+      console.log('this.servicesAsig');
+      console.log(this.servicesAsig);
+      console.log('this.services');
+      console.log(this.services);
       const data = {
 
         //services: newArrayService,

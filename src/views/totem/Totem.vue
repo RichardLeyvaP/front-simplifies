@@ -8,6 +8,15 @@
   <br>
   <br>
       <v-card elevation="0">
+        <v-row>
+          <v-col cols="12" md="9" style="text-align: right;">
+          </v-col>
+          <v-col cols="12" md="3" style="text-align: right;">
+            <p class="text-h7 " style="text-align: center;" @click="goToProfessional">
+                  Ingreso de Profesionales
+                </p>
+          </v-col>
+        </v-row>
         <v-row class="mt-6">
           <br>
 
@@ -35,7 +44,7 @@
           <v-row class="mt-6">
             <v-col cols="12" md="4"></v-col>
             <v-col cols="12" md="4">
-              <v-btn block rounded="0" @click="goToProfessional" size="x-large"> Profesional</v-btn>
+              <!--<v-btn block rounded="0" @click="goToProfessional" size="x-large"> Profesional</v-btn>-->
             </v-col>
           </v-row>
         </div>

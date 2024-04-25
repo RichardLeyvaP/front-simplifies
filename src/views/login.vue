@@ -230,7 +230,7 @@ export default {
         .post('http://127.0.0.1:8000/api/login', this.data)
         .then((response) => {
           if (response.data) {
-            if (this.editedItem.branch_id === response.data.branch_id || this.selectedOption === "empresa") {
+            if (this.editedItem.branch_id === response.data.branch_id || (this.selectedOption === "empresa" && response.data.business_id )) {
               this.user = response.data;
               console.log('this.user-------');
               console.log(this.user);
@@ -265,9 +265,8 @@ export default {
               }, 2000);
 
             }
-            else {
-              console.log('response.data--------');
-              console.log(response.data);
+            else {              
+          this.valid = true;
               this.showAlert("warning", "No es usuario de este sitio", 3000);
               router.push({ name: "Login" });
               this.loading = false;
@@ -287,11 +286,6 @@ export default {
         .get('http://127.0.0.1:8000/api/branch')
         .then((response) => {
           this.branches = response.data.branches;
-        });
-      axios
-        .get('http://127.0.0.1:8000/api/business')
-        .then((response) => {
-          this.business = response.data.business;
         });
     },
   },

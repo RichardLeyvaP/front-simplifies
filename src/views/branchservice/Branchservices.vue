@@ -434,7 +434,7 @@ export default {
                     .post('http://127.0.0.1:8000/api/branchservice', this.data)
                     .then(() => {
                     }).finally(() => {
-                        this.showAlert("success", "Producto asignado correctamente", 3000);
+                        this.showAlert("success", "Servicio asignado correctamente", 3000);
                         this.initialize();
           });
             }

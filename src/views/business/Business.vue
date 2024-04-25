@@ -132,7 +132,7 @@ export default {
 
       { title: 'Negocio', value: 'name' },
       { title: 'Dirección', value: 'address' },
-      { title: 'Propietario', value: 'professional.name' },
+      { title: 'Propietario', value: 'professional_name' },
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
     locale: {
