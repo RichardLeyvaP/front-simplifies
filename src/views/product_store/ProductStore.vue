@@ -14,6 +14,7 @@
       </v-col>
     </v-row>
   </v-snackbar>
+<v-container>
   <v-card elevation="6" class="mx-5" width='auto'>
     <v-toolbar color="#F18254">
       <v-row align="center">
@@ -165,8 +166,7 @@
         </template>
       </v-data-table>
     </v-card-text>
-  </v-card>
-
+  </v-card></v-container>
 
 
 

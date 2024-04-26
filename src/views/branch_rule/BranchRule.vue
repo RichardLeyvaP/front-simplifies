@@ -14,6 +14,7 @@
             </v-col>
         </v-row>
     </v-snackbar>
+    <v-container>
     <v-card elevation="6" class="mx-5" width='auto'>
         <v-toolbar color="#F18254">
             <v-row align="center">
@@ -88,15 +89,17 @@
 
         <v-row>
             <v-container>
-                <v-col cols="12" sm="12" md="6">
-                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
+                <v-col cols="12" md="6">
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila"
                         label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
-                        variant="underlined" @update:model-value="initialize()"></v-autocomplete>
+                        variant="underlined" @update:model-value="initialize()" ></v-autocomplete>
                 </v-col>
 
             </v-container>
         </v-row>
-        <v-card-text>
+        <v-row>
+            <v-col cols="12" md="12">
+                <v-card-text>
             <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
                 hide-details>
             </v-text-field>
@@ -119,10 +122,10 @@
                 </template>
             </v-data-table>
         </v-card-text>
-
-
+            </v-col>
+        </v-row>
     </v-card>
-
+</v-container>
 
 
 

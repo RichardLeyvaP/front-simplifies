@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/valid-v-slot -->
 <template >
    <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24" :multi-line="true"
         vertical v-model="snackbar">
@@ -681,7 +682,7 @@ let request = {};
      
      
       
-  timeReservated() {
+  /*timeReservated() {
       
 console.log('****************************this.professional[0]*************');
 console.log(this.professional[0]);
@@ -716,8 +717,8 @@ axios
       "Error",
       "Error al obtener el calendario de la Sucursal"
     );*/
-});
-},
+/*});
+},*/
       getDayOfWeekOK() {
 var Xmas95 = new Date();
 console.log('Este es new Date '+Xmas95);
