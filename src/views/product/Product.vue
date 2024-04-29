@@ -199,7 +199,7 @@
   { title: 'Referencia', key: 'reference' },
    { title: 'Nombre', key: 'name' },
    { title: 'Código', key: 'code' },
-   { title: 'Descripción', key: 'description' },
+   { title: 'Descripción', key: 'description', width: '100px'},
    { title: 'Estado', key: 'status_product' },
    { title: 'Precio compra', align: 'start', value: 'purchase_price' },
    { title: 'Precio venta', align: 'start', value: 'sale_price' },
@@ -300,7 +300,7 @@
             // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
             let img = new Image();
             img.src = this.imgedit;
-            return img.complete; // Devuelve true si la imagen está disponible
+            return true; // Devuelve true si la imagen está disponible
         }
         return false; // Si la URL de la imagen no está definida o está vacía, devuelve false
     },
@@ -357,8 +357,15 @@
       }else{
         this.mostrarFila = false;
       }
-   this.file = '';
-   this.imgMiniatura = 'http://127.0.0.1:8000/api/images/'+item.image_product;
+   this.file = null;
+   var img = new Image();
+      img.src = 'http://127.0.0.1:8000/api/images/'+item.image_product;
+      img.onload = () => {
+        this.imgMiniatura = 'http://127.0.0.1:8000/api/images/'+item.image_product;
+      };
+      img.onerror = () => {
+        this.imgMiniatura = '';
+      };
    this.editedIndex = 1;
    this.editedItem = Object.assign({}, item);
    this.dialog = true;
@@ -382,18 +389,18 @@
        this.message_delete = true
        this.showAlert("success","Producto eliminado correctamente", 3000)
        this.imgMiniatura = '';
-          this.file = '';
+          this.file = null;
      })
    this.closeDelete()
   },
   close() {
-   this.dialog = false
    this.$nextTick(() => {
      this.editedItem = Object.assign({}, this.defaultItem)
      this.editedIndex = -1;
      this.imgMiniatura = '';
-          this.file = '';
+          this.file = null;
           this.sale_priceTemp = '';
+   this.dialog = false;
    })
   },
   closeDelete() {
@@ -417,7 +424,7 @@
          this.initialize();
         this.showAlert("success","Producto editado correctamente", 3000);
         this.imgMiniatura = '';
-          this.file = '';
+          this.file = null;
           this.sale_priceTemp = '';
        })
    } else {
@@ -432,7 +439,7 @@
          this.initialize();
          this.showAlert("success","Producto registrado correctamente", 3000);
          this.imgMiniatura = '';
-          this.file = '';
+          this.file = null;
           this.sale_priceTemp = '';
        })
    }

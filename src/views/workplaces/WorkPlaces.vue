@@ -258,8 +258,10 @@
         axios
           .post('http://127.0.0.1:8000/api/workplace-destroy', request)
           .then(() => {
-            this.initialize();
-          })
+          }).finally(() => {
+              this.showAlert("success", "Puesto de trabajo eliminado correctamente", 3000);
+              this.initialize();
+          });
         this.closeDelete()
       },
       close() {
@@ -284,9 +286,10 @@
           axios
             .put('http://127.0.0.1:8000/api/workplace', this.data)
             .then(() => {
-              this.initialize();
-              this.showAlert("success", "Puesto de trabajo creado correctamente", 3000);
-            })
+            }).finally(() => {
+                    this.showAlert("success", "Puesto de trabajo editado correctamente", 3000);
+                    this.initialize();
+          });
         } else {
           this.valid = false;
           this.data.name = this.editedItem.name;
@@ -295,9 +298,10 @@
           axios
             .post('http://127.0.0.1:8000/api/workplace', this.data)
             .then(() => {
-              this.initialize();
-              this.showAlert("success", "Puesto de trabajo editado correctamente", 3000);
-            })
+            }).finally(() => {
+                    this.showAlert("success", "Puesto de trabajo creado correctamente", 3000);
+                    this.initialize();
+          });
         }
         this.close()
       },

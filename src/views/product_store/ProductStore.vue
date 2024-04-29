@@ -110,22 +110,15 @@
 
     </v-toolbar>
 
-    <!--<v-row>
+    <v-row>
       <v-container>
-        <v-col cols="12" sm="12" md="6">
-          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
-            label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
-            variant="underlined" @update:model-value="initialize()"></v-autocomplete>
-        </v-col>
-
-      </v-container>
-    </v-row>-->
-    <v-card-text>
+        <v-col cols="12" md="12">
+          <v-card-text>
       <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details>
       </v-text-field>
       <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :group-by="groupBy"
         :search="search" class="elevation-1" no-data-text="No hay datos disponibles"
-        no-results-text="No hay datos disponibles">
+        no-results-text="No hay datos disponibles" show-expand>
         <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
           <tr>
             <td :colspan="columns.length">
@@ -148,15 +141,6 @@
           {{ item.name }}
         </template>
         <template v-slot:item.actions="{ item }">
-          <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
-            mdi-pencil
-          </v-icon>
-          <v-icon size="25" color="green" class="me-2" @click="moverItem(item)">
-            mdi-folder-move
-          </v-icon>
-          <v-icon size="25" color="red" @click="deleteItem(item)">
-            mdi-delete
-          </v-icon>-->
           <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar existencia"></v-btn>
             <v-btn density="comfortable" icon="mdi-folder-move"  @click="moverItem(item)" color="green" variant="tonal"
@@ -166,6 +150,11 @@
         </template>
       </v-data-table>
     </v-card-text>
+        </v-col>
+
+      </v-container>
+    </v-row>
+    
   </v-card></v-container>
 
 

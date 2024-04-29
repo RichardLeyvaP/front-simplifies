@@ -18,10 +18,10 @@
     <v-card elevation="6" class="mx-5">
         <v-toolbar color="#F18254">
             <v-row align="center">
-                <v-col cols="12" md="8" class="grow ml-4 t">
+                <v-col cols="12" md="6" class="grow ml-2">
                     <span class="text-subtitle-1"> <strong>Pago a Cajero (a)</strong></span>
                 </v-col>
-                <v-col cols="12" md="3">
+                <v-col cols="12" md="5" class="text-right">
 
                     <v-btn class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat" elevation="2"
                         prepend-icon="mdi-account-cash" @click="showPay">

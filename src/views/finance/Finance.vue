@@ -14,22 +14,23 @@
             </v-col>
         </v-row>
     </v-snackbar>
+    <v-container>
     <v-card elevation="6" class="mx-5" width='auto'>
         <v-toolbar color="#F18254">
             <v-row align="center">
-                <v-col cols="12" md="7" class="grow ml-4">
+                <v-col cols="12" md="6" class="grow ml-2">
                     <span class="text-subtitle-1"> <strong>Detalles de operaciones de
                             {{ this.editedItem.type }}</strong></span>
                 </v-col>
-                <v-col cols="12" md="4">
+                <v-col cols="12" md="5" class="text-right">
 
                     <v-dialog v-model="dialog" max-width="800px">
                         <template v-slot:activator="{ props }">
-                            <v-btn class="text-subtitle-1  ml-16" color="#E7E9E9" variant="flat" elevation="2"
+                            <v-btn class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat" elevation="2"
                             prepend-icon="mdi-file-excel" @click="exportToExcel">
                                                 Exportar a Excel
                                             </v-btn>
-                            <v-btn v-bind="props" class="text-subtitle-1  ml-2  " color="#E7E9E9" variant="flat"
+                            <v-btn v-bind="props" class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat"
                                 elevation="2" prepend-icon="mdi-plus-circle">
                                 Agregar operación
                             </v-btn>
@@ -37,7 +38,7 @@
                         </template>
                         <v-card>
                             <v-toolbar color="#F18254">
-                                <span class="text-subtitle-2 ml-4"> {{ formTitle }}</span>
+                                <span class="text-subtitle-2 ml-2"> {{ formTitle }}</span>
                             </v-toolbar>
                             <v-card-text>
                                          <v-radio-group v-model="selectedOption" inline v-if="mostrarFila">
@@ -159,7 +160,7 @@
         <v-row>
             <v-container>
                 <v-row>
-                    <v-col cols="12" md="7">
+                    <v-col cols="12" md="8">
                         <v-radio-group v-model="selectedOption" inline v-if="mostrarFila">
                         <v-radio v-model="selectedOption" :label="options[0]" :value="options[0]"
                             color="orange-darken-3" class="mr-10" />
@@ -200,7 +201,7 @@
             </v-container>
         </v-row>
         <v-row>
-            <v-col cols="12" md="8"></v-col>
+            <v-col cols="12" md="7"></v-col>
             <v-col cols="12" md="2">
                 <v-card class="pa-2 pl-0 mb-2" elevation="2">
                     <v-list-item :subtitle="formatNumber(totalIngresos)" title="Ingresos">
@@ -226,7 +227,10 @@
                 </v-card>
             </v-col>
         </v-row>
-        <v-card-text>
+        <v-row>
+            <v-col cols="12" md="12">
+                <v-container>
+                    <v-card-text>
             <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
                 hide-details>
             </v-text-field>
@@ -259,14 +263,13 @@
                 </template>
             </v-data-table>
         </v-card-text>
+                </v-container>
+            </v-col>
+        </v-row>
 
 
     </v-card>
-
-
-
-
-    <br>
+    </v-container>
 </template>
 <script>
 

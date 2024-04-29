@@ -90,7 +90,7 @@
                   </v-col>
                   <v-col cols="12" md="6">
                     <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
-                          <img v-if="imagenDisponible()" :src="imgedit+'?$'+Date.now()" height="120" width="120">
+                          <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
                         </v-card>
                   </v-col>
                 </v-row>
@@ -455,12 +455,12 @@ export default {
             // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
             let img = new Image();
             img.src = this.imgedit;
-            return img.complete; // Devuelve true si la imagen está disponible
+            return true; // Devuelve true si la imagen está disponible
         }
         return false; // Si la URL de la imagen no está definida o está vacía, devuelve false
     },
     editItem(item) {
-      this.file = '';
+      this.file = null;
       this.imgMiniatura = 'http://127.0.0.1:8000/api/images/'+item.image_url;
       this.editedIndex = 1;
       this.editedItem = Object.assign({}, item);
@@ -496,12 +496,12 @@ export default {
       this.closeDelete()
     },
     close() {
-      this.dialog = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1;
         this.imgMiniatura = '';
-        this.file = '';
+        this.file = null;
+      this.dialog = false;
       })
     },
     closedialogPas(){
@@ -541,7 +541,7 @@ export default {
            this.showAlert("success","Profesional editado correctamente", 3000);
            this.mostrar = true;
            this.imgMiniatura = '';
-            this.file = '';
+            this.file = null;
           }).catch(error => {
             if(error.response.status === 400)
           this.showAlert("warning", 'Usuario ya existe', 3000);
@@ -567,7 +567,7 @@ export default {
             this.initialize();
             this.showAlert("success","Profesional registrado correctamente", 3000);
             this.imgMiniatura = '';
-            this.file = '';
+            this.file = null;
           }).catch(error => {
             console.log(error.response);
             if(error.response.status === 400)

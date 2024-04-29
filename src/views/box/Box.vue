@@ -18,28 +18,27 @@
   <v-card elevation="6" class="mx-5" width='auto'>
     <v-toolbar color="#F18254">
       <v-row>
-        <v-col cols="12" md="7" class="mt-4">
+        <v-col cols="12" md="5" class="mt-4">
           <span class="ml-4"> <strong>Caja <!--- {{ this.nameBranch }}--></strong></span>
         </v-col>
-        <v-col cols="12" md="5">
+        <v-col cols="12" md="7">
+           
           <v-dialog v-model="dialog" max-width="1000px">
-            <template v-slot:activator="{ props }">
-              <v-col>
+ <template v-slot:activator="{ props }">
+          <div class="text-center">
                 <v-btn @click="dialogDetallesCarPagado = true" color="#E7E9E9" variant="flat" elevation="2"
                   prepend-icon="mdi-account-star-outline" :disabled="filteredItemsPay.length !== 0 ? false : true">
                   Clientes atendidos
                 </v-btn>
                 <v-btn :disabled="closed_box || ejecutado" v-bind="props" color="#E7E9E9" variant="flat" elevation="2"
-                  prepend-icon="mdi-plus-circle" class="ml-4 mr-2">
+                  prepend-icon="mdi-plus-circle" class="ml-1">
                   Cierre de Caja
                 </v-btn>
                 <v-btn @click="openDialogBox" color="#E7E9E9" variant="flat" elevation="2"
-                  prepend-icon="mdi-cash-register">
+                  prepend-icon="mdi-cash-register" class="ml-1">
                   Caja
-                </v-btn>
-              </v-col>
+                </v-btn></div>
             </template>
-
             <v-card>
               <v-toolbar color="#F18254">
                 <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
@@ -241,7 +240,10 @@
             variant="underlined" @update:model-value="initialize()"></v-autocomplete>
         </v-col>
       </v-row>
-      <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
+      <v-row>
+        <v-container>          
+        <v-col cols="12" md="12">
+          <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
         hide-details></v-text-field>
 
 
@@ -264,10 +266,13 @@
           {{ item.clientName }}
         </template>
 
-        <template v-slot:item.pay="{ item }">
-          <v-chip :color="item.pay != 0 ? 'green' : 'red'" :text="item.pay" class="text-uppercase" label size="small">
-            {{ item.pay === 0 ? 'Pendiente' : 'Pagado' }}
+        <template v-slot:item.state="{ item }">
+          <v-chip :color="getColor(item.state)" class="text-uppercase" label size="small">
+            {{ getText(item.state) }}
           </v-chip>
+          <!--<v-chip :color="item.pay != 0 ? 'green' : 'red'" :text="item.pay" class="text-uppercase" label size="small">
+            {{ item.pay === 0 ? 'Pendiente' : 'Pagado' }}
+          </v-chip>-->
         </template>
 
         <template v-slot:top>
@@ -296,7 +301,9 @@
           </v-icon>-->
         </template>
       </v-data-table>
-
+        </v-col>
+        </v-container>
+      </v-row>
       <v-dialog v-model="dialogRequest" width="500">
         <v-card>
           <v-toolbar color="#F18254">
@@ -731,7 +738,7 @@ export default {
       { title: 'Servicios', value: 'service' },
       { title: 'Propina', value: 'tip' },
       { title: 'Monto Total', value: 'amount' },
-      { title: 'Estado', value: 'pay' },
+      { title: 'Estado', value: 'state' },
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
     headers3: [
@@ -912,9 +919,37 @@ export default {
         }
         this.initialize();
           });
+
+          /*setInterval(() => {
+            this.initialize();
+    }, 60000)*/
   },
 
   methods: {
+    getColor(state) {
+    switch (state) {
+      case 1:
+        return 'red';
+      case 2:
+        return 'blue';
+      case 3:
+        return 'yellow';
+      default:
+        return 'grey';
+    }
+  },
+  getText(state) {
+    switch (state) {
+      case 1:
+        return 'Por Pagar';
+      case 2:
+        return 'Atendiéndose';
+      case 3:
+        return 'En Cola';
+      default:
+        return 'Desconocido';
+    }
+  },
     formatNumber(value) {
             return value.toLocaleString('es-ES');
         },

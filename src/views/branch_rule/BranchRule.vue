@@ -97,33 +97,29 @@
 
             </v-container>
         </v-row>
-        <v-row>
-            <v-col cols="12" md="12">
+        <v-container>
+    <v-row>
+        <v-col cols="12">
+            <v-card>
                 <v-card-text>
-            <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
-                hide-details>
-            </v-text-field>
-            <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
-                :search="search" class="elevation-1" no-data-text="No hay datos disponibles"
-                no-results-text="No hay datos disponibles">
-                <template v-slot:top>
-
-                    <v-divider class="mx-4" inset vertical></v-divider>
-                    <v-spacer></v-spacer>
-                </template>
-
-                <template v-slot:item.actions="{ item }">
-
-                    <!--<v-icon size="25" color="red" @click="deleteItem(item)">
-                        mdi-delete
-                    </v-icon>-->
-                    <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
-            elevation="1" title="Eliminar regla de convivencia"></v-btn>
-                </template>
-            </v-data-table>
-        </v-card-text>
-            </v-col>
-        </v-row>
+                    <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details></v-text-field>
+                    <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search" class="elevation-1" no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles">
+                        <template v-slot:top>
+                            <v-divider class="mx-4" inset vertical></v-divider>
+                            <v-spacer></v-spacer>
+                        </template>
+                        <template v-slot:item.actions="{ item }">
+                            <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal" elevation="1" title="Eliminar regla de convivencia"></v-btn>
+                        </template>
+                        <template v-slot:item.description="{ item }">
+                            <div class="description-cell">{{ item.description }}</div>
+                        </template>
+                    </v-data-table>
+                </v-card-text>
+            </v-card>
+        </v-col>
+    </v-row>
+</v-container>
     </v-card>
 </v-container>
 
@@ -332,3 +328,10 @@ export default {
     },
 }
 </script>
+<style>
+.description-cell {
+    max-width: 400px; /* Define el ancho máximo del campo de descripción */
+    overflow: hidden; /* Oculta el texto que se desborda del campo de descripción */
+    text-overflow: ellipsis; /* Muestra puntos suspensivos (...) cuando el texto se recorta */
+}
+</style>

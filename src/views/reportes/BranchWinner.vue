@@ -41,7 +41,7 @@
               </v-locale-provider>
             </v-menu>
           </v-col>
-          <v-col cols="12" md="3">
+          <v-col cols="12" md="4">
             <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"  label="Seleccione una Sucursal"
               prepend-inner-icon="mdi-store" item-title="name" item-value="id" variant="outlined"
               ></v-autocomplete><!--@update:model-value="initialize()"-->

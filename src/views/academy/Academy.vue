@@ -67,10 +67,9 @@
                         </v-file-input>
                         </v-col>
                         <v-col cols="12" md="6">
-                        <!--<v-avatar elevation="3" color="grey-lighten-4" size="large">
-                          <img v-if="imgedit" :src="imgedit" height="70" width="70">
-                        </v-avatar>-->
-                        <img v-if="imagenDisponible()" :src="imgedit" height="90" width="90">
+                        <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
+                        <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
+                      </v-card>
                       </v-col>
                       </v-row>
                     </v-container>
@@ -517,9 +516,10 @@
             // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
             let img = new Image();
             img.src = this.imgedit;
-            return img.complete; // Devuelve true si la imagen está disponible
+
+            return true; // Devuelve true si la imagen está disponible
         }
-        return false; // Si la URL de la imagen no está definida o está vacía, devuelve false
+        return false; // Si la URL de la imagen no está definida o está vacía, devuelve false*/
     },
     showAlert(sb_type, sb_message, sb_timeout) {
       this.sb_type = sb_type
@@ -568,9 +568,17 @@
           });  
       },
       editItem(item) {
-        this.file = '';
+        this.file = null;
+        var img = new Image();
+      img.src = 'http://127.0.0.1:8000/api/images/' + item.image_data;
+      img.onload = () => {
+        this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.image_data;
+      };
+      img.onerror = () => {
+        this.imgMiniatura = '';
+      };
         //this.editedItem.id = item.id;
-      this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.image_data;
+     
         this.editedIndex = 2;
         this.editedItem = Object.assign({}, item);
         this.editedItem.business_id = parseInt(item.business_id);
@@ -595,7 +603,7 @@
         this.closeDelete()
       },
       close() {
-        this.file = '';
+        this.file = null;
       this.imgMiniatura = '';
         this.dialog = false;
         this.$nextTick(() => {
@@ -630,7 +638,7 @@
           axios
             .post('http://127.0.0.1:8000/api/enrollment-updated', formData)
             .then(() => {
-              this.file = '';
+              this.file = null;
             this.imgMiniatura = '';
             }).finally(() => {
               this.showAlert("success","Academia actualizada correctamente", 3000);
@@ -649,7 +657,7 @@
           axios
             .post('http://127.0.0.1:8000/api/enrollment', formData)
             .then(() => {
-              this.file = '';
+              this.file = null;
             this.imgMiniatura = '';
             }).finally(() => {
               this.showAlert("success","Academia creada correctamente", 3000);

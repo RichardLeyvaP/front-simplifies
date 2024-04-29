@@ -14,7 +14,8 @@
 
       </v-col>
     </v-row>
-  </v-snackbar>
+  </v-snackbar>  
+<v-container>
   <v-card elevation="6" class="mx-5" width='auto'>
     <v-toolbar color="#F18254">
       <v-row align="center">
@@ -47,7 +48,7 @@
                     </v-col>
                     <v-col cols="12" md="4">
                       <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.simultaneou" :items="options" clearable label="Simultaneo"
-                        prepend-inner-icon="mdi-format-list-bulleted-square" item-title="name" item-value="id"
+                        prepend-icon="mdi-format-list-bulleted-square" item-title="name" item-value="id"
                         variant="underlined"></v-autocomplete>
                     </v-col>
                     <v-col cols="12" md="4">
@@ -68,6 +69,11 @@
                       </v-text-field>
                     </v-col>
                     <v-col cols="12" md="4">
+                      <v-text-field v-model="editedItem.ponderation" clearable label="Ponderación"
+                        prepend-icon="mdi-arrow-collapse-vertical" variant="underlined" :rules="pago">
+                      </v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="4">
                       <v-text-field v-model="editedItem.profit_percentaje"
                         clearable label="% Ganancia" prepend-icon="mdi-percent" variant="underlined"
                         :rules="requiredRules">
@@ -75,7 +81,7 @@
                     </v-col>
                   </v-row>
                   <v-row>
-                    <v-col cols="12" md="6">
+                    <v-col cols="12" md="12">
                       <v-text-field v-model="editedItem.service_comment" clearable label="Descripción"
                         prepend-icon="mdi-book-open" variant="underlined" :rules="requiredRules">
                       </v-text-field>
@@ -85,11 +91,9 @@
                         variant="underlined" name="file" accept=".png, .jpg, .jpeg" @change="onFileSelected">
                       </v-file-input>
                     </v-col>
-                    <v-col cols="12" md="4">
-
-
-                      <v-card v-if="imagenDisponible()" elevation="6" class="mx-auto" max-width="120" max-height="120">
-                        <img :src="imgedit" height="120" width="120" @error="handleImageError">
+                    <v-col cols="12" md="6">
+                      <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
+                        <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
                       </v-card>
                     </v-col>
                   </v-row>
@@ -136,12 +140,12 @@
 
     </v-toolbar>
 
-
     <v-card-text>
       <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details></v-text-field>
+              
       <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search" :items="results"
-        class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+        class="elevation-1 responsive-table" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
 
         <template v-slot:top>
 
@@ -150,7 +154,7 @@
         </template>
 
         <template v-slot:item.simultaneou="{ item }">
-          <div class="text-end">
+          <div class="text-center">
             <v-chip :color="item.simultaneou ? 'green' : 'red'" :text="item.simultaneou ? 'Si ' : 'No'"
               class="text-uppercase" size="small" label></v-chip>
           </div>
@@ -181,7 +185,7 @@
       </v-data-table>
     </v-card-text>
   </v-card>
-
+</v-container>
 
 
 
@@ -209,11 +213,12 @@ export default {
     dialogDelete: false,
     headers: [
       { title: 'Nombre', key: 'name' },
-      { title: 'Simultaneo', key: 'simultaneou' },
+      { title: 'Simultaneo', align: 'center', key: 'simultaneou' },
       { title: 'Precio', key: 'price_service' },
       //{ title: 'Tipo', key: 'type_service' },
       { title: '% Ganancia', key: 'profit_percentaje' },
       { title: 'Duración', align: 'start', value: 'duration_service' },
+      { title: 'Ponderación', align: 'start', value: 'ponderation' },
       { title: 'Comentario', align: 'start', value: 'service_comment' },
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
@@ -240,7 +245,8 @@ export default {
       duration_service: '',
       service_comment: '',
       image_service: '',
-      id: ''
+      id: '',
+      ponderation: 0
     },
     data: {},
 
@@ -253,6 +259,7 @@ export default {
       duration_service: '',
       service_comment: '',
       image_service: '',
+      ponderation: 0
     },
     nameRules: [
       (v) => !!v || "El campo es requerido",
@@ -265,6 +272,9 @@ export default {
       (v) => !!v || "El campo es requerido",
     ],
     selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
+    pago: [
+      //(value) => !!value || 'Campo requerido',
+      (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
   }),
 
   computed: {
@@ -293,10 +303,12 @@ export default {
   methods: {
     imagenDisponible() {
       if (this.imgedit !== undefined && this.imgedit !== '') {
+      
         // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
         let img = new Image();
         img.src = this.imgedit;
-        return img.complete; // Devuelve true si la imagen está disponible
+
+        return true; // Devuelve true si la imagen está disponible
       }
       return false; // Si la URL de la imagen no está definida o está vacía, devuelve false*/
     },
@@ -332,7 +344,6 @@ export default {
     onFileSelected(event) {
       let file = event.target.files[0];
       this.editedItem.image_service = file;
-      console.log(this.editedItem.image_service);
       this.cargarImage(file);
     },
     cargarImage(file) {
@@ -343,8 +354,15 @@ export default {
       reader.readAsDataURL(file);
     },
     editItem(item) {
-      this.file = '';
-      this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.image_service;
+      this.file = null;
+      var img = new Image();
+      img.src = 'http://127.0.0.1:8000/api/images/' + item.image_service;
+      img.onload = () => {
+        this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.image_service;
+      };
+      img.onerror = () => {
+        this.imgMiniatura = '';
+      };
       this.editedIndex = 1;
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
@@ -371,12 +389,12 @@ export default {
       this.closeDelete()
     },
     close() {
-      this.dialog = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1;
         this.imgMiniatura = '';
-        this.file = '';
+        this.file = null;
+      this.dialog = false;
       })
     },
     closeDelete() {
@@ -400,7 +418,7 @@ export default {
           .then(() => {
             this.showAlert("success", "Servicio editado correctamente", 3000);
             this.imgMiniatura = '';
-            this.file = '';        
+            this.file = null;        
             
           }).finally(() => {
             this.initialize();
@@ -420,7 +438,7 @@ export default {
           .then(() => {
             this.showAlert("success", "Servicio registrado correctamente", 3000);
             this.imgMiniatura = '';
-            this.file = '';
+            this.file = null;
             this.initialize();
           })
       }
@@ -429,3 +447,9 @@ export default {
   },
 }
 </script>
+<style>
+.responsive-table {
+  width: 100%;
+  overflow-x: auto;
+}
+</style>

@@ -450,7 +450,7 @@ export default {
 this.branch_id = LocalStorageService.getItem('branch_id');
 console.log(this.branch_id);
       this.chargeServices();
-      this.chargeCalendarsBranches();
+      //this.chargeCalendarsBranches();
       // this. chargeProfessionals();
 
       /*this.arrayEvents = [...Array(1)].map(() => {
@@ -719,7 +719,7 @@ axios
     );*/
 /*});
 },*/
-      getDayOfWeekOK() {
+      /*getDayOfWeekOK() {
 var Xmas95 = new Date();
 console.log('Este es new Date '+Xmas95);
 var weekday = Xmas95.getDay();
@@ -727,8 +727,8 @@ var day = this.dayOfWeek.find((item) => item.id == weekday);
 console.log("esto devuelve el metodo");
 console.log(day ? day.day.toString().trim() : "");
 return day ? day.day.toString().trim() : "";
-},
-      chargeCalendarsBranches() {
+},*/
+      /*chargeCalendarsBranches() {
           axios
               .get(`http://127.0.0.1:8000/api/schedule-show?branch_id=${this.branch_id}`)
               .then((response) => {
@@ -742,8 +742,8 @@ return day ? day.day.toString().trim() : "";
                       "Error",
                       "Error al obtener el calendario de la Sucursal"
                     );*/
-              });
-      },
+             /*});
+      },*/
 
       nextStep() {
   

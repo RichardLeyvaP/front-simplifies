@@ -15,7 +15,7 @@
 
     </v-row>
   </v-snackbar>
-
+<v-container>
   <v-card elevation="6" class="mx-5">
 
     <v-toolbar color="#F18254">
@@ -87,8 +87,8 @@
                           <img v-if="imgedit" :src="imgedit" height="70" width="70">
                         </v-avatar>-->
                         <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
-                          <img v-if="imagenDisponible()" :src="imgedit+'?$'+Date.now()" height="120" width="120">
-                        </v-card>
+                        <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
+                      </v-card>
                       </v-col>
                     </v-row>
                   </v-container>
@@ -374,6 +374,7 @@
       </v-dialog>
     </v-card-text>
   </v-card>
+</v-container>
 </template>
 
 <script>
@@ -526,7 +527,7 @@ export default {
             // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
             let img = new Image();
             img.src = this.imgedit;
-            return img.complete; // Devuelve true si la imagen está disponible
+            return true; // Devuelve true si la imagen está disponible
         }
         return false; // Si la URL de la imagen no está definida o está vacía, devuelve false
     },
@@ -585,8 +586,15 @@ export default {
       reader.readAsDataURL(file);
     },
     editItem(item) {
-      this.file = '';
-      this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.image_data;
+      this.file = null;
+      var img = new Image();
+      img.src = 'http://127.0.0.1:8000/api/images/' + item.image_data;
+      img.onload = () => {
+        this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.image_data;
+      };
+      img.onerror = () => {
+        this.imgMiniatura = '';
+      };
       this.editedIndex = 1;
       this.editedItem = Object.assign({}, item)
       this.dialog = true;
@@ -611,7 +619,7 @@ export default {
       this.closeDelete()
     },
     close() {
-      this.file = '';
+      this.file = null;
       this.imgMiniatura = '';
       this.dialog = false;
       this.$nextTick(() => {
@@ -660,7 +668,7 @@ export default {
         axios
           .post('http://127.0.0.1:8000/api/branch-update', formData)
           .then(() => {
-            this.file = '';
+            this.file = null;
             this.imgMiniatura = '';
           }).finally(() => {
             this.showAlert("success", "Sucursal modificada correctamente", 3000);
@@ -680,7 +688,7 @@ export default {
         axios
           .post('http://127.0.0.1:8000/api/branch', formData)
           .then(() => {
-            this.file = '';
+            this.file = null;
             this.imgMiniatura = '';
           }).finally(() => {
             this.showAlert("success", "Sucursal creada correctamente", 3000);

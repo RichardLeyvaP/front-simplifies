@@ -78,7 +78,7 @@
                         </v-alert>
           </v-container>
         </v-col>
-        <v-col cols="12">
+        <v-col cols="12" md="12">
           <v-card-text>
             <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details></v-text-field>

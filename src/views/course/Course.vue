@@ -138,9 +138,11 @@
                           variant="underlined" density="compact" name="file" accept=".png, .jpg, .jpeg"
                           @change="onFileSelected">
                         </v-file-input>
-                        <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                          <img v-if="imagenDisponible()" :src="imgedit" height="70" width="70">
-                        </v-avatar>
+                      </v-col>
+                      <v-col cols="12" md="6">
+                        <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
+                        <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
+                      </v-card>
                       </v-col>
                     </v-row>
                     <v-divider></v-divider>
@@ -266,9 +268,9 @@
                     </v-file-input>
                   </v-col>
                   <v-col cols="12" md="12">
-                    <v-card elevation="6" class="mx-auto" max-width="210" max-height="120">
-                      <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
-                    </v-card>
+                    <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
+                        <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
+                      </v-card>
 
 
                   </v-col>
@@ -803,14 +805,21 @@ export default {
             // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
             let img = new Image();
             img.src = this.imgedit;
-            return img.complete; // Devuelve true si la imagen está disponible
+            return true; // Devuelve true si la imagen está disponible
         }
         return false; // Si la URL de la imagen no está definida o está vacía, devuelve false
     },
 
     openModal(imageUrl) {
       
-      this.selectedImageUrl = "http://127.0.0.1:8000/api/images/"+imageUrl; 
+      var img = new Image();
+      img.src = 'http://127.0.0.1:8000/api/images/' + imageUrl;
+      img.onload = () => {
+      this.selectedImageUrl = 'http://127.0.0.1:8000/api/images/' + imageUrl; 
+      };
+      img.onerror = () => {
+        this.selectedImageUrl = '';
+      };
      // alert(this.selectedImageUrl)// Establece la imagen seleccionada
       this.dialogPhoto = true; // Abre el modal
     },
@@ -863,7 +872,14 @@ export default {
       this.editedItemS.enrollment_confirmed = item.enrollment_confirmed;
       //this.editedItemS.image_url = item.image_url;
       this.editedItemS.student_id = item.id;
-      this.imgMiniatura = 'http://127.0.0.1:8000/api/images/'+item.image_url;
+      var img = new Image();
+      img.src = 'http://127.0.0.1:8000/api/images/'+item.image_url;
+      img.onload = () => {
+        this.imgMiniatura = 'http://127.0.0.1:8000/api/images/'+item.image_url;
+      };
+      img.onerror = () => {
+        this.imgMiniatura = '';
+      };
       /*  this.editedItemS.id_course=
       
       
@@ -1003,8 +1019,15 @@ export default {
       reader.readAsDataURL(file);
     },
     editItem(item) {
-      this.file = '';
-      this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.course_image;
+      this.file = null;
+      var img = new Image();
+      img.src = 'http://127.0.0.1:8000/api/images/' + item.image_data;
+      img.onload = () => {
+        this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.image_data;
+      };
+      img.onerror = () => {
+        this.imgMiniatura = '';
+      };
       this.editedIndex = 2;
       this.editedItem = Object.assign({}, item);
       this.editedItem.startDate = this.parseDate(item.startDate);
@@ -1038,7 +1061,7 @@ export default {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = 1
         this.imgMiniatura = '';
-        this.file = '';
+        this.file = null;
       })
     },
     closeUpdateS() {
@@ -1054,7 +1077,7 @@ export default {
       this.dialogRequest = false;
       this.dialogProducts = false;
       this.imgMiniatura = '';
-      this.file = '';
+      this.file = null;
         this.editedIndex = 1
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
@@ -1081,7 +1104,7 @@ export default {
           .post('http://127.0.0.1:8000/api/course-update', formData)
           .then(() => {
             this.imgMiniatura = '';
-            this.file = '';            
+            this.file = null;            
           }).finally(() => {
             this.showAlert("success", "Curso editado correctamente", 3000);
             this.initialize();
@@ -1104,7 +1127,7 @@ export default {
           .post('http://127.0.0.1:8000/api/course', formData)
           .then(() => {
             this.imgMiniatura = '';
-            this.file = '';
+            this.file = null;
           }).finally(() => {
             this.showAlert("success", "Curso registrado correctamente", 3000);
             this.initialize();
