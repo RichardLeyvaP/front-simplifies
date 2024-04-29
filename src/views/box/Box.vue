@@ -728,7 +728,7 @@ export default {
     product_exit:'',
     cant: '',
     product_store_id: '',
-
+    intervalId: null,
     headers: [
       { title: 'No', value: 'id' },
       { title: 'Profesional', value: 'professionalName' },
@@ -920,7 +920,8 @@ export default {
         this.initialize();
           });
 
-          setInterval(() => {
+          //this.intervalId = setInterval(this.initialize, 60000);
+          this.intervalId = setInterval(() => {
             axios
         .get('http://127.0.0.1:8000/api/branch-cars', {
           params: {
@@ -931,6 +932,10 @@ export default {
             this.results = response.data.cars;
         });
     }, 60000);
+  },
+  beforeUnmount() {
+    // Detener el intervalo cuando el componente se esté destruyendo para evitar fugas de memoria
+    clearInterval(this.intervalId);
   },
 
   methods: {
