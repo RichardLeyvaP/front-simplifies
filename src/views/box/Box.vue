@@ -920,9 +920,17 @@ export default {
         this.initialize();
           });
 
-          /*setInterval(() => {
-            this.initialize();
-    }, 60000)*/
+          setInterval(() => {
+            axios
+        .get('http://127.0.0.1:8000/api/branch-cars', {
+          params: {
+            branch_id: this.branch_id
+          }
+        })
+        .then((response) => {          
+            this.results = response.data.cars;
+        });
+    }, 60000);
   },
 
   methods: {
