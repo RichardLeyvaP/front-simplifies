@@ -359,7 +359,7 @@ const routes = [
         meta: { requiresAuth: true, requiresPermissions: ["view_surveys"] },
       },
       {
-        path: "/survey-cnounts",
+        path: "/survey-counts",
         name: "Resumen Encuesta",
         component: () =>
           import( "@/views/reportes/MostSurveys.vue"),

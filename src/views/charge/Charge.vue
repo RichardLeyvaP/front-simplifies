@@ -18,11 +18,10 @@
   <v-card elevation="6" class="mx-5">
     <v-toolbar color="#F18254">
       <v-row align="center">
-        <v-col cols="12" md="4" class="grow ml-4">
+        <v-col cols="12" md="7" class="grow ml-4">
           <span class="text-subtitle-1"> <strong>Listados de Cargos</strong></span>
         </v-col>
-        <v-col cols="12" md="5" class="mr-12"></v-col>
-        <v-col cols="12" md="2" class=" ">
+        <v-col cols="12" md="4" class="text-right">
 
           <v-dialog v-model="dialog" max-width="1000px">
             <template v-slot:activator="{ props }">
@@ -33,7 +32,7 @@
             </template>
             <v-card>
               <v-toolbar color="#F18254">
-                <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
+                <span class="text-subtitle-2 ml-2">{{ formTitle }}</span>
               </v-toolbar>
               <v-card-text>
                 <v-form v-model="valid" enctype="multipart/form-data">

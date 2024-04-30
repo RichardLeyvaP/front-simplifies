@@ -151,7 +151,7 @@ export default {
       { icon: "mdi-currency-usd", title: "Finanzas detalladas", to: "finance-branches-details", value: "finance-branches-details", permission: "view_finance_branches_details" },
       { icon: "mdi-currency-usd", title: "Detalles por operaciones", to: "details-operations", value: "details-operations", permission: "view_details_operations" },
       { icon: "mdi-currency-usd", title: "Operaciones en la caja", to: "branch-traces", value: "branch-traces", permission: "view_branch_traces" },
-      { icon: "mdi-currency-usd", title: "Resumen Encuestas", to: "survey-cnounts", value: "survey-cnounts", permission: "view_resumen_surveys" },
+      { icon: "mdi-format-list-bulleted-type", title: "Resumen Encuestas", to: "survey-counts", value: "survey-counts", permission: "view_resumen_surveys" },
     ],
     academias: [
       { icon: "mdi-school", title: "Academia", to: "academy", value: "academy", permission: "view_academy" },

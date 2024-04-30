@@ -17,15 +17,14 @@
  <v-card elevation="6" class="mx-5">
    <v-toolbar color="#F18254">
      <v-row align="center">
-       <v-col cols="12" md="4" class="grow ml-4">
+       <v-col cols="12" md="7" class="grow ml-4">
          <span class="text-subtitle-1"> <strong>Encuesta</strong></span>
        </v-col>
-        <v-col cols="12" md="5" class="mr-12"></v-col>
-       <v-col cols="12" md="2">          
+       <v-col cols="12" md="4" class="text-right">          
        
            <v-dialog v-model="dialog" max-width="600">
              <template v-slot:activator="{ props }">              
-               <v-btn v-bind="props" class="text-subtitle-1  ml-12 " color="#E7E9E9" variant="flat" elevation="2"
+               <v-btn v-bind="props" class="text-subtitle-1  ml-1 " color="#E7E9E9" variant="flat" elevation="2"
                prepend-icon="mdi-plus-circle">
                Nueva encuesta
              </v-btn>
