@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/return-in-computed-property -->
 <!-- eslint-disable vue/multi-word-component-names -->
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
@@ -401,25 +402,21 @@
                 </v-row>
                 <v-row>
                   <v-col cols="12" md="4">
-                    <v-text-field v-model="editedItem.cardGif" clearable label="Tarjeta de Regalo" prepend-icon="mdi-gift"
-                      variant="underlined" :rules="pago">
-                    </v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="4">
-                    <v-text-field v-if="mostrarCode" clearable v-model="editedCard.cardGiftUser_id" label="Código"
-                      prepend-icon="mdi-code" variant="underlined" @input="onCardGiftSelected"></v-text-field>
-
-                    <!--<v-autocomplete :no-data-text="'No hay datos disponibles'" v-if="mostrarCode" clearable v-model="editedCard.cardGift_id"
-                       :items="filteredCardGifts" label="Código" prepend-icon="mdi-code" item-title="code"
-                       item-value="id" variant="underlined" :rules="selectRules"
-                       @update:model-value="cardGifts"></v-autocomplete>-->
+                    <v-text-field clearable v-model="editedCard.cardGiftUser_id" label="Tarjeta de regalo (código)"
+                    prepend-icon="mdi-gift" variant="underlined" ></v-text-field><!--@input="onCardGiftSelected"-->
                   </v-col>
                   <v-col cols="12" md="4">
                     <v-text-field v-if="mostrarOtroCampo" v-model="editedCard.value" clearable label="Valor"
                       prepend-icon="mdi-currency-usd" variant="underlined" :disabled="true">
                     </v-text-field>
                   </v-col>
+                  <v-col cols="12" md="4">
+                    <v-text-field v-model="editedItem.cardGif" clearable label="Cantidad" prepend-icon="mdi-currency-usd"
+                      variant="underlined" :rules=[customValidation] v-if="mostrarOtroCampo">
+                    </v-text-field>
+                  </v-col>
                 </v-row>
+                  
               </v-container>
               <v-divider></v-divider>
               <v-card-actions>
@@ -729,6 +726,7 @@ export default {
     cant: '',
     product_store_id: '',
     intervalId: null,
+    
     headers: [
       { title: 'No', value: 'id' },
       { title: 'Profesional', value: 'professionalName' },
@@ -860,6 +858,14 @@ export default {
     formTitle() {
       return 'Cierre de Caja'
     },
+    validateCantidadCard(value) {
+      if (this.editedCard.value){
+      return value <= this.editedItem.value || "La cantidad debe ser menor o igual que la existencia (" + this.editedItem.value + ")";
+    }
+    else{
+      return true;
+    }
+  },
     rulesCampo1() {
 
       if (this.editedCard.value) {
@@ -876,7 +882,11 @@ export default {
   },
 
   watch: {
-
+    'editedCard.value': function(newVal) {
+      if (newVal !== '') {
+        this.customValidation(); // Llamar a la validación solo cuando editedCard.value tenga un valor
+      }
+    },
     dialog(val) {
       val || this.close()
     },
@@ -891,8 +901,16 @@ export default {
       } else {
         // Oculta los campos adicionales si el valor está vacío
         this.mostrarCode = false;
+        this.editedCard.value = 0;
+        this.editedCard.cardGiftUser_id = '';
       }
     },
+    'editedCard.cardGiftUser_id'(newValue, oldValue) {
+      // Llama a la función cuando cambia el valor de cardGiftUser_id
+      if(newValue){
+      this.onCardGiftSelected(newValue);
+      }
+    }
   },
 
   mounted() {
@@ -939,6 +957,12 @@ export default {
   },
 
   methods: {
+    customValidation() {
+      if (this.editedCard.value !== '' && parseInt(this.editedItem.cardGif) > parseInt(this.editedCard.value)) {
+        return 'El valor de la tarjeta de regalo no puede ser mayor que ' + this.editedCard.value;
+      }
+      return true;
+    },
     getColor(state) {
     switch (state) {
       case 1:
@@ -968,19 +992,28 @@ export default {
         },
     onCardGiftSelected(code) {
       // Realiza cualquier lógica adicional aquí
-      console.log('Elemento seleccionado:', code.data);
+      console.log('Elemento seleccionado:', code);
       axios
         .get('http://127.0.0.1:8000/api/card-gift-user-show-value', {
           params: {
-            code: code.data
+            code: code
           }
         })
         .then((response) => {
           this.editedCard.value = response.data
           console.log('Elemento seleccionado:', this.editedCard.value);
-        });
+        }).finally(() => {
+                if (this.editedCard.value) {
+                  this.mostrarOtroCampo = true;
+                }
+                else{
+                  this.editedCard.value = 0;
+                  this.editedItem.cardGif = '';
+                  this.mostrarOtroCampo = false;
+                }
+          });
       // Muestra otro campo y asigna un valor
-      this.mostrarOtroCampo = true;
+      
       //this.otroCampoValor = item.valor;  // Asigna el valor que desees
     },
 

@@ -121,6 +121,7 @@ export default {
       { title: "Reglas de convivencia", icon: "mdi-ruler", to: "rule", permission: "view_rules" },
       { title: "Operaciones de Gastos", icon: "mdi-cash-minus", to: "expense", permission: "view_expenses" },
       { title: "Operaciones de Ingreso", icon: "mdi-cash-plus", to: "revenue", permission: "view_revenues" },
+      { title: "Item de Encuesta", icon: "mdi-poll", to: "survey", permission: "view_surveys" },
     ],
     listItems: [
       //{ icon: "mdi-storefront-outline", title: "Sucursales", to: "branch", value: "surcursal", permission: "view_branches" },
@@ -150,6 +151,7 @@ export default {
       { icon: "mdi-currency-usd", title: "Finanzas detalladas", to: "finance-branches-details", value: "finance-branches-details", permission: "view_finance_branches_details" },
       { icon: "mdi-currency-usd", title: "Detalles por operaciones", to: "details-operations", value: "details-operations", permission: "view_details_operations" },
       { icon: "mdi-currency-usd", title: "Operaciones en la caja", to: "branch-traces", value: "branch-traces", permission: "view_branch_traces" },
+      { icon: "mdi-currency-usd", title: "Resumen Encuestas", to: "survey-cnounts", value: "survey-cnounts", permission: "view_resumen_surveys" },
     ],
     academias: [
       { icon: "mdi-school", title: "Academia", to: "academy", value: "academy", permission: "view_academy" },

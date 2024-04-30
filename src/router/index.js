@@ -352,6 +352,20 @@ const routes = [
         meta: { requiresAuth: true, requiresPermissions: ["view_revenues"] },
       },
       {
+        path: "/survey",
+        name: "Encuesta",
+        component: () =>
+          import( "@/views/surveys/Survey.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_surveys"] },
+      },
+      {
+        path: "/survey-cnounts",
+        name: "Resumen Encuesta",
+        component: () =>
+          import( "@/views/reportes/MostSurveys.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_resumen_surveys"] },
+      },
+      {
         path: "/finance",
         name: "Operaciones",
         component: () =>
