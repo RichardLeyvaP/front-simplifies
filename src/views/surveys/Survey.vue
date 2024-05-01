@@ -18,7 +18,7 @@
    <v-toolbar color="#F18254">
      <v-row align="center">
        <v-col cols="12" md="7" class="grow ml-4">
-         <span class="text-subtitle-1"> <strong>Encuesta</strong></span>
+         <span class="text-subtitle-1"> <strong>Item de Encuesta</strong></span>
        </v-col>
        <v-col cols="12" md="4" class="text-right">          
        
@@ -26,7 +26,7 @@
              <template v-slot:activator="{ props }">              
                <v-btn v-bind="props" class="text-subtitle-1  ml-1 " color="#E7E9E9" variant="flat" elevation="2"
                prepend-icon="mdi-plus-circle">
-               Nueva encuesta
+               Nuevo item
              </v-btn>
              </template>
              <v-card>
@@ -39,7 +39,7 @@
                      <v-row>
                        <v-col cols="12" md="10">
                       
-                           <v-text-field v-model="editedItem.name" clearable label="Nombre de la encuesta" prepend-icon="mdi-format-list-bulleted-type"
+                           <v-text-field v-model="editedItem.name" clearable label="Nombre del item de encuesta" prepend-icon="mdi-format-list-bulleted-type"
                      variant="underlined" :rules="nameRules">
                    </v-text-field>
 
@@ -64,10 +64,10 @@
              <v-card>
               
              <v-toolbar color="red">
-               <span class="text-subtitle-2 ml-4"> Eliminar encuesta</span>
+               <span class="text-subtitle-2 ml-4"> Eliminar item</span>
              </v-toolbar>        
 
-               <v-card-text class="mt-2 mb-2"> ¿Desea eliminar la encuesta?</v-card-text>
+               <v-card-text class="mt-2 mb-2"> ¿Desea eliminar el item?</v-card-text>
              <v-divider></v-divider>
              <v-card-actions>
                <v-spacer></v-spacer>
@@ -97,9 +97,9 @@
          mdi-delete
        </v-icon>-->
        <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
-            elevation="1" class="mr-1 mt-1 mb-1" title="Editar encuesta"></v-btn>
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar item"></v-btn>
           <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" :color="'red-darken-4'" variant="tonal"
-            elevation="1" title="Eliminar encuesta"></v-btn>
+            elevation="1" title="Eliminar item"></v-btn>
      </template>
    </v-data-table>
  </v-card-text>
@@ -124,7 +124,7 @@ export default {
 
    headers: [
 
-     { title: 'Encuesta', key: 'name' },
+     { title: 'Nombre del Item', key: 'name' },
      { title: 'Acciones', key: 'actions', sortable: false },
    ],
    results: [],
@@ -152,7 +152,7 @@ export default {
 
  computed: {
    formTitle() {
-     return this.editedIndex === -1 ? 'Nueva encuesta' : 'Editar encuesta'
+     return this.editedIndex === -1 ? 'Nuevo item' : 'Editar item'
    },
  },
 
@@ -224,9 +224,9 @@ export default {
        .post('http://127.0.0.1:8000/api/survey-destroy', request)
        .then(() => {
          this.initialize();
-         this.showAlert("success","Encuesta eliminada correctamente", 3000)
+         this.showAlert("success","Item eliminado correctamente", 3000)
        }).catch(()=>{
-         this.showAlert("error","No se puede Eliminar la encuesta", 3000)
+         this.showAlert("error","No se puede Eliminar el item", 3000)
        })
      this.closeDelete()
    },
@@ -253,7 +253,7 @@ export default {
            .put('http://127.0.0.1:8000/api/survey', this.data)
            .then(() => {
              this.initialize();
-             this.showAlert("success","Encuesta actualizada correctamente", 3000)
+             this.showAlert("success","Item actualizado correctamente", 3000)
            })
        } else {
          this.valid = false,
@@ -262,7 +262,7 @@ export default {
            .post('http://127.0.0.1:8000/api/survey', this.data)
            .then(() => {
              this.initialize();
-             this.showAlert("success","Encuesta registrada correctamente", 3000)
+             this.showAlert("success","Item registrado correctamente", 3000)
            })
        }
        this.close()

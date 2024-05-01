@@ -209,17 +209,18 @@
      
   <v-container>
     <v-card >
-<v-list>
-    <v-list-item v-for="(item) in filteredProfessionals" :key="item.title" :value="item.id">
-      <v-list-item-avatar>
-        <v-img :src="'http://127.0.0.1:8000/api/images/'+item.image_url" alt="Avatar"></v-img>
-      </v-list-item-avatar>
-      <v-list-item-content>
-        <v-list-item-title> <strong>{{ item.name }} {{ item.surname }} {{ item.second_surname }}</strong> </v-list-item-title>
+      <!--<v-list>
+        <v-list-item-group>
+    <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + item.image_data"
+      v-for="item in filteredBranches" :key="item.id">
+      <v-list-item-content class="d-flex align-center justify-space-between">
+        <v-list-item-title> <strong>{{ item.name }} {{ item.address }}</strong> </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
-</v-list>
-
+  </v-list-item-group>
+</v-list>-->
+      
+      
 <v-list>
   <v-list-item>
     <v-list-item-content>
@@ -227,20 +228,23 @@
     </v-list-item-content>
   </v-list-item>
 </v-list>
-
-<!--<v-list>
-    <v-list-item v-for="(item) in filteredServices" :key="item.title" :value="item.id">
-      <v-list-item-avatar>
-        <v-img :src="'http://127.0.0.1:8000/api/images/'+item.image_service" alt="Avatar" height="100px" width="100px"></v-img>
-      </v-list-item-avatar>
-      <v-list-item-content>
-        <v-list-item-title> <strong>{{ item.name }}</strong> </v-list-item-title>
-        <v-list-item-title>Duración: {{ item.duration_service }}</v-list-item-title>
-        <v-list-item-title>Precio: {{ item.duration_service }}</v-list-item-title>
-      </v-list-item-content>
-    </v-list-item>
-</v-list>-->
-<v-list item-props>
+<div class="d-flex align-center">
+  <!-- Encabezado "Professional:" -->
+  <strong>Professional:</strong>
+  <!-- Lista de profesionales -->
+  <v-list>
+    <v-list-item-group>
+      <!-- Iteración sobre los profesionales -->
+      <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + item.image_url" v-for="item in filteredProfessionals" :key="item.id">
+        <v-list-item-content class="d-flex align-center justify-space-between">
+          <!-- Nombre completo del profesional -->
+          <v-list-item-title><strong>{{ item.name }} {{ item.surname }} {{ item.second_surname }}</strong></v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list-item-group>
+  </v-list>
+</div>
+<v-list item-props><strong>Servicios:</strong>
                         <v-list-item-group>
                           <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + serviceA.image_service"
                             v-for="serviceA in filteredServices" :key="serviceA.id">
@@ -248,12 +252,12 @@
                             <v-list-item-content class="d-flex align-center justify-space-between">
                               <v-list-item-title> <strong>{{ serviceA.name }}</strong> </v-list-item-title>
                                </v-list-item-content>                         
-                            <v-list-item-title>Duración: {{ serviceA.duration_service }}</v-list-item-title>
-                            <v-list-item-title>Precio: {{ serviceA.price_service }}</v-list-item-title>
                           </v-list-item>
-                          <v-divider></v-divider>
                         </v-list-item-group>
 </v-list>
+<strong>Duración:</strong> {{ this.totalDuration }}
+<br>
+<strong>Precio:</strong> {{ this.totalPrice }}
     </v-card>
   </v-container>
      <!-- <v-col cols="12" md="6" >
@@ -417,6 +421,7 @@ export default {
   start_time1: '',
   array_services:[],
     nameBranch: '',
+    address: '',
     selectedItems: [],
   nameRules: [
       v => !!v || 'El nombre es requerido',
@@ -442,23 +447,6 @@ export default {
       v => !!v || 'El Teléfono es requerido',
    
     ],
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       disabledIntervals: [],
       intervals: [],
       countInterval: 0,
@@ -472,8 +460,10 @@ export default {
       selected: [],
       professional: [],
       branch_id: '',
+      business_id: '',
       dialogEncuesta: false,
       surveys: [],
+      branches: [],
       selectedSurveys: [],
       survey_id: '',
       //
@@ -501,6 +491,8 @@ export default {
               quantity: 10,
           },
       ],
+      totalPrice: '',
+      totalDuration: '',
   }),
   watch: {
   showDialog(newValue, oldValue) {
@@ -518,10 +510,21 @@ export default {
     filteredProfessionals() {
     return this.professionals.filter(item => item.id === this.professional[0]);
   },
-
   /*filteredBranches() {
-    return this.branches.filter(item => item.id === this.selected_branch.id);
+    const filteredBranch = this.branches.find(item => item.id === this.branch_id);
+    if (filteredBranch) {
+        this.address = filteredBranch.address;
+        console.log('this.address');
+        console.log(this.address);
+        return filteredBranch;
+    } else {
+        // Si no se encuentra ninguna coincidencia, puedes devolver un array vacío o null según tu preferencia
+        return [];
+    }
   },*/
+  filteredBranches() {
+    return this.branches.filter(item => item.id == this.branch.id);
+  },
 
   filteredServices() {
     //let totalTime = 0; // Inicializar la variable para almacenar el tiempo total
@@ -534,6 +537,11 @@ export default {
         // Si `this.selected_services` es una lista de ids, Array.includes() verificará si item.id está en la lista
         return Array.isArray(newArrayService) ? newArrayService.includes(item.id) : item.id === newArrayService;
     });
+
+    const totalPrice = filteredServices.reduce((total, service) => total + service.price_service, 0);
+    const totalDuration = filteredServices.reduce((total, service) => total + service.duration_service, 0);
+    this.totalDuration = totalDuration;
+    this.totalPrice = totalPrice;
    // Devolver los servicios filtrados
     return filteredServices;
   },
@@ -555,11 +563,19 @@ export default {
   },
   mounted() {
    
-    //this.business_id = LocalStorageService.getItem('business_id');
+    this.business_id = LocalStorageService.getItem('business_id');
   //this.charge_id = LocalStorageService.getItem('charge_id');
-this.branch_id = LocalStorageService.getItem('branch_id');
+this.branch_id = parseInt(LocalStorageService.getItem('branch_id'));
 this.nameBranch = JSON.parse(LocalStorageService.getItem("nameBranch"));
-console.log(this.branch_id);
+axios
+      .get('http://127.0.0.1:8000/api/show-business', {
+        params: {
+          business_id: this.business_id
+        }
+      })
+      .then((response) => {
+        this.branches = response.data.branches;
+      });
       this.chargeServices();
       //this.chargeCalendarsBranches();
       // this. chargeProfessionals();

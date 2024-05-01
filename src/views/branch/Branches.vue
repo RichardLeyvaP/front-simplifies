@@ -113,38 +113,11 @@
     </v-toolbar>
 
     <v-card-text>
+            <v-container>
       <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
                 hide-details>
             </v-text-field>
       <v-data-table :headers="headers" :search="search" :items="results" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
-        <template v-slot:top>
-
-          <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
-          
-          <v-dialog v-model="dialogDelete" max-width="600px">
-            <v-card>
-              <v-toolbar color="red">
-                <span class="text-subtitle-2 ml-4"> Eliminar Sucursal</span>
-              </v-toolbar>
-
-              <v-card-text class="mt-2 mb-2"> ¿Desea eliminar la Sucursal seleccionada?</v-card-text>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
-                  Cancelar
-                </v-btn>
-                <v-btn color="#F18254" variant="flat" @click="deleteItemConfirm">
-                  Aceptar
-                </v-btn>
-
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-
-        </template>
-
         <template v-slot:item.name="{ item }">
 
           <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
@@ -172,8 +145,10 @@
             elevation="1" title="Agregar Trabajdor"></v-btn> 
           <!--<v-icon size="25" color="primary" @click="showStores(item)" title="Asignar Almacén">
             mdi-store-outline
-          </v-icon> -->      
+          </v-icon> -->     
           <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-store-outline" @click="showStores(item)" color="green" variant="tonal"
+            elevation="1" title="Agregar Almacén"></v-btn>  
+          <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-handshake" @click="showAssociates(item)" color="green" variant="tonal"
             elevation="1" title="Agregar Almacén"></v-btn>  
           <!--<v-icon size="25" color="red" @click="deleteItem(item)" title="Eliminar Sucursal">
             mdi-delete
@@ -182,7 +157,27 @@
             elevation="1" title="Eliminar Sucursal"></v-btn>
         </template>
       </v-data-table>
+      </v-container>
+      <v-dialog v-model="dialogDelete" max-width="600px">
+            <v-card>
+              <v-toolbar color="red">
+                <span class="text-subtitle-2 ml-4"> Eliminar Sucursal</span>
+              </v-toolbar>
 
+              <v-card-text class="mt-2 mb-2"> ¿Desea eliminar la Sucursal seleccionada?</v-card-text>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
+                  Cancelar
+                </v-btn>
+                <v-btn color="#F18254" variant="flat" @click="deleteItemConfirm">
+                  Aceptar
+                </v-btn>
+
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
       <!--Professionals-->
       <v-dialog v-model="dialogProfessionals" fullscreen transition="dialog-bottom-transition">
         <v-card>
@@ -372,6 +367,100 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+
+      <!--Associates-->
+      <v-dialog v-model="dialogAssociates" fullscreen transition="dialog-bottom-transition">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-1 ml-4"> Asociados a la Sucursal</span>
+            <v-spacer></v-spacer>
+            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAddAssociates()">
+              Agregar Asociado
+            </v-btn>
+          </v-toolbar>
+          <v-card-text class="mt-2 mb-2">
+            <v-text-field class="mt-1 mb-1" v-model="search4" append-icon="mdi-magnify" label="Buscar" single-line
+              hide-details></v-text-field>
+            <v-data-table :headers="headers4" :items="branchAssociates" :search="search4" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+
+              <!--<template v-slot:item.name="{ item }">
+
+                    <v-avatar elevation="3" color="grey-lighten-4" size="large">
+                      <v-img :src="'http://127.0.0.1:8000/api/images/'+item.image_url" alt="image"></v-img>
+                    </v-avatar>
+                    {{ item.name+' '+item.surname+' '+item.second_surname}}
+                  </template>-->
+
+              <template v-slot:item.actions="{ item }">
+          <v-btn density="comfortable" icon="mdi-delete" @click="closeassociateRequest(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar afiliación del asociado"></v-btn>
+                <!--<v-icon size="small" color="red" @click="closestoreRequest(item)">
+                  mdi-delete
+                </v-icon>-->
+              </template>
+
+            </v-data-table>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
+              Volver
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="dialogAddAssociate" width="500">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-2 ml-4">Agregar Associado</span>
+          </v-toolbar>
+          <v-card-text class="mt-2 mb-2">
+            <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+              <v-container>
+                <v-row>
+                  <v-col cols="12" md="12">
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="associated_id" :items="associates" label="Asociado"
+                      prepend-icon="mdi-handshake" item-title="name" item-value="id" variant="underlined"
+                      :rules="selectRules"></v-autocomplete>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="#E7E9E9" variant="flat" @click="closeassociate">
+                  Cancelar
+                </v-btn>
+                <v-btn color="#F18254" variant="flat" @click="saveAssociated" :disabled="!valid">
+                  Aceptar
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="dialogRequestAssociate" width="500">
+        <v-card>
+
+          <v-toolbar color="red">
+            <span class="text-subtitle-2 ml-4"> Eliminar afiliación del asociado de esta sucursal</span>
+          </v-toolbar>
+
+          <v-card-text class="mt-2 mb-2"> ¿Desea eliminar esta afiliación del asociado con la sucursal?</v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="closerequestAssociate">
+              Cancelar
+            </v-btn>
+            <v-btn color="#F18254" variant="flat" @click="associateDelete">
+              Aceptar
+            </v-btn>
+
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-card-text>
   </v-card>
 </v-container>
@@ -392,6 +481,7 @@ export default {
     sb_title: '',
     sb_icon: '',
     search3: '',
+    search4: '',
     business_id: '',
     search2: '',
     search:'',
@@ -404,13 +494,14 @@ export default {
     dialogRequest: false,
     dialogAddStore: false,
     dialogRequestStore: false,
-
+    dialogRequestAssociate: false,
+    dialogAssociates : false,
+    dialogAddAssociate: false,
+    associated_id: '',
     headers: [
       { title: 'Nombre', value: 'name' },
-      { title: 'Negocio', value: 'business.name' },
       { title: 'Teléfono', value: 'phone' },
       { title: 'Dirección', value: 'address' },
-      { title: 'Localización', value: 'location' },
       { title: 'Tipo de Negocio', value: 'business_type.name' },
       { title: 'Técnico', value: 'useTechnical' },
       { title: 'Acciones', key: 'actions', sortable: false },
@@ -426,6 +517,11 @@ export default {
       { title: 'Descripción', value: 'description' },
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
+    headers4: [
+      { title: 'Nombre', value: 'name' },
+      { title: 'Email', value: 'email' },
+      { title: 'Acciones', key: 'actions', sortable: false },
+    ],
     results: [],
 
     business: [],
@@ -434,6 +530,8 @@ export default {
     branchStores: [],
     professionals: [],
     stores: [],
+    associates: [],
+    branchAssociates: [],
 
     editedIndex: -1,
     file: null,
@@ -468,6 +566,7 @@ export default {
       useTechnical: '',
       location: '',
     },
+
     nameRules: [
       (v) => !!v || "El campo es requerido",
       (v) => (v && v.length <= 100) ||
@@ -643,6 +742,7 @@ export default {
     },
     closeDelete() {
       this.dialogDelete = false;
+      this.dialogAssociates = false;
       this.dialogProfessionals = false;
       this.dialogStores = false;
       this.$nextTick(() => {
@@ -841,6 +941,74 @@ export default {
         this.editedItem = Object.assign({}, this.defaultItem)
       })
       this.showStores(this.branchSelect)
+    },
+    //Asociados
+    showAssociates(item) {
+      this.branchSelect = item;
+      this.branch_id = item.id;
+      axios
+        .get('http://127.0.0.1:8000/api/associate-branch', {
+          params: {
+            branch_id: item.id
+          }
+        })
+        .then((response) => {
+          this.branchAssociates = response.data.associates;
+          console.log('imprime professionals');
+        });
+      this.dialogAssociates = true;
+    },
+    showAddAssociates(){
+      axios
+        .get('http://127.0.0.1:8000/api/associated')
+        .then((response) => {
+          this.associates = response.data.associates;
+        });
+      this.dialogAddAssociate = true;
+    },
+    closeassociate() {
+      this.dialogAddAssociate = false;
+      this.associated_id = '';
+      this.showAssociates(this.branchSelect)
+    },
+    saveAssociated() {
+      this.valid = false,
+        this.data.branch_id = this.branch_id;
+      this.data.associated_id = this.associated_id;
+      axios
+        .post('http://127.0.0.1:8000/api/associate-branch', this.data)
+        .then(() => {
+          this.dialogAddAssociate = false;
+          }).finally(() => {
+          this.showAssociates(this.branchSelect);
+          this.showAlert("success", "Asociado afiliado correctamente a la sucursal", 3000);
+          this.associated_id = '';
+        });
+    },
+    closeassociateRequest(item) {
+      this.dialogRequestAssociate = true
+      //this.editedItem.branch_id=item.id
+      this.associated_id = item.id
+    },
+    closerequestAssociate() {
+      this.dialogRequestAssociate = false;
+      this.associated_id = '';
+      this.showAssociates(this.branchSelect)
+    },
+    associateDelete() {
+      let request = {
+        branch_id: this.branch_id,
+        associated_id: this.associated_id
+      };
+      axios
+        .post('http://127.0.0.1:8000/api/associate-branch-destroy', request)
+        .then(() => {
+          this.dialogRequestAssociate = false
+        }).finally(() => {
+          this.associated_id = '';
+          this.showAssociates(this.branchSelect);
+          this.showAlert("success", "Afiliación eliminada correctamente", 3000);
+          });
     },
   },
 }

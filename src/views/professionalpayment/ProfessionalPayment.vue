@@ -23,20 +23,16 @@
                 </v-col>
                 <v-col cols="12" md="4"></v-col>
                 <v-col cols="12" md="2">
-                        <v-btn class="text-subtitle-1  ml-12 " color="#E7E9E9" variant="flat"
-                                elevation="2" prepend-icon="mdi-plus-circle" @click="showAddPago()">
-                                Nuevo Pago
-                            </v-btn>
-                    <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition">
+                            <v-dialog v-model="dialog" max-width="95%" max-height="100%" transition="dialog-bottom-transition">
                         <v-card>
                             <v-toolbar color="#F18254">
-                                <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
+                                <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>                                
                             </v-toolbar>
                             <v-card-text>
                                 <v-form ref="form" v-model="valid" enctype="multipart/form-data">
                                     <v-container>
                                         <v-row>
-                                            <v-col cols="12" sm="12" md="3">
+                                            <!--<v-col cols="12" sm="12" md="3">
                                                 <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
                                                     v-if="this.mostrarFila" clearable label="Seleccione una Sucursal"
                                                     prepend-icon="mdi-store" item-title="name" item-value="id"
@@ -50,7 +46,7 @@
                                                     item-value="id" variant="underlined"
                                                     :rules="selectRules"
                                                     @update:model-value="carsEarrings()"></v-autocomplete>
-                                            </v-col>
+                                            </v-col>-->
                                             <v-col cols="12" md="3">
                                                 <v-select label="Tipo de pago" v-model="editedItem.type"
                                                     :items="['Adelanto', 'Quincena', 'Mes']"
@@ -58,7 +54,7 @@
                                                     :rules="selectRules"
                                                     prepend-icon="mdi-check-circle"></v-select><!--:disabled="!this.mostrarType"-->
                                             </v-col>
-                                            <v-col cols="12" md="3">
+                                            <v-col cols="12" md="9">
                                                 <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
                                                     :subtitle="totalMount()" append-icon="mdi-check" v-if="this.mostrarCars">
 
@@ -152,18 +148,18 @@
             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search"
                 :items="results" class="elevation-1" no-results-text="No hay datos disponibles"
                 no-data-text="No hay datos disponibles">
-                <template v-slot:item.nameProfessional="{ item }">
+                <template v-slot:item.name="{ item }">
 
                     <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
                         <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url" alt="image"></v-img>
                     </v-avatar>
-                    {{ item.nameProfessional }}
+                    {{ item.name }}
                 </template>
                 <template v-slot:item.actions="{ item }">
                     <!--<v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary"
                         variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Editar Pago a profesional"></v-btn>-->
-                    <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4"
-                        variant="tonal" elevation="1" title="Eliminar Pago a profesional"></v-btn>
+                    <v-btn density="comfortable" icon="mdi-account-cash" @click="pagoProfessional(item)" color="primary"
+                        variant="tonal" elevation="1" title="Pago a profesional"></v-btn>
                     <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
               mdi-pencil
             </v-icon>
@@ -173,6 +169,231 @@
                 </template>
             </v-data-table>
         </v-card-text>
+
+        <!--Barbero y encargado-->
+        <v-dialog v-model="dialogBarberoEncargado" fullscreen transition="dialog-bottom-transition">
+            <v-card>
+            <v-toolbar color="#F18254">
+                <span class="text-subtitle-1 ml-4">Pagos realizados</span>
+                <v-spacer></v-spacer>
+                <v-btn class="text-subtitle-1  ml-12 " color="#E7E9E9" variant="flat"
+                                    elevation="2" prepend-icon="mdi-plus-circle" @click="showAddPago()">
+                                    Nuevo Pago
+                                </v-btn>
+            </v-toolbar>
+            <v-card-text class="mt-2 mb-2">
+                <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar" single-line
+                hide-details></v-text-field>
+                <v-data-table :headers="headers3" :items="professionalPayment" :search="search3" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+
+                <!--<template v-slot:item.name="{ item }">
+
+                        <v-avatar elevation="3" color="grey-lighten-4" size="large">
+                        <v-img :src="'http://127.0.0.1:8000/api/images/'+item.image_url" alt="image"></v-img>
+                        </v-avatar>
+                        {{ item.name+' '+item.surname+' '+item.second_surname}}
+                    </template>-->
+
+                    <template v-slot:item.actions="{ item }">
+                        <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4"
+                            variant="tonal" elevation="1" title="Eliminar Pago a profesional"></v-btn>
+                    </template>
+
+                </v-data-table>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="#E7E9E9" variant="flat" @click="barberoDelete">
+                Volver
+                </v-btn>
+            </v-card-actions>
+            </v-card>
+        </v-dialog>
+            <v-dialog v-model="dialogOtros" max-width="600px">
+                <v-card>
+                    <v-toolbar color="#F18254">
+                    <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
+                    </v-toolbar>
+                    <v-card-text>
+                    <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12" md="6">
+                                                    <v-select label="Tipo de pago" v-model="editedItem.type"
+                                                        :items="['Adelanto', 'Quincena', 'Mes']"
+                                                        :item-value="['Adelanto', 'Quincena', 'Mes']" variant="underlined"
+                                                        :rules="selectRules"
+                                                        prepend-icon="mdi-check-circle"></v-select><!--:disabled="!this.mostrarType"-->
+                                                </v-col>
+                                                <v-col cols="12" md="6">
+                                                    <v-text-field v-model="editedItem.amount" clearable label="Monto"
+                                                        prepend-icon="mdi-cash" variant="underlined" :rules="pago">
+                                                    </v-text-field>
+                                                </v-col>
+                        </v-row>
+                    </v-container>
+                    <v-divider></v-divider>
+                    <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="#E7E9E9" variant="flat" @click="close">
+                        Cancelar
+                    </v-btn>
+                    <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
+                        Aceptar
+                    </v-btn>
+                    </v-card-actions>
+                </v-form>              
+                </v-card-text>
+                </v-card>
+            </v-dialog>
+          <!--Cajeros-->
+          <v-dialog v-model="dialogCashier" fullscreen transition="dialog-bottom-transition">
+            <v-card>
+            <v-toolbar color="#F18254">
+                <span class="text-subtitle-1 ml-4">Pagos realizados cajero (a)</span>
+                <v-spacer></v-spacer>
+                <v-btn class="text-subtitle-1  ml- " color="#E7E9E9" variant="flat"
+                                    elevation="2" prepend-icon="mdi-plus-circle" @click="showAddOperationTip()">
+                                    Nuevo Pago
+                                </v-btn>
+            </v-toolbar>
+                    <v-card-text class="mt-1 mb-1">
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-card-text>
+                                        <v-text-field class="mt-1 mb-1" v-model="search5" append-icon="mdi-magnify"
+                                            label="Buscar" single-line hide-details>
+                                        </v-text-field>
+                                        <v-data-table :headers="headers5" :items-per-page-text="'Elementos por páginas'"
+                                            :items="results1" :search="search5" class="elevation-2"
+                                            no-results-text="No hay datos disponibles"
+                                            no-data-text="No hay datos disponibles">
+                                                            
+                                    <template v-slot:item.actions="{ item }">
+                                        <v-btn density="comfortable" icon="mdi-delete" @click="deleteItemCashier(item)" color="red-darken-4"
+                                            variant="tonal" elevation="1" title="Eliminar Pago a profesional"></v-btn>
+                                    </template>
+                                        </v-data-table>
+                                    </v-card-text>
+                                </v-col>
+                            </v-row>
+                    </v-card-text>
+                    <v-divider></v-divider>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="#E7E9E9" variant="flat" @click="cashierDelete">
+                            Volver
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+            <v-dialog v-model="dialogDeleteCashier" max-width="500px">
+                        <v-card>
+
+                            <v-toolbar color="red">
+                                <span class="text-subtitle-2 ml-4"> Eliminar Pago a Professional</span>
+                            </v-toolbar>
+
+                            <v-card-text class="mt-2 mb-2"> ¿Desea eliminar el pago al professional?</v-card-text>
+                            <v-divider></v-divider>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
+                                    Cancelar
+                                </v-btn>
+                                <v-btn color="#F18254" variant="flat" @click="deleteItemConfirmCashier">
+                                    Aceptar
+                                </v-btn>
+
+                            </v-card-actions>
+                        </v-card>
+            </v-dialog>
+
+            <v-dialog v-model="dialogCashierCars" max-width="95%" max-height="100%" transition="dialog-bottom-transition">
+                <v-card>
+                            <v-toolbar color="#F18254">
+                                <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
+                            </v-toolbar>
+                            <v-card-text>
+                                <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+                                    <v-container>
+                                        <v-row>
+                                            <!--<v-col cols="12" sm="12" md="3">
+                                                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+                                                    v-if="this.mostrarFila" clearable label="Seleccione una Sucursal"
+                                                    prepend-icon="mdi-store" item-title="name" item-value="id"
+                                                    variant="underlined"
+                                                    @update:model-value="showAddOperationTip()"></v-autocomplete>
+                                            </v-col>
+                                            <v-col cols="12" sm="12" md="3">
+                                                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id" :items="professionals"
+                                                    clearable label="Seleccione un cajero (a)"
+                                                    prepend-icon="mdi-account-tie-outline" item-title="name"
+                                                    item-value="id" variant="underlined"
+                                                    :rules="selectRules"></v-autocomplete>
+                                            </v-col>-->
+                                            <v-col cols="12" md="3">
+                                                <v-select label="Tipo de pago" v-model="editedItem.type"
+                                                    :items="['Adelanto', 'Quincena', 'Mes']"
+                                                    :item-value="['Adelanto', 'Quincena', 'Mes']" variant="underlined"
+                                                    :rules="selectRules"
+                                                    prepend-icon="mdi-check-circle"></v-select><!--:disabled="!this.mostrarType"-->
+                                            </v-col>
+                                            <v-col cols="12" md="9">
+                                                <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
+                                                    :subtitle="totalMount1()" append-icon="mdi-check">
+
+                                                    <template v-slot:prepend>
+                                                        <v-avatar color="blue-darken-2">
+                                                            <v-icon icon="mdi-currency-usd"></v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                </v-card>
+                                                <v-text-field v-model="editedItem.amount" clearable label="Monto"
+                                                    v-show="false" prepend-icon="mdi-cash" variant="underlined"
+                                                    :rules="pago">
+                                                </v-text-field>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row>
+
+                                            <v-col cols="12" md="12">
+                                                <v-text-field class="mt-1 mb-1" v-model="search6"
+                                                    append-icon="mdi-magnify" label="Buscar" single-line
+                                                    hide-details></v-text-field>
+                                                <v-data-table v-model="selected2" :headers="headers6"
+                                                    :items-per-page-text="'Elementos por páginas'" :search="search6"
+                                                    :items="cars1" class="elevation-1"
+                                                    no-results-text="No hay datos disponibles"
+                                                    no-data-text="No hay datos disponibles" show-select>
+                                                    <template v-slot:item.clientName="{ item }">
+
+                                                        <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                                                            <v-img
+                                                                :src="'http://127.0.0.1:8000/api/images/' + item.client_image"
+                                                                alt="image"></v-img>
+                                                        </v-avatar>
+                                                        {{ item.clientName }}
+                                                    </template>
+                                                </v-data-table>
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
+                                    <v-divider></v-divider>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="#E7E9E9" variant="flat" @click="close">
+                                            Cancelar
+                                        </v-btn>
+                                        <v-btn color="#F18254" variant="flat" @click="saveCashier" :disabled="!valid">
+                                            Pagar
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-form>
+                            </v-card-text>
+                        </v-card>
+                    </v-dialog>
     </v-card>
 </template>
 
@@ -194,20 +415,52 @@ export default {
         business_id: '',
         branches: [],
         cars: [],
+        cars1: [],
+        professionalPayment: [],
         search: '',
+        search3: '',
+        search5: '',
+        search6: '',
         mostrarFila: false,
         dialog: false,
         mostrarCars: false,
         dialogDelete: false,
+        dialogBarberoEncargado: false,
+        dialogOtros: false,
+        dialogCashier: false,
+        dialogDeleteCashier: false,
+        dialogCashierCars: false,
         //mostrarType: true,
         headers: [
-            { title: 'Nombre del profesional', value: 'nameProfessional' },
-            { title: 'Fecha del pago', value: 'date' },
-            { title: 'Tipo de Pago', value: 'type' },
-            { title: 'Monto pagado', value: 'amount' },
+            { title: 'Nombre del profesional', value: 'name' },
+            { title: 'Correo', value: 'email' },
+            { title: 'Cargo', value: 'charge' },
             { title: 'Acciones', value: 'actions' },
         ],
+        headers3: [
+            { title: 'Fecha', value: 'date' },
+            { title: 'Pagado ($)', value: 'amount' },
+            { title: 'Tipo de pago', value: 'type' },
+            { title: 'Acciones', value: 'actions' },
+        ],
+        headers5: [
+            { title: 'Fecha del pago', key: 'date' },
+            { title: 'Tipo de Pago', key: 'type' },
+            { title: 'Monto pagado', key: 'amount' },
+            { title: 'Monto café', key: 'coffe_percent' },
+            { title: 'Acciones', value: 'actions' },
+        ],
+        headers6: [
+            { title: 'ID', align: 'start', key: 'id' },
+            { title: 'Nombre Cliente', align: 'end', key: 'clientName' },
+            { title: 'Nombre Profesional', align: 'end', key: 'professionalName' },
+            { title: 'Fecha', align: 'end', key: 'data' },
+            { title: 'Propina', align: 'end', key: 'tip' },
+            { title: 'Propina 10% Cajero (a)', align: 'end', key: 'tipCashier' },
+            { title: 'Propina 10% Café', align: 'end', key: 'tipCoffe' },
+        ],
         results: [],
+        results1: [],
         selectedOption: '',
         //options: ['Adelanto', 'Quincena', 'Mes'],
         professionals: [],
@@ -219,7 +472,8 @@ export default {
             id: '',
             nameProfessional: '',
             type: '',
-            amount: '',
+            amount: '',            
+            coffe_percent: ''
         },
         data: {},
 
@@ -228,6 +482,7 @@ export default {
             nameProfessional: '',
             type: '',
             amount: '',
+            coffe_percent: ''
         },
         nameRules: [
             (v) => !!v || "El campo es requerido",
@@ -338,6 +593,30 @@ export default {
             }
             
         },
+        totalMount1() {
+            let selectedItems;
+            if (this.selected2.length == 0) {
+                return this.cars1.reduce((total, item) => {
+                    // Asegúrate de que item.totalServices y item.tip sean números
+                    //const totalServices = Number(item.totalServices) || 0;
+                    const tip = Number(item.tipCashier) || 0;
+                    //this.editedItem.amount = total + totalServices + tip;
+                    return total + tip;
+                }, 0);
+            } else {
+                // Mapea los IDs de selected2 a los objetos correspondientes en cars
+                selectedItems = this.selected2.map(selectedId => this.cars1.find(car => car.id === selectedId));
+                // Calcula el total sumando totalServices y tip de los elementos seleccionados
+                return selectedItems.reduce((total, item) => {
+                    // Asegúrate de que item.totalServices y item.tip sean números
+                    //const totalServices = Number(item.totalServices) || 0;
+                    const tip = Number(item.tipCashier) || 0;
+                    this.editedItem.amount = total + tip;
+                    this.editedItem.coffe_percent = total + tip;
+                    return total + tip;
+                }, 0);
+            }
+        },
         
         /*professionalChange(){
             this.chargeProfessional = this.professionals.find(professional => professional.id == this.professional_id);
@@ -374,28 +653,43 @@ export default {
             this.professional_id = '';
 
             axios
-                .get('http://127.0.0.1:8000/api/branch-payment-show', {
-                    params: {
-                        branch_id: this.branch_id
-                    }
-                })
-                .then((response) => {
-                    this.results = response.data;
-                });
-        },
-        showAddPago(){
-            axios
                 .get('http://127.0.0.1:8000/api/branch_professionals_web', {
                     params: {
                         branch_id: this.branch_id
                     }
                 })
                 .then((response) => {
-                    this.professionals = response.data.professionals;
+                    this.results = response.data.professionals;
+                });
+        },
+        showAddPago(){
+            if (this.charge == 'Barbero' || this.charge == 'Barbero y Encargado') {
+                axios
+                .get('http://127.0.0.1:8000/api/professional-car-notpay', {
+                    params: {
+                        branch_id: this.branch_id,
+                        professional_id: this.professional_id
+                    }
+                })
+                .then((response) => {
+                    this.cars = response.data;
+                    /*if(this.cars.length == 0){
+                        //this.editedItem.type = 'Adelanto';
+                        this.mostrarCars = false;
+                        //this.mostrarType = false;
+                    }else{
+                        this.mostrarCars = true;
+                        //this.mostrarType = true;
+                    }*/
+                    this.mostrarCars = true;
                 });
                 this.dialog = true;
+            }else{
+                this.dialogOtros = true;
+            }
+            
         },
-        carsEarrings() {
+        /*/*carsEarrings() {
             this.editedItem.amount = '';
             this.chargeProfessional = this.professionals.find(professional => professional.id == this.professional_id);
             console.log('this.chargeProfessional');
@@ -421,7 +715,7 @@ export default {
                         //this.mostrarType = true;
                     }*/
 
-                    console.log('this.cars');
+                    /*console.log('this.cars');
                     console.log(this.cars);
                 });
             }else{
@@ -430,7 +724,7 @@ export default {
                 console.log('es otro cargo');
             }
             
-        },
+        },*/
         /*toggleService(serviceId) {
             const index = this.selected.indexOf(serviceId);
             console.log(this.selected);
@@ -448,6 +742,38 @@ export default {
             this.editedItem = Object.assign({}, item)
             this.dialog = true
         },
+        pagoProfessional(item) {
+            this.professional_id = item.id;
+            this.charge = item.charge;
+            if(item.charge == 'Cajero (a)'){
+                this.showCashier();
+            }
+            else{
+                this.showProfessional();
+            }
+        },
+
+        showProfessional(){
+             axios
+                .get('http://127.0.0.1:8000/api/professional-payment-show', {
+                    params: {
+                        branch_id: this.branch_id,
+                        professional_id: this.professional_id
+                    }
+                })
+                .then((response) => {
+                    this.professionalPayment = response.data;
+                    /*if(this.cars.length == 0){
+                        //this.editedItem.type = 'Adelanto';
+                        this.mostrarCars = false;
+                        //this.mostrarType = false;
+                    }else{
+                        this.mostrarCars = true;
+                        //this.mostrarType = true;
+                    }*/
+                });
+            this.dialogBarberoEncargado = true;
+        },
         deleteItem(item) {
             this.editedIndex = -1;
             this.editedItem.id = item.id;
@@ -461,33 +787,39 @@ export default {
             axios
                 .post('http://127.0.0.1:8000/api/professional-payment-destroy', request)
                 .then(() => {
-                    this.initialize();
                     this.showAlert("success", "Pago eliminado correctamente", 3000);
-                })
+                }).finally(() => {
+                    this.showProfessional();
+          });
             this.closeDelete()
         },
         close() {
-            this.dialog = false
+            this.dialog = false;
+            this.dialogOtros = false;
+            this.dialogCashierCars = false;
             this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem)
-                this.editedIndex = -1
             });
             this.editedIndex = -1;
             this.selectedOption = null;
             this.cars = [];
             this.selected2 = [];
-            this.professional_id = '';
             this.mostrarCars = false;
 
         },
+        barberoDelete(){
+            this.dialogBarberoEncargado = false;
+            this.professional_id = '';
+            this.charge = '';
+        },
         closeDelete() {
-            this.dialogDelete = false
+            this.dialogDelete = false;
+            this.dialogDeleteCashier = false;
             this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem)
                 this.editedIndex = -1;
                 this.cars = [];
                 this.selected = [];
-                this.professional_id = '';
                 this.mostrarCars = false;
             });
 
@@ -524,16 +856,119 @@ export default {
                     this.$nextTick(() => {
                         this.editedItem = Object.assign({}, this.defaultItem);
                     });
-
-                    this.initialize();
                     this.editedIndex = -1;
                     this.type = null;
                     this.cars = [];
                     this.selected2 = [];
-                    this.professional_id = '';
-                    this.mostrarCars = false;
+                    this.mostrarCars = false;                    
+                }).finally(() => {
                     this.showAlert("success", "Pago realizado correctamente", 3000);
+                    this.showProfessional();
+          });
+            //}
+            /*this.valid = false;
+            this.data.name = this.editedItem.name;
+            this.data.branch_id = this.branch_id
+
+            axios
+                .post('http://127.0.0.1:8000/api/workplace', this.data)
+                .then(() => {
+                    this.initialize();
+                    this.showAlert("success", "Puesto de trabajo editado correctamente", 3000);
+                })*/
+            this.close();
+        },
+        //cajeros
+        showCashier(){
+            axios
+                .get('http://127.0.0.1:8000/api/operation-tip', {
+                    params: {
+                        branch_id: this.branch_id,
+                        professional_id: this.professional_id
+                    }
                 })
+                .then((response) => {
+                    this.results1 = response.data;
+                });
+            this.dialogCashier = true;
+        },
+        cashierDelete(){
+            this.dialogCashier = false;
+            this.professional_id = '';
+        },
+        deleteItemCashier(item) {
+            this.editedIndex = -1;
+            this.editedItem.id = item.id;
+            this.dialogDeleteCashier = true;
+        },
+        deleteItemConfirmCashier() {
+            //this.results.splice(this.editedIndex, 1)
+            let request = {
+                id: this.editedItem.id
+            };
+            axios
+                .post('http://127.0.0.1:8000/api/operation-tip-destroy', request)
+                .then(() => {
+                }).finally(() => {
+                    this.showAlert("success", "Pago eliminado correctamente", 3000);
+                    this.showCashier();
+          });
+            this.closeDelete()
+        },
+        showAddOperationTip(){
+            axios
+                .get('http://127.0.0.1:8000/api/cashier-car-notpay', {
+                    params: {
+                        branch_id: this.branch_id
+                    }
+                })
+                .then((response) => {
+                    this.cars1 = response.data.cars;
+                });
+                this.dialogCashierCars = true;
+        },
+        saveCashier() {
+            this.valid = false;
+            /* if (this.editedIndex > -1) {
+                 this.data.id = this.editedItem.id;
+                 this.data.name = this.editedItem.name;
+                 axios
+                     .put('http://127.0.0.1:8000/api/workplace', this.data)
+                     .then(() => {
+                         this.initialize();
+                         this.showAlert("success", "Pago editado correctamente", 3000);
+                     })
+             } else {*/
+            console.log('this.ironValues');
+            console.log(this.selected2);
+            //console.log(this.selectedOption);
+            console.log(this.selected);
+            //const newArrayCar = this.selected.map(item => parseInt(item)); // Convertir a enteros si es necesario
+            //console.log('newArrayCar');
+            //console.log(newArrayCar);
+            this.data.professional_id = this.professional_id;
+            this.data.branch_id = this.branch_id;
+            this.data.car_ids = this.selected2;
+            this.data.amount = this.editedItem.amount;
+            this.data.coffe_percent = this.editedItem.coffe_percent;
+            this.data.type = this.editedItem.type;
+            console.log('this.data');
+            console.log(this.data);
+            axios
+                .post('http://127.0.0.1:8000/api/operation-tip', this.data)
+                .then(() => {
+                    this.$nextTick(() => {
+                        this.editedItem = Object.assign({}, this.defaultItem);
+                    });
+                    this.editedIndex = -1;
+                    this.type = null;
+                    this.cars = [];
+                    this.selected2 = [];
+                    this.mostrarCars = false;
+                }).finally(() => {
+                    this.showAlert("success", "Pago realizado correctamente", 3000);
+                    this.showCashier();
+          });
             //}
             /*this.valid = false;
             this.data.name = this.editedItem.name;

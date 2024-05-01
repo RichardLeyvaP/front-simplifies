@@ -68,11 +68,11 @@
                         prepend-icon="mdi-clock-time-eight" variant="underlined" :rules="requiredRules">
                       </v-text-field>
                     </v-col>
-                    <v-col cols="12" md="4">
+                    <!--<v-col cols="12" md="4">
                       <v-text-field v-model="editedItem.ponderation" clearable label="Ponderación"
                         prepend-icon="mdi-arrow-collapse-vertical" variant="underlined" :rules="pago">
                       </v-text-field>
-                    </v-col>
+                    </v-col>-->
                     <v-col cols="12" md="4">
                       <v-text-field v-model="editedItem.profit_percentaje"
                         clearable label="% Ganancia" prepend-icon="mdi-percent" variant="underlined"
@@ -218,7 +218,7 @@ export default {
       //{ title: 'Tipo', key: 'type_service' },
       { title: '% Ganancia', key: 'profit_percentaje' },
       { title: 'Duración', align: 'start', value: 'duration_service' },
-      { title: 'Ponderación', align: 'start', value: 'ponderation' },
+      //{ title: 'Ponderación', align: 'start', value: 'ponderation' },
       { title: 'Comentario', align: 'start', value: 'service_comment' },
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
@@ -246,7 +246,7 @@ export default {
       service_comment: '',
       image_service: '',
       id: '',
-      ponderation: 0
+      //ponderation: 0
     },
     data: {},
 
@@ -259,7 +259,7 @@ export default {
       duration_service: '',
       service_comment: '',
       image_service: '',
-      ponderation: 0
+      //ponderation: 0
     },
     nameRules: [
       (v) => !!v || "El campo es requerido",

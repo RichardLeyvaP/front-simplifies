@@ -251,13 +251,20 @@
   <v-divider></v-divider>
   <v-card-text>
     <v-row>
-      <v-col cols="12" sm="6" class="text-center">
-        <p><strong>Último look:</strong></p>
-        <v-card elevation="3" class="mx-auto" max-width="100" max-height="100">
-                  <v-img :src="'http://127.0.0.1:8000/api/images/' + details.imageLook" alt="image"></v-img>
+      <v-col cols="12" sm="3" class="text-left">
+        <v-card elevation="3" max-width="130" max-height="130">
+          <v-img class="d-flex align-end text-white" height="130" :src="'http://127.0.0.1:8000/api/images/' + details.imageLook" cover>
+    <v-card-title class="pa-0">
+        <v-chip color="">
+            <v-icon icon="mdi-camera" class="mr-1"></v-icon>
+            <span class="caption">{{ nameClient }}</span>
+        </v-chip>
+    </v-card-title>
+</v-img>
+                  <!--<v-img :src="'http://127.0.0.1:8000/api/images/' + details.imageLook" alt="image"></v-img>-->
                 </v-card>
       </v-col>
-      <v-col cols="12" sm="6">
+      <v-col cols="12" sm="6" class="text-left">
         <p><strong>Última vez atendido por:</strong> {{ details.professionalName }}</p>
         <p><strong>Cantidad de Visitas:</strong> {{ details.cantVisit }}</p>
         <p><strong>Última visita:</strong> {{ details.lastVisit }}</p>
@@ -478,6 +485,7 @@ export default {
       name: ''
     },
     details: '',
+    nameClient: '',
     nameRules: [
         (v) => !!v || "El campo es requerido",
         (v) => (v && v.length <= 50) ||
@@ -545,6 +553,7 @@ export default {
     {
       const selectedUser = this.users.find(user => user.user_id === selectedItem);
       this.details = selectedUser.details;
+      this.nameClient = selectedUser.name;
     console.log('this.details');
     console.log(this.details);
   }
@@ -764,6 +773,7 @@ export default {
     closestore() {
       this.dialogAddCardGift = false;
       this.details = '';
+      this.nameClient = '';
       this.$nextTick(() => {
         this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser)
       })
@@ -782,6 +792,7 @@ export default {
           this.$nextTick(() => {
             this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser);
             this.details = '';
+            this.nameClient = '';
           });
           this.dialogAddCardGift = false;
         }).finally(() => {
@@ -827,3 +838,9 @@ export default {
   },
 }
 </script>
+
+<style>
+.caption {
+  font-size: 11px; /* Ajusta el tamaño de fuente según tu preferencia */
+}
+</style>
