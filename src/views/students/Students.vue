@@ -17,16 +17,15 @@
 <v-card elevation="6" class="mx-5">
 <v-toolbar color="#F18254">
  <v-row align="center">
-   <v-col cols="12" md="4" class="grow ml-4">
-     <span class="text-subtitle-1"> <strong>Listado de Estudiantes</strong></span>
+   <v-col cols="12" md="8" class="grow ml-4">
+     <span class="text-subtitle-1 "> <strong>Listado de Estudiantes</strong></span>
    </v-col>
-   <v-col cols="12" md="4" class="mr-12"></v-col>
-   <v-col cols="12" md="3" class="pl-12 ">
+   <v-col cols="12" md="3">
      
      <v-dialog v-model="dialog" max-width="1000px">
        <template v-slot:activator="{ props }">
 
-         <v-btn v-bind="props" class="text-subtitle-1  ml-12  " color="#E7E9E9" variant="flat" elevation="2"
+         <v-btn v-bind="props" class="text-subtitle-1 ml-12" color="#E7E9E9" variant="flat" elevation="2"
            prepend-icon="mdi-plus-circle">
            Agregar Estudiante
          </v-btn>
@@ -142,6 +141,14 @@
    </v-avatar>
    {{ item.name }}
    </template>
+   <template v-slot:item.qr_url="{ item }">
+            <!-- Verifica si image_url cumple las condiciones -->
+            <!--<v-icon color="green" v-if="item.image_url && item.image_url !== 'image/default.png'" @click="openModal(item.image_url)">
+              mdi-eye
+            </v-icon>-->
+              <v-btn density="comfortable" icon="mdi-eye" color="green" v-if="item.qr_url && item.qr_url !== 'image/default.png'" @click="openModal(item.qr_url)" variant="tonal"
+                  elevation="1" class="mr-1 mt-1 mb-1" title="Ver detalles"></v-btn>
+            </template>
    <template v-slot:item.actions="{ item }">
      <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
        mdi-pencil
@@ -156,6 +163,21 @@
    </template>
  </v-data-table>
 </v-card-text>
+<!-- Modal para mostrar la imagen -->
+<v-dialog v-model="dialogPhoto" persistent max-width="600px">
+        <v-card>
+              <v-toolbar color="#F18254">
+                <span class="text-subtitle-2 ml-4"> Qr</span> <v-spacer></v-spacer>
+                <v-btn  @click="dialogPhoto = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+              </v-toolbar>
+        
+          <v-card-text>
+            <v-img :src="selectedImageUrl" aspect-ratio="1.5" contain fill-height></v-img>
+          </v-card-text>
+        </v-card>
+    </v-dialog>
 </v-card>
 
 
@@ -183,12 +205,14 @@ editando: false,
 dialog: false,
 message_delete: true,
 dialogDelete: false,
+dialogPhoto: false,
 headers: [
  { title: 'Nombre', key: 'name' },
  { title: 'Primer Apellido', key: 'surname' },
  { title: 'Segundo Apellido', key: 'second_surname' },
  { title: 'Correo', key: 'email' },
  { title: 'Teléfono', key: 'phone' },
+ { title: 'Qr', key: 'qr_url'},
  { title: 'Acciones', key: 'actions', sortable: false },
 ],
 results: [],
@@ -253,6 +277,19 @@ this.initialize()
 },
 
 methods: {
+  openModal(imageUrl) {
+      
+      var img = new Image();
+      img.src = 'http://127.0.0.1:8000/api/images/' + imageUrl;
+      img.onload = () => {
+      this.selectedImageUrl = 'http://127.0.0.1:8000/api/images/' + imageUrl; 
+      };
+      img.onerror = () => {
+        this.selectedImageUrl = '';
+      };
+     // alert(this.selectedImageUrl)// Establece la imagen seleccionada
+      this.dialogPhoto = true; // Abre el modal
+    },
   imagenDisponible() {
       if (this.imgedit !== undefined && this.imgedit !== '') {
       
