@@ -75,7 +75,9 @@
                </v-file-input>
              </v-col>
              <v-col cols="12" md="6">
-               <img v-if="imagenDisponible()" :src="imgedit" height="70" width="70">
+              <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
+                        <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
+                      </v-card>
              </v-col>
            </v-row>
          <v-divider></v-divider>
@@ -252,13 +254,15 @@ this.initialize()
 
 methods: {
   imagenDisponible() {
-        if (this.imgedit !== undefined && this.imgedit !== '') {
-            // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
-            let img = new Image();
-            img.src = this.imgedit;
-            return img.complete; // Devuelve true si la imagen está disponible
-        }
-        return false; // Si la URL de la imagen no está definida o está vacía, devuelve false
+      if (this.imgedit !== undefined && this.imgedit !== '') {
+      
+        // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
+        let img = new Image();
+        img.src = this.imgedit;
+
+        return true; // Devuelve true si la imagen está disponible
+      }
+      return false; // Si la URL de la imagen no está definida o está vacía, devuelve false*/
     },
 showAlert(sb_type,sb_message, sb_timeout)
 {    
@@ -312,8 +316,15 @@ onFileSelected(event) {
    reader.readAsDataURL(file);
  },
 editItem(item) {
- this.file = '';
- this.imgMiniatura = 'http://127.0.0.1:8000/api/images/'+item.student_image;
+  this.file = null;
+      var img = new Image();
+      img.src = 'http://127.0.0.1:8000/api/images/' + item.student_image;
+      img.onload = () => {
+        this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.student_image;
+      };
+      img.onerror = () => {
+        this.imgMiniatura = '';
+      };
  this.editedIndex = 1;
  this.editedItem = Object.assign({}, item)
  this.dialog = true;
