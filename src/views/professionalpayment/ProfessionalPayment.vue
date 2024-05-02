@@ -533,9 +533,9 @@ export default {
             { title: 'Acciones', value: 'actions' },
         ],
         headers3: [
-            { title: 'Fecha', value: 'date' },
-            { title: 'Pagado ($)', value: 'amount' },
-            { title: 'Tipo de pago', value: 'type' },
+            { title: 'Fecha', key: 'date' },
+            { title: 'Pagado ($)', key: 'amount' },
+            { title: 'Tipo de pago', key: 'type' },
             { title: 'Acciones', value: 'actions' },
         ],
         headers5: [
