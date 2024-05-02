@@ -398,7 +398,7 @@ export default {
     closePermission() {
       this.dialogAddPermission = false;
       this.permission_id = '';
-      this.showPermission(this.chargeSelect);
+      //this.showPermission(this.chargeSelect);
     },
     showPermission(item) {
       this.chargeSelect = item;
@@ -469,9 +469,9 @@ export default {
     },
     closerequestPermission() {
       this.dialogDeletePermission = false;
-      this.charge_id = '',
-         this.permission_id = '',
-      this.showPermission(this.chargeSelect)
+      this.charge_id = '';
+         this.permission_id = '';
+      //this.showPermission(this.chargeSelect)
     },
   },
 }
