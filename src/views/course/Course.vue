@@ -639,6 +639,7 @@ export default {
     enrollments : [],
     editedIndex: 1,
     users: [],
+    students: [],
     file: '',
     imgMiniatura: '',
     editedItem: {

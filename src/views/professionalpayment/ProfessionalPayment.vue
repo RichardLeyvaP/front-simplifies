@@ -23,7 +23,7 @@
                 </v-col>
                 <v-col cols="12" md="4"></v-col>
                 <v-col cols="12" md="2">
-                            <v-dialog v-model="dialog" max-width="95%" max-height="100%" transition="dialog-bottom-transition">
+                    <v-dialog v-model="dialog" max-width="95%" max-height="100%" transition="dialog-bottom-transition">
                         <v-card>
                             <v-toolbar color="#F18254">
                                 <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>                                
@@ -176,24 +176,64 @@
             <v-toolbar color="#F18254">
                 <span class="text-subtitle-1 ml-4">Pagos realizados</span>
                 <v-spacer></v-spacer>
-                <v-btn class="text-subtitle-1  ml-12 " color="#E7E9E9" variant="flat"
+                <v-btn class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat" elevation="2"
+                                        prepend-icon="mdi-file-excel" @click="exportToExcelProfessional">
+                                        Exportar a Excel
+                                    </v-btn>
+                <v-btn class="text-subtitle-1  ml-1 " color="#E7E9E9" variant="flat"
                                     elevation="2" prepend-icon="mdi-plus-circle" @click="showAddPago()">
                                     Nuevo Pago
                                 </v-btn>
             </v-toolbar>
-            <v-card-text class="mt-2 mb-2">
+            <v-container>
+            <v-row>
+                                <!-- Primera columna -->
+                                <v-col cols="12" sm="6" md="3">
+                                    <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40"
+                                        transition="scale-transition" offset-y min-width="290px">
+                                        <template v-slot:activator="{ props }">
+                                            <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined"
+                                                append-inner-icon="mdi-calendar" label="Fecha inicial"></v-text-field>
+                                        </template>
+                                        <v-locale-provider locale="es">
+                                            <v-date-picker header="Calendario" title="Seleccione la fecha"
+                                                color="orange lighten-2" :modelValue="getDate"
+                                                @update:model-value="updateDate" format="yyyy-MM-dd"
+                                                :max="dateFormatted2"></v-date-picker>
+                                        </v-locale-provider>
+                                    </v-menu>
+                                </v-col>
+                                <!-- Segunda columna -->
+                                <v-col cols="12" sm="6" md="3">
+                                    <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40"
+                                        transition="scale-transition" offset-y min-width="290px">
+                                        <template v-slot:activator="{ props }">
+                                            <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
+                                                append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
+                                        </template>
+                                        <v-locale-provider locale="es">
+                                            <v-date-picker header="Calendario" title="Seleccione la fecha"
+                                                color="orange lighten-2" :modelValue="getDate2"
+                                                @update:model-value="updateDate2" format="yyyy-MM-dd"
+                                                :min="dateFormatted"></v-date-picker>
+                                        </v-locale-provider>
+                                    </v-menu>
+                                </v-col>
+                                <v-col cols="12" md="1">
+                                    <v-btn icon @click="showProfessionalPeriodo()" color="#F18254">
+                                        <v-icon>mdi-magnify</v-icon></v-btn>
+                                </v-col>
+                            </v-row>
+                            </v-container>
+            <v-card-text>
                 <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar" single-line
                 hide-details></v-text-field>
                 <v-data-table :headers="headers3" :items="professionalPayment" :search="search3" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
-
-                <!--<template v-slot:item.name="{ item }">
-
-                        <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                        <v-img :src="'http://127.0.0.1:8000/api/images/'+item.image_url" alt="image"></v-img>
-                        </v-avatar>
-                        {{ item.name+' '+item.surname+' '+item.second_surname}}
-                    </template>-->
-
+                    <template v-slot:item.date="{ item }">
+                                            <span :class="{'bold-row': item.date == 'Total'}">
+                                            {{ item.date }}
+                                            </span>
+                                        </template> 
                     <template v-slot:item.actions="{ item }">
                         <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4"
                             variant="tonal" elevation="1" title="Eliminar Pago a profesional"></v-btn>
@@ -253,11 +293,56 @@
             <v-toolbar color="#F18254">
                 <span class="text-subtitle-1 ml-4">Pagos realizados cajero (a)</span>
                 <v-spacer></v-spacer>
-                <v-btn class="text-subtitle-1  ml- " color="#E7E9E9" variant="flat"
+                <v-btn class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat" elevation="2"
+                                        prepend-icon="mdi-file-excel" @click="exportToExcelCashier">
+                                        Exportar a Excel
+                                    </v-btn>
+                <v-btn class="text-subtitle-1  ml-1 " color="#E7E9E9" variant="flat"
                                     elevation="2" prepend-icon="mdi-plus-circle" @click="showAddOperationTip()">
                                     Nuevo Pago
                                 </v-btn>
+
             </v-toolbar>
+            <v-container>
+            <v-row>
+                                <!-- Primera columna -->
+                                <v-col cols="12" sm="6" md="3">
+                                    <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40"
+                                        transition="scale-transition" offset-y min-width="290px">
+                                        <template v-slot:activator="{ props }">
+                                            <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined"
+                                                append-inner-icon="mdi-calendar" label="Fecha inicial"></v-text-field>
+                                        </template>
+                                        <v-locale-provider locale="es">
+                                            <v-date-picker header="Calendario" title="Seleccione la fecha"
+                                                color="orange lighten-2" :modelValue="getDate"
+                                                @update:model-value="updateDate" format="yyyy-MM-dd"
+                                                :max="dateFormatted2"></v-date-picker>
+                                        </v-locale-provider>
+                                    </v-menu>
+                                </v-col>
+                                <!-- Segunda columna -->
+                                <v-col cols="12" sm="6" md="3">
+                                    <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40"
+                                        transition="scale-transition" offset-y min-width="290px">
+                                        <template v-slot:activator="{ props }">
+                                            <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
+                                                append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
+                                        </template>
+                                        <v-locale-provider locale="es">
+                                            <v-date-picker header="Calendario" title="Seleccione la fecha"
+                                                color="orange lighten-2" :modelValue="getDate2"
+                                                @update:model-value="updateDate2" format="yyyy-MM-dd"
+                                                :min="dateFormatted"></v-date-picker>
+                                        </v-locale-provider>
+                                    </v-menu>
+                                </v-col>
+                                <v-col cols="12" md="1">
+                                    <v-btn icon @click="showPay()" color="#F18254">
+                                        <v-icon>mdi-magnify</v-icon></v-btn>
+                                </v-col>
+                            </v-row>
+                            </v-container>
                     <v-card-text class="mt-1 mb-1">
                             <v-row>
                                 <v-col cols="12">
@@ -269,7 +354,11 @@
                                             :items="results1" :search="search5" class="elevation-2"
                                             no-results-text="No hay datos disponibles"
                                             no-data-text="No hay datos disponibles">
-                                                            
+                                            <template v-slot:item.date="{ item }">
+                                            <span :class="{'bold-row': item.date == 'Total'}">
+                                            {{ item.date }}
+                                            </span>
+                                        </template>            
                                     <template v-slot:item.actions="{ item }">
                                         <v-btn density="comfortable" icon="mdi-delete" @click="deleteItemCashier(item)" color="red-darken-4"
                                             variant="tonal" elevation="1" title="Eliminar Pago a profesional"></v-btn>
@@ -310,8 +399,8 @@
                         </v-card>
             </v-dialog>
 
-            <v-dialog v-model="dialogCashierCars" max-width="95%" max-height="100%" transition="dialog-bottom-transition">
-                <v-card>
+                <v-dialog v-model="dialogCashierCars" max-width="95%" max-height="100%" transition="dialog-bottom-transition">
+                    <v-card>
                             <v-toolbar color="#F18254">
                                 <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
                             </v-toolbar>
@@ -393,13 +482,15 @@
                                 </v-form>
                             </v-card-text>
                         </v-card>
-                    </v-dialog>
+                </v-dialog>
     </v-card>
 </template>
 
 <script>
 
 import axios from "axios";
+import { format } from "date-fns";
+import * as XLSX from 'xlsx';
 import LocalStorageService from "@/LocalStorageService";
 export default {
     data: () => ({
@@ -410,6 +501,10 @@ export default {
         sb_timeout: 2000,
         sb_title: '',
         sb_icon: '',
+        menu: false,
+        menu2: false,
+        input: null,
+        input2: null,
         branch_id: '',
         charge: '',
         business_id: '',
@@ -511,7 +606,27 @@ export default {
         },
         ironValues() {
             return this.selected2.map(selection => selection.id);
-        }
+        },
+        dateFormatted() {
+            const date = this.input ? new Date(this.input) : new Date();
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            return `${year}-${month}-${day}`;
+        },
+        dateFormatted2() {
+            const date = this.input2 ? new Date(this.input2) : new Date();
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            return `${year}-${month}-${day}`;
+        },
+        getDate() {
+            return this.input ? new Date(this.input) : new Date();
+        },
+        getDate2() {
+            return this.input2 ? new Date(this.input2) : new Date();
+        },
     },
 
     watch: {
@@ -569,6 +684,14 @@ export default {
     },
 
     methods: {
+        updateDate(val) {
+            this.input = val;
+            this.menu = false;
+        },
+        updateDate2(val) {
+            this.input2 = val;
+            this.menu2 = false;
+        },
         totalMount() {
             let selectedItems;
             if (this.selected2.length == 0) {
@@ -774,6 +897,22 @@ export default {
                 });
             this.dialogBarberoEncargado = true;
         },
+        showProfessionalPeriodo(){
+            const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+            const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+             axios
+                .get('http://127.0.0.1:8000/api/professional-payment-periodo', {
+                    params: {
+                        branch_id: this.branch_id,
+                        professional_id: this.professional_id,
+                        startDate: startDate,
+                        endDate: endDate
+                    }
+                })
+                .then((response) => {
+                    this.professionalPayment = response.data;
+                });
+        },
         deleteItem(item) {
             this.editedIndex = -1;
             this.editedItem.id = item.id;
@@ -878,6 +1017,46 @@ export default {
                 })*/
             this.close();
         },
+        exportToExcelProfessional() {
+            console.log('Entra aqui a exportar professional');
+            // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
+            let rows = [];
+
+            // Construye un objeto para los encabezados basado en la estructura de 'headers'
+            let headerRow = {};
+            this.headers3.forEach(header => {
+                headerRow[header.key] = header.title; // Usa 'key' para el mapeo y 'title' para el texto del encabezado
+            });
+            rows.push(headerRow);
+
+            // Ahora, mapea los datos de los items para que coincidan con los encabezados
+            this.professionalPayment.forEach(item => {
+                let rowData = {};
+                this.headers3.forEach(header => {
+                    rowData[header.key] = item[header.key] || ''; // Asegura que cada celda se mapee correctamente; usa '' para datos faltantes
+                });
+                rows.push(rowData);
+            });
+
+            let nameReport = {
+                // eslint-disable-next-line vue/no-use-computed-property-like-method
+                date: '',
+                type: '',
+                amount: ''
+            };
+            rows.push(nameReport);
+
+            // Convierte la matriz de filas en una hoja de trabajo Excel
+            const ws = XLSX.utils.json_to_sheet(rows, { skipHeader: true }); // 'skipHeader: true' porque ya agregamos manualmente los encabezados
+
+            // Crea un nuevo libro de trabajo y añade la hoja de trabajo con los datos
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Report" + format(new Date(), "yyyy-MM-dd"));
+
+            // Escribe el libro de trabajo a un archivo y desencadena la descarga
+            //XLSX.writeFile(wb, "report.xlsx");
+            XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
+        },
         //cajeros
         showCashier(){
             axios
@@ -891,6 +1070,27 @@ export default {
                     this.results1 = response.data;
                 });
             this.dialogCashier = true;
+        },
+        showPay() {
+            console.log('Entra aqui a pagos realizados');
+            //this.editedIndex1 = 1;
+            //this.state=true;
+            //this.input2 = new Date();
+            //this.input3 = new Date()
+            const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+            const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+            axios
+                .get('http://127.0.0.1:8000/api/operation-tip-periodo', {
+                    params: {
+                        branch_id: this.branch_id,
+                        professional_id: this.professional_id,
+                        startDate: startDate,
+                        endDate: endDate
+                    }
+                })
+                .then((response) => {
+                    this.results1 = response.data;
+                });
         },
         cashierDelete(){
             this.dialogCashier = false;
@@ -981,6 +1181,47 @@ export default {
                     this.showAlert("success", "Puesto de trabajo editado correctamente", 3000);
                 })*/
             this.close();
+        },
+        exportToExcelCashier() {
+            console.log('Entra aqui a exportar');
+            // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
+            let rows = [];
+
+            // Construye un objeto para los encabezados basado en la estructura de 'headers'
+            let headerRow = {};
+            this.headers5.forEach(header => {
+                headerRow[header.key] = header.title; // Usa 'key' para el mapeo y 'title' para el texto del encabezado
+            });
+            rows.push(headerRow);
+
+            // Ahora, mapea los datos de los items para que coincidan con los encabezados
+            this.results1.forEach(item => {
+                let rowData = {};
+                this.headers5.forEach(header => {
+                    rowData[header.key] = item[header.key] || ''; // Asegura que cada celda se mapee correctamente; usa '' para datos faltantes
+                });
+                rows.push(rowData);
+            });
+
+            let nameReport = {
+                // eslint-disable-next-line vue/no-use-computed-property-like-method
+                coffe: 'Pagos realizados a cajero(a)s', // Asume que 'name' es una de tus claves; ajusta según sea necesario
+                date: '',
+                type: '',
+                amount: ''
+            };
+            rows.push(nameReport);
+
+            // Convierte la matriz de filas en una hoja de trabajo Excel
+            const ws = XLSX.utils.json_to_sheet(rows, { skipHeader: true }); // 'skipHeader: true' porque ya agregamos manualmente los encabezados
+
+            // Crea un nuevo libro de trabajo y añade la hoja de trabajo con los datos
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Report" + format(new Date(), "yyyy-MM-dd"));
+
+            // Escribe el libro de trabajo a un archivo y desencadena la descarga
+            //XLSX.writeFile(wb, "report.xlsx");
+            XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
         },
     },
 }
