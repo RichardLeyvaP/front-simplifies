@@ -894,7 +894,7 @@ export default {
       this.$nextTick(() => {
         this.editedStudent = Object.assign({}, this.defaultStudent)
       })
-      this.showStudents(this.courseSelect)
+      //this.showStudents(this.courseSelect)
     },
     saveS() {
       this.valid = false,
@@ -944,7 +944,7 @@ export default {
       this.$nextTick(() => {
         this.editedStudent = Object.assign({}, this.defaultStudent)
       })
-      this.showStudents(this.courseSelect)
+      //this.showStudents(this.courseSelect)
     },
     requestDelete() {
       let request = {
@@ -1191,7 +1191,7 @@ export default {
       this.product_id = '';
       this.student_id = '';
       this.cant = '';
-      this.showProducts(this.productSelect)
+      //this.showProducts(this.productSelect)
     },
     saveProduct() {
       if (this.editedIndex == 3) {
@@ -1247,7 +1247,7 @@ export default {
     closerequestProduct() {
       this.dialogRequestProduct = false;
       this.productsale_id = '';
-      this.showProducts(this.productSelect)
+      //this.showProducts(this.productSelect)
     },
     deleteProduct() {
       let request = {
