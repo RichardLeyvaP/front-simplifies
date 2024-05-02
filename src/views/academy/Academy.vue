@@ -695,8 +695,8 @@
     },
     closestore() {
       this.dialogAddStore = false;
-      this.store_id = '',
-      this.showStores(this.enrollmentSelect)
+      this.store_id = '';
+      //this.showStores(this.enrollmentSelect)
     },
     saveStore() {
       this.valid = false,
@@ -722,7 +722,7 @@
     closerequestStore() {
       this.dialogRequestStore = false;
       this.store_id = '';
-      this.showStores(this.enrollmentSelect)
+      //this.showStores(this.enrollmentSelect)
     },
     storeDelete() {
       let request = {

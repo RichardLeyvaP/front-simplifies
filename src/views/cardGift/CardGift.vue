@@ -705,13 +705,13 @@ export default {
         this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser)
       })
       this.dialogRequestStore = false;
-      this.showCardGifts(this.cardSelect)
+      //this.showCardGifts(this.cardSelect)
     },
     closeDeletecardgiftUser() {
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
       })
-      this.initialize();
+      //this.initialize();
       this.dialogDelete = false;
     },
     requestDelete() {
@@ -777,7 +777,7 @@ export default {
       this.$nextTick(() => {
         this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser)
       })
-      this.showCardGifts(this.cardSelect)
+      //this.showCardGifts(this.cardSelect)
     },
     saveStore() {
       this.valid = false,
