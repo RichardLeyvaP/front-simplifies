@@ -738,7 +738,7 @@ export default {
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
       })
-      this.showStores(this.branchSelect)
+      //this.showStores(this.branchSelect)
     },
     closeDelete() {
       this.dialogDelete = false;
@@ -933,14 +933,14 @@ export default {
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
       })
-      this.showProfessionals(this.branchSelect)
+      //this.showProfessionals(this.branchSelect)
     },
     closerequestStore() {
       this.dialogRequestStore = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
       })
-      this.showStores(this.branchSelect)
+      //this.showStores(this.branchSelect)
     },
     //Asociados
     showAssociates(item) {
@@ -969,7 +969,7 @@ export default {
     closeassociate() {
       this.dialogAddAssociate = false;
       this.associated_id = '';
-      this.showAssociates(this.branchSelect)
+      //this.showAssociates(this.branchSelect)
     },
     saveAssociated() {
       this.valid = false,
@@ -993,7 +993,7 @@ export default {
     closerequestAssociate() {
       this.dialogRequestAssociate = false;
       this.associated_id = '';
-      this.showAssociates(this.branchSelect)
+      //this.showAssociates(this.branchSelect)
     },
     associateDelete() {
       let request = {
