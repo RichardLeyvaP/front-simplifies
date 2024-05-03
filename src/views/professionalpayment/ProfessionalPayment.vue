@@ -26,7 +26,7 @@
                     <v-dialog v-model="dialog" max-width="95%" max-height="100%" transition="dialog-bottom-transition">
                         <v-card>
                             <v-toolbar color="#F18254">
-                                <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>                                
+                                <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
                             </v-toolbar>
                             <v-card-text>
                                 <v-form ref="form" v-model="valid" enctype="multipart/form-data">
@@ -56,7 +56,8 @@
                                             </v-col>
                                             <v-col cols="12" md="9">
                                                 <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
-                                                    :subtitle="totalMount()" append-icon="mdi-check" v-if="this.mostrarCars">
+                                                    :subtitle="totalMount()" append-icon="mdi-check"
+                                                    v-if="this.mostrarCars">
 
                                                     <template v-slot:prepend>
                                                         <v-avatar color="blue-darken-2">
@@ -64,8 +65,9 @@
                                                         </v-avatar>
                                                     </template>
                                                 </v-card>
-                                                <v-text-field v-model="editedItem.amount" clearable label="Monto"
-                                                    prepend-icon="mdi-cash" variant="underlined" :rules="pago" v-show="!this.mostrarCars">
+                                                <v-text-field v-model="amountFromMethod1" clearable label="Monto"
+                                                    prepend-icon="mdi-cash" variant="underlined" :rules="pago"
+                                                    v-show="!this.mostrarCars">
                                                 </v-text-field>
                                             </v-col>
                                         </v-row>
@@ -90,7 +92,7 @@
                                                         {{ item.clientName }}
                                                     </template>
                                                     <template v-slot:item.pay="{ item }">
-                                                        {{ item.totalServices + item.tip}}
+                                                        {{ item.totalServices + item.tip }}
                                                     </template>
                                                 </v-data-table>
                                             </v-col>
@@ -102,8 +104,7 @@
                                         <v-btn color="#E7E9E9" variant="flat" @click="close">
                                             Cancelar
                                         </v-btn>
-                                        <v-btn color="#F18254" variant="flat" @click="save"
-                                            :disabled="!valid">
+                                        <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
                                             Pagar
                                         </v-btn>
                                     </v-card-actions>
@@ -138,9 +139,10 @@
         <v-card-text>
             <v-row>
                 <v-col cols="12" sm="12" md="4">
-                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
-                        label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
-                        variant="underlined" @update:model-value="initialize()"></v-autocomplete>
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+                        v-if="this.mostrarFila" clearable label="Seleccione una Sucursal" prepend-icon="mdi-store"
+                        item-title="name" item-value="id" variant="underlined"
+                        @update:model-value="initialize()"></v-autocomplete>
                 </v-col>
             </v-row>
             <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
@@ -173,242 +175,243 @@
         <!--Barbero y encargado-->
         <v-dialog v-model="dialogBarberoEncargado" fullscreen transition="dialog-bottom-transition">
             <v-card>
-            <v-toolbar color="#F18254">
-                <span class="text-subtitle-1 ml-4">Pagos realizados</span>
-                <v-spacer></v-spacer>
-                <v-btn class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat" elevation="2"
-                                        prepend-icon="mdi-file-excel" @click="exportToExcelProfessional">
-                                        Exportar a Excel
-                                    </v-btn>
-                <v-btn class="text-subtitle-1  ml-1 " color="#E7E9E9" variant="flat"
-                                    elevation="2" prepend-icon="mdi-plus-circle" @click="showAddPago()">
-                                    Nuevo Pago
-                                </v-btn>
-            </v-toolbar>
-            <v-container>
-            <v-row>
-                                <!-- Primera columna -->
-                                <v-col cols="12" sm="6" md="3">
-                                    <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40"
-                                        transition="scale-transition" offset-y min-width="290px">
-                                        <template v-slot:activator="{ props }">
-                                            <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined"
-                                                append-inner-icon="mdi-calendar" label="Fecha inicial"></v-text-field>
-                                        </template>
-                                        <v-locale-provider locale="es">
-                                            <v-date-picker header="Calendario" title="Seleccione la fecha"
-                                                color="orange lighten-2" :modelValue="getDate"
-                                                @update:model-value="updateDate" format="yyyy-MM-dd"
-                                                :max="dateFormatted2"></v-date-picker>
-                                        </v-locale-provider>
-                                    </v-menu>
-                                </v-col>
-                                <!-- Segunda columna -->
-                                <v-col cols="12" sm="6" md="3">
-                                    <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40"
-                                        transition="scale-transition" offset-y min-width="290px">
-                                        <template v-slot:activator="{ props }">
-                                            <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
-                                                append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
-                                        </template>
-                                        <v-locale-provider locale="es">
-                                            <v-date-picker header="Calendario" title="Seleccione la fecha"
-                                                color="orange lighten-2" :modelValue="getDate2"
-                                                @update:model-value="updateDate2" format="yyyy-MM-dd"
-                                                :min="dateFormatted"></v-date-picker>
-                                        </v-locale-provider>
-                                    </v-menu>
-                                </v-col>
-                                <v-col cols="12" md="1">
-                                    <v-btn icon @click="showProfessionalPeriodo()" color="#F18254">
-                                        <v-icon>mdi-magnify</v-icon></v-btn>
-                                </v-col>
-                            </v-row>
-                            </v-container>
-            <v-card-text>
-                <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar" single-line
-                hide-details></v-text-field>
-                <v-data-table :headers="headers3" :items="professionalPayment" :search="search3" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
-                    <template v-slot:item.date="{ item }">
-                                            <span :class="{'bold-row': item.date == 'Total'}">
-                                            {{ item.date }}
-                                            </span>
-                                        </template> 
-                    <template v-slot:item.actions="{ item }">
-                        <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4"
-                            variant="tonal" elevation="1" title="Eliminar Pago a profesional"></v-btn>
-                    </template>
+                <v-toolbar color="#F18254">
+                    <span class="text-subtitle-1 ml-4">Pagos realizados</span>
+                    <v-spacer></v-spacer>
+                    <v-btn class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat" elevation="2"
+                        prepend-icon="mdi-file-excel" @click="exportToExcelProfessional">
+                        Exportar a Excel
+                    </v-btn>
+                    <v-btn class="text-subtitle-1  ml-1 " color="#E7E9E9" variant="flat" elevation="2"
+                        prepend-icon="mdi-plus-circle" @click="showAddPago()">
+                        Nuevo Pago
+                    </v-btn>
+                </v-toolbar>
+                <v-container>
+                    <v-row>
+                        <!-- Primera columna -->
+                        <v-col cols="12" sm="6" md="3">
+                            <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40"
+                                transition="scale-transition" offset-y min-width="290px">
+                                <template v-slot:activator="{ props }">
+                                    <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined"
+                                        append-inner-icon="mdi-calendar" label="Fecha inicial"></v-text-field>
+                                </template>
+                                <v-locale-provider locale="es">
+                                    <v-date-picker header="Calendario" title="Seleccione la fecha"
+                                        color="orange lighten-2" :modelValue="getDate" @update:model-value="updateDate"
+                                        format="yyyy-MM-dd" :max="dateFormatted2"></v-date-picker>
+                                </v-locale-provider>
+                            </v-menu>
+                        </v-col>
+                        <!-- Segunda columna -->
+                        <v-col cols="12" sm="6" md="3">
+                            <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40"
+                                transition="scale-transition" offset-y min-width="290px">
+                                <template v-slot:activator="{ props }">
+                                    <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
+                                        append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
+                                </template>
+                                <v-locale-provider locale="es">
+                                    <v-date-picker header="Calendario" title="Seleccione la fecha"
+                                        color="orange lighten-2" :modelValue="getDate2"
+                                        @update:model-value="updateDate2" format="yyyy-MM-dd"
+                                        :min="dateFormatted"></v-date-picker>
+                                </v-locale-provider>
+                            </v-menu>
+                        </v-col>
+                        <v-col cols="12" md="1">
+                            <v-btn icon @click="showProfessionalPeriodo()" color="#F18254">
+                                <v-icon>mdi-magnify</v-icon></v-btn>
+                        </v-col>
+                    </v-row>
+                </v-container>
+                <v-card-text>
+                    <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar"
+                        single-line hide-details></v-text-field>
+                    <v-data-table :headers="headers3" :items="professionalPayment" :search="search3" class="elevation-1"
+                        :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
+                        no-data-text="No hay datos disponibles">
+                        <template v-slot:item.date="{ item }">
+                            <span :class="{ 'bold-row': item.date == 'Total' }">
+                                {{ item.date }}
+                            </span>
+                        </template>
+                        <template v-slot:item.actions="{ item }">
+                            <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)"
+                                color="red-darken-4" variant="tonal" elevation="1"
+                                title="Eliminar Pago a profesional"></v-btn>
+                        </template>
 
-                </v-data-table>
-            </v-card-text>
-            <v-divider></v-divider>
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="#E7E9E9" variant="flat" @click="barberoDelete">
-                Volver
-                </v-btn>
-            </v-card-actions>
+                    </v-data-table>
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="#E7E9E9" variant="flat" @click="barberoDelete">
+                        Volver
+                    </v-btn>
+                </v-card-actions>
             </v-card>
         </v-dialog>
-            <v-dialog v-model="dialogOtros" max-width="600px">
-                <v-card>
-                    <v-toolbar color="#F18254">
+        <v-dialog v-model="dialogOtros" max-width="600px">
+            <v-card>
+                <v-toolbar color="#F18254">
                     <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
-                    </v-toolbar>
-                    <v-card-text>
+                </v-toolbar>
+                <v-card-text>
                     <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-                    <v-container>
-                        <v-row>
-                            <v-col cols="12" md="6">
-                                                    <v-select label="Tipo de pago" v-model="editedItem.type"
-                                                        :items="['Adelanto', 'Quincena', 'Mes']"
-                                                        :item-value="['Adelanto', 'Quincena', 'Mes']" variant="underlined"
-                                                        :rules="selectRules"
-                                                        prepend-icon="mdi-check-circle"></v-select><!--:disabled="!this.mostrarType"-->
-                                                </v-col>
-                                                <v-col cols="12" md="6">
-                                                    <v-text-field v-model="editedItem.amount" clearable label="Monto"
-                                                        prepend-icon="mdi-cash" variant="underlined" :rules="pago">
-                                                    </v-text-field>
-                                                </v-col>
-                        </v-row>
-                    </v-container>
-                    <v-divider></v-divider>
-                    <v-card-actions>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="6">
+                                    <v-select label="Tipo de pago" v-model="editedItem.type"
+                                        :items="['Adelanto', 'Quincena', 'Mes']"
+                                        :item-value="['Adelanto', 'Quincena', 'Mes']" variant="underlined"
+                                        :rules="selectRules"
+                                        prepend-icon="mdi-check-circle"></v-select><!--:disabled="!this.mostrarType"-->
+                                </v-col>
+                                <v-col cols="12" md="6">
+                                    <v-text-field v-model="editedItem.amount" clearable label="Monto"
+                                        prepend-icon="mdi-cash" variant="underlined" :rules="pago">
+                                    </v-text-field>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                        <v-divider></v-divider>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="#E7E9E9" variant="flat" @click="close">
+                                Cancelar
+                            </v-btn>
+                            <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
+                                Aceptar
+                            </v-btn>
+                        </v-card-actions>
+                    </v-form>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+        <!--Cajeros-->
+        <v-dialog v-model="dialogCashier" fullscreen transition="dialog-bottom-transition">
+            <v-card>
+                <v-toolbar color="#F18254">
+                    <span class="text-subtitle-1 ml-4">Pagos realizados cajero (a)</span>
                     <v-spacer></v-spacer>
-                    <v-btn color="#E7E9E9" variant="flat" @click="close">
+                    <v-btn class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat" elevation="2"
+                        prepend-icon="mdi-file-excel" @click="exportToExcelCashier">
+                        Exportar a Excel
+                    </v-btn>
+                    <v-btn class="text-subtitle-1  ml-1 " color="#E7E9E9" variant="flat" elevation="2"
+                        prepend-icon="mdi-plus-circle" @click="showAddOperationTip()">
+                        Nuevo Pago
+                    </v-btn>
+
+                </v-toolbar>
+                <v-container>
+                    <v-row>
+                        <!-- Primera columna -->
+                        <v-col cols="12" sm="6" md="3">
+                            <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40"
+                                transition="scale-transition" offset-y min-width="290px">
+                                <template v-slot:activator="{ props }">
+                                    <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined"
+                                        append-inner-icon="mdi-calendar" label="Fecha inicial"></v-text-field>
+                                </template>
+                                <v-locale-provider locale="es">
+                                    <v-date-picker header="Calendario" title="Seleccione la fecha"
+                                        color="orange lighten-2" :modelValue="getDate" @update:model-value="updateDate"
+                                        format="yyyy-MM-dd" :max="dateFormatted2"></v-date-picker>
+                                </v-locale-provider>
+                            </v-menu>
+                        </v-col>
+                        <!-- Segunda columna -->
+                        <v-col cols="12" sm="6" md="3">
+                            <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40"
+                                transition="scale-transition" offset-y min-width="290px">
+                                <template v-slot:activator="{ props }">
+                                    <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
+                                        append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
+                                </template>
+                                <v-locale-provider locale="es">
+                                    <v-date-picker header="Calendario" title="Seleccione la fecha"
+                                        color="orange lighten-2" :modelValue="getDate2"
+                                        @update:model-value="updateDate2" format="yyyy-MM-dd"
+                                        :min="dateFormatted"></v-date-picker>
+                                </v-locale-provider>
+                            </v-menu>
+                        </v-col>
+                        <v-col cols="12" md="1">
+                            <v-btn icon @click="showPay()" color="#F18254">
+                                <v-icon>mdi-magnify</v-icon></v-btn>
+                        </v-col>
+                    </v-row>
+                </v-container>
+                <v-card-text class="mt-1 mb-1">
+                    <v-row>
+                        <v-col cols="12">
+                            <v-card-text>
+                                <v-text-field class="mt-1 mb-1" v-model="search5" append-icon="mdi-magnify"
+                                    label="Buscar" single-line hide-details>
+                                </v-text-field>
+                                <v-data-table :headers="headers5" :items-per-page-text="'Elementos por páginas'"
+                                    :items="results1" :search="search5" class="elevation-2"
+                                    no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+                                    <template v-slot:item.date="{ item }">
+                                        <span :class="{ 'bold-row': item.date == 'Total' }">
+                                            {{ item.date }}
+                                        </span>
+                                    </template>
+                                    <template v-slot:item.actions="{ item }">
+                                        <v-btn density="comfortable" icon="mdi-delete" @click="deleteItemCashier(item)"
+                                            color="red-darken-4" variant="tonal" elevation="1"
+                                            title="Eliminar Pago a profesional"></v-btn>
+                                    </template>
+                                </v-data-table>
+                            </v-card-text>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="#E7E9E9" variant="flat" @click="cashierDelete">
+                        Volver
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialogDeleteCashier" max-width="500px">
+            <v-card>
+
+                <v-toolbar color="red">
+                    <span class="text-subtitle-2 ml-4"> Eliminar Pago a Professional</span>
+                </v-toolbar>
+
+                <v-card-text class="mt-2 mb-2"> ¿Desea eliminar el pago al professional?</v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
                         Cancelar
                     </v-btn>
-                    <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
+                    <v-btn color="#F18254" variant="flat" @click="deleteItemConfirmCashier">
                         Aceptar
                     </v-btn>
-                    </v-card-actions>
-                </v-form>              
-                </v-card-text>
-                </v-card>
-            </v-dialog>
-          <!--Cajeros-->
-          <v-dialog v-model="dialogCashier" fullscreen transition="dialog-bottom-transition">
+
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="dialogCashierCars" max-width="95%" max-height="100%" transition="dialog-bottom-transition">
             <v-card>
-            <v-toolbar color="#F18254">
-                <span class="text-subtitle-1 ml-4">Pagos realizados cajero (a)</span>
-                <v-spacer></v-spacer>
-                <v-btn class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat" elevation="2"
-                                        prepend-icon="mdi-file-excel" @click="exportToExcelCashier">
-                                        Exportar a Excel
-                                    </v-btn>
-                <v-btn class="text-subtitle-1  ml-1 " color="#E7E9E9" variant="flat"
-                                    elevation="2" prepend-icon="mdi-plus-circle" @click="showAddOperationTip()">
-                                    Nuevo Pago
-                                </v-btn>
-
-            </v-toolbar>
-            <v-container>
-            <v-row>
-                                <!-- Primera columna -->
-                                <v-col cols="12" sm="6" md="3">
-                                    <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40"
-                                        transition="scale-transition" offset-y min-width="290px">
-                                        <template v-slot:activator="{ props }">
-                                            <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined"
-                                                append-inner-icon="mdi-calendar" label="Fecha inicial"></v-text-field>
-                                        </template>
-                                        <v-locale-provider locale="es">
-                                            <v-date-picker header="Calendario" title="Seleccione la fecha"
-                                                color="orange lighten-2" :modelValue="getDate"
-                                                @update:model-value="updateDate" format="yyyy-MM-dd"
-                                                :max="dateFormatted2"></v-date-picker>
-                                        </v-locale-provider>
-                                    </v-menu>
-                                </v-col>
-                                <!-- Segunda columna -->
-                                <v-col cols="12" sm="6" md="3">
-                                    <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40"
-                                        transition="scale-transition" offset-y min-width="290px">
-                                        <template v-slot:activator="{ props }">
-                                            <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
-                                                append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
-                                        </template>
-                                        <v-locale-provider locale="es">
-                                            <v-date-picker header="Calendario" title="Seleccione la fecha"
-                                                color="orange lighten-2" :modelValue="getDate2"
-                                                @update:model-value="updateDate2" format="yyyy-MM-dd"
-                                                :min="dateFormatted"></v-date-picker>
-                                        </v-locale-provider>
-                                    </v-menu>
-                                </v-col>
-                                <v-col cols="12" md="1">
-                                    <v-btn icon @click="showPay()" color="#F18254">
-                                        <v-icon>mdi-magnify</v-icon></v-btn>
-                                </v-col>
-                            </v-row>
-                            </v-container>
-                    <v-card-text class="mt-1 mb-1">
+                <v-toolbar color="#F18254">
+                    <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
+                </v-toolbar>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+                        <v-container>
                             <v-row>
-                                <v-col cols="12">
-                                    <v-card-text>
-                                        <v-text-field class="mt-1 mb-1" v-model="search5" append-icon="mdi-magnify"
-                                            label="Buscar" single-line hide-details>
-                                        </v-text-field>
-                                        <v-data-table :headers="headers5" :items-per-page-text="'Elementos por páginas'"
-                                            :items="results1" :search="search5" class="elevation-2"
-                                            no-results-text="No hay datos disponibles"
-                                            no-data-text="No hay datos disponibles">
-                                            <template v-slot:item.date="{ item }">
-                                            <span :class="{'bold-row': item.date == 'Total'}">
-                                            {{ item.date }}
-                                            </span>
-                                        </template>            
-                                    <template v-slot:item.actions="{ item }">
-                                        <v-btn density="comfortable" icon="mdi-delete" @click="deleteItemCashier(item)" color="red-darken-4"
-                                            variant="tonal" elevation="1" title="Eliminar Pago a profesional"></v-btn>
-                                    </template>
-                                        </v-data-table>
-                                    </v-card-text>
-                                </v-col>
-                            </v-row>
-                    </v-card-text>
-                    <v-divider></v-divider>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="#E7E9E9" variant="flat" @click="cashierDelete">
-                            Volver
-                        </v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
-            <v-dialog v-model="dialogDeleteCashier" max-width="500px">
-                        <v-card>
-
-                            <v-toolbar color="red">
-                                <span class="text-subtitle-2 ml-4"> Eliminar Pago a Professional</span>
-                            </v-toolbar>
-
-                            <v-card-text class="mt-2 mb-2"> ¿Desea eliminar el pago al professional?</v-card-text>
-                            <v-divider></v-divider>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
-                                    Cancelar
-                                </v-btn>
-                                <v-btn color="#F18254" variant="flat" @click="deleteItemConfirmCashier">
-                                    Aceptar
-                                </v-btn>
-
-                            </v-card-actions>
-                        </v-card>
-            </v-dialog>
-
-                <v-dialog v-model="dialogCashierCars" max-width="95%" max-height="100%" transition="dialog-bottom-transition">
-                    <v-card>
-                            <v-toolbar color="#F18254">
-                                <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
-                            </v-toolbar>
-                            <v-card-text>
-                                <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-                                    <v-container>
-                                        <v-row>
-                                            <!--<v-col cols="12" sm="12" md="3">
+                                <!--<v-col cols="12" sm="12" md="3">
                                                 <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
                                                     v-if="this.mostrarFila" clearable label="Seleccione una Sucursal"
                                                     prepend-icon="mdi-store" item-title="name" item-value="id"
@@ -422,67 +425,63 @@
                                                     item-value="id" variant="underlined"
                                                     :rules="selectRules"></v-autocomplete>
                                             </v-col>-->
-                                            <v-col cols="12" md="3">
-                                                <v-select label="Tipo de pago" v-model="editedItem.type"
-                                                    :items="['Adelanto', 'Quincena', 'Mes']"
-                                                    :item-value="['Adelanto', 'Quincena', 'Mes']" variant="underlined"
-                                                    :rules="selectRules"
-                                                    prepend-icon="mdi-check-circle"></v-select><!--:disabled="!this.mostrarType"-->
-                                            </v-col>
-                                            <v-col cols="12" md="9">
-                                                <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
-                                                    :subtitle="totalMount1()" append-icon="mdi-check">
+                                <v-col cols="12" md="3">
+                                    <v-select label="Tipo de pago" v-model="editedItem.type"
+                                        :items="['Adelanto', 'Quincena', 'Mes']"
+                                        :item-value="['Adelanto', 'Quincena', 'Mes']" variant="underlined"
+                                        :rules="selectRules"
+                                        prepend-icon="mdi-check-circle"></v-select><!--:disabled="!this.mostrarType"-->
+                                </v-col>
+                                <v-col cols="12" md="9">
+                                    <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
+                                        :subtitle="totalMount1()" append-icon="mdi-check">
 
-                                                    <template v-slot:prepend>
-                                                        <v-avatar color="blue-darken-2">
-                                                            <v-icon icon="mdi-currency-usd"></v-icon>
-                                                        </v-avatar>
-                                                    </template>
-                                                </v-card>
-                                                <v-text-field v-model="editedItem.amount" clearable label="Monto"
-                                                    v-show="false" prepend-icon="mdi-cash" variant="underlined"
-                                                    :rules="pago">
-                                                </v-text-field>
-                                            </v-col>
-                                        </v-row>
-                                        <v-row>
+                                        <template v-slot:prepend>
+                                            <v-avatar color="blue-darken-2">
+                                                <v-icon icon="mdi-currency-usd"></v-icon>
+                                            </v-avatar>
+                                        </template>
+                                    </v-card>
+                                    <v-text-field v-model="amountFromMethod" clearable label="Monto" v-show="false"
+                                        prepend-icon="mdi-cash" variant="underlined" :rules="pago">
+                                    </v-text-field>
+                                </v-col>
+                            </v-row>
+                            <v-row>
 
-                                            <v-col cols="12" md="12">
-                                                <v-text-field class="mt-1 mb-1" v-model="search6"
-                                                    append-icon="mdi-magnify" label="Buscar" single-line
-                                                    hide-details></v-text-field>
-                                                <v-data-table v-model="selected2" :headers="headers6"
-                                                    :items-per-page-text="'Elementos por páginas'" :search="search6"
-                                                    :items="cars1" class="elevation-1"
-                                                    no-results-text="No hay datos disponibles"
-                                                    no-data-text="No hay datos disponibles" show-select>
-                                                    <template v-slot:item.clientName="{ item }">
+                                <v-col cols="12" md="12">
+                                    <v-text-field class="mt-1 mb-1" v-model="search6" append-icon="mdi-magnify"
+                                        label="Buscar" single-line hide-details></v-text-field>
+                                    <v-data-table v-model="selected2" :headers="headers6"
+                                        :items-per-page-text="'Elementos por páginas'" :search="search6" :items="cars1"
+                                        class="elevation-1" no-results-text="No hay datos disponibles"
+                                        no-data-text="No hay datos disponibles" show-select>
+                                        <template v-slot:item.clientName="{ item }">
 
-                                                        <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                                                            <v-img
-                                                                :src="'http://127.0.0.1:8000/api/images/' + item.client_image"
-                                                                alt="image"></v-img>
-                                                        </v-avatar>
-                                                        {{ item.clientName }}
-                                                    </template>
-                                                </v-data-table>
-                                            </v-col>
-                                        </v-row>
-                                    </v-container>
-                                    <v-divider></v-divider>
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn color="#E7E9E9" variant="flat" @click="close">
-                                            Cancelar
-                                        </v-btn>
-                                        <v-btn color="#F18254" variant="flat" @click="saveCashier" :disabled="!valid">
-                                            Pagar
-                                        </v-btn>
-                                    </v-card-actions>
-                                </v-form>
-                            </v-card-text>
-                        </v-card>
-                </v-dialog>
+                                            <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                                                <v-img :src="'http://127.0.0.1:8000/api/images/' + item.client_image"
+                                                    alt="image"></v-img>
+                                            </v-avatar>
+                                            {{ item.clientName }}
+                                        </template>
+                                    </v-data-table>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                        <v-divider></v-divider>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="#E7E9E9" variant="flat" @click="close">
+                                Cancelar
+                            </v-btn>
+                            <v-btn color="#F18254" variant="flat" @click="saveCashier" :disabled="!valid">
+                                Pagar
+                            </v-btn>
+                        </v-card-actions>
+                    </v-form>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </v-card>
 </template>
 
@@ -567,7 +566,7 @@ export default {
             id: '',
             nameProfessional: '',
             type: '',
-            amount: '',            
+            amount: '',
             coffe_percent: ''
         },
         data: {},
@@ -601,6 +600,26 @@ export default {
     }),
 
     computed: {
+        amountFromMethod() {
+            if(this.selected2.length === 0){
+                return 0;
+            }
+            else{
+                
+        return this.totalMount1();
+            }
+    },
+
+    amountFromMethod1() {
+            if(this.selected2.length === 0){
+                return 0;
+            }
+            else{
+                
+        return this.totalMount();
+            }
+    },
+    
         formTitle() {
             return this.editedIndex === -1 ? 'Nuevo Pago a profesional' : 'Editar Pago a profesional'
         },
@@ -637,28 +656,11 @@ export default {
             val || this.closeDelete()
         },
         selected2(newVal) {
-      if (newVal.length == 0) {
-        // Si selected2 cambia a null, establecer editedItem.amount en cero
-        this.editedItem.amount = '';
-      }
-    }
-        /*selectedOption(newOption) {
-            // Realizar diferentes operaciones en función de la opción seleccionada
-            switch (newOption) {
-                case this.options[0]:
-                    this.mostrarCars = false;
-                    this.selected2 = [];
-                    break;
-                case this.options[1]:
-                    this.mostrarCars = true;
-                    //this.carsEarrings();
-                    break;
-                case this.options[2]:
-                    this.mostrarCars = true;
-                    //this.carsEarrings();
-                    break;
+            if (newVal.length == 0) {
+                // Si selected2 cambia a null, establecer editedItem.amount en cero
+                this.editedItem.amount = '';
             }
-        }*/
+        }
     },
 
     mounted() {
@@ -675,12 +677,12 @@ export default {
             .then((response) => {
                 this.branches = response.data.branches;
             }).finally(() => {
-            if (this.charge === 'Administrador') {
+                if (this.charge === 'Administrador') {
                     this.branch_id = this.branches[0].id;
                     this.mostrarFila = true;
                 }
                 this.initialize();
-          });        
+            });
     },
 
     methods: {
@@ -696,25 +698,25 @@ export default {
             let selectedItems;
             if (this.selected2.length == 0) {
                 return this.cars.reduce((total, item) => {
-                // Asegúrate de que item.totalServices y item.tip sean números
-                const totalServices = Number(item.totalServices) || 0;
-                const tip = Number(item.tip) || 0;
-                //this.editedItem.amount = total + totalServices + tip;
-                return total + totalServices + tip;
-            }, 0);
+                    // Asegúrate de que item.totalServices y item.tip sean números
+                    const totalServices = Number(item.totalServices) || 0;
+                    const tip = Number(item.tip) || 0;
+                    //this.editedItem.amount = total + totalServices + tip;
+                    return total + totalServices + tip;
+                }, 0);
             } else {
                 // Mapea los IDs de selected2 a los objetos correspondientes en cars
                 selectedItems = this.selected2.map(selectedId => this.cars.find(car => car.id === selectedId));
                 // Calcula el total sumando totalServices y tip de los elementos seleccionados
-            return selectedItems.reduce((total, item) => {
-                // Asegúrate de que item.totalServices y item.tip sean números
-                const totalServices = Number(item.totalServices) || 0;
-                const tip = Number(item.tip) || 0;
-                this.editedItem.amount = total + totalServices + tip;
-                return total + totalServices + tip;
-            }, 0);
+                return selectedItems.reduce((total, item) => {
+                    // Asegúrate de que item.totalServices y item.tip sean números
+                    const totalServices = Number(item.totalServices) || 0;
+                    const tip = Number(item.tip) || 0;
+                    //this.editedItem.amount = total + totalServices + tip;
+                    return total + totalServices + tip;
+                }, 0);
             }
-            
+
         },
         totalMount1() {
             let selectedItems;
@@ -734,13 +736,13 @@ export default {
                     // Asegúrate de que item.totalServices y item.tip sean números
                     //const totalServices = Number(item.totalServices) || 0;
                     const tip = Number(item.tipCashier) || 0;
-                    this.editedItem.amount = total + tip;
-                    this.editedItem.coffe_percent = total + tip;
+                    //this.editedItem.amount = total + tip;
+                    //this.editedItem.coffe_percent = total + tip;
                     return total + tip;
                 }, 0);
             }
         },
-        
+
         /*professionalChange(){
             this.chargeProfessional = this.professionals.find(professional => professional.id == this.professional_id);
             console.log('this.chargeProfessional');
@@ -785,32 +787,32 @@ export default {
                     this.results = response.data.professionals;
                 });
         },
-        showAddPago(){
+        showAddPago() {
             if (this.charge == 'Barbero' || this.charge == 'Barbero y Encargado') {
                 axios
-                .get('http://127.0.0.1:8000/api/professional-car-notpay', {
-                    params: {
-                        branch_id: this.branch_id,
-                        professional_id: this.professional_id
-                    }
-                })
-                .then((response) => {
-                    this.cars = response.data;
-                    /*if(this.cars.length == 0){
-                        //this.editedItem.type = 'Adelanto';
-                        this.mostrarCars = false;
-                        //this.mostrarType = false;
-                    }else{
+                    .get('http://127.0.0.1:8000/api/professional-car-notpay', {
+                        params: {
+                            branch_id: this.branch_id,
+                            professional_id: this.professional_id
+                        }
+                    })
+                    .then((response) => {
+                        this.cars = response.data;
+                        /*if(this.cars.length == 0){
+                            //this.editedItem.type = 'Adelanto';
+                            this.mostrarCars = false;
+                            //this.mostrarType = false;
+                        }else{
+                            this.mostrarCars = true;
+                            //this.mostrarType = true;
+                        }*/
                         this.mostrarCars = true;
-                        //this.mostrarType = true;
-                    }*/
-                    this.mostrarCars = true;
-                });
+                    });
                 this.dialog = true;
-            }else{
+            } else {
                 this.dialogOtros = true;
             }
-            
+
         },
         /*/*carsEarrings() {
             this.editedItem.amount = '';
@@ -838,16 +840,16 @@ export default {
                         //this.mostrarType = true;
                     }*/
 
-                    /*console.log('this.cars');
-                    console.log(this.cars);
-                });
-            }else{
-                this.mostrarCars = false;
-                //this.mostrarType = true;
-                console.log('es otro cargo');
-            }
-            
-        },*/
+        /*console.log('this.cars');
+        console.log(this.cars);
+    });
+}else{
+    this.mostrarCars = false;
+    //this.mostrarType = true;
+    console.log('es otro cargo');
+}
+ 
+},*/
         /*toggleService(serviceId) {
             const index = this.selected.indexOf(serviceId);
             console.log(this.selected);
@@ -868,16 +870,16 @@ export default {
         pagoProfessional(item) {
             this.professional_id = item.id;
             this.charge = item.charge;
-            if(item.charge == 'Cajero (a)'){
+            if (item.charge == 'Cajero (a)') {
                 this.showCashier();
             }
-            else{
+            else {
                 this.showProfessional();
             }
         },
 
-        showProfessional(){
-             axios
+        showProfessional() {
+            axios
                 .get('http://127.0.0.1:8000/api/professional-payment-show', {
                     params: {
                         branch_id: this.branch_id,
@@ -897,10 +899,10 @@ export default {
                 });
             this.dialogBarberoEncargado = true;
         },
-        showProfessionalPeriodo(){
+        showProfessionalPeriodo() {
             const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
             const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-             axios
+            axios
                 .get('http://127.0.0.1:8000/api/professional-payment-periodo', {
                     params: {
                         branch_id: this.branch_id,
@@ -929,7 +931,7 @@ export default {
                     this.showAlert("success", "Pago eliminado correctamente", 3000);
                 }).finally(() => {
                     this.showProfessional();
-          });
+                });
             this.closeDelete()
         },
         close() {
@@ -946,7 +948,7 @@ export default {
             this.mostrarCars = false;
 
         },
-        barberoDelete(){
+        barberoDelete() {
             this.dialogBarberoEncargado = false;
             this.professional_id = '';
             this.charge = '';
@@ -985,7 +987,7 @@ export default {
             this.data.professional_id = this.professional_id;
             this.data.branch_id = this.branch_id;
             this.data.car_ids = this.selected2;
-            this.data.amount = this.editedItem.amount;
+            this.data.amount = this.totalMount();
             this.data.type = this.editedItem.type;
             console.log('this.data');
             console.log(this.data);
@@ -999,11 +1001,11 @@ export default {
                     this.type = null;
                     this.cars = [];
                     this.selected2 = [];
-                    this.mostrarCars = false;                    
+                    this.mostrarCars = false;
                 }).finally(() => {
                     this.showAlert("success", "Pago realizado correctamente", 3000);
                     this.showProfessional();
-          });
+                });
             //}
             /*this.valid = false;
             this.data.name = this.editedItem.name;
@@ -1058,7 +1060,7 @@ export default {
             XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
         },
         //cajeros
-        showCashier(){
+        showCashier() {
             axios
                 .get('http://127.0.0.1:8000/api/operation-tip', {
                     params: {
@@ -1092,7 +1094,7 @@ export default {
                     this.results1 = response.data;
                 });
         },
-        cashierDelete(){
+        cashierDelete() {
             this.dialogCashier = false;
             this.professional_id = '';
         },
@@ -1112,10 +1114,10 @@ export default {
                 }).finally(() => {
                     this.showAlert("success", "Pago eliminado correctamente", 3000);
                     this.showCashier();
-          });
+                });
             this.closeDelete()
         },
-        showAddOperationTip(){
+        showAddOperationTip() {
             axios
                 .get('http://127.0.0.1:8000/api/cashier-car-notpay', {
                     params: {
@@ -1125,7 +1127,7 @@ export default {
                 .then((response) => {
                     this.cars1 = response.data.cars;
                 });
-                this.dialogCashierCars = true;
+            this.dialogCashierCars = true;
         },
         saveCashier() {
             this.valid = false;
@@ -1149,8 +1151,8 @@ export default {
             this.data.professional_id = this.professional_id;
             this.data.branch_id = this.branch_id;
             this.data.car_ids = this.selected2;
-            this.data.amount = this.editedItem.amount;
-            this.data.coffe_percent = this.editedItem.coffe_percent;
+            this.data.amount = this.totalMount1();
+            this.data.coffe_percent = this.totalMount1();
             this.data.type = this.editedItem.type;
             console.log('this.data');
             console.log(this.data);
@@ -1168,7 +1170,7 @@ export default {
                 }).finally(() => {
                     this.showAlert("success", "Pago realizado correctamente", 3000);
                     this.showCashier();
-          });
+                });
             //}
             /*this.valid = false;
             this.data.name = this.editedItem.name;
