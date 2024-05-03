@@ -35,9 +35,10 @@
         <v-row>
           <v-container>
             <v-col cols="12" sm="12" md="6">
-              <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
-                label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
-                variant="underlined" @update:model-value="initialize()"></v-autocomplete>
+              <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+                v-if="this.mostrarFila" clearable label="Seleccione una Sucursal" prepend-icon="mdi-store"
+                item-title="name" item-value="id" variant="underlined"
+                @update:model-value="initialize()"></v-autocomplete>
             </v-col>
 
           </v-container>
@@ -46,33 +47,34 @@
           <v-row>
             <v-col cols="12" md="5">
               <v-card elevation="2">
-              <v-tabs v-model="tabBarprof" color="rgb(241, 130, 84)" elevation="6">
-                <v-tab value="oneProf">Lista de Trabajadores</v-tab>
-              </v-tabs>
-              <v-window v-model="tabBarprof">
-                    <v-window-item value="oneProf">
-              <v-card elevation="2">
-                <v-list>
-                  <v-list-item-group v-model="professional" active-class="deep-purple--text text--accent-4">
+                <v-tabs v-model="tabBarprof" color="rgb(241, 130, 84)" elevation="6">
+                  <v-tab value="oneProf">Lista de Trabajadores</v-tab>
+                </v-tabs>
+                <v-window v-model="tabBarprof">
+                  <v-window-item value="oneProf">
+                    <v-card elevation="2">
+                      <v-list>
+                        <v-list-item-group v-model="professional" active-class="deep-purple--text text--accent-4">
 
-                    <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + professional.image_url"
-                      v-for="professional in professionals" :key="professional.id"
-                      @click="toggleService2(professional.id)"
-                      :class="{ 'selected-item': isProfessional(professional.id) }">
+                          <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + professional.image_url"
+                            v-for="professional in professionals" :key="professional.id"
+                            @click="toggleService2(professional.id)"
+                            :class="{ 'selected-item': isProfessional(professional.id) }">
 
-                      <v-list-item-content>
-                        <v-list-item-title>{{ professional.name + ' ' + professional.surname + ' '+professional.second_surname }}</v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
+                            <v-list-item-content>
+                              <v-list-item-title>{{ professional.name + ' ' + professional.surname + '
+    '+professional.second_surname }}</v-list-item-title>
+                            </v-list-item-content>
+                          </v-list-item>
 
 
-                  </v-list-item-group>
-                </v-list>
-              </v-card>
-              
-            </v-window-item>
-            </v-window>
-                
+                        </v-list-item-group>
+                      </v-list>
+                    </v-card>
+
+                  </v-window-item>
+                </v-window>
+
               </v-card>
             </v-col>
             <v-col cols="12" md="7">
@@ -107,7 +109,7 @@
                       <v-col cols="12" md="4">
                       </v-col>
                       <v-col cols="12" md="6">
-                        <v-row v-if="services.length >0">
+                        <v-row v-if="services.length > 0">
                           <v-switch v-if="mostrarSwitch" color="orange-darken-3" v-model="especial" label="Especial"
                             hide-details inset></v-switch>
                           <v-text-field v-model="this.profitPercen" clearable label="% Ganancia"
@@ -119,7 +121,7 @@
                       </v-col>
                       <v-divider></v-divider>
 
-                      <v-card-actions v-if="services.length >0">
+                      <v-card-actions v-if="services.length > 0">
                         <v-spacer></v-spacer>
                         <v-btn color="#F18254" variant="flat" :disabled="!selected.length" @click="asignService">
                           Asignar
@@ -152,7 +154,7 @@
                         </v-list-item-group>
                       </v-list>
 
-                      <v-card-actions >
+                      <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="#F18254" variant="flat" :disabled="!selected.length" @click="desasignService">
                           Eliminar
@@ -326,12 +328,12 @@ export default {
       .then((response) => {
         this.branches = response.data.branches;
       }).finally(() => {
-            if (this.charge === 'Administrador') {
-                    this.branch_id = this.branches[0].id;
-                    this.mostrarFila = true;
-                }
-                this.initialize();
-          }); 
+        if (this.charge === 'Administrador') {
+          this.branch_id = this.branches[0].id;
+          this.mostrarFila = true;
+        }
+        this.initialize();
+      });
 
     this.arrayEvents = [...Array(1)].map(() => {
       const day = Math.floor(Math.random() * 30)
@@ -354,8 +356,8 @@ export default {
         this.selected = [];
         //this.getServicesProfessional();
       }
-    //}
-  },
+      //}
+    },
     /*isSelected(serviceId) {
       console.log('entra a seleccionado');
       console.log(this.selected.id == serviceId);
@@ -448,7 +450,7 @@ export default {
       console.log(request);
 
       axios.post('http://127.0.0.1:8000/api/professionalservice', request)
-        .then(() => {          
+        .then(() => {
           this.showAlert("success", "Servicio asignado correctamente", 3000);
           this.profitPercen = '';
           //this.professional = '';

@@ -200,10 +200,12 @@
                 <v-avatar elevation="3" color="grey-lighten-4" size="large">
                   <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url+'?$'+Date.now()" alt="image"></v-img>
                 </v-avatar>
-                {{ item.name + ' ' + item.surname + ' ' + item.second_surname }}
+                {{ item.name}}
               </template>
 
               <template v-slot:item.actions="{ item }">
+                <v-btn density="comfortable" icon="mdi-pencil"  @click="editItemProfessional(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar asignación de profesional"></v-btn>
                 <v-btn density="comfortable" icon="mdi-delete" @click="deleteP(item)" color="red-darken-4" variant="tonal"
             elevation="1" title="Eliminar afiliación del trabajador"></v-btn>
                 <!--<v-icon size="small" color="red" @click="deleteP(item)">
@@ -225,17 +227,25 @@
       <v-dialog v-model="dialogAddProf" width="500">
         <v-card>
           <v-toolbar color="#F18254">
-            <span class="text-subtitle-2 ml-4">Agregar Trabajador</span>
+            <span class="text-subtitle-2 ml-4"> {{ formTitleProfessional }}</span>
           </v-toolbar>
           <v-card-text class="mt-2 mb-2">
             <v-form ref="form" v-model="valid" enctype="multipart/form-data">
               <v-container>
                 <v-row>
                   <v-col cols="12" md="12">
-                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.professional_id" :items="professionals" label="Trabajador"
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.professional_id" :items="professionals" label="Profesional"
                       prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined"
-                      :rules="selectRules"></v-autocomplete>
+                      :rules="selectRules" v-if="!editando"></v-autocomplete>
+                      <v-text-field v-model="nameProfessional" label="Professional"
+                                        prepend-icon="mdi-account-tie-outline" variant="underlined" v-if="editando" disabled="true">
+                                    </v-text-field>
                   </v-col>
+                  <v-col cols="12" md="12">
+                                    <v-text-field v-model="editedItem.ponderation" clearable label="Ponderación"
+                                        prepend-icon="mdi-arrow-collapse-vertical" variant="underlined" :rules="pago">
+                                    </v-text-field>
+                                    </v-col>
                 </v-row>
               </v-container>
               <v-divider></v-divider>
@@ -508,7 +518,8 @@ export default {
     ],
     headers2: [
       { title: 'Nombre', value: 'name' },
-      { title: 'Cargo', value: 'charge.name' },
+      { title: 'Cargo', value: 'charge' },
+      { title: 'Ponderación', value: 'ponderation' },
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
     headers3: [
@@ -534,8 +545,10 @@ export default {
     branchAssociates: [],
 
     editedIndex: -1,
+    editedIndexP: -1,
     file: null,
     imgMiniatura: '',
+    nameProfessional: '',
     editedItem: {
       id: '',
       name: '',
@@ -545,6 +558,7 @@ export default {
       business_type_id: '',
       image_data: '',
       professional_id: '',
+      ponderation: 0,
       store_id: '',
       useTechnical: 0,
       location: '',
@@ -562,6 +576,7 @@ export default {
       business_type_: '',
       image_data: '',
       professional_id: '',
+      ponderation: 0,
       store_id: '',
       useTechnical: '',
       location: '',
@@ -591,6 +606,10 @@ export default {
     },
     formTitle() {
       return this.editedIndex === -1 ? 'Nueva Sucursal' : 'Editar Sucursal'
+    },
+
+    formTitleProfessional() {
+      return this.editedIndexP === -1 ? 'Asignar Trabajador' : 'Editar Asignación del trabajador'
     },
   },
 
@@ -728,10 +747,11 @@ export default {
     },
     closeP() {
       this.dialogAddProf = false;
+      this.editando = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
       })
-      this.showProfessionals(this.branchSelect)
+      //this.showProfessionals(this.branchSelect)
     },
     closestore() {
       this.dialogAddStore = false;
@@ -815,6 +835,7 @@ export default {
       this.dialogProfessionals = true;
     },
     showAddProfessionals(){
+      this.editedIndexP = -1;
       axios
         .get('http://127.0.0.1:8000/api/professional-show-autocomplete-Notin', {
           params: {
@@ -826,6 +847,26 @@ export default {
         });
         this.dialogAddProf = true;
     },
+    editItemProfessional(item) {
+      this.editedIndexP = 2;
+      console.log('Professional');
+      console.log(item);
+      axios
+        .get('http://127.0.0.1:8000/api/professional-show-autocomplete-Notin', {
+          params: {
+            branch_id: this.branchSelect.id
+          }
+        })
+        .then((response) => {
+          this.professionals = response.data.professionals;
+        });
+            this.editedIndex = 2;
+            this.editedItem.professional_id = parseInt(item.professional_id);
+            this.editedItem.ponderation = item.ponderation;
+            this.nameProfessional = item.name;
+            this.dialogAddProf = true;
+            this.editando = true;
+            },
     showStores(item) {
       this.branchSelect = item;
       console.log(this.branchSelect);
@@ -852,9 +893,29 @@ export default {
       this.dialogAddStore = true;
     },
     saveP() {
-      this.valid = false,
+      if (this.editedIndexP == 2) {
+        this.valid = false,
         this.data.branch_id = this.branch_id;
       this.data.professional_id = this.editedItem.professional_id;
+      this.data.ponderation = this.editedItem.ponderation;
+      axios
+        .put('http://127.0.0.1:8000/api/branchprofessional', this.data)
+        .then(() => {
+          this.$nextTick(() => {
+            this.editedItem = Object.assign({}, this.defaultItem)
+          }).finally(() => {
+          this.showProfessionals(this.branchSelect);
+          this.showAlert("success", "Asignación del trabajado a la sucursal editada correctamente", 3000);
+          });
+          this.dialogAddProf = false;
+          this.editando = false;
+        this.editedIndex = -1;
+        })
+      }else{
+        this.valid = false,
+        this.data.branch_id = this.branch_id;
+      this.data.professional_id = this.editedItem.professional_id;
+      this.data.ponderation = this.editedItem.ponderation;
       axios
         .post('http://127.0.0.1:8000/api/branchprofessional', this.data)
         .then(() => {
@@ -865,7 +926,10 @@ export default {
           this.showAlert("success", "Trabajdor afiliado correctamente a la sucursal", 3000);
           });
           this.dialogAddProf = false;
+          this.editando = false;
+        this.editedIndex = -1;
         })
+      }
     },
     saveStore() {
       this.valid = false,
@@ -886,7 +950,7 @@ export default {
     deleteP(item) {
       this.dialogRequest = true
       //this.editedItem.branch_id=item.id
-      this.editedItem.professional_id = item.id
+      this.editedItem.professional_id = item.professional_id
     },
     closestoreRequest(item) {
       this.dialogRequestStore = true

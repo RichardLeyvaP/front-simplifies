@@ -253,7 +253,7 @@
 
         <template v-slot:item.professionalName="{ item }">
 
-          <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+          <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
             <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url" alt="image"></v-img>
           </v-avatar>
           {{ item.professionalName }}
@@ -261,7 +261,7 @@
 
         <template v-slot:item.clientName="{ item }">
 
-          <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+          <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
             <v-img :src="'http://127.0.0.1:8000/api/images/' + item.client_image" alt="image"></v-img>
           </v-avatar>
           {{ item.clientName }}
@@ -283,23 +283,28 @@
         </template>
 
         <template v-slot:item.actions="{ item }">
-          <v-btn density="comfortable" icon="mdi-eye" @click="showDetails(item)" color="primary" variant="tonal"
+          <!--<v-menu>
+            <template v-slot:activator="{ props }">
+              <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
+            </template>
+
+            <v-list>
+              <v-list-item>
+                <v-btn density="comfortable" icon="mdi-eye" @click="(item.active != 3) &&  showDetails(item)" :color="(item.active != 3) ? 'blue' : 'grey'" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Mostrar detalles del carro"></v-btn>
-          <v-btn density="comfortable" icon="mdi-credit-card" @click="payItem(item)" color="green-darken-1"
+          <v-btn density="comfortable" icon="mdi-credit-card" @click="(item.active != 3) && payItem(item)" :color="(item.active != 3) ? 'green-darken-1' : 'grey'"
             variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Pagar el carro"></v-btn>
-          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
-            elevation="1" title="Eliminar el carro"></v-btn>
-          <!--<v-btn density="comfortable">
-          <v-icon size="35" class="pr-3" title="Mostrar Detalles Carro" color="primary" @click="showDetails(item)">
-            mdi-eye
-          </v-icon>
-        </v-btn>
-          <v-icon :disabled="item.pay === 1" title="Pagar Carro" size="35" color="green" @click="payItem(item)">
-            mdi-credit-card
-          </v-icon>
-          <v-icon size="35" title="Eliminar Carro" color="red" @click="deleteItem(item)">
-            mdi-delete
-          </v-icon>-->
+          <v-btn density="comfortable" icon="mdi-delete" @click="(item.active != 3) && deleteItemSolicitud(item)" :color="(item.active != 3) ? 'red-darken-4' : 'grey'" variant="tonal"
+            elevation="1" title="Solicitud de eliminar carro"></v-btn>
+              </v-list-item>
+            </v-list>
+          </v-menu>-->
+          <v-btn density="comfortable" icon="mdi-eye" @click="(item.active != 3) &&  showDetails(item)" :color="(item.active != 3) ? 'blue' : 'grey'" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Mostrar detalles del carro"></v-btn>
+          <v-btn density="comfortable" icon="mdi-credit-card" @click="(item.active != 3) && payItem(item)" :color="(item.active != 3) ? 'green-darken-1' : 'grey'"
+            variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Pagar el carro"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="(item.active != 3) && deleteItemSolicitud(item)" :color="(item.active != 3) ? 'red-darken-4' : 'grey'" variant="tonal"
+            elevation="1" title="Solicitud de eliminar carro"></v-btn>
         </template>
       </v-data-table>
         </v-col>
@@ -471,11 +476,11 @@
 
               <template v-slot:item.actions="{ item }">
                 <v-btn density="comfortable" icon="mdi-cancel"
-                  :color="(item.request_delete && !this.car_ref.pay) ? 'red' : 'grey'" title="Eliminar solicitud"
-                  @click="(item.request_delete && !this.car_ref.pay) && deleteOrder(item)" elevation="1" class="mr-1 mt-1 mb-1"></v-btn>
+                :color="(item.request_delete != 3) ? 'red-darken-4' : 'grey'" title="Solicitar eliminar orden"
+                  @click="item.request_delete != 3 && deleteOrder(item)" elevation="1" class="mr-1 mt-1 mb-1"></v-btn>
 
-                <v-btn :color="(item.request_delete && !this.car_ref.pay) ? 'blue' : 'grey'" density="comfortable" icon="mdi-check"
-                  title="Denegar solicitud" @click="(item.request_delete && !this.car_ref.pay) && requestCancel(item)" elevation="1" class="mr-1 mt-1 mb-1"></v-btn>
+                <!--<v-btn :color="(item.request_delete && !this.car_ref.pay) ? 'blue' : 'grey'" density="comfortable" icon="mdi-check"
+                  title="Denegar solicitud" @click="(item.request_delete && !this.car_ref.pay) && requestCancel(item)" elevation="1" class="mr-1 mt-1 mb-1"></v-btn>-->
 
               </template>
 
@@ -505,9 +510,28 @@
             <v-form v-model="valid" enctype="multipart/form-data">
               <v-row>
                 <v-col cols="12" md="12">
-                  <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="product_store_id" :items="products" clearable label="Productos"
-                    prepend-inner-icon="mdi-tag-outline" item-title="name" item-value="id" variant="underlined"
-                    :rules="selectRules"  @update:model-value="cantExist"></v-autocomplete>
+                  <v-autocomplete
+                  :no-data-text="'No hay datos disponibles'" v-model="product_store_id" :items="products" clearable label="Productos"
+                    prepend-icon="mdi-tag-outline" item-title="name" item-value="id" variant="underlined"
+                    :rules="selectRules"  @update:model-value="cantExist" 
+                  >
+                  <!--chips
+              closable-chips<template v-slot:chip="{ props, item }">
+                <v-chip
+                  v-bind="props"
+                  :prepend-avatar="'http://127.0.0.1:8000/api/images/'+item.raw.image_product"
+                  :text="item.raw.name"
+                ></v-chip>
+              </template>-->
+              <template v-slot:item="{ props, item }">
+                <v-list-item
+                  v-bind="props"
+                  :prepend-avatar="'http://127.0.0.1:8000/api/images/'+item.raw.image_product"
+                  :subtitle="'Existencia: '+item.raw.product_exit"
+                  :title="item.raw.name"
+                ></v-list-item>
+              </template>
+                </v-autocomplete>
                     <v-text-field v-model="product_exit" clearable label="Existencia"
                       prepend-icon="mdi-currency-usd" variant="underlined" disabled="true">
                     </v-text-field>
@@ -546,8 +570,17 @@
               <v-row>
                 <v-col cols="12" md="12">
                   <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_service_professional_id" :items="services" clearable label="Servicios"
-                    prepend-inner-icon="mdi-list-box-outline" item-title="name" item-value="id" variant="underlined"
-                    :rules="selectRules"></v-autocomplete>
+                    prepend-icon="mdi-list-box-outline" item-title="name" item-value="id" variant="underlined"
+                    :rules="selectRules">
+                    <template v-slot:item="{ props, item }">
+                <v-list-item
+                  v-bind="props"
+                  :prepend-avatar="'http://127.0.0.1:8000/api/images/'+item.raw.image_service"
+                  :subtitle="'Precio: '+item.raw.price_service"
+                  :title="item.raw.name"
+                ></v-list-item>
+              </template>
+                  </v-autocomplete>
                 </v-col>
               </v-row>
               <v-divider></v-divider>
@@ -756,7 +789,7 @@ export default {
       { title: 'Imagen', value: 'image' },
       { title: 'Nombre', value: 'name' },
       { title: 'Categoría', value: 'category' },
-      { title: 'Precio', value: 'price' },
+      { title: 'Importe', value: 'price' },
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
     editedIndex: -1,
@@ -1033,8 +1066,21 @@ export default {
           });
     },
     deleteOrder(item) {
-      this.dialogRequest = true
-      this.editedItem.order_id = item.id
+      //this.dialogRequest = true
+      //this.editedItem.order_id = item.id
+      let request = {
+        id: item.id,
+        nameProfessional: this.nameProfessional,
+        branch_id: this.branch_id,
+      };
+      axios
+        .post('http://127.0.0.1:8000/api/order-destroy-solicitud', request)
+        .then(() => {
+          //this.initialize();
+        }).finally(() => {
+          this.showDetails(this.car_ref);
+          this.showAlert("success", "Solicitud de eliminación de orden hecha correctamente", 3000);
+          });
     },
 
     requestDelete() {
@@ -1288,6 +1334,22 @@ export default {
       this.editedItem.id = item.id;
       this.dialogDelete = true;
     },
+    deleteItemSolicitud(item) {
+      this.editedItem.id = item.id;
+      let request = {
+        id: this.editedItem.id,
+        nameProfessional: this.nameProfessional,
+        branch_id: this.branch_id
+      };
+      axios
+        .post('http://127.0.0.1:8000/api/car-destroy-solicitud', request)
+        .then(() => {
+        }).finally(() => {
+          this.initialize();
+          this.showAlert("success", "Solicitud de eliminacion hecha correctamente", 3000)
+          });
+    },
+
     payItem(item) {
       console.log(item);
       this.car_ref = item;
@@ -1346,7 +1408,6 @@ export default {
         .post('http://127.0.0.1:8000/api/car-destroy', request)
         .then(() => {
         }).finally(() => {
-          this.initialize();
           this.showAlert("success", "Carro eliminado correctamente", 3000)
           });
       this.dialogDelete = false;

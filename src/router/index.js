@@ -435,6 +435,13 @@ const routes = [
           import( "@/views/operationtip/OperationTip.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_cashier_tip"] },
       },
+      {
+        path: "/car-order-delete",
+        name: "Solicitudes de eliminacion",
+        component: () =>
+          import( "@/views/carorderdelete/CarOrderDelete.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_carorder_delete"] },
+      },
     ],
   },
 ];

@@ -311,7 +311,7 @@ size="x-large"
   </v-container>
   <v-dialog v-model="dialogEncuesta"
         transition="dialog-bottom-transition"
-        max-width="600"
+        max-width="600" persistent
       >
           <v-card>
             <v-toolbar
@@ -332,15 +332,15 @@ size="x-large"
                     </v-col>
             </v-card-text>
             <v-card-actions class="justify-end">
-              <v-btn          
+              <!--<v-btn          
               
               @click="dialogEncuesta = false"
-              >Cancelar</v-btn>
+              >Cancelar</v-btn>-->
               <v-btn variant="flat"
               color="#F18254"
               
               
-                @click="addEncuesta()"
+                @click="addEncuesta()" :disabled="!selectedSurveys.length>0"
               >Aceptar</v-btn>
             </v-card-actions>
           </v-card>

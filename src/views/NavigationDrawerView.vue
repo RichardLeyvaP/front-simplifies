@@ -169,7 +169,7 @@ export default {
       { icon: "mdi-calendar-check", title: "Permisos Asistencia", to: "vacation", value: "vacation", permission: "view_vacations" },      
       { icon: "mdi-cash-multiple", title: "Gastos e Ingresos", to: "finance", value: "finance", permission: "view_finances" },      
       { icon: "mdi-credit-card", title: "Pago a Profesionales", to: "professional-payment", value: "professional-payment", permission: "view_professional_payment" },
-      //{ icon: "mdi-account-cash", title: "Pago Propina a Cajero (a)", to: "cashier-tip", value: "cashier-tip", permission: "view_cashier_tip" },
+      { icon: "mdi mdi-delete-outline", title: "Solicitudes de eliminación", to: "car-order-delete", value: "car-order-delete", permission: "view_carorder_delete" },
       //{ icon: "mdi-list-box-outline", title: "Asignar servicios a una Sucursal", to: "branch-service-professional", value: "branch-service-professional", permission: "view_dashboard" },          
       //{ icon: "mdi mdi-chair-rolling", title: "Puestos de Trabajo", to: "workplace", value: "workplace", permission: "view_workplace" },
       //{ icon: "mdi-view-list", title: "Asignar Regla", to: "branch-rule", value: "branch-rule", permission: "view_branch_rules" },

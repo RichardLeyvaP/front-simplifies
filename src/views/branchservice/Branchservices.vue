@@ -39,7 +39,16 @@
                                         <v-col cols="12" md="12">
                                             <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.service_id" :items="services" clearable
                                                 label="Servicios" prepend-icon="mdi-list-box-outline" item-title="name"
-                                                item-value="id" variant="underlined" :rules="selectRules" v-if="!editando"></v-autocomplete>
+                                                item-value="id" variant="underlined" :rules="selectRules" v-if="!editando">
+                                                <template v-slot:item="{ props, item }">
+                                                    <v-list-item
+                                                    v-bind="props"
+                                                    :prepend-avatar="'http://127.0.0.1:8000/api/images/'+item.raw.image_service"
+                                                    :subtitle="'Precio: '+item.raw.price_service"
+                                                    :title="item.raw.name"
+                                                    ></v-list-item>
+                                                </template>
+                                            </v-autocomplete>
                                                 <v-text-field v-model="editedItem.name" label="Servicio"
                                         prepend-icon="mdi-list-box-outline" variant="underlined" v-if="editando" disabled="true">
                                     </v-text-field>

@@ -46,7 +46,15 @@
                         :rules="selectRules" :disabled="!mover"></v-autocomplete>
                       <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.product_id" :items="products" clearable label="Productos"
                         prepend-inner-icon="mdi-tag" item-title="name" item-value="id" variant="underlined"
-                        :rules="selectRules" :disabled="!mover"></v-autocomplete>
+                        :rules="selectRules" :disabled="!mover">
+                        <template v-slot:item="{ props, item }">
+                        <v-list-item
+                          v-bind="props"
+                          :prepend-avatar="'http://127.0.0.1:8000/api/images/'+item.raw.image_product"
+                          :title="item.raw.name"
+                        ></v-list-item>
+                      </template>
+                      </v-autocomplete>
                       <v-text-field v-model="editedItem.stock_depletion" clearable label="Límite de existencia para alerta"
                         prepend-inner-icon="mdi-package-variant-closed" variant="underlined" :rules="pago" :disabled="moverEdit">
                       </v-text-field>
