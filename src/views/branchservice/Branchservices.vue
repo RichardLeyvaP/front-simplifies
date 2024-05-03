@@ -306,14 +306,14 @@ export default {
         editedIndex: -1,
         editedItem: {
             service_id: '',
-            ponderation: 0,
+            ponderation: 1,
             id: ''
         },
         data: {},
 
         defaultItem: {
             service_id: '',
-            ponderation: 0,
+            ponderation: 1,
             id: ''
         },
 

@@ -62,8 +62,7 @@
                             :class="{ 'selected-item': isProfessional(professional.id) }">
 
                             <v-list-item-content>
-                              <v-list-item-title>{{ professional.name + ' ' + professional.surname + '
-    '+professional.second_surname }}</v-list-item-title>
+                              <v-list-item-title>{{ professional.name + ' ' + professional.surname +' '+professional.second_surname }}</v-list-item-title>
                             </v-list-item-content>
                           </v-list-item>
 
