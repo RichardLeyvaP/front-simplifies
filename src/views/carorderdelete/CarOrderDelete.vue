@@ -171,6 +171,7 @@ export default {
         mostrarFila: false,
         headers: [
             { title: 'No', value: 'id' },
+            { title: 'Sucursal', value: 'nameBranch' },
             { title: 'Profesional', value: 'professionalName' },
             { title: 'Cliente', value: 'clientName' },
             { title: 'Técnico', value: 'technical_assistance' },
@@ -181,6 +182,7 @@ export default {
             { title: 'Acciones', key: 'actions', sortable: false },
         ],
         headers1: [
+            { title: 'Sucursal', value: 'nameBranch' },
             { title: 'Carro', value: 'car_id' },
             { title: 'Profesional', value: 'professionalName' },
             { title: 'Cliente', value: 'clientName' },
@@ -206,21 +208,7 @@ export default {
         this.branch_id = LocalStorageService.getItem('branch_id');
         this.charge_id = LocalStorageService.getItem('charge_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
-        axios
-            .get('http://127.0.0.1:8000/api/show-business', {
-                params: {
-                    business_id: this.business_id
-                }
-            })
-            .then((response) => {
-                this.branches = response.data.branches;
-            }).finally(() => {
-                if (this.charge === 'Administrador') {
-                    this.branch_id = this.branches[0].id;
-                    this.mostrarFila = true;
-                }
-                this.initialize()
-            });
+       this.initialize();
     },
 
     methods: {
