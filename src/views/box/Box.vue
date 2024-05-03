@@ -504,7 +504,7 @@
 
         <v-card>
           <v-toolbar color="#F18254">
-            <span class="text-subtitle-2 ml-4"> Agergar Producto</span>
+            <span class="text-subtitle-2 ml-4"> Agregar Producto</span>
           </v-toolbar>
           <v-card-text>
             <v-form v-model="valid" enctype="multipart/form-data">
