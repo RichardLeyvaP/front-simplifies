@@ -127,11 +127,14 @@
                 </template>
                 <template v-slot:item.name="{ item }">
 
-                    <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                    <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
                         <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_service" alt="image"></v-img>
                     </v-avatar>
                     {{ item.name }}
                 </template>
+                <template v-slot:item.ponderation="{ item }">
+                    {{ item.ponderation === 0 ? 1 : item.ponderation }}
+                    </template>
                 <template v-slot:item.actions="{ item }">
                     <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
          mdi-pencil
@@ -338,6 +341,15 @@ export default {
     },
 
     watch: {
+        'editedItem.ponderation': function(newValue) {
+      // Si el nuevo valor es 0, lo ajustamos a 1
+      if (newValue === 0) {
+        this.editedItem.ponderation = 1;
+      }
+      else{
+        this.editedItem.ponderation;
+      }
+    },
         dialog(val) {
             val || this.close()
         },

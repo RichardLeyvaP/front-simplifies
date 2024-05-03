@@ -194,7 +194,9 @@
               hide-details></v-text-field>
 
             <v-data-table :headers="headers2" :items="branchProfessionals" :search="search2" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
-
+              <template v-slot:item.ponderation="{ item }">
+                    {{ item.ponderation === 0 ? 1 : item.ponderation }}
+                    </template>
               <template v-slot:item.name="{ item }">
 
                 <v-avatar elevation="3" color="grey-lighten-4" size="large">
@@ -558,7 +560,7 @@ export default {
       business_type_id: '',
       image_data: '',
       professional_id: '',
-      ponderation: 0,
+      ponderation: 1,
       store_id: '',
       useTechnical: 0,
       location: '',
@@ -576,7 +578,7 @@ export default {
       business_type_: '',
       image_data: '',
       professional_id: '',
-      ponderation: 0,
+      ponderation: 1,
       store_id: '',
       useTechnical: '',
       location: '',
@@ -614,6 +616,15 @@ export default {
   },
 
   watch: {
+    'editedItem.ponderation': function(newValue) {
+      // Si el nuevo valor es 0, lo ajustamos a 1
+      if (newValue === 0) {
+        this.editedItem.ponderation = 1;
+      }
+      else{
+        this.editedItem.ponderation;
+      }
+    },
     dialog(val) {
       val || this.close()
     },
