@@ -78,12 +78,12 @@
                                         </template>
 
                                         <template v-slot:item.actions="{ item }">
-                                            <v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)"
+                                            <v-btn density="comfortable" icon="mdi-check" @click="deleteItem(item)"
+                                                color="red-darken-4" variant="tonal" elevation="1"
+                                                title="Aceptar solicitud y eliminar el carro"></v-btn>
+                                            <v-btn density="comfortable" icon="mdi-close" @click="editItem(item)"
                                                 color="primary" variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
                                                 title="Denegar Solicitud"></v-btn>
-                                            <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)"
-                                                color="red-darken-4" variant="tonal" elevation="1"
-                                                title="Eliminar el carro"></v-btn>
                                         </template>
                                     </v-data-table>
                                 </v-window-item>
@@ -129,12 +129,12 @@
                                         </template>
 
                                         <template v-slot:item.actions="{ item }">
-                                            <v-btn density="comfortable" icon="mdi-pencil" @click="editItemOrder(item)"
+                                            <v-btn density="comfortable" icon="mdi-check" @click="deleteItemOrder(item)"
+                                                color="red-darken-4" variant="tonal" elevation="1"
+                                                title="Aceptar la solicitud y eliminar la orden"></v-btn>
+                                            <v-btn density="comfortable" icon="mdi-close" @click="editItemOrder(item)"
                                                 color="primary" variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
                                                 title="Denegar Solicitud"></v-btn>
-                                            <v-btn density="comfortable" icon="mdi-delete" @click="deleteItemOrder(item)"
-                                                color="red-darken-4" variant="tonal" elevation="1"
-                                                title="Eliminar la orden"></v-btn>
                                         </template>
                                     </v-data-table>
                                 </v-window-item>
