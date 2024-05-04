@@ -740,6 +740,7 @@ export default {
     business_id: '',
     nameBranch: '',
     nameProfessional: '',
+    professional_id: '',
     results: [],
     resultsPagado: [],
     orders: [],
@@ -952,6 +953,7 @@ export default {
     this.business_id = LocalStorageService.getItem('business_id');
     this.charge_id = LocalStorageService.getItem('charge_id');
     this.branch_id = LocalStorageService.getItem('branch_id');
+    this.professional_id = LocalStorageService.getItem('professional_id');
     this.nameBranch = LocalStorageService.getItem('nameBranch');
     this.nameProfessional = JSON.parse(LocalStorageService.getItem("name"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
@@ -1072,6 +1074,7 @@ export default {
         id: item.id,
         nameProfessional: this.nameProfessional,
         branch_id: this.branch_id,
+        professional_id: this.professional_id
       };
       axios
         .post('http://127.0.0.1:8000/api/order-destroy-solicitud', request)
@@ -1089,6 +1092,7 @@ export default {
         id: this.editedItem.order_id,
         nameProfessional: this.nameProfessional,
         branch_id: this.branch_id,
+        professional_id: this.professional_id
       };
       axios
         .post('http://127.0.0.1:8000/api/order-destroy-web', request)
@@ -1339,7 +1343,8 @@ export default {
       let request = {
         id: this.editedItem.id,
         nameProfessional: this.nameProfessional,
-        branch_id: this.branch_id
+        branch_id: this.branch_id,
+        professional_id: this.professional_id
       };
       axios
         .post('http://127.0.0.1:8000/api/car-destroy-solicitud', request)

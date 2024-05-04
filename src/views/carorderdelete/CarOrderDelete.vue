@@ -79,10 +79,10 @@
 
                                         <template v-slot:item.actions="{ item }">
                                             <v-btn density="comfortable" icon="mdi-check" @click="deleteItem(item)"
-                                                color="red-darken-4" variant="tonal" elevation="1"
+                                                color="primary" variant="tonal" elevation="1"
                                                 title="Aceptar solicitud y eliminar el carro"></v-btn>
                                             <v-btn density="comfortable" icon="mdi-close" @click="editItem(item)"
-                                                color="primary" variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
+                                                color="red-darken-4" variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
                                                 title="Denegar Solicitud"></v-btn>
                                         </template>
                                     </v-data-table>
@@ -130,10 +130,10 @@
 
                                         <template v-slot:item.actions="{ item }">
                                             <v-btn density="comfortable" icon="mdi-check" @click="deleteItemOrder(item)"
-                                                color="red-darken-4" variant="tonal" elevation="1"
+                                                color="primary" variant="tonal" elevation="1"
                                                 title="Aceptar la solicitud y eliminar la orden"></v-btn>
                                             <v-btn density="comfortable" icon="mdi-close" @click="editItemOrder(item)"
-                                                color="primary" variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
+                                                color="red-darken-4" variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
                                                 title="Denegar Solicitud"></v-btn>
                                         </template>
                                     </v-data-table>
@@ -165,6 +165,7 @@ export default {
         branch_id: '',
         charge: '',
         business_id: '',
+        professional_id: '',
         branches: [],
         search: '',
         search2: '',
@@ -208,6 +209,7 @@ export default {
         this.branch_id = LocalStorageService.getItem('branch_id');
         this.charge_id = LocalStorageService.getItem('charge_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
+        this.professional_id = LocalStorageService.getItem('professional_id');
        this.initialize();
     },
 
@@ -250,7 +252,8 @@ export default {
 
         deleteItem(item) {
             let request = {
-                id: item.id
+                id: item.id,
+                professional_id: this.professional_id
             };
             axios
                 .post('http://127.0.0.1:8000/api/car-destroy', request)
@@ -264,6 +267,7 @@ export default {
         editItem(item) {
             let request = {
                 id: item.id,
+                professional_id: this.professional_id
             };
             axios
                 .post('http://127.0.0.1:8000/api/car-denegada', request)
@@ -279,7 +283,8 @@ export default {
         //eliminar orden
         deleteItemOrder(item) {
             let request = {
-                id: item.id
+                id: item.id,
+                professional_id: this.professional_id
             };
             axios
                 .post('http://127.0.0.1:8000/api/order-destroy-web', request)
@@ -294,6 +299,7 @@ export default {
         editItemOrder(item) {
             let request = {
                 id: item.id,
+                professional_id: this.professional_id
             };
             axios
                 .post('http://127.0.0.1:8000/api/order-denegar', request)

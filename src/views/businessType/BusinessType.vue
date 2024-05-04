@@ -16,11 +16,10 @@
   <v-card elevation="6" class="mx-5">
     <v-toolbar color="#F18254">
       <v-row align="center">
-        <v-col cols="12" md="4" class="grow ml-4">
+        <v-col cols="12" md="8" class="grow ml-4">
           <span class="text-subtitle-1"> <strong>Tipos de Negocios</strong></span>
         </v-col>
-         <v-col cols="12" md="5" class="mr-12"></v-col>
-        <v-col cols="12" md="2">          
+        <v-col cols="12" md="3" class="text-right">          
         
             <v-dialog v-model="dialog" max-width="600">
               <template v-slot:activator="{ props }">              

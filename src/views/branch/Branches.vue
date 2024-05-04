@@ -120,7 +120,7 @@
       <v-data-table :headers="headers" :search="search" :items="results" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
         <template v-slot:item.name="{ item }">
 
-          <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+          <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
             <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_data" alt="image"></v-img>
           </v-avatar>
           {{ item.name }}
@@ -133,26 +133,16 @@
           </div>
         </template>
         <template v-slot:item.actions="{ item }">
-          <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)" title="Editar Sucursal">
-            mdi-pencil
-          </v-icon>-->
           <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-pencil" @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" title="Editar Sucursal"></v-btn>
-          <!--<v-icon size="25" color="green" @click="showProfessionals(item)" title="Asignar Professional">
-            mdi-account-tie
-          </v-icon>-->
           <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-account-tie" @click="showProfessionals(item)" color="primary" variant="tonal"
-            elevation="1" title="Agregar Trabajdor"></v-btn> 
-          <!--<v-icon size="25" color="primary" @click="showStores(item)" title="Asignar Almacén">
-            mdi-store-outline
-          </v-icon> -->     
+            elevation="1" title="Agregar Trabajdor"></v-btn>  
           <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-store-outline" @click="showStores(item)" color="green" variant="tonal"
             elevation="1" title="Agregar Almacén"></v-btn>  
           <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-handshake" @click="showAssociates(item)" color="green" variant="tonal"
             elevation="1" title="Agregar Almacén"></v-btn>  
-          <!--<v-icon size="25" color="red" @click="deleteItem(item)" title="Eliminar Sucursal">
-            mdi-delete
-          </v-icon>-->
+            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-finance" @click="showWinner(item)" color="green" variant="tonal"
+            elevation="1" title="Finanzas de la  sucursal"></v-btn>  
           <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
             elevation="1" title="Eliminar Sucursal"></v-btn>
         </template>
@@ -473,6 +463,79 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+
+      <!--Finanzas-->
+      <v-dialog v-model="dialogWinners" fullscreen transition="dialog-bottom-transition">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-h6 ml-4">Ganancias de la Sucursal</span>
+            <v-spacer></v-spacer>
+          </v-toolbar>
+          <v-container>
+      <v-row>
+        <!-- Primera columna -->
+        <v-col cols="12" md="3">
+          <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
+            min-width="290px" multiple>
+            <template v-slot:activator="{ props }">
+              <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined" append-inner-icon="mdi-calendar"
+                label="Fecha inicial" multiple></v-text-field>
+            </template>
+            <v-locale-provider locale="es">
+              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input @update:modelValue="updateDate"
+                format="yyyy-MM-dd" :max="dateFormatted2"></v-date-picker>
+            </v-locale-provider>
+          </v-menu>
+        </v-col>
+        <!-- Segunda columna -->
+        <v-col cols="12" md="3">
+          <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
+            min-width="290px">
+            <template v-slot:activator="{ props }">
+              <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
+                append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
+            </template>
+            <v-locale-provider locale="es">
+              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" @update:modelValue="updateDate1"
+                format="yyyy-MM-dd" :min="dateFormatted"></v-date-picker>
+            </v-locale-provider>
+          </v-menu>
+        </v-col>
+        <v-col cols="12" md="1">
+                        <v-btn icon @click="updateDate3" color="#F18254" >
+                    <v-icon>mdi-magnify</v-icon></v-btn>
+                </v-col>
+            </v-row>
+              </v-container>
+              <v-row>
+            <v-container>
+            <v-alert border type="info" variant="outlined" density="compact">
+                    <p v-html="formTitleWin"></p>
+                              </v-alert>
+                            </v-container>
+          </v-row> 
+            <v-container>
+          <v-row>
+              <v-col cols="12" md="4" v-for="(item, key) in winners" :key="key">
+                    <v-card class="mx-auto pa-4 ml-0" :subtitle="key=='Monto Generado' || key=='Monto Servicios Especiales' ? formatNumber(item.value) : item.value" :title="key">                  
+                    <template v-slot:prepend>
+                      <v-avatar :color="item.color">
+                        <v-icon color="white">{{ item.icon }}</v-icon>
+                      </v-avatar>
+                    </template>                
+                </v-card>
+              </v-col>
+            </v-row>
+            </v-container>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="closeShowWinner">
+              Volver
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-card-text>
   </v-card>
 </v-container>
@@ -481,6 +544,7 @@
 <script>
 
 import axios from "axios";
+import { format } from "date-fns";
 import LocalStorageService from "@/LocalStorageService";
 export default {
   data: () => ({
@@ -513,7 +577,7 @@ export default {
     headers: [
       { title: 'Nombre', value: 'name' },
       { title: 'Teléfono', value: 'phone' },
-      { title: 'Dirección', value: 'address' },
+      { title: 'Dirección', value: 'address', width: '200px'  },
       { title: 'Tipo de Negocio', value: 'business_type.name' },
       { title: 'Técnico', value: 'useTechnical' },
       { title: 'Acciones', key: 'actions', sortable: false },
@@ -583,6 +647,16 @@ export default {
       useTechnical: '',
       location: '',
     },
+    //winners
+    winners: [],
+    dialogWinners: false,
+    menu: false,
+    menu2: false,
+    input: null,
+    input2: null,
+    fecha: '',
+    search5: '',
+    editedIndexWin: -1,
 
     nameRules: [
       (v) => !!v || "El campo es requerido",
@@ -612,6 +686,39 @@ export default {
 
     formTitleProfessional() {
       return this.editedIndexP === -1 ? 'Asignar Trabajador' : 'Editar Asignación del trabajador'
+    },
+    formTitleWin() {
+      if (this.editedIndexWin === 2) {
+        const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+        return `Ganancias de la Sucursal en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;
+		
+      }
+      else {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.fecha = format(new Date(), "yyyy-MM-dd");
+        return `Ganancias de la Sucursal en el día`;
+      }
+    },
+    dateFormatted() {
+      const date = this.input ? new Date(this.input) : new Date();
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const year = date.getFullYear();
+      return `${year}-${month}-${day}`;
+    },
+    dateFormatted2() {
+      const date = this.input2 ? new Date(this.input2) : new Date();
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const year = date.getFullYear();
+      return `${year}-${month}-${day}`;
+    },
+    getDate() {
+      return this.input ? new Date(this.input) : new Date();
+    },
+    getDate2() {
+      return this.input2 ? new Date(this.input2) : new Date();
     },
   },
 
@@ -1084,6 +1191,57 @@ export default {
           this.showAssociates(this.branchSelect);
           this.showAlert("success", "Afiliación eliminada correctamente", 3000);
           });
+    },
+    //Finanzas
+    showWinner(item) {
+      this.branchSelect = item;
+      this.branch_id = item.id;
+      this.editedIndexWin = -1;
+      axios
+        .get('http://127.0.0.1:8000/api/branch_winner_icon', {
+          params: {
+            branch_id: this.branch_id
+          }
+        })
+        .then((response) => {
+          this.winners = response.data;
+        }).finally(() => {         
+          this.dialogWinners = true;
+          });
+    },
+    closeShowWinner() {
+      this.dialogWinners = false; 
+          this.editedIndexWin = -1;
+    },
+    formatNumber(value) {
+            return value.toLocaleString('es-ES');
+        },
+    updateDate(val) {
+      this.input = val;
+      this.menu = false;
+    },
+    updateDate1(val) {
+      this.input2 = val;
+      this.menu2 = false;
+    },
+    updateDate3() {
+      this.editedIndexWin = 2;
+      //this.input2 = val;
+      this.input = this.input ? new Date(this.input) : new Date();
+      const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+      axios
+        .get('http://127.0.0.1:8000/api/branch_winner_icon', {
+          params: {
+            branch_id: this.branch_id,
+            startDate: startDate,
+            endDate: endDate
+          }
+        })
+        .then((response) => {
+          this.winners = response.data;
+        })
+      //this.menu2 = false;
     },
   },
 }

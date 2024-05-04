@@ -4,12 +4,11 @@
     <v-card elevation="6" class="mx-5">
         <v-toolbar color="#F18254">
             <v-row align="center">
-                <v-col cols="12" md="6" class="grow ml-4">
+                <v-col cols="12" md="4" class="grow ml-4">
                     <span class="text-subtitle-1"> <strong>Movimiento de Productos</strong></span>
                 </v-col>
-                <v-spacer></v-spacer>
-                <v-col cols="12" md="5">
-                    <v-btn class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat" elevation="2"
+                <v-col cols="12" md="7" class="text-right">
+                    <v-btn class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2"
                         prepend-icon="mdi-trending-up" @click="showMostSold">
                         Más y menos vendidos
                     </v-btn>

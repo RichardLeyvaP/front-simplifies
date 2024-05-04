@@ -461,7 +461,14 @@ export default {
     },
     editItem(item) {
       this.file = null;
-      this.imgMiniatura = 'http://127.0.0.1:8000/api/images/'+item.image_url;
+      var img = new Image();
+      img.src = 'http://127.0.0.1:8000/api/images/' + item.image_url;
+      img.onload = () => {
+        this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.image_url;
+      };
+      img.onerror = () => {
+        this.imgMiniatura = '';
+      };
       this.editedIndex = 1;
       this.editedItem = Object.assign({}, item);
       this.editedItem.charge_id = parseInt(item.charge_id);

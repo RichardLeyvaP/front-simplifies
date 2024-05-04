@@ -135,8 +135,8 @@ export default {
       { icon: "mdi-chair-rolling", title: "Totem", to: "totem", value: "Totem", permission: "view_totem" },
     ],
     reportes: [
-      { icon: "mdi-finance", title: "Ganancias Sucursales del Negocio", to: "branch-winner", value: "branch-winners", permission: "view_branch_earnings" },
-      { icon: "mdi-finance", title: "Ganancias Negocio", to: "company-winner", value: "company-winners", permission: "view_company_earnings" },
+      //{ icon: "mdi-finance", title: "Ganancias Sucursales del Negocio", to: "branch-winner", value: "branch-winners", permission: "view_branch_earnings" },
+      //{ icon: "mdi-finance", title: "Ganancias Negocio", to: "company-winner", value: "company-winners", permission: "view_company_earnings" },
       { icon: "mdi-finance", title: "Monto por Profesionales", to: "branch-winner-professional", value: "branch-winner-professional", permission: "view_professional_earnings" },
       { icon: "mdi-finance", title: "Historial Clientes", to: "client-history", value: "client-history", permission: "view_client_history" },
       //{ icon: "mdi-finance", title: "Ganancias Negocios por Sucursales", to: "business-winner", value: "business-winner", permission: "view_business_earnings" },
