@@ -442,13 +442,13 @@
         <v-card>
           <v-toolbar color="#F18254">
             <v-row>
-              <v-col cols="12" md="9">
+              <v-col cols="12" md="7">
                 <span class="text-subtitle-2 ml-4"> Detalles del Carro</span>
               </v-col>
               <v-spacer></v-spacer>
-              <v-col cols="12" md="3">
+              <v-col cols="12" md="5" class="text-center">
                 <v-btn color="#E7E9E9" variant="flat" @click="showService(this.car_ref)"
-                  prepend-icon="mdi-list-box-outline" class="mr-2" :disabled="this.car_ref.pay == 1 ? true : false">
+                  prepend-icon="mdi-list-box-outline" class="mr-1" :disabled="this.car_ref.pay == 1 ? true : false">
                   Agregar Servicio
                 </v-btn>
                 <v-btn color="#E7E9E9" variant="flat" @click="showProduct(this.car_ref)" prepend-icon="mdi-tag-outline" :disabled="this.car_ref.pay == 1 ? true : false">
