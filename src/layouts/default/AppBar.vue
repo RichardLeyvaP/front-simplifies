@@ -150,6 +150,7 @@ export default {
     imageUrl: '',
     password: '',
     user_id:'',
+    branch_id:'',
     professional_id: '',
     results: [],
     showPasswordForm: false,
@@ -172,11 +173,13 @@ export default {
     this.charge = JSON.parse(LocalStorageService.getItem('charge'));
     this.user_id = JSON.parse(LocalStorageService.getItem('user_id'));
     this.professional_id = JSON.parse(LocalStorageService.getItem('professional_id'));
+    this.branch_id = LocalStorageService.getItem('branch_id');
     const image = LocalStorageService.getItem('image');
     const cleanedImage = image.replace(/"/g, '');
     this.imageUrl = `http://127.0.0.1:8000/api/images/${cleanedImage}`;
     console.log(this.imageUrl);
     // Otros datos que hayas almacenado
+    this.initialize();
   },
   methods: {
     showAlert(sb_type,sb_message, sb_timeout)
@@ -255,6 +258,20 @@ export default {
         this.password_new = '';
       });
     },
+    initialize(){
+      axios
+        .get('http://127.0.0.1:8000/api/notification-professional', {
+                    params: {
+                        branch_id: this.branch_id,
+                        professional_id: this.professional_id
+                    }
+                })
+        .then((response) => {
+          this.results = response.data.notifications;
+          console.log('imprime notificaciones');
+          console.log(this.results);
+        });
+    }
   }
 }
 </script>
