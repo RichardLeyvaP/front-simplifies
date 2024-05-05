@@ -128,7 +128,7 @@ export default {
       { title: 'Correo', key: 'email', sortable: false },
       { title: 'Teléfono', key: 'phone', sortable: false },
       { title: 'Clasificación', key: 'frecuence', sortable: true },
-      { title: 'Clasificación', key: 'frecuence', sortable: true },
+      { title: 'Cantidad Visitas', key: 'cant_visist', sortable: true },
       { title: 'Última vez Atendido', key: 'data', sortable: true },
     ],
     data: {},

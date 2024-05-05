@@ -138,7 +138,7 @@ export default {
       //{ icon: "mdi-finance", title: "Ganancias Sucursales del Negocio", to: "branch-winner", value: "branch-winners", permission: "view_branch_earnings" },
       //{ icon: "mdi-finance", title: "Ganancias Negocio", to: "company-winner", value: "company-winners", permission: "view_company_earnings" },
       { icon: "mdi-finance", title: "Monto por Profesionales", to: "branch-winner-professional", value: "branch-winner-professional", permission: "view_professional_earnings" },
-      { icon: "mdi-finance", title: "Historial Clientes", to: "client-history", value: "client-history", permission: "view_client_history" },
+      //{ icon: "mdi-finance", title: "Historial Clientes", to: "client-history", value: "client-history", permission: "view_client_history" },
       //{ icon: "mdi-finance", title: "Ganancias Negocios por Sucursales", to: "business-winner", value: "business-winner", permission: "view_business_earnings" },
       { icon: "mdi-timer-off", title: "Llegadas Tardes General", to: "branch-arriving-late", value: "branch-arriving-late", permission: "view_late_arrivals" },
       { icon: "mdi-timer-off", title: "Asistencia por Profesional", to: "professional-arriving-late", value: "professional-arriving-late", permission: "view_professional_late_arrivals" },
