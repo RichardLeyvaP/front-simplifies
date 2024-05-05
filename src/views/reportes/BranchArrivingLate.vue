@@ -1,28 +1,14 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
-     <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24" :multi-line="true"
-      vertical v-model="snackbar">
-      <v-row>
-        <v-col md="2">
-          <v-avatar :icon="sb_icon" color="sb_type" size="40"></v-avatar>
-        </v-col>
-        <v-col md="10">
-          <h4>{{ sb_title }}</h4>
-          {{ sb_message }}
-  
-        </v-col>
-  
-      </v-row>
-    </v-snackbar>
   <v-card elevation="6" class="mx-5">
     <v-toolbar color="#F18254">
       <v-container>
         <v-row align="center">
-          <v-col cols="12" md="8" class="grow mt-3">
+          <v-col cols="12" md="7" class="grow mt-3">
             <span class="text-h8"> <strong>Llegadas tardes por profesional en un (Día, Mes o Período)</strong></span>
           </v-col>
           <v-spacer></v-spacer>
-          <v-col cols="12" md="3">
+          <v-col cols="12" md="4">
             <v-btn class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat" elevation="2"
               prepend-icon="mdi-star" @click="showBestAsistance">
               Mejor Asistencia
@@ -65,20 +51,6 @@
             </v-locale-provider>
           </v-menu>
         </v-col>
-        <!-- Tercera columna -->
-        <!--<v-col cols="12" sm="6" md="3">
-          <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-            min-width="290px">
-            <template v-slot:activator="{ props }">
-              <v-text-field v-bind="props" :modelValue="dateFormatted3" variant="outlined"
-                append-inner-icon="mdi-calendar" label="Mes"></v-text-field>
-            </template>
-            <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate3" @update:model-value="updateDate3"
-                format="yyyy-MM" scrollable></v-date-picker>
-            </v-locale-provider>
-          </v-menu>
-        </v-col>-->
           <v-col cols="12" sm="12" md="3">
             <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" label="Seleccione una Sucursal"
               prepend-inner-icon="mdi-store" item-title="name" item-value="id" variant="outlined"
@@ -88,9 +60,46 @@
                         <v-btn icon @click="updateDate2" color="#F18254" >
                     <v-icon>mdi-magnify</v-icon></v-btn>
                 </v-col>
-        <v-col cols="12">
+        <v-col cols="12" md="12">
           <v-container>
-            <v-alert border type="info" variant="outlined" density="compact">
+            <v-card elevation="2">
+                        <v-tabs v-model="tabBar" color="rgb(241, 130, 84)"
+                            elevation="6"><!-- @click="handleTabChange"-->
+                            <v-tab value="one">Llegadas tardes por profesional</v-tab>
+                            <v-tab value="two">Mejores asistencias por professional</v-tab>
+                        </v-tabs>
+                        <v-card-text>
+                            <v-window v-model="tabBar">
+                                <v-window-item value="one">
+                                  <v-alert border type="info" variant="outlined" density="compact">
+                            <p v-html="formTitle"></p>
+                                      </v-alert>
+                                      <v-card-text>
+                              <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
+                                hide-details>
+                              </v-text-field>
+                              <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search2" class="elevation-2"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+                              </v-data-table>
+                            </v-card-text>
+                                </v-window-item>
+
+                                <v-window-item value="two">
+                                  <v-alert border type="info" variant="outlined" density="compact">
+                <p v-html="formTitle1"></p>
+                        </v-alert>
+                        <v-card-text>
+              <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
+                hide-details>
+              </v-text-field>
+              <v-data-table :headers="headers1" :items-per-page-text="'Elementos por páginas'" :items="results1" :search="search" class="elevation-2"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+              </v-data-table>
+            </v-card-text>
+                                </v-window-item>
+
+                            </v-window>
+                        </v-card-text>
+                    </v-card>
+            <!--<v-alert border type="info" variant="outlined" density="compact">
               <p v-html="formTitle"></p>
                         </v-alert>
           </v-container>
@@ -100,96 +109,11 @@
             </v-text-field>
             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search2" class="elevation-2"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
             </v-data-table>
-          </v-card-text>
+          </v-card-text>-->
+          </v-container>
         </v-col>
       </v-row>
-      <!--Mejores Asistencias-->
-      <v-dialog v-model="dialogBestAsistance" fullscreen transition="dialog-bottom-transition">
-        <v-card>
-          <v-toolbar color="#F18254">
-            <v-container>
-          <v-row align="center">
-            <v-col cols="12" md="8" class="grow ml-4">
-              <span class="text-h8"> <strong>Profesionales con mejor asistencia en un (Día, Mes o
-                  Período)</strong></span>
-            </v-col>
-            <v-spacer></v-spacer>
-            <v-col cols="12" md="3">
-              <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" elevation="2"
-                prepend-icon="mdi-file-excel" @click="exportToExcel1">
-                Exportar a Excel
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-container>
-          </v-toolbar>
-          <v-card-text class="mt-2 mb-2">
-            <v-container>      
-      <v-row>
-          <!-- Primera columna -->
-          <v-col cols="12" sm="6" md="3" >
-            <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-              min-width="290px">
-              <template v-slot:activator="{ props }">
-                <v-text-field v-bind="props" :modelValue="dateFormatted3" variant="outlined" append-inner-icon="mdi-calendar"
-                  label="Fecha inicial"></v-text-field>
-              </template>
-              <v-locale-provider locale="es">
-                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate3" @update:model-value="updateDate3"
-                  format="yyyy-MM-dd" :max="dateFormatted4"></v-date-picker>
-              </v-locale-provider>
-            </v-menu>
-          </v-col>
-          <!-- Segunda columna -->
-          <v-col cols="12" sm="6" md="3">
-            <v-menu v-model="menu4" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-              min-width="290px">
-              <template v-slot:activator="{ props }">
-                <v-text-field v-bind="props" :modelValue="dateFormatted4" variant="outlined"
-                  append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
-              </template>
-              <v-locale-provider locale="es">
-                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate4" @update:model-value="updateDate4"
-                  format="yyyy-MM-dd" :min="dateFormatted3"></v-date-picker>
-              </v-locale-provider>
-            </v-menu>
-          </v-col>    
-          <v-col cols="12" sm="12" md="3">
-            <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"  label="Seleccione una Sucursal"
-              prepend-inner-icon="mdi-store" item-title="name" item-value="id" variant="outlined"
-              ></v-autocomplete><!--@update:model-value="initialize()"-->
-          </v-col>
-          <v-col cols="12" md="1">
-                        <v-btn icon @click="updateDate5" color="#F18254" >
-                    <v-icon>mdi-magnify</v-icon></v-btn>
-                </v-col>
-          <v-col cols="12">
-            <v-container>
-              <v-alert border type="info" variant="outlined" density="compact">
-                <p v-html="formTitle1"></p>
-                        </v-alert>
-            </v-container>
-            <v-card-text>
-              <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
-                hide-details>
-              </v-text-field>
-              <v-data-table :headers="headers1" :items-per-page-text="'Elementos por páginas'" :items="results1" :search="search" class="elevation-2"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
-              </v-data-table>
-            </v-card-text>
-          </v-col>
-        </v-row>
-      </v-container> 
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="#E7E9E9" variant="flat" @click="closeDialogBestAsistance">
-              Volver
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <!--endMejores asistencias-->
+
     </v-container>
   </v-card>
 </template>
@@ -209,6 +133,7 @@ export default {
     },
   },
   data: () => ({
+    tabBar: null,
     fecha: '',
     fecha1: '',
     menu: false,

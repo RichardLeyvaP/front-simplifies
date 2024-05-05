@@ -78,9 +78,18 @@
             <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details>
             </v-text-field>
-            <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
+            <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :group-by="groupBy"
               :search="search2" class="elevation-2" no-results-text="No hay datos disponibles"
               no-data-text="No hay datos disponibles">
+              <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
+          <tr>
+            <td :colspan="columns.length">
+              <VBtn size="small" variant="text" :icon="isGroupOpen(item) ? '$expand' : '$next'"
+                @click="toggleGroup(item)"></VBtn>
+              {{ item.value }}
+            </td>
+          </tr>
+        </template>
               <template v-slot:item.tip="{ item }">
                                         <v-chip
                                             class="text-uppercase font-weight-bold" size="small" label> {{
@@ -134,8 +143,13 @@ export default {
     results: [],
     branches: [],
     business_id: '',
+    groupBy: [
+      {
+        key: 'name',
+      },
+    ],
     headers: [
-      { title: 'Profesional', key: 'name', sortable: false },
+      { title: 'Sucursal', key: 'branchName', sortable: false },
       { title: 'Monto', key: 'amount', sortable: false },
       { title: 'Retención', key: 'retention', sortable: false },
       { title: 'Propina', key: 'tip', sortable: false },

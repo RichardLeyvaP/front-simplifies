@@ -261,148 +261,150 @@
           <span class="text-subtitle-1 ml-4">Historial del Cliente</span>
           <v-spacer></v-spacer>
         </v-toolbar>
-        <v-container>
         <br>
-          <v-row>
-            <v-col cols="12" md="4">
-              <v-card class="mx-auto" max-width="400">
-                <v-img
-                  class="align-end text-white"
-                  height="300"
-                  :src="'http://127.0.0.1:8000/api/images/' + history.imageLook"
-                  cover
+        <v-row>
+          <v-col cols="12" md="4">
+            <v-card class="mx-auto" max-width="400">
+              <v-img
+                class="align-end text-white"
+                height="300"
+                :src="'http://127.0.0.1:8000/api/images/' + history.imageLook"
+                cover
+              >
+                <v-card-title>
+                  <v-chip class="ma-2" color="" label>
+                    <v-icon icon="mdi-camera" start></v-icon>
+                    Último Look
+                  </v-chip>
+                </v-card-title>
+              </v-img>
+
+              <v-card-text class="pt-2">
+                {{ history.clientName }}
+                <v-chip class="ma-1" color="warning" label size="small">
+                  <v-icon icon="mdi-timer" start></v-icon>
+                  {{ history.frecuencia }}
+                </v-chip>
+
+                <v-chip class="" color="warning" label size="small">
+                  <v-icon icon="mdi-store" start></v-icon>
+                  {{ history.cantVisit }} Visitas
+                </v-chip>
+                <br>
+                <v-divider class="mt-2"></v-divider>
+                <v-row>
+                  <v-col cols="12" md="6">
+                    <div class="text-h8 mt-3">Última vez atendido</div>
+                  </v-col>
+                  <v-col cols="6" md="6">
+                    <div class="text-h8 mt-3">{{ history.lastDate }}</div>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" md="12">
+                    <div class="text-h8 mt-3">Sucursal: {{ history.branchName }}</div>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" md="12">
+                    <div class="text-h8 mt-3">
+                      Profesional:
+                      <v-avatar
+                        elevation="3"
+                        class="mx-auto"
+                        max-width="60"
+                        max-height="60"
+                      >
+                        <v-img
+                          :src="'http://127.0.0.1:8000/api/images/' + history.image_url"
+                          alt="Imagen"
+                        ></v-img>
+                      </v-avatar>
+                      {{ history.professionalName }}
+                    </div>
+                  </v-col>
+                </v-row>
+                <v-divider></v-divider>
+                <br>
+                <v-textarea
+                  label=" Comentario "
+                  row-height="25"
+                  rows="3"
+                  variant="outlined"
+                  auto-grow
+                  shaped
+                  v-model="history.endLook"
+                  prepend-inner-icon="mdi-comment"
+                  readonly
                 >
-                  <v-card-title>
-                    <v-chip class="ma-2" color="" label>
-                      <v-icon icon="mdi-camera" start></v-icon>
-                      Último Look
-                    </v-chip>
-                  </v-card-title>
-                </v-img>
+                </v-textarea>
+              </v-card-text>
+            </v-card>
+          </v-col>
 
-                <v-card-text class="pt-2">
-                  {{ history.clientName }}
-                  <v-chip class="ma-1" color="warning" label size="small">
-                    <v-icon icon="mdi-timer" start></v-icon>
-                    {{ history.frecuencia }}
-                  </v-chip>
+          <v-col cols="12" md="4">
+            <v-card class="mx-auto" max-width="450">
+              <v-toolbar>
+                <v-btn icon="mdi-menu" variant="text"></v-btn>
 
-                  <v-chip class="" color="warning" label size="small">
-                    <v-icon icon="mdi-store" start></v-icon>
-                    {{ history.cantVisit }} Visitas
-                  </v-chip>
-                  <br />
-                  <v-divider class="mt-2"></v-divider>
-                  <v-row>
-                    <v-col cols="12" md="6">
-    <div class="text-h8 mt-3">Última vez atendido</div>
-  </v-col>
-  <v-col cols="6" md="6">
-    <div class="text-h8 mt-3">{{ history.lastDate }}</div>
-  </v-col>
-</v-row>
-<v-row>
-  <v-col cols="12" md="12">
-    <div class="text-h8 mt-3">Sucursal: {{ history.branchName }}</div>
-  </v-col>
-</v-row>
-<v-row>
-  <v-col cols="12" md="12">
-    <div class="text-h8 mt-3">
-      Profesional:
-      <v-avatar elevation="3" class="mx-auto" max-width="60" max-height="60">
-        <v-img :src="'http://127.0.0.1:8000/api/images/' + history.image_url" alt="Imagen"></v-img>
-      </v-avatar>
-      {{ history.professionalName }}
-    </div>
-  </v-col>
-                  </v-row>
-                  <v-divider></v-divider>
-                  <br />
-                  <v-textarea
-                    label=" Comentario "
-                    row-height="25"
-                    rows="3"
-                    variant="outlined"
-                    auto-grow
-                    shaped
-                    v-model="history.endLook"
-                    prepend-inner-icon="mdi-comment"
-                    readonly
-                  >
-                  </v-textarea>
-                </v-card-text>
-              </v-card>
-            </v-col>
+                <v-toolbar-title class="text-subtitle-2"
+                  >Servicios más demandados</v-toolbar-title
+                >
+              </v-toolbar>
 
-            <v-col cols="12" md="4">
-              <v-card class="mx-auto" max-width="450">
-                <v-toolbar>
-                  <v-btn icon="mdi-menu" variant="text"></v-btn>
+              <v-list lines="two" item-props>
+                <v-list-item
+                  v-for="service in history.services"
+                  :key="service.id"
+                  :title="service.name"
+                  :subtitle="service.cant"
+                >
+                  <template v-slot:prepend>
+                    <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                      <v-img
+                        :src="'http://127.0.0.1:8000/api/images/' + service.image_service"
+                        alt="image"
+                      ></v-img>
+                    </v-avatar>
+                  </template>
+                </v-list-item>
+              </v-list>
+            </v-card>
+          </v-col>
 
-                  <v-toolbar-title class="text-subtitle-2"
-                    >Servicios más demandados</v-toolbar-title
-                  >
-                </v-toolbar>
+          <v-col cols="12" md="4">
+            <v-card class="mx-auto" max-width="450">
+              <v-toolbar>
+                <v-btn icon="mdi-tag" variant="text"></v-btn>
 
-                <v-list lines="two" item-props>
-                  <v-list-item
-                    v-for="service in history.services"
-                    :key="service.id"
-                    :title="service.name"
-                    :subtitle="service.cant"
-                  >
-                    <template v-slot:prepend>
-                      <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                        <v-img
-                          :src="
-                            'http://127.0.0.1:8000/api/images/' + service.image_service
-                          "
-                          alt="image"
-                        ></v-img>
-                      </v-avatar>
-                    </template>
-                  </v-list-item>
-                </v-list>
-              </v-card>
-            </v-col>
+                <v-toolbar-title class="text-subtitle-2"
+                  >Productos más Comprados</v-toolbar-title
+                >
+              </v-toolbar>
 
-            <v-col cols="12" md="4">
-              <v-card class="mx-auto" max-width="450">
-                <v-toolbar>
-                  <v-btn icon="mdi-tag" variant="text"></v-btn>
-
-                  <v-toolbar-title class="text-subtitle-2"
-                    >Productos más Comprados</v-toolbar-title
-                  >
-                </v-toolbar>
-
-                <v-list lines="two" item-props>
-                  <v-list-item
-                    v-for="product in history.products"
-                    :key="product.id"
-                    :title="product.name"
-                    :subtitle="product.cant"
-                  >
-                    <template v-slot:prepend>
-                      <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                        <v-img
-                          :src="
-                            'http://127.0.0.1:8000/api/images/' + product.image_product
-                          "
-                          alt="image"
-                        ></v-img>
-                      </v-avatar>
-                    </template>
-                  </v-list-item>
-                </v-list>
-              </v-card>
-            </v-col>
-          </v-row>
-          <v-spacer></v-spacer>
-          <br />
-          <br />
-        </v-container>
+              <v-list lines="two" item-props>
+                <v-list-item
+                  v-for="product in history.products"
+                  :key="product.id"
+                  :title="product.name"
+                  :subtitle="product.cant"
+                >
+                  <template v-slot:prepend>
+                    <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                      <v-img
+                        :src="'http://127.0.0.1:8000/api/images/' + product.image_product"
+                        alt="image"
+                      ></v-img>
+                    </v-avatar>
+                  </template>
+                </v-list-item>
+              </v-list>
+            </v-card>
+          </v-col>
+        </v-row>
+        <v-spacer></v-spacer>
+        <br>
+        <br>
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -477,8 +479,10 @@ export default {
       (v) => !!v || "El Correo Electrónico es requerido",
       (v) => /.+@.+\..+/.test(v) || "El Correo Electrónico no es válido",
     ],
-    mobileRules: [(v) => !!v || "El Teléfono es requerido",
-    value => this.validateTelefono(value) || 'El número de teléfono no es válido'],
+    mobileRules: [
+      (v) => !!v || "El Teléfono es requerido",
+      (value) => this.validateTelefono(value) || "El número de teléfono no es válido",
+    ],
     selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
   }),
 
@@ -660,7 +664,7 @@ export default {
       this.close();
     },
     showHistory(item) {
-      console.log('Client History');
+      console.log("Client History");
       axios
         .get("http://127.0.0.1:8000/api/client-history", {
           params: {
