@@ -18,16 +18,22 @@
   <v-card elevation="6" class="mx-5" width='auto'>
     <v-toolbar color="#F18254">
       <v-row align="center">
-        <v-col cols="12" md="4" class="grow ml-4">
+        <v-col cols="12" md="5" class="grow ml-4">
           <span class="text-subtitle-1"> <strong>Listado de Productos por Almacenes</strong></span>
         </v-col>
-        <v-col cols="12" md="5" class="mr-12"></v-col>
-        <v-col cols="12" md="2">
-
+        <v-col cols="12" md="6" class="text-right">
+        <v-btn class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2"
+                        prepend-icon="mdi-shuffle" @click="showReposition">
+                        Reposición
+                    </v-btn>
+                    <v-btn class="text-subtitle-1 ml-1" color="#E7E9E9" variant="flat" elevation="2"
+                        prepend-icon="mdi-trending-up" @click="showMove">
+                        Movimiento
+                    </v-btn>
           <v-dialog v-model="dialog" max-width="600px">
             <template v-slot:activator="{ props }">
 
-              <v-btn v-bind="props" class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2"
+              <v-btn v-bind="props" class="text-subtitle-1 ml-1" color="#E7E9E9" variant="flat" elevation="2"
                 prepend-icon="mdi-plus-circle">
                 Asignar Productos
               </v-btn>
@@ -162,7 +168,134 @@
 
       </v-container>
     </v-row>
-    
+    <!--Reposicion de productos-->
+    <v-dialog v-model="dialogReposition" fullscreen transition="dialog-bottom-transition">
+                <v-card elevation="6">
+        <v-toolbar color="#F18254">
+            <v-container>
+                <v-row align="center">
+                    <v-col cols="12" md="9" class="grow">
+                        <span class="text-h8"> <strong>Reposición de productos</strong></span>
+                    </v-col>
+                    <v-spacer></v-spacer>
+                    <v-col cols="12" md="3">
+                        <v-btn class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2"
+                            prepend-icon="mdi-file-excel" @click="exportToExcel3">
+                            Exportar a Excel
+                        </v-btn>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-toolbar>
+        <v-card-text class="mt-1 mb-1">
+        <v-container>
+            <v-row>
+                <v-col cols="12">
+                    <v-container>
+                        <v-alert border type="info" variant="outlined" density="compact">
+                            <p><strong>Productos Próximos a agotarse</strong></p>
+                        </v-alert>
+                    </v-container>
+                    <v-card-text>
+                        <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar"
+                            single-line hide-details>
+                        </v-text-field>
+                        <v-data-table :headers="headers2" :items-per-page-text="'Elementos por páginas'" :items="results2"
+                            :search="search2" class="elevation-2" no-results-text="No hay datos disponibles"
+                            no-data-text="No hay datos disponibles">
+                            <template v-slot:item.name="{ item }">
+
+                                <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                                    <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_product"
+                                        alt="image"></v-img>
+                                </v-avatar>
+                                {{ item.name }}
+                            </template>
+                        </v-data-table>
+
+                    </v-card-text>
+                </v-col>
+            </v-row>
+        </v-container>
+        </v-card-text>
+        <v-divider></v-divider>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="#E7E9E9" variant="flat" @click="closeDialogReposition">
+                            Volver
+                        </v-btn>
+                    </v-card-actions>
+    </v-card>
+            </v-dialog>
+
+            <!--Movimiento de productos-->
+    <v-dialog v-model="dialogMove" fullscreen transition="dialog-bottom-transition">
+                <v-card elevation="6">
+        <v-toolbar color="#F18254">
+            <v-container>
+                <v-row align="center">
+                    <v-col cols="12" md="9" class="grow">
+                        <span class="text-h8"> <strong>Movimiento de Productos</strong></span>
+                    </v-col>
+                    <v-spacer></v-spacer>
+                    <v-col cols="12" md="3">
+                        <v-btn class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2"
+                            prepend-icon="mdi-file-excel" @click="exportToExcel4">
+                            Exportar a Excel
+                        </v-btn>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-toolbar>
+        <v-card-text class="mt-1 mb-1">
+        <v-container>
+          <v-row>
+                <v-col cols="12" md="4">
+                    <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="outlined"
+                        prepend-inner-icon="mdi-calendar"></v-select><!-- @update:model-value="initialize()"-->
+                </v-col>
+                <v-col cols="12" md="4">
+                    <v-select v-model="selectedMounth" :items="months" label="Selecciona un mes" variant="outlined"
+                        prepend-inner-icon="mdi-calendar" ></v-select><!--@update:model-value="moveProductsMounth()"-->
+                </v-col>
+                <v-col cols="12" md="1">
+                    <v-btn icon @click="moveProductsMounth()" color="#F18254">
+                        <v-icon>mdi-magnify</v-icon></v-btn>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col cols="12" md="12">
+                    <v-alert border type="info" variant="outlined" density="compact">
+                        <p v-html="formTitle1"></p>
+                    </v-alert>
+                </v-col>
+                <v-col cols="12" md="12">
+                    <v-card class="mx-auto  overflow-visible">
+                        <v-card-text>
+                            <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar"
+                                single-line hide-details>
+                            </v-text-field>
+                            <v-data-table :headers="headers3" :items-per-page-text="'Elementos por páginas'"
+                                :items="results3" :search="search3" no-results-text="No hay datos disponibles"
+                                no-data-text="No hay datos disponibles">
+
+                            </v-data-table>
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+            </v-row>
+        </v-container>
+        </v-card-text>
+        <v-divider></v-divider>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="#E7E9E9" variant="flat" @click="closeDialogMove">
+                            Volver
+                        </v-btn>
+                    </v-card-actions>
+    </v-card>
+            </v-dialog>
+            
   </v-card></v-container>
 
 
@@ -172,6 +305,9 @@
 <script>
 
 import axios from "axios";
+import { format } from "date-fns";
+import { es } from 'date-fns/locale';
+import * as XLSX from 'xlsx';
 import LocalStorageService from "@/LocalStorageService";
 
 export default {
@@ -229,6 +365,50 @@ export default {
       stock_depletion: '',
       id: ''
     },
+
+    //reposicion
+    dialogReposition: false,
+    results2: [],  
+    headers2: [
+            { title: 'Producto', key: 'name', sortable: false },
+            { title: 'Referencia', key: 'reference', sortable: false },
+            { title: 'Existencia', key: 'stock', sortable: false },
+            //{ title: 'Sucursal', key: 'nameBranch', sortable: true },
+            { title: 'Almacén', key: 'store', sortable: true },
+        ],
+        search2: '',
+    
+
+        //MOvimiento de productos
+        selectedYear: null,
+        selectedMounth: '',
+        years: [],
+        months: [
+            { value: '', title: '' },
+            { value: '01', title: 'Enero' },
+            { value: '02', title: 'Febrero' },
+            { value: '03', title: 'Marzo' },
+            { value: '04', title: 'Abril' },
+            { value: '05', title: 'Mayo' },
+            { value: '06', title: 'Junio' },
+            { value: '07', title: 'Julio' },
+            { value: '08', title: 'Agosto' },
+            { value: '09', title: 'Septiembre' },
+            { value: '10', title: 'Octubre' },
+            { value: '11', title: 'Noviembre' },
+            { value: '12', title: 'Diciembre' }
+        ],
+        dialogMove: false,
+        results3: []
+,        headers3: [
+            { title: 'Fecha Movimiento', key: 'data', sortable: false },
+            { title: 'Producto', key: 'nameProduct', sortable: false },
+            { title: 'Cantidad Trasladada', key: 'cant', sortable: false },
+            { title: 'Almacén Saliente', key: 'storeOut', sortable: false },
+            { title: 'Almacén Entrante', key: 'storeInt', sortable: false },
+        ],
+        editedIndexMov: -1,
+        search3: '',
     data: {},
 
     defaultItem: {
@@ -262,9 +442,23 @@ export default {
       else {
         return 'Trasladar producto de un almacén a otro'
       }
-    }
-  },
+    },
+    formTitle1() {
+            if (this.editedIndexMov === 2) {
+                // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+                //return 'Reporte de Movimiento de Productos en el mes ' + this.selectedMounth + '-' + this.selectedYear;
 
+                // Formatear la fecha en el formato deseado y traducir los nombres de los meses al español
+                //console.log(format(this.selectedMounth, "MMMM", { locale: es }));
+                return `Reporte de Movimiento de Productos en el mes de [<strong>${format(this.selectedMounth, "MMMM", { locale: es })}</strong> de <strong>${this.selectedYear}</strong>]`;
+            }
+            else {
+                // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+                this.fecha = format(new Date(), "yyyy-MM-dd");
+                return `Reporte de Movimiento de Productos  <strong>${this.selectedYear}</strong>`;
+            }
+  }
+},
   watch: {
     dialog(val) {
       val || this.close()
@@ -279,22 +473,6 @@ export default {
     this.charge_id = LocalStorageService.getItem('charge_id');
     this.branch_id = LocalStorageService.getItem('branch_id');
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
-
-    /*axios
-      .get('http://127.0.0.1:8000/api/show-business', {
-        params: {
-          business_id: this.business_id
-        }
-      })
-      .then((response) => {
-        this.branches = response.data.branches;
-      }).finally(() => {
-            if (this.charge == 'Administrador') {
-              console.log('Es administrador');
-                    this.branch_id = this.branches[0].id;
-                    this.mostrarFila = true;
-                }
-          });*/
           axios
         .get('http://127.0.0.1:8000/api/show-stores-products')
         .then((response) => {
@@ -329,33 +507,13 @@ export default {
       this.sb_timeout = sb_timeout
       this.snackbar = true
     },
-    /*updatedstores() {
-      axios
-        .get('http://127.0.0.1:8000/api/store-show')
-        .then((response) => {
-          this.stores = response.data.stores;
-        });
-    },*/
     initialize() {
       axios
         .get('http://127.0.0.1:8000/api/productstore-show')
         .then((response) => {
           this.results = response.data.products;
         });
-      /*axios
-        .get('http://127.0.0.1:8000/api/store-show', {
-          params: {
-            branch_id: this.branch_id
-          }
-        })
-        .then((response) => {
-          this.stores = response.data.stores;
-        });
-      axios
-        .get('http://127.0.0.1:8000/api/product')
-        .then((response) => {
-          this.products = response.data.products;
-        });*/
+
     },
     editItem(item) {
       this.mover = false;
@@ -483,6 +641,158 @@ export default {
       }
       this.close()
     },
+    //reposicion
+    showReposition() {
+            console.log('Entra aqui a reposicion');
+            axios
+                .get('http://127.0.0.1:8000/api/product-stock'/*, {
+                    params: {
+                        branch_id: this.branch_id,
+                        business_id: this.business_id
+                    }
+                }*/)
+                .then((response) => {
+                    this.results2 = response.data;
+                });
+            this.dialogReposition = true;
+        },
+    closeDialogReposition() {
+            this.dialogReposition = false;
+            this.results2 = [];
+        },
+        exportToExcel3() {
+            // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
+            let rows = [];
+
+            // Construye un objeto para los encabezados basado en la estructura de 'headers'
+            let headerRow = {};
+            this.headers2.forEach(header2 => {
+                headerRow[header2.key] = header2.title; // Usa 'key' para el mapeo y 'title' para el texto del encabezado
+            });
+            rows.push(headerRow);
+
+            // Ahora, mapea los datos de los items para que coincidan con los encabezados
+            this.results2.forEach(item => {
+                let rowData = {};
+                this.headers2.forEach(header1 => {
+                    rowData[header1.key] = item[header1.key] || ''; // Asegura que cada celda se mapee correctamente; usa '' para datos faltantes
+                });
+                rows.push(rowData);
+            });
+
+            let nameReport = {
+                // eslint-disable-next-line vue/no-use-computed-property-like-method
+                name: 'Reposición de productos', // Asume que 'name' es una de tus claves; ajusta según sea necesario
+                reference: '',
+                orders_count: ''
+            };
+            rows.push(nameReport);
+
+            // Convierte la matriz de filas en una hoja de trabajo Excel
+            const ws = XLSX.utils.json_to_sheet(rows, { skipHeader: true }); // 'skipHeader: true' porque ya agregamos manualmente los encabezados
+
+            // Crea un nuevo libro de trabajo y añade la hoja de trabajo con los datos
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Report" + new Date().toLocaleDateString().replace(/\//g, '-'));
+
+            // Escribe el libro de trabajo a un archivo y desencadena la descarga
+            //XLSX.writeFile(wb, "report.xlsx");
+            XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
+        }, 
+
+        //movimiento de productos
+    showMove() {
+           // Obtener el año actual
+        const currentYear = new Date().getFullYear();
+        // Llenar el arreglo years con los años, desde 2010 hasta el año actual
+        for (let year = 2000; year <= currentYear; year++) {
+            this.years.push(year);
+        }
+        // Establecer el año actual como el seleccionado por defecto
+        this.selectedYear = currentYear;
+        this.editedIndexMov = 1;
+            axios
+                .get('http://127.0.0.1:8000/api/move-products', {
+                    params: {
+                        //branch_id: this.branch_id,
+                        year: this.selectedYear,
+                        mounth: this.selectedMounth
+                    }
+                })
+                .then((response) => {
+                    this.results3 = response.data.movimientos;
+                })
+            this.dialogMove = true;
+        },
+    closeDialogMove() {
+            this.dialogMove = false;
+            this.results3 = [];
+        },
+        moveProductsMounth() {
+            if (this.selectedMounth) {
+              console.log('Mes seleccionado');
+                this.editedIndexMov = 2;
+                axios
+                    .get('http://127.0.0.1:8000/api/move-products', {
+                        params: {
+                            //branch_id: this.branch_id,
+                            year: this.selectedYear,
+                            mounth: this.selectedMounth
+                        }
+                    })
+                    .then((response) => {
+                        this.results3 = response.data.movimientos;
+                    })
+            } else {
+                this.showMove();
+            }
+          },
+          
+        exportToExcel4() {
+            // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
+            let rows = [];
+            let titleRow = {};
+            titleRow[this.headers[0].key] = this.formTitle1; // Utiliza la primera clave de encabezado para el título
+            rows.push(titleRow);
+
+            // Construye un objeto para los encabezados basado en la estructura de 'headers'
+            let headerRow = {};
+            this.headers3.forEach(header => {
+                if (header.children) {
+                    header.children.forEach(childHeader => {
+                        headerRow[childHeader.key] = childHeader.title;
+                    });
+                } else {
+                    headerRow[header.key] = header.title;
+                }
+            });
+            rows.push(headerRow);
+
+            // Ahora, mapea los datos de los items para que coincidan con los encabezados
+            this.results3.forEach(item => {
+                let rowData = {};
+                this.headers3.forEach(header => {
+                    if (header.children) {
+                        header.children.forEach(childHeader => {
+                            rowData[childHeader.key] = item[childHeader.key] || '';
+                        });
+                    } else {
+                        rowData[header.key] = item[header.key] || '';
+                    }
+                });
+                rows.push(rowData);
+            });
+
+            // Convierte la matriz de filas en una hoja de trabajo Excel
+            const ws = XLSX.utils.json_to_sheet(rows, { skipHeader: true }); // 'skipHeader: true' porque ya agregamos manualmente los encabezados
+
+            // Crea un nuevo libro de trabajo y añade la hoja de trabajo con los datos
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Report");
+
+            // Escribe el libro de trabajo a un archivo y desencadena la descarga
+            XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
+        },
   },
 }
 </script>
