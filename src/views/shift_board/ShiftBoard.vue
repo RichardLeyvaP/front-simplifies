@@ -159,7 +159,7 @@
         </v-col>
         <v-col md="6">
           <p class="text-h5 font-weight-black" style="text-align: center;">
-            {{ item.name }}
+            {{ item.client_name }}
           </p>
         </v-col>
       </v-row>
@@ -254,26 +254,26 @@ export default {
   data: () => ({
     currentIndex: 0,
      clientes : [
-  { code: '001', name: 'John Doe' },
-  { code: '002', name: 'Jane Smith' },
-  { code: '003', name: 'Michael Johnson' },
-  { code: '004', name: 'Emily Wilson' },
-  { code: '005', name: 'Robert Anderson' },
-  { code: '006', name: 'Sarah Martinez' },
-  { code: '007', name: 'David Lee' },
-  { code: '008', name: 'Jennifer Taylor' },
-  { code: '009', name: 'Christopher Moore' },
-  { code: '010', name: 'Jessica Clark' },
-  { code: '011', name: 'Daniel Harris' },
-  { code: '012', name: 'Melissa Walker' },
-  { code: '013', name: 'Matthew Turner' },
-  { code: '014', name: 'Lauren White' },
-  { code: '015', name: 'Joshua Rodriguez' },
-  { code: '016', name: 'Amanda Scott' },
-  { code: '017', name: 'Kevin Hall' },
-  { code: '018', name: 'Victoria King' },
-  { code: '019', name: 'Stephanie Hill' },
-  { code: '020', name: 'Jason Allen' }
+  // { code: '001', name: 'John Doe' },
+  // { code: '002', name: 'Jane Smith' },
+  // { code: '003', name: 'Michael Johnson' },
+  // { code: '004', name: 'Emily Wilson' },
+  // { code: '005', name: 'Robert Anderson' },
+  // { code: '006', name: 'Sarah Martinez' },
+  // { code: '007', name: 'David Lee' },
+  // { code: '008', name: 'Jennifer Taylor' },
+  // { code: '009', name: 'Christopher Moore' },
+  // { code: '010', name: 'Jessica Clark' },
+  // { code: '011', name: 'Daniel Harris' },
+  // { code: '012', name: 'Melissa Walker' },
+  // { code: '013', name: 'Matthew Turner' },
+  // { code: '014', name: 'Lauren White' },
+  // { code: '015', name: 'Joshua Rodriguez' },
+  // { code: '016', name: 'Amanda Scott' },
+  // { code: '017', name: 'Kevin Hall' },
+  // { code: '018', name: 'Victoria King' },
+  // { code: '019', name: 'Stephanie Hill' },
+  // { code: '020', name: 'Jason Allen' }
 ],
       items:[],
       
@@ -395,7 +395,9 @@ export default {
         })
         .then((response) => {
           this.reservations = response.data.tail;
-          console.log("Estoy entrando siiii");
+          this.clientes = this.reservations;
+          console.log("Estoy entrando this.clientes");
+          console.log(this.clientes);
           this.compararYAgregar();
           /* if(this.reservationsAux != this.reservations)
            {
