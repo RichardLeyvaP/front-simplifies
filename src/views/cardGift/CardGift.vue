@@ -128,7 +128,7 @@
         <template v-slot:item.image_cardgift="{ item }">
 
           <v-card class="my-2" rounded elevation="10" width="100">
-            <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_cardgift" alt="image" cover></v-img>
+            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_cardgift" alt="image" cover></v-img>
           </v-card>
         </template>
         <template v-slot:item.actions="{ item }">
@@ -176,7 +176,7 @@
               <template v-slot:item.name="{ item }">
 
                 <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                  <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_cardgift" alt="image"></v-img>
+                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_cardgift" alt="image"></v-img>
                 </v-avatar>
                 {{ item.name }}
               </template>
@@ -184,7 +184,7 @@
               <template v-slot:item.userName="{ item }">
 
                 <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                  <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url" alt="image"></v-img>
+                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
                 </v-avatar>
                 {{ item.userName }}
               </template>
@@ -253,7 +253,7 @@
     <v-row>
       <v-col cols="12" sm="3" class="text-left">
         <v-card elevation="3" max-width="130" max-height="130">
-          <v-img class="d-flex align-end text-white" height="130" :src="'http://127.0.0.1:8000/api/images/' + details.imageLook" cover>
+          <v-img class="d-flex align-end text-white" height="130" :src="'https://api2.simplifies.cl/api/images/' + details.imageLook" cover>
     <v-card-title class="pa-0">
         <v-chip color="">
             <v-icon icon="mdi-camera" class="mr-1"></v-icon>
@@ -261,7 +261,7 @@
         </v-chip>
     </v-card-title>
 </v-img>
-                  <!--<v-img :src="'http://127.0.0.1:8000/api/images/' + details.imageLook" alt="image"></v-img>-->
+                  <!--<v-img :src="'https://api2.simplifies.cl/api/images/' + details.imageLook" alt="image"></v-img>-->
                 </v-card>
       </v-col>
       <v-col cols="12" sm="6" class="text-left">
@@ -535,7 +535,7 @@ export default {
   mounted() {
     this.business_id = LocalStorageService.getItem('business_id');
     axios
-        .get('http://127.0.0.1:8000/api/business')
+        .get('https://api2.simplifies.cl/api/business')
         .then((response) => {
           this.business = response.data.business;
         }).finally(() => {
@@ -591,7 +591,7 @@ export default {
     },
     initialize() {
       axios
-        .get('http://127.0.0.1:8000/api/card-gift')
+        .get('https://api2.simplifies.cl/api/card-gift')
         .then((response) => {
           this.results = response.data.cardGifts;
         });
@@ -610,7 +610,7 @@ export default {
       this.editedCardGiftUser.card_gift_id = item.id
       this.data.card_gift_id = item.id
       axios
-        .get('http://127.0.0.1:8000/api/card-gift-user-show', {
+        .get('https://api2.simplifies.cl/api/card-gift-user-show', {
           params: {
             card_gift_id: item.id
           }
@@ -622,7 +622,7 @@ export default {
     },
     showAddClient(){
       axios
-        .get('http://127.0.0.1:8000/api/client-autocomplete')
+        .get('https://api2.simplifies.cl/api/client-autocomplete')
         .then((response) => {
           this.users = response.data.clients;
         });
@@ -650,9 +650,9 @@ export default {
     editItem(item) {
       this.file = null;
       var img = new Image();
-      img.src = 'http://127.0.0.1:8000/api/images/' + item.image_cardgift;
+      img.src = 'https://api2.simplifies.cl/api/images/' + item.image_cardgift;
       img.onload = () => {
-        this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.image_cardgift;
+        this.imgMiniatura = 'https://api2.simplifies.cl/api/images/' + item.image_cardgift;
       };
       img.onerror = () => {
         this.imgMiniatura = '';
@@ -674,7 +674,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('http://127.0.0.1:8000/api/card-gift-destroy', request)
+        .post('https://api2.simplifies.cl/api/card-gift-destroy', request)
         .then(() => {
           this.dialogDelete = false;
         }).finally(() => {
@@ -719,7 +719,7 @@ export default {
         id: this.editedCardGiftUser.id
       };
       axios
-        .post('http://127.0.0.1:8000/api/card-gift-user-destroy', request)
+        .post('https://api2.simplifies.cl/api/card-gift-user-destroy', request)
         .then(() => {
           this.dialogRequestStore = false;
         }).finally(() => {
@@ -740,7 +740,7 @@ export default {
         }
 
         axios
-          .post('http://127.0.0.1:8000/api/card-gift-update', formData)
+          .post('https://api2.simplifies.cl/api/card-gift-update', formData)
           .then(() => {
             this.imgMiniatura = '';
             this.file = null;
@@ -756,7 +756,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios
-          .post('http://127.0.0.1:8000/api/card-gift', formData)
+          .post('https://api2.simplifies.cl/api/card-gift', formData)
           .then(() => {
           }).finally(() => {
             this.showAlert("success", "Tarjeta de Regalo registrada correctamente", 3000);
@@ -787,7 +787,7 @@ export default {
       console.log('this.editedCardGiftUser.expiration_date');
       console.log(this.data.expiration_date);
       axios
-        .post('http://127.0.0.1:8000/api/card-gift-user', this.data)
+        .post('https://api2.simplifies.cl/api/card-gift-user', this.data)
         .then(() => {
           this.$nextTick(() => {
             this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser);
@@ -825,7 +825,7 @@ export default {
           console.log('formData');
           console.log(formData);
         axios
-          .post('http://127.0.0.1:8000/api/client', formData)
+          .post('https://api2.simplifies.cl/api/client', formData)
           .then(() => {
             this.showAlert("success","Cliente registrado correctamente", 3000);
           }).catch(error => {
