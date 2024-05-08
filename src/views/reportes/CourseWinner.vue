@@ -109,7 +109,7 @@
       
       this.business_id = parseInt(LocalStorageService.getItem("business_id"));
       axios
-      .get('http://127.0.0.1:8000/api/enrollment-show', {
+      .get('https://api2.simplifies.cl/api/enrollment-show', {
           params: {
             business_id: this.business_id
           }
@@ -169,7 +169,7 @@
       initialize() {
         this.editedIndex = 1;
         axios
-          .get('http://127.0.0.1:8000/api/calculate-course-earnings', {
+          .get('https://api2.simplifies.cl/api/calculate-course-earnings', {
             params: {
               business_id: this.business_id,
             }
@@ -182,7 +182,7 @@
       onEnrollmetChange() {
         this.editedIndex = 1;
         axios
-          .get('http://127.0.0.1:8000/api/calculate-course-earnings-enrollment', {
+          .get('https://api2.simplifies.cl/api/calculate-course-earnings-enrollment', {
             params: {
               enrollment_id: this.enrollment_id,
             }

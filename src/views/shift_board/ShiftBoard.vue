@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12" md="5" class="pr-0">
-      <v-card color="#F18254">
+      <v-card color="#FFFFFF">
         <v-row class="mt-6">
           <v-col cols="12" md="5"></v-col>
           <v-col cols="12" md="1">
@@ -14,52 +14,48 @@
 
         <v-row class="mt-6">
           <v-col cols="12" md="12">
-            <p class="text-h5 font-weight-black" style="text-align: center;">
+            <p class="text-h10 font-weight-black" style="text-align: center;">
               ÚLTIMO LLAMADO
             </p>
           </v-col>
         </v-row>
+        <br>
+<br>
+        <v-row class="mt-8">
+          <v-col cols="12" md="12">
+            <p class="text-h4 font-weight-black mb-2 " style="text-align: center;">
+              CLIENTE
+            </p>
+            <p class="text-h3 font-weight-black" :class="{ 'parpadea': parpadeando }" style="text-align: center; font-size: 40px; font-family: 'Poppins', sans-serif; font-weight: bold; color: #AD0101;">
+             <!-- Richard Leyva -->
+              {{ client }}
+            </p>
+          </v-col>
+        </v-row>
+        <br>
+<br>
         <v-row class="mt-10">
           <v-col cols="12" md="12">
-            <p class="text-h6 font-weight-black mb-2 " style="text-align: center;">
-              TURNO
+            <p class="text-h4 font-weight-black mb-2 " style="text-align: center;">
+              CÓDIGO DE RESERVA
             </p>
-            <p class="text-h4 font-weight-black " :class="{ 'parpadea': parpadeando }" style="text-align: center;">
+            <p class="text-h3 font-weight-black" :class="{ 'parpadea': parpadeando }" style="text-align: center; font-size: 40px; font-family: 'Poppins', sans-serif; font-weight: bold; color: #AD0101;">
+            <!-- RT03 -->
               {{ numero }}
             </p>
           </v-col>
         </v-row>
 
-
-        <v-row class="mt-8">
-          <v-col cols="12" md="12">
-            <p class="text-h6 font-weight-black mb-2 " style="text-align: center;">
-              CLIENTE
-            </p>
-            <p class="text-h4 font-weight-black " :class="{ 'parpadea': parpadeando }" style="text-align: center;">
-              {{ client }}
-            </p>
-          </v-col>
-        </v-row>
+<br>
+<br>
 
         <v-row class="mt-10">
           <v-col cols="12" md="12">
-            <p class="text-h6 font-weight-black mb-2 " style="text-align: center;">
-              PROFESIONAL
-            </p>
-            <p class="text-h4 font-weight-black " :class="{ 'parpadea': parpadeando }" style="text-align: center;">
-              {{ professional }}
-            </p>
-          </v-col>
-        </v-row>
-
-
-        <v-row class="mt-10">
-          <v-col cols="12" md="12">
-            <p class="text-h6 font-weight-black mb-2 " style="text-align: center;">
+            <p class="text-h4 font-weight-black mb-2 " style="text-align: center;">
               MÓDULO
             </p>
-            <p class="text-h4 font-weight-black " :class="{ 'parpadea': parpadeando }" style="text-align: center;">
+            <p class="text-h3 font-weight-black" :class="{ 'parpadea': parpadeando }" style="text-align: center; font-size: 40px; font-family: 'Poppins', sans-serif; font-weight: bold; color: #AD0101;">
+           <!-- MODULO 1 -->
               {{ module }}
             </p>
           </v-col>
@@ -86,68 +82,154 @@
       </v-card>
     </v-col>
     <v-col cols="12" md="7" class="pl-0">
-      <v-card color="#E7E9E9">
+      <v-card color="#292C33">
         <v-row class="mt-8">
           <v-col cols="12" md="3">
             <p class="text-h5 font-weight-black mb-12 " style="text-align: center;">
-              TURNO
+              CÓDIGO
             </p>
 
           </v-col>
 
-          <v-col cols="12" md="3">
+          <v-col cols="12" md="4">
             <p class="text-h5 font-weight-black mb-12 " style="text-align: center;">
-              CLIENTE
+              NOMBRE
             </p>
 
           </v-col>
 
-          <v-col cols="12" md="3">
-            <p class="text-h5 font-weight-black mb-12 " style="text-align: center;">
-              PROFESIONAL
-            </p>
+        
 
-          </v-col>
-
-          <v-col cols="12" md="3">
-            <p class="text-h5 font-weight-black mb-12 " style="text-align: center;">
-              MÓDULO
-            </p>
-
-          </v-col>
+         
 
         </v-row>
 
-        <v-row v-for="(dupla, index) in duplas" :key="index" class="mt-8">
+        <!-- <v-row v-for="(dupla, index) in duplas" :key="index" >
 
           <v-col cols="12" md="3">
-            <p class="text-h5 font-weight-black mb-12 " style="text-align: center;">
+            <p class="text-h5 font-weight-black  " style="text-align: center;">
               {{ dupla.number }}
             </p>
 
           </v-col>
-          <v-col cols="12" md="3">
-            <p class="text-h5 font-weight-black mb-12 " style="text-align: center;">
+          <v-col cols="12" md="4">
+            <p class="text-h5 font-weight-black  " style="text-align: center;">
               {{ dupla.cliente }}
             </p>
 
           </v-col>
 
-          <v-col cols="12" md="3">
-            <p class="text-h5 font-weight-black mb-12 " style="text-align: center;">
-              {{ dupla.trabajador }}
+          
+        </v-row> -->
+        <!-- <div class="custom-scroll-container">
+    <v-virtual-scroll :items="items"    height="600" ref="virtualScroll">
+      <template v-slot:default="{ item }">
+        <v-row>
+          <v-col md="3">
+            <p class="text-h5 font-weight-black" style="text-align: center;">
+              {{ item.code }}
             </p>
-
           </v-col>
-          <v-col cols="12" md="3">
-            <p class="text-h5 font-weight-black mb-12 " style="text-align: center;">
-              {{ dupla.module }}
+          <v-col md="4">
+            <p class="text-h5 font-weight-black" style="text-align: center;">
+              {{ item.name }}
             </p>
-
           </v-col>
         </v-row>
+      </template>
+    </v-virtual-scroll>
+  </div> -->
+
+  <v-carousel 
+  height="700"
+    show-arrows="hover"
+    cycle="true"
+    direction="vertical"
+    interval="3000"
+    hide-delimiters="true"
+  >
+ 
+  <v-carousel-item v-for="(itemGroup, index2) in items" :key="index2">
+    <v-col md="9" v-for="(item, index) in itemGroup" :key="index">
+      <v-row>
+        <v-col md="4">
+          <p class="text-h5 font-weight-black" style="text-align: center;">
+            {{ item.code }}
+          </p>
+        </v-col>
+        <v-col md="6">
+          <p class="text-h5 font-weight-black" style="text-align: center;">
+            {{ item.name }}
+          </p>
+        </v-col>
+      </v-row>
+    </v-col>
+  </v-carousel-item>
 
 
+
+  <!-- <v-carousel-item
+    
+  >
+  <v-col md="9" v-for="(item2, index) in items2" :key="index">
+    <v-row>
+          <v-col md="4">
+            <p class="text-h5 font-weight-black" style="text-align: center;">
+              {{ item2.code }}
+            </p>
+          </v-col>
+          <v-col md="6">
+            <p class="text-h5 font-weight-black" style="text-align: center;">
+              {{ item2.name }}
+            </p>
+          </v-col>
+        </v-row>
+            </v-col> 
+            
+      
+</v-carousel-item>
+  <v-carousel-item
+    
+  >
+  <v-col md="9" v-for="(item3, index) in items3" :key="index">
+    <v-row>
+          <v-col md="4">
+            <p class="text-h5 font-weight-black" style="text-align: center;">
+              {{ item3.code }}
+            </p>
+          </v-col>
+          <v-col md="6">
+            <p class="text-h5 font-weight-black" style="text-align: center;">
+              {{ item3.name }}
+            </p>
+          </v-col>
+        </v-row>
+            </v-col> 
+            
+      
+</v-carousel-item>
+  <v-carousel-item
+    
+  >
+  <v-col md="9" v-for="(item4, index) in items4" :key="index">
+    <v-row>
+          <v-col md="4">
+            <p class="text-h5 font-weight-black" style="text-align: center;">
+              {{ item4.code }}
+            </p>
+          </v-col>
+          <v-col md="6">
+            <p class="text-h5 font-weight-black" style="text-align: center;">
+              {{ item4.name }}
+            </p>
+          </v-col>
+        </v-row>
+            </v-col> 
+            
+      
+</v-carousel-item> -->
+
+</v-carousel>
 
         <v-row class="mt-10">
           <v-col cols="12" md="12">
@@ -170,6 +252,31 @@ import LocalStorageService from "@/LocalStorageService";
 export default {
 
   data: () => ({
+    currentIndex: 0,
+     clientes : [
+  { code: '001', name: 'John Doe' },
+  { code: '002', name: 'Jane Smith' },
+  { code: '003', name: 'Michael Johnson' },
+  { code: '004', name: 'Emily Wilson' },
+  { code: '005', name: 'Robert Anderson' },
+  { code: '006', name: 'Sarah Martinez' },
+  { code: '007', name: 'David Lee' },
+  { code: '008', name: 'Jennifer Taylor' },
+  { code: '009', name: 'Christopher Moore' },
+  { code: '010', name: 'Jessica Clark' },
+  { code: '011', name: 'Daniel Harris' },
+  { code: '012', name: 'Melissa Walker' },
+  { code: '013', name: 'Matthew Turner' },
+  { code: '014', name: 'Lauren White' },
+  { code: '015', name: 'Joshua Rodriguez' },
+  { code: '016', name: 'Amanda Scott' },
+  { code: '017', name: 'Kevin Hall' },
+  { code: '018', name: 'Victoria King' },
+  { code: '019', name: 'Stephanie Hill' },
+  { code: '020', name: 'Jason Allen' }
+],
+      items:[],
+      
 
     client: "",
     professional: "",
@@ -179,7 +286,7 @@ export default {
     parpadeando: false,
     module: 0,
     numero: 0,
-    duplas: [],
+   
     reservations: [], // Nuevo arreglo para almacenar las reservas
     reservationsAux: [], // Nuevo arreglo para almacenar las reservas
     currentReservation: {}, // Nuevo objeto para almacenar la reserva actual
@@ -191,6 +298,33 @@ export default {
   }),
 
   mounted() {
+       // Iniciar el ciclo automático de la animación
+       setInterval(() => {
+  // Aumenta el índice para avanzar al siguiente elemento
+  this.currentIndex++;
+
+  // Verifica si se alcanzó el final del arreglo
+  if (this.currentIndex >= this.items.length-16) {
+    // Reinicia el índice al principio del arreglo
+    this.currentIndex = 0;
+  }
+
+  // Espera a que el componente virtual-scroll esté completamente renderizado
+  this.$nextTick(() => {
+    // Obtén el componente virtual-scroll mediante su referencia
+    const virtualScroll = this.$refs.virtualScroll;
+
+    // Mueve la vista a la posición correspondiente al ítem en la posición del índice actual
+    virtualScroll.scrollToIndex(this.currentIndex);
+  });
+}, 1500); // Intervalo de 1.5 segundos (ajusta según sea necesario)
+
+
+        // Simulación de carga de datos (reemplazar con tu lógica real)
+        this.fetchItems();
+
+
+  
     // Establecer un intervalo para mostrar duplas cada 5 segundos    
     this.branch_id = LocalStorageService.getItem("branch_id");
     console.log('ESTOY ENTRANDO AL mounted()')
@@ -205,6 +339,32 @@ export default {
   },
 
   methods: {
+     
+
+    fetchItems() {
+      this.items = this.createArrayOfArrays(this.clientes, 13);
+
+   
+    },
+    createArrayOfArrays(originalArray, subsetSize) {
+  const arrayOfArrays = [];
+  const originalLength = originalArray.length;
+
+  for (let i = 0; i < originalLength; i++) {
+    const startIndex = i % originalLength; // Circular index
+
+    const subset = [];
+    for (let j = 0; j < subsetSize; j++) {
+      const index = (startIndex + j) % originalLength;
+      subset.push(originalArray[index]);
+    }
+
+    arrayOfArrays.push(subset);
+  }
+
+  return arrayOfArrays;
+},
+ 
     compararYAgregar() {
 
 
@@ -228,7 +388,7 @@ export default {
     callForTime() {
       console.log('AQUI SI ESTOY ENTRANDO -callForTime()');
       axios
-        .get('http://127.0.0.1:8000/api/tail_branch_attended', {
+        .get('https://api2.simplifies.cl/api/tail_branch_attended', {
           params: {
             branch_id: this.branch_id
           }
@@ -306,23 +466,25 @@ export default {
 
 
 </script>
-
-<style>
-.parpadea {
-  animation: parpadeo 1s infinite;
+<style scoped>
+.carousel-item {
+  animation: slide-up 2s infinite linear;
 }
 
-@keyframes parpadeo {
-  0% {
-    opacity: 1;
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
   }
+  to {
+    transform: translateY(0);
+  }
+}
 
-  50% {
-    opacity: 0;
-  }
+.custom-scroll-container {
+  overflow: hidden !important; /* Oculta el desbordamiento */
+}
 
-  100% {
-    opacity: 1;
-  }
+.custom-scroll-container::-webkit-scrollbar {
+  display: none !important; /* Oculta las barras de desplazamiento en WebKit */
 }
 </style>

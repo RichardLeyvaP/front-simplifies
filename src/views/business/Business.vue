@@ -469,7 +469,7 @@ export default {
     initialize() {
 
       axios
-        .get('http://127.0.0.1:8000/api/business')
+        .get('https://api2.simplifies.cl/api/business')
         .then((response) => {
           this.results = response.data.business;
         });
@@ -477,7 +477,7 @@ export default {
     },
     showAddProfessional(){
       axios
-        .get('http://127.0.0.1:8000/api/professional-show-autocomplete')
+        .get('https://api2.simplifies.cl/api/professional-show-autocomplete')
         .then((response) => {
           this.professionals = response.data.professionals;
         });
@@ -499,7 +499,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('http://127.0.0.1:8000/api/business-destroy', request)
+        .post('https://api2.simplifies.cl/api/business-destroy', request)
         .then(() => {
         }).finally(() => {
           this.initialize();
@@ -528,7 +528,7 @@ export default {
         this.data.address = this.editedItem.address;
         this.data.professional_id = this.editedItem.professional_id;
         axios
-          .put('http://127.0.0.1:8000/api/business', this.data)
+          .put('https://api2.simplifies.cl/api/business', this.data)
           .then(() => {
           }).finally(() => {
             this.initialize();
@@ -540,7 +540,7 @@ export default {
         this.data.professional_id = this.editedItem.professional_id;
 
         axios
-          .post('http://127.0.0.1:8000/api/business', this.data)
+          .post('https://api2.simplifies.cl/api/business', this.data)
           .then(() => {
           }).finally(() => {
             this.initialize();
@@ -557,7 +557,7 @@ export default {
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       axios
-        .get('http://127.0.0.1:8000/api/business-winner', {
+        .get('https://api2.simplifies.cl/api/business-winner', {
           params: {
             startDate: startDate,
             endDate: endDate
@@ -582,7 +582,7 @@ export default {
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       axios
-        .get('http://127.0.0.1:8000/api/business-winner', {
+        .get('https://api2.simplifies.cl/api/business-winner', {
           params: {
             startDate: startDate,
             endDate: endDate
@@ -641,7 +641,7 @@ export default {
     //monto por branches
     showWinnerBranch() {  
       axios
-        .get('http://127.0.0.1:8000/api/company_winner', {
+        .get('https://api2.simplifies.cl/api/company_winner', {
           params: {
             business_id: this.business_id,
           }
@@ -661,7 +661,7 @@ export default {
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       axios
-        .get('http://127.0.0.1:8000/api/company_winner', {
+        .get('https://api2.simplifies.cl/api/company_winner', {
           params: {
             startDate: startDate,
             endDate: endDate,
