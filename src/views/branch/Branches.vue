@@ -673,7 +673,7 @@ export default {
         "El campo debe tener al menos de 3 caracteres",
     ],
     mobileRules: [(v) => !!v || "El Teléfono es requerido"],
-    selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
+    selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
   }),
 
   computed: {

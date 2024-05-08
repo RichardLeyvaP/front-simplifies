@@ -616,7 +616,7 @@ export default {
       (v) => !!v || "El Teléfono es requerido",
       //(value) => this.validateTelefono(value) || "El número de teléfono no es válido",
     ],
-    selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
+    selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
   }),
 
   computed: {

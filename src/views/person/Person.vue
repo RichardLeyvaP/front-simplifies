@@ -871,7 +871,7 @@ export default {
       (v) => /.+@.+\..+/.test(v) || "El Correo Electrónico no es válido",
     ],
     mobileRules: [(v) => !!v || "El Teléfono es requerido"],
-    selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
+    selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
     pago: [(value) => !isNaN(parseFloat(value)) || "Debe ser un número"],
   }),
 

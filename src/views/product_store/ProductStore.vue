@@ -425,7 +425,7 @@ export default {
     requiredRules: [
       (v) => v === null || (!isNaN(v) && isFinite(v)) || 'Ingresa un número válido',
     ],
-    selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
+    selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
     pago: [
       (value) => !!value || 'Campo requerido',
       (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],

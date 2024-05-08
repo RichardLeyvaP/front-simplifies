@@ -172,7 +172,7 @@ export default {
             rule_id: '',
         },
 
-        selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
+        selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
     }),
 
     computed: {

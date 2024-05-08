@@ -15,11 +15,14 @@
                         <v-col cols="12">
                           <spam class="text-overline"> Ingreso Mensual
                             <div class="text-h6 font-weight-bold text-teal-darken-2">
-                              {{ amountMounth }}
+                              {{ formatNumber(amountMounth) }}
+                              <br>
+                              <div class="text-h6 font-weight-bold text-teal-darken-2">
                               <br>
                             </div>
+                            </div>
                           </spam>
-                          <p>Mes: {{ formattedDateMonth }} </p>
+                          <p>{{ formattedDateMonth }} </p>
                         </v-col>
                       </v-row>
                     </v-col>
@@ -27,13 +30,16 @@
                     <v-col cols="12" md="5">
                       <v-row>
                         <v-col cols="12">
-                          <spam class="text-overline"> Mes Anterior
+                          <spam class="text-overline"><br>
                             <div class="text-h6 font-weight-bold text-teal-darken-2">
                               {{ amountMounthAnt }}
                               <br>
+                              <div class="text-h6 font-weight-bold text-teal-darken-2">
+                              <br>
+                            </div>
                             </div>
                           </spam>
-                          <p>Mes: {{ formattedDateMonthAnt }} </p>
+                          <p>{{ formattedDateMonthAnt }} </p>
                         </v-col>
                       </v-row>
                     </v-col>
@@ -41,9 +47,6 @@
                       <v-avatar icon="mdi-cash-multiple" class=" text-h6 text-teal-darken-2"></v-avatar>
                     </v-col>
                   </v-row>
-                  <div class="text-right"> <!-- Utilizamos la clase de Vuetify para alinear a la derecha 
-                    <a @click="detailWinner">Ver Detalles</a>-->
-                  </div>
                 </div>
               </v-card-text>
             </v-card>
@@ -66,14 +69,14 @@
                       <v-row>
                         <v-col cols="12">
                           <spam class="text-overline"> Producto más Vendido
-                            <div class="text-h6 font-weight-bold text-teal-darken-2">
+                            <div class="text-h6 font-weight-bold text-amber-darken-1">
                               {{ productName }}
                             </div>
-                            <div class="text-h6 font-weight-bold text-teal-darken-2">
+                            <div class="text-h6 font-weight-bold text-amber-darken-1">
                               {{ productCant }}
                             </div>
                           </spam>
-                          <p>Mes: {{ formattedDate }} </p>
+                          <p>{{ formattedDate }} </p>
                         </v-col>
                       </v-row>
                     </v-col>
@@ -81,20 +84,20 @@
                     <v-col cols="12" md="5">
                       <v-row>
                         <v-col cols="12">
-                          <spam class="text-overline"> Día Mes Anterior
-                            <div class="text-h6 font-weight-bold text-teal-darken-2">
+                          <spam class="text-overline"><br>
+                            <div class="text-h6 font-weight-bold text-amber-darken-1">
                               {{ productNameAnt }}
                             </div>
-                            <div class="text-h6 font-weight-bold text-teal-darken-2">
+                            <div class="text-h6 font-weight-bold text-amber-darken-1">
                               {{ productCantAnt }}
                             </div>
                           </spam>
-                          <p>Mes: {{ formattedDateAnt }} </p>
+                          <p>{{ formattedDateAnt }} </p>
                         </v-col>
                       </v-row>
                     </v-col>
                     <v-col cols="12" md="2">
-                      <v-avatar icon="mdi-star-circle" class=" text-h6 text-teal-darken-2"></v-avatar>
+                      <v-avatar icon="mdi-star-circle" class=" text-h6 text-amber-darken-1"></v-avatar>
                     </v-col>
 
                   </v-row>
@@ -123,14 +126,14 @@
                       <v-row>
                         <v-col cols="12">
                           <spam class="text-overline"> Servicio más brindado
-                            <div class="text-h6 font-weight-bold text-teal-darken-2">
+                            <div class="text-h6 font-weight-bold text-brown-lighten-1">
                               {{ serviceName }}
                             </div>
-                            <div class="text-h6 font-weight-bold text-teal-darken-2">
+                            <div class="text-h6 font-weight-bold text-brown-lighten-1">
                               {{ serviceCant }}
                             </div>
                           </spam>
-                          <p>Mes: {{ formattedDate }} </p>
+                          <p>{{ formattedDate }} </p>
                         </v-col>
                       </v-row>
                     </v-col>
@@ -138,20 +141,20 @@
                     <v-col cols="12" md="5">
                       <v-row>
                         <v-col cols="12">
-                          <spam class="text-overline"> Día Mes Anterior
-                            <div class="text-h6 font-weight-bold text-teal-darken-2">
+                          <spam class="text-overline"><br>
+                            <div class="text-h6 font-weight-bold text-brown-lighten-1">
                               {{ serviceNameAnt }}
                             </div>
-                            <div class="text-h6 font-weight-bold text-teal-darken-2">
+                            <div class="text-h6 font-weight-bold text-brown-lighten-1">
                               {{ serviceCantAnt }}
                             </div>
                           </spam>
-                          <p>Mes: {{ formattedDateAnt }} </p>
+                          <p>{{ formattedDateAnt }} </p>
                         </v-col>
                       </v-row>
                     </v-col>
                     <v-col cols="12" md="2">
-                      <v-avatar icon="mdi-star-circle" class=" text-h6 text-teal-darken-2"></v-avatar>
+                      <v-avatar icon="mdi-star-circle" class=" text-h6 text-brown-lighten-1"></v-avatar>
 
                     </v-col>
 
@@ -282,7 +285,7 @@
           <v-card-text class="pt-0">
 
             <div class="subheading font-weight-light text-grey">
-              Reservas Diarias de la semana actual
+              Reservas Diarias de la web en la semana actual
             </div>
             <v-divider class="my-2"></v-divider>
             <v-icon class="me-2" size="small">
@@ -629,7 +632,7 @@ export default {
       chartData: {
         labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
         datasets: [{
-          label: 'Reservas',
+          label: 'Reservas Web',
           backgroundColor: ["#FFB300", "#FF7043", "#00796B", "#B0BEC5", "#C0CA33", "#8D6E63", "#616161"], data: this.reservationWeek
         }]
       },/*
@@ -679,6 +682,9 @@ export default {
     // this.renderChart(this.chartData, { responsive: true, maintainAspectRatio: false })
   },
   methods: {
+    formatNumber(value) {
+            return value.toLocaleString('es-ES');
+        },
     //ganancias en la semana
     generateChartData1() {
       return {
@@ -698,7 +704,7 @@ export default {
         labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
         datasets: [
           {
-            label: 'Reservas',
+            label: 'Reservas Web',
             backgroundColor: ["#FFB300", "#FF7043", "#00796B", "#B0BEC5", "#C0CA33", "#8D6E63", "#616161"],
             data: this.reservationWeek
           }

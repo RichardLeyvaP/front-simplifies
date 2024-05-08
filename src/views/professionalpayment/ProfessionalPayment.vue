@@ -19,7 +19,7 @@
         <v-toolbar color="#F18254">
             <v-row align="center">
                 <v-col cols="12" md="5" class="grow ml-4 t">
-                    <span class="text-subtitle-1"> <strong>Pago a Professionales</strong></span>
+                    <span class="text-subtitle-1"> <strong>Pago a Profesionales</strong></span>
                 </v-col>
                 <v-col cols="12" md="4"></v-col>
                 <v-col cols="12" md="2">
@@ -116,10 +116,10 @@
                         <v-card>
 
                             <v-toolbar color="red">
-                                <span class="text-subtitle-2 ml-4"> Eliminar Pago a Professional</span>
+                                <span class="text-subtitle-2 ml-4"> Eliminar Pago a Profesional</span>
                             </v-toolbar>
 
-                            <v-card-text class="mt-2 mb-2"> ¿Desea eliminar el pago al professional?</v-card-text>
+                            <v-card-text class="mt-2 mb-2"> ¿Desea eliminar el pago al profesional?</v-card-text>
                             <v-divider></v-divider>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
@@ -584,7 +584,7 @@ export default {
         pago: [
             (value) => !!value || 'Campo requerido',
             (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
-        selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
+        selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
         selected2: [],
         headers2: [
             { title: 'ID', align: 'start', value: 'id' },

@@ -499,7 +499,7 @@ export default {
       ],
       mobileRules: [(v) => !!v || "El Teléfono es requerido"],
     pago: [(v) => !!v || (!isNaN(v) && isFinite(v)) || 'Ingresa un número válido'],
-    selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
+    selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
   }),
 
   computed: {

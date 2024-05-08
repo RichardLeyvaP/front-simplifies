@@ -459,7 +459,7 @@
           (v) => (v && v.length >= 3) ||
           "El campo debe tener al menos 3 caracteres",
         ],
-     selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
+     selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
     }),
   
     computed: {

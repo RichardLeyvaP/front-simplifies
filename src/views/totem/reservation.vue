@@ -313,7 +313,7 @@ size="x-large"
               color="orange lighten-2"
               
               
-                @click="addEncuesta()"
+                @click="addEncuesta()" :disabled="!selectedSurveys.length>0"
               >Aceptar</v-btn>
             </v-card-actions>
           </v-card>
@@ -581,6 +581,9 @@ axios
 
   methods:
   {
+    formatNumber(value) {
+            return value.toLocaleString('es-ES');
+        },
     convertirMinutosAHorasYMinutos(minutos) {
 
 console.log("estos son los minutos")

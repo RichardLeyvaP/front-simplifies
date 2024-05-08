@@ -504,7 +504,7 @@ export default {
             branch_id: '',
             id: ''
         },
-        selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
+        selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
         nameRules: [
             (v) => !!v || "El campo es requerido"],
 

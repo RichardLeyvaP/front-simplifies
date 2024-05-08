@@ -556,10 +556,10 @@
       <v-dialog v-model="dialogAddProfessional" fullscreen transition="dialog-bottom-transition">
         <v-card>
           <v-toolbar color="#F18254">
-            <span class="text-subtitle-2 ml-4">Professionales asignados al curso</span>
+            <span class="text-subtitle-2 ml-4">Profesionales asignados al curso</span>
             <v-spacer></v-spacer>
             <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAdddialogProfessionals()">
-              Asignar Professional
+              Asignar Profesional
             </v-btn>
           </v-toolbar>
 
@@ -641,10 +641,10 @@
         <v-card>
 
           <v-toolbar color="red">
-            <span class="text-subtitle-2 ml-4"> Eliminar afiliación del professional al curso</span>
+            <span class="text-subtitle-2 ml-4"> Eliminar afiliación del profesional al curso</span>
           </v-toolbar>
 
-          <v-card-text class="mt-2 mb-2"> ¿Desea eliminar esta afiliación del professional con el curso?</v-card-text>
+          <v-card-text class="mt-2 mb-2"> ¿Desea eliminar esta afiliación del profesional con el curso?</v-card-text>
           <v-divider></v-divider>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -816,13 +816,13 @@ export default {
     dialogRequestProfessional: false,
     headers4: [
       //{ title: 'Nombre Estudiante', key: 'nameStudent' },
-      { title: 'Nombre Professional', key: 'name' },
+      { title: 'Nombre Profesional', key: 'name' },
       { title: 'Email', key: 'email' },
       { title: 'Cargo', key: 'charge' },
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
     search4: '',
-    selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
+    selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
   }),
   setup() {
         const adapter = useDate()

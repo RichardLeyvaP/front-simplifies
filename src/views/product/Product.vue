@@ -536,7 +536,7 @@ export default {
       (v) => (v && v.length >= 3) || "El campo debe tener al menos de 3 caracteres",
     ],
     requiredRules: [(v) => !!v || "El campo es requerido"],
-    selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
+    selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
   }),
 
   computed: {

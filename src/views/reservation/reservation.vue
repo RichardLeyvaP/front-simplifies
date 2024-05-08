@@ -434,7 +434,7 @@
       pago: [
      // (value) => !!value || 'Campo requerido',
      (value) => (!value || !isNaN(parseFloat(value))) || 'Debe ser un número'],
-      selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
+      selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
       requiredRules: [
      (v) => !!v || "El campo es requerido",
    ],
