@@ -553,7 +553,6 @@ export default {
       //{ title: 'Segundo Apellido', key: 'second_surname' },
       { title: "Correo", key: "email" },
       { title: "Teléfono", key: "phone" },
-      //{ title: 'Usuario', align: 'start', value: 'user.name' },
       { title: "Acciones", key: "actions", sortable: false },
     ],
     results: [],
