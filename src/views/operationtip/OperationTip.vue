@@ -119,10 +119,10 @@
                         <v-card>
 
                             <v-toolbar color="red">
-                                <span class="text-subtitle-2 ml-4"> Eliminar Pago a Professional</span>
+                                <span class="text-subtitle-2 ml-4"> Eliminar Pago a Profesional</span>
                             </v-toolbar>
 
-                            <v-card-text class="mt-2 mb-2"> ¿Desea eliminar el pago al professional?</v-card-text>
+                            <v-card-text class="mt-2 mb-2"> ¿Desea eliminar el pago al profesional?</v-card-text>
                             <v-divider></v-divider>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
