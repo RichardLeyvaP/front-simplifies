@@ -143,7 +143,7 @@ export default {
       //{ icon: "mdi-timer-off", title: "Llegadas Tardes General", to: "branch-arriving-late", value: "branch-arriving-late", permission: "view_late_arrivals" },
       //{ icon: "mdi-timer-off", title: "Asistencia por Profesional", to: "professional-arriving-late", value: "professional-arriving-late", permission: "view_professional_late_arrivals" },
       //{ icon: "mdi-timer", title: "Profesionales Mejor Asistencias", to: "professional-arriving", value: "professional-arriving", permission: "view_best_attendance" },
-      { icon: "mdi-account-multiple", title: "Visitas por Clientes", to: "clients-visist", value: "clients-visist", permission: "view_clients_frecuence" },
+      //{ icon: "mdi-account-multiple", title: "Visitas por Clientes", to: "clients-visist", value: "clients-visist", permission: "view_clients_frecuence" },
       //{ icon: "mdi-trending-up", title: "Productos más vendidos", to: "product-mostsolt", value: "product-mostsolt", permission: "products_mostsold" },
       //{ icon: "mdi-trending-up", title: "Movimiento de Productos", to: "move-product", value: "move-product", permission: "view_move_products" },
       //{ icon: "mdi-shuffle", title: "Reposición de Productos", to: "product-stock", value: "product-stock", permission: "products_stock" },

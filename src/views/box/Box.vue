@@ -1462,7 +1462,7 @@ export default {
       }
     },
     saveCloseBox() {
-      this.data.box_id = this.box.reduce((total, item) => total + item.id, 0);
+      //this.data.box_id = this.editedBox.id;
       this.data.totalCash = this.editedCloseBox.totalCash;
       this.data.totalCreditCard = this.editedCloseBox.totalCreditCard;
       this.data.totalDebit = this.editedCloseBox.totalDebit;

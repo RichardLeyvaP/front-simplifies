@@ -491,6 +491,21 @@
                                             class="text-uppercase font-weight-bold" size="small" label> {{
                             formatNumber(item.amount)}}</v-chip>
                                     </template>
+                                    <template v-slot:item.amountGenerate="{ item }">
+                                        <v-chip
+                                            class="text-uppercase font-weight-bold" size="small" label> {{
+                            formatNumber(item.amountGenerate)}}</v-chip>
+                                    </template>
+                                    <template v-slot:item.retention="{ item }">
+                                        <v-chip
+                                            class="text-uppercase font-weight-bold" size="small" label> {{
+                            formatNumber(item.retention)}}</v-chip>
+                                    </template>
+                                    <template v-slot:item.tip80="{ item }">
+                                        <v-chip
+                                            class="text-uppercase font-weight-bold" size="small" label> {{
+                            formatNumber(item.tip80)}}</v-chip>
+                                    </template>
                                     <template v-slot:item.total="{ item }">
                                         <v-chip
                                             class="text-uppercase font-weight-bold" size="small" label> {{
@@ -644,9 +659,7 @@
                         <v-btn icon @click="updateDate5" color="#F18254" >
                     <v-icon>mdi-magnify</v-icon></v-btn>
                 </v-col>
-        <v-col cols="12" md="12">
-
-  
+        <v-col cols="12" md="12">  
             <v-card elevation="2">
                         <v-tabs v-model="tabBar" color="rgb(241, 130, 84)"
                             elevation="6"><!-- @click="handleTabChange"-->
@@ -806,7 +819,8 @@ export default {
     headers1: [
       { title: "Professional", key: "name", sortable: false },
       { title: "Sucursal", key: "branchName", sortable: false },
-      { title: "Monto", key: "amount", sortable: false },
+      { title: "Ingreso Total", key: "amountGenerate", sortable: false },
+      { title: "Ganancia del barbero", key: "amount", sortable: false },
       { title: "Retención", key: "retention", sortable: false },
       { title: "Propina", key: "tip", sortable: false },
       { title: "Propina 80%", key: "tip80", sortable: false },
