@@ -35,7 +35,7 @@
       <v-card-text>
         <v-row>
             <v-col cols="12" sm="12" md="4">
-              <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable label="Seleccione una Sucursal"
+              <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable label="Seleccione una Sucursal"
                 prepend-icon="mdi-store" item-title="name" item-value="id" variant="underlined"
                 @update:model-value="initialize()"></v-autocomplete>
             </v-col>
@@ -169,7 +169,7 @@
                           <v-text-field v-if="mostrarCode" clearable v-model="editedCard.cardGift_id" label="Código"
                             prepend-icon="mdi-code" variant="underlined" @input="onCardGiftSelected"></v-text-field>
   
-                          <!--<v-autocomplete v-if="mostrarCode" clearable v-model="editedCard.cardGift_id"
+                          <!--<v-autocomplete :no-data-text="'No hay datos disponibles'" v-if="mostrarCode" clearable v-model="editedCard.cardGift_id"
                             :items="filteredCardGifts" label="Código" prepend-icon="mdi-code" item-title="code"
                             item-value="id" variant="underlined" :rules="selectRules"
                             @update:model-value="cardGifts"></v-autocomplete>-->

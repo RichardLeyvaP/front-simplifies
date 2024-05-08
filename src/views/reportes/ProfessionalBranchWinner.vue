@@ -37,7 +37,7 @@
                 </template>
                 <v-locale-provider locale="es">
                   <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" @update:modelValue="updateDate2"
-                    format="yyyy-MM-dd"></v-date-picker>
+                    format="yyyy-MM-dd" :min="dateFormatted"></v-date-picker>
                 </v-locale-provider>
               </v-menu>
             </v-col>
@@ -109,6 +109,7 @@ export default {
       input2: null,
       input3: null,
       fecha: '',
+      charge: '',
       editedIndex: '',
       branch_id: '',
       professional_id: '',
@@ -166,8 +167,9 @@ export default {
   },
   mounted() {
     // Recuperar datos del localStorage al cargar la aplicación
-    this.branch_id = LocalStorageService.getItem('branch_id');
-    this.professional_id = LocalStorageService.getItem('professional_id');
+    this.branch_id = parseInt(LocalStorageService.getItem('branch_id'));
+    this.professional_id = parseInt(LocalStorageService.getItem('professional_id'));
+    this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
             .get('http://127.0.0.1:8000/api/show-business', {
                 params: {
@@ -176,8 +178,10 @@ export default {
             })
             .then((response) => {
                 this.branches = response.data.branches;
-                this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-
+                //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+                if (this.charge === 'Administrador'){
+          this.branch_id = this.branches[0].id;
+        }
                 this.initialize()
             });
   },

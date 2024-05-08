@@ -18,11 +18,10 @@
   <v-card elevation="6" class="mx-5">
     <v-toolbar color="#F18254">
       <v-row align="center">
-        <v-col cols="12" md="4" class="grow ml-4">
+        <v-col cols="12" md="7" class="grow ml-4">
           <span class="text-subtitle-1"> <strong>Listados de Cargos</strong></span>
         </v-col>
-        <v-col cols="12" md="5" class="mr-12"></v-col>
-        <v-col cols="12" md="2" class=" ">
+        <v-col cols="12" md="4" class="text-right">
 
           <v-dialog v-model="dialog" max-width="1000px">
             <template v-slot:activator="{ props }">
@@ -33,7 +32,7 @@
             </template>
             <v-card>
               <v-toolbar color="#F18254">
-                <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
+                <span class="text-subtitle-2 ml-2">{{ formTitle }}</span>
               </v-toolbar>
               <v-card-text>
                 <v-form v-model="valid" enctype="multipart/form-data">
@@ -41,7 +40,7 @@
                     <v-row>
                       <v-col cols="12" md="6">
                         <v-text-field v-model="editedItem.name" clearable label="Nombre del Cargo"
-                          prepend-icon="mdi-family-tree" variant="underlined" :rules="nameRules" :disabled="(editedItem.name === 'Barbero' || editedItem.name === 'Encargado' || editedItem.name === 'Tecnico' || editedItem.name === 'Coordinador')">
+                          prepend-icon="mdi-family-tree" variant="underlined" :rules="nameRules" :disabled="(editedItem.name === 'Barbero' || editedItem.name === 'Encargado' || editedItem.name === 'Tecnico' || editedItem.name === 'Coordinador' || editedItem.name === 'Administrador' || editedItem.name === 'Cajero (a)')">
                         </v-text-field>
                       </v-col>
 
@@ -94,7 +93,7 @@
           <v-toolbar color="#F18254">
             <span class="text-h6 ml-4"> Permisos del cargo</span>
             <v-spacer></v-spacer>
-            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="this.dialogAddPermission = true">
+            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAddPermission()">
               Asignar Permiso
             </v-btn>
           </v-toolbar>
@@ -103,9 +102,11 @@
               hide-details></v-text-field>
             <v-data-table :headers="headers2" :items="chargePermissions" :search="search2" class="elevation-1" :items-per-page-text="'Elementos por páginas'"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
               <template v-slot:item.actions="{ item }">
-                <v-icon size="25" color="red" @click="closePermissosRequest(item)">
+                <!--<v-icon size="25" color="red" @click="closePermissosRequest(item)">
                   mdi-delete
-                </v-icon>
+                </v-icon>-->
+                <v-btn density="comfortable" icon="mdi-delete" @click="closePermissosRequest(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar asignación"></v-btn>
               </template>
 
             </v-data-table>
@@ -130,7 +131,7 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" md="12">
-                    <v-autocomplete v-model="permission_id" :items="permissions" label="Permisos"
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="permission_id" :items="permissions" label="Permisos"
                       prepend-icon="mdi-lock" item-title="name" item-value="id" variant="underlined"
                       :rules="selectRules"></v-autocomplete>
                   </v-col>
@@ -181,19 +182,25 @@
       <v-data-table :headers="headers" :search="search" :items-per-page-text="'Elementos por páginas'" :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
         no-results-text="No hay datos disponibles">
         <template v-slot:item.actions="{ item }">
-          <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
+          <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
             mdi-pencil
           </v-icon>          
           <v-icon size="25" color="green" @click="showPermission(item)">
             mdi-lock
           </v-icon>
-          <v-icon size="25" :color="(item.name === 'Barbero' || item.name === 'Encargado' || item.name === 'Tecnico' || item.name === 'Coordinador') ? 'grey' : 'red'"
-        @click="!(item.name === 'Barbero' || item.name === 'Encargado' || item.name === 'Tecnico' || item.name === 'Coordinador') && deleteItem(item)">
+          <v-icon size="25" :color="(item.name === 'Barbero' || item.name === 'Encargado' || item.name === 'Tecnico' || item.name === 'Coordinador' || item.name === 'Administrador') ? 'grey' : 'red'"
+        @click="!(item.name === 'Barbero' || item.name === 'Encargado' || item.name === 'Tecnico' || item.name === 'Coordinador'  || item.name === 'Administrador') && deleteItem(item)">
   mdi-delete
-</v-icon>
+</v-icon>-->
           <!--<v-icon size="25" color="red" @click="deleteItem(item)">
             mdi-delete
           </v-icon>-->
+          <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar cargo"></v-btn>
+          <v-btn density="comfortable" icon="mdi-lock" @click="showPermission(item)" color="green" variant="tonal"
+            elevation="1" title="Mostrar permisos asignados"></v-btn>
+            <v-btn density="comfortable" icon="mdi-delete" @click="(item.name === 'Barbero' || item.name === 'Encargado' || item.name === 'Tecnico' || item.name === 'Coordinador' || item.name === 'Administrador' || item.name === 'Barbero y Encargado' || item.name === 'Cajero (a)') ? '': deleteItem(item)" :color="(item.name === 'Barbero' || item.name === 'Encargado' || item.name === 'Tecnico' || item.name === 'Coordinador' || item.name === 'Administrador' || item.name === 'Barbero y Encargado' || item.name === 'Cajero (a)') ? 'grey' : 'red'" variant="tonal"
+            elevation="1" title="Eliminar cargo"></v-btn>
         </template>
       </v-data-table>
     </v-card-text>
@@ -257,7 +264,7 @@ export default {
       (v) =>
         (v && v.length <= 40) ||
         "El Nombre debe tener menos de 41 caracteres",
-      (v) => /^[a-zA-ZáÁéÉíÍóÓúÚñÑ\s']+$/.test(v) || "El Nombre no es válido",],
+      (v) => /^[a-zA-ZáÁéÉíÍóÓúÚñÑ\s()']+$/.test(v) || "El Nombre no es válido",],
     dirRules: [
       (v) => !!v || "El campo es requerido",
       (v) => (v && v.length <= 250) ||
@@ -283,7 +290,7 @@ export default {
     },
   },
 
-  created() {
+  mounted() {
     this.initialize()
   },
 
@@ -370,9 +377,10 @@ export default {
         axios
           .put('http://127.0.0.1:8000/api/charge', this.data)
           .then(() => {
+          }).finally(() => {
+            this.showAlert("success", "Cargo editado correctamente", 3000);
             this.initialize();
-            this.showAlert("success", "Cargo editado correctamente", 3000)
-          })
+          });
       } else {
         this.valid = false;
         this.data.name = this.editedItem.name;
@@ -380,16 +388,17 @@ export default {
         axios
           .post('http://127.0.0.1:8000/api/charge', this.data)
           .then(() => {
+          }).finally(() => {
+            this.showAlert("success", "Cargo registrado correctamente", 3000);
             this.initialize();
-            this.showAlert("success", "Cargo registrado correctamente", 3000)
-          })
+          });
       }
       this.close()
     },
     closePermission() {
       this.dialogAddPermission = false;
       this.permission_id = '';
-      this.showPermission(this.chargeSelect);
+      //this.showPermission(this.chargeSelect);
     },
     showPermission(item) {
       this.chargeSelect = item;
@@ -404,18 +413,21 @@ export default {
         })
         .then((response) => {
           this.chargePermissions = response.data.permissions;
-          console.log('imprime permissions');
         });
-        axios
-        .get('http://127.0.0.1:8000/api/charge-permission-NOTIN', {
-          params: {
-            charge_id: item.id
-          }
-        })
-        .then((response) => {
-          this.permissions = response.data.permissions;
-        })
+        
       this.dialogPermissions = true;
+    },
+    showAddPermission(){
+    axios
+            .get('http://127.0.0.1:8000/api/charge-permission-NOTIN', {
+              params: {
+                charge_id: this.chargeSelect.id
+              }
+            })
+            .then((response) => {
+              this.permissions = response.data.permissions;
+            });
+            this.dialogAddPermission = true;
     },
     savePermission() {
       this.valid = false,
@@ -427,9 +439,10 @@ export default {
          this.charge_id = '',
          this.permission_id = '',
           this.dialogAddPermission = false;
-          this.showPermission(this.chargeSelect);
+        }).finally(() => {
           this.showAlert("success", "Permiso asignado correctamente", 3000);
-        })
+          this.showPermission(this.chargeSelect);
+          });
     },
     closePermissosRequest(item) {
       console.log(item);
@@ -456,9 +469,9 @@ export default {
     },
     closerequestPermission() {
       this.dialogDeletePermission = false;
-      this.charge_id = '',
-         this.permission_id = '',
-      this.showPermission(this.chargeSelect)
+      this.charge_id = '';
+         this.permission_id = '';
+      //this.showPermission(this.chargeSelect)
     },
   },
 }

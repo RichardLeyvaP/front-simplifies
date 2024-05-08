@@ -14,6 +14,7 @@
             </v-col>
         </v-row>
     </v-snackbar>
+    <v-container>
     <v-card elevation="6" class="mx-5" width='auto'>
         <v-toolbar color="#F18254">
             <v-row align="center">
@@ -23,15 +24,11 @@
                 <v-col cols="12" md="4"></v-col>
                 <v-col cols="12" md="2">
 
-                    <v-dialog v-model="dialog" max-width="500px">
-                        <template v-slot:activator="{ props }">
-
-                            <v-btn v-bind="props" class="text-subtitle-1  ml-12  " color="#E7E9E9" variant="flat"
-                                elevation="2" prepend-icon="mdi-plus-circle">
+                            <v-btn class="text-subtitle-1  ml-12  " color="#E7E9E9" variant="flat"
+                                elevation="2" prepend-icon="mdi-plus-circle" @click="showAddRules()">
                                 Asignar regla
                             </v-btn>
-
-                        </template>
+                    <v-dialog v-model="dialog" max-width="500px">
                         <v-card>
                             <v-toolbar color="#F18254">
                                 <span class="text-subtitle-2 ml-4"> {{ formTitle }}</span>
@@ -40,10 +37,10 @@
                                 <v-form v-model="valid" enctype="multipart/form-data">
                                     <v-row>
                                         <v-col cols="12" md="12">
-                                            <v-autocomplete v-model="editedItem.rule_id" :items="rules" clearable
+                                            <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.rule_id" :items="rules" clearable
                                                 label="Reglas de convivencia" prepend-inner-icon="mdi-ruler"
                                                 item-title="name" item-value="id" variant="underlined"
-                                                :rules="selectRules"></v-autocomplete>  
+                                                :rules="selectRules"></v-autocomplete>
                                         </v-col>
                                     </v-row>
                                     <v-divider></v-divider>
@@ -92,38 +89,39 @@
 
         <v-row>
             <v-container>
-                <v-col cols="12" sm="12" md="6">
-                    <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
+                <v-col cols="12" md="6">
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila"
                         label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
-                        variant="underlined" @update:model-value="initialize()"></v-autocomplete>
+                        variant="underlined" @update:model-value="initialize()" ></v-autocomplete>
                 </v-col>
 
             </v-container>
         </v-row>
-        <v-card-text>
-            <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
-                hide-details>
-            </v-text-field>
-            <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search" class="elevation-1"
-                no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles" >
-                <template v-slot:top>
-
-                    <v-divider class="mx-4" inset vertical></v-divider>
-                    <v-spacer></v-spacer>
-                </template>
-
-                <template v-slot:item.actions="{ item }">
-
-                    <v-icon size="25" color="red" @click="deleteItem(item)">
-                        mdi-delete
-                    </v-icon>
-                </template>
-            </v-data-table>
-        </v-card-text>
-
-
+        <v-container>
+    <v-row>
+        <v-col cols="12">
+            <v-card>
+                <v-card-text>
+                    <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details></v-text-field>
+                    <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search" class="elevation-1" no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles">
+                        <template v-slot:top>
+                            <v-divider class="mx-4" inset vertical></v-divider>
+                            <v-spacer></v-spacer>
+                        </template>
+                        <template v-slot:item.actions="{ item }">
+                            <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal" elevation="1" title="Eliminar regla de convivencia"></v-btn>
+                        </template>
+                        <template v-slot:item.description="{ item }">
+                            <div class="description-cell">{{ item.description }}</div>
+                        </template>
+                    </v-data-table>
+                </v-card-text>
+            </v-card>
+        </v-col>
+    </v-row>
+</v-container>
     </v-card>
-
+</v-container>
 
 
 
@@ -147,6 +145,7 @@ export default {
         sb_icon: '',
         dialog: false,
         branch_id: '',
+        charge: '',
         business_id: '',
         search: '',
         search2: '',
@@ -202,24 +201,28 @@ export default {
     mounted() {
         this.business_id = LocalStorageService.getItem('business_id');
         this.charge_id = LocalStorageService.getItem('charge_id');
+        this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         this.branch_id = LocalStorageService.getItem('branch_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         axios
-                .get('http://127.0.0.1:8000/api/show-business', {
-                    params: {
-                        business_id: this.business_id
-                    }
-                })
-                .then((response) => {
-                    this.branches = response.data.branches;
-                    this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-        this.initialize()
-                });
+            .get('http://127.0.0.1:8000/api/show-business', {
+                params: {
+                    business_id: this.business_id
+                }
+            })
+            .then((response) => {
+                this.branches = response.data.branches;                
+            }).finally(() => {
+        if (this.charge === 'Administrador') 
+            {
+                this.branch_id = this.branches[0].id;
+                this.mostrarFila = true;
+            }
+                            //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+                            this.initialize()
+          });
+            
 
-        if (this.charge === 'Administrador') {
-            // Mostrar la fila con Autocomplete
-            this.mostrarFila = true;
-        }
         console.log(this.charge_id);
     },
 
@@ -256,6 +259,9 @@ export default {
                 .then((response) => {
                     this.results = response.data.rules;
                 });
+        },
+
+        showAddRules(){
             axios
                 .get('http://127.0.0.1:8000/api/branch-rules-noIn', {
                     params: {
@@ -265,8 +271,8 @@ export default {
                 .then((response) => {
                     this.rules = response.data.rules;
                 });
+                this.dialog = true;
         },
-
         deleteItem(item) {
             this.editedItem.rule_id = item.rule_id;
             this.dialogDelete = true;
@@ -279,10 +285,11 @@ export default {
             axios
                 .post('http://127.0.0.1:8000/api/branchrule-destroy', this.data)
                 .then(() => {
+                    this.message_delete = true;
+                }).finally(() => {
+                    this.showAlert("success", "Asignación eliminada correctamente", 3000);
                     this.initialize();
-                    this.message_delete = true
-                    this.showAlert("success", "Asignación eliminada correctamente", 3000)
-                });
+          });
             this.closeDelete()
         },
         close() {
@@ -310,9 +317,10 @@ export default {
                 axios
                     .post('http://127.0.0.1:8000/api/branchrule', this.data)
                     .then(() => {
+                    }).finally(() => {
+                        this.showAlert("success", "Regla de convivencia asignada correctamente", 3000);
                         this.initialize();
-                        this.showAlert("success", "Regla de convivencia asignada correctamente", 3000)
-                    });
+                });
             }
             this.close();
 
@@ -320,3 +328,10 @@ export default {
     },
 }
 </script>
+<style>
+.description-cell {
+    max-width: 400px; /* Define el ancho máximo del campo de descripción */
+    overflow: hidden; /* Oculta el texto que se desborda del campo de descripción */
+    text-overflow: ellipsis; /* Muestra puntos suspensivos (...) cuando el texto se recorta */
+}
+</style>

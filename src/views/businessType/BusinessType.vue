@@ -16,11 +16,10 @@
   <v-card elevation="6" class="mx-5">
     <v-toolbar color="#F18254">
       <v-row align="center">
-        <v-col cols="12" md="4" class="grow ml-4">
+        <v-col cols="12" md="8" class="grow ml-4">
           <span class="text-subtitle-1"> <strong>Tipos de Negocios</strong></span>
         </v-col>
-         <v-col cols="12" md="5" class="mr-12"></v-col>
-        <v-col cols="12" md="2">          
+        <v-col cols="12" md="3" class="text-right">          
         
             <v-dialog v-model="dialog" max-width="600">
               <template v-slot:activator="{ props }">              
@@ -85,15 +84,21 @@
           </v-row>
           </v-toolbar>
           <v-card-text>
-    <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
+            <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
+              hide-details></v-text-field>
+    <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search" :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
       no-results-text="No hay datos disponibles">
       <template v-slot:item.actions="{ item }">
-        <v-icon size="small" color="blue" class="me-2" @click="editItem(item)">
+        <!--<v-icon size="small" color="blue" class="me-2" @click="editItem(item)">
           mdi-pencil
         </v-icon>
         <v-icon size="small" color="red" @click="deleteItem(item)">
           mdi-delete
-        </v-icon>
+        </v-icon>-->
+        <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar tipo de negocio"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar tipo de negocio"></v-btn>
       </template>
     </v-data-table>
   </v-card-text>
@@ -112,7 +117,7 @@ export default {
     sb_timeout: 2000,
     sb_title:'',
     sb_icon:'',
-
+    search: '',
     dialog: false,
     dialogDelete: false,
 
@@ -246,18 +251,20 @@ export default {
           axios
             .put('http://127.0.0.1:8000/api/business-type', this.data)
             .then(() => {
+            }).finally(() => {
+              this.showAlert("success","Tipo de Negocio editado correctamente", 3000);
               this.initialize();
-              this.showAlert("success","Tipo de Negocio editado correctamente", 3000)
-            })
+          });
         } else {
           this.valid = false,
           this.data.name = this.editedItem.name;
           axios
             .post('http://127.0.0.1:8000/api/business-type', this.data)
             .then(() => {
+            }).finally(() => {
+              this.showAlert("success","Tipo de Negocio registrado correctamente", 3000);
               this.initialize();
-              this.showAlert("success","Tipo de Negocio registrado correctamente", 3000)
-            })
+          }); 
         }
         this.close()
      

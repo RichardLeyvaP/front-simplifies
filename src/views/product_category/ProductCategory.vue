@@ -57,7 +57,7 @@
                   <v-btn color="#E7E9E9" variant="flat" @click="close">
                     Cancelar
                   </v-btn>
-                  <v-btn color="primary" variant="flat" @click="save" :disabled="!valid">
+                  <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
                     Aceptar
                   </v-btn>
                 </v-card-actions>
@@ -90,15 +90,21 @@
       </v-row>
     </v-toolbar>
     <v-card-text>
-      <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
+      <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
+              hide-details></v-text-field>
+      <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search" :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
         no-results-text="No hay datos disponibles">
         <template v-slot:item.actions="{ item }">
-          <v-icon size="small" color="blue" class="me-2" @click="editItem(item)">
+          <!--<v-icon size="small" color="blue" class="me-2" @click="editItem(item)">
             mdi-pencil
           </v-icon>
           <v-icon size="small" color="red" @click="deleteItem(item)">
             mdi-delete
-          </v-icon>
+          </v-icon>-->
+          <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar categoría"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar categoría"></v-btn>
         </template>
       </v-data-table>
     </v-card-text>
@@ -117,7 +123,7 @@ export default {
     sb_timeout: 2000,
     sb_title: '',
     sb_icon: '',
-
+    search: '',
     dialog: false,
     dialogDelete: false,
 
@@ -172,7 +178,7 @@ export default {
     },
   },
 
-  created() {
+  mounted() {
     this.initialize()
   },
 

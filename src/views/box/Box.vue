@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/return-in-computed-property -->
 <!-- eslint-disable vue/multi-word-component-names -->
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
@@ -18,24 +19,27 @@
   <v-card elevation="6" class="mx-5" width='auto'>
     <v-toolbar color="#F18254">
       <v-row>
-        <v-col cols="12" md="8" class="mt-4">
+        <v-col cols="12" md="5" class="mt-4">
           <span class="ml-4"> <strong>Caja <!--- {{ this.nameBranch }}--></strong></span>
         </v-col>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="7">
+           
           <v-dialog v-model="dialog" max-width="1000px">
-            <template v-slot:activator="{ props }">
-              <v-col>
+ <template v-slot:activator="{ props }">
+          <div class="text-center">
+                <v-btn @click="dialogDetallesCarPagado = true" color="#E7E9E9" variant="flat" elevation="2"
+                  prepend-icon="mdi-account-star-outline" :disabled="filteredItemsPay.length !== 0 ? false : true">
+                  Clientes atendidos
+                </v-btn>
                 <v-btn :disabled="closed_box || ejecutado" v-bind="props" color="#E7E9E9" variant="flat" elevation="2"
-                  prepend-icon="mdi-plus-circle" class="ml-4 mr-2">
+                  prepend-icon="mdi-plus-circle" class="ml-1">
                   Cierre de Caja
                 </v-btn>
                 <v-btn @click="openDialogBox" color="#E7E9E9" variant="flat" elevation="2"
-                  prepend-icon="mdi-cash-register">
+                  prepend-icon="mdi-cash-register" class="ml-1">
                   Caja
-                </v-btn>
-              </v-col>
+                </v-btn></div>
             </template>
-
             <v-card>
               <v-toolbar color="#F18254">
                 <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
@@ -232,16 +236,427 @@
 
       <v-row>
         <v-col cols="12" sm="12" md="4">
-          <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
+          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
             label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
             variant="underlined" @update:model-value="initialize()"></v-autocomplete>
         </v-col>
       </v-row>
-      <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
+      <v-row>
+        <v-container>          
+        <v-col cols="12" md="12">
+          <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
         hide-details></v-text-field>
 
 
-      <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search"
+      <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="filteredItems" :search="search"
+        class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+
+        <template v-slot:item.professionalName="{ item }">
+
+          <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
+            <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url" alt="image"></v-img>
+          </v-avatar>
+          {{ item.professionalName }}
+        </template>
+
+        <template v-slot:item.clientName="{ item }">
+
+          <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
+            <v-img :src="'http://127.0.0.1:8000/api/images/' + item.client_image" alt="image"></v-img>
+          </v-avatar>
+          {{ item.clientName }}
+        </template>
+
+        <template v-slot:item.state="{ item }">
+          <v-chip :color="getColor(item.state)" class="text-uppercase" label size="small">
+            {{ getText(item.state) }}
+          </v-chip>
+          <!--<v-chip :color="item.pay != 0 ? 'green' : 'red'" :text="item.pay" class="text-uppercase" label size="small">
+            {{ item.pay === 0 ? 'Pendiente' : 'Pagado' }}
+          </v-chip>-->
+        </template>
+
+        <template v-slot:top>
+
+          <v-divider class="mx-4" inset vertical></v-divider>
+          <v-spacer></v-spacer>
+        </template>
+
+        <template v-slot:item.actions="{ item }">
+          <!--<v-menu>
+            <template v-slot:activator="{ props }">
+              <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
+            </template>
+
+            <v-list>
+              <v-list-item>
+                <v-btn density="comfortable" icon="mdi-eye" @click="(item.active != 3) &&  showDetails(item)" :color="(item.active != 3) ? 'blue' : 'grey'" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Mostrar detalles del carro"></v-btn>
+          <v-btn density="comfortable" icon="mdi-credit-card" @click="(item.active != 3) && payItem(item)" :color="(item.active != 3) ? 'green-darken-1' : 'grey'"
+            variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Pagar el carro"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="(item.active != 3) && deleteItemSolicitud(item)" :color="(item.active != 3) ? 'red-darken-4' : 'grey'" variant="tonal"
+            elevation="1" title="Solicitud de eliminar carro"></v-btn>
+              </v-list-item>
+            </v-list>
+          </v-menu>-->
+          <v-btn density="comfortable" icon="mdi-eye" @click="(item.active != 3) &&  showDetails(item)" :color="(item.active != 3) ? 'blue' : 'grey'" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Mostrar detalles del carro"></v-btn>
+          <v-btn density="comfortable" icon="mdi-credit-card" @click="(item.active != 3) && payItem(item)" :color="(item.active != 3) ? 'green-darken-1' : 'grey'"
+            variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Pagar el carro"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="(item.active != 3) && deleteItemSolicitud(item)" :color="(item.active != 3) ? 'red-darken-4' : 'grey'" variant="tonal"
+            elevation="1" title="Solicitud de eliminar carro"></v-btn>
+        </template>
+      </v-data-table>
+        </v-col>
+        </v-container>
+      </v-row>
+      <v-dialog v-model="dialogRequest" width="500">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-2 ml-4"> Solicitud de Eliminación de producto / servicio</span>
+          </v-toolbar>
+
+          <v-card-text class="mt-2 mb-2">
+
+
+            <v-alert variant="outlined" type="warning" prominent border="top">
+              Solicitud de eliminación en espera de aprobación
+            </v-alert>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
+            <v-btn color="default" variant="flat" @click="closeDeleteP">Cancelar</v-btn>
+            <v-btn color="warning" variant="flat" @click="requestDelete">Aceptar</v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="dialogDelete" max-width="600px">
+        <v-card>
+          <v-toolbar color="red">
+            <span class="text-subtitle-2 ml-4"> Eliminar Carro</span>
+          </v-toolbar>
+
+          <v-card-text class="mt-2 mb-2"> ¿Desea eliminar el carro seleccionado?</v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
+              Cancelar
+            </v-btn>
+            <v-btn color="#F18254" variant="flat" @click="deleteItemConfirm">
+              Aceptar
+            </v-btn>
+
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="dialogPay" max-width="800px">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-1  ml-2">Pagar Carro</span>
+            <v-spacer></v-spacer>
+            <span class="text-subtitle-1 mr-3">
+              Monto a pagar {{ this.editedItem.amount }} </span>
+          </v-toolbar>
+
+          <v-card-text>
+            <v-form v-model="valid" enctype="multipart/form-data">
+              <v-container>
+                <v-row>
+                  <v-col cols="12" md="6">
+                    <v-text-field v-model="editedItem.cash" clearable label="Efectivo" prepend-icon="mdi-cash"
+                      variant="underlined" :rules="pago">
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field v-model="editedItem.creditCard" clearable label="Tarjeta de Crédito"
+                      prepend-icon="mdi-credit-card" variant="underlined" :rules="pago">
+                    </v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" md="6">
+                    <v-text-field v-model="editedItem.debit" clearable label="Debito"
+                      prepend-icon="mdi-credit-card-outline" variant="underlined" :rules="pago">
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field v-model="editedItem.transfer" clearable label="Transferencia"
+                      prepend-icon="mdi-bank-transfer" variant="underlined" :rules="pago">
+                    </v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" md="6">
+                    <v-text-field v-model="editedItem.other" clearable label="Otro Método" prepend-icon="mdi-check"
+                      variant="underlined" :rules="pago">
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field v-model="editedItem.tip" clearable label="Propina" prepend-icon="mdi-currency-usd"
+                      variant="underlined" :rules="pago">
+                    </v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" md="4">
+                    <v-text-field clearable v-model="editedCard.cardGiftUser_id" label="Tarjeta de regalo (código)"
+                    prepend-icon="mdi-gift" variant="underlined" ></v-text-field><!--@input="onCardGiftSelected"-->
+                  </v-col>
+                  <v-col cols="12" md="4">
+                    <v-text-field v-if="mostrarOtroCampo" v-model="editedCard.value" clearable label="Valor"
+                      prepend-icon="mdi-currency-usd" variant="underlined" :disabled="true">
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="4">
+                    <v-text-field v-model="editedItem.cardGif" clearable label="Cantidad" prepend-icon="mdi-currency-usd"
+                      variant="underlined" :rules=[customValidation] v-if="mostrarOtroCampo">
+                    </v-text-field>
+                  </v-col>
+                </v-row>
+                  
+              </v-container>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="#E7E9E9" variant="flat" @click="closeDialogPay">
+                  Cancelar
+                </v-btn>
+                <v-btn color="#F18254" variant="flat" @click="savePay" :disabled="!valid">
+                  Aceptar
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="dialogDetallesCar" fullscreen transition="dialog-bottom-transition">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <v-row>
+              <v-col cols="12" md="7">
+                <span class="text-subtitle-2 ml-4"> Detalles del Carro</span>
+              </v-col>
+              <v-spacer></v-spacer>
+              <v-col cols="12" md="5" class="text-center">
+                <v-btn color="#E7E9E9" variant="flat" @click="showService(this.car_ref)"
+                  prepend-icon="mdi-list-box-outline" class="mr-1" :disabled="this.car_ref.pay == 1 ? true : false">
+                  Agregar Servicio
+                </v-btn>
+                <v-btn color="#E7E9E9" variant="flat" @click="showProduct(this.car_ref)" prepend-icon="mdi-tag-outline" :disabled="this.car_ref.pay == 1 ? true : false">
+                  Agregar Producto
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-toolbar>
+
+          <v-card-text class="mt-2 mb-2">
+            <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
+              hide-details></v-text-field>
+
+            <v-data-table :headers="headers2" :items="orders" :search="search2" class="elevation-1"
+              :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
+              no-data-text="No hay datos disponibles">
+
+              <template v-slot:item.image="{ item }">
+
+                <v-avatar elevation="3" color="grey-lighten-4" size="large">
+                  <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image" alt="image"></v-img>
+                </v-avatar>
+
+              </template>
+
+              <template v-slot:item.actions="{ item }">
+                <v-btn density="comfortable" icon="mdi-cancel"
+                :color="(item.request_delete != 3) ? 'red-darken-4' : 'grey'" title="Solicitar eliminar orden"
+                  @click="item.request_delete != 3 && deleteOrder(item)" elevation="1" class="mr-1 mt-1 mb-1"></v-btn>
+
+                <!--<v-btn :color="(item.request_delete && !this.car_ref.pay) ? 'blue' : 'grey'" density="comfortable" icon="mdi-check"
+                  title="Denegar solicitud" @click="(item.request_delete && !this.car_ref.pay) && requestCancel(item)" elevation="1" class="mr-1 mt-1 mb-1"></v-btn>-->
+
+              </template>
+
+            </v-data-table>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
+              Volver
+            </v-btn>
+
+            <v-btn color="#F18254" variant="flat" :disabled="this.car_ref.pay" @click="payItem(this.car_ref)">
+              Marcar como Pagado
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!--AddProducts-->
+      <v-dialog v-model="showAddProducts" max-width="500px">
+
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-2 ml-4"> Agregar Producto</span>
+          </v-toolbar>
+          <v-card-text>
+            <v-form v-model="valid" enctype="multipart/form-data">
+              <v-row>
+                <v-col cols="12" md="12">
+                  <v-autocomplete
+                  :no-data-text="'No hay datos disponibles'" v-model="product_store_id" :items="products" clearable label="Productos"
+                    prepend-icon="mdi-tag-outline" item-title="name" item-value="id" variant="underlined"
+                    :rules="selectRules"  @update:model-value="cantExist" 
+                  >
+                  <!--chips
+              closable-chips<template v-slot:chip="{ props, item }">
+                <v-chip
+                  v-bind="props"
+                  :prepend-avatar="'http://127.0.0.1:8000/api/images/'+item.raw.image_product"
+                  :text="item.raw.name"
+                ></v-chip>
+              </template>-->
+              <template v-slot:item="{ props, item }">
+                <v-list-item
+                  v-bind="props"
+                  :prepend-avatar="'http://127.0.0.1:8000/api/images/'+item.raw.image_product"
+                  :subtitle="'Existencia: '+item.raw.product_exit"
+                  :title="item.raw.name"
+                ></v-list-item>
+              </template>
+                </v-autocomplete>
+                    <v-text-field v-model="product_exit" clearable label="Existencia"
+                      prepend-icon="mdi-currency-usd" variant="underlined" disabled="true">
+                    </v-text-field>
+                    <v-text-field v-model="cant" clearable label="Cantidad"
+                      prepend-icon="mdi-currency-usd" variant="underlined" :rules=[validateCantidad]>
+                    </v-text-field>
+                </v-col>
+                
+                
+              </v-row>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+
+                <v-btn color="#E7E9E9" variant="flat" @click="closeAddProduct">
+                  Cancelar
+                </v-btn>
+                <v-btn color="#F18254" variant="flat" @click="saveAddProduct" :disabled="!valid">
+                  Aceptar
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+      <!--EndAddProducts-->
+      <!--AddServices-->
+      <v-dialog v-model="showAddServices" max-width="500px">
+
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-2 ml-4"> Agergar Servicio</span>
+          </v-toolbar>
+          <v-card-text>
+            <v-form v-model="valid" enctype="multipart/form-data">
+              <v-row>
+                <v-col cols="12" md="12">
+                  <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_service_professional_id" :items="services" clearable label="Servicios"
+                    prepend-icon="mdi-list-box-outline" item-title="name" item-value="id" variant="underlined"
+                    :rules="selectRules">
+                    <template v-slot:item="{ props, item }">
+                <v-list-item
+                  v-bind="props"
+                  :prepend-avatar="'http://127.0.0.1:8000/api/images/'+item.raw.image_service"
+                  :subtitle="'Precio: '+item.raw.price_service"
+                  :title="item.raw.name"
+                ></v-list-item>
+              </template>
+                  </v-autocomplete>
+                </v-col>
+              </v-row>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+
+                <v-btn color="#E7E9E9" variant="flat" @click="closeAddService">
+                  Cancelar
+                </v-btn>
+                <v-btn color="#F18254" variant="flat" @click="saveAddServie" :disabled="!valid">
+                  Aceptar
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+      <!--EndAddServices-->
+      <v-dialog v-model="dialogBox" max-width="600px">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-2 ml-4">Actualizar Caja</span>
+          </v-toolbar>
+
+          <v-card-text>
+            <v-form v-model="valid" enctype="multipart/form-data">
+              <v-container>
+                <v-row>
+                  <v-col cols="12" md="4">
+                    <v-text-field v-model="editedBox.cashFound" clearable label="Fondo en Caja" prepend-icon="mdi-safe"
+                      variant="underlined" :rules="pago">
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="4">
+                    <v-text-field v-model="editedBox.existence" clearable label="Existencia"
+                      prepend-icon="mdi-check-circle" variant="underlined" :rules="pago" :disabled="true">
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="4">
+                    <v-text-field v-model="editedBox.extraction" clearable label="Extracción"
+                      prepend-icon="mdi-arrow-down-bold" variant="underlined" :rules="pago">
+                    </v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="#E7E9E9" variant="flat" @click="closeDialogBox">
+                  Cancelar
+                </v-btn>
+                <v-btn color="#F18254" variant="flat" @click="saveBox" :disabled="!valid">
+                  Aceptar
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+      <!--Clientes atendidos crros pagados-->
+      <v-dialog v-model="dialogDetallesCarPagado" fullscreen transition="dialog-bottom-transition">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <v-row>
+              <v-col cols="12" md="9">
+                <span class="text-subtitle-2 ml-4"> Clientes atendidos</span>
+              </v-col>
+            </v-row>
+          </v-toolbar>
+
+          <v-card-text class="mt-2 mb-2">
+            <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar" single-line
+        hide-details></v-text-field>
+
+
+      <v-data-table :headers="headers3" :items-per-page-text="'Elementos por páginas'" :items="filteredItemsPay" :search="search3"
         class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
 
         <template v-slot:item.professionalName="{ item }">
@@ -270,240 +685,20 @@
 
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-
-          <v-dialog v-model="dialogRequest" width="500">
-            <v-card>
-              <v-toolbar color="#F18254">
-                <span class="text-subtitle-2 ml-4"> Solicitud de Eliminación de producto / servicio</span>
-              </v-toolbar>
-
-              <v-card-text class="mt-2 mb-2">
-
-
-                <v-alert variant="outlined" type="warning" prominent border="top">
-                  Solicitud de eliminación en espera de aprobación
-                </v-alert>
-              </v-card-text>
-              <v-divider></v-divider>
-              <v-card-actions>
-
-                <v-btn color="default" @click="closeDeleteP">Cancelar</v-btn>
-                <v-btn color="warning" :loading="loading" @click="requestDelete">Aceptar</v-btn>
-                <v-spacer></v-spacer>
-              </v-card-actions>
-
-            </v-card>
-          </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="600px">
-            <v-card>
-              <v-toolbar color="red">
-                <span class="text-subtitle-2 ml-4"> Eliminar Carro</span>
-              </v-toolbar>
-
-              <v-card-text class="mt-2 mb-2"> ¿Desea eliminar el carro seleccionado?</v-card-text>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
-                  Cancelar
-                </v-btn>
-                <v-btn color="#F18254" variant="flat" @click="deleteItemConfirm">
-                  Aceptar
-                </v-btn>
-
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-
-          <v-dialog v-model="dialogPay" max-width="800px">
-            <v-card>
-              <v-toolbar color="#F18254">
-                <span class="text-subtitle-1  ml-2">Pagar Carro</span>
-                <v-spacer></v-spacer>
-                <span class="text-subtitle-1 mr-3">
-                  Monto a pagar {{ this.editedItem.amount }} </span>
-              </v-toolbar>
-
-              <v-card-text>
-                <v-form v-model="valid" enctype="multipart/form-data">
-                  <v-container>
-                    <v-row>
-                      <v-col cols="12" md="6">
-                        <v-text-field v-model="editedItem.cash" clearable label="Efectivo" prepend-icon="mdi-cash"
-                          variant="underlined" :rules="pago">
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="12" md="6">
-                        <v-text-field v-model="editedItem.creditCard" clearable label="Tarjeta de Crédito"
-                          prepend-icon="mdi-credit-card" variant="underlined" :rules="pago">
-                        </v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col cols="12" md="6">
-                        <v-text-field v-model="editedItem.debit" clearable label="Debito"
-                          prepend-icon="mdi-credit-card-outline" variant="underlined" :rules="pago">
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="12" md="6">
-                        <v-text-field v-model="editedItem.transfer" clearable label="Transferencia"
-                          prepend-icon="mdi-bank-transfer" variant="underlined" :rules="pago">
-                        </v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col cols="12" md="6">
-                        <v-text-field v-model="editedItem.other" clearable label="Otro Método" prepend-icon="mdi-check"
-                          variant="underlined" :rules="pago">
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="12" md="6">
-                        <v-text-field v-model="editedItem.tip" clearable label="Propina" prepend-icon="mdi-currency-usd"
-                          variant="underlined" :rules="pago">
-                        </v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col cols="12" md="4">
-                        <v-text-field v-model="editedItem.cardGif" clearable label="Tarjeta de Regalo"
-                          prepend-icon="mdi-gift" variant="underlined" :rules="pago">
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="12" md="4">
-                        <v-text-field v-if="mostrarCode" clearable v-model="editedCard.cardGiftUser_id" label="Código"
-                          prepend-icon="mdi-code" variant="underlined" @input="onCardGiftSelected"></v-text-field>
-
-                        <!--<v-autocomplete v-if="mostrarCode" clearable v-model="editedCard.cardGift_id"
-                       :items="filteredCardGifts" label="Código" prepend-icon="mdi-code" item-title="code"
-                       item-value="id" variant="underlined" :rules="selectRules"
-                       @update:model-value="cardGifts"></v-autocomplete>-->
-                      </v-col>
-                      <v-col cols="12" md="4">
-                        <v-text-field v-if="mostrarOtroCampo" v-model="editedCard.value" clearable label="Valor"
-                          prepend-icon="mdi-currency-usd" variant="underlined" :disabled="true">
-                        </v-text-field>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                  <v-divider></v-divider>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="#E7E9E9" variant="flat" @click="closeDialogPay">
-                      Cancelar
-                    </v-btn>
-                    <v-btn color="#F18254" variant="flat" @click="savePay" :disabled="!valid">
-                      Aceptar
-                    </v-btn>
-                  </v-card-actions>
-                </v-form>
-              </v-card-text>
-            </v-card>
-          </v-dialog>
-
-          <v-dialog v-model="dialogDetallesCar" fullscreen transition="dialog-bottom-transition">
-            <v-card>
-              <v-toolbar color="#F18254">
-                <span class="text-subtitle-2 ml-4"> Detalles del Carro</span>
-              </v-toolbar>
-
-              <v-card-text class="mt-2 mb-2">
-                <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
-                  hide-details></v-text-field>
-
-                <v-data-table :headers="headers2" :items="orders" :search="search2" class="elevation-1"
-                  :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
-                  no-data-text="No hay datos disponibles">
-
-                  <template v-slot:item.image="{ item }">
-
-                    <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                      <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image" alt="image"></v-img>
-                    </v-avatar>
-
-                  </template>
-
-                  <template v-slot:item.actions="{ item }">
-                    <v-icon v-if="(item.request_delete)" :disabled="!(item.pay)" size="25" color="blue"
-                      @click="deleteOrder(item)">
-                      mdi-check
-                    </v-icon>
-                    <v-icon v-if="(item.request_delete)" :disabled="item.request_delete" size="25" color="red"
-                      @click="requestCancel(item)">
-                      mdi-cancel
-                    </v-icon>
-                  </template>
-
-                </v-data-table>
-              </v-card-text>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
-                  Volver
-                </v-btn>
-
-                <v-btn color="#F18254" variant="flat" :disabled="this.car_ref.pay" @click="payItem(this.car_ref)">
-                  Marcar como Pagado
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <v-dialog v-model="dialogBox" max-width="600px">
-            <v-card>
-              <v-toolbar color="#F18254">
-                <span class="text-subtitle-2 ml-4">Actualizar Caja</span>
-              </v-toolbar>
-
-              <v-card-text>
-                <v-form v-model="valid" enctype="multipart/form-data">
-                  <v-container>
-                    <v-row>
-                      <v-col cols="12" md="4">
-                        <v-text-field v-model="editedBox.cashFound" clearable label="Fondo en Caja"
-                          prepend-icon="mdi-safe" variant="underlined" :rules="pago">
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="12" md="4">
-                        <v-text-field v-model="editedBox.existence" clearable label="Existencia"
-                          prepend-icon="mdi-check-circle" variant="underlined" :rules="pago" :disabled="true">
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="12" md="4">
-                        <v-text-field v-model="editedBox.extraction" clearable label="Extracción"
-                          prepend-icon="mdi-arrow-down-bold" variant="underlined" :rules="pago">
-                        </v-text-field>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                  <v-divider></v-divider>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="#E7E9E9" variant="flat" @click="closeDialogBox">
-                      Cancelar
-                    </v-btn>
-                    <v-btn color="#F18254" variant="flat" @click="saveBox" :disabled="!valid">
-                      Aceptar
-                    </v-btn>
-                  </v-card-actions>
-                </v-form>
-              </v-card-text>
-            </v-card>
-          </v-dialog>
         </template>
 
-        <template v-slot:item.actions="{ item }">
-          <v-icon size="35" class="pr-3" title="Mostrar Detalles Carro" color="primary" @click="showDetails(item)">
-            mdi-eye
-          </v-icon>
-          <v-icon :disabled="item.pay === 1" title="Pagar Carro" size="35" color="green" @click="payItem(item)">
-            mdi-credit-card
-          </v-icon>
-          <v-icon size="35" title="Eliminar Carro" color="red" @click="deleteItem(item)">
-            mdi-delete
-          </v-icon>
-        </template>
-      </v-data-table>
-
+            </v-data-table>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
+              Volver
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!--End clientes atendidos-->
 
     </v-card-text>
 
@@ -529,8 +724,10 @@ export default {
     sb_timeout: 2000,
     sb_title: '',
     sb_icon: '',
+    dialogDetallesCarPagado: false,
     search: '',
     search2: '',
+    search3: '',
     dialog: false,
     dialogDetallesCar: false,
     dialogRequest: false,
@@ -538,11 +735,14 @@ export default {
     dialogPay: false,
     dialogBox: false,
     loading: false,
-    branch_id:'',
+    branch_id: '',
     charge_id: '',
     business_id: '',
     nameBranch: '',
+    nameProfessional: '',
+    professional_id: '',
     results: [],
+    resultsPagado: [],
     orders: [],
     box: [],
     branches: '',
@@ -551,7 +751,16 @@ export default {
     mostrarOtroCampo: false,
     ejecutado: false,
     closed_box: true,
-
+    showAddServices: false,
+    services: [],
+    branch_service_professional_id: '',
+    showAddProducts: false,
+    products: [],
+    product_exit:'',
+    cant: '',
+    product_store_id: '',
+    intervalId: null,
+    
     headers: [
       { title: 'No', value: 'id' },
       { title: 'Profesional', value: 'professionalName' },
@@ -561,8 +770,19 @@ export default {
       { title: 'Servicios', value: 'service' },
       { title: 'Propina', value: 'tip' },
       { title: 'Monto Total', value: 'amount' },
-      { title: 'Estado', value: 'pay' },
+      { title: 'Estado', value: 'state' },
       { title: 'Acciones', key: 'actions', sortable: false },
+    ],
+    headers3: [
+      { title: 'No', value: 'id' },
+      { title: 'Profesional', value: 'professionalName' },
+      { title: 'Cliente', value: 'clientName' },
+      { title: 'Técnico', value: 'technical_assistance' },
+      { title: 'Productos', value: 'product' },
+      { title: 'Servicios', value: 'service' },
+      { title: 'Propina', value: 'tip' },
+      { title: 'Monto Total', value: 'amount' },
+      { title: 'Estado', value: 'pay' },
     ],
 
     headers2: [
@@ -570,8 +790,8 @@ export default {
       { title: 'Imagen', value: 'image' },
       { title: 'Nombre', value: 'name' },
       { title: 'Categoría', value: 'category' },
-      { title: 'Precio', value: 'price' },
-      // { title: 'Solicitud de Eliminar', key: 'actions', sortable: false },
+      { title: 'Importe', value: 'price' },
+      { title: 'Acciones', key: 'actions', sortable: false },
     ],
     editedIndex: -1,
 
@@ -585,6 +805,7 @@ export default {
       creditCard: '',
       debit: '',
       transfer: '',
+      professional_id: '',
       other: '',
       amount: '',
       cardGif: ''
@@ -646,6 +867,7 @@ export default {
       creditCard: '',
       debit: '',
       transfer: '',
+      professional_id: '',
       other: '',
       amount: '',
       cardGif: ''
@@ -654,13 +876,30 @@ export default {
     pago: [
       //(value) => !!value || 'Campo requerido',
       (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
+      pago1: [
+      (value) => !!value || 'Campo requerido',
+      (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
     selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
   }),
 
   computed: {
+    filteredItems() {
+      return this.results.filter(item => item.pay !== 1);
+    },
+    filteredItemsPay() {
+      return this.results.filter(item => item.pay == 1);
+    },
     formTitle() {
       return 'Cierre de Caja'
     },
+    validateCantidadCard(value) {
+      if (this.editedCard.value){
+      return value <= this.editedItem.value || "La cantidad debe ser menor o igual que la existencia (" + this.editedItem.value + ")";
+    }
+    else{
+      return true;
+    }
+  },
     rulesCampo1() {
 
       if (this.editedCard.value) {
@@ -677,7 +916,11 @@ export default {
   },
 
   watch: {
-
+    'editedCard.value': function(newVal) {
+      if (newVal !== '') {
+        this.customValidation(); // Llamar a la validación solo cuando editedCard.value tenga un valor
+      }
+    },
     dialog(val) {
       val || this.close()
     },
@@ -692,8 +935,16 @@ export default {
       } else {
         // Oculta los campos adicionales si el valor está vacío
         this.mostrarCode = false;
+        this.editedCard.value = 0;
+        this.editedCard.cardGiftUser_id = '';
       }
     },
+    'editedCard.cardGiftUser_id'(newValue, oldValue) {
+      // Llama a la función cuando cambia el valor de cardGiftUser_id
+      if(newValue){
+      this.onCardGiftSelected(newValue);
+      }
+    }
   },
 
   mounted() {
@@ -702,7 +953,9 @@ export default {
     this.business_id = LocalStorageService.getItem('business_id');
     this.charge_id = LocalStorageService.getItem('charge_id');
     this.branch_id = LocalStorageService.getItem('branch_id');
+    this.professional_id = LocalStorageService.getItem('professional_id');
     this.nameBranch = LocalStorageService.getItem('nameBranch');
+    this.nameProfessional = JSON.parse(LocalStorageService.getItem("name"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
       .get('http://127.0.0.1:8000/api/show-business', {
@@ -712,35 +965,90 @@ export default {
       })
       .then((response) => {
         this.branches = response.data.branches;
-        this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-        this.nameBranch = !this.nameBranch ? this.nameBranch : this.branches[0].name;
+      }).finally(() => {
+        if (this.charge === 'Administrador') {
+          this.branch_id = this.branches[0].id;
+          this.mostrarFila = true;
+        }
+        this.initialize();
+          });
 
-        this.initialize()
-      });
-    if (this.charge === 'Administrador') {
-      // Mostrar la fila con Autocomplete
-      this.mostrarFila = true;
-    }
-    console.log(this.charge_id);
-    this.initialize()
+          //this.intervalId = setInterval(this.initialize, 60000);
+          this.intervalId = setInterval(() => {
+            axios
+        .get('http://127.0.0.1:8000/api/branch-cars', {
+          params: {
+            branch_id: this.branch_id
+          }
+        })
+        .then((response) => {          
+            this.results = response.data.cars;
+        });
+    }, 60000);
+  },
+  beforeUnmount() {
+    // Detener el intervalo cuando el componente se esté destruyendo para evitar fugas de memoria
+    clearInterval(this.intervalId);
   },
 
   methods: {
+    customValidation() {
+      if (this.editedCard.value !== '' && parseInt(this.editedItem.cardGif) > parseInt(this.editedCard.value)) {
+        return 'El valor de la tarjeta de regalo no puede ser mayor que ' + this.editedCard.value;
+      }
+      return true;
+    },
+    getColor(state) {
+    switch (state) {
+      case 1:
+        return 'red';
+      case 2:
+        return 'blue';
+      case 3:
+        return 'yellow';
+      default:
+        return 'grey';
+    }
+  },
+  getText(state) {
+    switch (state) {
+      case 1:
+        return 'Por Pagar';
+      case 2:
+        return 'Atendiéndose';
+      case 3:
+        return 'En Cola';
+      default:
+        return 'Desconocido';
+    }
+  },
+    formatNumber(value) {
+            return value.toLocaleString('es-ES');
+        },
     onCardGiftSelected(code) {
       // Realiza cualquier lógica adicional aquí
-      console.log('Elemento seleccionado:', code.data);
+      console.log('Elemento seleccionado:', code);
       axios
         .get('http://127.0.0.1:8000/api/card-gift-user-show-value', {
           params: {
-            code: code.data
+            code: code
           }
         })
         .then((response) => {
           this.editedCard.value = response.data
           console.log('Elemento seleccionado:', this.editedCard.value);
-        });
+        }).finally(() => {
+                if (this.editedCard.value) {
+                  this.mostrarOtroCampo = true;
+                }
+                else{
+                  this.editedCard.value = 0;
+                  this.editedItem.cardGif = '';
+                  this.mostrarOtroCampo = false;
+                }
+          });
       // Muestra otro campo y asigna un valor
-      this.mostrarOtroCampo = true;
+      
       //this.otroCampoValor = item.valor;  // Asigna el valor que desees
     },
 
@@ -754,27 +1062,46 @@ export default {
       axios
         .put('http://127.0.0.1:8000/api/car', request)
         .then(() => {
+        }).finally(() => {
           this.initialize();
-          this.showAlert("success", "Carro pagado correctamente", 3000)
-        })
+          this.showAlert("success", "Carro pagado correctamente", 3000);
+          });
     },
     deleteOrder(item) {
-      this.dialogRequest = true
-      this.editedItem.order_id = item.id
+      //this.dialogRequest = true
+      //this.editedItem.order_id = item.id
+      let request = {
+        id: item.id,
+        nameProfessional: this.nameProfessional,
+        branch_id: this.branch_id,
+        professional_id: this.professional_id
+      };
+      axios
+        .post('http://127.0.0.1:8000/api/order-destroy-solicitud', request)
+        .then(() => {
+          //this.initialize();
+        }).finally(() => {
+          this.showDetails(this.car_ref);
+          this.showAlert("success", "Solicitud de eliminación de orden hecha correctamente", 3000);
+          });
     },
 
     requestDelete() {
       this.loading = true
       let request = {
-        id: this.editedItem.order_id
+        id: this.editedItem.order_id,
+        nameProfessional: this.nameProfessional,
+        branch_id: this.branch_id,
+        professional_id: this.professional_id
       };
       axios
-        .post('http://127.0.0.1:8000/api/order-destroy', request)
+        .post('http://127.0.0.1:8000/api/order-destroy-web', request)
         .then(() => {
-          this.initialize();
-          this.showDetails(this.car_ref)
-          this.showAlert("success", "Orden eliminada correctamente", 3000)
-        })
+          //this.initialize();
+        }).finally(() => {
+          this.showDetails(this.car_ref);
+          this.showAlert("success", "Orden eliminada correctamente", 3000);
+          });
       this.dialogRequest = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
@@ -786,15 +1113,18 @@ export default {
       this.loading = true
       let request = {
         id: item.id,
-        request_delete: 0
+        request_delete: 0,
+        nameProfessional: this.nameProfessional,
+        branch_id: this.branch_id,
       };
       axios
-        .put('http://127.0.0.1:8000/api/order', request)
+        .put('http://127.0.0.1:8000/api/order-web', request)
         .then(() => {
-          this.initialize();
+        }).finally(() => {          
+          this.showAlert("success", "Orden denegada para ser eliminada correctamente", 3000);
+          //this.initialize();
           this.showDetails(this.car_ref)
-          this.showAlert("success", "Orden denegada para ser eliminada correctamente", 3000)
-        })
+          });
       this.dialogRequest = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
@@ -802,6 +1132,15 @@ export default {
       })
     },
     openDialogBox() {
+      axios
+        .get('http://127.0.0.1:8000/api/box-show', {
+          params: {
+            branch_id: this.branch_id
+          }
+        })
+        .then((response) => {
+          this.box = response.data.box;
+        });
       this.dialogBox = true;
       this.editedBox.id = this.box.id;
       this.editedBox.cashFound = '';
@@ -818,8 +1157,8 @@ export default {
       console.log("boxxxxxx");
       console.log(this.results.id);
       //if (!this.results) {    
-      this.editedCloseBox.totalMount = this.results.reduce((total, item) => total + item.amount, 0);
-      return this.results.reduce((total, item) => total + item.amount, 0) + " CLP";
+      this.editedCloseBox.totalMount = this.results.reduce((total, item) => total + item.amount + item.technical_assistance*5000, 0);
+      return this.formatNumber(this.results.reduce((total, item) => total + item.amount, 0)) + " CLP";
       //}
       //else{
       //return "CPL";
@@ -844,7 +1183,7 @@ export default {
         this.closed_box = true;
         this.ejecutado = false;
       }
-      return montosPendientes + " CLP";
+      return this.formatNumber(montosPendientes) + " CLP";
       //}
     },
 
@@ -934,7 +1273,7 @@ export default {
 
       const temp = this.box.reduce((total, item) => total + item.existence, 0);
       console.log(temp);
-      return temp ? temp + "CPL" : " CPL";
+      return temp ? this.formatNumber(temp) + "CPL" : " CPL";
       //return this.results.amount + " CLP";
     },
 
@@ -949,7 +1288,7 @@ export default {
         .filter(item => item.pay === 1)
         .reduce((total, item) => total + item.amount, 0);
 
-      return montosPagados ? montosPagados + " CLP" : " CPL";
+      return montosPagados ? this.formatNumber(montosPagados) + " CLP" : " CPL";
       //}
     },
 
@@ -984,34 +1323,9 @@ export default {
             branch_id: this.branch_id
           }
         })
-        .then((response) => {
-          if (response.data.cars === null) {
-            this.results = [];
-          } else {
+        .then((response) => {          
             this.results = response.data.cars;
-          }
-          console.log('imprime sucursales');
-          console.log(this.results);
         });
-
-      axios
-        .get('http://127.0.0.1:8000/api/box-show', {
-          params: {
-            branch_id: this.branch_id
-          }
-        })
-        .then((response) => {
-          this.box = response.data.box;
-        });
-      /*axios
-        .get('http://127.0.0.1:8000/api/show-business', {
-          params: {
-            business_id: this.business_id
-          }
-        })
-        .then((response) => {
-          this.branches = response.data.branches;
-        });*/
     },
     editItem(item) {
       this.editedIndex = 1;
@@ -1024,6 +1338,23 @@ export default {
       this.editedItem.id = item.id;
       this.dialogDelete = true;
     },
+    deleteItemSolicitud(item) {
+      this.editedItem.id = item.id;
+      let request = {
+        id: this.editedItem.id,
+        nameProfessional: this.nameProfessional,
+        branch_id: this.branch_id,
+        professional_id: this.professional_id
+      };
+      axios
+        .post('http://127.0.0.1:8000/api/car-destroy-solicitud', request)
+        .then(() => {
+        }).finally(() => {
+          this.initialize();
+          this.showAlert("success", "Solicitud de eliminacion hecha correctamente", 3000)
+          });
+    },
+
     payItem(item) {
       console.log(item);
       this.car_ref = item;
@@ -1074,14 +1405,16 @@ export default {
     },
     deleteItemConfirm() {
       let request = {
-        id: this.editedItem.id
+        id: this.editedItem.id,
+        nameProfessional: this.nameProfessional,
+        branch_id: this.branch_id
       };
       axios
         .post('http://127.0.0.1:8000/api/car-destroy', request)
         .then(() => {
-          this.initialize();
+        }).finally(() => {
           this.showAlert("success", "Carro eliminado correctamente", 3000)
-        })
+          });
       this.dialogDelete = false;
     },
     savePay() {
@@ -1095,7 +1428,8 @@ export default {
         this.data.cardGift = parseFloat(this.editedItem.cardGif) || 0;  // Fix typo here
         this.data.tip = parseFloat(this.editedItem.tip) || 0;
         this.data.code = this.editedCard.cardGiftUser_id || 0;  // Fix typo here
-
+        this.data.nameProfessional = this.nameProfessional;
+        this.data.branch_id = this.branch_id;
         const suma = this.data.cash + this.data.creditCard + this.data.debit + this.data.transfer + this.data.other + this.data.cardGift + this.data.tip;
 
         console.log(suma);
@@ -1105,20 +1439,21 @@ export default {
           axios
             .put('http://127.0.0.1:8000/api/payment', this.data)
             .then(() => {
+              }).finally(() => {
               this.showAlert("success", "Pago efectuado correctamente", 3000);
               this.initialize();
               this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem);
                 this.editedCard = Object.assign({}, this.defaultCard);
                 this.mostrarOtroCampo = false;
-              });
+                });
             });
           this.dialogPay = false;
           this.dialogDetallesCar = false;
           this.valid = true;
         }
         else {
-          this.showAlert("warning", "Monto debe coincidir con el monto total" + suma, 3000);
+          this.showAlert("warning", "Monto debe coincidir con el monto total " + (this.editedItem.amount + this.data.tip), 3000);
         }
         if (this.editedItem.cash || this.editedItem.creditCard || this.editedItem.debit || this.editedItem.transfer || this.editedItem.other || this.editedItem.cardGif || this.editedItem.tip) {
           this.valid = true;
@@ -1138,19 +1473,21 @@ export default {
       this.data.totalProduct = this.editedCloseBox.totalProduct;
       this.data.totalMount = this.editedCloseBox.totalMount;
       this.data.totalCardGif = this.editedCloseBox.totalCardGif;
+      this.data.branch_id = this.branch_id;
+      this.data.nameProfessional = this.nameProfessional;
       console.log(this.data);
       axios
         .post('http://127.0.0.1:8000/api/closebox', this.data)
         .then(() => {
+        }).finally(() => {
           this.showAlert("success", "Cierre de caja efectuado correctamente", 3000);
           this.initialize();
-
-          this.ejecutado = true;
-        });
+          });
       this.$nextTick(() => {
         this.editedCloseBox = Object.assign({}, this.defaultCloseBox)
 
       });
+          this.ejecutado = true;
       this.dialog = false;
     },
     saveBox() {
@@ -1159,9 +1496,11 @@ export default {
         this.data.cashFound = this.editedBox.cashFound;
         this.data.existence = this.editedBox.existence;
         this.data.extraction = this.editedBox.extraction;
+        this.data.nameProfessional = this.nameProfessional;
         axios
           .put('http://127.0.0.1:8000/api/box', this.data)
           .then(() => {
+          }).finally(() => {
             this.showAlert("success", "Caja Actualizada correctamente", 3000);
             this.initialize();
           });
@@ -1180,7 +1519,9 @@ export default {
       })
     },
     closeDelete() {
+      this.initialize();
       this.dialogDetallesCar = false;
+      this.dialogDetallesCarPagado = false;
       this.dialogDelete = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
@@ -1211,6 +1552,120 @@ export default {
         this.editedIndex = -1
       })
     },
+
+    //addServices
+    showService(car) {
+      console.log('imprime Carro');
+      console.log(car);
+
+      axios
+        .get('http://127.0.0.1:8000/api/services-professional-branch-web', {
+          params: {
+            branch_id: this.branch_id,
+            professional_id: car.professional_id
+          }
+        })
+        .then((response) => {
+          this.services = response.data.branchServicesPro;
+        });
+      this.showAddServices = true;
+
+      console.log(car);
+    },
+    closeAddService() {
+      this.showAddServices = false;
+      this.branch_service_professional_id = '';
+    },
+    saveAddServie() {
+      this.data.car_id = this.car_ref.id;
+      this.data.service_id = this.branch_service_professional_id;
+      this.data.product_id = 0;
+      this.data.type = 'service';
+      this.data.nameProfessional = this.nameProfessional;
+      this.data.branch_id = this.branch_id;
+      this.data.cant = 1;
+      console.log('Datos servicios agregar');
+      console.log(this.data);
+      axios
+        .post('http://127.0.0.1:8000/api/order-web', this.data)
+        .then(() => {
+        }).finally(() => {
+          this.showAlert("success", "Servicio agregado correctamente", 3000);
+          //this.initialize();
+          this.showDetails(this.car_ref);
+          this.showAddServices = false;
+          this.branch_service_professional_id = '';
+          this.cant = '';
+          });
+    },
+    //endAddService
+    //addProduct
+    validateCantidad(value) {
+      if (value == 0) {
+    return "El valor no puede ser nulo";
+  } else if (value <= this.product_exit) {
+    return true; // La cantidad es válida
+  } else {
+    return "La cantidad debe ser menor o igual que la existencia (" + this.product_exit + ")";
+  }
+    },
+    cantExist() {
+      console.log('this.product_store_id');
+      console.log(this.product_store_id);
+      let exist = this.products.filter(item => item.id == this.product_store_id);
+      console.log('exist[0]');
+      console.log(exist[0]);
+      this.product_exit = exist[0].product_exit;
+
+      console.log(exist[0].product_exit);
+    },
+    showProduct(car) {
+      console.log('imprime Carro');
+      console.log(car);
+
+      axios
+        .get('http://127.0.0.1:8000/api/productstore-show-web', {
+          params: {
+            branch_id: this.branch_id
+          }
+        })
+        .then((response) => {
+          this.products = response.data.products;
+
+          console.log('imprime Productos');
+          console.log(this.products);
+        });
+      this.showAddProducts = true;
+
+      console.log(car);
+    },
+    closeAddProduct() {
+      this.showAddProducts = false;
+      this.product_store_id = '';
+    },
+    saveAddProduct() {
+      this.data.car_id = this.car_ref.id;
+      this.data.service_id = 0;
+      this.data.product_id = this.product_store_id;
+      this.data.type = 'product';
+      this.data.nameProfessional = this.nameProfessional;
+      this.data.branch_id = this.branch_id;
+      this.data.cant = this.cant;
+      console.log('Datos producto agregar');
+      console.log(this.data);
+      axios
+        .post('http://127.0.0.1:8000/api/order-web', this.data)
+        .then(() => {
+        }).finally(() => {
+          this.showAlert("success", "Producto agregado correctamente", 3000);
+          //this.initialize();
+          this.showDetails(this.car_ref);
+          this.showAddProducts = false;
+          this.product_store_id = '';
+          this.cant = '';
+          });
+    },
+    //endAddProduct
   },
 }
 </script>

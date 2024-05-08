@@ -18,11 +18,10 @@
   <v-card elevation="6" class="mx-5">
     <v-toolbar color="#F18254">
       <v-row align="center">
-        <v-col cols="12" md="4" class="grow ml-4 t">
+        <v-col cols="12" md="8" class="grow ml-2">
           <span class="text-subtitle-1"> <strong>Reglas de Convivencia </strong></span>
         </v-col>
-         <v-col cols="12" md="5" class="mr-12"></v-col>
-        <v-col cols="12" md="2">
+        <v-col cols="12" md="3" class="text-right">
 
           <v-dialog v-model="dialog" max-width="800px">
             <template v-slot:activator="{ props }">
@@ -115,22 +114,18 @@
         
         <template v-slot:item.automatic="{ item }">
           <div class="d-flex justify-content-center">
-            <v-chip :color="item.automatic ? 'green' : 'red'" :text="item.automatic ? 'Si ' : 'No'"
+            <v-chip :color="item.automatic === '1' ? 'green' : 'red'" :text="item.automatic=== '1' ? 'Si ' : 'No'"
               class="text-uppercase" size="small" label></v-chip>
           </div>
         </template>
         <template v-slot:item.actions="{ item }">
-          <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
-            mdi-pencil
-          </v-icon>
-          <!--<v-icon size="25" color="green" @click="showPermission(item)">
-            mdi-storefront-outline
-          </v-icon>-->
-          <v-icon size="25" :color="item.automatic === 1 ? 'grey' : 'red'"
-        @click="item.automatic !== 1 && deleteItem(item)">
-  mdi-delete
-</v-icon>
+        <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar Regla de convivencia"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="item.automatic !== '1' && deleteItem(item)" :color="item.automatic === '1' ? 'grey' : 'red'" variant="tonal"
+            elevation="1" title="Eliminar Regla de convivencia"></v-btn>
         </template>
+        
+       
       </v-data-table>
     </v-card-text>
   </v-card>
@@ -154,10 +149,10 @@ export default {
 
     headers: [
 
-      { title: 'Regla de convivencia', key: 'name' },
+      { title: 'Regla de convivencia', key: 'name'},
       { title: 'Tipo de Regla de convivencia', key: 'type' },
       { title: 'Automática', key: 'automatic' },    
-      { title: 'Descripción', key: 'description' }, 
+      { title: 'Descripción', key: 'description', width: '300px' }, 
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
     results: [],
@@ -195,7 +190,7 @@ export default {
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? 'Nueva Regla convivencia' : 'Editar Regla convivencia'
+      return this.editedIndex === -1 ? 'Nueva Regla de convivencia' : 'Editar Regla de convivencia'
     },
   },
 
@@ -208,7 +203,7 @@ export default {
     },
   },
 
-  created() {
+  mounted() {
     this.initialize()
   },
 
@@ -241,13 +236,15 @@ export default {
       axios
         .get('http://127.0.0.1:8000/api/rule')
         .then((response) => {
-          console.log("entra a Buscar almacenes")
+          console.log("entra a Buscar las reglas")
           this.results = response.data.rules;
+          console.log(this.results);
         })
     },
     editItem(item) {
       this.editedIndex = 1;
-      this.editedItem = Object.assign({}, item)
+      this.editedItem = Object.assign({}, item);
+      this.editedItem.automatic = parseInt(item.automatic);
       this.dialog = true
     },
     deleteItem(item) {
@@ -321,3 +318,10 @@ export default {
   },
 }
 </script>
+<style>
+.description-cell {
+    max-width: 300px; /* Define el ancho máximo del campo de descripción */
+    overflow: hidden; /* Oculta el texto que se desborda del campo de descripción */
+    text-overflow: ellipsis; /* Muestra puntos suspensivos (...) cuando el texto se recorta */
+}
+</style>

@@ -12,9 +12,9 @@
           <v-sheet border>
             <v-row>
 
-              <v-col cols="12" md="6" class="mt-2">
-                <v-text-field :disabled="verificate" v-model="email_client2" :rules="emailRules"
-                  label="Correo Electrónico" outlined required></v-text-field>
+              <v-col cols="12" md="4" class="mt-2">
+                <v-text-field :disabled="verificate" v-model="email_client2"
+                  label="Usuario" outlined :rules="nameRules"></v-text-field> <!---->
               </v-col>
 
 
@@ -29,7 +29,7 @@
                 <!-- BOTONES -->
             <v-row class="mt-1">
               <v-spacer></v-spacer>
-              <v-btn size="x-large" :disabled="!validarEmail()" @click="nextStep">Siguiente</v-btn>            
+              <v-btn size="x-large" :disabled="!validarEmail()" @click="nextStep">Siguiente</v-btn>   <!---->         
             </v-row>
             
           </v-container>
@@ -314,7 +314,7 @@ export default {
   },
     validarEmail() {
       // Comprueba si todas las reglas de validación se cumplen
-      return this.emailRules.every(rule => rule(this.email_client2 || '') === true);
+      return this.nameRules.every(rule => rule(this.email_client2 || '') === true);
     },
     nextStep() {
     
@@ -455,7 +455,7 @@ prevStep() {
 
       const newArrayPlaces = this.array_Places.map(item => parseInt(item));
       console.log(newArrayPlaces[0]);
-      if (this.tipoProfessional === 'tecnico')//es tecnico
+      if (this.tipoProfessional === 'Tecnico')//es tecnico
       {
 
         this.getProfesional = {
@@ -694,10 +694,13 @@ prevStep() {
       //simulando q devuelve un tecnico puestoTId2= 1
 
       if (puestoTId2 === 1) {//es tecnico
-        this.tipoProfessional = 'tecnico';
+        this.tipoProfessional = 'Tecnico';
         this.chargepuestoTs();
       } else if (puestoTId2 === 2) {//es barbero
-        this.tipoProfessional = 'barbero';
+        this.tipoProfessional = 'Barbero';
+        this.chargepuestoTs();
+      }else if (puestoTId2 === 3) {//es barbero
+        this.tipoProfessional = 'Barbero y Encargado';
         this.chargepuestoTs();
       }
       else {
@@ -735,10 +738,10 @@ prevStep() {
     chargepuestoTs() {
 
       let url = ``;
-      if (this.tipoProfessional == 'tecnico') {
+      if (this.tipoProfessional == 'Tecnico') {
         url = `http://127.0.0.1:8000/api/branch_workplaces_select?branch_id=${this.branch_id}`;
       }
-      else if (this.tipoProfessional == 'barbero') {
+      else if (this.tipoProfessional == 'Barbero' || this.tipoProfessional == 'Barbero y Encargado') {
         url = `http://127.0.0.1:8000/api/branch_workplaces_busy?branch_id=${this.branch_id}`;
       }
 

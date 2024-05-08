@@ -21,7 +21,7 @@
         <v-col cols="12" md="4" class="grow ml-4">
           <span class="text-subtitle-1"> <strong>Listados Almacenes</strong></span>
         </v-col>
-         <v-col cols="12" md="5"></v-col>
+        <v-col cols="12" md="5"></v-col>
         <v-col cols="12" md="2">
 
           <v-dialog v-model="dialog" max-width="900px">
@@ -32,22 +32,22 @@
               </v-btn>
             </template>
             <v-card>
-                <v-toolbar color="#F18254">
-                  <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
-                </v-toolbar>
-                <v-card-text>                  
-              <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+              <v-toolbar color="#F18254">
+                <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
+              </v-toolbar>
+              <v-card-text>
+                <v-form ref="form" v-model="valid" enctype="multipart/form-data">
                   <v-container>
                     <v-row>
-                      <v-col cols="12"   md="6">
+                      <v-col cols="12" md="6">
                         <v-text-field v-model="editedItem.reference" clearable label="Referencia"
                           prepend-icon="mdi-pound-box-outline" variant="underlined" :rules="requiredRules">
                         </v-text-field>
                       </v-col>
 
                       <v-col cols="12" md="6">
-                        <v-text-field v-model="editedItem.address" clearable label="Dirección"
-                          prepend-icon="mdi-map" variant="underlined" :rules="dirRules">
+                        <v-text-field v-model="editedItem.address" clearable label="Dirección" prepend-icon="mdi-map"
+                          variant="underlined" :rules="dirRules">
                         </v-text-field>
                       </v-col>
 
@@ -59,17 +59,17 @@
 
                     </v-row>
                   </v-container>
-                <v-divider></v-divider>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="#E7E9E9" variant="flat" @click="close">
-                    Cancelar
-                  </v-btn>
-                  <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
-                    Aceptar
-                  </v-btn>
-                </v-card-actions> 
-              </v-form>               
+                  <v-divider></v-divider>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="#E7E9E9" variant="flat" @click="close">
+                      Cancelar
+                    </v-btn>
+                    <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
+                      Aceptar
+                    </v-btn>
+                  </v-card-actions>
+                </v-form>
               </v-card-text>
             </v-card>
           </v-dialog>
@@ -98,18 +98,21 @@
       </v-row>
     </v-toolbar>
     <v-card-text>
-      <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
-                hide-details>
-            </v-text-field>
-      <v-data-table :headers="headers" :search="search" :items-per-page-text="'Elementos por páginas'" :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
-        no-results-text="No hay datos disponibles">
+      <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details>
+      </v-text-field>
+      <v-data-table :headers="headers" :search="search" :items-per-page-text="'Elementos por páginas'" :items="results"
+        class="elevation-1" no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles">
         <template v-slot:item.actions="{ item }">
-          <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
+          <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
             mdi-pencil
           </v-icon>
           <v-icon size="25" color="red" @click="deleteItem(item)">
             mdi-delete
-          </v-icon>
+          </v-icon>-->
+          <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar Almacén"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar Alamcén"></v-btn>
         </template>
       </v-data-table>
     </v-card-text>
@@ -128,7 +131,7 @@ export default {
     sb_timeout: 2000,
     sb_title: '',
     sb_icon: '',
-    search:'',
+    search: '',
     dialog: false,
     dialogDelete: false,
 
@@ -157,19 +160,19 @@ export default {
       description: ''
     },
     dirRules: [
-        (v) => !!v || "El campo es requerido",
-        (v) => (v && v.length <= 250) ||
-          "El campo debe tener menos de 251 caracteres",
-          (v) => (v && v.length >= 3) ||
-          "El campo debe tener al menos de 3 caracteres",
-      ],
+      (v) => !!v || "El campo es requerido",
+      (v) => (v && v.length <= 250) ||
+        "El campo debe tener menos de 251 caracteres",
+      (v) => (v && v.length >= 3) ||
+        "El campo debe tener al menos de 3 caracteres",
+    ],
     nameRules: [
       (v) => !!v || "El Nombre es requerido",
       (v) =>
         (v && v.length <= 251) ||
         "El Nombre debe tener menos de 251 caracteres",
       (v) => /^[a-zA-ZáÁéÉíÍóÓúÚñÑ\s']+$/.test(v) || "El Nombre no es válido",],
-      requiredRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
+    requiredRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
   }),
 
   computed: {
@@ -187,7 +190,7 @@ export default {
     },
   },
 
-  created() {
+  mounted() {
     this.initialize()
   },
 

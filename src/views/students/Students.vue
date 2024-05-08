@@ -17,16 +17,15 @@
 <v-card elevation="6" class="mx-5">
 <v-toolbar color="#F18254">
  <v-row align="center">
-   <v-col cols="12" md="4" class="grow ml-4">
-     <span class="text-subtitle-1"> <strong>Listado de Estudiantes</strong></span>
+   <v-col cols="12" md="8" class="grow ml-4">
+     <span class="text-subtitle-1 "> <strong>Listado de Estudiantes</strong></span>
    </v-col>
-   <v-col cols="12" md="4" class="mr-12"></v-col>
-   <v-col cols="12" md="3" class="pl-12 ">
+   <v-col cols="12" md="3">
      
      <v-dialog v-model="dialog" max-width="1000px">
        <template v-slot:activator="{ props }">
 
-         <v-btn v-bind="props" class="text-subtitle-1  ml-12  " color="#E7E9E9" variant="flat" elevation="2"
+         <v-btn v-bind="props" class="text-subtitle-1 ml-12" color="#E7E9E9" variant="flat" elevation="2"
            prepend-icon="mdi-plus-circle">
            Agregar Estudiante
          </v-btn>
@@ -75,7 +74,9 @@
                </v-file-input>
              </v-col>
              <v-col cols="12" md="6">
-               <img v-if="imagenDisponible()" :src="imgedit" height="70" width="70">
+              <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
+                        <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
+                      </v-card>
              </v-col>
            </v-row>
          <v-divider></v-divider>
@@ -123,7 +124,10 @@
 
 
 <v-card-text>
- <v-data-table :headers="headers"  :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
+  <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar"
+                                single-line hide-details>
+                            </v-text-field>
+ <v-data-table :headers="headers"  :items="results" :search="search" class="elevation-1" no-data-text="No hay datos disponibles"
    no-results-text="No hay datos disponibles">
    <template v-slot:top>
 
@@ -137,16 +141,43 @@
    </v-avatar>
    {{ item.name }}
    </template>
+   <template v-slot:item.qr_url="{ item }">
+            <!-- Verifica si image_url cumple las condiciones -->
+            <!--<v-icon color="green" v-if="item.image_url && item.image_url !== 'image/default.png'" @click="openModal(item.image_url)">
+              mdi-eye
+            </v-icon>-->
+              <v-btn density="comfortable" icon="mdi-eye" color="green" v-if="item.qr_url && item.qr_url !== 'image/default.png'" @click="openModal(item.qr_url)" variant="tonal"
+                  elevation="1" class="mr-1 mt-1 mb-1" title="Ver detalles"></v-btn>
+            </template>
    <template v-slot:item.actions="{ item }">
-     <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
+     <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
        mdi-pencil
      </v-icon>
      <v-icon size="25" color="red" @click="deleteItem(item)">
        mdi-delete
-     </v-icon>
+     </v-icon>-->
+     <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar Estudiante"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar Estudiante"></v-btn>
    </template>
  </v-data-table>
 </v-card-text>
+<!-- Modal para mostrar la imagen -->
+<v-dialog v-model="dialogPhoto" persistent max-width="600px">
+        <v-card>
+              <v-toolbar color="#F18254">
+                <span class="text-subtitle-2 ml-4"> Qr</span> <v-spacer></v-spacer>
+                <v-btn  @click="dialogPhoto = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+              </v-toolbar>
+        
+          <v-card-text>
+            <v-img :src="selectedImageUrl" aspect-ratio="1.5" contain fill-height></v-img>
+          </v-card-text>
+        </v-card>
+    </v-dialog>
 </v-card>
 
 
@@ -169,16 +200,19 @@ sb_message: '',
 sb_timeout: 2000,
 sb_title:'',
 sb_icon:'',
+search:'',
 editando: false,
 dialog: false,
 message_delete: true,
 dialogDelete: false,
+dialogPhoto: false,
 headers: [
  { title: 'Nombre', key: 'name' },
  { title: 'Primer Apellido', key: 'surname' },
  { title: 'Segundo Apellido', key: 'second_surname' },
  { title: 'Correo', key: 'email' },
  { title: 'Teléfono', key: 'phone' },
+ { title: 'Qr', key: 'qr_url'},
  { title: 'Acciones', key: 'actions', sortable: false },
 ],
 results: [],
@@ -238,19 +272,34 @@ dialogDelete(val) {
 },
 },
 
-created() {
+mounted() {
 this.initialize()
 },
 
 methods: {
+  openModal(imageUrl) {
+      
+      var img = new Image();
+      img.src = 'http://127.0.0.1:8000/api/images/' + imageUrl;
+      img.onload = () => {
+      this.selectedImageUrl = 'http://127.0.0.1:8000/api/images/' + imageUrl; 
+      };
+      img.onerror = () => {
+        this.selectedImageUrl = '';
+      };
+     // alert(this.selectedImageUrl)// Establece la imagen seleccionada
+      this.dialogPhoto = true; // Abre el modal
+    },
   imagenDisponible() {
-        if (this.imgedit !== undefined && this.imgedit !== '') {
-            // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
-            let img = new Image();
-            img.src = this.imgedit;
-            return img.complete; // Devuelve true si la imagen está disponible
-        }
-        return false; // Si la URL de la imagen no está definida o está vacía, devuelve false
+      if (this.imgedit !== undefined && this.imgedit !== '') {
+      
+        // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
+        let img = new Image();
+        img.src = this.imgedit;
+
+        return true; // Devuelve true si la imagen está disponible
+      }
+      return false; // Si la URL de la imagen no está definida o está vacía, devuelve false*/
     },
 showAlert(sb_type,sb_message, sb_timeout)
 {    
@@ -304,8 +353,15 @@ onFileSelected(event) {
    reader.readAsDataURL(file);
  },
 editItem(item) {
- this.file = '';
- this.imgMiniatura = 'http://127.0.0.1:8000/api/images/'+item.student_image;
+  this.file = null;
+      var img = new Image();
+      img.src = 'http://127.0.0.1:8000/api/images/' + item.student_image;
+      img.onload = () => {
+        this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.student_image;
+      };
+      img.onerror = () => {
+        this.imgMiniatura = '';
+      };
  this.editedIndex = 1;
  this.editedItem = Object.assign({}, item)
  this.dialog = true;

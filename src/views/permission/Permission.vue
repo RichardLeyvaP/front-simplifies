@@ -41,7 +41,7 @@
                     <v-row>
                       <v-col cols="12" md="6">
                         <v-text-field v-model="editedItem.name" clearable label="Nombre"
-                          prepend-icon="mdi-pound-box-outline" variant="underlined" :rules="nameRules">
+                          prepend-icon="mdi-pound-box-outline" variant="underlined" :rules="nameRules" :disabled="editFile">
                         </v-text-field>
                       </v-col>
 
@@ -104,12 +104,16 @@
       <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" class="elevation-1" :search="search" no-data-text="No hay datos disponibles"
         no-results-text="No hay datos disponibles">
         <template v-slot:item.actions="{ item }">
-          <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
+          <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
             mdi-pencil
           </v-icon>
           <v-icon size="25" color="red" @click="deleteItem(item)">
             mdi-delete
-          </v-icon>
+          </v-icon>-->
+          <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar Permiso"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar Permiso"></v-btn>
         </template>
       </v-data-table>
     </v-card-text>
@@ -131,7 +135,7 @@ export default {
     cardSelect: '',
     dialog: false,
     dialogDelete: false,
-    dialogCardGitfUser: false,
+    editFile: false,
     search: '',
     headers: [
       { title: 'Módulo', key: 'module' },
@@ -174,7 +178,7 @@ export default {
       (v) =>
         (v && v.length <= 251) ||
         "El Nombre debe tener menos de 251 caracteres",
-      (v) => /^[a-zA-ZáÁéÉíÍóÓúÚñÑ_\s']+$/.test(v) || "El Nombre no es válido",],
+      (v) => /^[a-zA-ZáÁéÉíÍóÓúÚñÑ_\s()']+$/.test(v) || "El Nombre no es válido",],
       requiredRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
   }),
 
@@ -193,7 +197,7 @@ export default {
     },
   },
 
-  created() {
+  mounted() {
     this.initialize()
   },
 
@@ -233,7 +237,8 @@ export default {
     editItem(item) {
       this.editedIndex = 1;
       this.editedItem = Object.assign({}, item)
-      this.dialog = true
+      this.dialog = true;
+      this.editFile = true;
     },
     deleteItem(item) {
       this.editedIndex = 1;
@@ -259,7 +264,8 @@ export default {
       this.dialog = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
+        this.editedIndex = -1;
+        this.editFile = false;
       })
     },
     closeDelete() {
@@ -291,7 +297,8 @@ export default {
           .post('http://127.0.0.1:8000/api/permission', this.data)
           .then(() => {
             this.initialize();
-            this.showAlert("success", "Permiso registrado correctamente", 3000)
+            this.showAlert("success", "Permiso registrado correctamente", 3000);
+            this.editFile = true;
           })
       }
       this.close()

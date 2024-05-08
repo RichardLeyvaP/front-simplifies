@@ -1,3 +1,6 @@
+<!-- eslint-disable vue/multi-word-component-names -->
+<!-- eslint-disable vue/valid-v-slot -->
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
     <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type"
        elevation="24"  :multi-line="true"  vertical v-model="snackbar">
@@ -66,14 +69,14 @@
                <span class="text-subtitle-2 ml-4"> Eliminar operación de Gasto</span>
              </v-toolbar>        
 
-               <v-card-text class="mt-2 mb-2"> ¿Desea eliminar la esta operación de Gasto?</v-card-text>
+               <v-card-text class="mt-2 mb-2"> ¿Desea eliminar la operación de Gasto?</v-card-text>
              <v-divider></v-divider>
              <v-card-actions>
                <v-spacer></v-spacer>
                <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
                  Cancelar
                </v-btn>
-               <v-btn color="primary" variant="flat" @click="deleteItemConfirm">
+               <v-btn color="#F18254" variant="flat" @click="deleteItemConfirm">
                  Aceptar
                </v-btn>
 
@@ -84,15 +87,21 @@
          </v-row>
          </v-toolbar>
          <v-card-text>
-   <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
+          <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
+              hide-details></v-text-field>
+   <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search" :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
      no-results-text="No hay datos disponibles">
      <template v-slot:item.actions="{ item }">
-       <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
+       <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
          mdi-pencil
        </v-icon>
        <v-icon size="25" color="red" @click="deleteItem(item)">
          mdi-delete
-       </v-icon>
+       </v-icon>-->
+       <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar operación de gasto"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar operación de Gasto"></v-btn>
      </template>
    </v-data-table>
  </v-card-text>
@@ -111,7 +120,7 @@ export default {
    sb_timeout: 2000,
    sb_title:'',
    sb_icon:'',
-
+  search: '',
    dialog: false,
    dialogDelete: false,
 
@@ -245,18 +254,20 @@ export default {
          axios
            .put('http://127.0.0.1:8000/api/expense', this.data)
            .then(() => {
+           }).finally(() => {
+             this.showAlert("success","Operación de gasto actualizada correctamente", 3000);
              this.initialize();
-             this.showAlert("success","Gasto actualizado correctamente", 3000)
-           })
+          });
        } else {
          this.valid = false,
          this.data.name = this.editedItem.name;
          axios
            .post('http://127.0.0.1:8000/api/expense', this.data)
            .then(() => {
+           }).finally(() => {
+             this.showAlert("success","Operación de gasto registrada correctamente", 3000);
              this.initialize();
-             this.showAlert("success","Gasto registrado correctamente", 3000)
-           })
+          });
        }
        this.close()
     

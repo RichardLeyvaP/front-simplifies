@@ -1,4 +1,19 @@
+<!-- eslint-disable vue/valid-v-slot -->
 <template >
+   <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24" :multi-line="true"
+        vertical v-model="snackbar">
+        <v-row>
+          <v-col md="2">
+            <v-avatar :icon="sb_icon" color="sb_type" size="40"></v-avatar>
+          </v-col>
+          <v-col md="10">
+            <h4>{{ sb_title }}</h4>
+            {{ sb_message }}
+    
+          </v-col>
+    
+        </v-row>
+      </v-snackbar>
   <div>
   <v-container>
       <v-stepper elevation="6"   bg-color="" v-model="step" :items="items" hide-actions @update:model-value="handleStepChange">
@@ -190,6 +205,61 @@
      <v-text-field :disabled="verificate" v-model="email_client" :rules="emailRules" label="Correo Electrónico" outlined
        required></v-text-field>
      </v-col>
+
+     
+  <v-container>
+    <v-card >
+      <!--<v-list>
+        <v-list-item-group>
+    <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + item.image_data"
+      v-for="item in filteredBranches" :key="item.id">
+      <v-list-item-content class="d-flex align-center justify-space-between">
+        <v-list-item-title> <strong>{{ item.name }} {{ item.address }}</strong> </v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
+  </v-list-item-group>
+</v-list>-->
+      
+      
+<v-list>
+  <v-list-item>
+    <v-list-item-content>
+      <v-list-item-title><strong>{{ nameBranch }}</strong></v-list-item-title>
+    </v-list-item-content>
+  </v-list-item>
+</v-list>
+<div class="d-flex align-center">
+  <!-- Encabezado "Professional:" -->
+  <strong>Professional:</strong>
+  <!-- Lista de profesionales -->
+  <v-list>
+    <v-list-item-group>
+      <!-- Iteración sobre los profesionales -->
+      <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + item.image_url" v-for="item in filteredProfessionals" :key="item.id">
+        <v-list-item-content class="d-flex align-center justify-space-between">
+          <!-- Nombre completo del profesional -->
+          <v-list-item-title><strong>{{ item.name }} {{ item.surname }} {{ item.second_surname }}</strong></v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list-item-group>
+  </v-list>
+</div>
+<v-list item-props><strong>Servicios:</strong>
+                        <v-list-item-group>
+                          <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + serviceA.image_service"
+                            v-for="serviceA in filteredServices" :key="serviceA.id">
+
+                            <v-list-item-content class="d-flex align-center justify-space-between">
+                              <v-list-item-title> <strong>{{ serviceA.name }}</strong> </v-list-item-title>
+                               </v-list-item-content>                         
+                          </v-list-item>
+                        </v-list-item-group>
+</v-list>
+<strong>Duración:</strong> {{ this.totalDuration }}
+<br>
+<strong>Precio:</strong> {{ this.totalPrice }}
+    </v-card>
+  </v-container>
      <!-- <v-col cols="12" md="6" >
      <v-checkbox v-model="checkbox" color="orange lighten-2"
        :rules="[v => !!v || 'You must agree to continue!']" label="Términos y condiciones"
@@ -198,10 +268,6 @@
      </v-row>
 
    </v-form>
-
-
-
-
 <v-divider class="pt-4 mt-4"></v-divider>
 
 
@@ -243,6 +309,42 @@ size="x-large"
       <v-spacer></v-spacer>  
       </v-row>
   </v-container>
+  <v-dialog v-model="dialogEncuesta"
+        transition="dialog-bottom-transition"
+        max-width="600" persistent
+      >
+          <v-card>
+            <v-toolbar
+              color="orange lighten-2"
+              dark
+            >Como supo de nosotros</v-toolbar>
+            <v-card-text>
+              <v-col cols="12" md="12" class="mt-2">
+                  <v-checkbox
+      v-for="survey in surveys"
+      :key="survey.id"
+      v-model="selectedSurveys"
+      :label="survey.name"
+      :value="survey.id"
+      multiple
+      dense
+    ></v-checkbox>
+                    </v-col>
+            </v-card-text>
+            <v-card-actions class="justify-end">
+              <!--<v-btn          
+              
+              @click="dialogEncuesta = false"
+              >Cancelar</v-btn>-->
+              <v-btn variant="flat"
+              color="#F18254"
+              
+              
+                @click="addEncuesta()" :disabled="!selectedSurveys.length>0"
+              >Aceptar</v-btn>
+            </v-card-actions>
+          </v-card>
+      </v-dialog>
   <br>
   <br>
   <br>
@@ -279,6 +381,12 @@ import LocalStorageService from "@/LocalStorageService";
 export default {
 
   data: () => ({
+    snackbar: false,
+  sb_type: '',
+  sb_message: '',
+  sb_timeout: 2000,
+  sb_title:'',
+  sb_icon:'',
     loading : false,
     horarioDisponibleActual:'',
     idProfesionalListo:'',
@@ -312,7 +420,9 @@ export default {
   focus: '',
   start_time1: '',
   array_services:[],
-
+    nameBranch: '',
+    address: '',
+    selectedItems: [],
   nameRules: [
       v => !!v || 'El nombre es requerido',
       v => (v && v.length <= 50) || 'El nombre no debe exceder de 50 caracteres',
@@ -337,29 +447,12 @@ export default {
       v => !!v || 'El Teléfono es requerido',
    
     ],
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       disabledIntervals: [],
       intervals: [],
       countInterval: 0,
       reservedTime: [],
       calendars_branches: [],
-      arrayEvents: null,
+      //arrayEvents: null,
       selected_services: [],
       services: [],
       professionals: [],
@@ -367,6 +460,12 @@ export default {
       selected: [],
       professional: [],
       branch_id: '',
+      business_id: '',
+      dialogEncuesta: false,
+      surveys: [],
+      branches: [],
+      selectedSurveys: [],
+      survey_id: '',
       //
       //
       //
@@ -392,6 +491,8 @@ export default {
               quantity: 10,
           },
       ],
+      totalPrice: '',
+      totalDuration: '',
   }),
   watch: {
   showDialog(newValue, oldValue) {
@@ -406,6 +507,44 @@ export default {
 ,
 
   computed: {
+    filteredProfessionals() {
+    return this.professionals.filter(item => item.id === this.professional[0]);
+  },
+  /*filteredBranches() {
+    const filteredBranch = this.branches.find(item => item.id === this.branch_id);
+    if (filteredBranch) {
+        this.address = filteredBranch.address;
+        console.log('this.address');
+        console.log(this.address);
+        return filteredBranch;
+    } else {
+        // Si no se encuentra ninguna coincidencia, puedes devolver un array vacío o null según tu preferencia
+        return [];
+    }
+  },*/
+  filteredBranches() {
+    return this.branches.filter(item => item.id == this.branch.id);
+  },
+
+  filteredServices() {
+    //let totalTime = 0; // Inicializar la variable para almacenar el tiempo total
+    // Filtrar los servicios
+    const newArrayService = this.array_services.map(item => parseInt(item));
+
+    const filteredServices = this.services.filter(item => {
+        // Comprobar si el id de este servicio está presente en la lista de ids seleccionados
+        // Si `this.selected_services` es un solo id, item.id === this.selected_services evaluará a true o false
+        // Si `this.selected_services` es una lista de ids, Array.includes() verificará si item.id está en la lista
+        return Array.isArray(newArrayService) ? newArrayService.includes(item.id) : item.id === newArrayService;
+    });
+
+    const totalPrice = filteredServices.reduce((total, service) => total + service.price_service, 0);
+    const totalDuration = filteredServices.reduce((total, service) => total + service.duration_service, 0);
+    this.totalDuration = totalDuration;
+    this.totalPrice = totalPrice;
+   // Devolver los servicios filtrados
+    return filteredServices;
+  },
     advanceReserva1() {
     console.log()
     return !this.selected.length > 0; // Verdadero si hay elementos, falso si está vacío
@@ -424,28 +563,61 @@ export default {
   },
   mounted() {
    
-    //this.business_id = LocalStorageService.getItem('business_id');
+    this.business_id = LocalStorageService.getItem('business_id');
   //this.charge_id = LocalStorageService.getItem('charge_id');
-this.branch_id = LocalStorageService.getItem('branch_id');
-console.log(this.branch_id);
+this.branch_id = parseInt(LocalStorageService.getItem('branch_id'));
+this.nameBranch = JSON.parse(LocalStorageService.getItem("nameBranch"));
+axios
+      .get('http://127.0.0.1:8000/api/show-business', {
+        params: {
+          business_id: this.business_id
+        }
+      })
+      .then((response) => {
+        this.branches = response.data.branches;
+      });
       this.chargeServices();
-      this.chargeCalendarsBranches();
+      //this.chargeCalendarsBranches();
       // this. chargeProfessionals();
 
-      this.arrayEvents = [...Array(1)].map(() => {
+      /*this.arrayEvents = [...Array(1)].map(() => {
           const day = Math.floor(Math.random() * 30)
           const d = new Date()
           d.setDate(day)
 
 
           return "2023-11-24"
-      })
+      })*/
   },
 
 
   methods:
   {
+    showAlert(sb_type,sb_message, sb_timeout)
+  {    
+   this.sb_type= sb_type
   
+   if(sb_type=="success")
+   {
+     this.sb_title='Éxito'
+     this.sb_icon='mdi-check-circle'
+   }
+   
+   if(sb_type=="error")
+   {
+     this.sb_title='Error'
+     this.sb_icon='mdi-check-circle'
+   }
+  
+   if(sb_type=="warning")
+   {
+     this.sb_title='Advertencia'
+     this.sb_icon='mdi-alert-circle'
+   }
+   this.sb_message= sb_message
+   this.sb_timeout= sb_timeout
+   this.snackbar= true
+  },
     sumSelectedPrices() {
   let total = 0;
   for (const service of this.services) {
@@ -455,6 +627,7 @@ console.log(this.branch_id);
   }
   return total;
 },
+
 
 // handleStepChange(step) {
 //   this.step = step;
@@ -578,6 +751,7 @@ let request = {};
       name_client: this.name_client,
       surname_client:this.surname_client,
       second_surname:this.second_surname,
+      select_professional: 0,
       services: newArrayService,      
     }
 
@@ -598,8 +772,6 @@ let request = {};
     }
 
   }
- 
-
 
     console.log('**********************************---------------------');
 
@@ -609,24 +781,68 @@ let request = {};
         // Maneja la respuesta de la solicitud aquí
       this.message=response.data.msg
       this.loading = false;
-      // setTimeout(() => {
-      // Redirige a la URL externa deseada
-    //   window.location.href = 'https://barberiahernandez.com/barber_backend/web/app_dev.php/reservation';
-    // }, 3000);  
-    setTimeout(() => {
-      // Redirige a la URL externa deseada
-      this.$router.push('/totem');
-    }, 2000); 
-            })
-      .catch(error => {
+            }).finally(() => {
+                this.showAlert("success","Reserva realizada correctamente", 2000); 
+                setTimeout(() => {
+                  if(this.radios === 'ClientNo'){
+                 this.showDialogEncuesta();
+                  }else{
+                    this.$router.push('/totem');
+                  }
+        // Redirige a la URL externa deseada
+        //window.location.href = 'https://landingbh.simplifies.cl/';
+      }, 3000); 
+          });/*.finally(() => {
+                setTimeout(() => {
+                this.showAlert("success","Reserva realizada correctamente", 3000); 
+                  if(this.radios === 'ClientNo'){
+
+                  this.showDialogEncuesta();
+
+                  }else{
+                    this.$router.push('/totem');
+                  }
+        // Redirige a la URL externa deseada
+        //window.location.href = 'https://landingbh.simplifies.cl/';
+      }, 3000); 
+          });*/
+      /*.catch(error => {
         this.loading = false;
         // Maneja cualquier error que pueda ocurrir durante la solicitud
-        console.error('Error al hacer la solicitud:', error);
-      });
+        this.$router.push('/totem');
+      });*/
 
 
 
   },
+  showDialogEncuesta(){
+      axios
+        .get('http://127.0.0.1:8000/api/survey')
+        .then((response) => {          
+            this.surveys = response.data.surveys;
+        });
+      this.dialogEncuesta = true;
+    },
+
+    addEncuesta(){
+      console.log(this.selectedSurveys);
+      let request = {
+        email: this.email_client,
+        survey_id: this.selectedSurveys
+      
+      }
+      axios.post('http://127.0.0.1:8000/api/client-survey',  request )
+        .then(response => {
+          // Maneja la respuesta de la solicitud aquí
+       // this.message=response.data.msg
+       const t =response.data.msg
+       console.log(t);
+              }).finally(() => {
+                this.dialogEncuesta = false;
+                this.$router.push('/totem');
+          });
+
+    },
 
       isIntervalDisabled(time) {
   // Aquí puedes agregar la lógica para desactivar ciertos horarios.
@@ -636,7 +852,7 @@ let request = {};
      
      
       
-  timeReservated() {
+  /*timeReservated() {
       
 console.log('****************************this.professional[0]*************');
 console.log(this.professional[0]);
@@ -671,9 +887,9 @@ axios
       "Error",
       "Error al obtener el calendario de la Sucursal"
     );*/
-});
-},
-      getDayOfWeekOK() {
+/*});
+},*/
+      /*getDayOfWeekOK() {
 var Xmas95 = new Date();
 console.log('Este es new Date '+Xmas95);
 var weekday = Xmas95.getDay();
@@ -681,8 +897,8 @@ var day = this.dayOfWeek.find((item) => item.id == weekday);
 console.log("esto devuelve el metodo");
 console.log(day ? day.day.toString().trim() : "");
 return day ? day.day.toString().trim() : "";
-},
-      chargeCalendarsBranches() {
+},*/
+      /*chargeCalendarsBranches() {
           axios
               .get(`http://127.0.0.1:8000/api/schedule-show?branch_id=${this.branch_id}`)
               .then((response) => {
@@ -696,8 +912,8 @@ return day ? day.day.toString().trim() : "";
                       "Error",
                       "Error al obtener el calendario de la Sucursal"
                     );*/
-              });
-      },
+             /*});
+      },*/
 
       nextStep() {
   
@@ -874,6 +1090,8 @@ console.log(newArrayService);
       })
       .then((response) => {
                   this.professionals = response.data.professionals;
+                  console.log('this.professionals------');
+                  console.log(this.professionals);
                   // Obtener la menor hora disponible
 //  this.horarioDisponibleActual = this.professionals
        // Filtrar profesionales con horarios disponibles y obtener la menor hora
@@ -907,6 +1125,7 @@ this.idProfesionalListo = '';
 if(this.horarioDisponibleActual === null && this.idProfesionalListo === '')
 {
 console.log('NO HAY DISPONIBILIDAD');
+this.showAlert("warning","No hay profesional con horario disponible", 3000);
 this.changeStep(1);
 }
                     

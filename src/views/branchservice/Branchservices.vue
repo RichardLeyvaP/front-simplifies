@@ -22,16 +22,13 @@
                 </v-col>
                 <v-col cols="12" md="4"></v-col>
                 <v-col cols="12" md="2">
-
-                    <v-dialog v-model="dialog" max-width="500px">
-                        <template v-slot:activator="{ props }">
-
-                            <v-btn v-bind="props" class="text-subtitle-1  ml-12  " color="#E7E9E9" variant="flat"
-                                elevation="2" prepend-icon="mdi-plus-circle">
+                            <v-btn class="text-subtitle-1  ml-12  " color="#E7E9E9" variant="flat"
+                                elevation="2" prepend-icon="mdi-plus-circle" @click="showAddService()">
                                 Asignar Servicios
                             </v-btn>
 
-                        </template>
+                    <v-dialog v-model="dialog" max-width="500px">
+
                         <v-card>
                             <v-toolbar color="#F18254">
                                 <span class="text-subtitle-2 ml-4"> {{ formTitle }}</span>
@@ -40,10 +37,27 @@
                                 <v-form v-model="valid" enctype="multipart/form-data">
                                     <v-row>
                                         <v-col cols="12" md="12">
-                                            <v-autocomplete v-model="editedItem.service_id" :items="services" clearable
-                                                label="Servicios" prepend-inner-icon="mdi-store" item-title="name"
-                                                item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
-                                        </v-col>
+                                            <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.service_id" :items="services" clearable
+                                                label="Servicios" prepend-icon="mdi-list-box-outline" item-title="name"
+                                                item-value="id" variant="underlined" :rules="selectRules" v-if="!editando">
+                                                <template v-slot:item="{ props, item }">
+                                                    <v-list-item
+                                                    v-bind="props"
+                                                    :prepend-avatar="'http://127.0.0.1:8000/api/images/'+item.raw.image_service"
+                                                    :subtitle="'Precio: '+item.raw.price_service"
+                                                    :title="item.raw.name"
+                                                    ></v-list-item>
+                                                </template>
+                                            </v-autocomplete>
+                                                <v-text-field v-model="editedItem.name" label="Servicio"
+                                        prepend-icon="mdi-list-box-outline" variant="underlined" v-if="editando" disabled="true">
+                                    </v-text-field>
+                                        </v-col>                                        
+                                    <v-col cols="12" md="12">
+                                    <v-text-field v-model="editedItem.ponderation" clearable label="Ponderación"
+                                        prepend-icon="mdi-arrow-collapse-vertical" variant="underlined" :rules="pago">
+                                    </v-text-field>
+                                    </v-col>
                                     </v-row>
                                     <v-divider></v-divider>
                                     <v-card-actions>
@@ -92,7 +106,7 @@
         <v-row>
             <v-container>
                 <v-col cols="12" sm="12" md="6">
-                    <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
                         label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
                         variant="underlined" @update:model-value="initialize()"></v-autocomplete>
                 </v-col>
@@ -113,27 +127,34 @@
                 </template>
                 <template v-slot:item.name="{ item }">
 
-                    <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                    <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
                         <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_service" alt="image"></v-img>
                     </v-avatar>
                     {{ item.name }}
                 </template>
+                <template v-slot:item.ponderation="{ item }">
+                    {{ item.ponderation === 0 ? 1 : item.ponderation }}
+                    </template>
                 <template v-slot:item.actions="{ item }">
                     <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
          mdi-pencil
        </v-icon>
                     <v-icon size="25" color="green" @click="showProfessionals(item)">
                         mdi-account-tie-outline
-                    </v-icon>-->
+                    </v-icon>
                     <v-icon size="25" color="red" @click="deleteItem(item)">
                         mdi-delete
-                    </v-icon>
+                    </v-icon>-->
+                    <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar asignación de servicio"></v-btn>
+                    <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar asignación"></v-btn>
                 </template>
             </v-data-table>
         </v-card-text>
 
         <!--Professionals-->
-        <v-dialog v-model="dialogProfessionals" fullscreen transition="dialog-bottom-transition">
+        <!--<v-dialog v-model="dialogProfessionals" fullscreen transition="dialog-bottom-transition">
             <v-card>
                 <v-toolbar color="#F18254">
                     <span class="text-h6 ml-4"> Trabajadores que realizan servicio</span>
@@ -160,6 +181,8 @@
                             <v-icon size="25" color="red" @click="closeProfessionalRequest(item)">
                                 mdi-delete
                             </v-icon>
+                            <v-btn density="comfortable" icon="mdi-delete" @click="closeProfessionalRequest(item)"
+                                color="red-darken-4" variant="tonal" elevation="1" title="Eliminar asignación"></v-btn>
                         </template>
 
                     </v-data-table>
@@ -184,7 +207,7 @@
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="12">
-                                    <v-autocomplete v-model="professional_id" :items="professionals" label="Profesional"
+                                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id" :items="professionals" label="Profesional"
                                         prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id"
                                         variant="underlined" :rules="selectRules"></v-autocomplete>
                                 </v-col>
@@ -224,7 +247,7 @@
 
                 </v-card-actions>
             </v-card>
-        </v-dialog>
+        </v-dialog>-->
     </v-card>
 
 
@@ -248,6 +271,7 @@ export default {
         sb_timeout: 2000,
         sb_title: '',
         sb_icon: '',
+        charge: '',
         dialog: false,
         branch_id: '',
         business_id: '',
@@ -256,10 +280,10 @@ export default {
         search: '',
         search2: '',
         message_delete: true,
-        dialogProfessionals: false,
-        dialogAddProfessionals: false,
+        editando: false,
+        //dialogAddProfessionals: false,
         dialogDelete: false,
-        dialogDeleteProfessional: false,
+        ///dialogDeleteProfessional: false,
         headers: [
             //{ title: 'Almacén', align: 'start', value: 'direccionStore' },
             { title: 'Nombre', key: 'name' },
@@ -267,32 +291,39 @@ export default {
             { title: 'Duración', key: 'duration_service' },
             { title: 'Descripción', key: 'service_comment' },
             { title: 'Precio', align: 'start', value: 'price_service' },
+            { title: 'Ponderación', align: 'start', value: 'ponderation' },
             { title: 'Acciones', key: 'actions', sortable: false },
         ],
-        headers2: [
+        /*headers2: [
             { title: 'Nombre', key: 'name' },
             { title: 'Correo', key: 'email' },
             { title: 'Teléfono', key: 'phone' },
             { title: 'Acciones', key: 'actions', sortable: false },
-        ],
+        ],*/
         results: [],
         services: [],
-        professionals: [],
+        //professionals: [],
         branches: [],
-        branchServiceProfessionals: [],
-        branchServiceSelect: '',
+        //branchServiceProfessionals: [],
+        //branchServiceSelect: '',
         editedIndex: -1,
         editedItem: {
             service_id: '',
+            ponderation: 1,
             id: ''
         },
         data: {},
 
         defaultItem: {
             service_id: '',
+            ponderation: 1,
+            id: ''
         },
 
-        selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
+        selectRules: [(v) => !!v || "Debe seleccionar al menos un elemento"],
+        pago: [
+      //(value) => !!value || 'Campo requerido',
+      (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
     }),
 
     computed: {
@@ -300,7 +331,7 @@ export default {
             if (this.editedIndex === -1) {
                 return 'Asignar Servicio a sucursal';
             }
-            if (this.editedIndex === 3) {
+            if (this.editedIndex === 2) {
                 return 'Editar Asignación de servicio a sucursal';
             }
             else {
@@ -310,6 +341,15 @@ export default {
     },
 
     watch: {
+        'editedItem.ponderation': function(newValue) {
+      // Si el nuevo valor es 0, lo ajustamos a 1
+      if (newValue === 0) {
+        this.editedItem.ponderation = 1;
+      }
+      else{
+        this.editedItem.ponderation;
+      }
+    },
         dialog(val) {
             val || this.close()
         },
@@ -323,6 +363,7 @@ export default {
         this.charge_id = LocalStorageService.getItem('charge_id');
         this.branch_id = LocalStorageService.getItem('branch_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
+        this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         axios
             .get('http://127.0.0.1:8000/api/show-business', {
                 params: {
@@ -331,14 +372,14 @@ export default {
             })
             .then((response) => {
                 this.branches = response.data.branches;
-                this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-
+            }).finally(() => {
+                //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
+                if (this.charge === 'Administrador') {
+                    this.branch_id = this.branches[0].id;
+                    this.mostrarFila = true;
+                }
                 this.initialize();
-            });
-        if (this.charge === 'Administrador') {
-            // Mostrar la fila con Autocomplete
-            this.mostrarFila = true;
-        }
+          });
         console.log(this.charge_id);
     },
 
@@ -375,6 +416,8 @@ export default {
                 .then((response) => {
                     this.results = response.data.branchServices;
                 });
+        },
+        showAddService(){
             axios
                 .get('http://127.0.0.1:8000/api/branch-service-show', {
                     params: {
@@ -384,8 +427,15 @@ export default {
                 .then((response) => {
                     this.services = response.data.services;
                 });
+                this.dialog = true;
         },
-
+        editItem(item) {
+            this.editedIndex = 2;
+            this.editedItem = Object.assign({}, item);
+            this.editedItem.service_id = parseInt(item.service_id);
+            this.dialog = true;
+            this.editando = true;
+            },
         deleteItem(item) {
             this.editedItem = Object.assign({}, item);
             this.dialogDelete = true;
@@ -396,14 +446,16 @@ export default {
             axios
                 .post('http://127.0.0.1:8000/api/branchservice-destroy', this.data)
                 .then(() => {
+                    this.message_delete = true;
+                }).finally(() => {
+                    this.showAlert("success", "Asignación eliminada correctamente", 3000);
                     this.initialize();
-                    this.message_delete = true
-                    this.showAlert("success", "Asignación eliminada correctamente", 3000)
-                });
+          });
             this.closeDelete()
         },
         close() {
-            this.dialog = false
+            this.dialog = false;
+            this.editando = false;
             this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem)
                 this.editedIndex = -1
@@ -424,12 +476,27 @@ export default {
                 this.valid = false;
                 this.data.branch_id = this.branch_id;
                 this.data.service_id = this.editedItem.service_id;
+                this.data.ponderation = this.editedItem.ponderation;
                 axios
                     .post('http://127.0.0.1:8000/api/branchservice', this.data)
                     .then(() => {
+                    }).finally(() => {
+                        this.showAlert("success", "Servicio asignado correctamente", 3000);
                         this.initialize();
-                        this.showAlert("success", "Producto asignado correctamente", 3000)
-                    });
+          });
+            }
+            else{
+                this.valid = false;
+                this.data.branch_id = this.branch_id;
+                this.data.service_id = this.editedItem.service_id;
+                this.data.ponderation = this.editedItem.ponderation;
+                axios
+                    .put('http://127.0.0.1:8000/api/branchservice', this.data)
+                    .then(() => {
+                    }).finally(() => {
+                        this.showAlert("success", "Asignación editada correctamente", 3000);
+                        this.initialize();
+          });
             }
             this.close();
 
@@ -437,7 +504,7 @@ export default {
 
         //professionals
 
-        showProfessionals(item) {
+        /*showProfessionals(item) {
             this.branchServiceSelect = item;
             console.log(this.branchServiceSelect);
             this.branch_service_id = item.id;
@@ -509,7 +576,7 @@ export default {
                     this.showProfessionals(this.branchServiceSelect)
                     this.showAlert("success", "Asignación de profesional a servicio hecha correctamente", 3000)
                 })
-        },
+        },*/
     },
 }
 </script>

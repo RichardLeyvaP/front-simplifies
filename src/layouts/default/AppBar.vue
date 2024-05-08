@@ -20,6 +20,38 @@
 
     </v-app-bar-title>
     <v-spacer></v-spacer>
+    <v-badge :content="notificationsWithStateZero" color="red" class="mr-4">
+  <v-icon
+    id="menu-activator"
+    color="#F18254"
+    @click="showMenu = !showMenu; clearNotifications()" 
+    class="mr-2"
+    size="x-large"
+  ><!--@click="showMenu = !showMenu; clearNotifications()" poniendo esto podemos hacer la logica de pasar todas las que state sea 0 a uno-->
+    mdi-bell
+  </v-icon>
+</v-badge>
+
+<v-menu activator="#menu-activator">
+  <v-list>
+    <v-list-item
+    v-for="item in results"
+          :key="item.id"
+      :prepend-avatar="'http://127.0.0.1:8000/api/images/' + item.image_url"
+      @click="handleItemClickNotif(item)">
+      <div class="d-flex align-center justify-space-between w-100"> <!-- Contenedor flex -->
+        <v-list-item-title class="mr-2" :class="{ 'highlight': item.state2 === 2, 'accent': item.state !== 2 }">{{ item.tittle }}</v-list-item-title>
+        <!-- Iconos de acción 
+        <div v-if="item.tittle === 'Solicitud'">
+          <v-icon @click.stop="acceptRequest(item)">mdi-check</v-icon>
+          <v-icon @click.stop="rejectRequest(item)">mdi-close</v-icon>
+        </div>-->
+      </div>
+      <v-list-item-subtitle :class="{ 'highlight': item.state2 === 2, 'accent': item.state2 !== 2 }">{{ item.nameProfessional }}</v-list-item-subtitle> <!-- Título del elemento de la lista -->
+      <v-list-item-subtitle :class="{ 'highlight': item.state2 === 2, 'accent': item.state2 !== 2 }">{{ item.description }}</v-list-item-subtitle> <!-- Título del elemento de la lista -->
+    </v-list-item>
+  </v-list>
+</v-menu>
 
     <v-menu>
   <template v-slot:activator="{ props }">
@@ -31,7 +63,7 @@
   </template>
 
   <v-list>
-    <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" @click="handleItemClick(item)">
+    <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" @click="handleItemClick(item)" >
       <template v-slot:prepend>
         <v-icon :icon="item.icon"></v-icon>
       </template>
@@ -39,29 +71,6 @@
     </v-list-item>
   </v-list>
 </v-menu>
-    <!--<v-menu>
-      <template v-slot:activator="{ props }">
-
-        <v-list-item v-bind="props" variant="tonal" class="mr-4" lines="two" :prepend-avatar=imageUrl :title=name
-          :subtitle=charge>
-          <template v-slot:append>
-            <v-btn size="small" variant="text" icon="mdi-menu-down"></v-btn>
-          </template></v-list-item>
-
-      </template>
-
-      <v-list>
-        <v-list-item v-for="(item, i) in items" :key="i" :to="item.to">
-
-          <template v-slot:prepend>
-            <v-icon :icon="item.icon"></v-icon>
-          </template>
-
-
-          <v-list-item-title> {{ item.title }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>-->
     <v-dialog v-model="showPasswordForm" width="500">
         <v-card>
           <v-toolbar color="#F18254">
@@ -137,6 +146,12 @@ import axios from "axios";
 //const userTokenStore = UserTokenStore();
 export default {
   data: () => ({
+    snackbar: false,
+  sb_type: '',
+  sb_message: '',
+  sb_timeout: 2000,
+  sb_title:'',
+  sb_icon:'',
     nameBranch: '',
     name: '',
     charge: '',
@@ -144,6 +159,7 @@ export default {
     imageUrl: '',
     password: '',
     user_id:'',
+    branch_id:'',
     professional_id: '',
     results: [],
     showPasswordForm: false,
@@ -166,13 +182,52 @@ export default {
     this.charge = JSON.parse(LocalStorageService.getItem('charge'));
     this.user_id = JSON.parse(LocalStorageService.getItem('user_id'));
     this.professional_id = JSON.parse(LocalStorageService.getItem('professional_id'));
+    this.branch_id = LocalStorageService.getItem('branch_id');
     const image = LocalStorageService.getItem('image');
     const cleanedImage = image.replace(/"/g, '');
     this.imageUrl = `http://127.0.0.1:8000/api/images/${cleanedImage}`;
     console.log(this.imageUrl);
     // Otros datos que hayas almacenado
+    this.initialize();
+  },
+  computed: {
+    notificationsWithStateZero() {
+      return this.results.filter(notification => notification.state2 === 0).length;
+    }
   },
   methods: {
+    handleItemClickNotif(item) {
+      console.log('tretreterterter');
+      let request = {
+        id: item.id,
+        charge: this.charge
+      };
+      axios
+        .put('http://127.0.0.1:8000/api/notification3', request)
+        .then(() => {
+          //this.initialize();
+        }).finally(() => {
+          this.initialize();
+          });
+  },
+    clearNotifications() {
+      const results = this.results
+    .filter(notification => notification.state2 === 0)
+    .map(notification => notification.id);
+    if(results && results.length > 0){
+      let request = {
+        ids: results,
+        charge: this.charge
+      };
+      axios
+        .put('http://127.0.0.1:8000/api/notification-charge', request)
+        .then(() => {
+          //this.initialize();
+        }).finally(() => {
+          this.initialize();
+          });
+    }
+    },
     showAlert(sb_type,sb_message, sb_timeout)
     {    
       this.sb_type= sb_type
@@ -209,10 +264,10 @@ export default {
                 })
         .then((response) => {
           console.log(response);
-            this.showAlert("success", "Contraseña modificada correctamente", 3000)
             this.confirmPassword = '';
             this.confirmNewPassword = '';
             this.showPasswordForm = false;
+            this.showAlert("success", "Contraseña modificada correctamente", 3000);
         });
     },
     handleItemClick(item) {
@@ -249,6 +304,26 @@ export default {
         this.password_new = '';
       });
     },
+    initialize(){
+      axios
+        .get('http://127.0.0.1:8000/api/notification-professional-web', {
+                    params: {
+                        branch_id: this.branch_id,
+                        professional_id: this.professional_id
+                    }
+                })
+        .then((response) => {
+          this.results = response.data.notifications;
+        });
+    }
   }
 }
 </script>
+<style>
+.highlight { /* Color de texto primario en Vuetify por defecto */
+  opacity: 0.6;
+}
+.accent {  
+  font-weight: bold;
+}
+</style>

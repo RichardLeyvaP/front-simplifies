@@ -2,8 +2,8 @@
 <!-- eslint-disable vue/valid-v-slot -->
 
 <template>
-  <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24"
-    :multi-line="true" vertical v-model="snackbar">
+  <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24" :multi-line="true"
+    vertical v-model="snackbar">
     <v-row>
       <v-col md="2">
         <v-avatar :icon="sb_icon" color="sb_type" size="40"></v-avatar>
@@ -14,7 +14,8 @@
 
       </v-col>
     </v-row>
-  </v-snackbar>
+  </v-snackbar>  
+<v-container>
   <v-card elevation="6" class="mx-5" width='auto'>
     <v-toolbar color="#F18254">
       <v-row align="center">
@@ -41,13 +42,14 @@
                 <v-form v-model="valid" enctype="multipart/form-data">
                   <v-row>
                     <v-col cols="12" md="4">
-                      <v-text-field v-model="editedItem.name" clearable label="Nombre" prepend-icon="mdi-form-textbox"         variant="underlined" :rules="nameRules">
+                      <v-text-field v-model="editedItem.name" clearable label="Nombre" prepend-icon="mdi-form-textbox"
+                        variant="underlined" :rules="nameRules">
                       </v-text-field>
                     </v-col>
                     <v-col cols="12" md="4">
-                      <v-autocomplete v-model="editedItem.simultaneou" :items="options" clearable label="Simultaneo"
-                        prepend-inner-icon="mdi-format-list-bulleted-square" item-title="name" item-value="id" variant="underlined"
-                        ></v-autocomplete>
+                      <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.simultaneou" :items="options" clearable label="Simultaneo"
+                        prepend-icon="mdi-format-list-bulleted-square" item-title="name" item-value="id"
+                        variant="underlined"></v-autocomplete>
                     </v-col>
                     <v-col cols="12" md="4">
                       <v-text-field v-model="editedItem.price_service" clearable label="Precio"
@@ -66,14 +68,20 @@
                         prepend-icon="mdi-clock-time-eight" variant="underlined" :rules="requiredRules">
                       </v-text-field>
                     </v-col>
+                    <!--<v-col cols="12" md="4">
+                      <v-text-field v-model="editedItem.ponderation" clearable label="Ponderación"
+                        prepend-icon="mdi-arrow-collapse-vertical" variant="underlined" :rules="pago">
+                      </v-text-field>
+                    </v-col>-->
                     <v-col cols="12" md="4">
-                      <v-text-field v-if="editedItem.type_service === 'Regular'" v-model="editedItem.profit_percentaje" clearable label="% Ganancia"
-                        prepend-icon="mdi-percent" variant="underlined" :rules="requiredRules">
+                      <v-text-field v-model="editedItem.profit_percentaje"
+                        clearable label="% Ganancia" prepend-icon="mdi-percent" variant="underlined"
+                        :rules="requiredRules">
                       </v-text-field>
                     </v-col>
                   </v-row>
                   <v-row>
-                    <v-col cols="12" md="6">
+                    <v-col cols="12" md="12">
                       <v-text-field v-model="editedItem.service_comment" clearable label="Descripción"
                         prepend-icon="mdi-book-open" variant="underlined" :rules="requiredRules">
                       </v-text-field>
@@ -83,11 +91,9 @@
                         variant="underlined" name="file" accept=".png, .jpg, .jpeg" @change="onFileSelected">
                       </v-file-input>
                     </v-col>
-                    <v-col cols="12" md="4">
-
-
-                      <v-card v-if="imagenDisponible()" elevation="6" class="mx-auto" max-width="120" max-height="120">
-                        <img  :src="imgedit" height="120" width="120"  @error="handleImageError">
+                    <v-col cols="12" md="6">
+                      <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
+                        <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
                       </v-card>
                     </v-col>
                   </v-row>
@@ -134,10 +140,12 @@
 
     </v-toolbar>
 
-
     <v-card-text>
-      <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search" :items="results" class="elevation-1"
-      no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+      <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
+              hide-details></v-text-field>
+              
+      <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search" :items="results"
+        class="elevation-1 responsive-table" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
 
         <template v-slot:top>
 
@@ -146,31 +154,38 @@
         </template>
 
         <template v-slot:item.simultaneou="{ item }">
-          <div class="text-end">
+          <div class="text-center">
             <v-chip :color="item.simultaneou ? 'green' : 'red'" :text="item.simultaneou ? 'Si ' : 'No'"
               class="text-uppercase" size="small" label></v-chip>
           </div>
         </template>
         <template v-slot:item.name="{ item }">
-
+          <!--this.items = data.map(item => ({
+  ...item,
+  imageUrl: ${item.imageUrl}?${Date.now()}
+}));-->
           <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-            <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_service" alt="image"></v-img>
+            <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_service+'?$'+Date.now()" alt="image"></v-img>
           </v-avatar>
           {{ item.name }}
         </template>
 
         <template v-slot:item.actions="{ item }">
-          <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
+          <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
             mdi-pencil
           </v-icon>
           <v-icon size="25" color="red" @click="deleteItem(item)">
             mdi-delete
-          </v-icon>
+          </v-icon>-->
+          <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar servicio"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar servicio"></v-btn>
         </template>
       </v-data-table>
     </v-card-text>
   </v-card>
-
+</v-container>
 
 
 
@@ -191,18 +206,19 @@ export default {
     sb_timeout: 2000,
     sb_title: '',
     sb_icon: '',
-
+    search:'',
     dialog: false,
     editando: false,
     message_delete: true,
     dialogDelete: false,
     headers: [
       { title: 'Nombre', key: 'name' },
-      { title: 'Simultaneo', key: 'simultaneou' },
+      { title: 'Simultaneo', align: 'center', key: 'simultaneou' },
       { title: 'Precio', key: 'price_service' },
       //{ title: 'Tipo', key: 'type_service' },
       { title: '% Ganancia', key: 'profit_percentaje' },
       { title: 'Duración', align: 'start', value: 'duration_service' },
+      //{ title: 'Ponderación', align: 'start', value: 'ponderation' },
       { title: 'Comentario', align: 'start', value: 'service_comment' },
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
@@ -229,7 +245,8 @@ export default {
       duration_service: '',
       service_comment: '',
       image_service: '',
-      id: ''
+      id: '',
+      //ponderation: 0
     },
     data: {},
 
@@ -242,6 +259,7 @@ export default {
       duration_service: '',
       service_comment: '',
       image_service: '',
+      //ponderation: 0
     },
     nameRules: [
       (v) => !!v || "El campo es requerido",
@@ -254,6 +272,9 @@ export default {
       (v) => !!v || "El campo es requerido",
     ],
     selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
+    pago: [
+      //(value) => !!value || 'Campo requerido',
+      (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
   }),
 
   computed: {
@@ -275,19 +296,21 @@ export default {
   },
 
   mounted() {
-    this.initialize()
-    
+    this.initialize();
+
   },
 
   methods: {
-   imagenDisponible() {
-          if (this.imgedit !== undefined && this.imgedit !== '') {
-            // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
-            let img = new Image();
-            img.src = this.imgedit;
-            return img.complete; // Devuelve true si la imagen está disponible
-        }
-        return false; // Si la URL de la imagen no está definida o está vacía, devuelve false*/
+    imagenDisponible() {
+      if (this.imgedit !== undefined && this.imgedit !== '') {
+      
+        // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
+        let img = new Image();
+        img.src = this.imgedit;
+
+        return true; // Devuelve true si la imagen está disponible
+      }
+      return false; // Si la URL de la imagen no está definida o está vacía, devuelve false*/
     },
 
     showAlert(sb_type, sb_message, sb_timeout) {
@@ -321,7 +344,6 @@ export default {
     onFileSelected(event) {
       let file = event.target.files[0];
       this.editedItem.image_service = file;
-      console.log(this.editedItem.image_service);
       this.cargarImage(file);
     },
     cargarImage(file) {
@@ -332,8 +354,15 @@ export default {
       reader.readAsDataURL(file);
     },
     editItem(item) {
-      this.file = '';
-      this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.image_service;
+      this.file = null;
+      var img = new Image();
+      img.src = 'http://127.0.0.1:8000/api/images/' + item.image_service;
+      img.onload = () => {
+        this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.image_service;
+      };
+      img.onerror = () => {
+        this.imgMiniatura = '';
+      };
       this.editedIndex = 1;
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
@@ -353,19 +382,19 @@ export default {
       axios
         .post('http://127.0.0.1:8000/api/service-destroy', request)
         .then(() => {
-          this.initialize();
-          this.message_delete = true
           this.showAlert("success", "Servicio eliminado correctamente", 3000)
-        })
+        }).finally(() => {
+            this.initialize();
+          });
       this.closeDelete()
     },
     close() {
-      this.dialog = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1;
         this.imgMiniatura = '';
-        this.file = '';
+        this.file = null;
+      this.dialog = false;
       })
     },
     closeDelete() {
@@ -387,25 +416,30 @@ export default {
         axios
           .post('http://127.0.0.1:8000/api/service-update', formData)
           .then(() => {
-            this.initialize();
             this.showAlert("success", "Servicio editado correctamente", 3000);
             this.imgMiniatura = '';
-        this.file = '';
-          })
+            this.file = null;        
+            
+          }).finally(() => {
+            this.initialize();
+          });
+
       } else {
         this.valid = false;
-        this.editedItem.simultaneou = this.editedItem.simultaneou === 'Si' ? 1 : 0;
+        //this.editedItem.simultaneou = this.editedItem.simultaneou === 'Si' ? 1 : 0;
         const formData = new FormData();
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
         }
+        console.log('formData');
+        console.log(formData);
         axios
           .post('http://127.0.0.1:8000/api/service', formData)
           .then(() => {
-            this.initialize();
             this.showAlert("success", "Servicio registrado correctamente", 3000);
             this.imgMiniatura = '';
-        this.file = '';
+            this.file = null;
+            this.initialize();
           })
       }
       this.close()
@@ -413,3 +447,9 @@ export default {
   },
 }
 </script>
+<style>
+.responsive-table {
+  width: 100%;
+  overflow-x: auto;
+}
+</style>

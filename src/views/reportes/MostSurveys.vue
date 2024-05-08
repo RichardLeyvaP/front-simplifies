@@ -1,12 +1,13 @@
+<!-- eslint-disable vue/no-side-effects-in-computed-properties -->
 <!-- eslint-disable vue/valid-v-slot -->
+<!-- eslint-disable vue/return-in-computed-property -->
 <template>
-    <v-card elevation="6" class="mx-5">
+    <v-card elevation="4" class="mx-5">
       <v-toolbar color="#F18254">
         <v-container>
           <v-row align="center">
             <v-col cols="12" md="8" class="grow ml-4">
-              <span class="text-h8"> <strong>Profesionales con mejor asistencia en un (Día, Mes o
-                  Período)</strong></span>
+              <span class="text-subtitle-1"> <strong>Resumen de las Encuestas</strong></span>
             </v-col>
             <v-spacer></v-spacer>
             <v-col cols="12" md="3">
@@ -18,10 +19,11 @@
           </v-row>
         </v-container>
       </v-toolbar>
-      <v-container>      
-      <v-row>
-          <!-- Primera columna -->
-          <v-col cols="12" sm="6" md="3" >
+      <v-container>
+        <!-- <v-container>
+        <v-row>
+          Primera columna 
+          <v-col cols="12" sm="6" md="3">
             <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
               min-width="290px">
               <template v-slot:activator="{ props }">
@@ -29,12 +31,12 @@
                   label="Fecha inicial"></v-text-field>
               </template>
               <v-locale-provider locale="es">
-                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input @update:model-value="updateDate"
+                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input @update:modelValue="updateDate"
                   format="yyyy-MM-dd" :max="dateFormatted2"></v-date-picker>
               </v-locale-provider>
             </v-menu>
-          </v-col>
-          <!-- Segunda columna -->
+          </v-col>-->
+          <!-- Segunda columna 
           <v-col cols="12" sm="6" md="3">
             <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
               min-width="290px">
@@ -43,13 +45,17 @@
                   append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
               </template>
               <v-locale-provider locale="es">
-                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" @update:model-value="updateDate1"
+                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" @update:modelValue="updateDate1"
                   format="yyyy-MM-dd" :min="dateFormatted"></v-date-picker>
               </v-locale-provider>
             </v-menu>
           </v-col>
+          <v-col cols="12" md="1">
+                          <v-btn icon @click="updateDate2" color="#F18254" >
+                      <v-icon>mdi-magnify</v-icon></v-btn>
+                  </v-col>-->
           <!-- Tercera columna -->
-          <!--<v-col cols="12" sm="6" md="3">
+          <!--<v-col cols="12" sm="6" md="4">
             <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
               min-width="290px">
               <template v-slot:activator="{ props }">
@@ -57,31 +63,26 @@
                   append-inner-icon="mdi-calendar" label="Mes"></v-text-field>
               </template>
               <v-locale-provider locale="es">
-                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate3" @update:model-value="updateDate3"
-                  format="yyyy-MM" scrollable></v-date-picker>
+                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate3" @update:modelValue="updateDate3"
+                  format="yyyy-MM" scrollable no-title></v-date-picker>
               </v-locale-provider>
             </v-menu>
-          </v-col>-->          
-          <v-col cols="12" sm="12" md="3">
-            <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"  label="Seleccione una Sucursal"
-              prepend-inner-icon="mdi-store" item-title="name" item-value="id" variant="outlined"
-              ></v-autocomplete><!--@update:model-value="initialize()"-->
           </v-col>
-          <v-col cols="12" md="1">
-                        <v-btn icon @click="updateDate2" color="#F18254" >
-                    <v-icon>mdi-magnify</v-icon></v-btn>
-                </v-col>
+        </v-row>
+        </v-container>-->
+        <v-row>
           <v-col cols="12">
             <v-container>
               <v-alert border type="info" variant="outlined" density="compact">
-                <p v-html="formTitle"></p>
-                        </v-alert>
+                <p> Resumen de las Encuestas</p>
+                          </v-alert>
             </v-container>
+          </v-col>
+          <v-col cols="12" md="12">
             <v-card-text>
-              <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
-                hide-details>
-              </v-text-field>
-              <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search2" class="elevation-2"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+              <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
+                hide-details></v-text-field>
+              <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search" class="elevation-2"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
               </v-data-table>
             </v-card-text>
           </v-col>
@@ -105,50 +106,46 @@
       },
     },
     data: () => ({
-      fecha: null,
-      menu: false,
+      /*menu: false,
       menu2: false,
       menu3: false,
       input: null,
       input2: null,
       input3: null,
-      search2: '',
-      charge: '',
-      editedIndex: 1,
-      branch_id: '',
-      business_id: '',
+      fecha: '',*/
+      search: '',
+      editedIndex: -1,
       results: [],
-      branches: [],
+      business_id: '',
       headers: [
-        { title: 'Profesional', key: 'name', sortable: false },
-        { title: 'Cargo', key: 'charge', sortable: false },
-        { title: 'Cantidad', key: 'cant', sortable: false }
+        { title: 'Nombre Encuesta', key: 'name', sortable: false },
+        { title: 'Cantidad', key: 'client_surveys_count', sortable: true }
       ],
       data: {},
     }),
     computed: {
-      formTitle() {
+      /*formTitle() {
         if (this.editedIndex === 2) {
+          //this.input = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
-          //return 'Profesionales con mejor asistencia en el período ' + this.fecha;
+          //return 'Monto generado por Sucursales en el período ' + this.fecha;
           const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
-        return `Profesionales con mejor asistencia en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;		
-	
+        const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
+          return `Monto generado por Sucursales en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;		
         }
         /*else if (this.editedIndex === 3) {
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           this.fecha = format(this.input3, "yyyy-MM");
-          return 'Profesionales con mejor asistencia en el mes ' + format(this.input3, "yyyy-MM");
+          return 'Monto generado por Sucursales en el mes ' + format(this.input3, "yyyy-MM");
         }*/
-        else {
+        /*else {
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           this.fecha = format(new Date(), "yyyy-MM-dd");
-          //return 'Profesionales con mejor asistencia en el día ' + format(new Date(), "yyyy-MM-dd");
-          return `Profesionales con mejor asistencia en el día  <strong>${this.fecha}</strong>`;
+          return `Monto generado por Sucursales en el día  <strong>${this.fecha}</strong>`;
+          //return 'Monto generado por Sucursales en el día ' + format(new Date(), "yyyy-MM-dd");
         }
       },
       dateFormatted() {
@@ -164,19 +161,19 @@
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
         const year = date.getFullYear();
         return `${year}-${month}-${day}`;
-      },
+      },*/
       /*dateFormatted3() {
         const date = this.input3 ? new Date(this.input3) : new Date();
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
         const year = date.getFullYear();
         return `${year}-${month}`;
       },*/
-      getDate() {
+      /*getDate() {
         return this.input ? new Date(this.input) : new Date();
       },
       getDate2() {
         return this.input2 ? new Date(this.input2) : new Date();
-      },
+      },*/
       /*getDate3() {
         return this.input3 ? new Date(this.input3) : new Date();
       },*/
@@ -192,27 +189,15 @@
     },
   
     mounted() {
-    this.branch_id = parseInt(LocalStorageService.getItem("branch_id"));
-    this.business_id = parseInt(LocalStorageService.getItem("business_id"));
-    this.charge = JSON.parse(LocalStorageService.getItem("charge"));
-    axios
-            .get('http://127.0.0.1:8000/api/show-business', {
-                params: {
-                    business_id: this.business_id
-                }
-            })
-            .then((response) => {
-                this.branches = response.data.branches;
-                //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-                if (this.charge === 'Administrador'){
-          this.branch_id = this.branches[0].id;
-        }
-                this.initialize()
-            });
+      
+      this.business_id = parseInt(LocalStorageService.getItem("business_id"));
+      this.initialize();
     },
   
     methods: {
-  
+      /*formatNumber(value) {
+              return value.toLocaleString('es-ES');
+          },*/
       exportToExcel() {
         // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
         let rows = [];
@@ -236,9 +221,8 @@
         let nameReport = {
           // eslint-disable-next-line vue/no-use-computed-property-like-method
           name: this.formTitle, // Asume que 'name' es una de tus claves; ajusta según sea necesario
-          charge: '',
-          cantidad: '', // Deja vacíos los demás campos para esta fila especial
-        };
+          client_surveys_count: '', // Deja vacíos los demás campos para esta fila especial
+          };
         rows.push(nameReport);
   
         // Convierte la matriz de filas en una hoja de trabajo Excel
@@ -252,27 +236,25 @@
         //XLSX.writeFile(wb, "report.xlsx");
         XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
       },
-      updateDate(val) {
+      /*updateDate(val) {
         this.input = val;
         this.menu = false;
       },
       updateDate1(val) {
-      this.input2 = val;
-      this.menu2 = false;
-    },
+        this.input2 = val;
+        this.menu2 = false;
+      },
       updateDate2() {
-        //this.input2 = val;
         this.editedIndex = 2;
+        //this.input2 = val;
         const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-        console.log(startDate);
-        console.log(endDate);
+        const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
         axios
-          .get('http://127.0.0.1:8000/api/arriving-branch-periodo', {
+          .get('http://127.0.0.1:8000/api/company_winner', {
             params: {
-              branch_id: this.branch_id,
               startDate: startDate,
-              endDate: endDate
+              endDate: endDate,
+              business_id: this.business_id,
             }
           })
           .then((response) => {
@@ -281,7 +263,7 @@
             //this.input = new Date()
           })
         //this.menu2 = false;
-      },
+      },*/
       /*updateDate3(val) {
         this.editedIndex = 3;
         this.input3 = val;
@@ -290,9 +272,9 @@
         const mes = `${month}`;
         const ano = `${year}`;
         axios
-          .get('http://127.0.0.1:8000/api/arriving-branch-month', {
+          .get('http://127.0.0.1:8000/api/company_winner', {
             params: {
-              branch_id: this.branch_id,
+              business_id: this.business_id,
               mes: mes,
               year: ano
             }
@@ -305,19 +287,11 @@
       },*/
       initialize() {
         this.editedIndex = 1;
-        this.state=true;
-          //this.input2 = new Date();
-          //this.input3 = new Date()
         axios
-          .get('http://127.0.0.1:8000/api/arriving-branch-date', {
-            params: {
-              branch_id: this.branch_id
-            }
-          }).then((response) => {
+          .get('http://127.0.0.1:8000/api/surveyCounts')
+          .then((response) => {
             this.results = response.data;
-            //this.input2 = new Date();
-            //this.input = new Date()
-          });
+          })
       },
   
     },

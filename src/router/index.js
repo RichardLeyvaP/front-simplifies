@@ -96,7 +96,7 @@ const routes = [
       },
       {
         path: "/busines",
-        name: "Bussiness",
+        name: "Empresa",
         component: () =>
           import( "@/views/business/Business.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_business"] },
@@ -236,14 +236,14 @@ const routes = [
         path: "/workplace",
         name: "Puestos de Trabajo",
         component: () =>
-          import( "@/views/workplaces/Workplaces.vue"),
+          import( "@/views/workplaces/WorkPlaces.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_workplace"] },
       },
       {
         path: "/branch-service-professional",
         name: "Servicios se una branch",
         component: () =>
-          import( "@/views/branchservice/BranchServices.vue"),
+          import( "@/views/branchservice/Branchservices.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_service_branch"] },
       },
       {
@@ -303,13 +303,6 @@ const routes = [
         meta: { requiresAuth: true, requiresPermissions: ["view_professional_earnings"] },
       },
       {
-        path: "/professional-branch-winner",
-        name: "Ganancias Profesional",
-        component: () =>
-          import( "@/views/reportes/ProfessionalBranchWinner.vue"),
-        meta: { requiresAuth: true, requiresPermissions: ["view_stores"] },
-      },
-      {
         path: "/client-history",
         name: "Historia de Cliente",
         component: () =>
@@ -331,6 +324,13 @@ const routes = [
         meta: { requiresAuth: true, requiresPermissions: ["products_mostsold"] },
       },
       {
+        path: "/move-product",
+        name: "Movimiento de productos",
+        component: () =>
+          import( "@/views/reportes/MoveProductsBranches.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_move_products"] },
+      },
+      {
         path: "/product-stock",
         name: "Reposición de Productos",
         component: () =>
@@ -350,6 +350,20 @@ const routes = [
         component: () =>
           import( "@/views/revenue/Revenue.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_revenues"] },
+      },
+      {
+        path: "/survey",
+        name: "Encuesta",
+        component: () =>
+          import( "@/views/surveys/Survey.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_surveys"] },
+      },
+      {
+        path: "/survey-counts",
+        name: "Resumen Encuesta",
+        component: () =>
+          import( "@/views/reportes/MostSurveys.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_resumen_surveys"] },
       },
       {
         path: "/finance",
@@ -378,6 +392,55 @@ const routes = [
         component: () =>
           import( "@/views/reportes/FinanceBranchesDetails.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_finance_branches_details"] },
+      },
+      {
+        path: "/details-operations",
+        name: "Finanzas por sucursales por operación",
+        component: () =>
+          import( "@/views/reportes/DetailsOperations.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_details_operations"] },
+      },
+      {
+        path: "/branch-traces",
+        name: "Operaciones de la caja",
+        component: () =>
+          import( "@/views/reportes/BranchTraces.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_branch_traces"] },
+      },
+      {
+        path: "/vacation",
+        name: "Permisos Asistencia",
+        component: () =>
+          import( "@/views/vacation/Vacations.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_vacations"] },
+      },
+      {
+        path: "/couses-winner",
+        name: "Ingresos por cursos",
+        component: () =>
+          import( "@/views/reportes/CourseWinner.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_courses_winner"] },
+      },
+      {
+        path: "/professional-payment",
+        name: "Pago a Profesionales",
+        component: () =>
+          import( "@/views/professionalpayment/ProfessionalPayment.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_professional_payment"] },
+      },
+      {
+        path: "/cashier-tip",
+        name: "Pago Propina a Cajeros",
+        component: () =>
+          import( "@/views/operationtip/OperationTip.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_cashier_tip"] },
+      },
+      {
+        path: "/car-order-delete",
+        name: "Solicitudes de eliminacion",
+        component: () =>
+          import( "@/views/carorderdelete/CarOrderDelete.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_carorder_delete"] },
       },
     ],
   },

@@ -20,8 +20,8 @@
         <v-col cols="12" md="4" class="grow ml-4">
           <span class="text-subtitle-1"> <strong>Listado de Tarjeta Regalos</strong></span>
         </v-col>
-        <v-col cols="12" md="5" class="mr-8"></v-col>
-        <v-col cols="12" md="2" class=" ">
+        <v-col cols="12" md="5" class="mr-2"></v-col>
+        <v-col cols="12" md="2">
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="700px">
             <template v-slot:activator="{ props }">
@@ -40,7 +40,7 @@
                 <v-form v-model="valid" enctype="multipart/form-data">
                   <v-row>
                     <v-col cols="12" md="12">
-                      <v-autocomplete clearable v-model="editedItem.business_id" :items="business" label="Negocio"
+                      <v-autocomplete :no-data-text="'No hay datos disponibles'" clearable v-model="editedItem.business_id" :items="business" label="Negocio"
                         prepend-icon="mdi-domain" item-title="name" item-value="id" variant="underlined"
                         :rules="selectRules"></v-autocomplete>
                     </v-col>
@@ -116,8 +116,10 @@
 
 
     <v-card-text>
-      <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
-        no-results-text="No hay datos disponibles">
+      <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details>
+      </v-text-field>
+      <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search" class="elevation-1"
+        no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles">
         <template v-slot:top>
 
           <v-divider class="mx-4" inset vertical></v-divider>
@@ -130,7 +132,7 @@
           </v-card>
         </template>
         <template v-slot:item.actions="{ item }">
-          <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
+          <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
             mdi-pencil
           </v-icon>
           <v-icon size="25" color="green" class="me-2" @click="showCardGifts(item)">
@@ -138,7 +140,13 @@
           </v-icon>
           <v-icon size="25" color="red" @click="deleteItem(item)">
             mdi-delete
-          </v-icon>
+          </v-icon>-->
+          <v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar tarjeta de regalo"></v-btn>
+          <v-btn density="comfortable" icon="mdi-gift" @click="showCardGifts(item)" color="green" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Asignar tarjeta de regalo"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar tarjeta de regalo"></v-btn>
         </template>
       </v-data-table>
 
@@ -148,8 +156,11 @@
           <v-toolbar color="#F18254">
             <span class="text-h6 ml-6"> Asignar Tarjeta de Regalo</span>
             <v-spacer></v-spacer>
-            <v-btn class="ml-4" color="#E7E9E9" variant="flat" @click="this.dialogAddCardGift = true">
+            <v-btn class="ml-4" color="#E7E9E9" variant="flat" @click="showAddClient()">
               Asignar a Cliente
+            </v-btn>            
+            <v-btn class="ml-4" color="#E7E9E9" variant="flat" @click="this.dialogAddClient = true">
+              Registrar Cliente
             </v-btn>
           </v-toolbar>
 
@@ -158,7 +169,9 @@
             <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details></v-text-field>
 
-            <v-data-table :headers="headers2" :items="cardgiftUser" :search="search2" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+            <v-data-table :headers="headers2" :items="cardgiftUser" :search="search2" class="elevation-1"
+              :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
+              no-data-text="No hay datos disponibles">
 
               <template v-slot:item.name="{ item }">
 
@@ -177,9 +190,11 @@
               </template>
 
               <template v-slot:item.actions="{ item }">
-                <v-icon size="25" color="red" @click="deleteS(item)">
+                <!--<v-icon size="25" color="red" @click="deleteS(item)">
                   mdi-delete
-                </v-icon>
+                </v-icon>-->
+                <v-btn density="comfortable" icon="mdi-delete" @click="deleteS(item)" color="red-darken-4" variant="tonal"
+                  elevation="1" title="Eliminar asignación"></v-btn>
               </template>
 
             </v-data-table>
@@ -204,24 +219,62 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" md="6">
-                    <v-autocomplete v-model="editedCardGiftUser.user_id" :items="users" label="Cliente"
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedCardGiftUser.user_id" :items="users" label="Cliente"
                       prepend-icon="mdi-store-outline" item-title="name" item-value="user_id" variant="underlined"
-                      :rules="selectRules"></v-autocomplete>
+                      :rules="selectRules" @update:model-value="handleClientSelection"></v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="6">
                     <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
                       offset-y min-width="290px">
                       <template v-slot:activator="{ props }">
                         <v-text-field v-bind="props" :model-value="dateFormatted" variant="underlined"
-                          append-inner-icon="mdi-calendar" label="Fecha de Expiración"></v-text-field>
+                          append-icon="mdi-calendar" label="Fecha de Expiración"></v-text-field>
                       </template>
                       <v-locale-provider locale="es">
-                        <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :model-value=input @update:model-value="updateDate"
-                          format="yyyy-MM-dd"></v-date-picker>
+                        <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                          :model-value=input @update:model-value="updateDate" format="yyyy-MM-dd" 
+                          :min="new Date(
+                        Date.now() -
+                        new Date().getTimezoneOffset() * 60000
+                      )
+                        .toISOString()
+                        .substr(0, 10)
+                        "></v-date-picker>
                       </v-locale-provider>
                     </v-menu>
                   </v-col>
                 </v-row>
+                <v-row v-if="details && Object.keys(details).length > 0">
+    <v-col cols="12">
+      <v-card>
+  <v-card-title class="headline">Detalles del Cliente</v-card-title>
+  <v-divider></v-divider>
+  <v-card-text>
+    <v-row>
+      <v-col cols="12" sm="3" class="text-left">
+        <v-card elevation="3" max-width="130" max-height="130">
+          <v-img class="d-flex align-end text-white" height="130" :src="'http://127.0.0.1:8000/api/images/' + details.imageLook" cover>
+    <v-card-title class="pa-0">
+        <v-chip color="">
+            <v-icon icon="mdi-camera" class="mr-1"></v-icon>
+            <span class="caption">{{ nameClient }}</span>
+        </v-chip>
+    </v-card-title>
+</v-img>
+                  <!--<v-img :src="'http://127.0.0.1:8000/api/images/' + details.imageLook" alt="image"></v-img>-->
+                </v-card>
+      </v-col>
+      <v-col cols="12" sm="6" class="text-left">
+        <p><strong>Última vez atendido por:</strong> {{ details.professionalName }}</p>
+        <p><strong>Cantidad de Visitas:</strong> {{ details.cantVisit }}</p>
+        <p><strong>Última visita:</strong> {{ details.lastVisit }}</p>
+        <p><strong>Frecuencia:</strong> {{ details.frecuencia }}</p>
+      </v-col>
+    </v-row>
+  </v-card-text>
+</v-card>
+    </v-col>
+</v-row>
               </v-container>
               <v-divider></v-divider>
               <v-card-actions>
@@ -258,6 +311,68 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <!--AddClient-->
+      <v-dialog v-model="dialogAddClient" max-width="1000px">
+            <v-card>
+              <v-toolbar color="#F18254">
+                <span class="text-subtitle-2 ml-4"> Cliente</span>
+              </v-toolbar>
+              <v-card-text>
+                <v-form v-model="valid" enctype="multipart/form-data">
+                <v-row>
+                  <v-col cols="12" md="6">
+                    <v-text-field v-model="editedItemClient.name" clearable label="Nombre"
+                      prepend-icon="mdi-account-tie-outline" variant="underlined" :rules="nameRules">
+                    </v-text-field>
+
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field v-model="editedItemClient.surname" clearable label="Primer Apellido"
+                      prepend-icon="mdi-account-tie-outline" variant="underlined" :rules="nameRules">
+                    </v-text-field>
+
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field v-model="editedItemClient.second_surname" clearable label="Segundo Apellido"
+                      prepend-icon="mdi-account-tie-outline" variant="underlined" :rules="nameRules">
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field v-model="editedItemClient.email" clearable label="Correo Electrónico"
+                      prepend-icon="mdi-email-outline" variant="underlined" :rules="emailRules">
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field v-model="editedItemClient.phone" clearable label="Teléfono" prepend-icon="mdi-phone-outline"
+                      variant="underlined" :rules="mobileRules">
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-file-input clearable v-model="file" ref="fileInput" label="Avatar Cliente" variant="underlined" density="compact" name="file" accept=".png, .jpg, .jpeg" @change="onFileSelectedClient">
+                    </v-file-input>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
+                          <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
+                        </v-card>
+                  </v-col>
+                </v-row>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+
+                <v-btn color="#E7E9E9" variant="flat" @click="closeClient">
+                  Cancelar
+                </v-btn>
+                <v-btn color="#F18254" variant="flat" @click="saveClient"  :disabled="!valid">
+                  Aceptar
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+            </v-card-text>
+            </v-card>
+          </v-dialog>
+      <!--End AddClient-->
     </v-card-text>
   </v-card>
 
@@ -285,15 +400,17 @@ export default {
     sb_timeout: 2000,
     sb_title: '',
     sb_icon: '',
+    search: '',
+    search2: '',
     editando: false,
     dialog: false,
     dialogCardGift: false,
     dialogDelete: false,
     dialogCardGitfUser: false,
     dialogAddCardGift: false,
-    message_delete: true,
     dialogRequestStore: false,
     dialogAddStore: false,
+    dialogAddClient: false,
     branch_id: '',
     business_id: '',
     headers: [
@@ -339,6 +456,25 @@ export default {
       user_id: '',
       name: ''
     },
+    defaultItemClient: {
+      name: '',
+      surname: '',
+      second_surname: '',
+      email: '',
+      phone: '',
+      //user_id: '',
+      client_image: '',
+    },  
+    editedItemClient: {
+      name: '',
+      surname: '',
+      second_surname: '',
+      email: '',
+      phone: '',
+      //user_id: '',
+      client_image: '',
+      id: ''
+    },
     data: {},
 
     defaultItem: {
@@ -348,29 +484,33 @@ export default {
       user_id: '',
       name: ''
     },
+    details: '',
+    nameClient: '',
+    nameRules: [
+        (v) => !!v || "El campo es requerido",
+        (v) => (v && v.length <= 50) ||
+          "El campo debe tener menos de 51 caracteres",
+          (v) => (v && v.length >= 3) ||
+          "El campo debe tener al menos de 3 caracteres",
+      ],
+      emailRules: [
+        (v) => !!v || "El Correo Electrónico es requerido",
+        (v) => /.+@.+\..+/.test(v) || "El Correo Electrónico no es válido",
+      ],
+      mobileRules: [(v) => !!v || "El Teléfono es requerido"],
     pago: [(v) => !!v || (!isNaN(v) && isFinite(v)) || 'Ingresa un número válido'],
     selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
   }),
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? 'Crear Gift Card' : 'Editar Gift Card'
+      return this.editedIndex === -1 ? 'Crear tarjeta de regalo' : 'Editar tarjeta de regalo'
     },
 
     imgedit() {
       return this.imgMiniatura;
     },
-    /*dateFormatted() {
-      const date = this.input ? new Date(this.input) : new Date();
-      const day = date.getDate().toString().padStart(2, '0');
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const year = date.getFullYear();
-      return `${year}-${month}-${day}`;
 
-      getDate() {
-      return this.input ? new Date(this.input) : new Date();
-    },
-    },*/
     dateFormatted() {
       const date = this.input ? new Date(this.input) : new Date();
       const day = date.getDate().toString().padStart(2, '0');
@@ -394,18 +534,38 @@ export default {
 
   mounted() {
     this.business_id = LocalStorageService.getItem('business_id');
-    this.initialize()
+    axios
+        .get('http://127.0.0.1:8000/api/business')
+        .then((response) => {
+          this.business = response.data.business;
+        }).finally(() => {
+          if (this.business.length > 0) {
+            this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
+          }
+          this.initialize()
+          });
   },
 
   methods: {
+    handleClientSelection(selectedItem) {
+    // Buscar los detalles del cliente seleccionado en la lista de usuarios
+    if(selectedItem)
+    {
+      const selectedUser = this.users.find(user => user.user_id === selectedItem);
+      this.details = selectedUser.details;
+      this.nameClient = selectedUser.name;
+    console.log('this.details');
+    console.log(this.details);
+  }
+    },
     imagenDisponible() {
-        if (this.imgedit !== undefined && this.imgedit !== '') {
-            // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
-            let img = new Image();
-            img.src = this.imgedit;
-            return img.complete; // Devuelve true si la imagen está disponible
-        }
-        return false; // Si la URL de la imagen no está definida o está vacía, devuelve false
+      if (this.imgedit !== undefined && this.imgedit !== '') {
+        // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
+        let img = new Image();
+        img.src = this.imgedit;
+        return true; // Devuelve true si la imagen está disponible
+      }
+      return false; // Si la URL de la imagen no está definida o está vacía, devuelve false
     },
 
     showAlert(sb_type, sb_message, sb_timeout) {
@@ -435,21 +595,6 @@ export default {
         .then((response) => {
           this.results = response.data.cardGifts;
         });
-      axios
-        .get('http://127.0.0.1:8000/api/business')
-        .then((response) => {
-          this.business = response.data.business;
-          if (this.business.length > 0) {
-      this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
-    }        
-    console.log('this.editedItem.business_id');
-      console.log(this.editedItem.business_id);
-        });
-      axios
-        .get('http://127.0.0.1:8000/api/client-autocomplete')
-        .then((response) => {
-          this.users = response.data.clients;
-        });
     },
     //Users
     updateDate(val) {
@@ -475,6 +620,20 @@ export default {
         });
       this.dialogCardGitfUser = true;
     },
+    showAddClient(){
+      axios
+        .get('http://127.0.0.1:8000/api/client-autocomplete')
+        .then((response) => {
+          this.users = response.data.clients;
+        });
+        this.dialogAddCardGift = true;
+    },
+    onFileSelectedClient(event) {
+      let file = event.target.files[0];
+      this.editedItemClient.client_image = file;
+      //console.log(this.editedItem.image_cardgift);
+      this.cargarImage(file);
+    },
     onFileSelected(event) {
       let file = event.target.files[0];
       this.editedItem.image_cardgift = file;
@@ -489,8 +648,15 @@ export default {
       reader.readAsDataURL(file);
     },
     editItem(item) {
-      this.file = '';
-      this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.image_cardgift;
+      this.file = null;
+      var img = new Image();
+      img.src = 'http://127.0.0.1:8000/api/images/' + item.image_cardgift;
+      img.onload = () => {
+        this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.image_cardgift;
+      };
+      img.onerror = () => {
+        this.imgMiniatura = '';
+      };
       this.editedIndex = 1;
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
@@ -510,44 +676,43 @@ export default {
       axios
         .post('http://127.0.0.1:8000/api/card-gift-destroy', request)
         .then(() => {
-          this.initialize();
-          this.message_delete = true
+          this.dialogDelete = false;
+        }).finally(() => {
           this.showAlert("success", "Tarjeta de regalo eliminada correctamente", 3000);
-          
-      this.dialogDelete = false;
-        })
+          this.initialize();
+          });
     },
     close() {
-      this.dialog = false,
         this.dialogAddStore = false,
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1;
-        this.imgMiniatura = '';
-        this.file = '';
+          this.imgMiniatura = '';
+          this.file = null;
+      this.dialog = false;
         })
     },
     closeDelete() {
-      this.dialogCardGitfUser = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       })
+      this.dialogCardGitfUser = false;
     },
 
     closerequest() {
-      this.dialogRequestStore = false;
       this.$nextTick(() => {
         this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser)
       })
-      this.showCardGifts(this.cardSelect)
+      this.dialogRequestStore = false;
+      //this.showCardGifts(this.cardSelect)
     },
     closeDeletecardgiftUser() {
-      this.dialogDelete = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
       })
-      this.initialize();
+      //this.initialize();
+      this.dialogDelete = false;
     },
     requestDelete() {
       let request = {
@@ -556,15 +721,14 @@ export default {
       axios
         .post('http://127.0.0.1:8000/api/card-gift-user-destroy', request)
         .then(() => {
-          this.dialogRequest = false
+          this.dialogRequestStore = false;
+        }).finally(() => {
+          this.showCardGifts(this.cardSelect);
+          this.showAlert("success", "Asignacion eliminada correctamente", 3000);
           this.$nextTick(() => {
             this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser)
-          })
-          console.log(this.courseSelect);
-          this.showCardGifts(this.cardSelect)
-          this.showAlert("success", "Asignacion eliminada correctamente", 3000);
-          this.dialogRequestStore = false;
-        })
+          });
+          });
     },
     save() {
       if (this.editedIndex > -1) {
@@ -578,12 +742,13 @@ export default {
         axios
           .post('http://127.0.0.1:8000/api/card-gift-update', formData)
           .then(() => {
-            this.initialize();
+            this.imgMiniatura = '';
+            this.file = null;
+
+          }).finally(() => {
             this.showAlert("success", "Tarjeta de Regalo editada correctamente", 3000);
-        this.imgMiniatura = '';
-        this.file = '';
-            
-          })
+            this.initialize();
+          });
       } else {
         this.valid = false;
         const formData = new FormData();
@@ -593,9 +758,10 @@ export default {
         axios
           .post('http://127.0.0.1:8000/api/card-gift', formData)
           .then(() => {
+          }).finally(() => {
+            this.showAlert("success", "Tarjeta de Regalo registrada correctamente", 3000);
             this.initialize();
-            this.showAlert("success", "Tarjeta de Regalo registrada correctamente", 3000)
-          })
+          });
       }
       this.close()
     },
@@ -606,29 +772,75 @@ export default {
     },
     closestore() {
       this.dialogAddCardGift = false;
+      this.details = '';
+      this.nameClient = '';
       this.$nextTick(() => {
         this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser)
       })
-      this.showCardGifts(this.cardSelect)
+      //this.showCardGifts(this.cardSelect)
     },
     saveStore() {
       this.valid = false,
         this.data.card_gift_id = this.cardSelect.id;
       this.data.user_id = this.editedCardGiftUser.user_id;
-      this.data.expiration_date = this.editedCardGiftUser.expiration_date ? this.editedCardGiftUser.expiration_date :format(new Date(), "yyyy-MM-dd") ;/*this.input ? format(new Date(this.input), "") : new Date();*/
+      this.data.expiration_date = this.editedCardGiftUser.expiration_date ? this.editedCardGiftUser.expiration_date : format(new Date(), "yyyy-MM-dd");/*this.input ? format(new Date(this.input), "") : new Date();*/
       console.log('this.editedCardGiftUser.expiration_date');
       console.log(this.data.expiration_date);
       axios
         .post('http://127.0.0.1:8000/api/card-gift-user', this.data)
         .then(() => {
           this.$nextTick(() => {
-            this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser)
-          })
+            this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser);
+            this.details = '';
+            this.nameClient = '';
+          });
           this.dialogAddCardGift = false;
-          this.showCardGifts(this.cardSelect);
+        }).finally(() => {
           this.showAlert("success", "Tarjeta asignada correctamente al usuario", 3000);
-        })
+          this.showCardGifts(this.cardSelect);
+          });
     },
+    //cliente
+    closeClient(){
+      this.$nextTick(() => {
+          this.editedItemClient = Object.assign({}, this.defaultItemClient)
+          this.imgMiniatura = '';
+          this.file = null;
+        })
+      this.dialogAddClient = false;
+    },
+    saveClient()
+      {
+        this.valid = false;
+        /*this.data.name = this.editedItem.name;
+        this.data.name = this.editedItem.name;
+        this.data.surname = this.editedItem.surname;
+        this.data.second_surname = this.editedItem.second_surname;
+        this.data.email = this.editedItem.email;
+        this.data.phone = this.editedItem.phone;*/
+        const formData = new FormData();
+          for (let key in this.editedItemClient) {
+            formData.append(key, this.editedItemClient[key]);
+          } 
+          console.log('formData');
+          console.log(formData);
+        axios
+          .post('http://127.0.0.1:8000/api/client', formData)
+          .then(() => {
+            this.showAlert("success","Cliente registrado correctamente", 3000);
+          }).catch(error => {
+            if(error.response.status == '400')
+          this.showAlert("warning", 'Correo ya existe', 3000);
+        });
+        //this.showCardGifts(this.cardSelect);
+        this.closeClient();
+      }
   },
 }
 </script>
+
+<style>
+.caption {
+  font-size: 11px; /* Ajusta el tamaño de fuente según tu preferencia */
+}
+</style>

@@ -28,7 +28,7 @@
             </template>
             <v-locale-provider locale="es">
               <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input @update:modelValue="updateDate"
-                format="yyyy-MM-dd"></v-date-picker>
+                format="yyyy-MM-dd" :max="dateFormatted2"></v-date-picker>
             </v-locale-provider>
           </v-menu>
         </v-col>
@@ -41,13 +41,13 @@
                 append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
             </template>
             <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" @update:modelValue="updateDate2"
-                format="yyyy-MM-dd"></v-date-picker>
+              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" @update:modelValue="updateDate1"
+                format="yyyy-MM-dd" :min="dateFormatted"></v-date-picker>
             </v-locale-provider>
           </v-menu>
         </v-col>
         <!-- Tercera columna -->
-        <v-col cols="12" sm="6" md="4">
+        <!--<v-col cols="12" sm="6" md="4">
           <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
             min-width="290px">
             <template v-slot:activator="{ props }">
@@ -56,20 +56,39 @@
             </template>
             <v-locale-provider locale="es">
               <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate3" @update:modelValue="updateDate3"
-                format="yyyy-MM" scrollable></v-date-picker>
+                format="yyyy-MM" scrollable no-title></v-date-picker>
             </v-locale-provider>
           </v-menu>
-        </v-col>
+        </v-col>-->
+        <v-col cols="12" md="1">
+                        <v-btn icon @click="updateDate2" color="#F18254" >
+                    <v-icon>mdi-magnify</v-icon></v-btn>
+                </v-col>
         <v-col cols="12">
           <v-container>
-            <v-alert border type="warning" variant="outlined" prominent>
-              <span class="text-h6">{{ formTitle }}</span>
-            </v-alert>
+            <v-alert border type="info" variant="outlined" density="compact">
+              <p v-html="formTitle"></p>
+                        </v-alert>  
           </v-container>
           <v-card-text>
             <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details></v-text-field>
             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search2" class="elevation-2"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+              <template v-slot:item.tip="{ item }">
+											<v-chip v-if="item.tip > 0"
+												class="text-uppercase font-weight-bold" size="small" label> {{
+								formatNumber(item.tip)}}</v-chip>
+										</template>
+                    <template v-slot:item.earnings="{ item }">
+											<v-chip v-if="item.earnings > 0"
+												class="text-uppercase font-weight-bold" size="small" label> {{
+								formatNumber(item.earnings)}}</v-chip>
+										</template>
+                    <template v-slot:item.total="{ item }">
+											<v-chip v-if="item.total > 0"
+												class="text-uppercase font-weight-bold" size="small" label> {{
+								formatNumber(item.total)}}</v-chip>
+										</template>
             </v-data-table>
           </v-card-text>
         </v-col>
@@ -112,18 +131,24 @@ export default {
     formTitle() {
       if (this.editedIndex === 2){
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.fecha = format(this.input, "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
-        return 'Monto generado por Negocios en el período  ' + format(this.input, "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
+        //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
+        //return 'Monto generado por Negocios en el período  ' + this.fecha;
+        const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
+        return `Monto generado por Negocios en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;
       }
-      else if (this.editedIndex === 3){
+      /*else if (this.editedIndex === 3){
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.fecha = format(this.input3, "yyyy-MM");
         return 'Monto generado por Negocios en el mes ' + format(this.input3, "yyyy-MM");
-      }
+      }*/
       else{
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.fecha = format(new Date(), "yyyy-MM-dd");
-        return 'Monto generado por Negocios en día ' + format(new Date(), "yyyy-MM-dd");
+        return `Monto generado por Negocios en día  <strong>${this.fecha}</strong>`;
+        //return 'Monto generado por Negocios en día ' + format(new Date(), "yyyy-MM-dd");
       }
     },
     dateFormatted() {
@@ -140,21 +165,21 @@ export default {
       const year = date.getFullYear();
       return `${year}-${month}-${day}`;
     },
-    dateFormatted3() {
+    /*dateFormatted3() {
       const date = this.input3 ? new Date(this.input3) : new Date();
       const month = (date.getMonth() + 1).toString().padStart(2, '0');
       const year = date.getFullYear();
       return `${year}-${month}`;
-    },
+    },*/
     getDate() {
       return this.input ? new Date(this.input) : new Date();
     },
     getDate2() {
       return this.input2 ? new Date(this.input2) : new Date();
     },
-    getDate3() {
+    /*getDate3() {
       return this.input3 ? new Date(this.input3) : new Date();
-    },
+    },*/
   },
 
   watch: {
@@ -166,11 +191,14 @@ export default {
     },
   },
 
-  created() {
+  mounted() {
     this.initialize()
   },
 
   methods: {
+    formatNumber(value) {
+            return value.toLocaleString('es-ES');
+        },
     exportToExcel() {
       // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
       let rows = [];
@@ -216,11 +244,15 @@ export default {
       this.input = val;
       this.menu = false;
     },
-    updateDate2(val) {
-      this.editedIndex = 2;
+    updateDate1(val) {
       this.input2 = val;
+      this.menu2 = false;
+    },
+    updateDate2() {
+      this.editedIndex = 2;
+      //this.input2 = val;
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      const endDate = format(val, "yyyy-MM-dd");
+      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       axios
         .get('http://127.0.0.1:8000/api/business-winner', {
           params: {
@@ -230,12 +262,12 @@ export default {
         })
         .then((response) => {
           this.results = response.data;
-          this.input2 = new Date();
-          this.input = new Date()
+          //this.input2 = new Date();
+          //this.input = new Date()
         })
-      this.menu2 = false;
+      //this.menu2 = false;
     },
-    updateDate3(val) {
+    /*updateDate3(val) {
       this.editedIndex = 3;
       this.input3 = val;
       const month = (val.getMonth() + 1).toString().padStart(2, '0');
@@ -251,10 +283,10 @@ export default {
         })
         .then((response) => {
           this.results = response.data;
-          this.input3 = new Date();
+          //this.input3 = new Date();
         })
       this.menu3 = false;
-    },
+    },*/
     initialize() {
       this.editedIndex = 1;
       axios

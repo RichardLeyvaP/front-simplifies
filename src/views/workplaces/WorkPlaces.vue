@@ -87,19 +87,25 @@
       <v-card-text>
         <v-row>
      <v-col cols="12" sm="12" md="4">
-       <v-autocomplete v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
+       <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
          label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
          variant="underlined" @update:model-value="initialize()"></v-autocomplete>
      </v-col>
    </v-row>
-        <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+   <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
+              hide-details></v-text-field>
+        <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search" :items="results" class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
           <template v-slot:item.actions="{ item }">
-            <v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
+            <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar Puesto de Trabajo"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar Puesto de Trabajo"></v-btn>
+            <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
               mdi-pencil
             </v-icon>
             <v-icon size="25" color="red" @click="deleteItem(item)">
               mdi-delete
-            </v-icon>
+            </v-icon>-->
           </template>
         </v-data-table>
       </v-card-text>
@@ -120,8 +126,10 @@
       sb_title:'',
       sb_icon:'',
       branch_id:'',
+      charge: '',
       business_id: '',
       branches: '',
+      search: '',
       mostrarFila: false,
       dialog: false,
       dialogDelete: false,
@@ -178,15 +186,13 @@
             })
             .then((response) => {
                 this.branches = response.data.branches;
-                this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-
+            }).finally(() => {
+            if (this.charge === 'Administrador') {
+                    this.branch_id = this.branches[0].id;
+                    this.mostrarFila = true;
+                }
                 this.initialize()
-            });
-        if (this.charge === 'Administrador') {
-   // Mostrar la fila con Autocomplete
-   this.mostrarFila = true;
- }
-      this.initialize()
+          });
     },
   
     methods: {
@@ -252,8 +258,10 @@
         axios
           .post('http://127.0.0.1:8000/api/workplace-destroy', request)
           .then(() => {
-            this.initialize();
-          })
+          }).finally(() => {
+              this.showAlert("success", "Puesto de trabajo eliminado correctamente", 3000);
+              this.initialize();
+          });
         this.closeDelete()
       },
       close() {
@@ -278,9 +286,10 @@
           axios
             .put('http://127.0.0.1:8000/api/workplace', this.data)
             .then(() => {
-              this.initialize();
-              this.showAlert("success", "Puesto de trabajo creado correctamente", 3000);
-            })
+            }).finally(() => {
+                    this.showAlert("success", "Puesto de trabajo editado correctamente", 3000);
+                    this.initialize();
+          });
         } else {
           this.valid = false;
           this.data.name = this.editedItem.name;
@@ -289,9 +298,10 @@
           axios
             .post('http://127.0.0.1:8000/api/workplace', this.data)
             .then(() => {
-              this.initialize();
-              this.showAlert("success", "Puesto de trabajo editado correctamente", 3000);
-            })
+            }).finally(() => {
+                    this.showAlert("success", "Puesto de trabajo creado correctamente", 3000);
+                    this.initialize();
+          });
         }
         this.close()
       },
