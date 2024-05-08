@@ -269,7 +269,7 @@ export default {
     this.branch_id = parseInt(LocalStorageService.getItem("branch_id"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
-      .get('https://api2.simplifies.cl/api/show-business', {
+      .get('http://127.0.0.1:8000/api/show-business', {
           params: {
             business_id: this.business_id
           }
@@ -354,7 +354,7 @@ export default {
       console.log(startDate);
       console.log(endDate);
       axios
-        .get('https://api2.simplifies.cl/api/arriving-late-branch-periodo', {
+        .get('http://127.0.0.1:8000/api/arriving-late-branch-periodo', {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,
@@ -372,7 +372,7 @@ export default {
       this.editedIndex = 1;
       this.state=true;
       axios
-        .get('https://api2.simplifies.cl/api/arriving-late-branch-date', {
+        .get('http://127.0.0.1:8000/api/arriving-late-branch-date', {
           params: {
             branch_id: this.branch_id
           }
@@ -390,7 +390,7 @@ export default {
           //this.input2 = new Date();
           //this.input3 = new Date()
         axios
-          .get('https://api2.simplifies.cl/api/arriving-branch-date', {
+          .get('http://127.0.0.1:8000/api/arriving-branch-date', {
             params: {
               branch_id: this.branch_id
             }
@@ -413,7 +413,7 @@ export default {
         console.log(startDate);
         console.log(endDate);
         axios
-          .get('https://api2.simplifies.cl/api/arriving-branch-periodo', {
+          .get('http://127.0.0.1:8000/api/arriving-branch-periodo', {
             params: {
               branch_id: this.branch_id,
               startDate: startDate,

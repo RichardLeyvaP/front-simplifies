@@ -119,7 +119,7 @@
           <template v-slot:item.name="{ item }">
 
 <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_data" alt="image"></v-img>
+  <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_data" alt="image"></v-img>
 </v-avatar>
 {{ item.name }}
 </template>
@@ -159,7 +159,7 @@
               <!--<template v-slot:item.name="{ item }">
 
                     <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                      <v-img :src="'https://api2.simplifies.cl/api/images/'+item.image_url" alt="image"></v-img>
+                      <v-img :src="'http://127.0.0.1:8000/api/images/'+item.image_url" alt="image"></v-img>
                     </v-avatar>
                     {{ item.name+' '+item.surname+' '+item.second_surname}}
                   </template>-->
@@ -261,7 +261,7 @@
             <template v-slot:item.name="{ item }">
 
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
+              <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_product" alt="image"></v-img>
             </v-avatar>
             {{ item.name }}
             </template>
@@ -498,7 +498,7 @@
       this.business_id = LocalStorageService.getItem('business_id');
       this.editItem.business_id = this.business_id;
       axios
-          .get('https://api2.simplifies.cl/api/business')
+          .get('http://127.0.0.1:8000/api/business')
           .then((response) => {
             console.log(response.data);
             this.business = response.data.business;      
@@ -558,7 +558,7 @@
     },
     initialize() {
         axios
-          .get('https://api2.simplifies.cl/api/enrollment-show', {
+          .get('http://127.0.0.1:8000/api/enrollment-show', {
             params: {
                 business_id: this.business_id
             }
@@ -570,9 +570,9 @@
       editItem(item) {
         this.file = null;
         var img = new Image();
-      img.src = 'https://api2.simplifies.cl/api/images/' + item.image_data;
+      img.src = 'http://127.0.0.1:8000/api/images/' + item.image_data;
       img.onload = () => {
-        this.imgMiniatura = 'https://api2.simplifies.cl/api/images/' + item.image_data;
+        this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.image_data;
       };
       img.onerror = () => {
         this.imgMiniatura = '';
@@ -595,7 +595,7 @@
           id: this.editedItem.id
         };
         axios
-          .post('https://api2.simplifies.cl/api/enrollment-destroy', request)
+          .post('http://127.0.0.1:8000/api/enrollment-destroy', request)
           .then(() => {
             this.initialize();
             this.showAlert("success","Academia eliminada correctamente", 3000)
@@ -636,7 +636,7 @@
         console.log('formData');
         console.log(formData);
           axios
-            .post('https://api2.simplifies.cl/api/enrollment-updated', formData)
+            .post('http://127.0.0.1:8000/api/enrollment-updated', formData)
             .then(() => {
               this.file = null;
             this.imgMiniatura = '';
@@ -655,7 +655,7 @@
           formData.append(key, this.editedItem[key]);
         }
           axios
-            .post('https://api2.simplifies.cl/api/enrollment', formData)
+            .post('http://127.0.0.1:8000/api/enrollment', formData)
             .then(() => {
               this.file = null;
             this.imgMiniatura = '';
@@ -674,7 +674,7 @@
         this.enrollment_id = item.id;
         console.log(item.id);
         axios
-          .get('https://api2.simplifies.cl/api/enrollmentstore-show', {
+          .get('http://127.0.0.1:8000/api/enrollmentstore-show', {
             params: {
               enrollment_id: item.id
             }
@@ -686,7 +686,7 @@
     },
     showAddStores(){
       axios
-          .get('https://api2.simplifies.cl/api/store')
+          .get('http://127.0.0.1:8000/api/store')
           .then((response) => {
             this.stores = response.data.stores;
           });
@@ -705,7 +705,7 @@
       console.log('this.data');
       console.log(this.data);
       axios
-        .post('https://api2.simplifies.cl/api/enrollmentstore', this.data)
+        .post('http://127.0.0.1:8000/api/enrollmentstore', this.data)
         .then(() => {
           this.dialogAddStore = false;
           this.store_id = '';
@@ -730,7 +730,7 @@
         store_id: this.store_id
       };
       axios
-        .post('https://api2.simplifies.cl/api/enrollmentstore-destroy', request)
+        .post('http://127.0.0.1:8000/api/enrollmentstore-destroy', request)
         .then(() => {
           this.dialogRequestStore = false;
           this.store_id = '';
@@ -748,7 +748,7 @@
         this.enrollment_id = item.id;
         console.log(item.id);
         axios
-          .get('https://api2.simplifies.cl/api/productstore-academy-show', {
+          .get('http://127.0.0.1:8000/api/productstore-academy-show', {
             params: {
               enrollment_id: item.id
             }
@@ -760,7 +760,7 @@
         this.dialogStoresProducts = true;
 
         axios
-        .get('https://api2.simplifies.cl/api/store-academy-show', {
+        .get('http://127.0.0.1:8000/api/store-academy-show', {
           params: {
             enrollment_id: this.enrollment_id
           }
@@ -769,7 +769,7 @@
           this.storesAcademy = response.data.stores;
         });
       axios
-        .get('https://api2.simplifies.cl/api/product')
+        .get('http://127.0.0.1:8000/api/product')
         .then((response) => {
           this.products = response.data.products;
         });
@@ -791,7 +791,7 @@
       console.log('this.data');
       console.log(this.data);
       axios
-          .post('https://api2.simplifies.cl/api/productstore', this.data)
+          .post('http://127.0.0.1:8000/api/productstore', this.data)
           .then(() => {
           this.dialogAddProduct = false;
           this.store_id = '',
@@ -810,7 +810,7 @@
       console.log('this.data');
       console.log(this.data);
       axios
-          .put('https://api2.simplifies.cl/api/productstore', this.data)
+          .put('http://127.0.0.1:8000/api/productstore', this.data)
           .then(() => {
           this.dialogAddProduct = false;
           this.store_id = '',
@@ -846,7 +846,7 @@
       this.data.store_id = this.store_id;
       this.data.enrollment_id = this.enrollment_id;
       axios
-        .post('https://api2.simplifies.cl/api/productstore-destroy', this.data)
+        .post('http://127.0.0.1:8000/api/productstore-destroy', this.data)
         .then(() => {
           this.dialogRequestProduct = false;
           this.store_id = '',
