@@ -230,6 +230,11 @@
           </v-avatar>
           {{ item.fullName }}
         </template>
+        <template v-slot:item.phone="{ item }">
+        <td>
+          <a href="#" @click.prevent="openWhatsApp(item.phone)">{{ item.phone }}</a>
+        </td>
+      </template>
         <template v-slot:item.actions="{ item }">
           <v-btn
             density="comfortable"
@@ -493,6 +498,7 @@
             <v-data-table :headers="headers1" :items-per-page-text="'Elementos por páginas'" :items="frecuence"
               :search="search2" class="elevation-2" no-results-text="No hay datos disponibles"
               no-data-text="No hay datos disponibles">
+           
               <template v-slot:item.name="{ item }">
 
                 <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
@@ -609,7 +615,7 @@ export default {
     ],
     mobileRules: [
       (v) => !!v || "El Teléfono es requerido",
-      (value) => this.validateTelefono(value) || "El número de teléfono no es válido",
+      //(value) => this.validateTelefono(value) || "El número de teléfono no es válido",
     ],
     selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
   }),
@@ -689,6 +695,9 @@ export default {
   },
 
   methods: {
+    openWhatsApp(phone) {
+      window.open('http://wa.me/+' + phone);
+    },
     validateTelefono(value) {
       // Expresión regular para validar un número de teléfono con prefijo de Chile
       const telefonoRegex = /^(\+?56|0056|56)?(2|3|4|5|6|7|9)\d{7}$/;
