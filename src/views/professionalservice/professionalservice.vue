@@ -81,6 +81,7 @@
                 <v-tabs v-model="tabBar" color="rgb(241, 130, 84)" elevation="6"><!-- @click="handleTabChange"-->
                   <v-tab value="one">Lista de Servicios</v-tab>
                   <v-tab value="two">Servicios Asignados</v-tab>
+                  <v-tab value="tre">Servicio Meta</v-tab>
                 </v-tabs>
                 <v-card-text>
                   <v-window v-model="tabBar">
@@ -157,6 +158,53 @@
                         <v-spacer></v-spacer>
                         <v-btn color="#F18254" variant="flat" :disabled="!selected.length" @click="desasignService">
                           Eliminar
+                        </v-btn>
+                      </v-card-actions>
+                    </v-window-item>
+
+                    <!--          
+        SERVICIOS META -->
+        <v-window-item value="tre">
+                      <v-list item-props>
+                        <v-list-item-group v-model="selectedM" active-class="deep-purple--text text--accent-4"  v-if="serviceMeta.length > 0">
+                          <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + serviceM.image_service"
+                            v-for="serviceM in serviceMeta" :key="serviceM.id" @click="toggleService3(serviceM)"
+                            :class="{ 'selected-item': isSelected(serviceM.id) }">
+
+                            <v-list-item-content class="d-flex align-center justify-space-between">
+                              {{ serviceM.name }}
+                              <v-btn :color="!isSelected(serviceM.id) ? 'amber-darken-1' : ''"
+                                :dark="isSelected(serviceM.id)">
+                                {{ serviceM.type_service }}
+                              </v-btn>
+                            </v-list-item-content>
+                          </v-list-item>
+                          <v-divider></v-divider>
+                        </v-list-item-group>
+                        <v-list-item-group v-model="selected" active-class="deep-purple--text text--accent-4" v-else>
+                          <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + serviceA.image_service"
+                            v-for="serviceA in servicesAsig" :key="serviceA.id" @click="toggleService3(serviceA)"
+                            :class="{ 'selected-item': isSelected(serviceA.id) }">
+
+                            <v-list-item-content class="d-flex align-center justify-space-between">
+                              {{ serviceA.name }}
+                              <v-btn :color="!isSelected(serviceA.id) ? 'amber-darken-1' : ''"
+                                :dark="isSelected(serviceA.id)">
+                                {{ serviceA.type_service }}
+                              </v-btn>
+                            </v-list-item-content>
+                          </v-list-item>
+                          <v-divider></v-divider>
+                        </v-list-item-group>
+                      </v-list>
+
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="#F18254" variant="flat" v-if="!serviceMeta.length" :disabled="!selected.length" @click="metaService">
+                          Seleccionar Servicio Meta
+                        </v-btn>
+                        <v-btn color="#F18254" variant="flat" v-if="serviceMeta.length" :disabled="!selected.length" @click="metaServiceDelete">
+                          Eliminar Servicio Meta
                         </v-btn>
                       </v-card-actions>
                     </v-window-item>
@@ -264,6 +312,8 @@ export default {
     hourSelect: [],
     selected: [],
     selectedA: [],
+    selectedM: [],
+    serviceMeta: [],
     professional: [],
     branches: [],
     //
@@ -350,9 +400,18 @@ export default {
       //if (this.professional.length !== 0) {
       if (this.tabBar === 'one') {
         this.selected = [];
+        this.selectedA = [];
+        this.selectedM = [];
         //this.getServicesProfessional();
       } else if (this.tabBar === 'two') {
         this.selected = [];
+        this.selectedA = [];
+        this.selectedM = [];
+        //this.getServicesProfessional();
+      }else if (this.tabBar === 'tre') {
+        this.selected = [];
+        this.selectedA = [];
+        this.selectedM = [];
         //this.getServicesProfessional();
       }
       //}
@@ -465,6 +524,67 @@ export default {
           this.especial = false;
         });
     },
+    metaService() {
+
+        console.log('*********DATOS POARA ENVIAR PARA LA API***************');
+        console.log('this.professional');
+        console.log(this.professional[0]);
+        console.log('this.selected');
+        console.log(this.selected[0]);
+        let request = {
+          professional_id: this.professional[0],
+          branch_service_id: this.selected[0],
+          meta: 1
+        }
+        //CAMBIAR ESTA RUTA POR LA RUTA CORRECTA DE DESASIGNAR SERVICIO AL PROFESIONAL
+        axios
+          .post('https://api2.simplifies.cl/api/professionalservice-meta', request)
+          .then(() => {
+            this.showAlert("success", "Servicio Asignado como meta", 3000);
+            this.profitPercen = '';
+            this.getServicesProfessional();
+            //this.handleTabChange('two');
+            //this.professional = '';
+            this.selected = '';
+          }).catch(error => {
+            // Maneja cualquier error que pueda ocurrir durante la solicitud
+            console.log(error);
+            this.showAlert("warning", "Error al hacer la asignación".error, 3000);
+
+      });
+
+    },
+
+    metaServiceDelete() {
+
+console.log('*********DATOS POARA ENVIAR PARA LA API***************');
+console.log('this.professional');
+console.log(this.professional[0]);
+console.log('this.selected');
+console.log(this.selected[0]);
+let request = {
+  professional_id: this.professional[0],
+  branch_service_id: this.selected[0],
+  meta: 0
+}
+//CAMBIAR ESTA RUTA POR LA RUTA CORRECTA DE DESASIGNAR SERVICIO AL PROFESIONAL
+axios
+  .post('https://api2.simplifies.cl/api/professionalservice-meta', request)
+  .then(() => {
+    this.showAlert("success", "Servicio Asignado como meta", 3000);
+    this.profitPercen = '';
+    this.getServicesProfessional();
+    //this.handleTabChange('two');
+    //this.professional = '';
+    this.selected = '';
+  }).catch(error => {
+    // Maneja cualquier error que pueda ocurrir durante la solicitud
+    console.log(error);
+    this.showAlert("warning", "Error al hacer la asignación".error, 3000);
+
+});
+
+},
 
     changeStep(index) {
       // Cambiar el valor de step al índice especificado
@@ -545,10 +665,11 @@ export default {
           }
         })
         .then((response) => {
-          console.log(response.data)
+          console.log(response.data.metaData)
           //this.services = response.data.branchServices;
           this.servicesAsig = response.data.assignedServices;
           this.services = response.data.unassignedServices;
+          this.serviceMeta = response.data.metaData;
           if (this.services && this.services.length > 0) {
             this.mostrarSwitch = true;
             console.log('this.mostrarSwitch');

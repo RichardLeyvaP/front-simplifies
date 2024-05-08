@@ -752,7 +752,8 @@ let request = {};
       surname_client:this.surname_client,
       second_surname:this.second_surname,
       select_professional: 0,
-      services: newArrayService,      
+      services: newArrayService, 
+      from_home: 0     
     }
 
   }
@@ -768,7 +769,8 @@ let request = {};
       name_client: this.name_client,
       surname_client:this.surname_client,
       second_surname:this.second_surname,
-      services: newArrayService,      
+      services: newArrayService,
+      from_home: 0       
     }
 
   }

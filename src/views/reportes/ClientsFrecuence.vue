@@ -73,7 +73,7 @@
               no-data-text="No hay datos disponibles">
               <template v-slot:item.name="{ item }">
 
-                <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
                   <v-img :src="'https://api2.simplifies.cl/api/images/' + item.client_image" alt="image"></v-img>
                 </v-avatar>
                 {{ item.name }}

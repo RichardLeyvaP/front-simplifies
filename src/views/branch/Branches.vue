@@ -74,7 +74,7 @@
                         <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.useTechnical" :items="options" clearable label="Técnico"
                         prepend-icon="mdi-hair-dryer" item-title="name" item-value="id" variant="underlined"
                         ></v-autocomplete>
-                        <v-text-field v-model="editedItem.location" clearable label="Localización"
+                        <v-text-field v-model="editedItem.location" clearable label="Localización (Google Maps)"
                           prepend-icon="mdi-map-marker" variant="underlined">
                         </v-text-field>
                       </v-col>
@@ -133,15 +133,15 @@
           </div>
         </template>
         <template v-slot:item.actions="{ item }">
-          <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-pencil" @click="editItem(item)" color="primary" variant="tonal"
+          <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-pencil" @click="editItem(item)" color="primary" variant="darken-1"
             elevation="1" title="Editar Sucursal"></v-btn>
-          <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-account-tie" @click="showProfessionals(item)" color="primary" variant="tonal"
+          <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-account-tie" @click="showProfessionals(item)" color="indigo" variant="darken-2"
             elevation="1" title="Agregar Trabajdor"></v-btn>  
           <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-store-outline" @click="showStores(item)" color="green" variant="tonal"
             elevation="1" title="Agregar Almacén"></v-btn>  
-          <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-handshake" @click="showAssociates(item)" color="green" variant="tonal"
+          <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-handshake" @click="showAssociates(item)" color="orange" variant="tonal"
             elevation="1" title="Agregar Almacén"></v-btn>  
-            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-finance" @click="showWinner(item)" color="green" variant="tonal"
+            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-finance" @click="showWinner(item)" color="teal" variant="tonal"
             elevation="1" title="Finanzas de la  sucursal"></v-btn>  
           <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
             elevation="1" title="Eliminar Sucursal"></v-btn>

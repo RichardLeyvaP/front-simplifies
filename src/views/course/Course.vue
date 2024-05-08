@@ -223,6 +223,8 @@
             elevation="1" class="mr-1 mt-1 mb-1" title="Estudiantes inscritos"></v-btn>
             <!--<v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-storefront" @click="showProducts(item)" color="orange-darken-1" variant="tonal"
             elevation="1" title="Vender productos a estudiantes"></v-btn>-->
+            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-account-tie" @click="showAddProfessional(item)" color="indigo" variant="darken-2"
+            elevation="1" title="Asignar Professional"></v-btn>  
           <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
             elevation="1" title="Eliminar Curso"></v-btn>
           </template>
@@ -549,6 +551,113 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+
+      <!--Professionals-->
+      <v-dialog v-model="dialogAddProfessional" fullscreen transition="dialog-bottom-transition">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-2 ml-4">Professionales asignados al curso</span>
+            <v-spacer></v-spacer>
+            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAdddialogProfessionals()">
+              Asignar Professional
+            </v-btn>
+          </v-toolbar>
+
+          <v-card-text class="mt-2 mb-2">
+            <v-text-field class="mt-1 mb-1" v-model="search4" append-icon="mdi-magnify" label="Buscar" single-line
+              hide-details></v-text-field>
+
+            <v-data-table :headers="headers4" :items="courseprofessionals" :search="search4" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+              <template v-slot:item.ponderation="{ item }">
+                    {{ item.ponderation === 0 ? 1 : item.ponderation }}
+                    </template>
+              <template v-slot:item.name="{ item }">
+
+                <v-avatar elevation="3" color="grey-lighten-4" size="large">
+                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url+'?$'+Date.now()" alt="image"></v-img>
+                </v-avatar>
+                {{ item.name}}
+              </template>
+
+              <template v-slot:item.actions="{ item }">
+                <v-btn density="comfortable" icon="mdi-delete" @click="deleteProfessional(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar afiliación del professional"></v-btn>
+                <!--<v-icon size="small" color="red" @click="deleteP(item)">
+                  mdi-delete
+                </v-icon>-->
+              </template>
+
+            </v-data-table>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#F18254" variant="flat" @click="closeProfessional">
+              Volver
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="dialogAddProf" width="500">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-2 ml-4"> {{ formTitleProfessional }}</span>
+          </v-toolbar>
+          <v-card-text class="mt-2 mb-2">
+            <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+              <v-container>
+                <v-row>
+                  <v-col cols="12" md="12">
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id" :items="professionals" label="Profesional"
+                      prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined"
+                      :rules="selectRules">
+                      <template v-slot:item="{ props, item }">
+                <v-list-item
+                  v-bind="props"
+                  :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_url"
+                  :subtitle="'Cargo: '+item.raw.charge"
+                  :title="item.raw.name"
+                ></v-list-item>
+              </template>
+                      </v-autocomplete>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="#E7E9E9" variant="flat" @click="closeAdddialogProfessionals">
+                  Cancelar
+                </v-btn>
+                <v-btn color="#F18254" variant="flat" @click="saveProfessional" :disabled="!valid">
+                  Aceptar
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="dialogRequestProfessional" width="500">
+        <v-card>
+
+          <v-toolbar color="red">
+            <span class="text-subtitle-2 ml-4"> Eliminar afiliación del professional al curso</span>
+          </v-toolbar>
+
+          <v-card-text class="mt-2 mb-2"> ¿Desea eliminar esta afiliación del professional con el curso?</v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="closerequestProfessional">
+              Cancelar
+            </v-btn>
+            <v-btn color="#F18254" variant="flat" @click="requestDeleteProfessional">
+              Aceptar
+            </v-btn>
+
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
   </v-container>
 </template>
 <script>
@@ -698,7 +807,21 @@ export default {
       id:'',
 
     },
-
+    //professional
+    professionals: [],
+    courseprofessionals: [],
+    dialogAddProfessional: false,
+    professional_id: '',
+    dialogAddProf: false,
+    dialogRequestProfessional: false,
+    headers4: [
+      //{ title: 'Nombre Estudiante', key: 'nameStudent' },
+      { title: 'Nombre Professional', key: 'name' },
+      { title: 'Email', key: 'email' },
+      { title: 'Cargo', key: 'charge' },
+      { title: 'Acciones', key: 'actions', sortable: false },
+    ],
+    search4: '',
     selectRules: [(v) => !!v || "Seleccionar al menos un elemeto"],
   }),
   setup() {
@@ -1262,6 +1385,83 @@ export default {
           this.showAlert("success", "Asignación eliminada correctamente", 3000);  
           this.showProducts(this.productSelect); 
           });
+    },
+
+    //professionals
+    showAddProfessional(item){
+      this.courseSelect = item;
+          axios
+          .get('https://api2.simplifies.cl/api/course-professional', {
+            params: {
+              course_id: this.courseSelect.id
+            }
+          })
+          .then((response) => {
+            this.courseprofessionals = response.data.courseProfessionals;
+          });
+          this.dialogAddProfessional = true;
+    },
+    closeProfessional() {
+      this.dialogAddProfessional = false;
+      /*this.$nextTick(() => {
+        this.editedStudent = Object.assign({}, this.defaultStudent)
+      })*/
+      //this.showStudents(this.courseSelect)
+    },
+    saveProfessional() {
+      this.valid = false,
+        this.data.course_id = this.courseSelect.id;
+      this.data.professional_id = this.professional_id;
+      console.log(this.data);
+      axios
+        .post('https://api2.simplifies.cl/api/course-professional', this.data)
+        .then(() => {
+          this.dialogAddProf = false;
+          //this.initialize();
+        }).finally(() => {
+          this.showAddProfessional(this.courseSelect);
+          this.showAlert("success", "Professional asignado correctamente al curso", 3000);
+          });
+    },
+    showAdddialogProfessionals(){
+      axios
+        .get('https://api2.simplifies.cl/api/course-professional-show-Notin', {
+          params: {
+            course_id: this.courseSelect.id
+          }
+        })
+        .then((response) => {
+          this.professionals = response.data.professionals;
+        });
+        this.dialogAddProf = true;
+    },
+    closeAdddialogProfessionals(){
+      this.dialogAddProf = false;
+    },
+    deleteProfessional(item) {
+      this.dialogRequestProfessional = true;
+      //this.editedItem.branch_id=item.id
+      this.professional_id = item.professional_id
+    },
+    requestDeleteProfessional() {
+      let request = {
+        course_id: this.courseSelect.id,
+        professional_id: this.professional_id
+      };
+      axios
+        .post('https://api2.simplifies.cl/api/course-professional-destroy', request)
+        .then(() => {
+          this.dialogRequestProfessional = false;
+        }).finally(() => {
+          this.professional_id = '',
+          this.showAddProfessional(this.courseSelect);
+          this.showAlert("success", "Afiliación eliminada correctamente", 3000);
+          });
+    },
+    closerequestProfessional() {
+      this.dialogRequestProfessional = false;
+      this.professional_id = '';
+      //this.showProfessionals(this.branchSelect)
     },
   },//endMethods
 }

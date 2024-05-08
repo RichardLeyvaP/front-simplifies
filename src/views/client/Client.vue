@@ -27,13 +27,23 @@
         <v-col cols="12" md="4" class="grow ml-4">
           <span class="text-subtitle-1"> <strong>Listado de Clientes</strong></span>
         </v-col>
-        <v-col cols="12" md="5"></v-col>
-        <v-col cols="12" md="2">
+        <v-col cols="12" md="7" class="text-right">
+          <v-btn
+                v-bind="props"
+                class="text-subtitle-1 ml-1"
+                color="#E7E9E9"
+                variant="flat"
+                elevation="2"
+                prepend-icon="mdi-account-multiple"
+                @click="ClientsFrecuence()"
+              >
+                Frecuencia por Sucursal
+              </v-btn>
           <v-dialog v-model="dialog" max-width="1000px">
             <template v-slot:activator="{ props }">
               <v-btn
                 v-bind="props"
-                class="text-subtitle-1 ml-12"
+                class="text-subtitle-1 ml-1"
                 color="#E7E9E9"
                 variant="flat"
                 elevation="2"
@@ -412,10 +422,110 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <!--ClientFrecuence-->
+    <v-dialog v-model="dialogFrecuence" fullscreen transition="dialog-bottom-transition">
+      <v-card>
+        <v-toolbar color="#F18254">
+          <v-col cols="12" md="9" class="grow ml-4">
+            <span class="text-h8"> <strong>Visitas por clientes</strong></span>
+          </v-col>
+          <v-spacer></v-spacer>
+          <v-col cols="12" md="3" class="right">
+            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" elevation="2"
+              prepend-icon="mdi-file-excel" @click="exportToExcel">
+              Exportar a Excel
+            </v-btn>
+          </v-col>
+    </v-toolbar>
+        <v-container>
+        <v-row>
+         <!-- Primera columna -->
+         <v-col cols="12" sm="6" md="3" >
+          <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
+            min-width="290px">
+            <template v-slot:activator="{ props }">
+              <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined" append-inner-icon="mdi-calendar"
+                label="Fecha inicial"></v-text-field>
+            </template>
+            <v-locale-provider locale="es">
+              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input @update:model-value="updateDate"
+                format="yyyy-MM-dd" :max="dateFormatted2"></v-date-picker>
+            </v-locale-provider>
+          </v-menu>
+        </v-col>
+        <!-- Segunda columna -->
+        <v-col cols="12" sm="6" md="3">
+          <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
+            min-width="290px">
+            <template v-slot:activator="{ props }">
+              <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
+                append-inner-icon="mdi-calendar" label="Fecha final" ></v-text-field>
+            </template>
+            <v-locale-provider locale="es">
+              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" 
+                format="yyyy-MM-dd" :min="dateFormatted" @update:model-value="updateDate1"></v-date-picker><!--@update:model-value="updateDate2"-->
+            </v-locale-provider>
+          </v-menu>
+        </v-col>
+        <v-col cols="12" md="3">
+          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" 
+            label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
+            variant="outlined" ></v-autocomplete><!--@update:model-value="initialize()"-->
+        </v-col>
+        <v-col cols="12" md="1">
+                        <v-btn icon @click="updateDate2" color="#F18254" >
+                    <v-icon>mdi-magnify</v-icon></v-btn>
+                </v-col>
+      </v-row></v-container>
+      <v-row>
+        <v-col cols="12">
+          <v-container>
+            <v-alert border type="info" variant="outlined" density="compact">
+              <p v-html="formTitleFrec"></p>
+                        </v-alert>
+          </v-container>
+          <v-container>
+          <v-card-text>
+            <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
+              hide-details>
+            </v-text-field>
+            <v-data-table :headers="headers1" :items-per-page-text="'Elementos por páginas'" :items="frecuence"
+              :search="search2" class="elevation-2" no-results-text="No hay datos disponibles"
+              no-data-text="No hay datos disponibles">
+              <template v-slot:item.name="{ item }">
+
+                <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
+                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.client_image" alt="image"></v-img>
+                </v-avatar>
+                {{ item.name }}
+              </template>
+              <template v-slot:item.frecuence="{ item }">
+                <v-chip :color="item.frecuence != 'No Frecuente' ? 'green' : 'red'" :text="item.pay"
+                  class="text-uppercase" label size="small">
+                  {{ item.frecuence }}
+                </v-chip>
+              </template>
+            </v-data-table>
+
+          </v-card-text>
+        </v-container>
+        </v-col>
+        </v-row>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="#E7E9E9" variant="flat" @click="closeClientFrecuence"> Volver </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 <script>
 import axios from "axios";
+import * as XLSX from 'xlsx';
+import { format } from "date-fns";
+import LocalStorageService from "@/LocalStorageService";
 
 export default {
   data: () => ({
@@ -442,6 +552,7 @@ export default {
     ],
     results: [],
     editedIndex: -1,
+    editedIndexF: -1,
     users: [],
     file: null,
     imgMiniatura: "",
@@ -469,7 +580,24 @@ export default {
 
     //reporte
     dialogHistory: false,
+    dialogFrecuence: false,
+    frecuences: [],
+    menu: false,
+    menu2: false,
+    input: null,
+    input2: null,
+    search2: '',
+    charge: '',
     history: [],
+    frecuence: [],
+    headers1: [
+      { title: 'Profesional', key: 'name', sortable: false },
+      { title: 'Correo', key: 'email', sortable: false },
+      { title: 'Teléfono', key: 'phone', sortable: false },
+      { title: 'Clasificación', key: 'frecuence', sortable: true },
+      { title: 'Cantidad Visitas', key: 'cant_visist', sortable: true },
+      { title: 'Última vez Atendido', key: 'data', sortable: true },
+    ],
     nameRules: [
       (v) => !!v || "El campo es requerido",
       (v) => (v && v.length <= 50) || "El campo debe tener menos de 51 caracteres",
@@ -493,6 +621,40 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? "Nueva Persona" : "Editar Persona";
     },
+    formTitleFrec() {
+      if (this.editedIndexF === 2) {
+        const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
+        return `Visitas por clientes en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;
+      }
+      else {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.fecha = format(new Date(), "yyyy-MM-dd");
+        return `Visitas por clientes  <strong>${this.fecha}</strong>]`;
+      }
+    },
+    dateFormatted() {
+      const date = this.input ? new Date(this.input) : new Date();
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const year = date.getFullYear();
+      return `${year}-${month}-${day}`;
+    },
+    dateFormatted2() {
+      const date = this.input2 ? new Date(this.input2) : new Date();
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const year = date.getFullYear();
+      return `${year}-${month}-${day}`;
+    },
+    getDate() {
+      return this.input ? new Date(this.input) : new Date();
+    },
+    getDate2() {
+      return this.input2 ? new Date(this.input2) : new Date();
+    },
   },
 
   watch: {
@@ -505,7 +667,25 @@ export default {
   },
 
   mounted() {
+    this.branch_id = parseInt(LocalStorageService.getItem("branch_id"));
+    this.business_id = parseInt(LocalStorageService.getItem("business_id"));
+    this.charge_id = parseInt(LocalStorageService.getItem('charge_id'));
+    this.charge = JSON.parse(LocalStorageService.getItem("charge"));
+    axios
+      .get('https://api2.simplifies.cl/api/show-business', {
+        params: {
+          business_id: this.business_id
+        }
+      })
+      .then((response) => {
+        this.branches = response.data.branches;
+      }).finally(() => {
+        if (this.charge === 'Administrador') {
+          this.branch_id = this.branches[0].id;
+      this.mostrarFila = true;
+    } 
     this.initialize();
+          });
   },
 
   methods: {
@@ -682,6 +862,95 @@ export default {
     closeHistory() {
       this.dialogHistory = false;
     },
+    ClientsFrecuence() {
+      this.editedIndex = 2;
+      const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+      axios
+        .get('https://api2.simplifies.cl/api/clients-frecuence-periodo', {
+          params: {
+            branch_id: this.branch_id,
+            startDate: startDate,
+            endDate: endDate
+          }
+        })
+        .then((response) => {
+          this.frecuence = response.data;
+        }).finally(() => {
+          this.dialogFrecuence = true;
+          });
+    },
+    closeClientFrecuence() {
+      this.dialogFrecuence = false;
+    },
+    updateDate(val) {
+      this.input = val;
+      this.menu = false;
+      this.menu2 = false;
+    },
+    updateDate1(val) {
+      this.input2 = val;
+      this.menu2 = false;
+    },
+    updateDate2() {
+      this.editedIndexF = 2;
+      const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+      axios
+        .get('https://api2.simplifies.cl/api/clients-frecuence-periodo', {
+          params: {
+            branch_id: this.branch_id,
+            startDate: startDate,
+            endDate: endDate
+          }
+        })
+        .then((response) => {
+          this.frecuence = response.data;
+        });
+    },
+    exportToExcel() {
+      // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
+      let rows = [];
+
+      // Construye un objeto para los encabezados basado en la estructura de 'headers'
+      let headerRow = {};
+      this.headers1.forEach(header => {
+        headerRow[header.key] = header.title; // Usa 'key' para el mapeo y 'title' para el texto del encabezado
+      });
+      rows.push(headerRow);
+
+      // Ahora, mapea los datos de los items para que coincidan con los encabezados
+      this.frecuence.forEach(item => {
+        let rowData = {};
+        this.headers1.forEach(header => {
+          rowData[header.key] = item[header.key] || ''; // Asegura que cada celda se mapee correctamente; usa '' para datos faltantes
+        });
+        rows.push(rowData);
+      });
+
+      let nameReport = {
+        // eslint-disable-next-line vue/no-use-computed-property-like-method
+        name: this.formTitleFrec, // Asume que 'name' es una de tus claves; ajusta según sea necesario
+        email: '',
+        phone: '', // Deja vacíos los demás campos para esta fila especial
+        frecuence: '', // Usa 'total' para mostrar la fecha; ajusta las claves según corresponda a tu estructura
+        cant_visist: '',
+        data: ''
+      };
+      rows.push(nameReport);
+
+      // Convierte la matriz de filas en una hoja de trabajo Excel
+      const ws = XLSX.utils.json_to_sheet(rows, { skipHeader: true }); // 'skipHeader: true' porque ya agregamos manualmente los encabezados
+
+      // Crea un nuevo libro de trabajo y añade la hoja de trabajo con los datos
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Report" + this.fecha);
+
+      // Escribe el libro de trabajo a un archivo y desencadena la descarga
+      //XLSX.writeFile(wb, "report.xlsx");
+      XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
+    },
+    
   },
 };
 </script>
