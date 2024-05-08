@@ -209,7 +209,7 @@ export default {
 
     initialize() {
       axios
-        .get('https://api2.simplifies.cl/api/product-category')
+        .get('http://127.0.0.1:8000/api/product-category')
         .then((response) => {
           console.log("entra a Buscar almacenes")
           this.results = response.data.productcategories;
@@ -231,7 +231,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('https://api2.simplifies.cl/api/product-category-destroy', request)
+        .post('http://127.0.0.1:8000/api/product-category-destroy', request)
         .then(() => {
           this.initialize();
           this.showAlert("success", "Categoría de Producto eliminada correctamente", 3000)
@@ -262,7 +262,7 @@ export default {
         this.data.description = this.editedItem.description;
     
         axios
-          .put('https://api2.simplifies.cl/api/product-category', this.data)
+          .put('http://127.0.0.1:8000/api/product-category', this.data)
           .then(() => {
             this.initialize();
             this.showAlert("success", "Categoría de Producto editada correctamente", 3000)
@@ -272,7 +272,7 @@ export default {
         this.data.name = this.editedItem.name;
         this.data.description = this.editedItem.description;
         axios
-          .post('https://api2.simplifies.cl/api/product-category', this.data)
+          .post('http://127.0.0.1:8000/api/product-category', this.data)
           .then(() => {
             this.initialize();
             this.showAlert("success", "Categoría de Producto registrada correctamente", 3000)

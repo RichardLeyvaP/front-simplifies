@@ -220,7 +220,7 @@
           <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
             <v-img
               :src="
-                'https://api2.simplifies.cl/api/images/' +
+                'http://127.0.0.1:8000/api/images/' +
                 item.client_image +
                 '?$' +
                 Date.now()
@@ -278,7 +278,7 @@
               <v-img
                 class="align-end text-white"
                 height="300"
-                :src="'https://api2.simplifies.cl/api/images/' + history.imageLook"
+                :src="'http://127.0.0.1:8000/api/images/' + history.imageLook"
                 cover
               >
                 <v-card-title>
@@ -326,7 +326,7 @@
                         max-height="60"
                       >
                         <v-img
-                          :src="'https://api2.simplifies.cl/api/images/' + history.image_url"
+                          :src="'http://127.0.0.1:8000/api/images/' + history.image_url"
                           alt="Imagen"
                         ></v-img>
                       </v-avatar>
@@ -372,7 +372,7 @@
                   <template v-slot:prepend>
                     <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
                       <v-img
-                        :src="'https://api2.simplifies.cl/api/images/' + service.image_service"
+                        :src="'http://127.0.0.1:8000/api/images/' + service.image_service"
                         alt="image"
                       ></v-img>
                     </v-avatar>
@@ -402,7 +402,7 @@
                   <template v-slot:prepend>
                     <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
                       <v-img
-                        :src="'https://api2.simplifies.cl/api/images/' + product.image_product"
+                        :src="'http://127.0.0.1:8000/api/images/' + product.image_product"
                         alt="image"
                       ></v-img>
                     </v-avatar>
@@ -496,7 +496,7 @@
               <template v-slot:item.name="{ item }">
 
                 <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.client_image" alt="image"></v-img>
+                  <v-img :src="'http://127.0.0.1:8000/api/images/' + item.client_image" alt="image"></v-img>
                 </v-avatar>
                 {{ item.name }}
               </template>
@@ -672,7 +672,7 @@ export default {
     this.charge_id = parseInt(LocalStorageService.getItem('charge_id'));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
-      .get('https://api2.simplifies.cl/api/show-business', {
+      .get('http://127.0.0.1:8000/api/show-business', {
         params: {
           business_id: this.business_id
         }
@@ -727,11 +727,11 @@ export default {
       this.snackbar = true;
     },
     initialize() {
-      axios.get("https://api2.simplifies.cl/api/client").then((response) => {
+      axios.get("http://127.0.0.1:8000/api/client").then((response) => {
         this.results = response.data.clients;
       });
       /*axios
-        .get('https://api2.simplifies.cl/api/usuario')
+        .get('http://127.0.0.1:8000/api/usuario')
         .then((response) => {
           this.users = response.data.users;
         });*/
@@ -752,9 +752,9 @@ export default {
     editItem(item) {
       this.file = null;
       var img = new Image();
-      img.src = "https://api2.simplifies.cl/api/images/" + item.client_image;
+      img.src = "http://127.0.0.1:8000/api/images/" + item.client_image;
       img.onload = () => {
-        this.imgMiniatura = "https://api2.simplifies.cl/api/images/" + item.client_image;
+        this.imgMiniatura = "http://127.0.0.1:8000/api/images/" + item.client_image;
       };
       img.onerror = () => {
         this.imgMiniatura = "";
@@ -776,7 +776,7 @@ export default {
         id: this.editedItem.id,
       };
       axios
-        .post("https://api2.simplifies.cl/api/client-destroy", request)
+        .post("http://127.0.0.1:8000/api/client-destroy", request)
         .then(() => {})
         .finally(() => {
           this.showAlert("success", "Cliente eliminado correctamente", 3000);
@@ -812,7 +812,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios
-          .post("https://api2.simplifies.cl/api/client-update", formData)
+          .post("http://127.0.0.1:8000/api/client-update", formData)
           .then(() => {})
           .finally(() => {
             this.showAlert("success", "Cliente editado correctamente", 3000);
@@ -831,7 +831,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios
-          .post("https://api2.simplifies.cl/api/client", formData)
+          .post("http://127.0.0.1:8000/api/client", formData)
           .then(() => {
             this.initialize();
             this.showAlert("success", "Cliente registrado correctamente", 3000);
@@ -846,7 +846,7 @@ export default {
     showHistory(item) {
       console.log("Client History");
       axios
-        .get("https://api2.simplifies.cl/api/client-history", {
+        .get("http://127.0.0.1:8000/api/client-history", {
           params: {
             //branch_id: this.branch_id,
             client_id: item.id,
@@ -867,7 +867,7 @@ export default {
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       axios
-        .get('https://api2.simplifies.cl/api/clients-frecuence-periodo', {
+        .get('http://127.0.0.1:8000/api/clients-frecuence-periodo', {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,
@@ -897,7 +897,7 @@ export default {
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       axios
-        .get('https://api2.simplifies.cl/api/clients-frecuence-periodo', {
+        .get('http://127.0.0.1:8000/api/clients-frecuence-periodo', {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,

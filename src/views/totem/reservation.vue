@@ -35,7 +35,7 @@
                 
                 <v-list>
 <v-list-item-group v-model="selected" multiple active-class="deep-purple--text text--accent-4">
-  <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + service.image_service"
+  <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + service.image_service"
     v-for="service in services" :key="service.id" @click="toggleService(service.id)"
     :class="{ 'selected-item': isSelected(service.id) }" class="pt-4 pb-4">
 
@@ -90,7 +90,7 @@
                    
                       <v-list-item-group v-model="professional" active-class="deep-purple--text text--accent-4">
                          
-                          <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + professional.image_url"
+                          <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + professional.image_url"
                               v-for="professional in professionals" :key="professional.id"
                               @click="toggleService2(professional)"
                               :class="{ 'selected-item': isProfessional(professional.id) }" class="pt-4 pb-4">
@@ -205,71 +205,41 @@
      <v-text-field :disabled="verificate" v-model="email_client" :rules="emailRules" label="Correo Electrónico" outlined
        required></v-text-field>
      </v-col>
-
-     
-  <v-container>
-    <v-card >
-      <!--<v-list>
-        <v-list-item-group>
-    <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.image_data"
-      v-for="item in filteredBranches" :key="item.id">
-      <v-list-item-content class="d-flex align-center justify-space-between">
-        <v-list-item-title> <strong>{{ item.name }} {{ item.address }}</strong> </v-list-item-title>
-      </v-list-item-content>
-    </v-list-item>
-  </v-list-item-group>
-</v-list>-->
-      
-      
-<v-list>
-  <v-list-item>
-    <v-list-item-content>
-      <v-list-item-title><strong>{{ nameBranch }}</strong></v-list-item-title>
-    </v-list-item-content>
-  </v-list-item>
-</v-list>
-<div class="d-flex align-center">
-  <!-- Encabezado "Professional:" -->
-  <strong>Professional:</strong>
-  <!-- Lista de profesionales -->
-  <v-list>
-    <v-list-item-group>
-      <!-- Iteración sobre los profesionales -->
-      <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.image_url" v-for="item in filteredProfessionals" :key="item.id">
-        <v-list-item-content class="d-flex align-center justify-space-between">
-          <!-- Nombre completo del profesional -->
-          <v-list-item-title><strong>{{ item.name }} {{ item.surname }} {{ item.second_surname }}</strong></v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list-item-group>
-  </v-list>
-</div>
-<v-list item-props><strong>Servicios:</strong>
-                        <v-list-item-group>
-                          <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + serviceA.image_service"
-                            v-for="serviceA in filteredServices" :key="serviceA.id">
-
-                            <v-list-item-content class="d-flex align-center justify-space-between">
-                              <v-list-item-title> <strong>{{ serviceA.name }}</strong> </v-list-item-title>
-                               </v-list-item-content>                         
-                          </v-list-item>
-                        </v-list-item-group>
-</v-list>
-<strong>Duración:</strong> {{ this.totalDuration }}
-<br>
-<strong>Precio:</strong> {{ this.totalPrice }}
-    </v-card>
-  </v-container>
-     <!-- <v-col cols="12" md="6" >
-     <v-checkbox v-model="checkbox" color="orange lighten-2"
-       :rules="[v => !!v || 'You must agree to continue!']" label="Términos y condiciones"
-       required></v-checkbox>
-     </v-col> -->
      </v-row>
+     
 
    </v-form>
 <v-divider class="pt-4 mt-4"></v-divider>
+<v-container>
+              <v-card
+    class="mx-auto"
+   
+  >
+    <v-card-text>
+      <div class="text"><strong>Detalles de la Reserva</strong></div>      
 
+      <p>Ubicación : 
+        <span v-for="(item) in filteredBranches" :key="item.title" :value="item.id"> <strong>{{ item.name  }}</strong>, {{ item.address }} </span>
+      </p>
+
+      <p>Profesional : 
+        <span v-for="(item) in filteredProfessionals" :key="item.title" :value="item.id">
+           <strong> {{ item.name }} {{ item.surname }} {{ item.second_surname }}</strong> </span>
+      </p>
+      
+      <p>Servicios : <br>
+        <span v-for="(item) in filteredServices1.filteredServices" :key="item.title" :value="item.id">
+           <strong> {{ item.name }}</strong> <br> </span>
+      </p>
+
+      <p> Duración : <strong> {{ convertirMinutosAHorasYMinutos( filteredServices1.totalDuration) }}</strong></p>
+
+      <p> Precio Total : <strong> {{ filteredServices1.totalPrice }}</strong></p>
+     </v-card-text>
+
+  </v-card>
+  
+  </v-container>
 
 </v-sheet>
 <v-container>
@@ -311,7 +281,7 @@ size="x-large"
   </v-container>
   <v-dialog v-model="dialogEncuesta"
         transition="dialog-bottom-transition"
-        max-width="600" persistent
+        max-width="600"
       >
           <v-card>
             <v-toolbar
@@ -320,7 +290,7 @@ size="x-large"
             >Como supo de nosotros</v-toolbar>
             <v-card-text>
               <v-col cols="12" md="12" class="mt-2">
-                  <v-checkbox
+                <v-checkbox
       v-for="survey in surveys"
       :key="survey.id"
       v-model="selectedSurveys"
@@ -329,18 +299,21 @@ size="x-large"
       multiple
       dense
     ></v-checkbox>
+          <!--<v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="survey_id" :items="surveys" item-text="name" item-value="id"
+            label="Seleccione una opción" prepend-icon="mdi-poll"
+            variant="underlined"></v-autocomplete>-->
                     </v-col>
             </v-card-text>
             <v-card-actions class="justify-end">
-              <!--<v-btn          
+              <v-btn          
               
               @click="dialogEncuesta = false"
-              >Cancelar</v-btn>-->
-              <v-btn variant="flat"
-              color="#F18254"
+              >Cancelar</v-btn>
+              <v-btn
+              color="orange lighten-2"
               
               
-                @click="addEncuesta()" :disabled="!selectedSurveys.length>0"
+                @click="addEncuesta()"
               >Aceptar</v-btn>
             </v-card-actions>
           </v-card>
@@ -523,10 +496,25 @@ export default {
     }
   },*/
   filteredBranches() {
-    return this.branches.filter(item => item.id == this.branch.id);
+    return this.branches.filter(item => item.id == this.branch_id);
   },
+  filteredServices1() {
+    const newArrayService = this.array_services.map(item => parseInt(item));
+    //let totalTime = 0; // Inicializar la variable para almacenar el tiempo total
+    // Filtrar los servicios
+    const filteredServices = this.services.filter(item => {
+        // Comprobar si el id de este servicio está presente en la lista de ids seleccionados
+        // Si `this.selected_services` es un solo id, item.id === this.selected_services evaluará a true o false
+        // Si `this.selected_services` es una lista de ids, Array.includes() verificará si item.id está en la lista
+        return Array.isArray(newArrayService) ? newArrayService.includes(item.id) : item.id === newArrayService;
+    });
+    const totalPrice = filteredServices.reduce((total, service) => total + service.price_service, 0);
+    const totalDuration = filteredServices.reduce((total, service) => total + service.duration_service, 0);
 
-  filteredServices() {
+    // Devolver los servicios filtrados y la suma del precio y la duración
+    return { filteredServices, totalPrice, totalDuration };
+  },
+  /*filteredServices() {
     //let totalTime = 0; // Inicializar la variable para almacenar el tiempo total
     // Filtrar los servicios
     const newArrayService = this.array_services.map(item => parseInt(item));
@@ -544,7 +532,7 @@ export default {
     this.totalPrice = totalPrice;
    // Devolver los servicios filtrados
     return filteredServices;
-  },
+  },*/
     advanceReserva1() {
     console.log()
     return !this.selected.length > 0; // Verdadero si hay elementos, falso si está vacío
@@ -568,7 +556,7 @@ export default {
 this.branch_id = parseInt(LocalStorageService.getItem('branch_id'));
 this.nameBranch = JSON.parse(LocalStorageService.getItem("nameBranch"));
 axios
-      .get('https://api2.simplifies.cl/api/show-business', {
+      .get('http://127.0.0.1:8000/api/show-business', {
         params: {
           business_id: this.business_id
         }
@@ -593,6 +581,34 @@ axios
 
   methods:
   {
+    convertirMinutosAHorasYMinutos(minutos) {
+
+console.log("estos son los minutos")
+console.log(minutos)
+// Calcular las horas
+var horas = Math.floor(minutos / 60);
+// Calcular los minutos restantes después de convertir a horas
+var minutosRestantes = minutos % 60;
+
+// Construir el mensaje de salida
+var mensaje = "";
+if (horas > 0) {
+  mensaje += horas + " hora";
+  if (horas !== 1) {
+      mensaje += "s"; // plural si hay más de una hora
+  }
+}
+if (minutosRestantes > 0) {
+  if (mensaje !== "") {
+      mensaje += " y ";
+  }
+  mensaje += minutosRestantes + " minuto";
+  if (minutosRestantes !== 1) {
+      mensaje += "s"; // plural si hay más de un minuto
+  }
+}
+return mensaje;
+},
     showAlert(sb_type,sb_message, sb_timeout)
   {    
    this.sb_type= sb_type
@@ -670,7 +686,7 @@ axios
     
 
     // Realiza la solicitud POST Y BUSCO LOS DATOS DEL CLIENTE 
-    axios.get(`https://api2.simplifies.cl/api/client-email-phone?email=${this.email_client2}`)
+    axios.get(`http://127.0.0.1:8000/api/client-email-phone?email=${this.email_client2}`)
       .then(response => {
         // Maneja la respuesta de la solicitud aquí
       this.clientRegister = response.data.client;
@@ -778,7 +794,7 @@ let request = {};
     console.log('**********************************---------------------');
 
     // Realiza la solicitud GET con Axios y pasa los parámetros
-    axios.post('https://api2.simplifies.cl/api/reservation_store',  request )
+    axios.post('http://127.0.0.1:8000/api/reservation_store',  request )
       .then(response => {
         // Maneja la respuesta de la solicitud aquí
       this.message=response.data.msg
@@ -819,7 +835,7 @@ let request = {};
   },
   showDialogEncuesta(){
       axios
-        .get('https://api2.simplifies.cl/api/survey')
+        .get('http://127.0.0.1:8000/api/survey')
         .then((response) => {          
             this.surveys = response.data.surveys;
         });
@@ -833,7 +849,7 @@ let request = {};
         survey_id: this.selectedSurveys
       
       }
-      axios.post('https://api2.simplifies.cl/api/client-survey',  request )
+      axios.post('http://127.0.0.1:8000/api/client-survey',  request )
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
        // this.message=response.data.msg
@@ -871,7 +887,7 @@ data: formattedDate
 
 
 axios
-.get('https://api2.simplifies.cl/api/professional-reservations-time' , {
+.get('http://127.0.0.1:8000/api/professional-reservations-time' , {
           params: request
       })
       .then((response) => {
@@ -902,7 +918,7 @@ return day ? day.day.toString().trim() : "";
 },*/
       /*chargeCalendarsBranches() {
           axios
-              .get(`https://api2.simplifies.cl/api/schedule-show?branch_id=${this.branch_id}`)
+              .get(`http://127.0.0.1:8000/api/schedule-show?branch_id=${this.branch_id}`)
               .then((response) => {
                   this.calendars_branches = response.data.Schedules;
                   this.dayOfWeek = response.data.Schedules;
@@ -1061,7 +1077,7 @@ toggleService2(serviceId2) {
 
       chargeServices() {
           axios
-              .get(`https://api2.simplifies.cl/api/branchservice-show?branch_id=${this.branch_id}`)
+              .get(`http://127.0.0.1:8000/api/branchservice-show?branch_id=${this.branch_id}`)
               .then((response) => {
                   console.log(response.data)
                   this.services = response.data.services;
@@ -1087,7 +1103,7 @@ console.log(newArrayService);
 
           this.array_services = newArrayService;
           axios
-      .get(`https://api2.simplifies.cl/api/branch-professionals-service`, {
+      .get(`http://127.0.0.1:8000/api/branch-professionals-service`, {
           params: data
       })
       .then((response) => {

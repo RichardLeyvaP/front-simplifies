@@ -234,7 +234,7 @@ export default {
 
     initialize() {
       axios
-        .get('https://api2.simplifies.cl/api/rule')
+        .get('http://127.0.0.1:8000/api/rule')
         .then((response) => {
           console.log("entra a Buscar las reglas")
           this.results = response.data.rules;
@@ -258,7 +258,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('https://api2.simplifies.cl/api/rule-destroy', request)
+        .post('http://127.0.0.1:8000/api/rule-destroy', request)
         .then(() => {
           this.initialize();
           this.showAlert("success", "Regla de convivencia eliminada correctamente", 3000)
@@ -292,7 +292,7 @@ export default {
         console.log('this.editedItem.automatic');
         console.log(this.editedItem.automatic);
         axios
-          .put('https://api2.simplifies.cl/api/rule', this.data)
+          .put('http://127.0.0.1:8000/api/rule', this.data)
           .then(() => {
             this.initialize();
             this.showAlert("success", "Regla de convivencia editada correctamente", 3000)
@@ -305,7 +305,7 @@ export default {
         //this.data.automatic = this.editedItem.automatic;
         console.log(this.editedItem.automatic);
         axios
-          .post('https://api2.simplifies.cl/api/rule', this.data)
+          .post('http://127.0.0.1:8000/api/rule', this.data)
           .then(() => {
             this.initialize();
             this.showAlert("success", "Regla de convivencia registrada correctamente", 3000)
