@@ -110,7 +110,7 @@
 
 
 
-        <v-carousel height="400" show-arrows="hover" cycle="false" direction="vertical" interval="3000"
+        <v-carousel height="800" show-arrows="hover" cycle="false" direction="vertical" interval="3000"
           hide-delimiters="true">
 
           <v-carousel-item v-for="(itemGroup, index2) in items" :key="index2">
@@ -199,7 +199,7 @@ export default {
   methods: {
     fetchItems(valueClient) {
       console.log('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww ENTRE EN fetchItems');
-      this.items = this.createArrayOfArrays(valueClient, 4);
+      this.items = this.createArrayOfArrays(valueClient, 8);
       console.log('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww this.items');
       console.log(this.items);
 
