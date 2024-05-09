@@ -15,11 +15,10 @@
                         <v-col cols="12">
                           <spam class="text-overline"> Ingreso Mensual
                             <div class="text-h6 font-weight-bold text-teal-darken-2">
-                              {{ formatNumber(amountMounth) }}
-                              <br>
+                              {{ this.formatNumber(amountMounth) }}
                               <div class="text-h6 font-weight-bold text-teal-darken-2">
-                              <br>
                             </div>
+                              CPL
                             </div>
                           </spam>
                           <p>{{ formattedDateMonth }} </p>
@@ -32,11 +31,10 @@
                         <v-col cols="12">
                           <spam class="text-overline"><br>
                             <div class="text-h6 font-weight-bold text-teal-darken-2">
-                              {{ amountMounthAnt }}
-                              <br>
+                              {{ this.formatNumber(amountMounthAnt) }}
                               <div class="text-h6 font-weight-bold text-teal-darken-2">
-                              <br>
                             </div>
+                            CPL
                             </div>
                           </spam>
                           <p>{{ formattedDateMonthAnt }} </p>
@@ -569,7 +567,11 @@ import axios from "axios";
 export default {
   name: 'LoginPage',
   components: { Bar, LineChart },
-
+  props: {
+      value: {
+        type: String
+      },
+    },
   data() {
     return {
       formattedDate: '',
@@ -683,7 +685,24 @@ export default {
   },
   methods: {
     formatNumber(value) {
-            return value.toLocaleString('es-ES');
+      // Si el valor es menor que 1000, devuelve el valor original sin formato
+  if (value < 1000) {
+    return value;
+  }
+
+  // Primero, redondea el valor a dos decimales
+  value = Math.round((value + Number.EPSILON) * 100) / 100;
+
+  // Separa la parte entera de la parte decimal
+  let parts = value.toString().split(".");
+  let integerPart = parts[0];
+  let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+
+  // Agrega los separadores de miles
+  integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+  // Combina la parte entera y la parte decimal
+  return integerPart + decimalPart;
         },
     //ganancias en la semana
     generateChartData1() {

@@ -152,6 +152,9 @@
             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search"
                 :items="results" class="elevation-1" no-results-text="No hay datos disponibles"
                 no-data-text="No hay datos disponibles">
+                <template v-slot:item.amount="{ item }"> {{
+								formatNumber(item.amount)}}
+										</template>
                 <template v-slot:item.nameClient="{ item }">
 
                     <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
@@ -443,6 +446,9 @@ export default {
     },
 
     methods: {
+        formatNumber(value) {
+            return value.toLocaleString('es-ES');
+        },
         updateDate(val) {
             this.input = val;
             this.menu = false;

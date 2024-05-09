@@ -234,7 +234,7 @@
 
       <p> Duración : <strong> {{ convertirMinutosAHorasYMinutos( filteredServices1.totalDuration) }}</strong></p>
 
-      <p> Precio Total : <strong> {{ filteredServices1.totalPrice }}</strong></p>
+      <p> Precio Total : <strong> {{ this.formatNumber(filteredServices1.totalPrice) }}</strong></p>
      </v-card-text>
 
   </v-card>
@@ -582,7 +582,24 @@ axios
   methods:
   {
     formatNumber(value) {
-            return value.toLocaleString('es-ES');
+      // Si el valor es menor que 1000, devuelve el valor original sin formato
+  if (value < 1000) {
+    return value;
+  }
+
+  // Primero, redondea el valor a dos decimales
+  value = Math.round((value + Number.EPSILON) * 100) / 100;
+
+  // Separa la parte entera de la parte decimal
+  let parts = value.toString().split(".");
+  let integerPart = parts[0];
+  let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+
+  // Agrega los separadores de miles
+  integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+  // Combina la parte entera y la parte decimal
+  return integerPart + decimalPart;
         },
     convertirMinutosAHorasYMinutos(minutos) {
 
