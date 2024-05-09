@@ -283,7 +283,7 @@
                             <v-btn color="#E7E9E9" variant="flat" @click="close">
                                 Cancelar
                             </v-btn>
-                            <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
+                            <v-btn color="#F18254" variant="flat" @click="saveOtros" :disabled="!valid">
                                 Aceptar
                             </v-btn>
                         </v-card-actions>
@@ -1017,6 +1017,30 @@ export default {
                     this.initialize();
                     this.showAlert("success", "Puesto de trabajo editado correctamente", 3000);
                 })*/
+            this.close();
+        },
+        saveOtros() {
+            this.valid = false;
+        
+            this.data.professional_id = this.professional_id;
+            this.data.branch_id = this.branch_id;
+            this.data.amount = this.editedItem.amount;
+            this.data.type = this.editedItem.type;
+            console.log('this.data');
+            console.log(this.data);
+            axios
+                .post('http://127.0.0.1:8000/api/professional-payment', this.data)
+                .then(() => {
+                    this.$nextTick(() => {
+                        this.editedItem = Object.assign({}, this.defaultItem);
+                    });
+                    this.editedIndex = -1;
+                    this.type = null;
+                    this.mostrarCars = false;
+                }).finally(() => {
+                    this.showAlert("success", "Pago realizado correctamente", 3000);
+                    this.showProfessional();
+                });
             this.close();
         },
         exportToExcelProfessional() {
