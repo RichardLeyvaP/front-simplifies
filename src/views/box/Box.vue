@@ -363,7 +363,7 @@
             <span class="text-subtitle-1  ml-2">Pagar Carro</span>
             <v-spacer></v-spacer>
             <span class="text-subtitle-1 mr-3">
-              Monto a pagar {{ this.editedItem.amount }} </span>
+              Monto a pagar {{ formatNumber(this.editedItem.amount) }} </span>
           </v-toolbar>
 
           <v-card-text>
@@ -992,9 +992,29 @@ export default {
   },
 
   methods: {
+    formatNumber(value) {
+      // Si el valor es menor que 1000, devuelve el valor original sin formato
+  if (value < 1000) {
+    return value;
+  }
+
+  // Primero, redondea el valor a dos decimales
+  value = Math.round((value + Number.EPSILON) * 100) / 100;
+
+  // Separa la parte entera de la parte decimal
+  let parts = value.toString().split(".");
+  let integerPart = parts[0];
+  let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+
+  // Agrega los separadores de miles
+  integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+  // Combina la parte entera y la parte decimal
+  return integerPart + decimalPart;
+        },
     customValidation() {
       if (this.editedCard.value !== '' && parseInt(this.editedItem.cardGif) > parseInt(this.editedCard.value)) {
-        return 'El valor de la tarjeta de regalo no puede ser mayor que ' + this.editedCard.value;
+        return 'El valor de la tarjeta de regalo no puede ser mayor que ' + this.formatNumber(this.editedCard.value);
       }
       return true;
     },
@@ -1022,9 +1042,9 @@ export default {
         return 'Desconocido';
     }
   },
-    formatNumber(value) {
+    /*formatNumber(value) {
             return value.toLocaleString('es-ES');
-        },
+        },*/
     onCardGiftSelected(code) {
       // Realiza cualquier lógica adicional aquí
       console.log('Elemento seleccionado:', code);
@@ -1453,7 +1473,7 @@ export default {
           this.valid = true;
         }
         else {
-          this.showAlert("warning", "Monto debe coincidir con el monto total " + (this.editedItem.amount + this.data.tip), 3000);
+          this.showAlert("warning", "Monto debe coincidir con el monto total " + this.formatNumber(this.editedItem.amount + this.data.tip), 3000);
         }
         if (this.editedItem.cash || this.editedItem.creditCard || this.editedItem.debit || this.editedItem.transfer || this.editedItem.other || this.editedItem.cardGif || this.editedItem.tip) {
           this.valid = true;
