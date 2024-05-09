@@ -18,7 +18,7 @@
                               {{ this.formatNumber(amountMounth) }}
                               <div class="text-h6 font-weight-bold text-teal-darken-2">
                             </div>
-                              CPL
+                            CLP
                             </div>
                           </spam>
                           <p>{{ formattedDateMonth }} </p>
@@ -34,7 +34,7 @@
                               {{ this.formatNumber(amountMounthAnt) }}
                               <div class="text-h6 font-weight-bold text-teal-darken-2">
                             </div>
-                            CPL
+                            CLP
                             </div>
                           </spam>
                           <p>{{ formattedDateMonthAnt }} </p>
