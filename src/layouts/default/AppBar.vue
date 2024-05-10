@@ -143,6 +143,7 @@
 import LocalStorageService from "@/LocalStorageService";
 //import { UserTokenStore } from "@/store/UserTokenStore";
 import axios from "axios";
+//import router from '@/router/index';
 //const userTokenStore = UserTokenStore();
 export default {
   data: () => ({
@@ -197,7 +198,6 @@ export default {
   },
   methods: {
     handleItemClickNotif(item) {
-      console.log('tretreterterter');
       let request = {
         id: item.id,
         charge: this.charge
@@ -207,7 +207,8 @@ export default {
         .then(() => {
           //this.initialize();
         }).finally(() => {
-          this.initialize();
+          //this.initialize();
+          this.$router.push({ path: 'car-order-delete' });
           });
   },
     clearNotifications() {

@@ -89,7 +89,7 @@
           <v-col cols="12" md="4">
             <p class="font-weight-black" 
               style="text-align: center; font-size: 40px; font-family: 'Poppins', sans-serif; font-weight: bold; color: #ffffff;">
-              CÓDIGO
+              RESERVA
             </p>
 
           </v-col>

@@ -307,13 +307,11 @@ size="x-large"
             <v-card-actions class="justify-end">
               <v-btn          
               
-              @click="dialogEncuesta = false"
+              @click="dialogEncuesta = false" color="#E7E9E9" variant="flat"
               >Cancelar</v-btn>
-              <v-btn
-              color="orange lighten-2"
+              <v-btn         
               
-              
-                @click="addEncuesta()" :disabled="!selectedSurveys.length>0"
+                @click="addEncuesta()" :disabled="!selectedSurveys.length>0" color="#F18254" variant="flat"
               >Aceptar</v-btn>
             </v-card-actions>
           </v-card>
