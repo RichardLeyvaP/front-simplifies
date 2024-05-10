@@ -71,14 +71,20 @@
         </v-row>
         </v-container>-->
         <v-row>
-          <v-col cols="12">
+        <v-container>
+          <v-col cols="12" sm="12" md="4">
+          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" 
+            label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
+            variant="outlined" @update:modelValue="initialize()"></v-autocomplete><!-- @update:modelValue="nameBranchSelect"-->
+          </v-col>
+        </v-container>
+          
+          <v-col cols="12" md="12">
             <v-container>
               <v-alert border type="info" variant="outlined" density="compact">
                 <p> Resumen de las Encuestas</p>
                           </v-alert>
             </v-container>
-          </v-col>
-          <v-col cols="12" md="12">
             <v-card-text>
               <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
                 hide-details></v-text-field>
@@ -96,9 +102,6 @@
   import { format } from "date-fns";
   import * as XLSX from 'xlsx';
   import LocalStorageService from "@/LocalStorageService";
-  /*import { UserTokenStore } from "@/store/UserTokenStore";
-  
-  const userTokenStore = UserTokenStore();*/
   export default {
     props: {
       value: {
@@ -106,17 +109,15 @@
       },
     },
     data: () => ({
-      /*menu: false,
-      menu2: false,
-      menu3: false,
-      input: null,
-      input2: null,
-      input3: null,
-      fecha: '',*/
+ 
+      branches: '',
+      branch_id: '',
+      charge: '',
       search: '',
       editedIndex: -1,
       results: [],
       business_id: '',
+      mostrarFila: false,
       headers: [
         { title: 'Nombre Encuesta', key: 'name', sortable: false },
         { title: 'Cantidad', key: 'client_surveys_count', sortable: true }
@@ -189,9 +190,25 @@
     },
   
     mounted() {
-      
       this.business_id = parseInt(LocalStorageService.getItem("business_id"));
-      this.initialize();
+      this.branch_id = parseInt(LocalStorageService.getItem('branch_id'));
+      this.charge = JSON.parse(LocalStorageService.getItem("charge"));
+      axios
+      .get('http://127.0.0.1:8000/api/show-business', {
+        params: {
+          business_id: this.business_id
+        }
+      })
+      .then((response) => {
+        this.branches = response.data.branches;
+      }).finally(() => {
+            if (this.charge === 'Administrador') {
+                    this.branch_id = this.branches[0].id;
+                  this.branchName = this.branches[0].name;
+                    this.mostrarFila = true;
+                }
+                this.initialize();
+          });
     },
   
     methods: {
@@ -288,7 +305,11 @@
       initialize() {
         this.editedIndex = 1;
         axios
-          .get('http://127.0.0.1:8000/api/surveyCounts')
+          .get('http://127.0.0.1:8000/api/surveyCounts', {
+        params: {
+          branch_id: this.branch_id
+        }
+      })
           .then((response) => {
             this.results = response.data;
           })

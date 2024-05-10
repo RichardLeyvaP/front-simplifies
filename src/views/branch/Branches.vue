@@ -140,7 +140,7 @@
           <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-store-outline" @click="showStores(item)" color="green" variant="tonal"
             elevation="1" title="Agregar Almacén"></v-btn>  
           <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-handshake" @click="showAssociates(item)" color="orange" variant="tonal"
-            elevation="1" title="Agregar Almacén"></v-btn>  
+            elevation="1" title="Agregar Asociado"></v-btn>  
             <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-finance" @click="showWinner(item)" color="teal" variant="tonal"
             elevation="1" title="Finanzas de la  sucursal"></v-btn>  
           <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"

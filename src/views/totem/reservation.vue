@@ -866,7 +866,8 @@ let request = {};
       console.log(this.selectedSurveys);
       let request = {
         email: this.email_client,
-        survey_id: this.selectedSurveys
+        survey_id: this.selectedSurveys,
+        branch_id: this.branch_id,
       
       }
       axios.post('http://127.0.0.1:8000/api/client-survey',  request )

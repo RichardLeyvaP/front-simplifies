@@ -66,12 +66,12 @@
                     <v-col cols="12" md="5">
                       <v-row>
                         <v-col cols="12">
-                          <spam class="text-overline"> Producto más Vendido
+                          <spam class="text-overline"> Productos Vendidos
                             <div class="text-h6 font-weight-bold text-amber-darken-1">
-                              {{ productName }}
+                              {{ formatNumber(productCant) }}
                             </div>
                             <div class="text-h6 font-weight-bold text-amber-darken-1">
-                              {{ productCant }}
+                              CLP
                             </div>
                           </spam>
                           <p>{{ formattedDate }} </p>
@@ -84,10 +84,10 @@
                         <v-col cols="12">
                           <spam class="text-overline"><br>
                             <div class="text-h6 font-weight-bold text-amber-darken-1">
-                              {{ productNameAnt }}
+                              {{ formatNumber(productCantAnt) }}
                             </div>
                             <div class="text-h6 font-weight-bold text-amber-darken-1">
-                              {{ productCantAnt }}
+                              CLP
                             </div>
                           </spam>
                           <p>{{ formattedDateAnt }} </p>
@@ -123,12 +123,12 @@
                     <v-col cols="12" md="5">
                       <v-row>
                         <v-col cols="12">
-                          <spam class="text-overline"> Servicio más brindado
+                          <spam class="text-overline"> Servicios brindados
                             <div class="text-h6 font-weight-bold text-brown-lighten-1">
-                              {{ serviceName }}
+                              {{ formatNumber(serviceCant) }}
                             </div>
                             <div class="text-h6 font-weight-bold text-brown-lighten-1">
-                              {{ serviceCant }}
+                              CLP
                             </div>
                           </spam>
                           <p>{{ formattedDate }} </p>
@@ -141,10 +141,10 @@
                         <v-col cols="12">
                           <spam class="text-overline"><br>
                             <div class="text-h6 font-weight-bold text-brown-lighten-1">
-                              {{ serviceNameAnt }}
+                              {{ formatNumber(serviceCantAnt) }}
                             </div>
                             <div class="text-h6 font-weight-bold text-brown-lighten-1">
-                              {{ serviceCantAnt }}
+                              CLP
                             </div>
                           </spam>
                           <p>{{ formattedDateAnt }} </p>
@@ -765,21 +765,21 @@ export default {
         })
         .then((response) => {
           this.products = response.data.product;
-          this.productsData = this.products[0].products;
-          this.productsDataAnt = this.products[0].productsAnt;
-          this.productName = this.products[0].name;
-          this.productNameAnt = this.products[0].nameAnt;
+          //this.productsData = this.products[0].products;
+          //this.productsDataAnt = this.products[0].productsAnt;
+          //this.productName = this.products[0].name;
+          //this.productNameAnt = this.products[0].nameAnt;
           this.productCant = this.products[0].cant;
           this.productCantAnt = this.products[0].cantAnt;
           this.services = response.data.service;
-          this.servicesData = this.services[0].services;
-          this.servicesDataAnt = this.services[0].servicesAnt;
-          this.serviceName = this.services[0].name;
-          this.serviceNameAnt = this.services[0].nameAnt;
+          //this.servicesData = this.services[0].services;
+          //this.servicesDataAnt = this.services[0].servicesAnt;
+          //this.serviceName = this.services[0].name;
+          //this.serviceNameAnt = this.services[0].nameAnt;
           this.serviceCant = this.services[0].cant;
           this.serviceCantAnt = this.services[0].cantAnt;
-          this.servicesData = this.services[0].services;
-          console.log(this.services[0].services);
+          //this.servicesData = this.services[0].services;
+          //console.log(this.services[0].services);
         });
       axios
         .get('http://127.0.0.1:8000/api/cars-winner-mounth', {
