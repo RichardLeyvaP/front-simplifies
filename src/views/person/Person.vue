@@ -341,10 +341,10 @@
             <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
               <v-img
                 :src="
-                  'https://api2.simplifies.cl/api/images/' + item.image_url + '?$' + Date.now()
-                "
+                  'https://api2.simplifies.cl/api/images/' + item.image_url "
                 alt="image"
-              ></v-img>
+              ></v-img><!--+ '?$' + Date.now()
+                -->
             </v-avatar>
             {{ item.fullName }}
           </template>
@@ -370,9 +370,19 @@
             ></v-btn>
             <v-btn
               density="comfortable"
+              icon="mdi-hot-tub"
+              @click="showFreeday(item)"
+              color="green"
+              variant="tonal"
+              elevation="1"
+              class="mr-1 mt-1 mb-1"
+              title="Días libres"
+            ></v-btn>
+            <v-btn
+              density="comfortable"
               icon="mdi-lock-reset"
               @click="changePass(item)"
-              color="green"
+              color="teal"
               variant="tonal"
               elevation="1"
               class="mr-1 mt-1 mb-1"
@@ -382,7 +392,7 @@
               density="comfortable"
               icon="mdi-timer-off"
               @click="showLater(item)"
-              color="green"
+              color="orange"
               variant="tonal"
               elevation="1"
               class="mr-1 mt-1 mb-1"
@@ -708,6 +718,51 @@
       </v-container>
       </v-card>
     </v-dialog>
+
+    <!--Freeday-->
+    <v-dialog v-model="dialogfreeday" width="700">
+              <v-card>
+                <v-toolbar color="#F18254">
+                  <span class="text-subtitle-2 ml-4">Días libres</span>
+                </v-toolbar>
+
+                <v-card-text class="mt-2 mb-2">
+                  <v-table density="compact">
+                            <thead>
+                                <tr>
+                                    <th class="text-left">Día</th>
+                                    <th class="text-left">Laboral</th>
+                                    <th class="text-left">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(freeday, index) in freedays" :key="index">
+                                    <td>{{ freeday.nombre }}</td>
+                                    <td>
+                                        <v-switch class="mx-0 pa-0" density="compact" inset color="amber-darken-4"
+                                            v-model="freeday.esLaboral"></v-switch>
+                                    </td>
+                                    <td v-if="freeday.esLaboral">
+                                      Descanso
+                                    </td>
+                                    <td v-else>Laboral</td>
+                                </tr>
+                            </tbody>
+                        </v-table>
+                  <v-divider></v-divider>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="#E7E9E9" variant="flat" @click="closeFreeday">
+                        Cancelar
+                      </v-btn>
+                      <v-btn @click="saveFreeday" class="text-subtitle-1  ml-1  " color="#F18254" variant="flat" elevation="2"
+                            prepend-icon="mdi-plus-circle">
+                            Actualizar
+                        </v-btn>
+                    </v-card-actions>
+                </v-card-text>
+              </v-card>
+            </v-dialog>
     </v-card>
   </v-container>
 </template>
@@ -740,6 +795,7 @@ export default {
     professional_id: '',
     branch_id: '',
     mostrarFila: false,
+    selectedProfessional: [],
     headers: [
       { title: "Nombre y Apellidos", key: "fullName" },
       //{ title: 'Primer Apellido', key: 'surname' },
@@ -860,7 +916,9 @@ export default {
       ],
       search5: '',
       search6: '',
-
+    //freeday
+    dialogfreeday: false,
+    freedays: [],
     nameRules: [
       (v) => !!v || "El campo es requerido",
       (v) => (v && v.length <= 50) || "El campo debe tener menos de 51 caracteres",
@@ -1404,6 +1462,85 @@ export default {
           });
         //this.menu2 = false;
       },
+
+      //dias libres
+      showFreeday(item) {
+        this.selectedProfessional = item;
+      this.professional_id = item.id;
+          this.dialogfreeday = true;
+          axios
+                .get('https://api2.simplifies.cl/api/restday-show', {
+                    params: {
+                        professional_id: this.professional_id
+                    }
+                })
+                .then((response) => {
+                  this.freedays = response.data.Schedules.map(schedule => ({
+                        nombre: schedule.day,
+                        esLaboral: schedule.state !== 0
+                    }));
+                    console.log('this.freedays');
+                    console.log(this.freedays);
+                });
+    },
+    closeFreeday() {
+      this.freedays = [];
+      this.selectedProfessional = [];
+      this.dialogfreeday = false;
+    },
+    saveFreeday() {
+            //const start_time;
+            //const closing_time;
+
+            const updatedData = this.freedays.map(dia => {
+   
+                const state = dia.esLaboral;
+                return {
+                    day: dia.nombre,
+                    state: state ? 1 : 0,
+                };
+            });
+            let request = {
+                professional_id: this.professional_id,
+                schedule: updatedData
+            };
+            /*const updatedData = this.dias.map(dia => ({
+                day: dia.nombre,
+                start_time: dia.entradaHora + ':' + dia.entradaMinuto,
+                closing_time: dia.salidaHora + ':' + dia.salidaMinuto,
+            }));*/
+            console.log('request');
+            console.log(request);
+            axios.put('https://api2.simplifies.cl/api/restday', request)
+                .then(() => {
+                    this.showAlert("success", "Días de descanso actualizado correctamente", 3000);
+                }).catch(error => {
+                    // Maneja cualquier error que ocurra al enviar los datos al servidor
+                    this.showAlert("warning", "Error interno del sistema", 3000);
+                }).finally(() => {
+                    this.showFreeday(this.selectedProfessional);
+          });
+        }
   },
 };
 </script>
+
+<style>
+.my-select .v-select__slot,
+.my-select .v-input__control {
+    min-height: auto;
+    /* Ajusta el tamaño mínimo según necesites */
+    padding: 4px;
+    /* Ajusta el padding para reducir espacio */
+}
+
+.my-select .v-select__selections {
+    font-size: 0.875rem;
+    /* Reduce el tamaño de la fuente */
+}
+
+.my-switch .v-input--selection-controls__input {
+    margin: 0;
+    /* Ajusta el margen del switch si es necesario */
+}
+</style>
