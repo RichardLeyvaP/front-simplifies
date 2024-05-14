@@ -206,7 +206,7 @@ export default {
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         
         axios
-      .get('http://127.0.0.1:8000/api/show-business', {
+      .get('https://api2.simplifies.cl/api/show-business', {
         params: {
           business_id: this.business_id
         }
@@ -272,7 +272,7 @@ export default {
             console.log('this.branch_id')
         console.log(this.branch_id)
             axios
-                .get('http://127.0.0.1:8000/api/revenue-expense-details', {
+                .get('https://api2.simplifies.cl/api/revenue-expense-details', {
                     params: {
                         branch_id: this.branch_id,
                         year: this.selectedYear,
@@ -291,7 +291,7 @@ export default {
         operationDetails() {
             this.editedIndex = 2;
             axios
-                .get('http://127.0.0.1:8000/api/revenue-expense-details', {
+                .get('https://api2.simplifies.cl/api/revenue-expense-details', {
                     params: {
                         branch_id: this.branch_id,
                         year: this.selectedYear,

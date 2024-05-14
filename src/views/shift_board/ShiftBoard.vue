@@ -114,16 +114,16 @@
           hide-delimiters="true">
 
           <v-carousel-item v-for="(itemGroup, index2) in items" :key="index2">
-            <v-col md="12" v-for="(item, index) in itemGroup" :key="index">
+            <v-col md="10" v-for="(item, index) in itemGroup" :key="index">
               <v-row>
-                <v-col md="3" >
+                <v-col md="4" class="offset-md-1">
                   <p class="font-weight-black" 
-              style="text-align: center; font-size: 40px; font-family: 'Poppins', sans-serif; font-weight: bold; color: #ffffff;">
+              style="text-align: justify; font-size: 40px; font-family: 'Poppins', sans-serif; font-weight: bold; color: #ffffff;">
                     {{ item.code }}
                   </p>
                 </v-col>
                
-                <v-col md="6" class="offset-md-2">
+                <v-col md="6" class="offset-md-1">
                   <p class=" font-weight-black" 
               style="text-align: justify; font-size: 40px; font-family: 'Poppins', sans-serif; font-weight: bold; color: #ffffff;">
                     {{ item.client_name }}
@@ -262,7 +262,7 @@ export default {
     callForTime() {
       console.log('AQUI SI ESTOY ENTRANDO -callForTime()');
       axios
-        .get('http://127.0.0.1:8000/api/tail_branch_attended', {
+        .get('https://api2.simplifies.cl/api/tail_branch_attended', {
           params: {
             branch_id: this.branch_id
           }

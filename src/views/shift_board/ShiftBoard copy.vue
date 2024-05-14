@@ -228,7 +228,7 @@ export default {
     callForTime() {
       console.log('AQUI SI ESTOY ENTRANDO -callForTime()');
       axios
-        .get('http://127.0.0.1:8000/api/tail_branch_attended', {
+        .get('https://api2.simplifies.cl/api/tail_branch_attended', {
           params: {
             branch_id: this.branch_id
           }

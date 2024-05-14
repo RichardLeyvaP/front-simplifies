@@ -254,7 +254,7 @@
         <template v-slot:item.professionalName="{ item }">
 
           <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-            <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url" alt="image"></v-img>
+            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
           </v-avatar>
           {{ item.professionalName }}
         </template>
@@ -262,7 +262,7 @@
         <template v-slot:item.clientName="{ item }">
 
           <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-            <v-img :src="'http://127.0.0.1:8000/api/images/' + item.client_image" alt="image"></v-img>
+            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.client_image" alt="image"></v-img>
           </v-avatar>
           {{ item.clientName }}
         </template>
@@ -469,7 +469,7 @@
               <template v-slot:item.image="{ item }">
 
                 <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                  <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image" alt="image"></v-img>
+                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image" alt="image"></v-img>
                 </v-avatar>
 
               </template>
@@ -519,14 +519,14 @@
               closable-chips<template v-slot:chip="{ props, item }">
                 <v-chip
                   v-bind="props"
-                  :prepend-avatar="'http://127.0.0.1:8000/api/images/'+item.raw.image_product"
+                  :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_product"
                   :text="item.raw.name"
                 ></v-chip>
               </template>-->
               <template v-slot:item="{ props, item }">
                 <v-list-item
                   v-bind="props"
-                  :prepend-avatar="'http://127.0.0.1:8000/api/images/'+item.raw.image_product"
+                  :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_product"
                   :subtitle="'Existencia: '+item.raw.product_exit"
                   :title="item.raw.name"
                 ></v-list-item>
@@ -575,7 +575,7 @@
                     <template v-slot:item="{ props, item }">
                 <v-list-item
                   v-bind="props"
-                  :prepend-avatar="'http://127.0.0.1:8000/api/images/'+item.raw.image_service"
+                  :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_service"
                   :subtitle="'Precio: '+item.raw.price_service"
                   :title="item.raw.name"
                 ></v-list-item>
@@ -662,7 +662,7 @@
         <template v-slot:item.professionalName="{ item }">
 
           <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-            <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url" alt="image"></v-img>
+            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
           </v-avatar>
           {{ item.professionalName }}
         </template>
@@ -670,7 +670,7 @@
         <template v-slot:item.clientName="{ item }">
 
           <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-            <v-img :src="'http://127.0.0.1:8000/api/images/' + item.client_image" alt="image"></v-img>
+            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.client_image" alt="image"></v-img>
           </v-avatar>
           {{ item.clientName }}
         </template>
@@ -958,7 +958,7 @@ export default {
     this.nameProfessional = JSON.parse(LocalStorageService.getItem("name"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
-      .get('http://127.0.0.1:8000/api/show-business', {
+      .get('https://api2.simplifies.cl/api/show-business', {
         params: {
           business_id: this.business_id
         }
@@ -976,7 +976,7 @@ export default {
           //this.intervalId = setInterval(this.initialize, 60000);
           this.intervalId = setInterval(() => {
             axios
-        .get('http://127.0.0.1:8000/api/branch-cars', {
+        .get('https://api2.simplifies.cl/api/branch-cars', {
           params: {
             branch_id: this.branch_id
           }
@@ -1049,7 +1049,7 @@ export default {
       // Realiza cualquier lógica adicional aquí
       console.log('Elemento seleccionado:', code);
       axios
-        .get('http://127.0.0.1:8000/api/card-gift-user-show-value', {
+        .get('https://api2.simplifies.cl/api/card-gift-user-show-value', {
           params: {
             code: code
           }
@@ -1080,7 +1080,7 @@ export default {
         id: item.id
       };
       axios
-        .put('http://127.0.0.1:8000/api/car', request)
+        .put('https://api2.simplifies.cl/api/car', request)
         .then(() => {
         }).finally(() => {
           this.initialize();
@@ -1097,7 +1097,7 @@ export default {
         professional_id: this.professional_id
       };
       axios
-        .post('http://127.0.0.1:8000/api/order-destroy-solicitud', request)
+        .post('https://api2.simplifies.cl/api/order-destroy-solicitud', request)
         .then(() => {
           //this.initialize();
         }).finally(() => {
@@ -1115,7 +1115,7 @@ export default {
         professional_id: this.professional_id
       };
       axios
-        .post('http://127.0.0.1:8000/api/order-destroy-web', request)
+        .post('https://api2.simplifies.cl/api/order-destroy-web', request)
         .then(() => {
           //this.initialize();
         }).finally(() => {
@@ -1138,7 +1138,7 @@ export default {
         branch_id: this.branch_id,
       };
       axios
-        .put('http://127.0.0.1:8000/api/order-web', request)
+        .put('https://api2.simplifies.cl/api/order-web', request)
         .then(() => {
         }).finally(() => {          
           this.showAlert("success", "Orden denegada para ser eliminada correctamente", 3000);
@@ -1153,7 +1153,7 @@ export default {
     },
     openDialogBox() {
       axios
-        .get('http://127.0.0.1:8000/api/box-show', {
+        .get('https://api2.simplifies.cl/api/box-show', {
           params: {
             branch_id: this.branch_id
           }
@@ -1338,7 +1338,7 @@ export default {
     initialize() {
 
       axios
-        .get('http://127.0.0.1:8000/api/branch-cars', {
+        .get('https://api2.simplifies.cl/api/branch-cars', {
           params: {
             branch_id: this.branch_id
           }
@@ -1367,7 +1367,7 @@ export default {
         professional_id: this.professional_id
       };
       axios
-        .post('http://127.0.0.1:8000/api/car-destroy-solicitud', request)
+        .post('https://api2.simplifies.cl/api/car-destroy-solicitud', request)
         .then(() => {
         }).finally(() => {
           this.initialize();
@@ -1397,7 +1397,7 @@ export default {
       }
 
       axios
-        .get('http://127.0.0.1:8000/api/card-gift-show', {
+        .get('https://api2.simplifies.cl/api/card-gift-show', {
           params: {
             business_id: this.business_id
           }
@@ -1411,7 +1411,7 @@ export default {
       this.car_ref = item
       this.editedItem.id = item.id;
       axios
-        .get('http://127.0.0.1:8000/api/order-show', {
+        .get('https://api2.simplifies.cl/api/order-show', {
           params: {
             car_id: item.id
           }
@@ -1430,7 +1430,7 @@ export default {
         branch_id: this.branch_id
       };
       axios
-        .post('http://127.0.0.1:8000/api/car-destroy', request)
+        .post('https://api2.simplifies.cl/api/car-destroy', request)
         .then(() => {
         }).finally(() => {
           this.showAlert("success", "Carro eliminado correctamente", 3000)
@@ -1457,7 +1457,7 @@ export default {
         if (suma === this.editedItem.amount + this.data.tip) {
           this.valid = true;
           axios
-            .put('http://127.0.0.1:8000/api/payment', this.data)
+            .put('https://api2.simplifies.cl/api/payment', this.data)
             .then(() => {
               }).finally(() => {
               this.showAlert("success", "Pago efectuado correctamente", 3000);
@@ -1497,7 +1497,7 @@ export default {
       this.data.nameProfessional = this.nameProfessional;
       console.log(this.data);
       axios
-        .post('http://127.0.0.1:8000/api/closebox', this.data)
+        .post('https://api2.simplifies.cl/api/closebox', this.data)
         .then(() => {
         }).finally(() => {
           this.showAlert("success", "Cierre de caja efectuado correctamente", 3000);
@@ -1518,7 +1518,7 @@ export default {
         this.data.extraction = this.editedBox.extraction;
         this.data.nameProfessional = this.nameProfessional;
         axios
-          .put('http://127.0.0.1:8000/api/box', this.data)
+          .put('https://api2.simplifies.cl/api/box', this.data)
           .then(() => {
           }).finally(() => {
             this.showAlert("success", "Caja Actualizada correctamente", 3000);
@@ -1579,7 +1579,7 @@ export default {
       console.log(car);
 
       axios
-        .get('http://127.0.0.1:8000/api/services-professional-branch-web', {
+        .get('https://api2.simplifies.cl/api/services-professional-branch-web', {
           params: {
             branch_id: this.branch_id,
             professional_id: car.professional_id
@@ -1607,7 +1607,7 @@ export default {
       console.log('Datos servicios agregar');
       console.log(this.data);
       axios
-        .post('http://127.0.0.1:8000/api/order-web', this.data)
+        .post('https://api2.simplifies.cl/api/order-web', this.data)
         .then(() => {
         }).finally(() => {
           this.showAlert("success", "Servicio agregado correctamente", 3000);
@@ -1644,7 +1644,7 @@ export default {
       console.log(car);
 
       axios
-        .get('http://127.0.0.1:8000/api/productstore-show-web', {
+        .get('https://api2.simplifies.cl/api/productstore-show-web', {
           params: {
             branch_id: this.branch_id
           }
@@ -1674,7 +1674,7 @@ export default {
       console.log('Datos producto agregar');
       console.log(this.data);
       axios
-        .post('http://127.0.0.1:8000/api/order-web', this.data)
+        .post('https://api2.simplifies.cl/api/order-web', this.data)
         .then(() => {
         }).finally(() => {
           this.showAlert("success", "Producto agregado correctamente", 3000);
