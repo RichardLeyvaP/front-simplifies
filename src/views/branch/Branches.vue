@@ -237,6 +237,12 @@
                                     <v-text-field v-model="editedItem.ponderation" clearable label="Ponderación"
                                         prepend-icon="mdi-arrow-collapse-vertical" variant="underlined" :rules="pago">
                                     </v-text-field>
+                                    <v-text-field v-if="bonus" v-model="editedItem.limit" clearable label="Meta de Productividad"
+                                        prepend-icon="mdi-arrow-collapse-vertical" variant="underlined" :rules="pago" >
+                                    </v-text-field>
+                                     <v-text-field v-if="bonus" v-model="editedItem.mountpay" clearable label="Monto a Pagar"
+                                        prepend-icon="mdi-arrow-collapse-vertical" variant="underlined" :rules="pago" >
+                                    </v-text-field>
                                     </v-col>
                 </v-row>
               </v-container>
@@ -574,6 +580,7 @@ export default {
     dialogAssociates : false,
     dialogAddAssociate: false,
     associated_id: '',
+    bonus: false,
     headers: [
       { title: 'Nombre', value: 'name' },
       { title: 'Teléfono', value: 'phone' },
@@ -586,6 +593,8 @@ export default {
       { title: 'Nombre', value: 'name' },
       { title: 'Cargo', value: 'charge' },
       { title: 'Ponderación', value: 'ponderation' },
+      { title: 'Meta Productividad', value: 'limit' },
+      { title: 'Monto a Pagar', value: 'mountpay' },
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
     headers3: [
@@ -628,6 +637,8 @@ export default {
       store_id: '',
       useTechnical: 0,
       location: '',
+      limit: '',
+      mountpay: ''
     },
     data: {},
     options: [
@@ -646,6 +657,8 @@ export default {
       store_id: '',
       useTechnical: '',
       location: '',
+      limit: '',
+      mountpay: ''
     },
     //winners
     winners: [],
@@ -865,6 +878,7 @@ export default {
     },
     closeP() {
       this.dialogAddProf = false;
+      this.bonus = false;
       this.editando = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
@@ -981,9 +995,14 @@ export default {
             this.editedIndex = 2;
             this.editedItem.professional_id = parseInt(item.professional_id);
             this.editedItem.ponderation = item.ponderation;
+            this.editedItem.limit = item.limit;
+            this.editedItem.mountpay = item.mountpay;
             this.nameProfessional = item.name;
             this.dialogAddProf = true;
             this.editando = true;
+            if(item.charge === 'Barbero' || item.charge === 'Barbero y Encargado'){
+              this.bonus = true;
+            }
             },
     showStores(item) {
       this.branchSelect = item;
@@ -1016,6 +1035,8 @@ export default {
         this.data.branch_id = this.branch_id;
       this.data.professional_id = this.editedItem.professional_id;
       this.data.ponderation = this.editedItem.ponderation;
+      this.data.limit = this.editedItem.limit;
+      this.data.mountpay = this.editedItem.mountpay;
       axios
         .put('https://api2.simplifies.cl/api/branchprofessional', this.data)
         .then(() => {
@@ -1027,6 +1048,7 @@ export default {
           });
           this.dialogAddProf = false;
           this.editando = false;
+          this.bonus = false;
         this.editedIndex = -1;
         })
       }else{
@@ -1034,6 +1056,8 @@ export default {
         this.data.branch_id = this.branch_id;
       this.data.professional_id = this.editedItem.professional_id;
       this.data.ponderation = this.editedItem.ponderation;
+      this.data.limit = this.editedItem.limit;
+      this.data.mountpay = this.editedItem.mountpay;
       axios
         .post('https://api2.simplifies.cl/api/branchprofessional', this.data)
         .then(() => {
@@ -1045,6 +1069,7 @@ export default {
           });
           this.dialogAddProf = false;
           this.editando = false;
+          this.bonus = false;
         this.editedIndex = -1;
         })
       }
