@@ -194,7 +194,7 @@
       this.branch_id = parseInt(LocalStorageService.getItem('branch_id'));
       this.charge = JSON.parse(LocalStorageService.getItem("charge"));
       axios
-      .get('https://api2.simplifies.cl/api/show-business', {
+      .get('http://127.0.0.1:8000/api/show-business', {
         params: {
           business_id: this.business_id
         }
@@ -267,7 +267,7 @@
         const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
         const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
         axios
-          .get('https://api2.simplifies.cl/api/company_winner', {
+          .get('http://127.0.0.1:8000/api/company_winner', {
             params: {
               startDate: startDate,
               endDate: endDate,
@@ -289,7 +289,7 @@
         const mes = `${month}`;
         const ano = `${year}`;
         axios
-          .get('https://api2.simplifies.cl/api/company_winner', {
+          .get('http://127.0.0.1:8000/api/company_winner', {
             params: {
               business_id: this.business_id,
               mes: mes,
@@ -305,7 +305,7 @@
       initialize() {
         this.editedIndex = 1;
         axios
-          .get('https://api2.simplifies.cl/api/surveyCounts', {
+          .get('http://127.0.0.1:8000/api/surveyCounts', {
         params: {
           branch_id: this.branch_id
         }

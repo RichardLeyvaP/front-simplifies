@@ -203,7 +203,7 @@
           <template v-slot:item.name="{ item }">
 
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.course_image" alt="image"></v-img>
+              <v-img :src="'http://127.0.0.1:8000/api/images/' + item.course_image" alt="image"></v-img>
             </v-avatar>
             {{ item.name }}
           </template>
@@ -313,7 +313,7 @@
 
                 <template v-slot:item.name="{ item }">
                   <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                    <v-img :src="'https://api2.simplifies.cl/api/images/' + item.student_image" alt="image"></v-img>
+                    <v-img :src="'http://127.0.0.1:8000/api/images/' + item.student_image" alt="image"></v-img>
                   </v-avatar>
                   {{ item.name + ' ' + item.surname + ' ' + item.second_surname }}
                 </template>
@@ -457,7 +457,7 @@
             <template v-slot:item.nameProduct="{ item }">
 
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
+              <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_product" alt="image"></v-img>
             </v-avatar>
             {{ item.nameProduct }}
             </template>
@@ -465,7 +465,7 @@
             <!--<template v-slot:item.nameStudent="{ item }">
 
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.student_image" alt="image"></v-img>
+              <v-img :src="'http://127.0.0.1:8000/api/images/' + item.student_image" alt="image"></v-img>
             </v-avatar>
             {{ item.nameStudent }}
             </template>-->
@@ -574,7 +574,7 @@
               <template v-slot:item.name="{ item }">
 
                 <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url+'?$'+Date.now()" alt="image"></v-img>
+                  <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url+'?$'+Date.now()" alt="image"></v-img>
                 </v-avatar>
                 {{ item.name}}
               </template>
@@ -614,7 +614,7 @@
                       <template v-slot:item="{ props, item }">
                 <v-list-item
                   v-bind="props"
-                  :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_url"
+                  :prepend-avatar="'http://127.0.0.1:8000/api/images/'+item.raw.image_url"
                   :subtitle="'Cargo: '+item.raw.charge"
                   :title="item.raw.name"
                 ></v-list-item>
@@ -937,9 +937,9 @@ export default {
     openModal(imageUrl) {
       
       var img = new Image();
-      img.src = 'https://api2.simplifies.cl/api/images/' + imageUrl;
+      img.src = 'http://127.0.0.1:8000/api/images/' + imageUrl;
       img.onload = () => {
-      this.selectedImageUrl = 'https://api2.simplifies.cl/api/images/' + imageUrl; 
+      this.selectedImageUrl = 'http://127.0.0.1:8000/api/images/' + imageUrl; 
       };
       img.onerror = () => {
         this.selectedImageUrl = '';
@@ -955,7 +955,7 @@ export default {
       this.course_id = item.id;
       //console.log(item.id);
       axios
-        .get('https://api2.simplifies.cl/api/course-student-show', {
+        .get('http://127.0.0.1:8000/api/course-student-show', {
           params: {
             course_id: item.id
           }
@@ -970,7 +970,7 @@ export default {
     },
     showAddStudent(){
           axios
-          .get('https://api2.simplifies.cl/api/student-show', {
+          .get('http://127.0.0.1:8000/api/student-show', {
             params: {
               course_id: this.courseSelect.id
             }
@@ -997,9 +997,9 @@ export default {
       //this.editedItemS.image_url = item.image_url;
       this.editedItemS.student_id = item.id;
       var img = new Image();
-      img.src = 'https://api2.simplifies.cl/api/images/'+item.image_url;
+      img.src = 'http://127.0.0.1:8000/api/images/'+item.image_url;
       img.onload = () => {
-        this.imgMiniatura = 'https://api2.simplifies.cl/api/images/'+item.image_url;
+        this.imgMiniatura = 'http://127.0.0.1:8000/api/images/'+item.image_url;
       };
       img.onerror = () => {
         this.imgMiniatura = '';
@@ -1025,7 +1025,7 @@ export default {
       this.data.student_id = this.editedStudent.student_id;
       console.log(this.data);
       axios
-        .post('https://api2.simplifies.cl/api/course-student', this.data)
+        .post('http://127.0.0.1:8000/api/course-student', this.data)
         .then(() => {
           this.$nextTick(() => {
             this.editedStudent = Object.assign({}, this.defaultStudent)
@@ -1053,7 +1053,7 @@ export default {
          formData.append(key, this.editedItemS[key]);
       }
       axios
-        .post('https://api2.simplifies.cl/api/course-student-update', formData)
+        .post('http://127.0.0.1:8000/api/course-student-update', formData)
         .then(() => {
           this.dialogAddStudent = false;
         }).finally(() => {
@@ -1075,7 +1075,7 @@ export default {
         student_id: this.editedStudent.student_id
       };
       axios
-        .post('https://api2.simplifies.cl/api/course-student-destroy', request)
+        .post('http://127.0.0.1:8000/api/course-student-destroy', request)
         .then(() => {
           this.dialogRequest = false;
         }).finally(() => {
@@ -1107,7 +1107,7 @@ export default {
     },
     initialize() {
       axios
-        .get('https://api2.simplifies.cl/api/course-show', {
+        .get('http://127.0.0.1:8000/api/course-show', {
           params: {
             business_id: this.business_id
           }
@@ -1119,7 +1119,7 @@ export default {
     },
     showAddCurso(){
       axios
-              .get('https://api2.simplifies.cl/api/enrollment-show', {
+              .get('http://127.0.0.1:8000/api/enrollment-show', {
                 params: {
                   business_id: this.business_id
                 }
@@ -1145,9 +1145,9 @@ export default {
     editItem(item) {
       this.file = null;
       var img = new Image();
-      img.src = 'https://api2.simplifies.cl/api/images/' + item.image_data;
+      img.src = 'http://127.0.0.1:8000/api/images/' + item.image_data;
       img.onload = () => {
-        this.imgMiniatura = 'https://api2.simplifies.cl/api/images/' + item.image_data;
+        this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.image_data;
       };
       img.onerror = () => {
         this.imgMiniatura = '';
@@ -1171,7 +1171,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('https://api2.simplifies.cl/api/course-destroy', request)
+        .post('http://127.0.0.1:8000/api/course-destroy', request)
         .then(() => {
         }).finally(() => {
           this.showAlert("success", "Curso eliminado correctamente", 3000);
@@ -1225,7 +1225,7 @@ export default {
         }
         console.log(formData);
         axios
-          .post('https://api2.simplifies.cl/api/course-update', formData)
+          .post('http://127.0.0.1:8000/api/course-update', formData)
           .then(() => {
             this.imgMiniatura = '';
             this.file = null;            
@@ -1248,7 +1248,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios
-          .post('https://api2.simplifies.cl/api/course', formData)
+          .post('http://127.0.0.1:8000/api/course', formData)
           .then(() => {
             this.imgMiniatura = '';
             this.file = null;
@@ -1274,7 +1274,7 @@ export default {
       /*this.courseSelect = item;
       console.log(item.id);*/
       axios
-        .get('https://api2.simplifies.cl/api/productsale-show', {
+        .get('http://127.0.0.1:8000/api/productsale-show', {
           params: {
             course_id: item.course_id,
             enrollment_id: this.courseSelect.enrollment_id,
@@ -1285,7 +1285,7 @@ export default {
           this.productSales = response.data.productsales;
         });
         /*axios
-        .get('https://api2.simplifies.cl/api/course-student-product-show',{
+        .get('http://127.0.0.1:8000/api/course-student-product-show',{
           params: {
             course_id: item.id
           }
@@ -1299,7 +1299,7 @@ export default {
     },
     showAddProduct(){
         axios
-                .get('https://api2.simplifies.cl/api/products-academy-show', {
+                .get('http://127.0.0.1:8000/api/products-academy-show', {
                   params: {
                     enrollment_id: this.courseSelect.enrollment_id
                   }
@@ -1329,7 +1329,7 @@ export default {
       /*console.log('this.data');
       console.log(this.data);*/
       axios
-          .post('https://api2.simplifies.cl/api/productsale', this.data)
+          .post('http://127.0.0.1:8000/api/productsale', this.data)
           .then(() => {
           this.dialogAddProduct = false;
           this.student_id = '',
@@ -1350,7 +1350,7 @@ export default {
       console.log('this.data');
       console.log(this.data);
       axios
-          .put('https://api2.simplifies.cl/api/productstore', this.data)
+          .put('http://127.0.0.1:8000/api/productstore', this.data)
           .then(() => {
           this.dialogAddProduct = false;
           this.store_id = '',
@@ -1377,7 +1377,7 @@ export default {
         id: this.productsale_id
       };
       axios
-        .post('https://api2.simplifies.cl/api/productsale-destroy', request)
+        .post('http://127.0.0.1:8000/api/productsale-destroy', request)
         .then(() => {
           this.dialogRequestProduct = false;
           this.productsale_id = '';
@@ -1391,7 +1391,7 @@ export default {
     showAddProfessional(item){
       this.courseSelect = item;
           axios
-          .get('https://api2.simplifies.cl/api/course-professional', {
+          .get('http://127.0.0.1:8000/api/course-professional', {
             params: {
               course_id: this.courseSelect.id
             }
@@ -1414,7 +1414,7 @@ export default {
       this.data.professional_id = this.professional_id;
       console.log(this.data);
       axios
-        .post('https://api2.simplifies.cl/api/course-professional', this.data)
+        .post('http://127.0.0.1:8000/api/course-professional', this.data)
         .then(() => {
           this.dialogAddProf = false;
           //this.initialize();
@@ -1425,7 +1425,7 @@ export default {
     },
     showAdddialogProfessionals(){
       axios
-        .get('https://api2.simplifies.cl/api/course-professional-show-Notin', {
+        .get('http://127.0.0.1:8000/api/course-professional-show-Notin', {
           params: {
             course_id: this.courseSelect.id
           }
@@ -1449,7 +1449,7 @@ export default {
         professional_id: this.professional_id
       };
       axios
-        .post('https://api2.simplifies.cl/api/course-professional-destroy', request)
+        .post('http://127.0.0.1:8000/api/course-professional-destroy', request)
         .then(() => {
           this.dialogRequestProfessional = false;
         }).finally(() => {

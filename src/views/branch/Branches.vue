@@ -121,7 +121,7 @@
         <template v-slot:item.name="{ item }">
 
           <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_data" alt="image"></v-img>
+            <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_data" alt="image"></v-img>
           </v-avatar>
           {{ item.name }}
         </template>
@@ -190,7 +190,7 @@
               <template v-slot:item.name="{ item }">
 
                 <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url+'?$'+Date.now()" alt="image"></v-img>
+                  <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url+'?$'+Date.now()" alt="image"></v-img>
                 </v-avatar>
                 {{ item.name}}
               </template>
@@ -300,7 +300,7 @@
               <!--<template v-slot:item.name="{ item }">
 
                     <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                      <v-img :src="'https://api2.simplifies.cl/api/images/'+item.image_url" alt="image"></v-img>
+                      <v-img :src="'http://127.0.0.1:8000/api/images/'+item.image_url" alt="image"></v-img>
                     </v-avatar>
                     {{ item.name+' '+item.surname+' '+item.second_surname}}
                   </template>-->
@@ -394,7 +394,7 @@
               <!--<template v-slot:item.name="{ item }">
 
                     <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                      <v-img :src="'https://api2.simplifies.cl/api/images/'+item.image_url" alt="image"></v-img>
+                      <v-img :src="'http://127.0.0.1:8000/api/images/'+item.image_url" alt="image"></v-img>
                     </v-avatar>
                     {{ item.name+' '+item.surname+' '+item.second_surname}}
                   </template>-->
@@ -759,7 +759,7 @@ export default {
       //console.log('this.editedItem.business_id');
       //console.log(this.editedItem.business_id);
       axios
-        .get('https://api2.simplifies.cl/api/business')
+        .get('http://127.0.0.1:8000/api/business')
         .then((response) => {
           this.business = response.data.business;     
         }).finally(() => {
@@ -806,7 +806,7 @@ export default {
     initialize() {
 
       axios
-        .get('https://api2.simplifies.cl/api/branch')
+        .get('http://127.0.0.1:8000/api/branch')
         .then((response) => {
           this.results = response.data.branches;
           console.log('imprime sucursales');
@@ -815,7 +815,7 @@ export default {
     },
     showAddBranch(){
       axios
-        .get('https://api2.simplifies.cl/api/business-type')
+        .get('http://127.0.0.1:8000/api/business-type')
         .then((response) => {
           this.businessTypes = response.data.businessTypes;
         });
@@ -837,9 +837,9 @@ export default {
     editItem(item) {
       this.file = null;
       var img = new Image();
-      img.src = 'https://api2.simplifies.cl/api/images/' + item.image_data;
+      img.src = 'http://127.0.0.1:8000/api/images/' + item.image_data;
       img.onload = () => {
-        this.imgMiniatura = 'https://api2.simplifies.cl/api/images/' + item.image_data;
+        this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.image_data;
       };
       img.onerror = () => {
         this.imgMiniatura = '';
@@ -860,7 +860,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('https://api2.simplifies.cl/api/branch-destroy', request)
+        .post('http://127.0.0.1:8000/api/branch-destroy', request)
         .then(() => {
           this.initialize();
           this.showAlert("success", "Sucursal eliminada correctamente", 3000)
@@ -918,7 +918,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios
-          .post('https://api2.simplifies.cl/api/branch-update', formData)
+          .post('http://127.0.0.1:8000/api/branch-update', formData)
           .then(() => {
             this.file = null;
             this.imgMiniatura = '';
@@ -938,7 +938,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios
-          .post('https://api2.simplifies.cl/api/branch', formData)
+          .post('http://127.0.0.1:8000/api/branch', formData)
           .then(() => {
             this.file = null;
             this.imgMiniatura = '';
@@ -955,7 +955,7 @@ export default {
       this.branch_id = item.id;
       console.log(item.id);
       axios
-        .get('https://api2.simplifies.cl/api/branch-professionals', {
+        .get('http://127.0.0.1:8000/api/branch-professionals', {
           params: {
             branch_id: item.id
           }
@@ -969,7 +969,7 @@ export default {
     showAddProfessionals(){
       this.editedIndexP = -1;
       axios
-        .get('https://api2.simplifies.cl/api/professional-show-autocomplete-Notin', {
+        .get('http://127.0.0.1:8000/api/professional-show-autocomplete-Notin', {
           params: {
             branch_id: this.branchSelect.id
           }
@@ -984,7 +984,7 @@ export default {
       console.log('Professional');
       console.log(item);
       axios
-        .get('https://api2.simplifies.cl/api/professional-show-autocomplete-Notin', {
+        .get('http://127.0.0.1:8000/api/professional-show-autocomplete-Notin', {
           params: {
             branch_id: this.branchSelect.id
           }
@@ -1010,7 +1010,7 @@ export default {
       this.branch_id = item.id;
       console.log(item.id);
       axios
-        .get('https://api2.simplifies.cl/api/store-show', {
+        .get('http://127.0.0.1:8000/api/store-show', {
           params: {
             branch_id: item.id
           }
@@ -1023,7 +1023,7 @@ export default {
     },
     showAddStores(){
       axios
-        .get('https://api2.simplifies.cl/api/store')
+        .get('http://127.0.0.1:8000/api/store')
         .then((response) => {
           this.stores = response.data.stores;
         });
@@ -1038,7 +1038,7 @@ export default {
       this.data.limit = this.editedItem.limit;
       this.data.mountpay = this.editedItem.mountpay;
       axios
-        .put('https://api2.simplifies.cl/api/branchprofessional', this.data)
+        .put('http://127.0.0.1:8000/api/branchprofessional', this.data)
         .then(() => {
           this.$nextTick(() => {
             this.editedItem = Object.assign({}, this.defaultItem)
@@ -1059,7 +1059,7 @@ export default {
       this.data.limit = this.editedItem.limit;
       this.data.mountpay = this.editedItem.mountpay;
       axios
-        .post('https://api2.simplifies.cl/api/branchprofessional', this.data)
+        .post('http://127.0.0.1:8000/api/branchprofessional', this.data)
         .then(() => {
           this.$nextTick(() => {
             this.editedItem = Object.assign({}, this.defaultItem)
@@ -1079,7 +1079,7 @@ export default {
         this.data.branch_id = this.branch_id;
       this.data.store_id = this.editedItem.store_id;
       axios
-        .post('https://api2.simplifies.cl/api/branchstore', this.data)
+        .post('http://127.0.0.1:8000/api/branchstore', this.data)
         .then(() => {
           this.dialogAddStore = false;
           }).finally(() => {
@@ -1106,7 +1106,7 @@ export default {
         professional_id: this.editedItem.professional_id
       };
       axios
-        .post('https://api2.simplifies.cl/api/branchprofessional-destroy', request)
+        .post('http://127.0.0.1:8000/api/branchprofessional-destroy', request)
         .then(() => {
           this.dialogRequest = false;
         }).finally(() => {
@@ -1123,7 +1123,7 @@ export default {
         store_id: this.editedItem.store_id
       };
       axios
-        .post('https://api2.simplifies.cl/api/branchstore-destroy', request)
+        .post('http://127.0.0.1:8000/api/branchstore-destroy', request)
         .then(() => {
           this.dialogRequestStore = false
         }).finally(() => {
@@ -1154,7 +1154,7 @@ export default {
       this.branchSelect = item;
       this.branch_id = item.id;
       axios
-        .get('https://api2.simplifies.cl/api/associate-branch', {
+        .get('http://127.0.0.1:8000/api/associate-branch', {
           params: {
             branch_id: item.id
           }
@@ -1167,7 +1167,7 @@ export default {
     },
     showAddAssociates(){
       axios
-        .get('https://api2.simplifies.cl/api/associated')
+        .get('http://127.0.0.1:8000/api/associated')
         .then((response) => {
           this.associates = response.data.associates;
         });
@@ -1183,7 +1183,7 @@ export default {
         this.data.branch_id = this.branch_id;
       this.data.associated_id = this.associated_id;
       axios
-        .post('https://api2.simplifies.cl/api/associate-branch', this.data)
+        .post('http://127.0.0.1:8000/api/associate-branch', this.data)
         .then(() => {
           this.dialogAddAssociate = false;
           }).finally(() => {
@@ -1208,7 +1208,7 @@ export default {
         associated_id: this.associated_id
       };
       axios
-        .post('https://api2.simplifies.cl/api/associate-branch-destroy', request)
+        .post('http://127.0.0.1:8000/api/associate-branch-destroy', request)
         .then(() => {
           this.dialogRequestAssociate = false
         }).finally(() => {
@@ -1223,7 +1223,7 @@ export default {
       this.branch_id = item.id;
       this.editedIndexWin = -1;
       axios
-        .get('https://api2.simplifies.cl/api/branch_winner_icon', {
+        .get('http://127.0.0.1:8000/api/branch_winner_icon', {
           params: {
             branch_id: this.branch_id
           }
@@ -1256,7 +1256,7 @@ export default {
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       axios
-        .get('https://api2.simplifies.cl/api/branch_winner_icon', {
+        .get('http://127.0.0.1:8000/api/branch_winner_icon', {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,
