@@ -370,7 +370,7 @@
             ></v-btn>
             <v-btn
               density="comfortable"
-              icon="mdi-hot-tub"
+              icon="mdi-calendar-blank"
               @click="showFreeday(item)"
               color="green"
               variant="tonal"
