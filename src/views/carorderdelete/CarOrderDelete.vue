@@ -56,7 +56,7 @@
                                         <template v-slot:item.professionalName="{ item }">
 
                                             <v-avatar class="mr-2" elevation="3" color="grey-lighten-4">
-                                                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url"
+                                                <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url"
                                                     alt="image"></v-img>
                                             </v-avatar>
                                             {{ item.professionalName }}
@@ -65,7 +65,7 @@
                                         <template v-slot:item.clientName="{ item }">
 
                                             <v-avatar class="mr-2" elevation="3" color="grey-lighten-4">
-                                                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.client_image"
+                                                <v-img :src="'http://127.0.0.1:8000/api/images/' + item.client_image"
                                                     alt="image"></v-img>
                                             </v-avatar>
                                             {{ item.clientName }}
@@ -101,7 +101,7 @@
                                         <template v-slot:item.professionalName="{ item }">
 
                                             <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                                                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url"
+                                                <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url"
                                                     alt="image"></v-img>
                                             </v-avatar>
                                             {{ item.professionalName }}
@@ -110,7 +110,7 @@
                                         <template v-slot:item.clientName="{ item }">
 
                                             <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                                                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.client_image"
+                                                <v-img :src="'http://127.0.0.1:8000/api/images/' + item.client_image"
                                                     alt="image"></v-img>
                                             </v-avatar>
                                             {{ item.clientName }}
@@ -118,7 +118,7 @@
                                         <template v-slot:item.name="{ item }">
 
                                             <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                                                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image"
+                                                <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image"
                                                     alt="image"></v-img>
                                             </v-avatar>
                                             {{ item.name }}
@@ -237,7 +237,7 @@ export default {
         initialize() {
 
             axios
-                .get('https://api2.simplifies.cl/api/branch-cars-delete', {
+                .get('http://127.0.0.1:8000/api/branch-cars-delete', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -254,7 +254,7 @@ export default {
                 professional_id: this.professional_id
             };
             axios
-                .post('https://api2.simplifies.cl/api/car-destroy', request)
+                .post('http://127.0.0.1:8000/api/car-destroy', request)
                 .then(() => {
                 }).finally(() => {
                     this.initialize();
@@ -268,7 +268,7 @@ export default {
                 professional_id: this.professional_id
             };
             axios
-                .post('https://api2.simplifies.cl/api/car-denegada', request)
+                .post('http://127.0.0.1:8000/api/car-denegada', request)
                 .then(() => {
                 }).finally(() => {
                     this.initialize();
@@ -285,7 +285,7 @@ export default {
                 professional_id: this.professional_id
             };
             axios
-                .post('https://api2.simplifies.cl/api/order-destroy-web', request)
+                .post('http://127.0.0.1:8000/api/order-destroy-web', request)
                 .then(() => {
                     //this.initialize();
                 }).finally(() => {
@@ -300,7 +300,7 @@ export default {
                 professional_id: this.professional_id
             };
             axios
-                .post('https://api2.simplifies.cl/api/order-denegar', request)
+                .post('http://127.0.0.1:8000/api/order-denegar', request)
                 .then(() => {
                 }).finally(() => {
                     this.initialize();

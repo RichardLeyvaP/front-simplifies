@@ -205,7 +205,7 @@ export default {
         this.branch_id = LocalStorageService.getItem('branch_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         axios
-            .get('https://api2.simplifies.cl/api/show-business', {
+            .get('http://127.0.0.1:8000/api/show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -251,7 +251,7 @@ export default {
         },
         initialize() {
             axios
-                .get('https://api2.simplifies.cl/api/branch_rules', {
+                .get('http://127.0.0.1:8000/api/branch_rules', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -263,7 +263,7 @@ export default {
 
         showAddRules(){
             axios
-                .get('https://api2.simplifies.cl/api/branch-rules-noIn', {
+                .get('http://127.0.0.1:8000/api/branch-rules-noIn', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -283,7 +283,7 @@ export default {
             this.data.branch_id = this.branch_id;
             this.data.rule_id = this.editedItem.rule_id;
             axios
-                .post('https://api2.simplifies.cl/api/branchrule-destroy', this.data)
+                .post('http://127.0.0.1:8000/api/branchrule-destroy', this.data)
                 .then(() => {
                     this.message_delete = true;
                 }).finally(() => {
@@ -315,7 +315,7 @@ export default {
                 this.data.branch_id = this.branch_id;
                 this.data.rule_id = this.editedItem.rule_id;
                 axios
-                    .post('https://api2.simplifies.cl/api/branchrule', this.data)
+                    .post('http://127.0.0.1:8000/api/branchrule', this.data)
                     .then(() => {
                     }).finally(() => {
                         this.showAlert("success", "Regla de convivencia asignada correctamente", 3000);
