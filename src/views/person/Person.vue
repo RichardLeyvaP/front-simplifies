@@ -1477,7 +1477,7 @@ export default {
                 .then((response) => {
                   this.freedays = response.data.Schedules.map(schedule => ({
                         nombre: schedule.day,
-                        esLaboral: schedule.state !== 0
+                        esLaboral: parseInt(schedule.state) !== 0
                     }));
                     console.log('this.freedays');
                     console.log(this.freedays);
