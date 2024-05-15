@@ -149,7 +149,7 @@
                 <template v-slot:item.name="{ item }">
 
                     <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                        <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url" alt="image"></v-img>
+                        <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
                     </v-avatar>
                     {{ item.name }}
                 </template>
@@ -349,12 +349,12 @@ export default {
         initialize() {
             if (this.charge == 'Administrador') {
                 /*axios
-                    .get('http://127.0.0.1:8000/api/professional-show-autocomplete')
+                    .get('https://api2.simplifies.cl/api/professional-show-autocomplete')
                     .then((response) => {
                         this.professionals = response.data.professionals;
                     });*/
                 axios
-                    .get('http://127.0.0.1:8000/api/vacation')
+                    .get('https://api2.simplifies.cl/api/vacation')
                     .then((response) => {
                         this.results = response.data.vacations;
                         this.professionals = response.data.professionals;
@@ -362,7 +362,7 @@ export default {
             } else {
                 console.log('No es administrador');
                 /*axios
-                    .get('http://127.0.0.1:8000/api/professional-show-autocomplete-branch', {
+                    .get('https://api2.simplifies.cl/api/professional-show-autocomplete-branch', {
                         params: {
                             branch_id: this.branch_id
                         }
@@ -371,7 +371,7 @@ export default {
                         this.professionals = response.data.professionals;
                     });*/
                 axios
-                    .get('http://127.0.0.1:8000/api/vacation-show', {
+                    .get('https://api2.simplifies.cl/api/vacation-show', {
                         params: {
                             branch_id: this.branch_id
                         }
@@ -405,7 +405,7 @@ export default {
                 id: this.id
             };
             axios
-                .post('http://127.0.0.1:8000/api/vacation-destroy', request)
+                .post('https://api2.simplifies.cl/api/vacation-destroy', request)
                 .then(() => {
                     this.showAlert("success", "Días de permisos eliminados correctamente", 3000)
                     this.initialize();
@@ -438,7 +438,7 @@ export default {
                 this.data.endDate = this.formattedEndDate;
                 console.log(this.data);
                 axios
-                    .put('http://127.0.0.1:8000/api/vacation', this.data)
+                    .put('https://api2.simplifies.cl/api/vacation', this.data)
                     .then(() => {
                         this.initialize();
                         this.professional_id = '',
@@ -456,7 +456,7 @@ export default {
                 this.data.endDate = this.formattedEndDate;
                 console.log(this.data);
                 axios
-                    .post('http://127.0.0.1:8000/api/vacation', this.data)
+                    .post('https://api2.simplifies.cl/api/vacation', this.data)
                     .then(() => {
                         this.professional_id = '',
                         this.description = '';

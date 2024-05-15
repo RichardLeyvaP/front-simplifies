@@ -32,7 +32,7 @@
 
               <v-card class="mx-auto" max-width="400">
                 <v-img class="align-end text-white" height="300"
-                  :src="'http://127.0.0.1:8000/api/images/' + results.imageLook" cover>
+                  :src="'https://api2.simplifies.cl/api/images/' + results.imageLook" cover>
                   <v-card-title>
 
                     <v-chip class="ma-2" color="" label>
@@ -58,7 +58,7 @@
                   <v-divider class="mt-2"></v-divider>
                   <!--<v-subheader class="text-h8 mt-3">Última vez atendido</v-subheader><br>
                   <v-avatar elevation="3" class="mx-auto" max-width="60" max-height="60">
-                    <v-img :src="'http://127.0.0.1:8000/api/images/' + results.image_url" alt="Imagen"></v-img>
+                    <v-img :src="'https://api2.simplifies.cl/api/images/' + results.image_url" alt="Imagen"></v-img>
                   </v-avatar>
                   {{ results.professionalName }}
                 -->
@@ -79,7 +79,7 @@
     <v-row>
       <v-col cols="12" md="12">
       <v-subheader class="text-h8 text-center mt-3">Profesional: <v-avatar elevation="3" class="mx-auto" max-width="60" max-height="60">
-        <v-img :src="'http://127.0.0.1:8000/api/images/' + results.image_url" alt="Imagen"></v-img>
+        <v-img :src="'https://api2.simplifies.cl/api/images/' + results.image_url" alt="Imagen"></v-img>
       </v-avatar>
       {{ results.professionalName }}</v-subheader>
     </v-col>
@@ -108,7 +108,7 @@
                     :subtitle="service.cant">
                     <template v-slot:prepend>
                       <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                        <v-img :src="'http://127.0.0.1:8000/api/images/' + service.image_service" alt="image"></v-img>
+                        <v-img :src="'https://api2.simplifies.cl/api/images/' + service.image_service" alt="image"></v-img>
                       </v-avatar>
                     </template>
                   </v-list-item>
@@ -130,7 +130,7 @@
                     :subtitle="product.cant">
                     <template v-slot:prepend>
                       <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                        <v-img :src="'http://127.0.0.1:8000/api/images/' + product.image_product" alt="image"></v-img>
+                        <v-img :src="'https://api2.simplifies.cl/api/images/' + product.image_product" alt="image"></v-img>
                       </v-avatar>
                     </template>
                   </v-list-item>
@@ -169,12 +169,12 @@ export default {
     this.business_id = parseInt(LocalStorageService.getItem("business_id"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
-        .get('http://127.0.0.1:8000/api/client-index-autocomplete')
+        .get('https://api2.simplifies.cl/api/client-index-autocomplete')
         .then((response) => {
           this.clients = response.data.clients;
         });
     /*axios
-      .get('http://127.0.0.1:8000/api/show-business', {
+      .get('https://api2.simplifies.cl/api/show-business', {
         params: {
           business_id: this.business_id
         }
@@ -194,7 +194,7 @@ export default {
   methods: {
     /*initialize() {
       axios
-        .get('http://127.0.0.1:8000/api/client-index-autocomplete')
+        .get('https://api2.simplifies.cl/api/client-index-autocomplete')
         .then((response) => {
           this.clients = response.data.clients;
         });
@@ -203,7 +203,7 @@ export default {
       console.log(this.client_id);
       this.results = [];
       axios
-        .get('http://127.0.0.1:8000/api/client-history', {
+        .get('https://api2.simplifies.cl/api/client-history', {
           params: {
             //branch_id: this.branch_id,
             client_id: this.client_id
