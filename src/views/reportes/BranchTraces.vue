@@ -71,10 +71,8 @@
                 hide-details></v-text-field>
                 
               <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search2" class="elevation-2"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
-                <template v-slot:item.tip="{ item }">
-                                              <v-chip v-if="item.amount > 0"
-                                                  class="text-uppercase font-weight-bold" size="small" label> {{
-                                  formatNumber(item.amount)}}</v-chip>
+                <template v-slot:item.amount="{ item }">
+                {{ formatNumber(item.amount)}}                                  
                                           </template>
               </v-data-table>
             </v-card-text>

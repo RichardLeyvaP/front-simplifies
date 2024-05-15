@@ -143,6 +143,7 @@
                           clearable
                           label="Teléfono"
                           prepend-icon="mdi-phone-outline"
+                          placeholder="+56912345678"
                           variant="underlined"
                           :rules="mobileRules"
                         >
@@ -180,7 +181,7 @@
                           clearable
                           v-model="file"
                           ref="fileInput"
-                          label="Avatar Professionals"
+                          label="Avatar Profesionals"
                           variant="underlined"
                           density="compact"
                           name="file"
@@ -340,10 +341,10 @@
           <template v-slot:item.fullName="{ item }">
             <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
               <v-img
-                :src="
-                  'http://127.0.0.1:8000/api/images/' + item.image_url "
+                :src="'http://127.0.0.1:8000/api/images/' + item.image_url+'?$'+Date.now()"
                 alt="image"
-              ></v-img><!--+ '?$' + Date.now()
+              ></v-img
+              ><!--+ '?$' + Date.now()
                 -->
             </v-avatar>
             {{ item.fullName }}
@@ -437,96 +438,176 @@
             </v-row>
           </v-toolbar>
           <v-container>
-      <v-row>
-        <!-- Primera columna -->
-        <v-col cols="12" sm="6" md="3">
-          <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-            min-width="290px">
-            <template v-slot:activator="{ props }">
-              <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined" append-inner-icon="mdi-calendar"
-                label="Fecha inicial"></v-text-field>
-            </template>
-            <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input
-                @update:modelValue="updateDate" format="yyyy-MM-dd" :max="dateFormatted2"></v-date-picker>
-            </v-locale-provider>
-          </v-menu>
-        </v-col>
-        <!-- Segunda columna -->
-        <v-col cols="12" sm="6" md="3">
-          <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-            min-width="290px">
-            <template v-slot:activator="{ props }">
-              <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
-                append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
-            </template>
-            <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
-                :modelValue="getDate2" @update:modelValue="updateDate1" format="yyyy-MM-dd" :min="dateFormatted"></v-date-picker>
-            </v-locale-provider>
-          </v-menu>
-        </v-col>
-        <v-col cols="12" md="1">
-                        <v-btn icon @click="updateDate2" color="#F18254" >
-                    <v-icon>mdi-magnify</v-icon></v-btn>
-                </v-col>
-        <v-col cols="12">
-            <v-alert border type="info" variant="outlined" density="compact">
-              <p v-html="formTitleWin"></p>
-                        </v-alert>
-                        <v-card class="mx-auto  overflow-visible">
-          <v-card-text>
-            <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
-              hide-details>
-            </v-text-field>
-            <v-data-table :headers="headers1" :items-per-page-text="'Elementos por páginas'" :items="winner" :group-by="groupBy"
-              :search="search2" class="elevation-2" no-results-text="No hay datos disponibles"
-              no-data-text="No hay datos disponibles">
-              <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
-          <tr>
-            <td :colspan="columns.length">
-              <VBtn size="small" variant="text" :icon="isGroupOpen(item) ? '$expand' : '$next'"
-                @click="toggleGroup(item)"></VBtn>
-              {{ item.value }}
-            </td>
-          </tr>
-        </template>
-              <template v-slot:item.tip="{ item }">
-                                        <v-chip
-                                            class="text-uppercase font-weight-bold" size="small" label> {{
-                            formatNumber(item.tip)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.amount="{ item }">
-                                        <v-chip
-                                            class="text-uppercase font-weight-bold" size="small" label> {{
-                            formatNumber(item.amount)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.amountGenerate="{ item }">
-                                        <v-chip
-                                            class="text-uppercase font-weight-bold" size="small" label> {{
-                            formatNumber(item.amountGenerate)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.retention="{ item }">
-                                        <v-chip
-                                            class="text-uppercase font-weight-bold" size="small" label> {{
-                            formatNumber(item.retention)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.tip80="{ item }">
-                                        <v-chip
-                                            class="text-uppercase font-weight-bold" size="small" label> {{
-                            formatNumber(item.tip80)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.total="{ item }">
-                                        <v-chip
-                                            class="text-uppercase font-weight-bold" size="small" label> {{
-                            formatNumber(item.total)}}</v-chip>
-                                    </template>
-            </v-data-table>
-          </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
+            <v-row>
+              <!-- Primera columna -->
+              <v-col cols="12" sm="6" md="3">
+                <v-menu
+                  v-model="menu"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-bind="props"
+                      :modelValue="dateFormatted"
+                      variant="outlined"
+                      append-inner-icon="mdi-calendar"
+                      label="Fecha inicial"
+                    ></v-text-field>
+                  </template>
+                  <v-locale-provider locale="es">
+                    <v-date-picker
+                      header="Calendario"
+                      title="Seleccione la fecha"
+                      color="orange lighten-2"
+                      :modelValue="input"
+                      @update:modelValue="updateDate"
+                      format="yyyy-MM-dd"
+                      :max="dateFormatted2"
+                    ></v-date-picker>
+                  </v-locale-provider>
+                </v-menu>
+              </v-col>
+              <!-- Segunda columna -->
+              <v-col cols="12" sm="6" md="3">
+                <v-menu
+                  v-model="menu2"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-bind="props"
+                      :modelValue="dateFormatted2"
+                      variant="outlined"
+                      append-inner-icon="mdi-calendar"
+                      label="Fecha final"
+                    ></v-text-field>
+                  </template>
+                  <v-locale-provider locale="es">
+                    <v-date-picker
+                      header="Calendario"
+                      title="Seleccione la fecha"
+                      color="orange lighten-2"
+                      :modelValue="getDate2"
+                      @update:modelValue="updateDate1"
+                      format="yyyy-MM-dd"
+                      :min="dateFormatted"
+                    ></v-date-picker>
+                  </v-locale-provider>
+                </v-menu>
+              </v-col>
+              <v-col cols="12" md="1">
+                <v-btn icon @click="updateDate2" color="#F18254">
+                  <v-icon>mdi-magnify</v-icon></v-btn
+                >
+              </v-col>
+              <v-col cols="12">
+                <v-alert border type="info" variant="outlined" density="compact">
+                  <p v-html="formTitleWin"></p>
+                </v-alert>
+                <v-card class="mx-auto overflow-visible">
+                  <v-card-text>
+                    <v-text-field
+                      class="mt-1 mb-1"
+                      v-model="search2"
+                      append-icon="mdi-magnify"
+                      label="Buscar"
+                      single-line
+                      hide-details
+                    >
+                    </v-text-field>
+                    <v-data-table
+                      :headers="headers1"
+                      :items-per-page-text="'Elementos por páginas'"
+                      :items="winner"
+                      :group-by="groupBy"
+                      :search="search2"
+                      class="elevation-2"
+                      no-results-text="No hay datos disponibles"
+                      no-data-text="No hay datos disponibles"
+                    >
+                      <template
+                        v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }"
+                      >
+                        <tr>
+                          <td :colspan="columns.length">
+                            <VBtn
+                              size="small"
+                              variant="text"
+                              :icon="isGroupOpen(item) ? '$expand' : '$next'"
+                              @click="toggleGroup(item)"
+                            ></VBtn>
+                            {{ item.value }}
+                          </td>
+                        </tr>
+                      </template>
+                      <template v-slot:item.tip="{ item }">
+                        <v-chip
+                          class="text-uppercase font-weight-bold"
+                          size="small"
+                          label
+                        >
+                          {{ formatNumber(item.tip) }}</v-chip
+                        >
+                      </template>
+                      <template v-slot:item.amount="{ item }">
+                        <v-chip
+                          class="text-uppercase font-weight-bold"
+                          size="small"
+                          label
+                        >
+                          {{ formatNumber(item.amount) }}</v-chip
+                        >
+                      </template>
+                      <template v-slot:item.amountGenerate="{ item }">
+                        <v-chip
+                          class="text-uppercase font-weight-bold"
+                          size="small"
+                          label
+                        >
+                          {{ formatNumber(item.amountGenerate) }}</v-chip
+                        >
+                      </template>
+                      <template v-slot:item.retention="{ item }">
+                        <v-chip
+                          class="text-uppercase font-weight-bold"
+                          size="small"
+                          label
+                        >
+                          {{ formatNumber(item.retention) }}</v-chip
+                        >
+                      </template>
+                      <template v-slot:item.tip80="{ item }">
+                        <v-chip
+                          class="text-uppercase font-weight-bold"
+                          size="small"
+                          label
+                        >
+                          {{ formatNumber(item.tip80) }}</v-chip
+                        >
+                      </template>
+                      <template v-slot:item.total="{ item }">
+                        <v-chip
+                          class="text-uppercase font-weight-bold"
+                          size="small"
+                          label
+                        >
+                          {{ formatNumber(item.total) }}</v-chip
+                        >
+                      </template>
+                    </v-data-table>
+                  </v-card-text>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-container>
           <v-divider></v-divider>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -561,60 +642,118 @@
             </v-row>
           </v-toolbar>
           <v-container>
-      <v-row>
-        <!-- Primera columna -->
-        <v-col cols="12" sm="6" md="3">
-          <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-            min-width="290px">
-            <template v-slot:activator="{ props }">
-              <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined" append-inner-icon="mdi-calendar"
-                label="Fecha inicial"></v-text-field>
-            </template>
-            <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input
-                @update:modelValue="updateDate" format="yyyy-MM-dd" :max="dateFormatted2"></v-date-picker>
-            </v-locale-provider>
-          </v-menu>
-        </v-col>
-        <!-- Segunda columna -->
-        <v-col cols="12" sm="6" md="3">
-          <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-            min-width="290px">
-            <template v-slot:activator="{ props }">
-              <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
-                append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
-            </template>
-            <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
-                :modelValue="getDate2" @update:modelValue="updateDate1" format="yyyy-MM-dd" :min="dateFormatted"></v-date-picker>
-            </v-locale-provider>
-          </v-menu>
-        </v-col>
-        <v-col cols="12" sm="12" md="3">
-          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" label="Seleccione una Sucursal"
-            prepend-inner-icon="mdi-store" item-title="name" item-value="id"
-            variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
-        </v-col>
-        <v-col cols="12" md="1">
-                        <v-btn icon @click="updateDate3" color="#F18254" >
-                    <v-icon>mdi-magnify</v-icon></v-btn>
-                </v-col>
-        <v-col cols="12">
-            <v-alert border type="info" variant="outlined" density="compact">
-              <p v-html="formTitleLater"></p>
-                        </v-alert>
-        </v-col>
-      </v-row>
-      <v-card-text>
-            <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar" single-line
-              hide-details>
-            </v-text-field>
-            <v-data-table :headers="headers2" :items-per-page-text="'Elementos por páginas'" :items="laters"
-              :search="search3" class="elevation-2" no-results-text="No hay datos disponibles"
-              no-data-text="No hay datos disponibles">
-            </v-data-table>
-          </v-card-text>
-    </v-container>
+            <v-row>
+              <!-- Primera columna -->
+              <v-col cols="12" sm="6" md="3">
+                <v-menu
+                  v-model="menu"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-bind="props"
+                      :modelValue="dateFormatted"
+                      variant="outlined"
+                      append-inner-icon="mdi-calendar"
+                      label="Fecha inicial"
+                    ></v-text-field>
+                  </template>
+                  <v-locale-provider locale="es">
+                    <v-date-picker
+                      header="Calendario"
+                      title="Seleccione la fecha"
+                      color="orange lighten-2"
+                      :modelValue="input"
+                      @update:modelValue="updateDate"
+                      format="yyyy-MM-dd"
+                      :max="dateFormatted2"
+                    ></v-date-picker>
+                  </v-locale-provider>
+                </v-menu>
+              </v-col>
+              <!-- Segunda columna -->
+              <v-col cols="12" sm="6" md="3">
+                <v-menu
+                  v-model="menu2"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-bind="props"
+                      :modelValue="dateFormatted2"
+                      variant="outlined"
+                      append-inner-icon="mdi-calendar"
+                      label="Fecha final"
+                    ></v-text-field>
+                  </template>
+                  <v-locale-provider locale="es">
+                    <v-date-picker
+                      header="Calendario"
+                      title="Seleccione la fecha"
+                      color="orange lighten-2"
+                      :modelValue="getDate2"
+                      @update:modelValue="updateDate1"
+                      format="yyyy-MM-dd"
+                      :min="dateFormatted"
+                    ></v-date-picker>
+                  </v-locale-provider>
+                </v-menu>
+              </v-col>
+              <v-col cols="12" sm="12" md="3">
+                <v-autocomplete
+                  :no-data-text="'No hay datos disponibles'"
+                  v-model="branch_id"
+                  :items="branches"
+                  v-if="this.mostrarFila"
+                  label="Seleccione una Sucursal"
+                  prepend-inner-icon="mdi-store"
+                  item-title="name"
+                  item-value="id"
+                  variant="outlined"
+                ></v-autocomplete
+                ><!--@update:model-value="initialize()"-->
+              </v-col>
+              <v-col cols="12" md="1">
+                <v-btn icon @click="updateDate3" color="#F18254">
+                  <v-icon>mdi-magnify</v-icon></v-btn
+                >
+              </v-col>
+              <v-col cols="12">
+                <v-alert border type="info" variant="outlined" density="compact">
+                  <p v-html="formTitleLater"></p>
+                </v-alert>
+              </v-col>
+            </v-row>
+            <v-card-text>
+              <v-text-field
+                class="mt-1 mb-1"
+                v-model="search3"
+                append-icon="mdi-magnify"
+                label="Buscar"
+                single-line
+                hide-details
+              >
+              </v-text-field>
+              <v-data-table
+                :headers="headers2"
+                :items-per-page-text="'Elementos por páginas'"
+                :items="laters"
+                :search="search3"
+                class="elevation-2"
+                no-results-text="No hay datos disponibles"
+                no-data-text="No hay datos disponibles"
+              >
+              </v-data-table>
+            </v-card-text>
+          </v-container>
           <v-divider></v-divider>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -625,144 +764,228 @@
 
       <!--assistance-->
       <v-dialog v-model="dialogAsist" fullscreen transition="dialog-bottom-transition">
-      <v-card>
-        <v-toolbar color="#F18254">
-          <span class="text-subtitle-1 ml-4">Asistencias de professionales por sucursales</span>
-          <v-spacer></v-spacer>
-        </v-toolbar>
-        <v-container>
-        <v-row>
-        <!-- Primera columna -->
-        <v-col cols="12" sm="6" md="3" >
-          <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-            min-width="290px">
-            <template v-slot:activator="{ props }">
-              <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined" append-inner-icon="mdi-calendar"
-                label="Fecha inicial"></v-text-field>
-            </template>
-            <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input @update:model-value="updateDate"
-                format="yyyy-MM-dd" :max="dateFormatted2"></v-date-picker>
-            </v-locale-provider>
-          </v-menu>
-        </v-col>
-        <!-- Segunda columna -->
-        <v-col cols="12" sm="6" md="3">
-          <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-            min-width="290px">
-            <template v-slot:activator="{ props }">
-              <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
-                append-inner-icon="mdi-calendar" label="Fecha final" ></v-text-field>
-            </template>
-            <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" 
-                format="yyyy-MM-dd" :min="dateFormatted" @update:model-value="updateDate1"></v-date-picker><!--@update:model-value="updateDate2"-->
-            </v-locale-provider>
-          </v-menu>
-        </v-col>
-          <v-col cols="12" sm="12" md="3">
-            <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" label="Seleccione una Sucursal"
-              prepend-inner-icon="mdi-store" item-title="name" item-value="id" variant="outlined"
-              ></v-autocomplete><!--@update:model-value="onBranchChange"-->
-          </v-col>
-          <v-col cols="12" md="1">
-                        <v-btn icon @click="updateDate5" color="#F18254" >
-                    <v-icon>mdi-magnify</v-icon></v-btn>
-                </v-col>
-        <v-col cols="12" md="12">  
-            <v-card elevation="2">
-                        <v-tabs v-model="tabBar" color="rgb(241, 130, 84)"
-                            elevation="6"><!-- @click="handleTabChange"-->
-                            <v-tab value="one">Llegadas tardes por profesional</v-tab>
-                            <v-tab value="two">Mejores asistencias por professional</v-tab>
-                        </v-tabs>
-                        <v-card-text>
-                            <v-window v-model="tabBar">
-                                <v-window-item value="one">
-                                  <v-alert border type="info" variant="outlined" density="compact">
-                            <p v-html="formTitleAsist1"></p>
-                                      </v-alert>
-                                      <v-card-text>
-                              <v-text-field class="mt-1 mb-1" v-model="search5" append-icon="mdi-magnify" label="Buscar" single-line
-                                hide-details>
-                              </v-text-field>
-                              <v-data-table :headers="headers3" :items-per-page-text="'Elementos por páginas'" :items="asistLate" :search="search5" class="elevation-2"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
-                              </v-data-table>
-                            </v-card-text>
-                                </v-window-item>
-
-                                <v-window-item value="two">
-                                  <v-alert border type="info" variant="outlined" density="compact">
-                <p v-html="formTitleAsist2"></p>
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-1 ml-4"
+              >Asistencias de profesionales por sucursales</span
+            >
+            <v-spacer></v-spacer>
+          </v-toolbar>
+          <v-container>
+            <v-row>
+              <!-- Primera columna -->
+              <v-col cols="12" sm="6" md="3">
+                <v-menu
+                  v-model="menu"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-bind="props"
+                      :modelValue="dateFormatted"
+                      variant="outlined"
+                      append-inner-icon="mdi-calendar"
+                      label="Fecha inicial"
+                    ></v-text-field>
+                  </template>
+                  <v-locale-provider locale="es">
+                    <v-date-picker
+                      header="Calendario"
+                      title="Seleccione la fecha"
+                      color="orange lighten-2"
+                      :modelValue="input"
+                      @update:model-value="updateDate"
+                      format="yyyy-MM-dd"
+                      :max="dateFormatted2"
+                    ></v-date-picker>
+                  </v-locale-provider>
+                </v-menu>
+              </v-col>
+              <!-- Segunda columna -->
+              <v-col cols="12" sm="6" md="3">
+                <v-menu
+                  v-model="menu2"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-bind="props"
+                      :modelValue="dateFormatted2"
+                      variant="outlined"
+                      append-inner-icon="mdi-calendar"
+                      label="Fecha final"
+                    ></v-text-field>
+                  </template>
+                  <v-locale-provider locale="es">
+                    <v-date-picker
+                      header="Calendario"
+                      title="Seleccione la fecha"
+                      color="orange lighten-2"
+                      :modelValue="getDate2"
+                      format="yyyy-MM-dd"
+                      :min="dateFormatted"
+                      @update:model-value="updateDate1"
+                    ></v-date-picker
+                    ><!--@update:model-value="updateDate2"-->
+                  </v-locale-provider>
+                </v-menu>
+              </v-col>
+              <v-col cols="12" sm="12" md="3">
+                <v-autocomplete
+                  :no-data-text="'No hay datos disponibles'"
+                  v-model="branch_id"
+                  :items="branches"
+                  label="Seleccione una Sucursal"
+                  prepend-inner-icon="mdi-store"
+                  item-title="name"
+                  item-value="id"
+                  variant="outlined"
+                ></v-autocomplete
+                ><!--@update:model-value="onBranchChange"-->
+              </v-col>
+              <v-col cols="12" md="1">
+                <v-btn icon @click="updateDate5" color="#F18254">
+                  <v-icon>mdi-magnify</v-icon></v-btn
+                >
+              </v-col>
+              <v-col cols="12" md="12">
+                <v-card elevation="2">
+                  <v-tabs v-model="tabBar" color="rgb(241, 130, 84)" elevation="6"
+                    ><!-- @click="handleTabChange"-->
+                    <v-tab value="one">Llegadas tardes por profesional</v-tab>
+                    <v-tab value="two">Mejores asistencias por profesional</v-tab>
+                  </v-tabs>
+                  <v-card-text>
+                    <v-window v-model="tabBar">
+                      <v-window-item value="one">
+                        <v-alert border type="info" variant="outlined" density="compact">
+                          <p v-html="formTitleAsist1"></p>
                         </v-alert>
                         <v-card-text>
-              <v-text-field class="mt-1 mb-1" v-model="search6" append-icon="mdi-magnify" label="Buscar" single-line
-                hide-details>
-              </v-text-field>
-              <v-data-table :headers="headers4" :items-per-page-text="'Elementos por páginas'" :items="asistTime" :search="search6" class="elevation-2"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
-              </v-data-table>
-            </v-card-text>
-                                </v-window-item>
-
-                            </v-window>
+                          <v-text-field
+                            class="mt-1 mb-1"
+                            v-model="search5"
+                            append-icon="mdi-magnify"
+                            label="Buscar"
+                            single-line
+                            hide-details
+                          >
+                          </v-text-field>
+                          <v-data-table
+                            :headers="headers3"
+                            :items-per-page-text="'Elementos por páginas'"
+                            :items="asistLate"
+                            :search="search5"
+                            class="elevation-2"
+                            no-results-text="No hay datos disponibles"
+                            no-data-text="No hay datos disponibles"
+                          >
+                          </v-data-table>
                         </v-card-text>
-                    </v-card>
-        </v-col>
-        </v-row>
-        <v-spacer></v-spacer>
-        <v-divider></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="#E7E9E9" variant="flat" @click="closeAsist"> Volver </v-btn>
-        </v-card-actions>
-      </v-container>
-      </v-card>
-    </v-dialog>
+                      </v-window-item>
 
-    <!--Freeday-->
-    <v-dialog v-model="dialogfreeday" width="700">
-              <v-card>
-                <v-toolbar color="#F18254">
-                  <span class="text-subtitle-2 ml-4">Días libres</span>
-                </v-toolbar>
+                      <v-window-item value="two">
+                        <v-alert border type="info" variant="outlined" density="compact">
+                          <p v-html="formTitleAsist2"></p>
+                        </v-alert>
+                        <v-card-text>
+                          <v-text-field
+                            class="mt-1 mb-1"
+                            v-model="search6"
+                            append-icon="mdi-magnify"
+                            label="Buscar"
+                            single-line
+                            hide-details
+                          >
+                          </v-text-field>
+                          <v-data-table
+                            :headers="headers4"
+                            :items-per-page-text="'Elementos por páginas'"
+                            :items="asistTime"
+                            :search="search6"
+                            class="elevation-2"
+                            no-results-text="No hay datos disponibles"
+                            no-data-text="No hay datos disponibles"
+                          >
+                          </v-data-table>
+                        </v-card-text>
+                      </v-window-item>
+                    </v-window>
+                  </v-card-text>
+                </v-card>
+              </v-col>
+            </v-row>
+            <v-spacer></v-spacer>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="#E7E9E9" variant="flat" @click="closeAsist"> Volver </v-btn>
+            </v-card-actions>
+          </v-container>
+        </v-card>
+      </v-dialog>
 
-                <v-card-text class="mt-2 mb-2">
-                  <v-table density="compact">
-                            <thead>
-                                <tr>
-                                    <th class="text-left">Día</th>
-                                    <th class="text-left">Laboral</th>
-                                    <th class="text-left">Estado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(freeday, index) in freedays" :key="index">
-                                    <td>{{ freeday.nombre }}</td>
-                                    <td>
-                                        <v-switch class="mx-0 pa-0" density="compact" inset color="amber-darken-4"
-                                            v-model="freeday.esLaboral"></v-switch>
-                                    </td>
-                                    <td v-if="freeday.esLaboral">
-                                      Descanso
-                                    </td>
-                                    <td v-else>Laboral</td>
-                                </tr>
-                            </tbody>
-                        </v-table>
-                  <v-divider></v-divider>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="#E7E9E9" variant="flat" @click="closeFreeday">
-                        Cancelar
-                      </v-btn>
-                      <v-btn @click="saveFreeday" class="text-subtitle-1  ml-1  " color="#F18254" variant="flat" elevation="2"
-                            prepend-icon="mdi-plus-circle">
-                            Actualizar
-                        </v-btn>
-                    </v-card-actions>
-                </v-card-text>
-              </v-card>
-            </v-dialog>
+      <!--Freeday-->
+      <v-dialog v-model="dialogfreeday" width="700">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-2 ml-4">Días libres</span>
+          </v-toolbar>
+
+          <v-card-text class="mt-2 mb-2">
+            <v-table density="compact">
+              <thead>
+                <tr>
+                  <th class="text-left">Día</th>
+                  <th class="text-left">Laboral</th>
+                  <th class="text-left">Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(freeday, index) in freedays" :key="index">
+                  <td>{{ freeday.nombre }}</td>
+                  <td>
+                    <v-switch
+                      class="mx-0 pa-0"
+                      density="compact"
+                      inset
+                      color="amber-darken-4"
+                      v-model="freeday.esLaboral"
+                    ></v-switch>
+                  </td>
+                  <td v-if="freeday.esLaboral">Descanso</td>
+                  <td v-else>Laboral</td>
+                </tr>
+              </tbody>
+            </v-table>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="#E7E9E9" variant="flat" @click="closeFreeday">
+                Cancelar
+              </v-btn>
+              <v-btn
+                @click="saveFreeday"
+                class="text-subtitle-1 ml-1"
+                color="#F18254"
+                variant="flat"
+                elevation="2"
+                prepend-icon="mdi-plus-circle"
+              >
+                Actualizar
+              </v-btn>
+            </v-card-actions>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
     </v-card>
   </v-container>
 </template>
@@ -791,9 +1014,9 @@ export default {
     dialogDelete: false,
     showPasswordForm: false,
     branches: [],
-    business_id: '',
-    professional_id: '',
-    branch_id: '',
+    business_id: "",
+    professional_id: "",
+    branch_id: "",
     mostrarFila: false,
     selectedProfessional: [],
     headers: [
@@ -873,7 +1096,7 @@ export default {
     search2: "",
     dialogWinner: false,
     headers1: [
-      { title: "Professional", key: "name", sortable: false },
+      { title: "Profesional", key: "name", sortable: false },
       { title: "Sucursal", key: "branchName", sortable: false },
       { title: "Ingreso Total", key: "amountGenerate", sortable: false },
       { title: "Ganancia del barbero", key: "amount", sortable: false },
@@ -885,18 +1108,18 @@ export default {
     ],
     groupBy: [
       {
-        key: 'name',
+        key: "name",
       },
     ],
-    //laters 
+    //laters
     dialogLater: false,
     laters: [],
-    charge: '',
+    charge: "",
     headers2: [
       /*{ title: 'Profesional', key: 'name', sortable: false },
       { title: 'Monto', key: 'amount', sortable: false },*/
-      { title: 'Hora de entrada', key: 'start_time', sortable: false },
-      { title: 'Hora de salida', key: 'end_time', sortable: false }
+      { title: "Hora de entrada", key: "start_time", sortable: false },
+      { title: "Hora de salida", key: "end_time", sortable: false },
     ],
 
     //Asistance
@@ -905,17 +1128,17 @@ export default {
     asistTime: [],
 
     headers3: [
-      { title: 'Profesional', key: 'name', sortable: false },
-      { title: 'Cargo', key: 'charge', sortable: false },
-      { title: 'Cantidad', key: 'cant', sortable: false }
+      { title: "Profesional", key: "name", sortable: false },
+      { title: "Cargo", key: "charge", sortable: false },
+      { title: "Cantidad", key: "cant", sortable: false },
     ],
     headers4: [
-        { title: 'Profesional', key: 'name', sortable: false },
-        { title: 'Cargo', key: 'charge', sortable: false },
-        { title: 'Cantidad', key: 'cant', sortable: false }
-      ],
-      search5: '',
-      search6: '',
+      { title: "Profesional", key: "name", sortable: false },
+      { title: "Cargo", key: "charge", sortable: false },
+      { title: "Cantidad", key: "cant", sortable: false },
+    ],
+    search5: "",
+    search6: "",
     //freeday
     dialogfreeday: false,
     freedays: [],
@@ -928,7 +1151,10 @@ export default {
       (v) => !!v || "El Correo Electrónico es requerido",
       (v) => /.+@.+\..+/.test(v) || "El Correo Electrónico no es válido",
     ],
-    mobileRules: [(v) => !!v || "El Teléfono es requerido"],
+    mobileRules: [
+      v => !!v || 'El número de móvil es requerido',
+      v => /^\+569\d{8}$/.test(v) || 'Formato de número móvil inválido. Ejemplo: +56912345678'
+    ],
     selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
     pago: [(value) => !isNaN(parseFloat(value)) || "Debe ser un número"],
   }),
@@ -957,12 +1183,14 @@ export default {
     },
     formTitleLater() {
       if (this.editedIndexLater === 2) {
-        const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-        const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-        return `Llegadas tardes en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;		
-	
-      }
-      else {
+        const startDate = this.input
+          ? format(this.input, "yyyy-MM-dd")
+          : format(new Date(), "yyyy-MM-dd");
+        const endDate = this.input2
+          ? format(this.input2, "yyyy-MM-dd")
+          : format(new Date(), "yyyy-MM-dd");
+        return `Llegadas tardes en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;
+      } else {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.fecha = format(new Date(), "yyyy-MM-dd");
         return `Legada tarde en el día  <strong>${this.fecha}</strong>`;
@@ -970,23 +1198,29 @@ export default {
     },
     formTitleAsist1() {
       if (this.editedIndexAsist1 === 2) {
-        const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+        const startDate = this.input
+          ? format(this.input, "yyyy-MM-dd")
+          : format(new Date(), "yyyy-MM-dd");
+        const endDate = this.input2
+          ? format(this.input2, "yyyy-MM-dd")
+          : format(new Date(), "yyyy-MM-dd");
         return `Llegadas tardes en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;
-        }
-      else {
+      } else {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.fecha = format(new Date(), "yyyy-MM-dd");
         return `Llegada tarde en el día  <strong>${this.fecha}</strong>`;
-        }
+      }
     },
     formTitleAsist2() {
       if (this.editedIndexAsist1 == 2) {
-        const startDate = this.input3 ? format(this.input3, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      const endDate = this.input4 ? format(this.input4, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      return `Profesionales con mejor asistencia en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;
-       }
-      else {
+        const startDate = this.input3
+          ? format(this.input3, "yyyy-MM-dd")
+          : format(new Date(), "yyyy-MM-dd");
+        const endDate = this.input4
+          ? format(this.input4, "yyyy-MM-dd")
+          : format(new Date(), "yyyy-MM-dd");
+        return `Profesionales con mejor asistencia en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;
+      } else {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.fecha = format(new Date(), "yyyy-MM-dd");
         return `Profesionales con mejor asistencia en el día  <strong>${this.fecha}</strong>`;
@@ -1028,23 +1262,23 @@ export default {
     this.business_id = parseInt(LocalStorageService.getItem("business_id"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
-      .get('http://127.0.0.1:8000/api/charge-web', {
+      .get("http://127.0.0.1:8000/api/charge-web", {
         params: {
-          business_id: this.business_id
-        }
+          business_id: this.business_id,
+        },
       })
-        .then((response) => {
-          this.branches = response.data.branches;
-          this.charges = response.data.charges;
-          //this.branch_id = this.branches[0].id;
-        })
-        .finally(() => {
-          if (this.charge === 'Administrador') {
+      .then((response) => {
+        this.branches = response.data.branches;
+        this.charges = response.data.charges;
+        //this.branch_id = this.branches[0].id;
+      })
+      .finally(() => {
+        if (this.charge === "Administrador") {
           this.branch_id = this.branches[0].id;
           this.mostrarFila = true;
         }
         this.initialize();
-        });
+      });
   },
 
   methods: {
@@ -1257,8 +1491,28 @@ export default {
     closeWinner() {
       this.dialogWinner = false;
     },
-    formatNumber(value) {
+    /*formatNumber(value) {
       return value.toLocaleString("es-ES");
+    },*/
+    formatNumber(value) {
+      // Si el valor es menor que 1000, devuelve el valor original sin formato
+      if (value < 1000) {
+        return value;
+      }
+
+      // Primero, redondea el valor a dos decimales
+      value = Math.round((value + Number.EPSILON) * 100) / 100;
+
+      // Separa la parte entera de la parte decimal
+      let parts = value.toString().split(".");
+      let integerPart = parts[0];
+      let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+
+      // Agrega los separadores de miles
+      integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+      // Combina la parte entera y la parte decimal
+      return integerPart + decimalPart;
     },
     exportToExcel() {
       // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
@@ -1338,7 +1592,7 @@ export default {
     showLater(item) {
       this.professional_id = item.id;
       this.editedIndexLater = -1;
-          this.dialogLater = true;
+      this.dialogLater = true;
       /*axios
       .get('http://127.0.0.1:8000/api/show-business', {
         params: {
@@ -1362,16 +1616,20 @@ export default {
     updateDate3() {
       //this.input2 = val;
       this.editedIndexLater = 2;
-      const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+      const startDate = this.input
+        ? format(this.input, "yyyy-MM-dd")
+        : format(new Date(), "yyyy-MM-dd");
+      const endDate = this.input2
+        ? format(this.input2, "yyyy-MM-dd")
+        : format(new Date(), "yyyy-MM-dd");
       axios
-        .get('http://127.0.0.1:8000/api/arriving-late-professional-periodo', {
+        .get("http://127.0.0.1:8000/api/arriving-late-professional-periodo", {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id,
             startDate: startDate,
-            endDate: endDate
-          }
+            endDate: endDate,
+          },
         })
         .then((response) => {
           this.laters = response.data;
@@ -1383,16 +1641,16 @@ export default {
 
       // Construye un objeto para los encabezados basado en la estructura de 'headers'
       let headerRow = {};
-      this.headers2.forEach(header => {
+      this.headers2.forEach((header) => {
         headerRow[header.key] = header.title; // Usa 'key' para el mapeo y 'title' para el texto del encabezado
       });
       rows.push(headerRow);
 
       // Ahora, mapea los datos de los items para que coincidan con los encabezados
-      this.laters.forEach(item => {
+      this.laters.forEach((item) => {
         let rowData = {};
-        this.headers2.forEach(header => {
-          rowData[header.key] = item[header.key] || ''; // Asegura que cada celda se mapee correctamente; usa '' para datos faltantes
+        this.headers2.forEach((header) => {
+          rowData[header.key] = item[header.key] || ""; // Asegura que cada celda se mapee correctamente; usa '' para datos faltantes
         });
         rows.push(rowData);
       });
@@ -1400,8 +1658,8 @@ export default {
       let nameReport = {
         // eslint-disable-next-line vue/no-use-computed-property-like-method
         name: this.formTitleLater, // Asume que 'name' es una de tus claves; ajusta según sea necesario
-        start_time: '',
-        end_time: ''//, // Deja vacíos los demás campos para esta fila especial
+        start_time: "",
+        end_time: "", //, // Deja vacíos los demás campos para esta fila especial
         //total: '' // Usa 'total' para mostrar la fecha; ajusta las claves según corresponda a tu estructura
       };
       rows.push(nameReport);
@@ -1415,7 +1673,10 @@ export default {
 
       // Escribe el libro de trabajo a un archivo y desencadena la descarga
       //XLSX.writeFile(wb, "report.xlsx");
-      XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
+      XLSX.writeFile(
+        wb,
+        `report_${new Date().toLocaleDateString().replace(/\//g, "-")}.xlsx`
+      );
     },
 
     //asistencias
@@ -1424,10 +1685,10 @@ export default {
       this.editedIndexAsist2 = -1;
       axios
         .get("http://127.0.0.1:8000/api/branch_professionals_winner", {
-            params: {
-              branch_id: this.branch_id
-            }
-          })
+          params: {
+            branch_id: this.branch_id,
+          },
+        })
         .then((response) => {
           this.asistTime = response.data.tiempo;
           this.asistLate = response.data.tardes;
@@ -1440,46 +1701,50 @@ export default {
       this.dialogAsist = false;
     },
     updateDate5() {
-      console.log('Entra aqui a mejores aisitencias del periodo');
-        //this.input2 = val;
-        this.editedIndexAsist1 = 2;
-        this.editedIndexAsist2 = 2;
-        const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-        console.log(startDate);
-        console.log(endDate);
-        axios
-          .get('http://127.0.0.1:8000/api/arriving-branch-periodo', {
-            params: {
-              branch_id: this.branch_id,
-              startDate: startDate,
-              endDate: endDate
-            }
-          })
-          .then((response) => {
-            this.asistTime = response.data.tiempo;
+      console.log("Entra aqui a mejores aisitencias del periodo");
+      //this.input2 = val;
+      this.editedIndexAsist1 = 2;
+      this.editedIndexAsist2 = 2;
+      const startDate = this.input
+        ? format(this.input, "yyyy-MM-dd")
+        : format(new Date(), "yyyy-MM-dd");
+      const endDate = this.input2
+        ? format(this.input2, "yyyy-MM-dd")
+        : format(new Date(), "yyyy-MM-dd");
+      console.log(startDate);
+      console.log(endDate);
+      axios
+        .get("http://127.0.0.1:8000/api/arriving-branch-periodo", {
+          params: {
+            branch_id: this.branch_id,
+            startDate: startDate,
+            endDate: endDate,
+          },
+        })
+        .then((response) => {
+          this.asistTime = response.data.tiempo;
           this.asistLate = response.data.tardes;
-          });
-        //this.menu2 = false;
-      },
+        });
+      //this.menu2 = false;
+    },
 
-      //dias libres
-      showFreeday(item) {
-        this.selectedProfessional = item;
+    //dias libres
+    showFreeday(item) {
+      this.selectedProfessional = item;
       this.professional_id = item.id;
-          this.dialogfreeday = true;
-          axios
-                .get('http://127.0.0.1:8000/api/restday-show', {
-                    params: {
-                        professional_id: this.professional_id
-                    }
-                })
-                .then((response) => {
-                  this.freedays = response.data.Schedules.map(schedule => ({
-                        nombre: schedule.day,
-                        esLaboral: parseInt(schedule.state) !== 0
-                    }));
-                });
+      this.dialogfreeday = true;
+      axios
+        .get("http://127.0.0.1:8000/api/restday-show", {
+          params: {
+            professional_id: this.professional_id,
+          },
+        })
+        .then((response) => {
+          this.freedays = response.data.Schedules.map((schedule) => ({
+            nombre: schedule.day,
+            esLaboral: parseInt(schedule.state) !== 0,
+          }));
+        });
     },
     closeFreeday() {
       this.freedays = [];
@@ -1487,38 +1752,40 @@ export default {
       this.dialogfreeday = false;
     },
     saveFreeday() {
-            //const start_time;
-            //const closing_time;
+      //const start_time;
+      //const closing_time;
 
-            const updatedData = this.freedays.map(dia => {
-   
-                const state = dia.esLaboral;
-                return {
-                    day: dia.nombre,
-                    state: state ? 1 : 0,
-                };
-            });
-            let request = {
-                professional_id: this.professional_id,
-                schedule: updatedData
-            };
-            /*const updatedData = this.dias.map(dia => ({
+      const updatedData = this.freedays.map((dia) => {
+        const state = dia.esLaboral;
+        return {
+          day: dia.nombre,
+          state: state ? 1 : 0,
+        };
+      });
+      let request = {
+        professional_id: this.professional_id,
+        schedule: updatedData,
+      };
+      /*const updatedData = this.dias.map(dia => ({
                 day: dia.nombre,
                 start_time: dia.entradaHora + ':' + dia.entradaMinuto,
                 closing_time: dia.salidaHora + ':' + dia.salidaMinuto,
             }));*/
-            console.log('request');
-            console.log(request);
-            axios.put('http://127.0.0.1:8000/api/restday', request)
-                .then(() => {
-                    this.showAlert("success", "Días de descanso actualizado correctamente", 3000);
-                }).catch(error => {
-                    // Maneja cualquier error que ocurra al enviar los datos al servidor
-                    this.showAlert("warning", "Error interno del sistema", 3000);
-                }).finally(() => {
-                    this.showFreeday(this.selectedProfessional);
-          });
-        }
+      console.log("request");
+      console.log(request);
+      axios
+        .put("http://127.0.0.1:8000/api/restday", request)
+        .then(() => {
+          this.showAlert("success", "Días de descanso actualizado correctamente", 3000);
+        })
+        .catch((error) => {
+          // Maneja cualquier error que ocurra al enviar los datos al servidor
+          this.showAlert("warning", "Error interno del sistema", 3000);
+        })
+        .finally(() => {
+          this.showFreeday(this.selectedProfessional);
+        });
+    },
   },
 };
 </script>
@@ -1526,19 +1793,19 @@ export default {
 <style>
 .my-select .v-select__slot,
 .my-select .v-input__control {
-    min-height: auto;
-    /* Ajusta el tamaño mínimo según necesites */
-    padding: 4px;
-    /* Ajusta el padding para reducir espacio */
+  min-height: auto;
+  /* Ajusta el tamaño mínimo según necesites */
+  padding: 4px;
+  /* Ajusta el padding para reducir espacio */
 }
 
 .my-select .v-select__selections {
-    font-size: 0.875rem;
-    /* Reduce el tamaño de la fuente */
+  font-size: 0.875rem;
+  /* Reduce el tamaño de la fuente */
 }
 
 .my-switch .v-input--selection-controls__input {
-    margin: 0;
-    /* Ajusta el margen del switch si es necesario */
+  margin: 0;
+  /* Ajusta el margen del switch si es necesario */
 }
 </style>

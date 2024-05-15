@@ -237,6 +237,9 @@
                                 {{ item.date }}
                             </span>
                         </template>
+                        <template v-slot:item.amount="{ item }">
+                {{ formatNumber(item.amount)}}                                  
+                                          </template>
                         <template v-slot:item.actions="{ item }">
                             <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)"
                                 color="red-darken-4" variant="tonal" elevation="1"
@@ -361,6 +364,13 @@
                                             {{ item.date }}
                                         </span>
                                     </template>
+                                    
+                                    <!--<template v-slot:item.amount="{ item }">
+                {{ formatNumber(item.amount)}}                                  
+                                          </template>
+                                          <template v-slot:item.coffe_percent="{ item }">
+                {{ formatNumber(item.coffe_percent)}}                                  
+                                          </template>-->
                                     <template v-slot:item.actions="{ item }">
                                         <v-btn density="comfortable" icon="mdi-delete" @click="deleteItemCashier(item)"
                                             color="red-darken-4" variant="tonal" elevation="1"
@@ -464,6 +474,15 @@
                                             </v-avatar>
                                             {{ item.clientName }}
                                         </template>
+                                        <template v-slot:item.tip="{ item }">
+                {{ formatNumber(item.tip)}}                                  
+                                          </template>
+                                          <template v-slot:item.tipCashier="{ item }">
+                {{ formatNumber(item.tipCashier)}}                                  
+                                          </template>
+                                          <template v-slot:item.tipCoffe="{ item }">
+                {{ formatNumber(item.tipCoffe)}}                                  
+                                          </template>
                                     </v-data-table>
                                 </v-col>
                             </v-row>
@@ -748,8 +767,28 @@ export default {
             console.log('this.chargeProfessional');
             console.log(this.chargeProfessional);
         },*/
-        formatNumber(value) {
+        /*formatNumber(value) {
             return value.toLocaleString('es-ES');
+        },*/
+        formatNumber(value) {
+      // Si el valor es menor que 1000, devuelve el valor original sin formato
+  if (value < 1000) {
+    return value;
+  }
+
+  // Primero, redondea el valor a dos decimales
+  value = Math.round((value + Number.EPSILON) * 100) / 100;
+
+  // Separa la parte entera de la parte decimal
+  let parts = value.toString().split(".");
+  let integerPart = parts[0];
+  let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+
+  // Agrega los separadores de miles
+  integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+  // Combina la parte entera y la parte decimal
+  return integerPart + decimalPart;
         },
         showAlert(sb_type, sb_message, sb_timeout) {
             this.sb_type = sb_type

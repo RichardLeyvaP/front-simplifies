@@ -266,7 +266,18 @@
           </v-avatar>
           {{ item.clientName }}
         </template>
-
+        <template v-slot:item.technical_assistance="{ item }">
+                {{ formatNumber(item.technical_assistance)}}                                  
+                                          </template>
+                                          <template v-slot:item.product="{ item }">
+                {{ formatNumber(item.product)}}                                  
+                                          </template>
+                                          <template v-slot:item.service="{ item }">
+                {{ formatNumber(item.service)}}                                  
+                                          </template>
+                                          <template v-slot:item.amount="{ item }">
+                {{ formatNumber(item.amount)}}                                  
+                                          </template>
         <template v-slot:item.state="{ item }">
           <v-chip :color="getColor(item.state)" class="text-uppercase" label size="small">
             {{ getText(item.state) }}
@@ -473,7 +484,9 @@
                 </v-avatar>
 
               </template>
-
+              <template v-slot:item.price="{ item }">
+                {{ formatNumber(item.price)}}                                  
+                                          </template>
               <template v-slot:item.actions="{ item }">
                 <v-btn density="comfortable" icon="mdi-cancel"
                 :color="(item.request_delete != 3) ? 'red-darken-4' : 'grey'" title="Solicitar eliminar orden"
@@ -680,7 +693,21 @@
             {{ item.pay === 0 ? 'Pendiente' : 'Pagado' }}
           </v-chip>
         </template>
-
+        <template v-slot:item.technical_assistance="{ item }">
+                {{ formatNumber(item.technical_assistance)}}                                  
+                                          </template>
+                                          <template v-slot:item.product="{ item }">
+                {{ formatNumber(item.product)}}                                  
+                                          </template>
+                                          <template v-slot:item.service="{ item }">
+                {{ formatNumber(item.service)}}                                  
+                                          </template>
+                                          <template v-slot:item.tip="{ item }">
+                {{ formatNumber(item.tip)}}                                  
+                                          </template>
+                                          <template v-slot:item.amount="{ item }">
+                {{ formatNumber(item.amount)}}                                  
+                                          </template>
         <template v-slot:top>
 
           <v-divider class="mx-4" inset vertical></v-divider>

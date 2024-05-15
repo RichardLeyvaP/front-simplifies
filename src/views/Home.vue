@@ -8,7 +8,10 @@
             </v-toolbar>
             <v-card elevation="5" style="z-index:2; margin-top: -20px; border:0px">
               <v-card-text>
-                <div>
+                <div>                
+                    <v-row>
+                    <v-col cols="12" md="12"></v-col>
+                    </v-row>
                   <v-row>
                     <v-col cols="12" md="5">
                       <v-row>
