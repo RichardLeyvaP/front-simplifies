@@ -1479,8 +1479,6 @@ export default {
                         nombre: schedule.day,
                         esLaboral: parseInt(schedule.state) !== 0
                     }));
-                    console.log('this.freedays');
-                    console.log(this.freedays);
                 });
     },
     closeFreeday() {
