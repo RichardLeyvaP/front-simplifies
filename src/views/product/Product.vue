@@ -247,6 +247,12 @@
           no-results-text="No hay datos disponibles"
           no-data-text="No hay datos disponibles"
         >
+        <template v-slot:item.purchase_price ="{ item }">
+                         {{ formatNumber(item.purchase_price)}}
+                                    </template>
+                                    <template v-slot:item.sale_price ="{ item }">
+                         {{ formatNumber(item.sale_price)}}
+                                    </template>
           <template v-slot:top>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
@@ -605,6 +611,26 @@ export default {
   },
 
   methods: {
+    formatNumber(value) {
+      // Si el valor es menor que 1000, devuelve el valor original sin formato
+  if (value < 1000) {
+    return value;
+  }
+
+  // Primero, redondea el valor a dos decimales
+  value = Math.round((value + Number.EPSILON) * 100) / 100;
+
+  // Separa la parte entera de la parte decimal
+  let parts = value.toString().split(".");
+  let integerPart = parts[0];
+  let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+
+  // Agrega los separadores de miles
+  integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+  // Combina la parte entera y la parte decimal
+  return integerPart + decimalPart;
+        },
     updateDate(val) {
             this.input = val;
             this.menu = false;

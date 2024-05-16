@@ -63,21 +63,22 @@
                </v-text-field>
              </v-col>
              <v-col cols="12" md="6">
-               <v-text-field v-model="editedItem.phone" clearable label="Teléfono" prepend-icon="mdi-phone-outline"
+               <v-text-field v-model="editedItem.phone" clearable label="Teléfono" prepend-icon="mdi-phone-outline" placeholder="+56912345678"
                  variant="underlined" :rules="mobileRules">
                </v-text-field>
              </v-col>
            </v-row>
            <v-row>
              <v-col cols="12" md="6">
-               <v-file-input clearable v-model="file" ref="fileInput" label="Imagen de Estudiante" variant="underlined" density="compact" name="file" accept=".png, .jpg, .jpeg" @change="onFileSelected">
-               </v-file-input>
-             </v-col>
-             <v-col cols="12" md="6">
-              <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
+                      <v-file-input clearable v-model="file" ref="fileInput" label="Imagen del Estuduante"
+                        variant="underlined" name="file" accept=".png, .jpg, .jpeg" @change="onFileSelected">
+                      </v-file-input>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
                         <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
                       </v-card>
-             </v-col>
+                    </v-col>
            </v-row>
          <v-divider></v-divider>
          <v-card-actions>
@@ -250,7 +251,11 @@ nameRules: [
    (v) => !!v || "El Correo Electrónico es requerido",
    (v) => /.+@.+\..+/.test(v) || "El Correo Electrónico no es válido",
  ],
- mobileRules: [(v) => !!v || "El Teléfono es requerido"],
+ mobileRules: [
+      v => !!v || 'El número de móvil es requerido',
+      v => /^\+569\d{8}$/.test(v) || 'Formato de número móvil inválido. Ejemplo: +56912345678'
+    ],
+ //mobileRules: [(v) => !!v || "El Teléfono es requerido"],
  selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
 }),
 
@@ -339,19 +344,17 @@ initialize() {
    });*/
 },
 onFileSelected(event) {
-   let file = event.target.files[0];
- this.editedItem.student_image = file;
- console.log("esta es la imagen")
- console.log(this.editedItem.student_image);
- this.cargarImage(file);
- },
- cargarImage(file){
-   let reader = new FileReader();
-   reader.onload = (e) => {
-     this.imgMiniatura = e.target.result;
-   }
-   reader.readAsDataURL(file);
- },
+      let file = event.target.files[0];
+      this.editedItem.student_image = file;
+      this.cargarImage(file);
+    },
+    cargarImage(file) {
+      let reader = new FileReader();
+      reader.onload = (e) => {
+        this.imgMiniatura = e.target.result;
+      }
+      reader.readAsDataURL(file);
+    },
 editItem(item) {
   this.file = null;
       var img = new Image();

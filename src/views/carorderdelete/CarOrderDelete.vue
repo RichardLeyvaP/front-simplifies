@@ -70,7 +70,22 @@
                                             </v-avatar>
                                             {{ item.clientName }}
                                         </template>
-
+                                        <template v-slot:item.amount="{ item }">
+                {{ formatNumber(item.amount)}}                                  
+                                          </template>
+                                          
+                                        <template v-slot:item.technical_assistance="{ item }">
+                {{ formatNumber(item.technical_assistance)}}                                  
+                                          </template>
+                                          <template v-slot:item.tip="{ item }">
+                {{ formatNumber(item.tip)}}                                  
+                                          </template>
+                                          <template v-slot:item.product="{ item }">
+                {{ formatNumber(item.product)}}                                  
+                                          </template>
+                                          <template v-slot:item.service="{ item }">
+                {{ formatNumber(item.service)}}                                  
+                                          </template>
                                         <template v-slot:top>
 
                                             <v-divider class="mx-4" inset vertical></v-divider>
@@ -123,6 +138,9 @@
                                             </v-avatar>
                                             {{ item.name }}
                                         </template>
+                                        <template v-slot:item.price="{ item }">
+                {{ formatNumber(item.price)}}                                  
+                                          </template>
                                         <template v-slot:top>
                                             <v-divider class="mx-4" inset vertical></v-divider>
                                             <v-spacer></v-spacer>
@@ -212,6 +230,26 @@ export default {
     },
 
     methods: {
+        formatNumber(value) {
+      // Si el valor es menor que 1000, devuelve el valor original sin formato
+  if (value < 1000) {
+    return value;
+  }
+
+  // Primero, redondea el valor a dos decimales
+  value = Math.round((value + Number.EPSILON) * 100) / 100;
+
+  // Separa la parte entera de la parte decimal
+  let parts = value.toString().split(".");
+  let integerPart = parts[0];
+  let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+
+  // Agrega los separadores de miles
+  integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+  // Combina la parte entera y la parte decimal
+  return integerPart + decimalPart;
+        },
         showAlert(sb_type, sb_message, sb_timeout) {
             this.sb_type = sb_type
 

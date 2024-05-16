@@ -109,6 +109,7 @@
                         clearable
                         label="Teléfono"
                         prepend-icon="mdi-phone-outline"
+                        placeholder="+56912345678"
                         variant="underlined"
                         :rules="mobileRules"
                       >
@@ -442,7 +443,7 @@
               Exportar a Excel
             </v-btn>
           </v-col>
-    </v-toolbar>
+      </v-toolbar>
         <v-container>
         <v-row>
          <!-- Primera columna -->
@@ -613,9 +614,13 @@ export default {
       (v) => /.+@.+\..+/.test(v) || "El Correo Electrónico no es válido",
     ],
     mobileRules: [
+      v => !!v || 'El número de móvil es requerido',
+      v => /^\+569\d{8}$/.test(v) || 'Formato de número móvil inválido. Ejemplo: +56912345678'
+    ],
+    /*mobileRules: [
       (v) => !!v || "El Teléfono es requerido",
       //(value) => this.validateTelefono(value) || "El número de teléfono no es válido",
-    ],
+    ],*/
     selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
   }),
 
@@ -695,7 +700,7 @@ export default {
 
   methods: {
     openWhatsApp(phone) {
-      window.open('http://wa.me/+' + phone);
+      window.open('http://wa.me/' + phone);
     },
     validateTelefono(value) {
       // Expresión regular para validar un número de teléfono con prefijo de Chile
@@ -797,6 +802,8 @@ export default {
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
+        this.imgMiniatura = "";
+        this.file = "";
       });
     },
     closeDelete() {

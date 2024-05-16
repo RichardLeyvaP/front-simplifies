@@ -241,8 +241,7 @@
             variant="underlined" @update:model-value="initialize()"></v-autocomplete>
         </v-col>
       </v-row>
-      <v-row>
-        <v-container>          
+      <v-row>        
         <v-col cols="12" md="12">
           <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
         hide-details></v-text-field>
@@ -266,7 +265,18 @@
           </v-avatar>
           {{ item.clientName }}
         </template>
-
+        <template v-slot:item.technical_assistance="{ item }">
+                {{ formatNumber(item.technical_assistance)}}                                  
+                                          </template>
+                                          <template v-slot:item.product="{ item }">
+                {{ formatNumber(item.product)}}                                  
+                                          </template>
+                                          <template v-slot:item.service="{ item }">
+                {{ formatNumber(item.service)}}                                  
+                                          </template>
+                                          <template v-slot:item.amount="{ item }">
+                {{ formatNumber(item.amount)}}                                  
+                                          </template>
         <template v-slot:item.state="{ item }">
           <v-chip :color="getColor(item.state)" class="text-uppercase" label size="small">
             {{ getText(item.state) }}
@@ -308,7 +318,6 @@
         </template>
       </v-data-table>
         </v-col>
-        </v-container>
       </v-row>
       <v-dialog v-model="dialogRequest" width="500">
         <v-card>
@@ -473,7 +482,9 @@
                 </v-avatar>
 
               </template>
-
+              <template v-slot:item.price="{ item }">
+                {{ formatNumber(item.price)}}                                  
+                                          </template>
               <template v-slot:item.actions="{ item }">
                 <v-btn density="comfortable" icon="mdi-cancel"
                 :color="(item.request_delete != 3) ? 'red-darken-4' : 'grey'" title="Solicitar eliminar orden"
@@ -680,7 +691,21 @@
             {{ item.pay === 0 ? 'Pendiente' : 'Pagado' }}
           </v-chip>
         </template>
-
+        <template v-slot:item.technical_assistance="{ item }">
+                {{ formatNumber(item.technical_assistance)}}                                  
+                                          </template>
+                                          <template v-slot:item.product="{ item }">
+                {{ formatNumber(item.product)}}                                  
+                                          </template>
+                                          <template v-slot:item.service="{ item }">
+                {{ formatNumber(item.service)}}                                  
+                                          </template>
+                                          <template v-slot:item.tip="{ item }">
+                {{ formatNumber(item.tip)}}                                  
+                                          </template>
+                                          <template v-slot:item.amount="{ item }">
+                {{ formatNumber(item.amount)}}                                  
+                                          </template>
         <template v-slot:top>
 
           <v-divider class="mx-4" inset vertical></v-divider>

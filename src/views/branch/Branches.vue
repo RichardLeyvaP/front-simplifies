@@ -47,7 +47,7 @@
                       </v-col>
                       <v-col cols="12" md="6">
                         <v-text-field v-model="editedItem.phone" clearable label="Teléfono"
-                          prepend-icon="mdi-phone-outline" variant="underlined" :rules="mobileRules">
+                          prepend-icon="mdi-phone-outline" variant="underlined"  placeholder="+56912345678" :rules="mobileRules">
                         </v-text-field>
                       </v-col>
                       <v-col cols="12" md="6">
@@ -685,7 +685,10 @@ export default {
       (v) => (v && v.length >= 3) ||
         "El campo debe tener al menos de 3 caracteres",
     ],
-    mobileRules: [(v) => !!v || "El Teléfono es requerido"],
+    mobileRules: [
+      v => !!v || 'El número de móvil es requerido',
+      v => /^\+569\d{8}$/.test(v) || 'Formato de número móvil inválido. Ejemplo: +56912345678'
+    ],
     selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
   }),
 
