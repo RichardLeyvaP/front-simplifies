@@ -848,7 +848,8 @@ export default {
         this.imgMiniatura = '';
       };
       this.editedIndex = 1;
-      this.editedItem = Object.assign({}, item)
+      this.editedItem = Object.assign({}, item);
+      this.editedItem.business_type_id = parseInt(item.business_type_id);
       this.dialog = true;
       this.editando = true;
     },
