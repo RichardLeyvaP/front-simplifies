@@ -238,7 +238,7 @@
                             </span>
                         </template>
                         <template v-slot:item.amount="{ item }">
-                {{ formatNumber(item.amount)}}                                  
+                {{ formatNumber(parseInt(item.amount))}}                                  
                                           </template>
                         <template v-slot:item.actions="{ item }">
                             <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)"

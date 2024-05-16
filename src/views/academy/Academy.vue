@@ -41,25 +41,37 @@
                       <v-row>
                         <v-col cols="12" md="12">
                           <v-text-field v-model="editedItem.name" clearable label="Nombre de la Academia"
-                            prepend-icon="mdi-ruler" variant="underlined" :rules="nameRules">
+                            prepend-icon="mdi-ruler" variant="underlined" :rules="nameRules" density="compact">
                           </v-text-field>
                         </v-col>
                       </v-row>
                       <v-row>
                         <v-col cols="12" md="12">
                           <v-text-field v-model="editedItem.description" clearable label="Descripción"
-                            prepend-icon="mdi-form-textarea" variant="underlined" :rules="descripRules">
+                            prepend-icon="mdi-form-textarea" variant="underlined" :rules="descripRules" density="compact">
                           </v-text-field>
                         </v-col>
+                        </v-row>
+                        <v-row>
+                        <v-col cols="12" md="6">
+                        <v-text-field v-model="editedItem.address" clearable label="Dirección"
+                          prepend-icon="mdi-map-marker-outline" variant="underlined" :rules="dirRules" density="compact">
+                        </v-text-field>
+                      </v-col>
+                      <v-col cols="12" md="6">
+                        <v-text-field v-model="editedItem.phone" clearable label="Teléfono"
+                          prepend-icon="mdi-phone-outline" variant="underlined"  placeholder="+56912345678" :rules="mobileRules" density="compact">
+                        </v-text-field>
+                      </v-col>
                       </v-row>
                       <v-row>
                         <v-col cols="12" md="6">
-                          <v-text-field v-model="editedItem.location" clearable label="Localización"
-                          prepend-icon="mdi-map-marker" variant="underlined">
+                          <v-text-field v-model="editedItem.location" clearable label="Localización (Google Maps)"
+                          prepend-icon="mdi-map-marker" variant="underlined" density="compact">
                         </v-text-field>
                         </v-col>
                         <v-col cols="12" md="6">
-                          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.business_id" :items="business" clearable label="Negocio" prepend-icon="mdi-domain" item-title="name" item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
+                          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.business_id" :items="business" clearable label="Negocio" prepend-icon="mdi-domain" item-title="name" item-value="id" variant="underlined" :rules="selectRules" density="compact"></v-autocomplete>
                         </v-col>
                         <v-col cols="12" md="6">
                         <v-file-input clearable v-model="file" ref="fileInput" label="Imagen Academia" variant="underlined"
@@ -404,8 +416,9 @@
   
         { title: 'Academia', value: 'name' },
         { title: 'Descripción', value: 'description' },
+        { title: 'Dirección', value: 'address' },
         { title: 'Localización', value: 'location' },
-        { title: 'Negocio', value: 'business.name' },
+        { title: 'Teléfono', value: 'phone' },
         { title: 'Acciones', key: 'actions', sortable: false },
       ],
       headers2: [
@@ -431,6 +444,8 @@
         id: '',
         name: '',
         description: '',
+        address: '',
+        phone: '',
         image_data: '',
         business_id: '',
         location: ''
@@ -441,6 +456,8 @@
         id: '',
         name: '',
         description: '',
+        address: '',
+        phone: '',
         business_id: '',
         image_data: '',
         location: ''
@@ -459,6 +476,10 @@
           (v) => (v && v.length >= 3) ||
           "El campo debe tener al menos 3 caracteres",
         ],
+    mobileRules: [
+      v => !!v || 'El número de móvil es requerido',
+      v => /^\+569\d{8}$/.test(v) || 'Formato de número móvil inválido. Ejemplo: +56912345678'
+    ],
      selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
     }),
   
