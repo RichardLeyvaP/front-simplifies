@@ -8,44 +8,37 @@
             </v-toolbar>
             <v-card elevation="5" style="z-index:2; margin-top: -20px; border:0px">
               <v-card-text>
-                <div>                
-                    <v-row>
-                    <v-col cols="12" md="12"></v-col>
-                    </v-row>
+                <div>
                   <v-row>
-                    <v-col cols="12" md="5">
-                      <v-row>
-                        <v-col cols="12">
-                          <spam class="text-overline"> Ingreso Mensual
-                            <div class="text-h6 font-weight-bold text-teal-darken-2">
-                              {{ this.formatNumber(amountMounth) }}
-                              <div class="text-h6 font-weight-bold text-teal-darken-2">
-                            </div>
-                            CLP
-                            </div>
-                          </spam>
-                          <p>{{ formattedDateMonth }} </p>
-                        </v-col>
-                      </v-row>
-                    </v-col>
-
-                    <v-col cols="12" md="5">
-                      <v-row>
-                        <v-col cols="12">
-                          <spam class="text-overline"><br>
-                            <div class="text-h6 font-weight-bold text-teal-darken-2">
-                              {{ this.formatNumber(amountMounthAnt) }}
-                              <div class="text-h6 font-weight-bold text-teal-darken-2">
-                            </div>
-                            CLP
-                            </div>
-                          </spam>
-                          <p>{{ formattedDateMonthAnt }} </p>
-                        </v-col>
-                      </v-row>
+                    <v-col cols="12" md="10">
+                      <spam class="text-overline">Ingreso Mensual</spam>
                     </v-col>
                     <v-col cols="12" md="2">
-                      <v-avatar icon="mdi-cash-multiple" class=" text-h6 text-teal-darken-2"></v-avatar>
+                      <v-avatar icon="mdi-cash-multiple" class="text-h6 text-teal-darken-2"></v-avatar>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12" md="6">
+                      <spam class="text-overline">
+                        <div class="text-h6 font-weight-bold text-teal-darken-2">
+                          {{ this.formatNumber(amountMounth) }}
+                          <div class="text-h6 font-weight-bold text-teal-darken-2">
+                          </div>
+                          CLP
+                        </div>
+                      </spam>
+                      <p>{{ formattedDateMonth }} </p>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <spam class="text-overline">
+                        <div class="text-h6 font-weight-bold text-teal-darken-2">
+                          {{ this.formatNumber(amountMounthAnt) }}
+                          <div class="text-h6 font-weight-bold text-teal-darken-2">
+                          </div>
+                          CLP
+                        </div>
+                      </spam>
+                      <p>{{ formattedDateMonthAnt }} </p>
                     </v-col>
                   </v-row>
                 </div>
@@ -66,10 +59,20 @@
               <v-card-text>
                 <div>
                   <v-row>
-                    <v-col cols="12" md="5">
+                    <v-col cols="12" md="10">
+                      <spam class="text-overline">Productos Vendidos</spam>
+                    </v-col>
+                    <v-col cols="12" md="2">
+                      <v-avatar icon="mdi-star-circle" class=" text-h6 text-amber-darken-1"></v-avatar>
+                    </v-col>
+
+                  </v-row>
+
+                  <v-row>
+                    <v-col cols="12" md="6">
                       <v-row>
                         <v-col cols="12">
-                          <spam class="text-overline"> Productos Vendidos
+                          <spam class="text-overline">
                             <div class="text-h6 font-weight-bold text-amber-darken-1">
                               {{ formatNumber(productCant) }}
                             </div>
@@ -82,10 +85,10 @@
                       </v-row>
                     </v-col>
 
-                    <v-col cols="12" md="5">
+                    <v-col cols="12" md="6">
                       <v-row>
                         <v-col cols="12">
-                          <spam class="text-overline"><br>
+                          <spam class="text-overline">
                             <div class="text-h6 font-weight-bold text-amber-darken-1">
                               {{ formatNumber(productCantAnt) }}
                             </div>
@@ -97,10 +100,6 @@
                         </v-col>
                       </v-row>
                     </v-col>
-                    <v-col cols="12" md="2">
-                      <v-avatar icon="mdi-star-circle" class=" text-h6 text-amber-darken-1"></v-avatar>
-                    </v-col>
-
                   </v-row>
                   <!--<div class="text-right">
                     <a herf="#" @click="detailProduct">Ver detalles</a>
@@ -123,10 +122,18 @@
               <v-card-text>
                 <div>
                   <v-row>
-                    <v-col cols="12" md="5">
+                    <v-col cols="12" md="10">
+                      <spam class="text-overline">Servicios brindados</spam>
+                    </v-col>
+                    <v-col cols="12" md="2">
+                      <v-avatar icon="mdi-star-circle" class=" text-h6 text-brown-lighten-1"></v-avatar>
+                    </v-col>
+                    </v-row>
+                  <v-row>
+                    <v-col cols="12" md="6">
                       <v-row>
                         <v-col cols="12">
-                          <spam class="text-overline"> Servicios brindados
+                          <spam class="text-overline">
                             <div class="text-h6 font-weight-bold text-brown-lighten-1">
                               {{ formatNumber(serviceCant) }}
                             </div>
@@ -139,10 +146,10 @@
                       </v-row>
                     </v-col>
 
-                    <v-col cols="12" md="5">
+                    <v-col cols="12" md="6">
                       <v-row>
                         <v-col cols="12">
-                          <spam class="text-overline"><br>
+                          <spam class="text-overline">
                             <div class="text-h6 font-weight-bold text-brown-lighten-1">
                               {{ formatNumber(serviceCantAnt) }}
                             </div>
@@ -154,11 +161,6 @@
                         </v-col>
                       </v-row>
                     </v-col>
-                    <v-col cols="12" md="2">
-                      <v-avatar icon="mdi-star-circle" class=" text-h6 text-brown-lighten-1"></v-avatar>
-
-                    </v-col>
-
                   </v-row>
                   <!--<div class="text-right">
                     <a herf="#" @click="detailService">Ver detalles</a>
@@ -171,112 +173,6 @@
           </v-card>
         </v-flex>
       </v-col>
-      <!--<v-col cols="12" md="6" lg="3">
-        <v-flex>
-          <v-card elevation="6">
-            <v-toolbar elevation="6" id="bar-login" style="height: 45px;" dark color="amber-darken-1">
-            </v-toolbar>
-            <v-card elevation="5" style="z-index:2; margin-top: -20px; border:0px">
-              <v-card-text>
-                <div>
-                  <v-row>
-                    <v-col cols="12" md="9">
-                      <v-row>
-                        <v-col cols="12">
-                          <spam class="text-overline"> Reservas Diarias
-                            <div class="text-h4 font-weight-bold text-amber-darken-1">
-                              {{  reservDay  }}
-                            </div>
-                          </spam>
-                          <p>Fecha: {{ formattedDate }} </p>
-                        </v-col>
-
-                      </v-row>
-                    </v-col>
-
-                    <v-col cols="12" md="3">
-                      <v-avatar icon="mdi-calendar" class=" text-h6 text-amber-darken-1"></v-avatar>
-                    </v-col>
-                  </v-row>
-                </div>
-              </v-card-text>
-            </v-card>
-            <v-toolbar elevation="6" dark color="amber-darken-1" style="margin-top: -40px; height: 70px;">
-            </v-toolbar>
-          </v-card>
-        </v-flex>
-      </v-col>
-      <v-col cols="12" md="6" lg="3">
-        <v-flex>
-          <v-card elevation="6">
-            <v-toolbar elevation="6" id="bar-login" style="height: 45px;" dark color="deep-orange-lighten-1">
-            </v-toolbar>
-            <v-card elevation="5" style="z-index:2; margin-top: -20px; border:0px">
-              <v-card-text>
-                <div>
-                  <v-row>
-                    <v-col cols="12" md="9">
-                      <v-row>
-                        <v-col cols="12">
-                          <spam class="text-overline"> Clientes Frecuentes
-                            <div class="text-h4 font-weight-bold text-deep-orange-lighten-1">
-                              {{ clientFrecuente }}
-                            </div>
-                          </spam>
-                          <p>Fecha: {{ formattedDate }} </p>
-                        </v-col>
-                      </v-row>
-                    </v-col>
-
-                    <v-col cols="12" md="3">
-                      <v-avatar icon="mdi-account-star" class=" text-h6 text-deep-orange-lighten-1"></v-avatar>
-                    </v-col>
-
-                  </v-row>
-                </div>
-              </v-card-text>
-            </v-card>
-            <v-toolbar elevation="6" dark color="deep-orange-lighten-1" style="margin-top: -40px; height: 70px;">
-            </v-toolbar>
-          </v-card>
-        </v-flex>
-      </v-col>-->
-
-      <!--<v-col cols="12" md="4" lg="4">
-        <v-flex>
-          <v-card elevation="6">
-            <v-toolbar elevation="6" id="bar-login" style="height: 45px;" dark color="brown-lighten-1">
-            </v-toolbar>
-            <v-card elevation="5" style="z-index:2; margin-top: -20px; border:0px">
-              <v-card-text>
-                <div>
-                  <v-row>
-                    <v-col cols="12" md="9">
-                      <v-row>
-                        <v-col cols="12">
-                          <spam class="text-overline"> Servicio más brindado
-                            <div class="text-h4 font-weight-bold text-brown-lighten-1">
-                              {{amountDay}}
-                            </div>
-                          </spam>
-                          <p>Fecha: {{ formattedDate }} </p>
-                        </v-col>
-
-                      </v-row>
-                    </v-col>
-
-                    <v-col cols="12" md="3">
-                      <v-avatar icon="mdi-cash" class=" text-h6 text-brown-lighten-1"></v-avatar>
-                    </v-col>
-                  </v-row>
-                </div>
-              </v-card-text>
-            </v-card>
-            <v-toolbar elevation="6" dark color="brown-lighten-1" style="margin-top: -40px; height: 70px;">
-            </v-toolbar>
-          </v-card>
-        </v-flex>
-      </v-col>-->
     </v-row>
     <v-row v-if="mostrarFila">
       <v-col cols="6">
@@ -343,16 +239,16 @@
                 <v-list-item-group>
                   <v-list-item v-for="(carDetail, index) in winners" :key="index">
                     <v-list-item-content>
-                      <v-list-item-title> <v-icon>mdi-tag</v-icon>Productos: {{ carDetail.productsAmount
+                      <v-list-item-title> <v-icon>mdi-tag</v-icon>Productos: {{ formatNumber(carDetail.productsAmount)
                         }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-hair-dryer</v-icon>Servicios: {{ carDetail.servicesAmount
+                      <v-list-item-title><v-icon>mdi-hair-dryer</v-icon>Servicios: {{ formatNumber(carDetail.servicesAmount)
                         }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-chair-rolling</v-icon>Ganancias: {{ carDetail.earnings
+                      <v-list-item-title><v-icon>mdi-chair-rolling</v-icon>Ganancias: {{ formatNumber(carDetail.earnings)
                         }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-cog</v-icon>Asistencia Técnica: {{ carDetail.technical_assistance
+                      <v-list-item-title><v-icon>mdi-cog</v-icon>Asistencia Técnica: {{ formatNumber(carDetail.technical_assistance)
                         }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-cash</v-icon>Propina: {{ carDetail.tip }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-briefcase</v-icon>Total: {{ carDetail.total }}</v-list-item-title>
+                      <v-list-item-title><v-icon>mdi-cash</v-icon>Propina: {{ formatNumber(carDetail.tip) }}</v-list-item-title>
+                      <v-list-item-title><v-icon>mdi-briefcase</v-icon>Total: {{ formatNumber(carDetail.total) }}</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list-item-group>
@@ -364,16 +260,16 @@
                 <v-list-item-group>
                   <v-list-item v-for="(carDetail, index) in winnersAnt" :key="index">
                     <v-list-item-content>
-                      <v-list-item-title> <v-icon>mdi-tag</v-icon>Productos: {{ carDetail.productsAmount
+                      <v-list-item-title> <v-icon>mdi-tag</v-icon>Productos: {{ formatNumber(carDetail.productsAmount)
                         }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-hair-dryer</v-icon>Servicios: {{ carDetail.servicesAmount
+                      <v-list-item-title><v-icon>mdi-hair-dryer</v-icon>Servicios: {{ formatNumber(carDetail.servicesAmount)
                         }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-chair-rolling</v-icon>Ganancias: {{ carDetail.earnings
+                      <v-list-item-title><v-icon>mdi-chair-rolling</v-icon>Ganancias: {{ formatNumber(carDetail.earnings)
                         }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-cog</v-icon>Asistencia Técnica: {{ carDetail.technical_assistance
+                      <v-list-item-title><v-icon>mdi-cog</v-icon>Asistencia Técnica: {{ formatNumber(carDetail.technical_assistance)
                         }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-cash</v-icon>Propina: {{ carDetail.tip }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-briefcase</v-icon>Total: {{ carDetail.total }}</v-list-item-title>
+                      <v-list-item-title><v-icon>mdi-cash</v-icon>Propina: {{ formatNumber(carDetail.tip) }}</v-list-item-title>
+                      <v-list-item-title><v-icon>mdi-briefcase</v-icon>Total: {{ formatNumber(carDetail.total) }}</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list-item-group>
@@ -394,7 +290,7 @@
       <v-card>
         <v-toolbar color="#F18254">
           <v-col cols="12" md="9" class="grow ml-4">
-            <span class="text-h8"> <strong>Servicios más brindados</strong></span>
+            <span class="text-h8"> <strong>Servicios brindados</strong></span>
           </v-col>
           <v-spacer></v-spacer>
         </v-toolbar>
@@ -454,7 +350,7 @@
       <v-card>
         <v-toolbar color="#F18254">
           <v-col cols="12" md="9" class="grow ml-4">
-            <span class="text-h8"> <strong>Productos mas vendidos</strong></span>
+            <span class="text-h8"> <strong>Productos vendidos</strong></span>
           </v-col>
           <v-spacer></v-spacer>
         </v-toolbar>
@@ -571,10 +467,10 @@ export default {
   name: 'LoginPage',
   components: { Bar, LineChart },
   props: {
-      value: {
-        type: String
-      },
+    value: {
+      type: String
     },
+  },
   data() {
     return {
       formattedDate: '',
@@ -620,7 +516,7 @@ export default {
       search3: '',
       headers: [
         { title: "Nombre Producto", key: "name", sortable: false },
-        { title: "Cantidad", key: "orders", sortable: true }
+        { title: "Cantidad", key: "total_cant", sortable: true }
       ],
       headers1: [
         { title: "Nombre Servicio", key: "name", sortable: false },
@@ -689,24 +585,24 @@ export default {
   methods: {
     formatNumber(value) {
       // Si el valor es menor que 1000, devuelve el valor original sin formato
-  if (value < 1000) {
-    return value;
-  }
+      if (value < 1000) {
+        return value;
+      }
 
-  // Primero, redondea el valor a dos decimales
-  value = Math.round((value + Number.EPSILON) * 100) / 100;
+      // Primero, redondea el valor a dos decimales
+      value = Math.round((value + Number.EPSILON) * 100) / 100;
 
-  // Separa la parte entera de la parte decimal
-  let parts = value.toString().split(".");
-  let integerPart = parts[0];
-  let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+      // Separa la parte entera de la parte decimal
+      let parts = value.toString().split(".");
+      let integerPart = parts[0];
+      let decimalPart = parts.length > 1 ? "." + parts[1] : "";
 
-  // Agrega los separadores de miles
-  integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      // Agrega los separadores de miles
+      integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
-  // Combina la parte entera y la parte decimal
-  return integerPart + decimalPart;
-        },
+      // Combina la parte entera y la parte decimal
+      return integerPart + decimalPart;
+    },
     //ganancias en la semana
     generateChartData1() {
       return {
@@ -768,15 +664,15 @@ export default {
         })
         .then((response) => {
           this.products = response.data.product;
-          //this.productsData = this.products[0].products;
-          //this.productsDataAnt = this.products[0].productsAnt;
+          this.productsData = this.products[0].products;
+          this.productsDataAnt = this.products[0].productsAnt;
           //this.productName = this.products[0].name;
           //this.productNameAnt = this.products[0].nameAnt;
           this.productCant = this.products[0].cant;
           this.productCantAnt = this.products[0].cantAnt;
           this.services = response.data.service;
-          //this.servicesData = this.services[0].services;
-          //this.servicesDataAnt = this.services[0].servicesAnt;
+          this.servicesData = this.services[0].services;
+          this.servicesDataAnt = this.services[0].servicesAnt;
           //this.serviceName = this.services[0].name;
           //this.serviceNameAnt = this.services[0].nameAnt;
           this.serviceCant = this.services[0].cant;
