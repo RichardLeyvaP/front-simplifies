@@ -138,7 +138,7 @@
    <template v-slot:item.name="{ item }">
 
    <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-     <v-img :src="'http://127.0.0.1:8000/api/images/'+item.student_image" alt="image"></v-img>
+     <v-img :src="'https://api2.simplifies.cl/api/images/'+item.student_image" alt="image"></v-img>
    </v-avatar>
    {{ item.name }}
    </template>
@@ -285,9 +285,9 @@ methods: {
   openModal(imageUrl) {
       
       var img = new Image();
-      img.src = 'http://127.0.0.1:8000/api/images/' + imageUrl;
+      img.src = 'https://api2.simplifies.cl/api/images/' + imageUrl;
       img.onload = () => {
-      this.selectedImageUrl = 'http://127.0.0.1:8000/api/images/' + imageUrl; 
+      this.selectedImageUrl = 'https://api2.simplifies.cl/api/images/' + imageUrl; 
       };
       img.onerror = () => {
         this.selectedImageUrl = '';
@@ -333,12 +333,12 @@ showAlert(sb_type,sb_message, sb_timeout)
 },
 initialize() {
  axios
-   .get('http://127.0.0.1:8000/api/student')
+   .get('https://api2.simplifies.cl/api/student')
    .then((response) => {
      this.results = response.data.clients;
    });
    /*axios
-   .get('http://127.0.0.1:8000/api/usuario')
+   .get('https://api2.simplifies.cl/api/usuario')
    .then((response) => {
      this.users = response.data.users;
    });*/
@@ -358,9 +358,9 @@ onFileSelected(event) {
 editItem(item) {
   this.file = null;
       var img = new Image();
-      img.src = 'http://127.0.0.1:8000/api/images/' + item.student_image;
+      img.src = 'https://api2.simplifies.cl/api/images/' + item.student_image;
       img.onload = () => {
-        this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.student_image;
+        this.imgMiniatura = 'https://api2.simplifies.cl/api/images/' + item.student_image;
       };
       img.onerror = () => {
         this.imgMiniatura = '';
@@ -382,7 +382,7 @@ deleteItemConfirm() {
    id: this.editedItem.id
  };
  axios
-   .post('http://127.0.0.1:8000/api/student-destroy', request)
+   .post('https://api2.simplifies.cl/api/student-destroy', request)
    .then(() => {
      this.initialize();
      this.message_delete = true
@@ -414,7 +414,7 @@ save() {
        formData.append(key, this.editedItem[key]);
      }  
    axios
-     .post('http://127.0.0.1:8000/api/student-update', formData)
+     .post('https://api2.simplifies.cl/api/student-update', formData)
      .then(() => {
        this.initialize();
       this.showAlert("success","Estudiante editado correctamente", 3000)
@@ -428,7 +428,7 @@ save() {
        formData.append(key, this.editedItem[key]);
      } 
    axios
-     .post('http://127.0.0.1:8000/api/student', formData)
+     .post('https://api2.simplifies.cl/api/student', formData)
      .then(() => {
        this.initialize();
        this.showAlert("success","Estudiante registrado correctamente", 3000)

@@ -167,7 +167,7 @@
   imageUrl: ${item.imageUrl}?${Date.now()}
 }));-->
           <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-            <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_service+'?$'+Date.now()" alt="image"></v-img>
+            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_service+'?$'+Date.now()" alt="image"></v-img>
           </v-avatar>
           {{ item.name }}
         </template>
@@ -358,7 +358,7 @@ export default {
     },
     initialize() {
       axios
-        .get('http://127.0.0.1:8000/api/service')
+        .get('https://api2.simplifies.cl/api/service')
         .then((response) => {
           this.results = response.data.services;
         });
@@ -378,9 +378,9 @@ export default {
     editItem(item) {
       this.file = null;
       var img = new Image();
-      img.src = 'http://127.0.0.1:8000/api/images/' + item.image_service;
+      img.src = 'https://api2.simplifies.cl/api/images/' + item.image_service;
       img.onload = () => {
-        this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.image_service;
+        this.imgMiniatura = 'https://api2.simplifies.cl/api/images/' + item.image_service;
       };
       img.onerror = () => {
         this.imgMiniatura = '';
@@ -402,7 +402,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('http://127.0.0.1:8000/api/service-destroy', request)
+        .post('https://api2.simplifies.cl/api/service-destroy', request)
         .then(() => {
           this.showAlert("success", "Servicio eliminado correctamente", 3000)
         }).finally(() => {
@@ -436,7 +436,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios
-          .post('http://127.0.0.1:8000/api/service-update', formData)
+          .post('https://api2.simplifies.cl/api/service-update', formData)
           .then(() => {
             this.showAlert("success", "Servicio editado correctamente", 3000);
             this.imgMiniatura = '';
@@ -456,7 +456,7 @@ export default {
         console.log('formData');
         console.log(formData);
         axios
-          .post('http://127.0.0.1:8000/api/service', formData)
+          .post('https://api2.simplifies.cl/api/service', formData)
           .then(() => {
             this.showAlert("success", "Servicio registrado correctamente", 3000);
             this.imgMiniatura = '';

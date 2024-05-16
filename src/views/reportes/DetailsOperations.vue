@@ -272,7 +272,7 @@ export default {
         console.log('this.charge')
         console.log(this.charge)
         axios
-            .get('http://127.0.0.1:8000/api/show-business', {
+            .get('https://api2.simplifies.cl/api/show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -361,7 +361,7 @@ export default {
         initialize() {
             this.editedIndex = 1;
             axios
-                .get('http://127.0.0.1:8000/api/details-operations', {
+                .get('https://api2.simplifies.cl/api/details-operations', {
                     params: {
                         branch_id: this.branch_id,
                         year: this.selectedYear
@@ -378,7 +378,7 @@ export default {
             this.editedIndex = 3;
             if(this.selectedMounth){
                 axios
-                .get('http://127.0.0.1:8000/api/details-operations-month', {
+                .get('https://api2.simplifies.cl/api/details-operations-month', {
                     params: {
                         branch_id: this.branch_id,
                         year: this.selectedYear,

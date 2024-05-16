@@ -341,7 +341,7 @@
           <template v-slot:item.fullName="{ item }">
             <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
               <v-img
-                :src="'http://127.0.0.1:8000/api/images/' + item.image_url+'?$'+Date.now()"
+                :src="'https://api2.simplifies.cl/api/images/' + item.image_url+'?$'+Date.now()"
                 alt="image"
               ></v-img
               ><!--+ '?$' + Date.now()
@@ -1262,7 +1262,7 @@ export default {
     this.business_id = parseInt(LocalStorageService.getItem("business_id"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
-      .get("http://127.0.0.1:8000/api/charge-web", {
+      .get("https://api2.simplifies.cl/api/charge-web", {
         params: {
           business_id: this.business_id,
         },
@@ -1285,7 +1285,7 @@ export default {
     shangePassword() {
       console.log(this.editedItem.user_id);
       axios
-        .get("http://127.0.0.1:8000/api/change_password", {
+        .get("https://api2.simplifies.cl/api/change_password", {
           params: {
             id: this.editedItem.user_id,
             password: this.confirmPassword,
@@ -1322,7 +1322,7 @@ export default {
       this.snackbar = true;
     },
     initialize() {
-      axios.get("http://127.0.0.1:8000/api/professional").then((response) => {
+      axios.get("https://api2.simplifies.cl/api/professional").then((response) => {
         this.results = response.data.professionals;
       });
     },
@@ -1355,9 +1355,9 @@ export default {
     editItem(item) {
       this.file = null;
       var img = new Image();
-      img.src = "http://127.0.0.1:8000/api/images/" + item.image_url;
+      img.src = "https://api2.simplifies.cl/api/images/" + item.image_url;
       img.onload = () => {
-        this.imgMiniatura = "http://127.0.0.1:8000/api/images/" + item.image_url;
+        this.imgMiniatura = "https://api2.simplifies.cl/api/images/" + item.image_url;
       };
       img.onerror = () => {
         this.imgMiniatura = "";
@@ -1386,7 +1386,7 @@ export default {
       let request = {
         id: this.editedItem.id,
       };
-      axios.post("http://127.0.0.1:8000/api/professional-destroy", request).then(() => {
+      axios.post("https://api2.simplifies.cl/api/professional-destroy", request).then(() => {
         this.initialize();
         this.message_delete = true;
         this.showAlert("success", "Profesional eliminado correctamente", 3000);
@@ -1433,7 +1433,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios
-          .post("http://127.0.0.1:8000/api/professional-update", formData)
+          .post("https://api2.simplifies.cl/api/professional-update", formData)
           .then(() => {
             this.initialize();
             this.showAlert("success", "Profesional editado correctamente", 3000);
@@ -1461,7 +1461,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios
-          .post("http://127.0.0.1:8000/api/register_professional", formData)
+          .post("https://api2.simplifies.cl/api/register_professional", formData)
           .then(() => {
             this.initialize();
             this.showAlert("success", "Profesional registrado correctamente", 3000);
@@ -1480,7 +1480,7 @@ export default {
     showWinner() {
       this.editedIndexWin = -1;
       axios
-        .get("http://127.0.0.1:8000/api/branch_professionals_winner")
+        .get("https://api2.simplifies.cl/api/branch_professionals_winner")
         .then((response) => {
           this.winner = response.data;
         })
@@ -1578,7 +1578,7 @@ export default {
         ? format(this.input2, "yyyy-MM-dd")
         : format(new Date(), "yyyy-MM-dd");
       axios
-        .get("http://127.0.0.1:8000/api/branch_professionals_winner", {
+        .get("https://api2.simplifies.cl/api/branch_professionals_winner", {
           params: {
             startDate: startDate,
             endDate: endDate,
@@ -1594,7 +1594,7 @@ export default {
       this.editedIndexLater = -1;
       this.dialogLater = true;
       /*axios
-      .get('http://127.0.0.1:8000/api/show-business', {
+      .get('https://api2.simplifies.cl/api/show-business', {
         params: {
           business_id: this.business_id
         }
@@ -1623,7 +1623,7 @@ export default {
         ? format(this.input2, "yyyy-MM-dd")
         : format(new Date(), "yyyy-MM-dd");
       axios
-        .get("http://127.0.0.1:8000/api/arriving-late-professional-periodo", {
+        .get("https://api2.simplifies.cl/api/arriving-late-professional-periodo", {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id,
@@ -1684,7 +1684,7 @@ export default {
       this.editedIndexAsist1 = -1;
       this.editedIndexAsist2 = -1;
       axios
-        .get("http://127.0.0.1:8000/api/branch_professionals_winner", {
+        .get("https://api2.simplifies.cl/api/branch_professionals_winner", {
           params: {
             branch_id: this.branch_id,
           },
@@ -1714,7 +1714,7 @@ export default {
       console.log(startDate);
       console.log(endDate);
       axios
-        .get("http://127.0.0.1:8000/api/arriving-branch-periodo", {
+        .get("https://api2.simplifies.cl/api/arriving-branch-periodo", {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,
@@ -1734,7 +1734,7 @@ export default {
       this.professional_id = item.id;
       this.dialogfreeday = true;
       axios
-        .get("http://127.0.0.1:8000/api/restday-show", {
+        .get("https://api2.simplifies.cl/api/restday-show", {
           params: {
             professional_id: this.professional_id,
           },
@@ -1774,7 +1774,7 @@ export default {
       console.log("request");
       console.log(request);
       axios
-        .put("http://127.0.0.1:8000/api/restday", request)
+        .put("https://api2.simplifies.cl/api/restday", request)
         .then(() => {
           this.showAlert("success", "Días de descanso actualizado correctamente", 3000);
         })

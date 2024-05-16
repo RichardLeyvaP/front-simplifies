@@ -310,7 +310,7 @@
                   no-data-text="No hay datos disponibles">
                   <template v-slot:item.name="{ item }">
                     <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                      <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_service
+                      <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_service
                         " alt="image"></v-img>
                     </v-avatar>
                     {{ item.name }}
@@ -327,7 +327,7 @@
                   no-data-text="No hay datos disponibles">
                   <template v-slot:item.name="{ item }">
                     <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                      <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_service
+                      <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_service
                         " alt="image"></v-img>
                     </v-avatar>
                     {{ item.name }}
@@ -373,7 +373,7 @@
                   </template>
                   <template v-slot:item.name="{ item }">
                     <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                      <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_product
+                      <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product
                         " alt="image"></v-img>
                     </v-avatar>
                     {{ item.name }}
@@ -393,7 +393,7 @@
                   </template>
                   <template v-slot:item.name="{ item }">
                     <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                      <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_product
+                      <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product
                         " alt="image"></v-img>
                     </v-avatar>
                     {{ item.name }}
@@ -431,13 +431,13 @@
               <template v-slot:item.professionalName="{ item }">
 
                 <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                  <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_data" alt="image"></v-img>
+                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_data" alt="image"></v-img>
                 </v-avatar>
                 {{ item.professionalName }}
               </template>
               <template v-slot:item.clientName="{ item }">
                 <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                  <v-img :src="'http://127.0.0.1:8000/api/images/' + item.client_image
+                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.client_image
                     " alt="image"></v-img>
                 </v-avatar>
                 {{ item.clientName }}
@@ -645,7 +645,7 @@ export default {
       //this.reservationWeek = [40, 20, 12, 10, 35, 22, 0];
       this.editedIndex = 1;
       /*axios
-        .get('http://127.0.0.1:8000/api/cars-winner-day', {
+        .get('https://api2.simplifies.cl/api/cars-winner-day', {
           params: {
             branch_id: this.branch_id,
             business_id: this.business_id
@@ -656,7 +656,7 @@ export default {
           console.log(this.amountDay);
         });*/
       axios
-        .get('http://127.0.0.1:8000/api/car-products-services', {
+        .get('https://api2.simplifies.cl/api/car-products-services', {
           params: {
             branch_id: this.branch_id,
             business_id: this.business_id
@@ -681,7 +681,7 @@ export default {
           //console.log(this.services[0].services);
         });
       axios
-        .get('http://127.0.0.1:8000/api/cars-winner-mounth', {
+        .get('https://api2.simplifies.cl/api/cars-winner-mounth', {
           params: {
             branch_id: this.branch_id,
             business_id: this.business_id
@@ -695,7 +695,7 @@ export default {
           console.log(this.amountMounth);
         });
       /*axios
-        .get('http://127.0.0.1:8000/api/reservations-count', {
+        .get('https://api2.simplifies.cl/api/reservations-count', {
           params: {
             branch_id: this.branch_id,
             business_id: this.business_id
@@ -706,7 +706,7 @@ export default {
           console.log(this.reservDay);
         });*/
       /*axios
-        .get('http://127.0.0.1:8000/api/client-frecuente', {
+        .get('https://api2.simplifies.cl/api/client-frecuente', {
           params: {
             branch_id: this.branch_id,
             business_id: this.business_id
@@ -717,7 +717,7 @@ export default {
           console.log(this.clientFrecuente);
         });*/
       axios
-        .get('http://127.0.0.1:8000/api/cars-winner-week', {
+        .get('https://api2.simplifies.cl/api/cars-winner-week', {
           params: {
             branch_id: this.branch_id,
             business_id: this.business_id
@@ -728,7 +728,7 @@ export default {
           console.log(this.winnerWeek);
         });
       axios
-        .get('http://127.0.0.1:8000/api/reservations-count-week', {
+        .get('https://api2.simplifies.cl/api/reservations-count-week', {
           params: {
             branch_id: this.branch_id,
             business_id: this.business_id

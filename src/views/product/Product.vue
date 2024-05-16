@@ -261,7 +261,7 @@
             <v-avatar class="mr-2" elevation="3" color="grey-lighten-4">
               <v-img
                 :src="
-                  'http://127.0.0.1:8000/api/images/' +
+                  'https://api2.simplifies.cl/api/images/' +
                   item.image_product +
                   '?$' +
                   Date.now()
@@ -432,7 +432,7 @@
                         <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
                           <v-img
                             :src="
-                              'http://127.0.0.1:8000/api/images/' + item.image_product
+                              'https://api2.simplifies.cl/api/images/' + item.image_product
                             "
                             alt="image"
                           ></v-img>
@@ -601,7 +601,7 @@ export default {
 
   mounted() {
     axios
-      .get("http://127.0.0.1:8000/api/product-category")
+      .get("https://api2.simplifies.cl/api/product-category")
       .then((response) => {
         this.productCategories = response.data.productcategories;
       })
@@ -684,7 +684,7 @@ export default {
       this.snackbar = true;
     },
     initialize() {
-      axios.get("http://127.0.0.1:8000/api/product").then((response) => {
+      axios.get("https://api2.simplifies.cl/api/product").then((response) => {
         this.results = response.data.products;
       });
     },
@@ -710,9 +710,9 @@ export default {
       }
       this.file = null;
       var img = new Image();
-      img.src = "http://127.0.0.1:8000/api/images/" + item.image_product;
+      img.src = "https://api2.simplifies.cl/api/images/" + item.image_product;
       img.onload = () => {
-        this.imgMiniatura = "http://127.0.0.1:8000/api/images/" + item.image_product;
+        this.imgMiniatura = "https://api2.simplifies.cl/api/images/" + item.image_product;
       };
       img.onerror = () => {
         this.imgMiniatura = "";
@@ -733,7 +733,7 @@ export default {
       let request = {
         id: this.editedItem.id,
       };
-      axios.post("http://127.0.0.1:8000/api/product-destroy", request).then(() => {
+      axios.post("https://api2.simplifies.cl/api/product-destroy", request).then(() => {
         this.initialize();
         this.message_delete = true;
         this.showAlert("success", "Producto eliminado correctamente", 3000);
@@ -769,7 +769,7 @@ export default {
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
         }
-        axios.post("http://127.0.0.1:8000/api/product-update", formData).then(() => {
+        axios.post("https://api2.simplifies.cl/api/product-update", formData).then(() => {
           this.initialize();
           this.showAlert("success", "Producto editado correctamente", 3000);
           this.imgMiniatura = "";
@@ -782,7 +782,7 @@ export default {
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
         }
-        axios.post("http://127.0.0.1:8000/api/product", formData).then(() => {
+        axios.post("https://api2.simplifies.cl/api/product", formData).then(() => {
           this.initialize();
           this.showAlert("success", "Producto registrado correctamente", 3000);
           this.imgMiniatura = "";
@@ -798,7 +798,7 @@ export default {
             console.log('Entra aqui a mejores aisitencias');
             this.editedIndex1 = 1;
             axios
-                .get('http://127.0.0.1:8000/api/product-mostSold')
+                .get('https://api2.simplifies.cl/api/product-mostSold')
                 .then((response) => {
                     this.results1 = response.data;
                 });
@@ -815,7 +815,7 @@ export default {
             const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
             const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
             axios
-                .get('http://127.0.0.1:8000/api/product-mostSold-periodo', {
+                .get('https://api2.simplifies.cl/api/product-mostSold-periodo', {
                     params: {
                         //branch_id: this.branch_id,
                         startDate: startDate,
