@@ -228,7 +228,7 @@
                   <v-col cols="12" md="12">
                     <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.professional_id" :items="professionals" label="Profesional"
                       prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined"
-                      :rules="selectRules" v-if="!editando"></v-autocomplete>
+                      :rules="selectRules" v-if="!editando" @update:model-value="bonusActiv"></v-autocomplete>
                       <v-text-field v-model="nameProfessional" label="Professional"
                                         prepend-icon="mdi-account-tie-outline" variant="underlined" v-if="editando" disabled="true">
                                     </v-text-field>
@@ -238,10 +238,10 @@
                                         prepend-icon="mdi-arrow-collapse-vertical" variant="underlined" :rules="pago">
                                     </v-text-field>
                                     <v-text-field v-if="bonus" v-model="editedItem.limit" clearable label="Meta de Productividad"
-                                        prepend-icon="mdi-arrow-collapse-vertical" variant="underlined" :rules="pago" >
+                                        prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago" >
                                     </v-text-field>
                                      <v-text-field v-if="bonus" v-model="editedItem.mountpay" clearable label="Monto a Pagar"
-                                        prepend-icon="mdi-arrow-collapse-vertical" variant="underlined" :rules="pago" >
+                                        prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago" >
                                     </v-text-field>
                                     </v-col>
                 </v-row>
@@ -774,6 +774,15 @@ export default {
   },
 
   methods: {
+  bonusActiv(professional_id){
+    const selectedProfessional = this.professionals.find(prof => prof.id === professional_id);
+      if (selectedProfessional.charge == "Barbero y Encargado" || selectedProfessional.charge == "Barbero") {
+        this.bonus = true;
+      }
+      else {
+        this.bonus = false;
+      }
+  },
     imagenDisponible() {
         if (this.imgedit !== undefined && this.imgedit !== '') {
             // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
