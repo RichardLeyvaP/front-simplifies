@@ -346,6 +346,8 @@
                   elevation="1" class="mr-1 mt-1 mb-1" title="Editar Asignación"></v-btn>
                   <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-storefront" @click="showProducts(item)" color="orange-darken-1" variant="tonal"
             elevation="1" title="Asignar productos al estudiante"></v-btn>
+            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-checkbox-marked-circle" @click="editState(item)" color="green-darken-1" variant="tonal"
+            elevation="1" title="Editar estado en el curso"></v-btn>
                 <v-btn density="comfortable" icon="mdi-delete" @click="deleteS(item)" color="red-darken-4" variant="tonal"
                   elevation="1" title="Eliminar asignación"></v-btn>
                       </template>
@@ -658,6 +660,49 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+
+      <!--editar estado del estudainte--> 
+      <v-dialog v-model="dialogUpdateState" max-width="700px">
+          <v-card>
+            <v-toolbar color="#F18254">
+              <span class="text-subtitle-2 ml-4">Actualizar Estado en el Curso</span>
+            </v-toolbar>
+            <v-card-text>
+              <v-form v-model="valid" enctype="multipart/form-data">
+                <v-row>
+                  <v-col cols="12" md="6">
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="enabled" :items="options" clearable label="Habilitado"
+                        prepend-icon="mdi-format-list-bulleted-square" item-title="name" item-value="id"
+                        variant="underlined"></v-autocomplete>
+                  </v-col>
+
+                  <v-col cols="12" md="6">
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="payment_status" :items="options1" clearable label="Estado de los Pagos"
+                        prepend-icon="mdi-format-list-bulleted-square" item-title="name" item-value="id"
+                        variant="underlined"></v-autocomplete>
+                  </v-col>
+
+                  <v-col cols="12" md="6">
+                    <v-text-field v-show="payment_status === 0" v-model="amount_pay" clearable label="Monto a pagar"
+                      prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago">
+                    </v-text-field>
+                  </v-col>
+                </v-row>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+
+                  <v-btn color="#E7E9E9" variant="flat" @click="closeState">
+                    Cancelar
+                  </v-btn>
+                  <v-btn color="#F18254" variant="flat" @click="StateSave" :disabled="!valid">
+                    Aceptar
+                  </v-btn>
+                </v-card-actions>
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
   </v-container>
 </template>
 <script>
@@ -691,6 +736,7 @@ export default {
     business_id: '',
     message_delete: true,
     dialogUpdateS: false,
+    dialogUpdateState: false,
     dialogDelete: false,
     dialogStudents: false,
     dialogAddStudent: false,
@@ -778,7 +824,10 @@ export default {
       id:'',
     },
     data: {},
-
+    
+    enabled: '',
+      payment_status: '',
+      amount_pay: '',
     editedItemS: {
       reservation_payment: '',
       total_payment: '',
@@ -822,7 +871,30 @@ export default {
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
     search4: '',
+    options: [
+      {
+        "name": "Habilitado",
+        "id": 1
+      },
+      {
+        "name": "No Habilitado",
+        "id": 0
+      }
+    ],
+    options1: [
+      {
+        "name": "Ok",
+        "id": 1
+      },
+      {
+        "name": "Retrasado",
+        "id": 0
+      }
+    ],
     selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
+    pago: [
+      (value) => !!value || 'Campo requerido',
+      (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
   }),
   setup() {
         const adapter = useDate()
@@ -1462,6 +1534,50 @@ export default {
       this.dialogRequestProfessional = false;
       this.professional_id = '';
       //this.showProfessionals(this.branchSelect)
+    },
+    //
+    editState(item) {
+      console.log("Este es el Item")
+      console.log(item)
+      this.dialogUpdateState = true;
+      //this.editedItem.branch_id=item.id
+      this.enabled = item.enabled;
+      this.payment_status = item.payment_status;
+      this.amount_pay = item.amount_pay;
+      //this.editedItemS.image_url = item.image_url;
+      this.editedItemS.student_id = item.id;
+      this.editedStudent.student_id = item.id;
+
+    },
+    closeState() {
+      this.dialogUpdateState = false;
+      this.enabled = '';
+      this.payment_status = '';
+      this.amount_pay = '';
+      this.editedItemS.student_id = '';
+      this.editedStudent.student_id = '';
+      //this.showStudents(this.courseSelect)
+    },
+    StateSave() {
+      this.valid = false,
+        this.data.course_id = this.course_id;
+      this.data.student_id = this.editedStudent.student_id;
+      this.data.enabled = this.enabled;
+      this.data.payment_status = this.payment_status;
+      this.data.amount_pay = this.payment_status ? 0 : this.amount_pay;
+
+      console.log('this.data------------');
+      console.log(this.data);
+   
+      axios
+        .post('https://api2.simplifies.cl/api/course-student-update2', this.data)
+        .then(() => {
+          this.dialogUpdateState = false;
+        }).finally(() => {
+          this.showAlert("success", "Estado en el curso actualizado correctamente", 3000);
+          this.showStudents(this.courseSelect);
+          });
+          this.closeState();
     },
   },//endMethods
 }
