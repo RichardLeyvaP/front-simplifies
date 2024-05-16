@@ -241,8 +241,7 @@
             variant="underlined" @update:model-value="initialize()"></v-autocomplete>
         </v-col>
       </v-row>
-      <v-row>
-        <v-container>          
+      <v-row>        
         <v-col cols="12" md="12">
           <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
         hide-details></v-text-field>
@@ -319,7 +318,6 @@
         </template>
       </v-data-table>
         </v-col>
-        </v-container>
       </v-row>
       <v-dialog v-model="dialogRequest" width="500">
         <v-card>
