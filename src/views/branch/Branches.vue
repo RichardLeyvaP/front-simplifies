@@ -865,6 +865,8 @@ export default {
       this.editedIndex = 1;
       this.editedItem = Object.assign({}, item);
       this.editedItem.business_type_id = parseInt(item.business_type_id);
+      this.editedItem.business_id = parseInt(item.business_id);
+      
       this.dialog = true;
       this.editando = true;
     },
