@@ -824,7 +824,7 @@ export default {
       { title: 'Pago de Reserva', value: 'reservation_payment' },
       { title: 'Pago Total', value: 'total_payment' },
       { title: 'Habilitado', value: 'enabled' },
-      { title: 'Pago', value: 'status' },
+      { title: 'Estado de Pago', value: 'status' },
       { title: 'Monto a Pagar', value: 'amount_pay' },
       { title: 'Comprobante', value: 'image_url' },
       { title: 'Acciones', key: 'actions', sortable: false },
@@ -934,7 +934,7 @@ export default {
     ],
     selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
     pago: [
-      (value) => !!value || 'Campo requerido',
+      //(value) => !!value || 'Campo requerido',
       (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
   }),
   setup() {
