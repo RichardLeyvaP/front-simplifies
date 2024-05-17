@@ -56,7 +56,7 @@
                                             </v-col>
                                             <v-col cols="12" md="9">
                                                 <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
-                                                    :subtitle="totalMount()" append-icon="mdi-check"
+                                                    :subtitle="this.formatNumber(totalMount())" append-icon="mdi-check"
                                                     v-if="this.mostrarCars">
 
                                                     <template v-slot:prepend>
@@ -91,8 +91,8 @@
                                                         </v-avatar>
                                                         {{ item.clientName }}
                                                     </template>
-                                                    <template v-slot:item.pay="{ item }">
-                                                        {{ formatNumber(item.totalServices + item.tip) }}
+                                                    <template v-slot:item.pay="{ item }">                                                    
+                                                        {{ formatNumber(Number(item.totalServices) + Number(item.tip)) }}
                                                     </template>
                                                     <template v-slot:item.totalServices ="{ item }">
                          {{ formatNumber(item.totalServices)}}
@@ -453,7 +453,7 @@
                                 </v-col>
                                 <v-col cols="12" md="9">
                                     <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
-                                        :subtitle="totalMount1()" append-icon="mdi-check">
+                                        :subtitle="this.formatNumber(totalMount1())" append-icon="mdi-check">
 
                                         <template v-slot:prepend>
                                             <v-avatar color="blue-darken-2">
@@ -739,8 +739,8 @@ export default {
                     // Asegúrate de que item.totalServices y item.tip sean números
                     const totalServices = Number(item.totalServices) || 0;
                     const tip = Number(item.tip) || 0;
-                    //this.editedItem.amount = total + totalServices + tip;
-                    return this.formatNumber(total + totalServices + tip);
+                    const amount = total + totalServices + tip;
+                    return amount;
                 }, 0);
             } else {
                 // Mapea los IDs de selected2 a los objetos correspondientes en cars
@@ -750,8 +750,32 @@ export default {
                     // Asegúrate de que item.totalServices y item.tip sean números
                     const totalServices = Number(item.totalServices) || 0;
                     const tip = Number(item.tip) || 0;
-                    //this.editedItem.amount = total + totalServices + tip;
-                    return this.formatNumber(total + totalServices + tip);
+                    const amount = total + totalServices + tip;
+                    return amount;
+                }, 0);
+            }
+
+        },
+        totalMount4() {
+            let selectedItems;
+            if (this.selected2.length == 0) {
+                return this.cars.reduce((total, item) => {
+                    // Asegúrate de que item.totalServices y item.tip sean números
+                    const totalServices = Number(item.totalServices) || 0;
+                    const tip = Number(item.tip) || 0;
+                    const amount = total + totalServices + tip;
+                    return this.formatNumber(amount);
+                }, 0);
+            } else {
+                // Mapea los IDs de selected2 a los objetos correspondientes en cars
+                selectedItems = this.selected2.map(selectedId => this.cars.find(car => car.id === selectedId));
+                // Calcula el total sumando totalServices y tip de los elementos seleccionados
+                return selectedItems.reduce((total, item) => {
+                    // Asegúrate de que item.totalServices y item.tip sean números
+                    const totalServices = Number(item.totalServices) || 0;
+                    const tip = Number(item.tip) || 0;
+                    const amount = total + totalServices + tip;
+                    return this.formatNumber(amount);
                 }, 0);
             }
 
@@ -764,7 +788,8 @@ export default {
                     //const totalServices = Number(item.totalServices) || 0;
                     const tip = Number(item.tipCashier) || 0;
                     //this.editedItem.amount = total + totalServices + tip;
-                    return this.formatNumber(total + tip);
+                    const amount = total + tip;
+                    return amount;
                 }, 0);
             } else {
                 // Mapea los IDs de selected2 a los objetos correspondientes en cars
@@ -776,7 +801,8 @@ export default {
                     const tip = Number(item.tipCashier) || 0;
                     //this.editedItem.amount = total + tip;
                     //this.editedItem.coffe_percent = total + tip;
-                    return this.formatNumber(total + tip);
+                    const amount = total + tip;
+                    return amount;
                 }, 0);
             }
         },
