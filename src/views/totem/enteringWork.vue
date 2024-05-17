@@ -154,7 +154,7 @@
     <br>
     <v-row>  
           <v-spacer></v-spacer>        
-        <v-btn size="x-large" to="totem" >Volver a inicio</v-btn>
+        <v-btn size="x-large" @click="handleClick" >Volver a inicio</v-btn>
         <v-spacer></v-spacer>  
         </v-row>
         <br>
@@ -309,6 +309,11 @@ export default {
       }
     }, this.timeDurationAwait);
   },
+
+  handleClick() {
+      clearTimeout(this.timer);
+      this.$router.push('/totem');
+    },
   stopTimer() {
     clearTimeout(this.timer);
   },
