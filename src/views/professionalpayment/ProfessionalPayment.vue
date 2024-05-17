@@ -493,13 +493,13 @@
                                         {{ item.professionalName }}
                                         </template>
                                         <template v-slot:item.tip="{ item }">
-                {{ formatNumber(item.tip)}}                                  
+                {{ formatNumber(parseInt(item.tip))}}                                  
                                           </template>
                                           <template v-slot:item.tipCashier="{ item }">
-                {{ formatNumber(item.tipCashier)}}                                  
+                {{ formatNumber(parseInt(item.tipCashier))}}                                  
                                           </template>
                                           <template v-slot:item.tipCoffe="{ item }">
-                {{ formatNumber(item.tipCoffe)}}                                  
+                {{ formatNumber(parseInt(item.tipCoffe))}}                                  
                                           </template>
                                     </v-data-table>
                                 </v-container>
