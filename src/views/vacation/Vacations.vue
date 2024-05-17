@@ -44,7 +44,16 @@
                                                     clearable label="Porfesional"
                                                     prepend-inner-icon="mdi-account-tie-outline" item-title="name"
                                                     item-value="id" variant="underlined"
-                                                    :rules="selectRules" :disabled='edit'></v-autocomplete>
+                                                    :rules="selectRules" :disabled='edit'>
+                                                    <template v-slot:item="{ props, item }">
+                                                    <v-list-item
+                                                        v-bind="props"
+                                                        :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_url"
+                                                        :subtitle="'Cargo: '+item.raw.charge"
+                                                        :title="item.raw.name"
+                                                    ></v-list-item>
+                                                    </template>
+                                                    </v-autocomplete>
                                             </v-col>
                                         </v-row>
                                         <v-row>

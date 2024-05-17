@@ -175,7 +175,12 @@
               </v-toolbar>
         
           <v-card-text>
+            <template v-if="loadingImage">
+        <v-progress-circular indeterminate color="#F18254"></v-progress-circular>
+      </template>
+      <template v-else>
             <v-img :src="selectedImageUrl" aspect-ratio="1.5" contain fill-height></v-img>
+      </template>
           </v-card-text>
         </v-card>
     </v-dialog>
@@ -207,6 +212,7 @@ dialog: false,
 message_delete: true,
 dialogDelete: false,
 dialogPhoto: false,
+loadingImage: false,
 headers: [
  { title: 'Nombre', key: 'name' },
  { title: 'Primer Apellido', key: 'surname' },
@@ -283,6 +289,24 @@ this.initialize()
 
 methods: {
   openModal(imageUrl) {
+    this.dialogPhoto = true;
+    this.loadingImage = true;
+  var img = new Image();
+  img.src = 'https://api2.simplifies.cl/api/images/' + imageUrl;
+  
+  img.onload = () => {
+    this.selectedImageUrl = 'https://api2.simplifies.cl/api/images/' + imageUrl;
+    this.loadingImage = false;
+    //this.dialogPhoto = true; // Abre el modal solo después de que la imagen esté cargada
+  };
+
+  img.onerror = () => {
+    this.selectedImageUrl = '';
+    this.dialogPhoto = false; // Abre el modal incluso si la carga falla, puede mostrar un mensaje de error o una imagen de respaldo
+    this.loadingImage = false;
+  };
+},
+  /*openModal(imageUrl) {
       
       var img = new Image();
       img.src = 'https://api2.simplifies.cl/api/images/' + imageUrl;
@@ -294,7 +318,7 @@ methods: {
       };
      // alert(this.selectedImageUrl)// Establece la imagen seleccionada
       this.dialogPhoto = true; // Abre el modal
-    },
+    },*/
   imagenDisponible() {
       if (this.imgedit !== undefined && this.imgedit !== '') {
       

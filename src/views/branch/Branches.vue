@@ -228,7 +228,16 @@
                   <v-col cols="12" md="12">
                     <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.professional_id" :items="professionals" label="Profesional"
                       prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined"
-                      :rules="selectRules" v-if="!editando" @update:model-value="bonusActiv"></v-autocomplete>
+                      :rules="selectRules" v-if="!editando" @update:model-value="bonusActiv">
+                      <template v-slot:item="{ props, item }">
+                                                    <v-list-item
+                                                        v-bind="props"
+                                                        :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_url"
+                                                        :subtitle="'Cargo: '+item.raw.charge"
+                                                        :title="item.raw.name"
+                                                    ></v-list-item>
+                                                    </template>
+                      </v-autocomplete>
                       <v-text-field v-model="nameProfessional" label="Professional"
                                         prepend-icon="mdi-account-tie-outline" variant="underlined" v-if="editando" disabled="true">
                                     </v-text-field>

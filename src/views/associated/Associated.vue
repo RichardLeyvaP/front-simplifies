@@ -38,7 +38,7 @@
                    <v-form ref="form" v-model="valid" enctype="multipart/form-data">
                    <v-container>
                      <v-row>
-                       <v-col cols="12" md="10">
+                       <v-col cols="12" md="12">
                       
                            <v-text-field v-model="editedItem.name" clearable label="Nombre del Asociado" prepend-icon="mdi-account-network"
                      variant="underlined" :rules="nameRules">
