@@ -84,7 +84,7 @@
                                                     no-data-text="No hay datos disponibles" show-select>
                                                     <template v-slot:item.clientName="{ item }">
 
-                                                        <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                                                        <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
                                                             <v-img
                                                                 :src="'https://api2.simplifies.cl/api/images/' + item.client_image"
                                                                 alt="image"></v-img>
@@ -92,8 +92,17 @@
                                                         {{ item.clientName }}
                                                     </template>
                                                     <template v-slot:item.pay="{ item }">
-                                                        {{ item.totalServices + item.tip }}
+                                                        {{ formatNumber(item.totalServices + item.tip) }}
                                                     </template>
+                                                    <template v-slot:item.totalServices ="{ item }">
+                         {{ formatNumber(item.totalServices)}}
+                                    </template>
+                                    <template v-slot:item.amountGenerate ="{ item }">
+                         {{ formatNumber(item.amountGenerate)}}
+                                    </template>
+                                    <template v-slot:item.tip ="{ item }">
+                         {{ formatNumber(item.tip)}}
+                                    </template>
                                                 </v-data-table>
                                             </v-col>
                                         </v-row>
@@ -152,7 +161,7 @@
                 no-data-text="No hay datos disponibles">
                 <template v-slot:item.name="{ item }">
 
-                    <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                    <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
                         <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
                     </v-avatar>
                     {{ item.name }}
@@ -365,12 +374,12 @@
                                         </span>
                                     </template>
                                     
-                                    <!--<template v-slot:item.amount="{ item }">
-                {{ formatNumber(item.amount)}}                                  
+                                    <template v-slot:item.amount="{ item }">
+                {{ formatNumber(parseInt(item.amount))}}                                  
                                           </template>
                                           <template v-slot:item.coffe_percent="{ item }">
-                {{ formatNumber(item.coffe_percent)}}                                  
-                                          </template>-->
+                {{ formatNumber(parseInt(item.coffe_percent))}}                                  
+                                          </template>
                                     <template v-slot:item.actions="{ item }">
                                         <v-btn density="comfortable" icon="mdi-delete" @click="deleteItemCashier(item)"
                                             color="red-darken-4" variant="tonal" elevation="1"
@@ -460,6 +469,7 @@
                             <v-row>
 
                                 <v-col cols="12" md="12">
+                                <v-container>
                                     <v-text-field class="mt-1 mb-1" v-model="search6" append-icon="mdi-magnify"
                                         label="Buscar" single-line hide-details></v-text-field>
                                     <v-data-table v-model="selected2" :headers="headers6"
@@ -468,11 +478,19 @@
                                         no-data-text="No hay datos disponibles" show-select>
                                         <template v-slot:item.clientName="{ item }">
 
-                                            <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                                            <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
                                                 <v-img :src="'https://api2.simplifies.cl/api/images/' + item.client_image"
                                                     alt="image"></v-img>
                                             </v-avatar>
                                             {{ item.clientName }}
+                                        </template>
+                                        <template v-slot:item.professionalName="{ item }">
+
+                                        <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
+                                            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url"
+                                                alt="image"></v-img>
+                                        </v-avatar>
+                                        {{ item.professionalName }}
                                         </template>
                                         <template v-slot:item.tip="{ item }">
                 {{ formatNumber(item.tip)}}                                  
@@ -484,6 +502,7 @@
                 {{ formatNumber(item.tipCoffe)}}                                  
                                           </template>
                                     </v-data-table>
+                                </v-container>
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -565,8 +584,8 @@ export default {
         ],
         headers6: [
             { title: 'ID', align: 'start', key: 'id' },
-            { title: 'Nombre Cliente', align: 'end', key: 'clientName' },
-            { title: 'Nombre Profesional', align: 'end', key: 'professionalName' },
+            { title: 'Nombre Cliente', key: 'clientName' },
+            { title: 'Nombre Profesional', key: 'professionalName' },
             { title: 'Fecha', align: 'end', key: 'data' },
             { title: 'Propina', align: 'end', key: 'tip' },
             { title: 'Propina 10% Cajero (a)', align: 'end', key: 'tipCashier' },
@@ -721,7 +740,7 @@ export default {
                     const totalServices = Number(item.totalServices) || 0;
                     const tip = Number(item.tip) || 0;
                     //this.editedItem.amount = total + totalServices + tip;
-                    return total + totalServices + tip;
+                    return this.formatNumber(total + totalServices + tip);
                 }, 0);
             } else {
                 // Mapea los IDs de selected2 a los objetos correspondientes en cars
@@ -732,7 +751,7 @@ export default {
                     const totalServices = Number(item.totalServices) || 0;
                     const tip = Number(item.tip) || 0;
                     //this.editedItem.amount = total + totalServices + tip;
-                    return total + totalServices + tip;
+                    return this.formatNumber(total + totalServices + tip);
                 }, 0);
             }
 
@@ -745,7 +764,7 @@ export default {
                     //const totalServices = Number(item.totalServices) || 0;
                     const tip = Number(item.tipCashier) || 0;
                     //this.editedItem.amount = total + totalServices + tip;
-                    return total + tip;
+                    return this.formatNumber(total + tip);
                 }, 0);
             } else {
                 // Mapea los IDs de selected2 a los objetos correspondientes en cars
@@ -757,7 +776,7 @@ export default {
                     const tip = Number(item.tipCashier) || 0;
                     //this.editedItem.amount = total + tip;
                     //this.editedItem.coffe_percent = total + tip;
-                    return total + tip;
+                    return this.formatNumber(total + tip);
                 }, 0);
             }
         },
@@ -772,23 +791,23 @@ export default {
         },*/
         formatNumber(value) {
       // Si el valor es menor que 1000, devuelve el valor original sin formato
-  if (value < 1000) {
-    return value;
-  }
+            if (value < 1000) {
+                return value;
+            }
 
-  // Primero, redondea el valor a dos decimales
-  value = Math.round((value + Number.EPSILON) * 100) / 100;
+            // Primero, redondea el valor a dos decimales
+            value = Math.round((value + Number.EPSILON) * 100) / 100;
 
-  // Separa la parte entera de la parte decimal
-  let parts = value.toString().split(".");
-  let integerPart = parts[0];
-  let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+            // Separa la parte entera de la parte decimal
+            let parts = value.toString().split(".");
+            let integerPart = parts[0];
+            let decimalPart = parts.length > 1 ? "." + parts[1] : "";
 
-  // Agrega los separadores de miles
-  integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            // Agrega los separadores de miles
+            integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
-  // Combina la parte entera y la parte decimal
-  return integerPart + decimalPart;
+            // Combina la parte entera y la parte decimal
+            return integerPart + decimalPart;
         },
         showAlert(sb_type, sb_message, sb_timeout) {
             this.sb_type = sb_type

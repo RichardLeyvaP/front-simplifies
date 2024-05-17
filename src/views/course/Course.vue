@@ -207,16 +207,14 @@
             </v-avatar>
             {{ item.name }}
           </template>
+          <template v-slot:item.reservation_price ="{ item }">
+                         {{ formatNumber(item.reservation_price)}}
+                                    </template>
+                                    <template v-slot:item.price ="{ item }">
+                         {{ formatNumber(item.price)}}
+                                    </template>
           <template v-slot:item.actions="{ item }">
-            <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
-              mdi-pencil
-            </v-icon>
-            <v-icon size="25" color="green" @click="showStudents(item)">
-              mdi-account-school
-            </v-icon>
-            <v-icon size="25" color="red" @click="deleteItem(item)">
-              mdi-delete
-            </v-icon>-->
+
             <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar Curso"></v-btn>
             <v-btn density="comfortable" icon="mdi-account-school"  @click="showStudents(item)" color="green" variant="tonal"
@@ -315,7 +313,7 @@
                   <v-avatar elevation="3" color="grey-lighten-4" size="large">
                     <v-img :src="'https://api2.simplifies.cl/api/images/' + item.student_image" alt="image"></v-img>
                   </v-avatar>
-                  {{ item.name + ' ' + item.surname + ' ' + item.second_surname }}
+                  {{ item.name + ' ' + item.surname }}
                 </template>
 
                 <template v-slot:item.image_url="{ item }">
@@ -328,13 +326,33 @@
             </template>
 
                 <template v-slot:item.enrollment_confirmed="{ item }">
-                  <div class="text-end">
+                  <div class="text-center">
                     <v-chip :color="item.enrollment_confirmed == 1 ? 'green' : 'red'"
                       :text="item.enrollment_confirmed == 1 ? 'SI' : 'NO'" class="text-uppercase" size="small"
                       label></v-chip>
                   </div>
                 </template>
-
+                <template v-slot:item.enabled="{ item }">
+                  <div class="text-center">
+                    {{parseInt(item.enabled) ? 'Habilitado' : 'No Habilitado'}}
+                  </div>
+                </template>
+                <template v-slot:item.status="{ item }">
+                  <div class="text-center">
+                    {{parseInt(item.status) ? 'Ok' : 'Retrasado'}}
+                  </div>
+                </template>
+                <template v-slot:item.amount_pay="{ item }">
+                  <div class="text-center">
+                    {{formatNumber(item.amount_pay)}}
+                  </div>
+                </template>
+                <template v-slot:item.reservation_payment ="{ item }">
+                         {{ formatNumber(item.reservation_payment)}}
+                                    </template>
+                                    <template v-slot:item.total_payment ="{ item }">
+                         {{ formatNumber(item.total_payment)}}
+                                    </template>
                 <template v-slot:item.actions="{ item }">
                  <!--<v-icon size="25" color="primary" @click="editS(item)">
                     mdi-pencil
@@ -375,7 +393,15 @@
                     <v-col cols="12" md="12">
                       <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedStudent.student_id" :items="students" label="Estudiante"
                         prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined"
-                        :rules="selectRules"></v-autocomplete>
+                        :rules="selectRules">
+                        <template v-slot:item="{ props, item }">
+                          <v-list-item
+                            v-bind="props"
+                            :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.client_image"
+                            :title="item.raw.name"
+                          ></v-list-item>
+                        </template>
+                        </v-autocomplete>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -456,6 +482,9 @@
                 </td>
               </tr>
             </template>-->
+            <template v-slot:item.price ="{ item }">
+                         {{ formatNumber(item.price)}}
+                                    </template>
             <template v-slot:item.nameProduct="{ item }">
 
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
@@ -508,7 +537,16 @@
                       :rules="selectRules"></v-autocomplete>-->
                   <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="product_id" :items="products" clearable label="Productos"
                         prepend-icon="mdi-tag" item-title="name" item-value="id" variant="underlined"
-                        :rules="selectRules" @update:model-value="cantExist"></v-autocomplete>
+                        :rules="selectRules" @update:model-value="cantExist">
+                        <template v-slot:item="{ props, item }">
+                          <v-list-item
+                            v-bind="props"
+                            :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_product"
+                            :subtitle="'Existencia: '+item.raw.product_exit"
+                            :title="item.raw.name"
+                          ></v-list-item>
+                        </template>
+                        </v-autocomplete>
                         <v-text-field v-model="product_exit" clearable label="Existencia"
                       prepend-icon="mdi-currency-usd" variant="underlined" disabled="true">
                     </v-text-field>
@@ -785,6 +823,9 @@ export default {
       { title: 'Matriculado', value: 'enrollment_confirmed' },
       { title: 'Pago de Reserva', value: 'reservation_payment' },
       { title: 'Pago Total', value: 'total_payment' },
+      { title: 'Habilitado', value: 'enabled' },
+      { title: 'Pago', value: 'status' },
+      { title: 'Monto a Pagar', value: 'amount_pay' },
       { title: 'Comprobante', value: 'image_url' },
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
@@ -975,6 +1016,37 @@ export default {
   },
 
   methods: {
+    formatNumber(value) {
+      // Si el valor es menor que 1000, devuelve el valor original sin formato
+  if (value < 1000) {
+    return value;
+  }
+
+  // Primero, redondea el valor a dos decimales
+  value = Math.round((value + Number.EPSILON) * 100) / 100;
+
+  // Separa la parte entera de la parte decimal
+  let parts = value.toString().split(".");
+  let integerPart = parts[0];
+  let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+
+  // Agrega los separadores de miles
+  integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+  // Combina la parte entera y la parte decimal
+  return integerPart + decimalPart;
+        },
+    imagenDisponible() {
+      if (this.imgedit !== undefined && this.imgedit !== '') {
+      
+        // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
+        let img = new Image();
+        img.src = this.imgedit;
+
+        return true; // Devuelve true si la imagen está disponible
+      }
+      return false; // Si la URL de la imagen no está definida o está vacía, devuelve false*/
+    },
     updateDate() {
       this.menu = false;
     },
