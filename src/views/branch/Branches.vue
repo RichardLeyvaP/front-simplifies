@@ -317,9 +317,6 @@
               <template v-slot:item.actions="{ item }">
           <v-btn density="comfortable" icon="mdi-delete" @click="closestoreRequest(item)" color="red-darken-4" variant="tonal"
             elevation="1" title="Eliminar afiliación del almacén"></v-btn>
-                <!--<v-icon size="small" color="red" @click="closestoreRequest(item)">
-                  mdi-delete
-                </v-icon>-->
               </template>
 
             </v-data-table>
