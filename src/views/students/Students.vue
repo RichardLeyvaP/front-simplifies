@@ -70,7 +70,7 @@
            </v-row>
            <v-row>
              <v-col cols="12" md="6">
-                      <v-file-input clearable v-model="file" ref="fileInput" label="Imagen del Estuduante"
+                      <v-file-input clearable v-model="file" ref="fileInput" label="Imagen del Estudiante"
                         variant="underlined" name="file" accept=".png, .jpg, .jpeg" @change="onFileSelected">
                       </v-file-input>
                     </v-col>

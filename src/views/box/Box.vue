@@ -1200,7 +1200,7 @@ export default {
     },
     totalMount() {
       console.log("boxxxxxx");
-      console.log(this.results.id);
+      console.log(this.results);
       //if (!this.results) {    
       this.editedCloseBox.totalMount = this.results.reduce((total, item) => total + item.amount + item.technical_assistance*5000, 0);
       return this.formatNumber(this.results.reduce((total, item) => total + item.amount, 0)) + " CLP";
@@ -1318,7 +1318,7 @@ export default {
 
       const temp = this.box.reduce((total, item) => total + item.existence, 0);
       console.log(temp);
-      return temp ? this.formatNumber(temp) + "CPL" : " CPL";
+      return temp ? this.formatNumber(temp) + "CLP" : " CLP";
       //return this.results.amount + " CLP";
     },
 
@@ -1370,6 +1370,7 @@ export default {
         })
         .then((response) => {          
             this.results = response.data.cars;
+            this.box = response.data.box;
         });
     },
     editItem(item) {
@@ -1401,6 +1402,7 @@ export default {
     },
 
     payItem(item) {
+      console.log('Carro a pagar');
       console.log(item);
       this.car_ref = item;
       this.editedIndex = 1;

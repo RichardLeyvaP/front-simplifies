@@ -273,7 +273,7 @@
         <v-card>
 
           <v-toolbar color="red">
-            <span class="text-subtitle-2 ml-4"> Eliminar afiliación del professional de esta sucursal</span>
+            <span class="text-subtitle-2 ml-4"> Eliminar afiliación del trabajador de esta sucursal</span>
           </v-toolbar>
 
           <v-card-text class="mt-2 mb-2"> ¿Desea eliminar esta afiliación del trabajador con la sucursal?</v-card-text>
@@ -435,7 +435,7 @@
       <v-dialog v-model="dialogAddAssociate" width="500">
         <v-card>
           <v-toolbar color="#F18254">
-            <span class="text-subtitle-2 ml-4">Agregar Associado</span>
+            <span class="text-subtitle-2 ml-4">Agregar Asociado</span>
           </v-toolbar>
           <v-card-text class="mt-2 mb-2">
             <v-form ref="form" v-model="valid" enctype="multipart/form-data">

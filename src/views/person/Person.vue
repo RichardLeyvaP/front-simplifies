@@ -181,7 +181,7 @@
                           clearable
                           v-model="file"
                           ref="fileInput"
-                          label="Avatar Profesionals"
+                          label="Avatar Profesional"
                           variant="underlined"
                           density="compact"
                           name="file"

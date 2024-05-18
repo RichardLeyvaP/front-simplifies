@@ -72,7 +72,7 @@
                 
               <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search2" class="elevation-2"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
                 <template v-slot:item.amount="{ item }">
-                {{ formatNumber(item.amount)}}                                  
+                {{ formatNumber(parseInt(item.amount))}}                                  
                                           </template>
               </v-data-table>
             </v-card-text>
