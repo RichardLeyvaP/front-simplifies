@@ -783,6 +783,7 @@ export default {
     products: [],
     product_exit:'',
     cant: '',
+    priceService: '',
     product_store_id: '',
     intervalId: null,
     
@@ -1402,9 +1403,14 @@ export default {
     },
 
     payItem(item) {
+      this.initialize();
       console.log('Carro a pagar');
       console.log(item);
       this.car_ref = item;
+      let temp = this.results.filter(item => item.id == this.car_ref.id);
+      console.log('temp nuevo carrro');
+      console.log(temp[0]);
+      item = temp[0];
       this.editedIndex = 1;
       this.editedItem.car_id = item.id;
       this.editedItem.tip = item.tip;
@@ -1435,6 +1441,8 @@ export default {
         });
     },
     showDetails(item) {
+      console.log('carro a ver details');
+      console.log(item);
       this.car_ref = item
       this.editedItem.id = item.id;
       axios
@@ -1447,8 +1455,10 @@ export default {
           this.orders = response.data.orders;
           console.log('imprime oreders');
           console.log(this.orders);
-        });
-      this.dialogDetallesCar = true;
+        }).finally(() => {
+        //this.priceService = this.orders.reduce((total, item) => total + item.price, 0);
+        this.dialogDetallesCar = true;
+          });
     },
     deleteItemConfirm() {
       let request = {
@@ -1623,6 +1633,7 @@ export default {
       this.showAddServices = false;
       this.branch_service_professional_id = '';
     },
+
     saveAddServie() {
       this.data.car_id = this.car_ref.id;
       this.data.service_id = this.branch_service_professional_id;
@@ -1638,7 +1649,10 @@ export default {
         .then(() => {
         }).finally(() => {
           this.showAlert("success", "Servicio agregado correctamente", 3000);
-          //this.initialize();
+           /*this.initialize();
+         let temp = this.results.filter(item => item.id == this.car_ref.id);
+          console.log('tempsddasdasd');
+          console.log(temp[0]);*/
           this.showDetails(this.car_ref);
           this.showAddServices = false;
           this.branch_service_professional_id = '';
@@ -1663,8 +1677,6 @@ export default {
       console.log('exist[0]');
       console.log(exist[0]);
       this.product_exit = exist[0].product_exit;
-
-      console.log(exist[0].product_exit);
     },
     showProduct(car) {
       console.log('imprime Carro');
@@ -1705,7 +1717,10 @@ export default {
         .then(() => {
         }).finally(() => {
           this.showAlert("success", "Producto agregado correctamente", 3000);
-          //this.initialize();
+          /*this.initialize();
+          let temp= this.results.filter(item => item.id == this.car_ref.id);
+          console.log('tempsddasdasd');
+          console.log(temp[0]);*/
           this.showDetails(this.car_ref);
           this.showAddProducts = false;
           this.product_store_id = '';
