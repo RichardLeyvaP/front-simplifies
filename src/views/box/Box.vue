@@ -31,7 +31,7 @@
                   prepend-icon="mdi-account-star-outline" :disabled="filteredItemsPay.length !== 0 ? false : true">
                   Clientes atendidos
                 </v-btn>
-                <v-btn :disabled="closed_box || ejecutado" v-bind="props" color="#E7E9E9" variant="flat" elevation="2"
+                <v-btn :disabled="(closed_box || ejecutado)" v-bind="props" color="#E7E9E9" variant="flat" elevation="2"
                   prepend-icon="mdi-plus-circle" class="ml-1">
                   Cierre de Caja
                 </v-btn>
@@ -1222,12 +1222,12 @@ export default {
         .reduce((total, item) => total + item.amount, 0);
       if (!montosPendientes) {
         this.closed_box = false;
-        this.ejecutado = false;
+       // this.ejecutado = false;
         console.log(this.closed_box)
       }
       else {
         this.closed_box = true;
-        this.ejecutado = false;
+        //this.ejecutado = false;
       }
       return this.formatNumber(montosPendientes) + " CLP";
       //}
@@ -1315,12 +1315,15 @@ export default {
     },
 
     existence() {
-      console.log('imprime existence');
-
-      const temp = this.box.reduce((total, item) => total + item.existence, 0);
-      console.log(temp);
-      return temp ? this.formatNumber(temp) + "CLP" : " CLP";
-      //return this.results.amount + " CLP";
+    console.log('imprime existence');
+    console.log(this.box);
+    if (this.box != null) {
+    const temp = this.box.reduce((total, item) => total + (item.existence || 0), 0);
+    console.log(temp);
+    return this.formatNumber(temp) + " CLP";
+    } else {
+        return "0 CLP";
+    }
     },
 
     totalMountPagado() {
@@ -1372,6 +1375,18 @@ export default {
         .then((response) => {          
             this.results = response.data.cars;
             this.box = response.data.box;
+            if (this.box === null) {
+            this.ejecutado = false;
+        } else {
+            // Si this.box no es null, verificar si box_close es null
+            if (this.box.box_close === null) {
+                this.ejecutado = false;
+            } else {
+                this.ejecutado = true;
+            }
+        }
+        console.log('this.ejecutado');
+        console.log(this.ejecutado);
         });
     },
     editItem(item) {
