@@ -32,21 +32,6 @@
                                 <v-form ref="form" v-model="valid" enctype="multipart/form-data">
                                     <v-container>
                                         <v-row>
-                                            <!--<v-col cols="12" sm="12" md="3">
-                                                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
-                                                    v-if="this.mostrarFila" clearable label="Seleccione una Sucursal"
-                                                    prepend-icon="mdi-store" item-title="name" item-value="id"
-                                                    variant="underlined"
-                                                    @update:model-value="showAddPago()"></v-autocomplete>
-                                            </v-col>
-                                            <v-col cols="12" sm="12" md="3">
-                                                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id" :items="professionals"
-                                                    clearable label="Seleccione un professional"
-                                                    prepend-icon="mdi-account-tie-outline" item-title="name"
-                                                    item-value="id" variant="underlined"
-                                                    :rules="selectRules"
-                                                    @update:model-value="carsEarrings()"></v-autocomplete>
-                                            </v-col>-->
                                             <v-col cols="12" md="3">
                                                 <v-select label="Tipo de pago" v-model="editedItem.type"
                                                     :items="['Adelanto', 'Quincena', 'Mes']"
@@ -54,7 +39,12 @@
                                                     :rules="selectRules"
                                                     prepend-icon="mdi-check-circle"></v-select><!--:disabled="!this.mostrarType"-->
                                             </v-col>
-                                            <v-col cols="12" md="9">
+                                            <v-col cols="12" md="4">
+                                                    <v-text-field v-model="editedItem.amount" clearable label="Monto"
+                                                        prepend-icon="mdi-cash" variant="underlined" :rules="pago1">
+                                                    </v-text-field>
+                                                </v-col>
+                                            <v-col cols="12" md="5">
                                                 <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
                                                     :subtitle="this.formatNumber(totalMount())" append-icon="mdi-check"
                                                     v-if="this.mostrarCars">
@@ -65,11 +55,7 @@
                                                         </v-avatar>
                                                     </template>
                                                 </v-card>
-                                                <v-text-field v-model="amountFromMethod1" clearable label="Monto"
-                                                    prepend-icon="mdi-cash" variant="underlined" :rules="pago"
-                                                    v-show="!this.mostrarCars">
-                                                </v-text-field>
-                                            </v-col>
+                                                </v-col>
                                         </v-row>
                                         <v-row>
 
@@ -113,7 +99,7 @@
                                         <v-btn color="#E7E9E9" variant="flat" @click="close">
                                             Cancelar
                                         </v-btn>
-                                        <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
+                                        <v-btn color="#F18254" variant="flat" @click="save" :disabled="(!valid || (!selected2.length && !editedItem.amount))">
                                             Pagar
                                         </v-btn>
                                     </v-card-actions>
@@ -430,20 +416,6 @@
                     <v-form ref="form" v-model="valid" enctype="multipart/form-data">
                         <v-container>
                             <v-row>
-                                <!--<v-col cols="12" sm="12" md="3">
-                                                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
-                                                    v-if="this.mostrarFila" clearable label="Seleccione una Sucursal"
-                                                    prepend-icon="mdi-store" item-title="name" item-value="id"
-                                                    variant="underlined"
-                                                    @update:model-value="showAddOperationTip()"></v-autocomplete>
-                                            </v-col>
-                                            <v-col cols="12" sm="12" md="3">
-                                                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id" :items="professionals"
-                                                    clearable label="Seleccione un cajero (a)"
-                                                    prepend-icon="mdi-account-tie-outline" item-title="name"
-                                                    item-value="id" variant="underlined"
-                                                    :rules="selectRules"></v-autocomplete>
-                                            </v-col>-->
                                 <v-col cols="12" md="3">
                                     <v-select label="Tipo de pago" v-model="editedItem.type"
                                         :items="['Adelanto', 'Quincena', 'Mes']"
@@ -451,7 +423,12 @@
                                         :rules="selectRules"
                                         prepend-icon="mdi-check-circle"></v-select><!--:disabled="!this.mostrarType"-->
                                 </v-col>
-                                <v-col cols="12" md="9">
+                                <v-col cols="12" md="4">
+                                                    <v-text-field v-model="editedItem.amount" clearable label="Monto"
+                                                        prepend-icon="mdi-cash" variant="underlined" :rules="pago1">
+                                                    </v-text-field>
+                                                </v-col>
+                                <v-col cols="12" md="5">
                                     <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
                                         :subtitle="this.formatNumber(totalMount1())" append-icon="mdi-check">
 
@@ -461,9 +438,6 @@
                                             </v-avatar>
                                         </template>
                                     </v-card>
-                                    <v-text-field v-model="amountFromMethod" clearable label="Monto" v-show="false"
-                                        prepend-icon="mdi-cash" variant="underlined" :rules="pago">
-                                    </v-text-field>
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -512,7 +486,7 @@
                             <v-btn color="#E7E9E9" variant="flat" @click="close">
                                 Cancelar
                             </v-btn>
-                            <v-btn color="#F18254" variant="flat" @click="saveCashier" :disabled="!valid">
+                            <v-btn color="#F18254" variant="flat" @click="saveCashier" :disabled="(!valid || (!selected2.length && !editedItem.amount))">
                                 Pagar
                             </v-btn>
                         </v-card-actions>
@@ -586,10 +560,10 @@ export default {
             { title: 'ID', align: 'start', key: 'id' },
             { title: 'Nombre Cliente', key: 'clientName' },
             { title: 'Nombre Profesional', key: 'professionalName' },
-            { title: 'Fecha', align: 'end', key: 'data' },
-            { title: 'Propina', align: 'end', key: 'tip' },
-            { title: 'Propina 10% Cajero (a)', align: 'end', key: 'tipCashier' },
-            { title: 'Propina 10% Café', align: 'end', key: 'tipCoffe' },
+            { title: 'Fecha',  key: 'data' },
+            { title: 'Propina', key: 'tip' },
+            { title: 'Propina 10% Cajero (a)', key: 'tipCashier' },
+            { title: 'Propina 10% Café', key: 'tipCoffe' },
         ],
         results: [],
         results1: [],
@@ -621,6 +595,9 @@ export default {
         ],
         pago: [
             (value) => !!value || 'Campo requerido',
+            (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
+            pago1: [
+            //(value) => !!value || 'Campo requerido',
             (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
         selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
         selected2: [],
@@ -693,12 +670,12 @@ export default {
         dialogDelete(val) {
             val || this.closeDelete()
         },
-        selected2(newVal) {
+        /*selected2(newVal) {
             if (newVal.length == 0) {
                 // Si selected2 cambia a null, establecer editedItem.amount en cero
                 this.editedItem.amount = '';
             }
-        }
+        }*/
     },
 
     mounted() {
@@ -752,30 +729,6 @@ export default {
                     const tip = Number(item.tip) || 0;
                     const amount = total + totalServices + tip;
                     return amount;
-                }, 0);
-            }
-
-        },
-        totalMount4() {
-            let selectedItems;
-            if (this.selected2.length == 0) {
-                return this.cars.reduce((total, item) => {
-                    // Asegúrate de que item.totalServices y item.tip sean números
-                    const totalServices = Number(item.totalServices) || 0;
-                    const tip = Number(item.tip) || 0;
-                    const amount = total + totalServices + tip;
-                    return this.formatNumber(amount);
-                }, 0);
-            } else {
-                // Mapea los IDs de selected2 a los objetos correspondientes en cars
-                selectedItems = this.selected2.map(selectedId => this.cars.find(car => car.id === selectedId));
-                // Calcula el total sumando totalServices y tip de los elementos seleccionados
-                return selectedItems.reduce((total, item) => {
-                    // Asegúrate de que item.totalServices y item.tip sean números
-                    const totalServices = Number(item.totalServices) || 0;
-                    const tip = Number(item.tip) || 0;
-                    const amount = total + totalServices + tip;
-                    return this.formatNumber(amount);
                 }, 0);
             }
 
@@ -1071,7 +1024,12 @@ export default {
             this.data.professional_id = this.professional_id;
             this.data.branch_id = this.branch_id;
             this.data.car_ids = this.selected2;
-            this.data.amount = this.totalMount();
+            if(this.selected2.length){  
+                const temp = Number(this.totalMount());              
+            this.data.amount = temp+Number(this.editedItem.amount);
+            }else{
+                this.data.amount = this.editedItem.amount; 
+            }
             this.data.type = this.editedItem.type;
             console.log('this.data');
             console.log(this.data);
@@ -1259,8 +1217,14 @@ export default {
             this.data.professional_id = this.professional_id;
             this.data.branch_id = this.branch_id;
             this.data.car_ids = this.selected2;
-            this.data.amount = this.totalMount1();
+            if(this.selected2.length){  
+                const temp = Number(this.totalMount1());              
+            this.data.amount = temp+Number(this.editedItem.amount);
             this.data.coffe_percent = this.totalMount1();
+            }else{
+                this.data.amount = this.editedItem.amount;
+            this.data.coffe_percent = 0; 
+            }
             this.data.type = this.editedItem.type;
             console.log('this.data');
             console.log(this.data);

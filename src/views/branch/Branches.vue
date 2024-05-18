@@ -243,13 +243,13 @@
                                     </v-text-field>
                   </v-col>
                   <v-col cols="12" md="12">
-                                    <v-text-field v-model="editedItem.ponderation" clearable label="Ponderación"
+                                    <v-text-field v-show="bonus" v-model="editedItem.ponderation" clearable label="Ponderación"
                                         prepend-icon="mdi-arrow-collapse-vertical" variant="underlined" :rules="pago">
                                     </v-text-field>
-                                    <v-text-field v-if="bonus" v-model="editedItem.limit" clearable label="Meta de Productividad"
+                                    <v-text-field v-show="bonus" v-model="editedItem.limit" clearable label="Meta de Productividad"
                                         prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago" >
                                     </v-text-field>
-                                     <v-text-field v-if="bonus" v-model="editedItem.mountpay" clearable label="Monto a Pagar"
+                                     <v-text-field v-show="bonus" v-model="editedItem.mountpay" clearable label="Monto a Pagar"
                                         prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago" >
                                     </v-text-field>
                                     </v-col>
@@ -1068,8 +1068,8 @@ export default {
         this.data.branch_id = this.branch_id;
       this.data.professional_id = this.editedItem.professional_id;
       this.data.ponderation = this.editedItem.ponderation;
-      this.data.limit = this.editedItem.limit;
-      this.data.mountpay = this.editedItem.mountpay;
+      this.data.limit = this.editedItem.limit ? this.editedItem.limit : 0;
+      this.data.mountpay = this.editedItem.mountpay ? this.editedItem.mountpay : 0;
       axios
         .put('https://api2.simplifies.cl/api/branchprofessional', this.data)
         .then(() => {
@@ -1089,8 +1089,8 @@ export default {
         this.data.branch_id = this.branch_id;
       this.data.professional_id = this.editedItem.professional_id;
       this.data.ponderation = this.editedItem.ponderation;
-      this.data.limit = this.editedItem.limit;
-      this.data.mountpay = this.editedItem.mountpay;
+      this.data.limit = this.editedItem.limit ? this.editedItem.limit : 0;
+      this.data.mountpay = this.editedItem.mountpay ? this.editedItem.mountpay : 0;
       axios
         .post('https://api2.simplifies.cl/api/branchprofessional', this.data)
         .then(() => {
