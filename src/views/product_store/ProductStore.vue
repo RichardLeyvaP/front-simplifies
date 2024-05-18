@@ -49,7 +49,15 @@
                     <v-col cols="12" md="12">
                       <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.store_id" :items="stores" clearable label="Almacenes"
                         prepend-inner-icon="mdi-store" item-title="address" item-value="id" variant="underlined"
-                        :rules="selectRules" :disabled="!mover"></v-autocomplete>
+                        :rules="selectRules" :disabled="!mover">
+                        <template v-slot:item="{ props, item }">
+                        <v-list-item
+                          v-bind="props"
+                          :subtitle="'Referencia: '+item.raw.reference"
+                          :title="item.raw.address"
+                        ></v-list-item>
+                        </template>
+                        </v-autocomplete>
                       <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.product_id" :items="products" clearable label="Productos"
                         prepend-inner-icon="mdi-tag" item-title="name" item-value="id" variant="underlined"
                         :rules="selectRules" :disabled="!mover">
@@ -74,7 +82,15 @@
                         variant="underlined" @update:model-value="updatedstores()"></v-autocomplete>-->
                       <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.store_idM" :items="stores1" clearable label="Almacenes"
                         prepend-inner-icon="mdi-store" item-title="address" item-value="id" variant="underlined"
-                        :rules=selectRules></v-autocomplete>
+                        :rules=selectRules>
+                        <template v-slot:item="{ props, item }">
+                        <v-list-item
+                          v-bind="props"
+                          :subtitle="'Referencia: '+item.raw.reference"
+                          :title="item.raw.address"
+                        ></v-list-item>
+                        </template>
+                        </v-autocomplete>
                       <v-text-field v-model="editedItem.product_quantityM" clearable label="Cantidad a mover"
                         prepend-inner-icon="mdi-tag-arrow-right" variant="underlined" :rules=[validateCantidad]>
                       </v-text-field>

@@ -1444,6 +1444,8 @@ export default {
           .catch((error) => {
             if (error.response.status === 400)
               this.showAlert("warning", "Usuario ya existe", 3000);
+              else if (error.response.status === 401)
+              this.showAlert("warning", "Correo ya existe", 3000);
           });
       } else {
         this.valid = false;
@@ -1470,9 +1472,11 @@ export default {
           })
           .catch((error) => {
             console.log(error.response);
-            if (error.response.status === 400)
+            if (error.response.status === 400){
               this.showAlert("warning", "Usuario ya existe", 3000);
+            }
           });
+          
       }
       this.close();
     },

@@ -444,7 +444,11 @@ save() {
       this.showAlert("success","Estudiante editado correctamente", 3000)
       this.imgMiniatura = '';
         this.file = '';
-     })
+     }).catch((error) => {
+            if (error.response.status === 400){
+              this.showAlert("warning", "Correo ya existe", 3000);
+            }
+          });
  } else {
    this.valid = false;
    const formData = new FormData();
@@ -458,7 +462,11 @@ save() {
        this.showAlert("success","Estudiante registrado correctamente", 3000)
        this.imgMiniatura = '';
         this.file = '';
-     })
+     }).catch((error) => {
+            if (error.response.status === 400){
+              this.showAlert("warning", "Correo ya existe", 3000);
+            }
+          });
  }
  this.close()
 },

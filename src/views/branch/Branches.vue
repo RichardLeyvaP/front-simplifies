@@ -342,7 +342,15 @@
                   <v-col cols="12" md="12">
                     <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.store_id" :items="stores" label="Almacén"
                       prepend-icon="mdi-store-outline" item-title="address" item-value="id" variant="underlined"
-                      :rules="selectRules"></v-autocomplete>
+                      :rules="selectRules">
+                      <template v-slot:item="{ props, item }">
+                        <v-list-item
+                          v-bind="props"
+                          :subtitle="'Referencia: '+item.raw.reference"
+                          :title="item.raw.address"
+                        ></v-list-item>
+                        </template>
+                      </v-autocomplete>
                   </v-col>
                 </v-row>
               </v-container>
@@ -1031,7 +1039,7 @@ export default {
       this.branch_id = item.id;
       console.log(item.id);
       axios
-        .get('https://api2.simplifies.cl/api/store-show', {
+        .get('https://api2.simplifies.cl/api/branchstore-show', {
           params: {
             branch_id: item.id
           }
@@ -1044,7 +1052,11 @@ export default {
     },
     showAddStores(){
       axios
-        .get('https://api2.simplifies.cl/api/store')
+        .get('https://api2.simplifies.cl/api/branchstore-show-notInt', {
+          params: {
+            branch_id: this.branchSelect.id
+          }
+        })
         .then((response) => {
           this.stores = response.data.stores;
         });
@@ -1188,7 +1200,11 @@ export default {
     },
     showAddAssociates(){
       axios
-        .get('https://api2.simplifies.cl/api/associated')
+        .get('https://api2.simplifies.cl/api/associated-show', {
+          params: {
+            branch_id: this.branchSelect.id
+          }
+        })
         .then((response) => {
           this.associates = response.data.associates;
         });
@@ -1216,7 +1232,7 @@ export default {
     closeassociateRequest(item) {
       this.dialogRequestAssociate = true
       //this.editedItem.branch_id=item.id
-      this.associated_id = item.id
+      this.associated_id = item.associated_id
     },
     closerequestAssociate() {
       this.dialogRequestAssociate = false;

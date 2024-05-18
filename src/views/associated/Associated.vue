@@ -266,7 +266,10 @@ export default {
            .then(() => {
              this.initialize();
              this.showAlert("success","Asociado editado correctamente", 3000)
-           })
+           }).catch((error) => {
+            if (error.response.status == "400")
+              this.showAlert("warning", "Correo ya existe", 3000);
+          });
        } else {
          this.valid = false,         
          this.data.id = this.editedItem.id;
@@ -277,7 +280,10 @@ export default {
            .then(() => {
              this.initialize();
              this.showAlert("success","Asociado registrado correctamente", 3000)
-           })
+           }).catch((error) => {
+            if (error.response.status == "400")
+              this.showAlert("warning", "Correo ya existe", 3000);
+          });
        }
        this.close()
     

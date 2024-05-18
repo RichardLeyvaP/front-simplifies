@@ -207,7 +207,15 @@
                   <v-col cols="12" md="12">
                     <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="store_id" :items="stores" label="Almacén"
                       prepend-icon="mdi-store-outline" item-title="address" item-value="id" variant="underlined"
-                      :rules="selectRules"></v-autocomplete>
+                      :rules="selectRules">
+                      <template v-slot:item="{ props, item }">
+                        <v-list-item
+                          v-bind="props"
+                          :subtitle="'Referencia: '+item.raw.reference"
+                          :title="item.raw.address"
+                        ></v-list-item>
+                        </template>
+                      </v-autocomplete>
                   </v-col>
                 </v-row>
               </v-container>
@@ -707,7 +715,11 @@
     },
     showAddStores(){
       axios
-          .get('https://api2.simplifies.cl/api/store')
+          .get('https://api2.simplifies.cl/api/enrollmentstore-show-notIn', {
+          params: {
+            enrollment_id: this.enrollmentSelect.id
+          }
+        })
           .then((response) => {
             this.stores = response.data.stores;
           });
