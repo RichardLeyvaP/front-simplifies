@@ -23,11 +23,21 @@
                 </v-col>
                 <v-col cols="12" md="4"></v-col>
                 <v-col cols="12" md="2">
-                    <v-dialog v-model="dialog" max-width="95%" max-height="100%" transition="dialog-bottom-transition">
-                        <v-card>
+                
+                    <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition">
                             <v-toolbar color="#F18254">
                                 <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
                             </v-toolbar>
+                        <v-card>
+                            <v-tabs v-model="tabBar" color="rgb(241, 130, 84)"
+                            elevation="6"><!-- @click="handleTabChange"-->
+                            <v-tab value="one">Pago de carros</v-tab>
+                            <v-tab value="two">Pago de docencia</v-tab>
+                        </v-tabs>
+                        <v-card-text>
+                            <v-window v-model="tabBar">
+                        <v-window-item value="one">
+                                    <v-card>
                             <v-card-text>
                                 <v-form ref="form" v-model="valid" enctype="multipart/form-data">
                                     <v-container>
@@ -104,6 +114,72 @@
                                         </v-btn>
                                     </v-card-actions>
                                 </v-form>
+                            </v-card-text>
+                        </v-card>
+                                </v-window-item>
+
+                        <v-window-item value="two">
+                                    <v-card>
+                            <v-card-text>
+                                <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+                                    <v-container>
+                                        <v-row>
+                                            <v-col cols="12" md="3">
+                                                <v-select label="Tipo de pago" v-model="editedItem.academia"
+                                                    :items="['Pago Academia']"
+                                                    :item-value="['Pago Academia']" variant="underlined"
+                                                    :rules="selectRules"
+                                                    prepend-icon="mdi-check-circle"></v-select><!--:disabled="!this.mostrarType"-->
+                                            </v-col>
+                                            <v-col cols="12" md="4">
+                                                    <v-text-field v-model="editedItem.amountAcadem" clearable label="Monto"
+                                                        prepend-icon="mdi-cash" variant="underlined" :rules="pago">
+                                                    </v-text-field>
+                                                </v-col>
+                                            <!--<v-col cols="12" md="5">
+                                                <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
+                                                    :subtitle="this.formatNumber(totalMount())" append-icon="mdi-check"
+                                                    v-if="this.mostrarCars">
+
+                                                    <template v-slot:prepend>
+                                                        <v-avatar color="blue-darken-2">
+                                                            <v-icon icon="mdi-currency-usd"></v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                </v-card>
+                                                </v-col>-->
+                                        </v-row>
+                                        <v-row>
+                                                <v-col cols="12" md="12" v-if="mostrarDoc">
+                                                    <v-text-field class="mt-1 mb-1" v-model="search2"
+                                                    append-icon="mdi-magnify" label="Buscar" single-line
+                                                    hide-details></v-text-field>
+                                                <v-data-table v-model="selectedCourse" :headers="headers4"
+                                                    :items-per-page-text="'Elementos por páginas'" :search="search4"
+                                                    :items="courses" class="elevation-1"
+                                                    no-results-text="No hay datos disponibles"
+                                                    no-data-text="No hay datos disponibles" select-strategy="single" show-select>
+                                                    
+                                                </v-data-table>
+                                                </v-col>
+                                                </v-row>
+                                        </v-container>
+                                        <v-divider></v-divider>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="#E7E9E9" variant="flat" @click="close">
+                                            Cancelar
+                                        </v-btn>
+                                        <v-btn color="#F18254" variant="flat" @click="saveCourse" :disabled="(!valid || !selectedCourse.length)">
+                                            Pagar
+                                        </v-btn>
+                                    </v-card-actions>
+                                        </v-form>
+                                        </v-card-text>
+                                        </v-card>
+                                    </v-window-item>
+
+                            </v-window>
                             </v-card-text>
                         </v-card>
                     </v-dialog>
@@ -505,6 +581,7 @@ import * as XLSX from 'xlsx';
 import LocalStorageService from "@/LocalStorageService";
 export default {
     data: () => ({
+        tabBar: false,
         valid: true,
         snackbar: false,
         sb_type: '',
@@ -530,6 +607,7 @@ export default {
         mostrarFila: false,
         dialog: false,
         mostrarCars: false,
+        mostrarDoc: false,
         dialogDelete: false,
         dialogBarberoEncargado: false,
         dialogOtros: false,
@@ -579,7 +657,9 @@ export default {
             nameProfessional: '',
             type: '',
             amount: '',
-            coffe_percent: ''
+            coffe_percent: '',
+            academia: 'Pago Academia',
+            amountAcadem: '',
         },
         data: {},
 
@@ -588,7 +668,9 @@ export default {
             nameProfessional: '',
             type: '',
             amount: '',
-            coffe_percent: ''
+            coffe_percent: '',
+            academia: 'Pago Academia',
+            amountAcadem: '',
         },
         nameRules: [
             (v) => !!v || "El campo es requerido",
@@ -601,9 +683,10 @@ export default {
             (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
         selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
         selected2: [],
+        selectedCourse: [],
         headers2: [
             { title: 'ID', align: 'start', value: 'id' },
-            { title: 'Nombre Cliente', align: 'end', value: 'clientName' },
+            { title: 'Nombre Cliente', value: 'clientName' },
             { title: 'Fecha', align: 'end', value: 'data' },
             { title: 'Ganancias Servicios', align: 'end', value: 'totalServices' },
             { title: 'Cantidad Servicios', align: 'end', value: 'services' },
@@ -612,6 +695,16 @@ export default {
             { title: 'Monto a Pagar', align: 'end', value: 'pay' },
         ],
         search2: '',
+        headers4: [
+            { title: 'ID', align: 'start', value: 'id' },
+            { title: 'Academia', align: 'start', value: 'nameEnrollment' },
+            { title: 'Nombre Curso', value: 'nameCourse' },
+            { title: 'Descripción', value: 'description' },
+            { title: 'Fecha Inicio', align: 'end', value: 'startDate' },
+            { title: 'Fecha Terminación', align: 'end', value: 'endDate' }
+        ],
+        search4: '',
+        courses: [],
     }),
 
     computed: {
@@ -834,7 +927,8 @@ export default {
                         }
                     })
                     .then((response) => {
-                        this.cars = response.data;
+                        this.cars = response.data.cars;
+                        this.courses = response.data.courses;
                         /*if(this.cars.length == 0){
                             //this.editedItem.type = 'Adelanto';
                             this.mostrarCars = false;
@@ -844,6 +938,7 @@ export default {
                             //this.mostrarType = true;
                         }*/
                         this.mostrarCars = true;
+                        this.mostrarDoc = true;
                     });
                 this.dialog = true;
             } else {
@@ -1044,6 +1139,58 @@ export default {
                     this.cars = [];
                     this.selected2 = [];
                     this.mostrarCars = false;
+                }).finally(() => {
+                    this.showAlert("success", "Pago realizado correctamente", 3000);
+                    this.showProfessional();
+                });
+            //}
+            /*this.valid = false;
+            this.data.name = this.editedItem.name;
+            this.data.branch_id = this.branch_id
+
+            axios
+                .post('https://api2.simplifies.cl/api/workplace', this.data)
+                .then(() => {
+                    this.initialize();
+                    this.showAlert("success", "Puesto de trabajo editado correctamente", 3000);
+                })*/
+            this.close();
+        },
+        //course
+        saveCourse() {
+            this.valid = false;
+            /* if (this.editedIndex > -1) {
+                 this.data.id = this.editedItem.id;
+                 this.data.name = this.editedItem.name;
+                 axios
+                     .put('https://api2.simplifies.cl/api/workplace', this.data)
+                     .then(() => {
+                         this.initialize();
+                         this.showAlert("success", "Pago editado correctamente", 3000);
+                     })
+             } else {*/
+            console.log('this.selectedCourse');
+            console.log(this.selectedCourse);
+            //const newArrayCar = this.selected.map(item => parseInt(item)); // Convertir a enteros si es necesario
+            //console.log('newArrayCar');
+            //console.log(newArrayCar);
+            this.data.professional_id = this.professional_id;
+            this.data.branch_id = this.branch_id;
+            this.data.course_ids = this.selectedCourse[0];
+                this.data.amount = this.editedItem.amountAcadem;
+            this.data.type = this.editedItem.academia;
+            console.log('this.data');
+            console.log(this.data);
+            axios
+                .post('https://api2.simplifies.cl/api/professional-payment', this.data)
+                .then(() => {
+                    this.$nextTick(() => {
+                        this.editedItem = Object.assign({}, this.defaultItem);
+                    });
+                    this.editedIndex = -1;
+                    this.courses = [];
+                    this.selectedCourse = [];
+                    this.mostrarDoc = false;
                 }).finally(() => {
                     this.showAlert("success", "Pago realizado correctamente", 3000);
                     this.showProfessional();
