@@ -904,7 +904,8 @@ export default {
       (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
       pago1: [
       (value) => !!value || 'Campo requerido',
-      (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
+      (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número',
+      (value) => /^\d+(\.\d+)?$/.test(value) || "Debe ser un número con punto decimal (10.00)",],
     selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
   }),
 

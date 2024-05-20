@@ -1156,7 +1156,8 @@ export default {
       v => /^\+569\d{8}$/.test(v) || 'Formato de número móvil inválido. Ejemplo: +56912345678'
     ],
     selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
-    pago: [(value) => !isNaN(parseFloat(value)) || "Debe ser un número"],
+    pago: [(value) => /^\d+(\.\d+)?$/.test(value) || "Debe ser un número con punto decimal (10.00)",          
+      (value) => !isNaN(parseFloat(value)) || "Debe ser un número"],
   }),
 
   computed: {

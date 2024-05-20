@@ -322,7 +322,7 @@ export default {
 
         selectRules: [(v) => !!v || "Debe seleccionar al menos un elemento"],
         pago: [
-      //(value) => !!value || 'Campo requerido',
+            (value) => /^\d+(\.\d+)?$/.test(value) || "Debe ser un número con punto decimal (10.00)",
       (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
     }),
 

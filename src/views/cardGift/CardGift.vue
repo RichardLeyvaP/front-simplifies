@@ -498,7 +498,8 @@ export default {
         (v) => /.+@.+\..+/.test(v) || "El Correo Electrónico no es válido",
       ],
       mobileRules: [(v) => !!v || "El Teléfono es requerido"],
-    pago: [(v) => !!v || (!isNaN(v) && isFinite(v)) || 'Ingresa un número válido'],
+    pago: [(value) => /^\d+(\.\d+)?$/.test(value) || "Debe ser un número con punto decimal (10.00)",
+      (v) => !!v || (!isNaN(v) && isFinite(v)) || 'Ingresa un número válido'],
     selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
   }),
 

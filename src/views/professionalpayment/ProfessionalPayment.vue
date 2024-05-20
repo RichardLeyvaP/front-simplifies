@@ -677,9 +677,10 @@ export default {
         ],
         pago: [
             (value) => !!value || 'Campo requerido',
+            (value) => /^\d+(\.\d+)?$/.test(value) || "Debe ser un número con punto decimal (10.00)",
             (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
             pago1: [
-            //(value) => !!value || 'Campo requerido',
+                (value) => /^\d+(\.\d+)?$/.test(value) || "Debe ser un número con punto decimal (10.00)",
             (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
         selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
         selected2: [],
