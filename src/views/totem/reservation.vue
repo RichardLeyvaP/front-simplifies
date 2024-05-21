@@ -307,7 +307,7 @@ size="x-large"
             <v-card-actions class="justify-end">
               <v-btn          
               
-              @click="dialogEncuesta = false" color="#E7E9E9" variant="flat"
+              @click="closeEncuesta()" color="#E7E9E9" variant="flat"
               >Cancelar</v-btn>
               <v-btn         
               
@@ -879,6 +879,9 @@ let request = {};
                 this.$router.push('/totem');
           });
 
+    },
+    closeEncuesta(){
+      this.$router.push('/totem');
     },
 
       isIntervalDisabled(time) {
