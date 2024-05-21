@@ -70,7 +70,7 @@
                       >
                       </v-text-field>
                     </v-col>
-                    <v-col cols="12" md="6">
+                    <!--<v-col cols="12" md="6">
                       <v-text-field
                         v-model="editedItem.surname"
                         clearable
@@ -91,7 +91,7 @@
                         :rules="nameRules"
                       >
                       </v-text-field>
-                    </v-col>
+                    </v-col>-->
                     <v-col cols="12" md="6">
                       <v-text-field
                         v-model="editedItem.email"
@@ -217,7 +217,7 @@
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
         </template>
-        <template v-slot:item.fullName="{ item }">
+        <template v-slot:item.name="{ item }">
           <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
             <v-img
               :src="
@@ -229,7 +229,7 @@
               alt="image"
             ></v-img>
           </v-avatar>
-          {{ item.fullName }}
+          {{ item.name }}
         </template>
         <template v-slot:item.phone="{ item }">
         <td>
@@ -549,7 +549,7 @@ export default {
     message_delete: true,
     dialogDelete: false,
     headers: [
-      { title: "Nombre", key: "fullName" },
+      { title: "Nombre", key: "name" },
       //{ title: 'Primer Apellido', key: 'surname' },
       //{ title: 'Segundo Apellido', key: 'second_surname' },
       { title: "Correo", key: "email" },

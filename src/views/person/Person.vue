@@ -80,7 +80,7 @@
                         >
                         </v-text-field>
                       </v-col>
-                      <v-col cols="12" md="6">
+                      <!--<v-col cols="12" md="6">
                         <v-text-field
                           v-model="editedItem.surname"
                           clearable
@@ -101,7 +101,7 @@
                           :rules="nameRules"
                         >
                         </v-text-field>
-                      </v-col>
+                      </v-col>-->
                       <v-col cols="12" md="6">
                         <v-text-field
                           v-model="editedItem.email"
@@ -338,7 +338,7 @@
           <template v-slot:item.retention="{ item }">
             {{ item.retention ? item.retention + "%" : "" }}
           </template>
-          <template v-slot:item.fullName="{ item }">
+          <template v-slot:item.name="{ item }">
             <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
               <v-img
                 :src="'https://api2.simplifies.cl/api/images/' + item.image_url+'?$'+Date.now()"
@@ -347,7 +347,7 @@
               ><!--+ '?$' + Date.now()
                 -->
             </v-avatar>
-            {{ item.fullName }}
+            {{ item.name }}
           </template>
           <template v-slot:item.actions="{ item }">
             <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
@@ -1020,7 +1020,7 @@ export default {
     mostrarFila: false,
     selectedProfessional: [],
     headers: [
-      { title: "Nombre y Apellidos", key: "fullName" },
+      { title: "Nombre y Apellidos", key: "name" },
       //{ title: 'Primer Apellido', key: 'surname' },
       //{ title: 'Segundo Apellido', key: 'second_surname' },
       { title: "Correo", key: "email" },

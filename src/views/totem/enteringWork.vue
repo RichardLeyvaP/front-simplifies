@@ -616,7 +616,7 @@ prevStep() {
     },
     mostrarPuestoT(value)//mando si es barbero o tecnico
     {
-      if(value === 2)//barbero, muestro el seleccionar 1 solo
+      if(value === 2 || value === 3)//barbero, muestro el seleccionar 1 solo
       {
         this.mostrarSheet = false;
         return true;

@@ -1076,8 +1076,8 @@ export default {
           this.$nextTick(() => {
             this.editedItem = Object.assign({}, this.defaultItem)
           }).finally(() => {
-          this.showProfessionals(this.branchSelect);
           this.showAlert("success", "Asignación del trabajado a la sucursal editada correctamente", 3000);
+          this.showProfessionals(this.branchSelect);
           });
           this.dialogAddProf = false;
           this.editando = false;
@@ -1097,8 +1097,8 @@ export default {
           this.$nextTick(() => {
             this.editedItem = Object.assign({}, this.defaultItem)
           }).finally(() => {
-          this.showProfessionals(this.branchSelect);
           this.showAlert("success", "Trabajdor afiliado correctamente a la sucursal", 3000);
+          this.showProfessionals(this.branchSelect);
           });
           this.dialogAddProf = false;
           this.editando = false;

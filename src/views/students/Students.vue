@@ -38,13 +38,18 @@
          <v-card-text>
            <v-form v-model="valid" enctype="multipart/form-data">
            <v-row>
-             <v-col cols="12" md="4">
+             <v-col cols="12" md="6">
                <v-text-field v-model="editedItem.name" clearable label="Nombre"
                  prepend-icon="mdi-account-tie-outline" variant="underlined" :rules="nameRules">
                </v-text-field>
 
              </v-col>
-             <v-col cols="12" md="4">
+             <v-col cols="12" md="6">
+               <v-text-field v-model="editedItem.email" clearable label="Correo Electrónico"
+                 prepend-icon="mdi-email-outline" variant="underlined" :rules="emailRules">
+               </v-text-field>
+             </v-col>
+             <!--<v-col cols="12" md="4">
                <v-text-field v-model="editedItem.surname" clearable label="Primer Apellido"
                  prepend-icon="mdi-account-tie-outline" variant="underlined" :rules="nameRules">
                </v-text-field>
@@ -54,26 +59,22 @@
                <v-text-field v-model="editedItem.second_surname" clearable label="Segundo Apellido"
                  prepend-icon="mdi-account-tie-outline" variant="underlined" :rules="nameRules">
                </v-text-field>
-             </v-col>
+             </v-col>-->
            </v-row>
            <v-row>
-             <v-col cols="12" md="6">
-               <v-text-field v-model="editedItem.email" clearable label="Correo Electrónico"
-                 prepend-icon="mdi-email-outline" variant="underlined" :rules="emailRules">
-               </v-text-field>
-             </v-col>
              <v-col cols="12" md="6">
                <v-text-field v-model="editedItem.phone" clearable label="Teléfono" prepend-icon="mdi-phone-outline" placeholder="+56912345678"
                  variant="underlined" :rules="mobileRules">
                </v-text-field>
              </v-col>
-           </v-row>
-           <v-row>
              <v-col cols="12" md="6">
                       <v-file-input clearable v-model="file" ref="fileInput" label="Imagen del Estudiante"
                         variant="underlined" name="file" accept=".png, .jpg, .jpeg" @change="onFileSelected">
                       </v-file-input>
                     </v-col>
+                    
+           </v-row>
+           <v-row>
                     <v-col cols="12" md="6">
                       <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
                         <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
@@ -215,8 +216,8 @@ dialogPhoto: false,
 loadingImage: false,
 headers: [
  { title: 'Nombre', key: 'name' },
- { title: 'Primer Apellido', key: 'surname' },
- { title: 'Segundo Apellido', key: 'second_surname' },
+ //{ title: 'Primer Apellido', key: 'surname' },
+ //{ title: 'Segundo Apellido', key: 'second_surname' },
  { title: 'Correo', key: 'email' },
  { title: 'Teléfono', key: 'phone' },
  { title: 'Qr', key: 'qr_url'},
