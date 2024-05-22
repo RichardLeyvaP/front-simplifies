@@ -99,7 +99,7 @@
        </v-icon>-->
        <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar operación de ingreso"></v-btn>
-          <v-btn density="comfortable" icon="mdi-delete" @click="(item.id == 4 || item.id == 3 || item.id == 5 || item.id ==6) ? '' : deleteItem(item)" :color="(item.id == 4 || item.id == 3 || item.id == 5 || item.id ==6) ? 'grey' : 'red-darken-4'" variant="tonal"
+          <v-btn density="comfortable" icon="mdi-delete" @click="(item.id == 4 || item.id == 3 || item.id == 5 || item.id ==6 || item.id ==7) ? '' : deleteItem(item)" :color="(item.id == 4 || item.id == 3 || item.id == 5 || item.id ==6 || item.id ==7) ? 'grey' : 'red-darken-4'" variant="tonal"
             elevation="1" title="Eliminar operación de ingreso"></v-btn>
      </template>
    </v-data-table>

@@ -182,7 +182,7 @@
                <v-sheet border>       
    <v-form ref="form" lazy-validation>
      <v-row>
-     <v-col cols="12" md="4" class="mt-1">
+     <v-col cols="12" md="5" class="mt-1">
      <v-text-field :disabled="verificate" v-model="name_client" :counter="50" :rules="nameRules" label="Nombre" outlined
        required></v-text-field>
      </v-col>
@@ -198,11 +198,11 @@
      </v-col>-->
 
 
-   <v-col cols="12" md="5" class="mt-1">
+   <v-col cols="12" md="4" class="mt-1">
      <v-text-field :disabled="verificate" v-model="email_client" :rules="emailRules" label="Correo Electrónico" outlined
        required></v-text-field>
      </v-col>
-     <v-col cols="12" md="4" class="mt-1">
+     <v-col cols="12" md="3" class="mt-1">
      <v-text-field :disabled="verificate" v-model="phone_client" :rules="mobileRules"  placeholder="+56912345678" label="Teléfono" outlined required></v-text-field>
    </v-col>
      </v-row>
@@ -282,6 +282,7 @@ size="x-large"
   <v-dialog v-model="dialogEncuesta"
         transition="dialog-bottom-transition"
         max-width="600"
+        @click:outside="closeEncuesta"
       >
           <v-card>
             <v-toolbar
@@ -289,7 +290,22 @@ size="x-large"
               dark
             >Como supo de nosotros</v-toolbar>
             <v-card-text>
-              <v-col cols="12" md="12" class="mt-2">
+              <v-list-item 
+        v-for="survey in surveys"
+        :key="survey.id"
+        class="py-0 my-0"
+      >
+        <v-list-item-content class="d-flex align-center">
+          <v-checkbox
+            v-model="selectedSurveys"
+            :label="survey.name"
+            :value="survey.id"
+            dense
+            class="pa-0 ma-0"
+          ></v-checkbox>
+        </v-list-item-content>
+      </v-list-item>
+              <!--<v-col cols="12" md="12" class="mt-2">
                 <v-checkbox
       v-for="survey in surveys"
       :key="survey.id"
@@ -299,10 +315,7 @@ size="x-large"
       multiple
       dense
     ></v-checkbox>
-          <!--<v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="survey_id" :items="surveys" item-text="name" item-value="id"
-            label="Seleccione una opción" prepend-icon="mdi-poll"
-            variant="underlined"></v-autocomplete>-->
-                    </v-col>
+                    </v-col>-->
             </v-card-text>
             <v-card-actions class="justify-end">
               <v-btn          
@@ -1192,6 +1205,18 @@ this.changeStep(1);
   background-color: orange !important;
 }
 
+.v-list-item {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  margin-top: -8px !important;
+  margin-bottom: -8px !important;
+}
+.v-checkbox {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  margin-top: -4px !important;
+  margin-bottom: -4px !important;
+}
 /* Espacio entre los items */
 .list-item-spacing {
   margin-bottom: 8px;

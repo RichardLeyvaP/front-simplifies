@@ -159,7 +159,9 @@
                                                     :items="courses" class="elevation-1"
                                                     no-results-text="No hay datos disponibles"
                                                     no-data-text="No hay datos disponibles" select-strategy="single" show-select>
-                                                    
+                                                    <template v-slot:item.price="{ item }">
+                {{ formatNumber(parseInt(item.price))}}                                  
+                                          </template>
                                                 </v-data-table>
                                                 </v-col>
                                                 </v-row>
@@ -700,6 +702,7 @@ export default {
             { title: 'ID', align: 'start', value: 'id' },
             { title: 'Academia', align: 'start', value: 'nameEnrollment' },
             { title: 'Nombre Curso', value: 'nameCourse' },
+            { title: 'Precio Curso', value: 'price' },
             { title: 'Descripción', value: 'description' },
             { title: 'Fecha Inicio', align: 'end', value: 'startDate' },
             { title: 'Fecha Terminación', align: 'end', value: 'endDate' }
