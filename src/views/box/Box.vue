@@ -1220,6 +1220,7 @@ export default {
         .then((response) => {          
             this.results = response.data.cars;
           this.box = response.data.box;
+          this.cashierSales = response.data.sales;
         }).finally(() => {
             if (this.box[0] === null) {
             this.ejecutado = false;
