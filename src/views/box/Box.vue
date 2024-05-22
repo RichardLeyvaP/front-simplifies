@@ -749,7 +749,7 @@
         hide-details></v-text-field>
 
 
-      <v-data-table v-model="selected" :headers="headers4" :items-per-page-text="'Elementos por páginas'" :items="cashierSales" :search="search4"
+      <v-data-table v-model="selected" :headers="headers4" :items-per-page-text="'Elementos por páginas'" :items="cashierSalesProf" :search="search4"
         class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles" :item-selectable="isSelectable" show-select>
 
         <template v-slot:item.professionalName="{ item }">
@@ -980,6 +980,7 @@ export default {
     showSaleProducts: false,
     showDialogSaleProducts: false,
     cashierSales: [],
+    cashierSalesProf: [],
     search4: '',
     selected: [],
     amountSales: '',
@@ -1220,7 +1221,7 @@ export default {
         .then((response) => {          
             this.results = response.data.cars;
           this.box = response.data.box;
-          this.cashierSales = response.data.sales;
+          this.cashierSales = response.data.cashierSales;
         }).finally(() => {
             if (this.box[0] === null) {
             this.ejecutado = false;
@@ -1987,7 +1988,7 @@ export default {
       return item.pay === 0;
     },
     calculateAmountSales() {
-      this.amountSales = this.cashierSales
+      this.amountSales = this.cashierSalesProf
         .filter(item => this.selected.includes(item.id))
         .reduce((total, item) => {
           //const price = parseFloat(item.price); // Convertir a número
@@ -2014,8 +2015,8 @@ export default {
           }
         })
         .then((response) => {
-          this.cashierSales = response.data.sales;
-          console.log(this.cashierSales);
+          this.cashierSalesProf = response.data.sales;
+          console.log(this.cashierSalesProf);
         });
       this.showDialogSaleProducts = true;
     },
