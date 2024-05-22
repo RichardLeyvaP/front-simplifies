@@ -752,7 +752,7 @@
       <v-data-table v-model="selected" :headers="headers4" :items-per-page-text="'Elementos por páginas'" :items="cashierSalesProf" :search="search4"
         class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles" :item-selectable="isSelectable" show-select>
 
-        <template v-slot:item.professionalName="{ item }">
+        <template v-slot:item.name="{ item }">
 
           <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
             <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
@@ -1023,7 +1023,6 @@ export default {
       { title: 'Cantidad', value: 'cant' },
       { title: 'Importe', value: 'price' },
       { title: 'Estado', value: 'pay' },
-      { title: 'Acciones', key: 'actions', sortable: false },
     ],
     editedIndex: -1,
 

@@ -491,7 +491,18 @@
                     <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
                 </v-toolbar>
                 <v-card-text>
-                    <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+                    <v-card>
+                        <v-tabs v-model="tabBarCashier" color="rgb(241, 130, 84)"
+                            elevation="6"><!-- @click="handleTabChange"-->
+                            <v-tab value="one">Pago de Ppropinas</v-tab>
+                            <v-tab value="two">Pago de venta de productos</v-tab>
+                        </v-tabs>
+                        <v-card-text>
+                            <v-window v-model="tabBarCashier">
+                        <v-window-item value="one">
+                                    <v-card>
+                                        <v-card-text>
+                                            <v-form ref="form" v-model="valid" enctype="multipart/form-data">
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="3">
@@ -569,6 +580,75 @@
                             </v-btn>
                         </v-card-actions>
                     </v-form>
+                            </v-card-text>
+                                    </v-card>
+                        </v-window-item>
+                        <v-window-item value="two">
+                                    <v-card>
+                            <v-card-text>
+                                <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="3">
+                                    <v-select label="Tipo de pago" v-model="editedItem.cashierproduct"
+                                        :items="['Pago venta de productos']"
+                                        :item-value="['Pago venta de productos']" variant="underlined"
+                                        :rules="selectRules"
+                                        prepend-icon="mdi-check-circle"></v-select><!--:disabled="!this.mostrarType"-->
+                                </v-col>
+                                <v-col cols="12" md="4">
+                                                    <v-text-field v-model="editedItem.amountSaleProduct" clearable label="Monto"
+                                                        prepend-icon="mdi-cash" variant="underlined" :rules="pago1">
+                                                    </v-text-field>
+                                                </v-col>
+                            </v-row>
+                            <v-row>
+
+                                <v-col cols="12" md="12">
+                                <v-container>
+                                    <v-text-field class="mt-1 mb-1" v-model="search6" append-icon="mdi-magnify"
+                                        label="Buscar" single-line hide-details></v-text-field>
+                                    <v-data-table v-model="selectedCashier" :headers="headers7"
+                                        :items-per-page-text="'Elementos por páginas'" :search="search7" :items="cashierSales"
+                                        class="elevation-1" no-results-text="No hay datos disponibles"
+                                        no-data-text="No hay datos disponibles" show-select>
+                                        <template v-slot:item.name="{ item }">
+
+                                            <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                                            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
+                                            </v-avatar>
+                                            {{ item.name }}
+                                            </template>
+                                            <template v-slot:item.price="{ item }">
+                                                {{ formatNumber(item.price)}}                                  
+                                                                            </template>
+                                            <template v-slot:top>
+
+                                            <v-divider class="mx-4" inset vertical></v-divider>
+                                            <v-spacer></v-spacer>
+                                            </template>
+                                    </v-data-table>
+                                </v-container>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                        <v-divider></v-divider>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="#E7E9E9" variant="flat" @click="close">
+                                Cancelar
+                            </v-btn>
+                            <v-btn color="#F18254" variant="flat" @click="saveCashierProduct" :disabled="!isFormValid">
+                                Pagar
+                            </v-btn>
+                        </v-card-actions>
+                    </v-form>
+                            </v-card-text>
+                            </v-card>
+                            </v-window-item>
+                            </v-window>
+                            </v-card-text>
+                    </v-card>
                 </v-card-text>
             </v-card>
         </v-dialog>
@@ -584,6 +664,7 @@ import LocalStorageService from "@/LocalStorageService";
 export default {
     data: () => ({
         tabBar: false,
+        tabBarCashier: false,
         valid: true,
         snackbar: false,
         sb_type: '',
@@ -648,6 +729,7 @@ export default {
         results: [],
         results1: [],
         selectedOption: '',
+        typePay: '',
         //options: ['Adelanto', 'Quincena', 'Mes'],
         professionals: [],
         professional_id: '',
@@ -661,7 +743,9 @@ export default {
             amount: '',
             coffe_percent: '',
             academia: 'Pago Academia',
+            cashierproduct: 'Pago venta de Productos',
             amountAcadem: '',
+            amountSaleProduct: '',
         },
         data: {},
 
@@ -672,14 +756,16 @@ export default {
             amount: '',
             coffe_percent: '',
             academia: 'Pago Academia',
+            cashierproduct: 'Pago venta de Productos',
             amountAcadem: '',
+            amountSaleProduct: '',
         },
         nameRules: [
             (v) => !!v || "El campo es requerido",
         ],
         pago: [
             (value) => !!value || 'Campo requerido',
-            (value) => /^\d+(\.\d+)?$/.test(value) || "Debe ser un número con punto decimal (10.00)",
+            (value) => !(/^\d+(\.\d+)?$/.test(value)) || "Debe ser un número con punto decimal (10.00)",
             (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
             pago1: [
                 (value) => /^\d+(\.\d+)?$/.test(value) || "Debe ser un número con punto decimal (10.00)",
@@ -687,6 +773,8 @@ export default {
         selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
         selected2: [],
         selectedCourse: [],
+        cashierSales: [],
+        selectedCashier: [],
         headers2: [
             { title: 'ID', align: 'start', value: 'id' },
             { title: 'Nombre Cliente', value: 'clientName' },
@@ -707,11 +795,20 @@ export default {
             { title: 'Fecha Inicio', align: 'end', value: 'startDate' },
             { title: 'Fecha Terminación', align: 'end', value: 'endDate' }
         ],
+    headers7: [
+      { title: 'Producto', value: 'name' },
+      { title: 'Cantidad', value: 'cant' },
+      { title: 'Importe', value: 'price' },
+    ],
+    search7: '',
         search4: '',
         courses: [],
     }),
 
     computed: {
+        isFormValid() {
+            return this.valid && this.selectedCashier.length > 0 && this.editedItem.amountSaleProduct;
+        },
         amountFromMethod() {
             if(this.selected2.length === 0){
                 return 0;
@@ -1103,23 +1200,10 @@ export default {
         },
         save() {
             this.valid = false;
-            /* if (this.editedIndex > -1) {
-                 this.data.id = this.editedItem.id;
-                 this.data.name = this.editedItem.name;
-                 axios
-                     .put('https://api2.simplifies.cl/api/workplace', this.data)
-                     .then(() => {
-                         this.initialize();
-                         this.showAlert("success", "Pago editado correctamente", 3000);
-                     })
-             } else {*/
             console.log('this.ironValues');
             console.log(this.selected2);
             //console.log(this.selectedOption);
             console.log(this.selected);
-            //const newArrayCar = this.selected.map(item => parseInt(item)); // Convertir a enteros si es necesario
-            //console.log('newArrayCar');
-            //console.log(newArrayCar);
             this.data.professional_id = this.professional_id;
             this.data.branch_id = this.branch_id;
             this.data.car_ids = this.selected2;
@@ -1147,17 +1231,6 @@ export default {
                     this.showAlert("success", "Pago realizado correctamente", 3000);
                     this.showProfessional();
                 });
-            //}
-            /*this.valid = false;
-            this.data.name = this.editedItem.name;
-            this.data.branch_id = this.branch_id
-
-            axios
-                .post('https://api2.simplifies.cl/api/workplace', this.data)
-                .then(() => {
-                    this.initialize();
-                    this.showAlert("success", "Puesto de trabajo editado correctamente", 3000);
-                })*/
             this.close();
         },
         //course
@@ -1318,12 +1391,14 @@ export default {
         deleteItemCashier(item) {
             this.editedIndex = -1;
             this.editedItem.id = item.id;
+            this.typePay = item.car;
             this.dialogDeleteCashier = true;
         },
         deleteItemConfirmCashier() {
             //this.results.splice(this.editedIndex, 1)
             let request = {
-                id: this.editedItem.id
+                id: this.editedItem.id,
+                type: this.typePay
             };
             axios
                 .post('https://api2.simplifies.cl/api/operation-tip-destroy', request)
@@ -1338,11 +1413,13 @@ export default {
             axios
                 .get('https://api2.simplifies.cl/api/cashier-car-notpay', {
                     params: {
-                        branch_id: this.branch_id
+                        branch_id: this.branch_id,
+                        professional_id: this.professional_id
                     }
                 })
                 .then((response) => {
                     this.cars1 = response.data.cars;
+                    this.cashierSales = response.data.sales;
                 });
             this.dialogCashierCars = true;
         },
@@ -1381,6 +1458,43 @@ export default {
             console.log(this.data);
             axios
                 .post('https://api2.simplifies.cl/api/operation-tip', this.data)
+                .then(() => {
+                    this.$nextTick(() => {
+                        this.editedItem = Object.assign({}, this.defaultItem);
+                    });
+                    this.editedIndex = -1;
+                    this.type = null;
+                    this.cars = [];
+                    this.selected2 = [];
+                    this.mostrarCars = false;
+                }).finally(() => {
+                    this.showAlert("success", "Pago realizado correctamente", 3000);
+                    this.showCashier();
+                });
+            //}
+            /*this.valid = false;
+            this.data.name = this.editedItem.name;
+            this.data.branch_id = this.branch_id
+
+            axios
+                .post('https://api2.simplifies.cl/api/workplace', this.data)
+                .then(() => {
+                    this.initialize();
+                    this.showAlert("success", "Puesto de trabajo editado correctamente", 3000);
+                })*/
+            this.close();
+        },
+        saveCashierProduct() {
+            this.valid = false;
+            this.data.professional_id = this.professional_id;
+            this.data.branch_id = this.branch_id;
+            this.data.ids = this.selectedCashier;
+            this.data.amount = this.editedItem.amountSaleProduct;
+            this.data.type = this.editedItem.cashierproduct;
+            console.log('this.data');
+            console.log(this.data);
+            axios
+                .post('https://api2.simplifies.cl/api/professional-payment-cashier', this.data)
                 .then(() => {
                     this.$nextTick(() => {
                         this.editedItem = Object.assign({}, this.defaultItem);
