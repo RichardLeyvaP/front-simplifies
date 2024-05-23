@@ -1220,7 +1220,7 @@ export default {
         .then((response) => {          
             this.results = response.data.cars;
           this.box = response.data.box;
-          this.cashierSales = response.data.cashiersales;
+          this.cashierSales = response.data.cashierSales;
         }).finally(() => {
             if (this.box[0] === null) {
             this.ejecutado = false;
@@ -1433,8 +1433,7 @@ export default {
       //console.log(this.results);
       //if (!this.results) {   
         const amount = this.results.reduce((total, item) => total + item.amount, 0);
-        const productsales = this.cashierSales
-      .reduce((total, item) => total + item.price, 0);
+        const productsales = this.cashierSales.reduce((total, item) => total + item.price, 0);
       const temp = amount+productsales;
       this.editedCloseBox.totalMount = temp;
       return this.formatNumber(temp) + " CLP";
@@ -1453,9 +1452,7 @@ export default {
       const montosPendientes = this.results
         .filter(item => item.pay === 0)
         .reduce((total, item) => total + item.amount, 0);
-        const productsales = this.cashierSales
-      .filter(item => item.pay === 0)
-      .reduce((total, item) => total + item.price, 0);
+        const productsales = this.cashierSales.filter(item => item.pay === 0).reduce((total, item) => total + item.price, 0);
       const pendiente = montosPendientes+productsales;
       if (!pendiente) {
         this.closed_box = false;
@@ -1612,7 +1609,7 @@ export default {
             this.results = response.data.cars;
             this.box = response.data.box;
             this.payments = response.data.payments;
-            this.cashierSales = response.data.cashiersales;
+            this.cashierSales = response.data.cashierSales;
         }).finally(() => {
             if (this.box[0] === null) {
             this.ejecutado = false;
