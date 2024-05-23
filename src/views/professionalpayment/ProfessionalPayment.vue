@@ -706,14 +706,14 @@ export default {
         ],
         headers3: [
             { title: 'Fecha', key: 'date' },
-            { title: 'Pagado ($)', key: 'amount' },
             { title: 'Tipo de pago', key: 'type' },
+            { title: 'Monto Líquido', key: 'amount' },
             { title: 'Acciones', value: 'actions' },
         ],
         headers5: [
             { title: 'Fecha del pago', key: 'date' },
             { title: 'Tipo de Pago', key: 'type' },
-            { title: 'Monto pagado', key: 'amount' },
+            { title: 'Monto Líquido', key: 'amount' },
             { title: 'Monto café', key: 'coffe_percent' },
             { title: 'Acciones', value: 'actions' },
         ],

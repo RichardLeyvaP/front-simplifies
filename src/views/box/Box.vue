@@ -1220,7 +1220,7 @@ export default {
         .then((response) => {          
             this.results = response.data.cars;
           this.box = response.data.box;
-          this.cashierSales = response.data.cashierSales;
+          this.cashierSales = response.data.cashiersales;
         }).finally(() => {
             if (this.box[0] === null) {
             this.ejecutado = false;
@@ -1612,7 +1612,7 @@ export default {
             this.results = response.data.cars;
             this.box = response.data.box;
             this.payments = response.data.payments;
-            this.cashierSales = response.data.cashierSales;
+            this.cashierSales = response.data.cashiersales;
         }).finally(() => {
             if (this.box[0] === null) {
             this.ejecutado = false;
@@ -2020,7 +2020,8 @@ export default {
       this.showDialogSaleProducts = true;
     },
     closeDialogSaleProduct() {
-      this.showDialogSaleProducts = false;
+      this.showDialogSaleProducts = false;      
+      this.initialize();
     },
     showSalegProduct() {
       axios

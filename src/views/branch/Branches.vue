@@ -537,7 +537,7 @@
             <v-container>
           <v-row>
               <v-col cols="12" md="4" v-for="(item, key) in winners" :key="key">
-                    <v-card class="mx-auto pa-4 ml-0" :subtitle="key=='Monto Generado' || key=='Monto Servicios Especiales' ? formatNumber(item.value) : item.value" :title="key">                  
+                    <v-card class="mx-auto pa-4 ml-0" :subtitle="key=='Monto Generado' || key=='Monto Servicios Especiales' || key=='Total Retenciones' ? formatNumber(item.value) : item.value" :title="key">                  
                     <template v-slot:prepend>
                       <v-avatar :color="item.color">
                         <v-icon color="white">{{ item.icon }}</v-icon>
@@ -1276,7 +1276,25 @@ export default {
           this.editedIndexWin = -1;
     },
     formatNumber(value) {
-            return value.toLocaleString('es-ES');
+            //return value.toLocaleString('es-ES');
+            // Si el valor es menor que 1000, devuelve el valor original sin formato
+            if (value < 1000) {
+                return value;
+            }
+
+            // Primero, redondea el valor a dos decimales
+            value = Math.round((value + Number.EPSILON) * 100) / 100;
+
+            // Separa la parte entera de la parte decimal
+            let parts = value.toString().split(".");
+            let integerPart = parts[0];
+            let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+
+            // Agrega los separadores de miles
+            integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+            // Combina la parte entera y la parte decimal
+            return integerPart + decimalPart;
         },
     updateDate(val) {
       this.input = val;
