@@ -33,6 +33,24 @@ const routes = [
       import( "@/views/totem/enteringWork.vue"),
   },
   {
+    path: "/reserv/confirmation",
+    name: "confirmation",
+    component: () =>
+      import( "@/views/confirmation.vue"),
+  },
+  {
+    path: "/reserv/cancelation",
+    name: "cancelation",
+    component: () =>
+      import( "@/views/cancelation.vue"),
+  },
+  {
+    path: "/reserv/denied",
+    name: "denied",
+    component: () =>
+      import( "@/views/denied.vue"),
+  },
+  {
     path: "/reserve",
     name: "Reservar",
     component: () =>
