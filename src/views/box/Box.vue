@@ -690,8 +690,8 @@
         </template>
 
         <template v-slot:item.pay="{ item }">
-          <v-chip :color="item.pay != 0 ? 'green' : 'red'" :text="item.pay" class="text-uppercase" label size="small">
-            {{ item.pay === 0 ? 'Pendiente' : 'Pagado' }}
+          <v-chip :color="parseIntitem.pay === '0' ? 'red' : 'green'" :text="item.pay" class="text-uppercase" label size="small">
+            {{ item.pay === '0' ? 'Pendiente' : 'Pagado' }}
           </v-chip>
         </template>
         <template v-slot:item.technical_assistance="{ item }">
@@ -760,8 +760,8 @@
           {{ item.name }}
         </template>
         <template v-slot:item.pay="{ item }">
-          <v-chip :color="item.pay != 0 ? 'green' : 'red'" :text="item.pay" class="text-uppercase" label size="small">
-            {{ item.pay === 0 ? 'Pendiente' : 'Pagado' }}
+          <v-chip :color="parseInt(item.pay) === 0 ? 'red' : 'green'" :text="item.pay" class="text-uppercase" label size="small">
+            {{ parseInt(item.pay) === 0 ? 'Pendiente' : 'Pagado' }}
           </v-chip>
         </template>
         <template v-slot:item.price="{ item }">
@@ -1117,10 +1117,10 @@ export default {
 
   computed: {
     filteredItems() {
-      return this.results.filter(item => item.pay == 0);
+      return this.results.filter(item => item.pay === 0);
     },
     filteredItemsPay() {
-      return this.results.filter(item => item.pay == 1);
+      return this.results.filter(item => item.pay === 1);
     },
     formTitle() {
       return 'Cierre de Caja'
@@ -1981,7 +1981,7 @@ export default {
     //endAddProduct
     //sale Product
     isSelectable(item) {
-      return item.pay === 0;
+      return parseInt(item.pay) === 0;
     },
     calculateAmountSales() {
       this.amountSales = this.cashierSalesProf
@@ -2068,7 +2068,8 @@ export default {
             .then(() => {
               }).finally(() => {
               this.showAlert("success", "Pago efectuado correctamente", 3000);
-              this.initialize();
+              this.initialize();              
+          this.showDialogProduct();
               this.$nextTick(() => {
                 this.mostrarOtroCampo = false;
                 });
@@ -2076,7 +2077,7 @@ export default {
           this.dialogPaySales = false;
           this.selected = [];
           this.valid = true;
-          this.showDialogProduct();
+          this.editedItem = Object.assign({}, this.defaultItem);
         }
         else {
           this.showAlert("warning", "Monto debe coincidir con el monto total " + this.formatNumber(Number(this.amountSales)/* + Number(this.editedItem.tip)*/), 3000);
