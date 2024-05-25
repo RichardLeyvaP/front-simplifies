@@ -209,8 +209,17 @@
      
 
    </v-form>
+   <v-row>
+    <v-col cols="12" md="8">
+      <p style="color: #555; text-align: justify;">
+  <span style="font-size: 1em; font-weight: bold; color: red; display: block; text-align: center;">¡IMPORTANTE!</span><br>
+  Puede llegar 10 minutos antes o después de la hora indicada y debe anunciarse en la caja para que se sitúe de primero en la lista de espera y así su barbero lo pueda atender después del servicio que esté realizando.
+</p>
+    </v-col>
+   </v-row>
 <v-divider class="pt-4 mt-4"></v-divider>
 <v-container>
+
               <v-card
     class="mx-auto"
    

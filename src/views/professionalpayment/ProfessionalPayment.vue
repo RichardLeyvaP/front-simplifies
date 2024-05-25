@@ -109,7 +109,7 @@
                                         <v-btn color="#E7E9E9" variant="flat" @click="close">
                                             Cancelar
                                         </v-btn>
-                                        <v-btn color="#F18254" variant="flat" @click="save" :disabled="(!valid || (!selected2.length && !editedItem.amount))">
+                                        <v-btn color="#F18254" variant="flat" @click="save" :disabled="(!valid && (!selected2.length))">
                                             Pagar
                                         </v-btn>
                                     </v-card-actions>
@@ -575,7 +575,7 @@
                             <v-btn color="#E7E9E9" variant="flat" @click="close">
                                 Cancelar
                             </v-btn>
-                            <v-btn color="#F18254" variant="flat" @click="saveCashier" :disabled="(!valid || (!selected2.length && !editedItem.amount))">
+                            <v-btn color="#F18254" variant="flat" @click="saveCashier" :disabled="(!valid && (!selected2.length))">
                                 Pagar
                             </v-btn>
                         </v-card-actions>
@@ -765,7 +765,7 @@ export default {
         ],
         pago: [
             (value) => !!value || 'Campo requerido',
-            (value) => !(/^\d+(\.\d+)?$/.test(value)) || "Debe ser un número con punto decimal (10.00)",
+            (value) => /^\d+(\.\d+)?$/.test(value) || "Debe ser un número con punto decimal (10.00)",
             (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
             pago1: [
                 (value) => /^\d+(\.\d+)?$/.test(value) || "Debe ser un número con punto decimal (10.00)",

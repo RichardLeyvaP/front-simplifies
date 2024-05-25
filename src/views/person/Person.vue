@@ -503,6 +503,11 @@
                   </v-locale-provider>
                 </v-menu>
               </v-col>
+              <v-col cols="12" sm="12" md="3">
+          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
+            label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
+            variant="outlined"></v-autocomplete><!-- @update:model-value="initialize()">-->
+        </v-col>
               <v-col cols="12" md="1">
                 <v-btn icon @click="updateDate2" color="#F18254">
                   <v-icon>mdi-magnify</v-icon></v-btn
@@ -527,12 +532,12 @@
                       :headers="headers1"
                       :items-per-page-text="'Elementos por páginas'"
                       :items="winner"
-                      :group-by="groupBy"
+                      
                       :search="search2"
                       class="elevation-2"
                       no-results-text="No hay datos disponibles"
                       no-data-text="No hay datos disponibles"
-                    >
+                    ><!--:group-by="groupBy"-->
                       <template
                         v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }"
                       >
@@ -555,6 +560,15 @@
                           label
                         >
                           {{ formatNumber(item.tip) }}</v-chip
+                        >
+                      </template>
+                      <template v-slot:item.bonus="{ item }">
+                        <v-chip
+                          class="text-uppercase font-weight-bold"
+                          size="small"
+                          label
+                        >
+                          {{ formatNumber(item.bonus) }}</v-chip
                         >
                       </template>
                       <template v-slot:item.amount="{ item }">
@@ -602,6 +616,17 @@
                           {{ formatNumber(item.total) }}</v-chip
                         >
                       </template>
+                      <template v-slot:item.name="{ item }">
+                      <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
+                        <v-img
+                          :src="'https://api2.simplifies.cl/api/images/' + item.image_url"
+                          alt="image"
+                        ></v-img
+                        ><!--+ '?$' + Date.now()
+                          -->
+                      </v-avatar>
+                      {{ item.name }}
+                    </template>
                     </v-data-table>
                   </v-card-text>
                 </v-card>
@@ -1097,20 +1122,21 @@ export default {
     dialogWinner: false,
     headers1: [
       { title: "Profesional", key: "name", sortable: false },
-      { title: "Sucursal", key: "branchName", sortable: false },
-      { title: "Ingreso Total", key: "amountGenerate", sortable: false },
-      { title: "Ganancia del barbero", key: "amount", sortable: false },
-      { title: "Retención", key: "retention", sortable: false },
-      { title: "Propina", key: "tip", sortable: false },
-      { title: "Propina 80%", key: "tip80", sortable: false },
-      { title: "Clientes atendidos", key: "total_cars", sortable: false },
-      { title: "Total", key: "total", sortable: false },
+      //{ title: "Sucursal", key: "branchName", sortable: false },
+      { title: "Ingreso Total", key: "amountGenerate", sortable: true },
+      { title: "Ganancia del barbero", key: "amount", sortable: true },
+      { title: "Retención", key: "retention", sortable: true },
+      { title: "Propina", key: "tip", sortable: true },
+      { title: "Propina 80%", key: "tip80", sortable: true },
+      { title: "Bonos", key: "bonus", sortable: true },
+      { title: "Clientes atendidos", key: "total_cars", sortable: true },
+      { title: "Total", key: "total", sortable: true },
     ],
-    groupBy: [
+    /*groupBy: [
       {
         key: "name",
       },
-    ],
+    ],*/
     //laters
     dialogLater: false,
     laters: [],
@@ -1485,7 +1511,11 @@ export default {
     showWinner() {
       this.editedIndexWin = -1;
       axios
-        .get("https://api2.simplifies.cl/api/branch_professionals_winner")
+        .get("https://api2.simplifies.cl/api/branch_professionals_winner", {
+          params: {
+            branch_id: this.branch_id
+          },
+        })
         .then((response) => {
           this.winner = response.data;
         })
@@ -1587,6 +1617,7 @@ export default {
           params: {
             startDate: startDate,
             endDate: endDate,
+            branch_id: this.branch_id
           },
         })
         .then((response) => {

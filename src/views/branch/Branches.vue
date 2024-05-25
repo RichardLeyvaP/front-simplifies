@@ -20,12 +20,16 @@
 
     <v-toolbar color="#F18254">
       <v-row >
-        <v-col cols="12" md="9" class="mt-4">
+        <v-col cols="12" md="5" class="mt-4">
           <span class="ml-3"> <strong>Listado de Sucursales</strong></span>
         </v-col>
         
-        <v-col cols="12" md="3">          
-          <v-btn class="text-subtitle-1  ml-12  " color="#E7E9E9" variant="flat" elevation="2"
+        <v-col cols="12" md="7" class="text-right"> 
+          <v-btn class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2"
+                prepend-icon="mdi-plus-circle" @click="showWinner()">
+                Estadísticas Sucursal
+              </v-btn>        
+          <v-btn class="text-subtitle-1  ml-1 mr-1 " color="#E7E9E9" variant="flat" elevation="2"
                 prepend-icon="mdi-plus-circle" @click="showAddBranch()">
                 Agregar Sucursal
               </v-btn>
@@ -141,8 +145,8 @@
             elevation="1" title="Agregar Almacén"></v-btn>  
           <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-handshake" @click="showAssociates(item)" color="orange" variant="tonal"
             elevation="1" title="Agregar Asociado"></v-btn>  
-            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-finance" @click="showWinner(item)" color="teal" variant="tonal"
-            elevation="1" title="Finanzas de la  sucursal"></v-btn>  
+            <!--<v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-finance" @click="showWinner(item)" color="teal" variant="tonal"
+            elevation="1" title="Finanzas de la  sucursal"></v-btn>-->  
           <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
             elevation="1" title="Eliminar Sucursal"></v-btn>
         </template>
@@ -521,6 +525,11 @@
             </v-locale-provider>
           </v-menu>
         </v-col>
+        <v-col cols="12" sm="12" md="3">
+          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" v-if="mostrarFila" :items="results" clearable
+            label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
+            variant="outlined"></v-autocomplete><!-- @update:model-value="initialize()">-->
+        </v-col>
         <v-col cols="12" md="1">
                         <v-btn icon @click="updateDate3" color="#F18254" >
                     <v-icon>mdi-magnify</v-icon></v-btn>
@@ -581,6 +590,8 @@ export default {
     business_id: '',
     search2: '',
     search:'',
+    mostrarFila: false,
+    charge: '',
     editando: false,
     dialog: false,
     dialogDelete: false,
@@ -595,6 +606,7 @@ export default {
     dialogAddAssociate: false,
     associated_id: '',
     bonus: false,
+    branch_id: '',
     headers: [
       { title: 'Nombre', value: 'name' },
       { title: 'Teléfono', value: 'phone' },
@@ -773,6 +785,8 @@ export default {
   mounted() {
     this.business_id = LocalStorageService.getItem('business_id');
     this.editedItem.business_id = this.business_id; // Establecer el primer negocio como valor predeterminado
+    this.branch_id = parseInt(LocalStorageService.getItem("branch_id"));
+    this.charge = JSON.parse(LocalStorageService.getItem("charge"));
       //console.log('this.editedItem.business_id');
       //console.log(this.editedItem.business_id);
       axios
@@ -783,6 +797,10 @@ export default {
           if (this.business.length > 0) {
       this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
     } 
+    if (this.charge === "Administrador") {
+          this.branch_id = this.business[0].id;
+          this.mostrarFila = true;
+        }
     this.initialize();
           });
   },
@@ -837,7 +855,12 @@ export default {
           this.results = response.data.branches;
           console.log('imprime sucursales');
           console.log(this.results);
-        });
+        }).finally(() => {
+    if (this.charge === "Administrador") {
+          this.branch_id = this.results[0].id;
+          this.mostrarFila = true;
+        }
+          });
     },
     showAddBranch(){
       axios
@@ -1255,9 +1278,8 @@ export default {
           });
     },
     //Finanzas
-    showWinner(item) {
-      this.branchSelect = item;
-      this.branch_id = item.id;
+    showWinner() {
+      //this.branchSelect = item;
       this.editedIndexWin = -1;
       axios
         .get('https://api2.simplifies.cl/api/branch_winner_icon', {

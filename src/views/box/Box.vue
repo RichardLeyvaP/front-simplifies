@@ -1220,9 +1220,12 @@ export default {
         .then((response) => {          
             this.results = response.data.cars;
           this.box = response.data.box;
-          this.cashierSales = response.data.cashierSales;
+          this.payments = response.data.payments;
+            this.cashierSales = response.data.cashierSales;
+          console.log('this.box');
+          console.log(this.box);
         }).finally(() => {
-            if (this.box[0] === null) {
+            if (this.box === null) {
             this.ejecutado = false;
         } else {
             // Si this.box no es null, verificar si box_close es null
@@ -1545,12 +1548,13 @@ export default {
     existence() {
     console.log('imprime existence');
     console.log(this.box);
-    if (!this.box) {
-    const temp = this.box.reduce((total, item) => total + (item.existence || 0), 0);
-    console.log(temp);
-    return this.formatNumber(temp) + " CLP";
-    } else {
+    if (!this.box) {    
         return "0 CLP";
+    } else {
+      const temp = this.box.existence;
+    console.log(temp);
+    return temp;
+    //return this.formatNumber(temp) + " CLP";
     }
     },
 
@@ -1610,12 +1614,14 @@ export default {
             this.box = response.data.box;
             this.payments = response.data.payments;
             this.cashierSales = response.data.cashierSales;
+            console.log('this.box');
+          console.log(this.box);
         }).finally(() => {
-            if (this.box[0] === null) {
+            if (this.box === null) {
             this.ejecutado = false;
         } else {
             // Si this.box no es null, verificar si box_close es null
-            if (this.box[0].box_close === null) {
+            if (this.box.box_close === null) {
                 this.ejecutado = false;
             } else {
                 this.ejecutado = true;
