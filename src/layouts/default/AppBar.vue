@@ -147,6 +147,7 @@ import axios from "axios";
 //const userTokenStore = UserTokenStore();
 export default {
   data: () => ({
+    intervalId: null,
     snackbar: false,
   sb_type: '',
   sb_message: '',
@@ -190,6 +191,24 @@ export default {
     console.log(this.imageUrl);
     // Otros datos que hayas almacenado
     this.initialize();
+    this.intervalId = setInterval(() => {
+      axios
+        .get('https://api2.simplifies.cl/api/notification-professional-web', {
+                    params: {
+                        branch_id: this.branch_id,
+                        professional_id: this.professional_id
+                    }
+                })
+        .then((response) => {
+          this.results = response.data.notifications;
+          console.log('this.results notificaciones');
+          console.log(this.results);
+        });
+    }, 30000);
+  },
+  beforeUnmount() {
+    // Detener el intervalo cuando el componente se esté destruyendo para evitar fugas de memoria
+    clearInterval(this.intervalId);
   },
   computed: {
     notificationsWithStateZero() {

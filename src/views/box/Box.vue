@@ -1229,7 +1229,7 @@ export default {
             this.ejecutado = false;
         } else {
             // Si this.box no es null, verificar si box_close es null
-            if (this.box[0].box_close === null) {
+            if (this.box.box_close === null) {
                 this.ejecutado = false;
                 console.log('this.box.box_close false');
         //console.log(this.box.box_close);

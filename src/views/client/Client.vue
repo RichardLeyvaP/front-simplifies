@@ -222,12 +222,10 @@
             <v-img
               :src="
                 'https://api2.simplifies.cl/api/images/' +
-                item.client_image +
-                '?$' +
-                Date.now()
-              "
+                item.client_image"
               alt="image"
-            ></v-img>
+            ></v-img><!--+ '?$' + Date.now()
+                -->
           </v-avatar>
           {{ item.name }}
         </template>

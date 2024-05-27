@@ -262,12 +262,12 @@
               <v-img
                 :src="
                   'https://api2.simplifies.cl/api/images/' +
-                  item.image_product +
-                  '?$' +
-                  Date.now()
+                  item.image_product
                 "
                 alt="image"
-              ></v-img>
+              ></v-img><!-- +
+                  '?$' +
+                  Date.now()-->
             </v-avatar>
             {{ item.name }}
           </template>

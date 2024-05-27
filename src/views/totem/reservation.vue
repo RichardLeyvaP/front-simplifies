@@ -210,7 +210,7 @@
 
    </v-form>
    <v-row>
-    <v-col cols="12" md="8">
+    <v-col cols="12" md="12">
       <p style="color: #555; text-align: justify;">
   <span style="font-size: 1em; font-weight: bold; color: red; display: block; text-align: center;">¡IMPORTANTE!</span><br>
   Puede llegar 10 minutos antes o después de la hora indicada y debe anunciarse en la caja para que se sitúe de primero en la lista de espera y así su barbero lo pueda atender después del servicio que esté realizando.
@@ -302,7 +302,7 @@ size="x-large"
               <v-list-item 
         v-for="survey in surveys"
         :key="survey.id"
-        class="py-0 my-0"
+        :class="['py-0', 'my-0', 'custom-list-item']"
       >
         <v-list-item-content class="d-flex align-center">
           <v-checkbox
@@ -1214,7 +1214,7 @@ this.changeStep(1);
   background-color: orange !important;
 }
 
-.v-list-item {
+.custom-list-item {
   padding-top: 0px !important;
   padding-bottom: 0px !important;
   margin-top: -8px !important;

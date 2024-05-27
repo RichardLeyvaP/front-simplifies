@@ -167,8 +167,8 @@
   imageUrl: ${item.imageUrl}?${Date.now()}
 }));-->
           <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_service+'?$'+Date.now()" alt="image"></v-img>
-          </v-avatar>
+            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_service" alt="image"></v-img>
+          </v-avatar><!--+'?$'+Date.now()-->
           {{ item.name }}
         </template>
 

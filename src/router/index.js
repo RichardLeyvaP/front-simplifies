@@ -501,7 +501,7 @@ router.beforeEach((to, from, next) => {
     //const userPermissions1 = userTokenStore.permissionsUser;
     
     const userPermissions = LocalStorageService.getItem("permissionsUser");
-    console.log(userPermissions);
+    //console.log(userPermissions);
     const hasPermissions = permissions.every((permission) =>
       //userPermissions.includes(permission)
       userPermissions.includes(permission)

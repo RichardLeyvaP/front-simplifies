@@ -341,7 +341,7 @@
           <template v-slot:item.name="{ item }">
             <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
               <v-img
-                :src="'https://api2.simplifies.cl/api/images/' + item.image_url+'?$'+Date.now()"
+                :src="'https://api2.simplifies.cl/api/images/' + item.image_url"
                 alt="image"
               ></v-img
               ><!--+ '?$' + Date.now()
@@ -1768,7 +1768,6 @@ export default {
     showFreeday(item) {
       this.selectedProfessional = item;
       this.professional_id = item.id;
-      this.dialogfreeday = true;
       axios
         .get("https://api2.simplifies.cl/api/restday-show", {
           params: {
@@ -1776,10 +1775,16 @@ export default {
           },
         })
         .then((response) => {
-          this.freedays = response.data.Schedules.map((schedule) => ({
+          this.freedays = response.data.Schedules
+          console.log('this.freedays dias de descanso');
+          console.log(this.freedays);
+        })
+        .finally(() => {
+          this.freedays = this.freedays.map((schedule) => ({
             nombre: schedule.day,
             esLaboral: parseInt(schedule.state) !== 0,
-          }));
+          }));          
+      this.dialogfreeday = true;
         });
     },
     closeFreeday() {
