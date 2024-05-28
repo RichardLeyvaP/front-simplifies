@@ -850,8 +850,11 @@ export default {
             this.showAlert("success", "Cliente registrado correctamente", 3000);
           })
           .catch((error) => {
-            if (error.response.status == "400")
+            if (error.response.status == "400"){
               this.showAlert("warning", "Correo ya existe", 3000);
+            }else if (error.response.status === 401) {
+              this.showAlert("warning", "Correo ya existe", 3000);
+            }
           });
       }
       this.close();

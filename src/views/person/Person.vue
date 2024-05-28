@@ -1501,6 +1501,8 @@ export default {
             console.log(error.response);
             if (error.response.status === 400){
               this.showAlert("warning", "Usuario ya existe", 3000);
+            }else if (error.response.status === 401) {
+              this.showAlert("warning", "Correo ya existe", 3000);
             }
           });
           
