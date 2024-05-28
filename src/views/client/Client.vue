@@ -100,6 +100,7 @@
                         prepend-icon="mdi-email-outline"
                         variant="underlined"
                         :rules="emailRules"
+                        @change="handleEmailChange"
                       >
                       </v-text-field>
                     </v-col>
@@ -524,6 +525,36 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <!--Para verificar el email existe-->
+    <v-dialog v-model="dialogEmail" @click:outside="closeEmail" max-width="500px">
+              <v-card>
+                <v-toolbar color="#F18254">
+                  <span class="text-subtitle-2 ml-4">Información!!!</span>
+                </v-toolbar>
+
+                <v-card-text class="mt-2">
+                  <span>Ya existe un profesional con este correo, ¿desea continuar?</span>
+                </v-card-text>
+
+                <v-card-text class="d-flex align-center mt-2">
+                  <v-avatar class="mr-2">
+                    <v-img :src="'https://api2.simplifies.cl/api/images/' + profesImage" alt="Avatar del profesional"></v-img>
+                  </v-avatar>
+                  <span>{{ profesName }}</span>
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="#E7E9E9" variant="flat" @click="closeEmail">
+                    Cancelar
+                  </v-btn>
+                  <v-btn color="#F18254" variant="flat" @click="acceptEmail">
+                    Aceptar
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
   </v-card>
 </template>
 <script>
@@ -566,7 +597,7 @@ export default {
       second_surname: "",
       email: "",
       phone: "",
-      //user_id: '',
+      user_id: '',
       client_image: "",
       id: "",
     },
@@ -578,7 +609,7 @@ export default {
       second_surname: "",
       email: "",
       phone: "",
-      //user_id: '',
+      user_id: '',
       client_image: "",
     },
 
@@ -594,6 +625,14 @@ export default {
     charge: '',
     history: [],
     frecuence: [],
+
+
+    typeUser: '',
+    userId: '',
+    profesName: '',
+    profesImage: '',
+    dialogEmail: false,
+
     headers1: [
       { title: 'Profesional', key: 'name', sortable: false },
       { title: 'Correo', key: 'email', sortable: false },
@@ -697,6 +736,39 @@ export default {
   },
 
   methods: {
+    handleEmailChange() {
+      axios
+        .get("https://api2.simplifies.cl/api/client-email", {
+          params: {
+            email: this.editedItem.email
+          },
+        })
+        .then((response) => {
+          this.userId = response.data.user;
+          this.profesName = response.data.clientName;
+          this.profesImage = response.data.clientImage;
+          this.typeUser = response.data.type;
+        })
+        .finally(() => {
+          if(this.typeUser === 'Client'){
+            this.dialogEmail = false;
+            this.showAlert("warning", "Ya existe un cliente con este correo", 3000);
+            //this.showAlert("success", "Este correo ya esta asignado a un cliente", 3000);
+          }
+          if(this.typeUser === 'Professional'){
+            this.dialogEmail = true;
+          }
+        });
+    },
+    closeEmail(){
+      this.dialogEmail = false;
+      this.userId = '',
+      this.close();
+    },
+    acceptEmail(){
+      this.editedItem.user_id = this.userId;
+      this.dialogEmail = false;
+    },
     openWhatsApp(phone) {
       window.open('http://wa.me/' + phone);
     },
