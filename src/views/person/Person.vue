@@ -1442,6 +1442,13 @@ const adapter = useDate()
             color: this.colors[this.rnd(0, this.colors.length - 1)],
             allDay: false ,
           })
+          events.push({
+            title: this.names[1],
+            start:new Date('2024-07-14 18:00:00'),
+            end: new Date('2024-07-14 12:45:00'),
+            color: this.colors[this.rnd(0, this.colors.length - 1)],
+            allDay: false ,
+          })
         
 
         this.events = events
