@@ -221,7 +221,15 @@
                   <v-col cols="12" md="6">
                     <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedCardGiftUser.user_id" :items="users" label="Cliente"
                       prepend-icon="mdi-store-outline" item-title="name" item-value="user_id" variant="underlined"
-                      :rules="selectRules" @update:model-value="handleClientSelection"></v-autocomplete>
+                      :rules="selectRules" @update:model-value="handleClientSelection">
+                      <template v-slot:item="{ props, item }">
+                                                    <v-list-item
+                                                        v-bind="props"
+                                                        :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.client_image"
+                                                        :title="item.raw.name"
+                                                    ></v-list-item>
+                                                    </template>
+                      </v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="6">
                     <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
