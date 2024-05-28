@@ -314,6 +314,32 @@
                 </v-card-text>
               </v-card>
             </v-dialog>
+
+            <!--ver reservaciones de profesionales-->
+            <v-dialog v-model="showReserPrpfessional" >
+              <v-toolbar color="#F18254">
+                  <span class="text-subtitle-2 ml-4">Componente de Calenario de reserva</span>
+                </v-toolbar>
+              <v-card>
+               
+
+                <v-card-text class="mt-2 mb-2">
+                  <v-row class="fill-height">
+    
+      <v-sheet >
+        <v-calendar
+          ref="calendar"
+          v-model="today"
+          :events="events"
+          color="primary"
+          type="month"
+        ></v-calendar>
+      </v-sheet>
+   
+  </v-row>
+                </v-card-text>
+              </v-card>
+            </v-dialog>
           </v-col>
         </v-row>
       </v-toolbar>
@@ -408,6 +434,16 @@
               variant="tonal"
               elevation="1"
               title="Eliminar Profesional"
+            ></v-btn>
+            <v-btn
+              density="comfortable"
+              icon="mdi-clipboard-text"
+              @click="chargeData(item)"
+              color="teal"
+              variant="tonal"
+              elevation="1"
+              class="mr-1 mt-1 mb-1"
+              title="Ver Reservaciones"
             ></v-btn>
           </template>
         </v-data-table>
@@ -1050,9 +1086,35 @@ import axios from "axios";
 import { format } from "date-fns";
 import * as XLSX from "xlsx";
 import LocalStorageService from "@/LocalStorageService";
+import { VCalendar } from 'vuetify/labs/VCalendar'
+import { useDate } from 'vuetify'
+
+
 
 export default {
+  components: {
+    VCalendar,
+  },
+
   data: () => ({
+    // aqui va lo del calendar
+    focus: '',
+      events: [],
+      colors: [
+        'blue',
+        'indigo',
+        'deep-purple',
+        'cyan',
+        'green',
+        'orange',
+        'grey darken-1',
+      ],
+      names: [
+        'Richard Leyva Pérez',
+        'Yasmany',
+        'Jose',
+      ],
+    // aqui va lo del calendar
     tabBar: null,
     valid: true,
     snackbar: false,
@@ -1070,6 +1132,7 @@ export default {
     dialogDelete: false,
     dialogEmail: false,
     showPasswordForm: false,
+    showReserPrpfessional: false,
     branches: [],
     business_id: "",
     professional_id: "",
@@ -1322,6 +1385,14 @@ export default {
   },
 
   mounted() {
+// aqui va lo del calendario
+const adapter = useDate()
+      this.fetchEvents({
+        start: adapter.startOfDay(adapter.startOfMonth(new Date())),
+        end: adapter.endOfDay(adapter.endOfMonth(new Date())),
+      })
+// aqui va lo del calendario
+
     this.branch_id = parseInt(LocalStorageService.getItem("branch_id"));
     this.business_id = parseInt(LocalStorageService.getItem("business_id"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
@@ -1346,6 +1417,39 @@ export default {
   },
 
   methods: {
+    // aqui lo del calendario
+    getEventColor(event) {
+        return event.color
+      },
+      fetchEvents() {
+        const events = []
+
+       
+        
+
+          events.push({
+            title: this.names[0],
+            start:new Date('2024-05-20 17:01:00'),
+            end: new Date('2024-05-20 18:01:00'),
+            color: this.colors[this.rnd(0, this.colors.length - 1)],
+            allDay: false ,
+          })
+
+          events.push({
+            title: this.names[1],
+            start:new Date('2024-05-21 18:00:00'),
+            end: new Date('2024-05-21 12:45:00'),
+            color: this.colors[this.rnd(0, this.colors.length - 1)],
+            allDay: false ,
+          })
+        
+
+        this.events = events
+      },
+      rnd(a, b) {
+        return Math.floor((b - a + 1) * Math.random()) + a
+      },
+    // aqui lo del calendario
     handleEmailChange() {
       axios
         .get("https://api2.simplifies.cl/api/professional-email", {
@@ -1471,6 +1575,12 @@ export default {
       console.log("this.editedItem");
       console.log(this.editedItem);
       this.showPasswordForm = true;
+    },
+    chargeData(item) {//aqui cargo el componente del calendar
+      this.editedItem = Object.assign({}, item);
+      console.log("this.editedItem");
+      console.log(this.editedItem);
+      this.showReserPrpfessional = true;
     },
     deleteItem(item) {
       this.editedIndex = -1;
