@@ -110,6 +110,7 @@
                           prepend-icon="mdi-email-outline"
                           variant="underlined"
                           :rules="emailRules"
+                          @change="handleEmailChange"
                         >
                         </v-text-field>
                       </v-col>
@@ -1011,6 +1012,36 @@
           </v-card-text>
         </v-card>
       </v-dialog>
+
+      <!--Para verificar el email existe-->
+      <v-dialog v-model="dialogEmail" @click:outside="closeEmail" max-width="500px">
+              <v-card>
+                <v-toolbar color="#F18254">
+                  <span class="text-subtitle-2 ml-4">Información!!!</span>
+                </v-toolbar>
+
+                <v-card-text class="mt-2">
+                  <span>Ya existe un cliente con este correo, ¿desea continuar?</span>
+                </v-card-text>
+
+                <v-card-text class="d-flex align-center mt-2">
+                  <v-avatar class="mr-2">
+                    <v-img :src="'https://api2.simplifies.cl/api/images/' + clientImage" alt="Avatar del cliente"></v-img>
+                  </v-avatar>
+                  <span>{{ clientName }}</span>
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="#E7E9E9" variant="flat" @click="closeEmail">
+                    Cancelar
+                  </v-btn>
+                  <v-btn color="#F18254" variant="flat" @click="acceptEmail">
+                    Aceptar
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
     </v-card>
   </v-container>
 </template>
@@ -1037,6 +1068,7 @@ export default {
     editando: false,
     message_delete: true,
     dialogDelete: false,
+    dialogEmail: false,
     showPasswordForm: false,
     branches: [],
     business_id: "",
@@ -1152,6 +1184,11 @@ export default {
     dialogAsist: false,
     asistLate: [],
     asistTime: [],
+
+    typeUser: '',
+    userId: '',
+    clientName: '',
+    clientImage: '',
 
     headers3: [
       { title: "Profesional", key: "name", sortable: false },
@@ -1309,6 +1346,39 @@ export default {
   },
 
   methods: {
+    handleEmailChange() {
+      axios
+        .get("https://api2.simplifies.cl/api/professional-email", {
+          params: {
+            email: this.editedItem.email
+          },
+        })
+        .then((response) => {
+          this.userId = response.data.user;
+          this.clientName = response.data.clientName;
+          this.clientImage = response.data.clientImage;
+          this.typeUser = response.data.type;
+        })
+        .finally(() => {
+          if(this.typeUser === 'Client'){
+            this.dialogEmail = true;
+            //this.showAlert("success", "Este correo ya esta asignado a un cliente", 3000);
+          }
+          if(this.typeUser === 'Professional'){
+            this.dialogEmail = false;
+            this.showAlert("warning", "Ya existe un professional con este correo", 3000);
+          }
+        });
+    },
+    closeEmail(){
+      this.dialogEmail = false;
+      this.userId = '',
+      this.close();
+    },
+    acceptEmail(){
+      this.editedItem.user_id = this.userId;
+      this.dialogEmail = false;
+    },
     shangePassword() {
       console.log(this.editedItem.user_id);
       axios
