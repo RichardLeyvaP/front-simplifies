@@ -1102,17 +1102,18 @@ export default {
       events: [],
       colors: [
         'blue',
-        'indigo',
-        'deep-purple',
-        'cyan',
         'green',
         'orange',
         'grey darken-1',
+        'indigo',
+        'deep-purple',
+        'cyan',
+        
       ],
       names: [
         'Richard Leyva Pérez',
         'Yasmany',
-        'Jose',
+        'Jose Manuel',
       ],
     // aqui va lo del calendar
     tabBar: null,
@@ -1439,6 +1440,13 @@ const adapter = useDate()
             title: this.names[1],
             start:new Date('2024-05-21 18:00:00'),
             end: new Date('2024-05-21 12:45:00'),
+            color: this.colors[this.rnd(0, this.colors.length - 1)],
+            allDay: false ,
+          })
+          events.push({
+            title: this.names[1],
+            start:new Date('2024-07-14 18:00:00'),
+            end: new Date('2024-07-14 12:45:00'),
             color: this.colors[this.rnd(0, this.colors.length - 1)],
             allDay: false ,
           })
