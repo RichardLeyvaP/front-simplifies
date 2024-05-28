@@ -1102,17 +1102,18 @@ export default {
       events: [],
       colors: [
         'blue',
-        'indigo',
-        'deep-purple',
-        'cyan',
         'green',
         'orange',
         'grey darken-1',
+        'indigo',
+        'deep-purple',
+        'cyan',
+        
       ],
       names: [
         'Richard Leyva Pérez',
         'Yasmany',
-        'Jose',
+        'Jose Manuel',
       ],
     // aqui va lo del calendar
     tabBar: null,
