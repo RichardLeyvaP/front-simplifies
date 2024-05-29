@@ -303,7 +303,7 @@ export default {
         dialogDelete: false,
         headers: [
             //{ title: 'Almacén', align: 'start', value: 'direccionStore' },
-            { title: 'No. Control', key: 'control' },
+            { title: 'No. Control', key: 'id' },
             { title: 'Fecha Registro', key: 'data' },
             { title: 'Tipo de Operación', key: 'operation' },
             { title: 'Detalle de Operación', key: 'nameDetalle' },

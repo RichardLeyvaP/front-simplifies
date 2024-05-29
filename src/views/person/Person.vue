@@ -25,12 +25,12 @@
     <v-card elevation="6" class="mx-5">
       <v-toolbar color="#F18254">
         <v-row align="center">
-          <v-col cols="12" md="4" class="grow ml-4">
+          <v-col cols="12" md="3" class="grow ml-4">
             <span class="text-subtitle-1">
               <strong>Listado de Profesionales</strong></span
             >
           </v-col>
-          <v-col cols="12" md="7" class="text-right">
+          <v-col cols="12" md="8" class="text-right">
             <v-btn
               class="text-subtitle-1"
               color="#E7E9E9"
@@ -314,32 +314,6 @@
                 </v-card-text>
               </v-card>
             </v-dialog>
-
-            <!--ver reservaciones de profesionales-->
-            <v-dialog v-model="showReserPrpfessional" >
-              <v-toolbar color="#F18254">
-                  <span class="text-subtitle-2 ml-4">Componente de Calenario de reserva</span>
-                </v-toolbar>
-              <v-card>
-               
-
-                <v-card-text class="mt-2 mb-2">
-                  <v-row class="fill-height">
-    
-      <v-sheet >
-        <v-calendar
-          ref="calendar"
-          v-model="today"
-          :events="events"
-          color="primary"
-          type="month"
-        ></v-calendar>
-      </v-sheet>
-   
-  </v-row>
-                </v-card-text>
-              </v-card>
-            </v-dialog>
           </v-col>
         </v-row>
       </v-toolbar>
@@ -428,15 +402,6 @@
             ></v-btn>
             <v-btn
               density="comfortable"
-              icon="mdi-delete"
-              @click="deleteItem(item)"
-              color="red-darken-4"
-              variant="tonal"
-              elevation="1"
-              title="Eliminar Profesional"
-            ></v-btn>
-            <v-btn
-              density="comfortable"
               icon="mdi-clipboard-text"
               @click="chargeData(item)"
               color="teal"
@@ -444,6 +409,15 @@
               elevation="1"
               class="mr-1 mt-1 mb-1"
               title="Ver Reservaciones"
+            ></v-btn>
+            <v-btn
+              density="comfortable"
+              icon="mdi-delete"
+              @click="deleteItem(item)"
+              color="red-darken-4"
+              variant="tonal"
+              elevation="1"
+              title="Eliminar Profesional"
             ></v-btn>
           </template>
         </v-data-table>
@@ -1078,6 +1052,89 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
+
+            <!--ver reservaciones de profesionales-->
+            <v-dialog v-model="showReserPrpfessional" fullscreen transition="dialog-bottom-transition">
+              <v-card>
+          <v-toolbar color="#F18254">
+            <v-row align="center">
+              <v-col cols="12" md="8" class="grow ml-4">
+                <span class="text-h8">
+                  <strong>Reservas del profesional</strong></span
+                >
+              </v-col>
+            </v-row>
+          </v-toolbar>
+          <v-container>
+            <v-row>
+              <v-col cols="12" sm="12" md="3">
+                <v-autocomplete
+                  :no-data-text="'No hay datos disponibles'"
+                  v-model="branch_id"
+                  :items="branches"
+                  v-if="this.mostrarFila"
+                  label="Seleccione una Sucursal"
+                  prepend-inner-icon="mdi-store"
+                  item-title="name"
+                  item-value="id"
+                  variant="outlined"
+                ></v-autocomplete
+                ><!--@update:model-value="initialize()"-->
+              </v-col>
+              <v-col cols="12" md="1">
+                <v-btn icon @click="showReservations" color="#F18254">
+                  <v-icon>mdi-magnify</v-icon></v-btn
+                >
+              </v-col>
+            </v-row>
+            <v-container>
+            <v-card-text>
+              <v-row>
+                <div >
+    <v-sheet>
+      <v-calendar
+        ref="calendar"
+        v-model="today"
+        :events="events"
+        :event-color="getEventColor"        
+      >
+      </v-calendar>
+    </v-sheet>
+  </div>
+            
+            </v-row>
+            </v-card-text>
+          </v-container>
+          </v-container>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="closeCalendar"> Volver </v-btn>
+          </v-card-actions>
+        </v-card>
+              <!--<v-toolbar color="#F18254">
+                  <span class="text-subtitle-2 ml-4">Componente de Calenario de reserva</span>
+                </v-toolbar>
+              <v-card>
+               
+
+                <v-card-text class="mt-2 mb-2">
+                  <v-row class="fill-height">
+    
+      <v-sheet >
+        <v-calendar
+          ref="calendar"
+          v-model="today"
+          :events="events"
+          color="primary"
+          type="month"
+        ></v-calendar>
+      </v-sheet>
+   
+  </v-row>
+                </v-card-text>
+              </v-card>-->
+            </v-dialog>
     </v-card>
   </v-container>
 </template>
@@ -1087,7 +1144,6 @@ import { format } from "date-fns";
 import * as XLSX from "xlsx";
 import LocalStorageService from "@/LocalStorageService";
 import { VCalendar } from 'vuetify/labs/VCalendar'
-import { useDate } from 'vuetify'
 
 
 
@@ -1097,7 +1153,7 @@ export default {
   },
 
   data: () => ({
-    // aqui va lo del calendar
+    today: new Date(),
     focus: '',
       events: [],
       colors: [
@@ -1269,6 +1325,8 @@ export default {
     //freeday
     dialogfreeday: false,
     freedays: [],
+
+    reservations: [],
     nameRules: [
       (v) => !!v || "El campo es requerido",
       (v) => (v && v.length <= 50) || "El campo debe tener menos de 51 caracteres",
@@ -1382,18 +1440,10 @@ export default {
     },
     dialogDelete(val) {
       val || this.closeDelete();
-    },
+    }
   },
 
   mounted() {
-// aqui va lo del calendario
-const adapter = useDate()
-      this.fetchEvents({
-        start: adapter.startOfDay(adapter.startOfMonth(new Date())),
-        end: adapter.endOfDay(adapter.endOfMonth(new Date())),
-      })
-// aqui va lo del calendario
-
     this.branch_id = parseInt(LocalStorageService.getItem("branch_id"));
     this.business_id = parseInt(LocalStorageService.getItem("business_id"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
@@ -1418,44 +1468,23 @@ const adapter = useDate()
   },
 
   methods: {
+    getMonthDateRange(date) {
+      const start = new Date(date.getFullYear(), date.getMonth(), 1);
+      const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+      return { start, end };
+    },
     // aqui lo del calendario
     getEventColor(event) {
         return event.color
       },
-      fetchEvents() {
-        const events = []
-
-       
-        
-
-          events.push({
-            title: this.names[0],
-            start:new Date('2024-05-20 17:01:00'),
-            end: new Date('2024-05-20 18:01:00'),
-            color: this.colors[this.rnd(0, this.colors.length - 1)],
-            allDay: false ,
-          })
-
-          events.push({
-            title: this.names[1],
-            start:new Date('2024-05-21 18:00:00'),
-            end: new Date('2024-05-21 12:45:00'),
-            color: this.colors[this.rnd(0, this.colors.length - 1)],
-            allDay: false ,
-          })
-          events.push({
-            title: this.names[1],
-            start:new Date('2024-07-14 18:00:00'),
-            end: new Date('2024-07-14 12:45:00'),
-            color: this.colors[this.rnd(0, this.colors.length - 1)],
-            allDay: false ,
-          })
-        
-
-        this.events = events
-      },
       rnd(a, b) {
         return Math.floor((b - a + 1) * Math.random()) + a
+      },
+      closeCalendar(){
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.reservations = [];
+        this.events = [];
+        this.showReserPrpfessional = false;
       },
     // aqui lo del calendario
     handleEmailChange() {
@@ -1585,11 +1614,49 @@ const adapter = useDate()
       this.showPasswordForm = true;
     },
     chargeData(item) {//aqui cargo el componente del calendar
-      this.editedItem = Object.assign({}, item);
-      console.log("this.editedItem");
-      console.log(this.editedItem);
-      this.showReserPrpfessional = true;
+
+      this.editedItem = Object.assign({}, item);      
+      this.showReserPrpfessional = true;      
+      this.showReservations();
     },
+    showReservations() {//aqui cargo el componente del calendar
+      console.log('this.today');
+      console.log(this.today);
+      const today = new Date(this.today);
+      const range = this.getMonthDateRange(today);
+      const startDate = range.start.toISOString().split('T')[0];
+      const endDate = range.end.toISOString().split('T')[0];
+      /*const startDate = this.input
+        ? format(this.input, "yyyy-MM-dd")
+        : format(new Date(), "yyyy-MM-dd");
+      const endDate = this.input2
+        ? format(this.input2, "yyyy-MM-dd")
+        : format(new Date(), "yyyy-MM-dd");*/
+      axios
+        .get("https://api2.simplifies.cl/api/professional-reservations-periodo", {
+          params: {
+            branch_id: this.branch_id,
+            professional_id: this.editedItem.id,
+            startDate: startDate,
+            endDate: endDate
+          },
+        })
+        .then((response) => {
+          this.reservations = response.data.reservaciones;
+        })
+        .finally(() => {
+          this.events = [];
+          this.reservations.forEach(reservacion => {
+        this.events.push({
+          title: reservacion.clientName,
+          start: new Date(reservacion.startDate),
+          end: new Date(reservacion.endDate),
+          color: this.colors[this.rnd(0, this.colors.length - 1)],
+          allDay: false
+        });
+      });
+        });
+      },
     deleteItem(item) {
       this.editedIndex = -1;
       this.editedItem.id = item.id;
@@ -2038,5 +2105,10 @@ const adapter = useDate()
 .my-switch .v-input--selection-controls__input {
   margin: 0;
   /* Ajusta el margen del switch si es necesario */
+}
+.custom-calendar .vc-day {
+    /* Aplica estilos para controlar el tamaño de los días */
+    font-size: 14px; /* Tamaño de fuente */
+    padding: 8px; /* Espaciado interno */
 }
 </style>
