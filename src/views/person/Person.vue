@@ -1065,8 +1065,9 @@
 
             <!--ver reservaciones de profesionales-->
             <v-dialog v-model="showReserPrpfessional" fullscreen transition="dialog-bottom-transition">
-              <v-container>
+
               <v-card>
+
           <v-toolbar color="#F18254">
             <v-row align="center">
               <v-col cols="12" md="8" class="grow ml-4">
@@ -1076,6 +1077,7 @@
               </v-col>
             </v-row>
           </v-toolbar>
+          <v-container>
             <v-row>
               <v-col cols="12" sm="12" md="3">
                 <v-autocomplete
@@ -1095,7 +1097,7 @@
               <v-col cols="12" md="3">
                     <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id" :items="professionals" label="Profesional"
                       prepend-inner-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="outlined"
-                      :rules="selectRules" @update:model-value="showReservationsProfessional()">
+                       @update:model-value="showReservationsProfessional()">
                       <template v-slot:item="{ props, item }">
                                                     <v-list-item
                                                         v-bind="props"
@@ -1128,8 +1130,9 @@
             <v-spacer></v-spacer>
             <v-btn color="#E7E9E9" variant="flat" @click="closeCalendar"> Volver </v-btn>
           </v-card-actions>
+        </v-container>
         </v-card>
-          </v-container>
+
               <!--<v-toolbar color="#F18254">
                   <span class="text-subtitle-2 ml-4">Componente de Calenario de reserva</span>
                 </v-toolbar>
@@ -1634,6 +1637,7 @@ export default {
       this.showReservations();
     },
     showReservations() {//aqui cargo el componente del calendar
+      this.professional_id = '';
       console.log('this.today');
       console.log(this.today);
       const today = new Date(this.today);
