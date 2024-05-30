@@ -546,7 +546,7 @@
           </v-row> 
           <v-row>
               <v-col cols="12" md="3" v-for="(item, key) in winners" :key="key">
-                    <v-card class="mx-auto pa-2 ml-0" :subtitle="key=='Monto Generado' || key=='Monto Servicios Especiales' || key=='Total Retenciones' || key=='Utilidad de Productos Vendidos' || key=='Utilidad de Servicios' || key=='Utilidades' || key=='Monto Generado Servicios' || key=='Monto de Productos Vendidos' || key=='Monto de Propina' || key=='Café 10% Propina' ? formatNumber(item.value) : item.value" :title="key">                  
+                    <v-card class="mx-auto pa-2 ml-0" :subtitle="key=='Monto Generado' || key=='Monto Servicios Especiales' || key=='Total Retenciones' || key=='Utilidad de Productos Vendidos' || key=='Utilidad de Servicios' || key=='Utilidades' || key=='Monto Generado Servicios' || key=='Monto de Productos Vendidos' || key=='Monto de Propina' || key=='10% Propina' ? formatNumber(item.value) : item.value" :title="key">                  
                     <template v-slot:prepend>
                       <v-avatar :color="item.color">
                         <v-icon color="white">{{ item.icon }}</v-icon>

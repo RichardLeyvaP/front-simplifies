@@ -201,10 +201,57 @@
             </v-container>
         </v-row>
         <v-row>
-            <v-col cols="12" md="7"></v-col>
+            <v-col cols="12" md="2">
+                <v-card class="pa-2 pl-0 mb-2" elevation="2" v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'">
+                    <v-list-item :subtitle="formatNumber(ingresoProducts)" title="Ingreso Productos">
+                        <template v-slot:prepend>
+                            <v-avatar color="green">
+                                <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
+                            </v-avatar>
+                        </template>
+
+                    </v-list-item>
+                </v-card>
+            </v-col>
+            <v-col cols="12" md="2">
+                <v-card class="pa-2 pl-0 mb-2" elevation="2" v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'">
+                    <v-list-item :subtitle="formatNumber(gastoProducts)" title="Gasto Productos">
+                        <template v-slot:prepend>
+                            <v-avatar color="red">
+                                <v-icon color="white">{{ 'mdi-minus-circle' }}</v-icon>
+                            </v-avatar>
+                        </template>
+
+                    </v-list-item>
+                </v-card>
+            </v-col>
+            <v-col cols="12" md="2">
+                <v-card class="pa-2 pl-0 mb-2" elevation="2" v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'">
+                    <v-list-item :subtitle="formatNumber(ingresoServices)" title="Ingreso Servicio 10% Propina">
+                        <template v-slot:prepend>
+                            <v-avatar color="green">
+                                <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
+                            </v-avatar>
+                        </template>
+
+                    </v-list-item>
+                </v-card>
+            </v-col>
+            <v-col cols="12" md="2">
+                <v-card class="pa-2 pl-0 mb-2" elevation="2" v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'">
+                    <v-list-item :subtitle="formatNumber(gastoServices)" title="Gasto Servicio 10% Propina">
+                        <template v-slot:prepend>
+                            <v-avatar color="red">
+                                <v-icon color="white">{{ 'mdi-minus-circle' }}</v-icon>
+                            </v-avatar>
+                        </template>
+
+                    </v-list-item>
+                </v-card>
+            </v-col>
             <v-col cols="12" md="2">
                 <v-card class="pa-2 pl-0 mb-2" elevation="2">
-                    <v-list-item :subtitle="formatNumber(totalIngresos)" title="Ingresos">
+                    <v-list-item :subtitle="formatNumber(utilidades)" title="Utilidades">
                         <template v-slot:prepend>
                             <v-avatar color="green">
                                 <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
@@ -299,6 +346,11 @@ export default {
         charge: '',
         totalIngresos: 0,
         totalGastos: 0,
+        utilidades: 0,
+        ingresoProducts: 0,
+        gastoProducts: 0,
+        ingresoServices: 0,
+        gastoServices: 0,
         message_delete: true,
         dialogDelete: false,
         headers: [
@@ -553,7 +605,25 @@ export default {
             XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
         },
         formatNumber(value) {
-            return value.toLocaleString('es-ES');
+            //return value.toLocaleString('es-ES');
+            // Si el valor es menor que 1000, devuelve el valor original sin formato
+            if (value < 1000) {
+                return value;
+            }
+
+            // Primero, redondea el valor a dos decimales
+            value = Math.round((value + Number.EPSILON) * 100) / 100;
+
+            // Separa la parte entera de la parte decimal
+            let parts = value.toString().split(".");
+            let integerPart = parts[0];
+            let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+
+            // Agrega los separadores de miles
+            integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+            // Combina la parte entera y la parte decimal
+            return integerPart + decimalPart;
         },
         selectBusiness() {
             this.editedItem.type = 'Negocio'
@@ -644,6 +714,19 @@ export default {
                     this.results = response.data.finances;
 
                     this.editedItem.control = this.results.length !== 0 ? this.results[0].control + 1 : 1;
+                    
+                    //this.visibility = !this.editedItem.control ? false : true;
+
+                    //this.editedItem.control = !this.results ? 0 : this.results[0].control + 1 ;// Obtener el numero de control realizado
+                    /*if (!this.editedItem.control) {
+                        console.log('es cero');
+                        this.visibility = true;
+                    }*/
+                    //console.log('this.results');
+                    //console.log(this.results);
+                    /*console.log('this.editedItem.control');
+                    console.log(this.editedItem.control);*/
+                }).finally(() => {
                     this.totalIngresos = this.results.reduce((total, item) => {
                         // Verifica si el campo "revenue" tiene un valor numérico
                         if (typeof item.revenue === 'number') {
@@ -664,17 +747,53 @@ export default {
                             return total;
                         }
                     }, 0);
-                    //this.visibility = !this.editedItem.control ? false : true;
 
-                    //this.editedItem.control = !this.results ? 0 : this.results[0].control + 1 ;// Obtener el numero de control realizado
-                    /*if (!this.editedItem.control) {
-                        console.log('es cero');
-                        this.visibility = true;
-                    }*/
-                    /*console.log('this.results');
-                    console.log(this.results);
-                    console.log('this.editedItem.control');
-                    console.log(this.editedItem.control);*/
+                    //Ingreso Productos
+                    this.ingresoProducts = this.results.reduce((total, item) => {
+                        // Verifica si el campo "revenue" tiene un valor numérico
+                        if (item.typeDetail === 'Ingreso Producto') {
+                            // Suma el valor de "revenue" al total
+                            return total + item.amount;
+                        } else {
+                            // Si el campo "revenue" no es un número, no suma nada
+                            return total;
+                        }
+                    }, 0);
+
+                    //GAsto Productos
+                    this.gastoProducts = this.results.reduce((total, item) => {
+                        // Verifica si el campo "revenue" tiene un valor numérico
+                        if (item.typeDetail === 'Gasto Producto') {
+                            // Suma el valor de "revenue" al total
+                            return total + item.amount;
+                        } else {
+                            // Si el campo "revenue" no es un número, no suma nada
+                            return total;
+                        }
+                    }, 0);
+                    //GAsto Servicio Propina
+                    this.gastoServices = this.results.reduce((total, item) => {
+                        // Verifica si el campo "revenue" tiene un valor numérico
+                        if (item.typeDetail === 'Gasto Servicio' || item.typeDetail === 'Gasto Propina') {
+                            // Suma el valor de "revenue" al total
+                            return total + item.amount;
+                        } else {
+                            // Si el campo "revenue" no es un número, no suma nada
+                            return total;
+                        }
+                    }, 0);
+                    //Ingreso Servicio Propina
+                    this.ingresoServices = this.results.reduce((total, item) => {
+                        // Verifica si el campo "revenue" tiene un valor numérico
+                        if (item.typeDetail === 'Ingreso Servicio' || item.typeDetail === 'Ingreso Propina') {
+                            // Suma el valor de "revenue" al total
+                            return total + item.amount;
+                        } else {
+                            // Si el campo "revenue" no es un número, no suma nada
+                            return total;
+                        }
+                    }, 0);
+                    this.utilidades = this.totalIngresos - this.totalGastos;
                 });
         },
 

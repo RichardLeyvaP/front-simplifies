@@ -49,11 +49,13 @@
                                                     :rules="selectRules"
                                                     prepend-icon="mdi-check-circle"></v-select><!--:disabled="!this.mostrarType"-->
                                             </v-col>
-                                            <v-col cols="12" md="4">
+                                            
+                                            <v-col cols="12" md="4"></v-col>
+                                            <!--<v-col cols="12" md="4">
                                                     <v-text-field v-model="editedItem.amount" clearable label="Monto"
                                                         prepend-icon="mdi-cash" variant="underlined" :rules="pago1">
                                                     </v-text-field>
-                                                </v-col>
+                                                </v-col>-->
                                             <v-col cols="12" md="5">
                                                 <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
                                                     :subtitle="this.formatNumber(totalMount())" append-icon="mdi-check"
@@ -109,7 +111,7 @@
                                         <v-btn color="#E7E9E9" variant="flat" @click="close">
                                             Cancelar
                                         </v-btn>
-                                        <v-btn color="#F18254" variant="flat" @click="save" :disabled="(!valid && (!selected2.length))">
+                                        <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid || !selected2.length>0">
                                             Pagar
                                         </v-btn>
                                     </v-card-actions>
@@ -1207,12 +1209,10 @@ export default {
             this.data.professional_id = this.professional_id;
             this.data.branch_id = this.branch_id;
             this.data.car_ids = this.selected2;
-            if(this.selected2.length){  
-                const temp = Number(this.totalMount());              
-            this.data.amount = temp+Number(this.editedItem.amount);
-            }else{
-                this.data.amount = this.editedItem.amount; 
-            }
+
+            const temp = Number(this.totalMount());              
+            this.data.amount = temp;
+
             this.data.type = this.editedItem.type;
             console.log('this.data');
             console.log(this.data);
