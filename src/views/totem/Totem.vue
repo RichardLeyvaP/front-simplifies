@@ -38,13 +38,13 @@
           <v-row class="mt-6">
             <v-col cols="12" md="4"></v-col>
             <v-col cols="12" md="4" style="text-align: center;">
-              <v-btn class="orange-border blink"  block rounded="0" size="x-large" @click="goToReserve"> Cliente</v-btn>
+              <v-btn class="orange-border blink"  block rounded="0" size="x-large" @click="goToReserve"> Reservar Turno</v-btn>
             </v-col>
           </v-row>
           <v-row class="mt-6">
             <v-col cols="12" md="4"></v-col>
             <v-col cols="12" md="4">
-              <!--<v-btn block rounded="0" @click="goToProfessional" size="x-large"> Profesional</v-btn>-->
+              <v-btn class="orange-border blink"  block rounded="0" size="x-large" @click="goAnnounceArrival"> Anunciar Llegada</v-btn>
             </v-col>
           </v-row>
         </div>
@@ -200,6 +200,9 @@ export default {
     },
     goToProfessional() {
       router.push({ name: "toProfessional" });
+    },
+    goAnnounceArrival() {
+      router.push({ name: "toAnnounceArrival" });
     },
 
     show(value) {
