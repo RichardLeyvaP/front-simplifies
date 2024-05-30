@@ -2,6 +2,19 @@
 
 <!-- este es el archivo wue se presentó al cliente -->
 <template>
+  <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24"
+        :multi-line="true" vertical v-model="snackbar">
+        <v-row>
+            <v-col md="2">
+                <v-avatar :icon="sb_icon" color="sb_type" size="40"></v-avatar>
+            </v-col>
+            <v-col md="10">
+                <h4>{{ sb_title }}</h4>
+                {{ sb_message }}
+
+            </v-col>
+        </v-row>
+    </v-snackbar>
   <div >
     <v-container>
       <v-stepper hide-actions  bg-color="" v-model="step" :items="items" 
@@ -75,6 +88,12 @@ import LocalStorageService from "@/LocalStorageService";
 export default {
   data: () => ({
     mostrarSheet: true,
+    snackbar: false,
+        sb_type: '',
+        sb_message: '',
+        sb_timeout: 2000,
+        sb_title: '',
+        sb_icon: '',
     // variables referente al codigo Qr
     array_Places: [],
     getProfesional: {},
@@ -82,7 +101,6 @@ export default {
     formIn: 0,
     email: "",
     loading: false,
-    showAlert: false,
     qrCode: '',
     qrCodeBase64: '',
     showQR: false,
@@ -193,6 +211,27 @@ export default {
 
   methods:
   {
+    showAlert(sb_type, sb_message, sb_timeout) {
+            this.sb_type = sb_type
+
+            if (sb_type == "success") {
+                this.sb_title = 'Éxito'
+                this.sb_icon = 'mdi-check-circle'
+            }
+
+            if (sb_type == "error") {
+                this.sb_title = 'Error'
+                this.sb_icon = 'mdi-check-circle'
+            }
+
+            if (sb_type == "warning") {
+                this.sb_title = 'Advertencia'
+                this.sb_icon = 'mdi-alert-circle'
+            }
+            this.sb_message = sb_message
+            this.sb_timeout = sb_timeout
+            this.snackbar = true
+        },
     startTimer() {
     this.timer = setTimeout(() => {
       // Redirigir a otra página después de 20 segundos si estás en el último paso
@@ -285,36 +324,40 @@ export default {
 
           //ASIGNO A LOS CAMPOS DEL FORMULARIO TDS LOS DATOS
           if (code === 4) {
-            console.log("LA RESERVA FUE CONFIRMADA");
+            this.showAlert("success", "La reserva fue confirmada", 3000);
+            //console.log("LA RESERVA FUE CONFIRMADA");
             this.startTimer();
             //MADAR MENSAJE Y EN 5 SEGUNDOS IR AL INICIO
             
         }
          else if (code === 3) {
-            console.log("LA RESERVA FUE CANCELADA");
+          this.showAlert("warning", "Su reserva se encuantra cancelada", 3000);
+            //console.log("LA RESERVA FUE CANCELADA");
             this.startTimer();
             //MANDA UN MENSAJE QUE CONTACTE CON EL PERSONAL D ELA BARBERIA
             
         }
         else if (code === 5)
         {
-          console.log("LA RESERVA NO ES VALIDA, NO COINCIDE");
+          this.showAlert("warning", "La reserva no es válida, código no coincide", 3000);
+          //console.log("LA RESERVA NO ES VALIDA, NO COINCIDE");
           this.changeStep(1);
         }
-          else {
+          /*else {
             this.changeStep(1);
             console.log("NO COINCIDE EL CÓDIGO Y NO MANDO NINGUNO DE LOS VALORES ESPERADOS");
-          }
+          }*/
           
           this.clearTextClient();
         })
         .catch(error => {
+          this.showAlert("warning", "Error de conexión", 3000);
           this.startTimer();
           this.clearTextClient();
           //simulando que diera un tecnico
           //  this.togglepuestoT2(1);
           // Maneja cualquier error que pueda ocurrir durante la solicitud
-          console.error('Error al hacer la solicitud:', error);
+         // console.error('Error al hacer la solicitud:', error);
         });
 
     },
