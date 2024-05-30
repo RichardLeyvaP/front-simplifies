@@ -39,6 +39,12 @@ const routes = [
       import( "@/views/confirmation.vue"),
   },
   {
+    path: "/reserv/toAnnounceArrival",
+    name: "toAnnounceArrival",
+    component: () =>
+    import( "@/views/totem/announceArrival.vue"),
+  },
+  {
     path: "/reserv/cancelation",
     name: "cancelation",
     component: () =>
