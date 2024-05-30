@@ -25,7 +25,7 @@
     <v-card elevation="6" class="mx-5">
       <v-toolbar color="#F18254">
         <v-row align="center">
-          <v-col cols="12" md="3" class="grow ml-4">
+          <v-col cols="12" md="3" class="grow ml-3">
             <span class="text-subtitle-1">
               <strong>Listado de Profesionales</strong></span
             >
@@ -40,6 +40,16 @@
               @click="showWinner()"
             >
               Ganancias
+            </v-btn>
+            <v-btn
+              class="text-subtitle-1 ml-1"
+              color="#E7E9E9"
+              variant="flat"
+              elevation="2"
+              prepend-icon="mdi-clipboard-text"
+              @click="chargeData()"
+            >
+              Reservaciones
             </v-btn>
             <v-btn
               class="text-subtitle-1 ml-1"
@@ -400,7 +410,7 @@
               class="mr-1 mt-1 mb-1"
               title="Legadas tardes por sucursal"
             ></v-btn>
-            <v-btn
+            <!--<v-btn
               density="comfortable"
               icon="mdi-clipboard-text"
               @click="chargeData(item)"
@@ -409,7 +419,7 @@
               elevation="1"
               class="mr-1 mt-1 mb-1"
               title="Ver Reservaciones"
-            ></v-btn>
+            ></v-btn>-->
             <v-btn
               density="comfortable"
               icon="mdi-delete"
@@ -1055,6 +1065,7 @@
 
             <!--ver reservaciones de profesionales-->
             <v-dialog v-model="showReserPrpfessional" fullscreen transition="dialog-bottom-transition">
+              <v-container>
               <v-card>
           <v-toolbar color="#F18254">
             <v-row align="center">
@@ -1065,7 +1076,6 @@
               </v-col>
             </v-row>
           </v-toolbar>
-          <v-container>
             <v-row>
               <v-col cols="12" sm="12" md="3">
                 <v-autocomplete
@@ -1078,16 +1088,25 @@
                   item-title="name"
                   item-value="id"
                   variant="outlined"
+                  @update:model-value="showReservations()"
                 ></v-autocomplete
                 ><!--@update:model-value="initialize()"-->
               </v-col>
-              <v-col cols="12" md="1">
-                <v-btn icon @click="showReservations" color="#F18254">
-                  <v-icon>mdi-magnify</v-icon></v-btn
-                >
-              </v-col>
+              <v-col cols="12" md="3">
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id" :items="professionals" label="Profesional"
+                      prepend-inner-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="outlined"
+                      :rules="selectRules" @update:model-value="showReservationsProfessional()">
+                      <template v-slot:item="{ props, item }">
+                                                    <v-list-item
+                                                        v-bind="props"
+                                                        :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_url"
+                                                        :subtitle="'Cargo: '+item.raw.charge"
+                                                        :title="item.raw.name"
+                                                    ></v-list-item>
+                                                    </template>
+                      </v-autocomplete>
+                      </v-col>
             </v-row>
-            <v-container>
             <v-card-text>
               <v-row>
                 <div >
@@ -1104,14 +1123,13 @@
             
             </v-row>
             </v-card-text>
-          </v-container>
-          </v-container>
           <v-divider></v-divider>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="#E7E9E9" variant="flat" @click="closeCalendar"> Volver </v-btn>
           </v-card-actions>
         </v-card>
+          </v-container>
               <!--<v-toolbar color="#F18254">
                   <span class="text-subtitle-2 ml-4">Componente de Calenario de reserva</span>
                 </v-toolbar>
@@ -1156,6 +1174,7 @@ export default {
     today: new Date(),
     focus: '',
       events: [],
+      professionals: [],
       colors: [
         'blue',
         'green',
@@ -1165,11 +1184,6 @@ export default {
         'deep-purple',
         'cyan',
         
-      ],
-      names: [
-        'Richard Leyva Pérez',
-        'Yasmany',
-        'Jose Manuel',
       ],
     // aqui va lo del calendar
     tabBar: null,
@@ -1633,10 +1647,48 @@ export default {
         ? format(this.input2, "yyyy-MM-dd")
         : format(new Date(), "yyyy-MM-dd");*/
       axios
+        .get("https://api2.simplifies.cl/api/branch-reservations-periodo", {
+          params: {
+            branch_id: this.branch_id,
+            startDate: startDate,
+            endDate: endDate
+          },
+        })
+        .then((response) => {
+          this.reservations = response.data.reservaciones;
+          this.professionals = response.data.professionals;
+        })
+        .finally(() => {
+          this.events = [];
+          this.reservations.forEach(reservacion => {
+        this.events.push({
+          title: reservacion.clientName,  //`${reservacion.clientName} - ${new Date(reservacion.startDate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`
+          start: new Date(reservacion.startDate),
+          end: new Date(reservacion.endDate),
+          color: this.colors[this.rnd(0, this.colors.length - 1)],
+          allDay: false
+        });
+      });
+        });
+      },
+      showReservationsProfessional() {//aqui cargo el componente del calendar
+      console.log('this.today');
+      console.log(this.today);
+      const today = new Date(this.today);
+      const range = this.getMonthDateRange(today);
+      const startDate = range.start.toISOString().split('T')[0];
+      const endDate = range.end.toISOString().split('T')[0];
+      /*const startDate = this.input
+        ? format(this.input, "yyyy-MM-dd")
+        : format(new Date(), "yyyy-MM-dd");
+      const endDate = this.input2
+        ? format(this.input2, "yyyy-MM-dd")
+        : format(new Date(), "yyyy-MM-dd");*/
+      axios
         .get("https://api2.simplifies.cl/api/professional-reservations-periodo", {
           params: {
             branch_id: this.branch_id,
-            professional_id: this.editedItem.id,
+            professional_id: this.professional_id,
             startDate: startDate,
             endDate: endDate
           },
