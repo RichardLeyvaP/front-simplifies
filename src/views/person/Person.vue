@@ -73,7 +73,7 @@
                         <v-text-field
                           v-model="editedItem.name"
                           clearable
-                          label="Nombre"
+                          label="Nombre y Apellidos"
                           prepend-icon="mdi-account-tie-outline"
                           variant="underlined"
                           :rules="nameRules"
@@ -1236,7 +1236,7 @@ export default {
       password: "",
       second_surname: "",
       email: "",
-      phone: "",
+      phone: '+569',
       user_id: "",
       charge_id: "",
       image_url: "",
@@ -1252,7 +1252,7 @@ export default {
       surname: "",
       second_surname: "",
       email: "",
-      phone: "",
+      phone: '+569',
       retention: "",
       user_id: "",
       charge_id: "",

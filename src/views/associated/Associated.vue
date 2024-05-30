@@ -40,7 +40,7 @@
                      <v-row>
                        <v-col cols="12" md="12">
                       
-                           <v-text-field v-model="editedItem.name" clearable label="Nombre del Asociado" prepend-icon="mdi-account-network"
+                           <v-text-field v-model="editedItem.name" clearable label="Nombre y Apellidos" prepend-icon="mdi-account-network"
                      variant="underlined" :rules="nameRules">
                    </v-text-field>
                    <v-text-field v-model="editedItem.email" clearable label="Correo del Asociado" prepend-icon="mdi-email-outline"
@@ -128,7 +128,7 @@ export default {
 
    headers: [
 
-     { title: 'Nombre', key: 'name' },
+     { title: 'Nombre y Apellidos', key: 'name' },
      { title: 'Correo', key: 'email' },
      { title: 'Acciones', key: 'actions', sortable: false },
    ],

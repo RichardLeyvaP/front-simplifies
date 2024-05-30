@@ -26,7 +26,7 @@
         
         <v-col cols="12" md="7" class="text-right"> 
           <v-btn class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2"
-                prepend-icon="mdi-plus-circle" @click="showWinner()">
+                prepend-icon="mdi-plus-circle" @click="showWinner()" v-if="this.charge === 'Administrador' || this.charge === 'Administrador de Sucursal'">
                 Estadísticas Sucursal
               </v-btn>        
           <v-btn class="text-subtitle-1  ml-1 mr-1 " color="#E7E9E9" variant="flat" elevation="2"
@@ -536,17 +536,17 @@
                 </v-col>
             </v-row>
               </v-container>
-              <v-row>
             <v-container>
+              <v-row>
+                <v-col cols="12" md="12">
             <v-alert border type="info" variant="outlined" density="compact">
                     <p v-html="formTitleWin"></p>
                               </v-alert>
-                            </v-container>
+                            </v-col>
           </v-row> 
-            <v-container>
           <v-row>
-              <v-col cols="12" md="4" v-for="(item, key) in winners" :key="key">
-                    <v-card class="mx-auto pa-4 ml-0" :subtitle="key=='Monto Generado' || key=='Monto Servicios Especiales' || key=='Total Retenciones' ? formatNumber(item.value) : item.value" :title="key">                  
+              <v-col cols="12" md="3" v-for="(item, key) in winners" :key="key">
+                    <v-card class="mx-auto pa-2 ml-0" :subtitle="key=='Monto Generado' || key=='Monto Servicios Especiales' || key=='Total Retenciones' || key=='Utilidad de Productos Vendidos' || key=='Utilidad de Servicios' || key=='Utilidades' || key=='Monto Generado Servicios' || key=='Monto de Productos Vendidos' || key=='Monto de Propina' || key=='Café 10% Propina' ? formatNumber(item.value) : item.value" :title="key">                  
                     <template v-slot:prepend>
                       <v-avatar :color="item.color">
                         <v-icon color="white">{{ item.icon }}</v-icon>

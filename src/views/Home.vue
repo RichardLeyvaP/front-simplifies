@@ -243,12 +243,12 @@
                         }}</v-list-item-title>
                       <v-list-item-title><v-icon>mdi-hair-dryer</v-icon>Servicios: {{ formatNumber(carDetail.servicesAmount)
                         }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-chair-rolling</v-icon>Ganancias: {{ formatNumber(carDetail.earnings)
-                        }}</v-list-item-title>
+                      <v-list-item-title><v-icon>mdi-cash</v-icon>Propina: {{ formatNumber(carDetail.tip) }}</v-list-item-title>
                       <v-list-item-title><v-icon>mdi-cog</v-icon>Asistencia Técnica: {{ formatNumber(carDetail.technical_assistance)
                         }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-cash</v-icon>Propina: {{ formatNumber(carDetail.tip) }}</v-list-item-title>
                       <v-list-item-title><v-icon>mdi-briefcase</v-icon>Total: {{ formatNumber(carDetail.total) }}</v-list-item-title>
+                      <v-list-item-title><v-icon>mdi-chair-rolling</v-icon>Ganancias: {{ formatNumber(carDetail.utilidad)
+                        }}</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list-item-group>
@@ -264,12 +264,12 @@
                         }}</v-list-item-title>
                       <v-list-item-title><v-icon>mdi-hair-dryer</v-icon>Servicios: {{ formatNumber(carDetail.servicesAmount)
                         }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-chair-rolling</v-icon>Ganancias: {{ formatNumber(carDetail.earnings)
-                        }}</v-list-item-title>
+                      <v-list-item-title><v-icon>mdi-cash</v-icon>Propina: {{ formatNumber(carDetail.tip) }}</v-list-item-title>
                       <v-list-item-title><v-icon>mdi-cog</v-icon>Asistencia Técnica: {{ formatNumber(carDetail.technical_assistance)
                         }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-cash</v-icon>Propina: {{ formatNumber(carDetail.tip) }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-briefcase</v-icon>Total: {{ formatNumber(carDetail.total) }}</v-list-item-title>
+                      <v-list-item-title><v-icon>mdi-briefcase</v-icon>Total: {{ formatNumber(carDetail.total) }}</v-list-item-title> 
+                      <v-list-item-title><v-icon>mdi-chair-rolling</v-icon>Ganancias: {{ formatNumber(carDetail.utilidad)
+                        }}</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list-item-group>

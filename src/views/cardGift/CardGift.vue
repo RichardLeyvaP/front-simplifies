@@ -329,12 +329,12 @@
                 <v-form v-model="valid" enctype="multipart/form-data">
                 <v-row>
                   <v-col cols="12" md="6">
-                    <v-text-field v-model="editedItemClient.name" clearable label="Nombre"
+                    <v-text-field v-model="editedItemClient.name" clearable label="Nombre y Apellidos"
                       prepend-icon="mdi-account-tie-outline" variant="underlined" :rules="nameRules">
                     </v-text-field>
 
                   </v-col>
-                  <v-col cols="12" md="6">
+                  <!--<v-col cols="12" md="6">
                     <v-text-field v-model="editedItemClient.surname" clearable label="Primer Apellido"
                       prepend-icon="mdi-account-tie-outline" variant="underlined" :rules="nameRules">
                     </v-text-field>
@@ -344,10 +344,10 @@
                     <v-text-field v-model="editedItemClient.second_surname" clearable label="Segundo Apellido"
                       prepend-icon="mdi-account-tie-outline" variant="underlined" :rules="nameRules">
                     </v-text-field>
-                  </v-col>
+                  </v-col>-->
                   <v-col cols="12" md="6">
                     <v-text-field v-model="editedItemClient.email" clearable label="Correo Electrónico"
-                      prepend-icon="mdi-email-outline" variant="underlined" :rules="emailRules">
+                      prepend-icon="mdi-email-outline" variant="underlined" :rules="emailRules" @change="handleEmailChange">
                     </v-text-field>
                   </v-col>
                   <v-col cols="12" md="6">
@@ -381,6 +381,36 @@
             </v-card>
           </v-dialog>
       <!--End AddClient-->
+
+      <!--Para verificar el email existe-->
+    <v-dialog v-model="dialogEmail" @click:outside="closeEmail" max-width="500px">
+              <v-card>
+                <v-toolbar color="#F18254">
+                  <span class="text-subtitle-2 ml-4">Información!!!</span>
+                </v-toolbar>
+
+                <v-card-text class="mt-2">
+                  <span>Ya existe un profesional con este correo, ¿desea continuar?</span>
+                </v-card-text>
+
+                <v-card-text class="d-flex align-center mt-2">
+                  <v-avatar class="mr-2">
+                    <v-img :src="'https://api2.simplifies.cl/api/images/' + profesImage" alt="Avatar del profesional"></v-img>
+                  </v-avatar>
+                  <span>{{ profesName }}</span>
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="#E7E9E9" variant="flat" @click="closeEmail">
+                    Cancelar
+                  </v-btn>
+                  <v-btn color="#F18254" variant="flat" @click="acceptEmail">
+                    Aceptar
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
     </v-card-text>
   </v-card>
 
@@ -398,7 +428,11 @@ import { format } from "date-fns";
 
 export default {
   data: () => ({
-
+    typeUser: '',
+    userId: '',
+    profesName: '',
+    profesImage: '',
+    dialogEmail: false,
     valid: true,
     snackbar: false,
     input: null,
@@ -469,8 +503,8 @@ export default {
       surname: '',
       second_surname: '',
       email: '',
-      phone: '',
-      //user_id: '',
+      phone: '+569',
+      user_id: '',
       client_image: '',
     },  
     editedItemClient: {
@@ -478,8 +512,8 @@ export default {
       surname: '',
       second_surname: '',
       email: '',
-      phone: '',
-      //user_id: '',
+      phone: '+569',
+      user_id: '',
       client_image: '',
       id: ''
     },
@@ -505,7 +539,10 @@ export default {
         (v) => !!v || "El Correo Electrónico es requerido",
         (v) => /.+@.+\..+/.test(v) || "El Correo Electrónico no es válido",
       ],
-      mobileRules: [(v) => !!v || "El Teléfono es requerido"],
+      mobileRules: [
+      v => !!v || 'El número de móvil es requerido',
+      v => /^\+569\d{8}$/.test(v) || 'Formato de número móvil inválido. Ejemplo: +56912345678'
+    ],
     pago: [(value) => /^\d+(\.\d+)?$/.test(value) || "Debe ser un número con punto decimal (10.00)",
       (v) => !!v || (!isNaN(v) && isFinite(v)) || 'Ingresa un número válido'],
     selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
@@ -556,6 +593,39 @@ export default {
   },
 
   methods: {
+    handleEmailChange() {
+      axios
+        .get("https://api2.simplifies.cl/api/client-email", {
+          params: {
+            email: this.editedItemClient.email
+          },
+        })
+        .then((response) => {
+          this.userId = response.data.user;
+          this.profesName = response.data.clientName;
+          this.profesImage = response.data.clientImage;
+          this.typeUser = response.data.type;
+        })
+        .finally(() => {
+          if(this.typeUser === 'Client'){
+            this.dialogEmail = false;
+            this.showAlert("warning", "Ya existe un cliente con este correo", 3000);
+            //this.showAlert("success", "Este correo ya esta asignado a un cliente", 3000);
+          }
+          if(this.typeUser === 'Professional'){
+            this.dialogEmail = true;
+          }
+        });
+    },
+    closeEmail(){
+      this.dialogEmail = false;
+      this.userId = '',
+      this.close();
+    },
+    acceptEmail(){
+      this.editedItemClient.user_id = this.userId;
+      this.dialogEmail = false;
+    },
     handleClientSelection(selectedItem) {
     // Buscar los detalles del cliente seleccionado en la lista de usuarios
     if(selectedItem)

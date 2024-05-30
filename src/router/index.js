@@ -303,7 +303,7 @@ const routes = [
         path: "/professional-service",
         name: "Asignar Servicio a profesional",
         component: () =>
-          import( "@/views/professionalservice/Professionalservice.vue"),
+          import( "@/views/professionalservice/professionalservice.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_service_professional"] },
       },
       {

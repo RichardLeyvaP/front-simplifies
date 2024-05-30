@@ -63,7 +63,7 @@
                       <v-text-field
                         v-model="editedItem.name"
                         clearable
-                        label="Nombre"
+                        label="Nombre y Apellidos"
                         prepend-icon="mdi-account-tie-outline"
                         variant="underlined"
                         :rules="nameRules"
@@ -578,7 +578,7 @@ export default {
     message_delete: true,
     dialogDelete: false,
     headers: [
-      { title: "Nombre", key: "name" },
+      { title: "Nombre y Apellidos", key: "name" },
       //{ title: 'Primer Apellido', key: 'surname' },
       //{ title: 'Segundo Apellido', key: 'second_surname' },
       { title: "Correo", key: "email" },
@@ -596,7 +596,7 @@ export default {
       surname: "",
       second_surname: "",
       email: "",
-      phone: "",
+      phone: '+569',
       user_id: '',
       client_image: "",
       id: "",
@@ -608,7 +608,7 @@ export default {
       surname: "",
       second_surname: "",
       email: "",
-      phone: "",
+      phone: '+569',
       user_id: '',
       client_image: "",
     },
@@ -1020,7 +1020,7 @@ export default {
         // eslint-disable-next-line vue/no-use-computed-property-like-method
         name: this.formTitleFrec, // Asume que 'name' es una de tus claves; ajusta según sea necesario
         email: '',
-        phone: '', // Deja vacíos los demás campos para esta fila especial
+        phone: '+569', // Deja vacíos los demás campos para esta fila especial
         frecuence: '', // Usa 'total' para mostrar la fecha; ajusta las claves según corresponda a tu estructura
         cant_visist: '',
         data: ''

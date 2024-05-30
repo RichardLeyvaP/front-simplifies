@@ -403,7 +403,7 @@ export default {
   name_client:"",
   email_client:"",
   email_client2:"",
-  phone_client:"",
+  phone_client: '+569',
   selected_interval:"",
   surname_client:"",
   second_surname:"",    
@@ -713,7 +713,7 @@ return mensaje;
       clearTextClient()
       {
           this.name_client = '';
-       this.phone_client = '';
+       this.phone_client = '+569';
        //this.surname_client = '';
        //this.second_surname = '';
        this.email_client = '';

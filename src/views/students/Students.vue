@@ -39,7 +39,7 @@
            <v-form v-model="valid" enctype="multipart/form-data">
            <v-row>
              <v-col cols="12" md="6">
-               <v-text-field v-model="editedItem.name" clearable label="Nombre"
+               <v-text-field v-model="editedItem.name" clearable label="Nombre y Apellidos"
                  prepend-icon="mdi-account-tie-outline" variant="underlined" :rules="nameRules">
                </v-text-field>
 
@@ -215,7 +215,7 @@ dialogDelete: false,
 dialogPhoto: false,
 loadingImage: false,
 headers: [
- { title: 'Nombre', key: 'name' },
+ { title: 'Nombre y Apellidos', key: 'name' },
  //{ title: 'Primer Apellido', key: 'surname' },
  //{ title: 'Segundo Apellido', key: 'second_surname' },
  { title: 'Correo', key: 'email' },
@@ -233,7 +233,7 @@ editedItem: {
  surname: '',
  second_surname: '',
  email: '',
- phone: '',
+ phone: '+569',
  student_image: '',
  id: ''
 },
@@ -244,7 +244,7 @@ defaultItem: {
  surname: '',
  second_surname: '',
  email: '',
- phone: '',
+ phone: '+569',
  student_image: '',
 },   
 nameRules: [
