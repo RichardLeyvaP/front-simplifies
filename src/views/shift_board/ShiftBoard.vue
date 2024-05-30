@@ -43,7 +43,7 @@
             <p class="text-h3 font-weight-black" :class="{ 'parpadea': parpadeando }"
               style="text-align: center; font-size: 40px; font-family: 'Poppins', sans-serif; font-weight: bold; color: #AD0101;">
               <!-- RT03 -->
-              {{ code }}
+              {{ getString(code) }}
             </p>
           </v-col>
         </v-row>
@@ -119,7 +119,7 @@
                 <v-col md="4" class="offset-md-1">
                   <p class="font-weight-black" 
               style="text-align: justify; font-size: 40px; font-family: 'Poppins', sans-serif; font-weight: bold; color: #ffffff;">
-                    {{ item.code }}
+                    {{ getString(item.code) }}
                   </p>
                 </v-col>
                
@@ -197,6 +197,13 @@ export default {
   },
 
   methods: {
+
+    getString(str) {
+      if (str.startsWith('RE')) {
+        return 'RESERVA';
+      }
+      return str;
+    },
     fetchItems(valueClient) {
       console.log('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww ENTRE EN fetchItems');
       this.items = this.createArrayOfArrays(valueClient, 8);
