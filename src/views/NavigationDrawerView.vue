@@ -153,8 +153,8 @@ export default {
       { title: "Tipos de Negocio", icon: "mdi-format-list-bulleted-type", to: "business-type", permission: "view_business_types" },
       //{ title: "Operaciones de Ingreso", icon: "mdi-family-tree", to: "/charge", permission: "view_charges" },
       { title: "Reglas de convivencia", icon: "mdi-ruler", to: "rule", permission: "view_rules" },
-      { title: "Operaciones de Gastos", icon: "mdi-cash-minus", to: "expense", permission: "view_expenses" },
-      { title: "Operaciones de Ingreso", icon: "mdi-cash-plus", to: "revenue", permission: "view_revenues" },
+      //{ title: "Operaciones de Gastos", icon: "mdi-cash-minus", to: "expense", permission: "view_expenses" },
+      //{ title: "Operaciones de Ingreso", icon: "mdi-cash-plus", to: "revenue", permission: "view_revenues" },
       { title: "Encuesta", icon: "mdi-poll", to: "survey", permission: "view_surveys" },
     ],
     listItems: [
@@ -213,10 +213,13 @@ export default {
   
     ],
     gastosingresos:[
+      { title: "Operaciones de Gastos", icon: "mdi-cash-minus", to: "expense", permission: "view_expenses" },
+      { title: "Operaciones de Ingreso", icon: "mdi-cash-plus", to: "revenue", permission: "view_revenues" },
       { icon: "mdi-cash-multiple", title: "Gastos e Ingresos", to: "finance", value: "finance", permission: "view_finances" },   
       { icon: "mdi-currency-usd", title: "Finanzas por Sucursales", to: "finance-branches", value: "finance-branches", permission: "view_finance_branches" },
       { icon: "mdi-currency-usd", title: "Finanzas detalladas", to: "finance-branches-details", value: "finance-branches-details", permission: "view_finance_branches_details" },
       { icon: "mdi-currency-usd", title: "Detalles por operaciones", to: "details-operations", value: "details-operations", permission: "view_details_operations" },
+      { icon: "mdi-currency-usd", title: "Finanzas por operaciones", to: "finance-detail-operation", value: "finance-detail-operation", permission: "view_finance_detal_operation" },
     ],
     professionals:[
       { icon: "mdi-account-tie-outline", title: "Profesionales", to: "person", value: "profesionals", permission: "view_professionals" },

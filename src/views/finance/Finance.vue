@@ -200,10 +200,55 @@
                     </v-row>
             </v-container>
         </v-row>
-        <v-row>
-            <v-col cols="12" md="2">
-                <v-card class="pa-2 pl-0 mb-2" elevation="2" v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'">
-                    <v-list-item :subtitle="formatNumber(ingresoProducts)" title="Ingreso Productos">
+            <v-col cols="12">
+                <v-row class="d-flex flex-wrap">
+        <v-col cols="2" class="pa-1">
+            <v-card class="pa-2" elevation="2" v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'" @click="filterResults('IP')">
+                <v-list-item :subtitle="formatNumber(ingresoProducts)" title="Ingreso Productos">
+                    <template v-slot:prepend>
+                        <v-avatar color="green">
+                            <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
+                        </v-avatar>
+                    </template>
+                </v-list-item>
+            </v-card>
+        </v-col>
+        <v-col cols="2" class="pa-1">
+            <v-card class="pa-2" elevation="2" v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'" @click="filterResults('GP')">
+                <v-list-item :subtitle="formatNumber(gastoProducts)" title="Gasto Productos">
+                    <template v-slot:prepend>
+                        <v-avatar color="red">
+                            <v-icon color="white">{{ 'mdi-minus-circle' }}</v-icon>
+                        </v-avatar>
+                    </template>
+                </v-list-item>
+            </v-card>
+        </v-col>
+        <v-col cols="2" class="pa-1">
+            <v-card class="pa-2" elevation="2" v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'" @click="filterResults('IS')">
+                <v-list-item :subtitle="formatNumber(ingresoServices)" title="Ingreso Servicio">
+                    <template v-slot:prepend>
+                        <v-avatar color="green">
+                            <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
+                        </v-avatar>
+                    </template>
+                </v-list-item>
+            </v-card>
+        </v-col>
+        <v-col cols="2" class="pa-1">
+            <v-card class="pa-2" elevation="2" v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'" @click="filterResults('GS')">
+                <v-list-item :subtitle="formatNumber(gastoServices)" title="Gasto Servicio">
+                    <template v-slot:prepend>
+                        <v-avatar color="red">
+                            <v-icon color="white">{{ 'mdi-minus-circle' }}</v-icon>
+                        </v-avatar>
+                    </template>
+                </v-list-item>
+            </v-card>
+        </v-col>
+        <v-col cols="2" class="pa-1">
+                <v-card class="pa-2" elevation="2">
+                    <v-list-item :subtitle="formatNumber(utilidades)" title="Utilidades">
                         <template v-slot:prepend>
                             <v-avatar color="green">
                                 <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
@@ -213,9 +258,9 @@
                     </v-list-item>
                 </v-card>
             </v-col>
-            <v-col cols="12" md="2">
-                <v-card class="pa-2 pl-0 mb-2" elevation="2" v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'">
-                    <v-list-item :subtitle="formatNumber(gastoProducts)" title="Gasto Productos">
+            <v-col cols="2" class="pa-1">
+                <v-card class="pa-2" elevation="2">
+                    <v-list-item :subtitle="formatNumber(totalGastos)" title="Gastos">
                         <template v-slot:prepend>
                             <v-avatar color="red">
                                 <v-icon color="white">{{ 'mdi-minus-circle' }}</v-icon>
@@ -225,31 +270,9 @@
                     </v-list-item>
                 </v-card>
             </v-col>
-            <v-col cols="12" md="2">
-                <v-card class="pa-2 pl-0 mb-2" elevation="2" v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'">
-                    <v-list-item :subtitle="formatNumber(ingresoServices)" title="Ingreso Servicio 10% Propina">
-                        <template v-slot:prepend>
-                            <v-avatar color="green">
-                                <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
-                            </v-avatar>
-                        </template>
-
-                    </v-list-item>
-                </v-card>
+    </v-row>
             </v-col>
-            <v-col cols="12" md="2">
-                <v-card class="pa-2 pl-0 mb-2" elevation="2" v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'">
-                    <v-list-item :subtitle="formatNumber(gastoServices)" title="Gasto Servicio 10% Propina">
-                        <template v-slot:prepend>
-                            <v-avatar color="red">
-                                <v-icon color="white">{{ 'mdi-minus-circle' }}</v-icon>
-                            </v-avatar>
-                        </template>
-
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" md="2">
+            <!--<v-col cols="12" md="2">
                 <v-card class="pa-2 pl-0 mb-2" elevation="2">
                     <v-list-item :subtitle="formatNumber(utilidades)" title="Utilidades">
                         <template v-slot:prepend>
@@ -272,8 +295,7 @@
 
                     </v-list-item>
                 </v-card>
-            </v-col>
-        </v-row>
+            </v-col>-->
         <v-row>
             <v-col cols="12" md="12">
                 <v-container>
@@ -289,6 +311,9 @@
                     <!--<v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
                         <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
                     </v-avatar>-->
+                </template>
+                <template v-slot:item.comment="{ item }">
+                    {{ getString(item.comment)}}
                 </template>
                 <template v-slot:top>
 
@@ -351,6 +376,7 @@ export default {
         gastoProducts: 0,
         ingresoServices: 0,
         gastoServices: 0,
+        typeDetailFilter: null,
         message_delete: true,
         dialogDelete: false,
         headers: [
@@ -411,7 +437,6 @@ export default {
     }),
 
     computed: {
-
         formTitle() {
             if (this.editedIndex === -1) {
                 return 'Registrar Operación de ' + this.editedItem.type;
@@ -564,6 +589,21 @@ export default {
     },
 
     methods: {
+        getString(str) {
+  // Encuentra la posición del primer espacio en la cadena
+  const firstSpaceIndex = str.indexOf(' ');
+  
+  // Si se encuentra un espacio, devuelve la subcadena después del espacio
+  if (firstSpaceIndex !== -1) {
+    return str.substring(firstSpaceIndex + 1);
+  }
+  
+  // Si no hay espacio, devuelve la cadena original
+ return str;
+},
+        filterResults(typeDetail) {
+      this.search = typeDetail;
+    },
         exportToExcel() {
             // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
             let rows = [];
@@ -898,3 +938,4 @@ export default {
     },
 }
 </script>
+
