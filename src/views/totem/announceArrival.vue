@@ -129,30 +129,12 @@ export default {
     branch_id: '',
 
     nameRules: [
-      v => !!v || 'El nombre es requerido',
-      v => (v && v.length <= 50) || 'El nombre no debe exceder de 50 caracteres',
+      v => !!v || 'El código es requerido',
+      v => (v && v.length <= 10) || 'El código es de 1 a 10 caracteres',
     ],
 
-    surname_professional_Rules: [
-      v => !!v || 'El Apellido Paterno es requerido',
-      v => (v && v.length <= 50) || 'El Apellido Paterno no debe exceder de 50 caracteres',
-    ],
 
-    second_surname_Rules: [
-      v => !!v || 'El Apellido Materno es requerido',
-      v => (v && v.length <= 50) || 'El Apellido Materno no debe exceder de 50 caracteres',
-    ],
-
-    emailRules: [
-        value => !!value || 'El correo electrónico es requerido',
-        value => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) || 'El correo electrónico debe ser válido',
-      ],
-
-    phoneRules: [
-      v => !!v || 'El Teléfono es requerido',
-
-    ],
-    timeDurationAwait : 3000,//3 segundos despues que genera el Qr
+    timeDurationAwait : 3000,//3 segundos despues que le da respuesta
     redirectToAnotherPage :false,
     disabledIntervals: [],
     intervals: [],
@@ -324,14 +306,14 @@ export default {
 
           //ASIGNO A LOS CAMPOS DEL FORMULARIO TDS LOS DATOS
           if (code === 4) {
-            this.showAlert("success", "La reserva fue confirmada", 3000);
+            this.showAlert("success", "Se ha confirmado su llegada.Espere ser atendido", 3000);
             //console.log("LA RESERVA FUE CONFIRMADA");
             this.startTimer();
             //MADAR MENSAJE Y EN 5 SEGUNDOS IR AL INICIO
             
         }
          else if (code === 3) {
-          this.showAlert("warning", "Su reserva se encuantra cancelada", 3000);
+          this.showAlert("warning", "Su reserva se encuantra cancelada por no ser confirmada en tiempo", 3000);
             //console.log("LA RESERVA FUE CANCELADA");
             this.startTimer();
             //MANDA UN MENSAJE QUE CONTACTE CON EL PERSONAL D ELA BARBERIA
@@ -339,7 +321,8 @@ export default {
         }
         else if (code === 5)
         {
-          this.showAlert("warning", "La reserva no es válida, código no coincide", 3000);
+          this.showAlert("warning", "El código no es válido, digite un código válido", 3000);
+          this.clearTextClient();
           //console.log("LA RESERVA NO ES VALIDA, NO COINCIDE");
           this.changeStep(1);
         }
@@ -351,9 +334,11 @@ export default {
           this.clearTextClient();
         })
         .catch(error => {
-          this.showAlert("warning", "Error de conexión", 3000);
+          this.showAlert("warning", "Error de conexión, vuelva a intentarlo", 3000);
           this.startTimer();
           this.clearTextClient();
+          console.log('******error******');
+          console.log(error);
           //simulando que diera un tecnico
           //  this.togglepuestoT2(1);
           // Maneja cualquier error que pueda ocurrir durante la solicitud
