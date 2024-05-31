@@ -246,8 +246,27 @@
       </v-row>
       <v-row>        
         <v-col cols="12" md="12">
-          <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
-        hide-details></v-text-field>
+          <v-card-title class="d-flex align-center pe-2">
+            <v-btn @click="initialize" class="mt-1 mb-1" color="#F18254">
+        <v-icon left>mdi-refresh</v-icon>
+        Refrescar
+      </v-btn>
+
+      <v-spacer></v-spacer>
+
+      <v-text-field
+        v-model="search"
+        density="compact"
+        label="Search"
+        prepend-inner-icon="mdi-magnify"
+        variant="solo-filled"
+        flat
+        hide-details
+        single-line
+      ></v-text-field>
+    </v-card-title>
+          <!--<v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
+        hide-details></v-text-field>-->
 
 
       <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="filteredItems" :search="search"
@@ -666,6 +685,7 @@
           </v-toolbar>
 
           <v-card-text class="mt-2 mb-2">
+          
             <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar" single-line
         hide-details></v-text-field>
 
