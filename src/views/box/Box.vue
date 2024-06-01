@@ -710,7 +710,7 @@
         </template>
 
         <template v-slot:item.pay="{ item }">
-          <v-chip :color="parseIntitem.pay === '0' ? 'red' : 'green'" :text="item.pay" class="text-uppercase" label size="small">
+          <v-chip :color="parseInt(item.pay) === '0' ? 'red' : 'green'" :text="item.pay" class="text-uppercase" label size="small">
             {{ item.pay === '0' ? 'Pendiente' : 'Pagado' }}
           </v-chip>
         </template>
@@ -936,6 +936,58 @@
         </v-card>
       </v-dialog>
 <!--endSaleProduct-->
+<!--Bonus-->
+<v-dialog v-model="showDialogBonus" max-width="800px" transition="dialog-bottom-transition">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <v-row>
+              <v-col cols="12" md="8">
+                <span class="text-subtitle-2 ml-3">Bonos de profesionales</span>
+              </v-col>
+              <v-col cols="12" md="4" class="text-center">
+                <v-btn @click="exportToExcel" color="#E7E9E9" variant="flat" elevation="2"
+                  prepend-icon="mdi-file-excel">
+                  Exportar a Excel
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-toolbar>
+
+          <v-card-text class="mt-2 mb-2">
+            <v-text-field class="mt-1 mb-1" v-model="search8" append-icon="mdi-magnify" label="Buscar" single-line
+        hide-details></v-text-field>
+
+
+      <v-data-table :headers="headers8" :items-per-page-text="'Elementos por páginas'" :items="bonus" :search="search8"
+        class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+
+        <template v-slot:item.name="{ item }">
+
+          <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+          </v-avatar>
+          {{ item.name }}
+        </template>
+        <template v-slot:item.amount="{ item }">
+                {{ formatNumber(item.amount)}}                                  
+                                          </template>
+        <template v-slot:top>
+
+          <v-divider class="mx-4" inset vertical></v-divider>
+          <v-spacer></v-spacer>
+        </template>
+
+            </v-data-table>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="showDialogBonus=false">
+              Volver
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-card-text>
 
 
@@ -946,6 +998,8 @@
 
 import axios from "axios";
 import LocalStorageService from "@/LocalStorageService";
+import * as XLSX from 'xlsx';
+import { format } from "date-fns";
 /*import { UserTokenStore } from "@/store/UserTokenStore";
 
 const userTokenStore = UserTokenStore();*/
@@ -1003,6 +1057,7 @@ export default {
     cashierSalesProf: [],
     search4: '',
     selected: [],
+    bonus: [],
     amountSales: '',
     dialogPaySales: false,
     payments: [],
@@ -1044,6 +1099,13 @@ export default {
       { title: 'Importe', value: 'price' },
       { title: 'Estado', value: 'pay' },
     ],
+    headers8: [
+      { title: 'Profesional', value: 'name' },
+      { title: 'Tipo', value: 'bonus' },
+      { title: 'Importe', value: 'amount' }
+    ],
+    showDialogBonus: false,
+    search8: '',
     editedIndex: -1,
 
     editedItem: {
@@ -1812,10 +1874,14 @@ export default {
       console.log(this.data);
       axios
         .post('https://api2.simplifies.cl/api/closebox', this.data)
-        .then(() => {
+        .then((response) => {          
+            this.bonus = response.data.bonus;
+            console.log('this.bonus');
+            console.log(this.bonus);
         }).finally(() => {
           this.showAlert("success", "Cierre de caja efectuado correctamente", 3000);
-          this.initialize();
+          this.showDialogBonus = true;
+          //this.initialize();
           });
       this.$nextTick(() => {
         this.editedCloseBox = Object.assign({}, this.defaultCloseBox)
@@ -2136,6 +2202,46 @@ export default {
           this. showDialogProduct();
           });
     },
+    exportToExcel() {
+            console.log('Entra aqui a exportar');
+            // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
+            let rows = [];
+
+            // Construye un objeto para los encabezados basado en la estructura de 'headers'
+            let headerRow = {};
+            this.headers8.forEach(header => {
+                headerRow[header.value] = header.title; // Usa 'key' para el mapeo y 'title' para el texto del encabezado
+            });
+            rows.push(headerRow);
+
+            // Ahora, mapea los datos de los items para que coincidan con los encabezados
+            this.bonus.forEach(item => {
+                let rowData = {};
+                this.headers8.forEach(header => {
+                    rowData[header.value] = item[header.value] || ''; // Asegura que cada celda se mapee correctamente; usa '' para datos faltantes
+                });
+                rows.push(rowData);
+            });
+
+            let nameReport = {
+                // eslint-disable-next-line vue/no-use-computed-property-like-method
+                name: 'Pago a profesional bonos', // Asume que 'name' es una de tus claves; ajusta según sea necesario
+                type: '',
+                amount: ''
+            };
+            rows.push(nameReport);
+
+            // Convierte la matriz de filas en una hoja de trabajo Excel
+            const ws = XLSX.utils.json_to_sheet(rows, { skipHeader: true }); // 'skipHeader: true' porque ya agregamos manualmente los encabezados
+
+            // Crea un nuevo libro de trabajo y añade la hoja de trabajo con los datos
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Report" + format(new Date(), "yyyy-MM-dd"));
+
+            // Escribe el libro de trabajo a un archivo y desencadena la descarga
+            //XLSX.writeFile(wb, "report.xlsx");
+            XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
+        },
   },
 }
 </script>
