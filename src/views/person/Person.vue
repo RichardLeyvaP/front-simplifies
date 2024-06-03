@@ -1078,8 +1078,17 @@
             </v-row>
           </v-toolbar>
           <v-container>
+            <v-card-text>
+              <v-row>
+              
             <v-row>
-              <v-col cols="12" sm="12" md="3">
+              
+            </v-row>
+                <div class="fixed-size-calendar">
+    <v-sheet>
+
+    <v-row>
+      <v-col cols="12" sm="12" md="3">
                 <v-autocomplete
                   :no-data-text="'No hay datos disponibles'"
                   v-model="branch_id"
@@ -1089,6 +1098,8 @@
                   prepend-inner-icon="mdi-store"
                   item-title="name"
                   item-value="id"
+                  density="compact"
+                  class="ma-2"
                   variant="outlined"
                   @update:model-value="showReservations()"
                 ></v-autocomplete
@@ -1096,7 +1107,7 @@
               </v-col>
               <v-col cols="12" md="3">
                     <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id" :items="professionals" label="Profesional"
-                      prepend-inner-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="outlined"
+                      prepend-inner-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="outlined" density="compact" class="ma-2"
                        @update:model-value="showReservationsProfessional()">
                       <template v-slot:item="{ props, item }">
                                                     <v-list-item
@@ -1108,18 +1119,58 @@
                                                     </template>
                       </v-autocomplete>
                       </v-col>
-            </v-row>
-            <v-card-text>
-              <v-row>
-                <div >
-    <v-sheet>
+      <v-col cols="12" md="3">
+        <v-select
+        v-model="type"
+        :items="types"
+        class="ma-2"
+        label="Modo de vista"
+        variant="outlined"
+        density="compact"
+        hide-details
+      ></v-select>
+      </v-col>
+      <!--<v-cols cols="6">
+        <v-select
+        v-model="weekday"
+        :items="weekdays"
+        class="ma-2"
+        label="weekdays"
+        variant="outlined"
+        dense
+        hide-details
+      ></v-select>
+      </v-cols>-->
+    </v-row>
       <v-calendar
         ref="calendar"
-        v-model="today"
+        v-model="value"
         :events="events"
-        :event-color="getEventColor"        
+        :view-mode="type"
+        :event-color="getEventColor" 
+        class="fixed-size-calendar" 
+        hide-day-header="false"     
       >
+      <template #day-label="{ day }">
+          {{ dayLabels[day] }}
+        </template>
+        <template #month-label="{ month }">
+          {{ monthLabels[month] }}
+        </template>
+        <template #weekday-label="{ weekday }">
+          {{ dayLabels[weekday] }}
+        </template>
       </v-calendar>
+      <!--<v-sheet>
+        :weekdays="weekday"
+      <v-calendar
+        ref="calendar"
+        v-model="value"
+        :events="events"
+        :view-mode="type"
+        :weekdays="weekday"
+      ></v-calendar>
+    </v-sheet>-->
     </v-sheet>
   </div>
             
@@ -1132,29 +1183,6 @@
           </v-card-actions>
         </v-container>
         </v-card>
-
-              <!--<v-toolbar color="#F18254">
-                  <span class="text-subtitle-2 ml-4">Componente de Calenario de reserva</span>
-                </v-toolbar>
-              <v-card>
-               
-
-                <v-card-text class="mt-2 mb-2">
-                  <v-row class="fill-height">
-    
-      <v-sheet >
-        <v-calendar
-          ref="calendar"
-          v-model="today"
-          :events="events"
-          color="primary"
-          type="month"
-        ></v-calendar>
-      </v-sheet>
-   
-  </v-row>
-                </v-card-text>
-              </v-card>-->
             </v-dialog>
     </v-card>
   </v-container>
@@ -1174,8 +1202,26 @@ export default {
   },
 
   data: () => ({
+    type: 'month',
+    types: [
+      { title: 'Mes', value: 'month' },
+      { title: 'Día', value: 'day' }
+    ],
+    dayLabels: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+    monthLabels: [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ],
     today: new Date(),
     focus: '',
+    value: [new Date()],
+    weekday: [0, 1, 2, 3, 4, 5, 6],
+      weekdays: [
+        { title: 'Dom - Sáb', value: [0, 1, 2, 3, 4, 5, 6] },
+        { title: 'Lun - Dom', value: [1, 2, 3, 4, 5, 6, 0] },
+        { title: 'Lun - Vie', value: [1, 2, 3, 4, 5] },
+        { title: 'Lun, Mié, Vie', value: [1, 3, 5] },
+      ],
       events: [],
       professionals: [],
       colors: [
@@ -1664,6 +1710,7 @@ export default {
         })
         .finally(() => {
           this.events = [];
+          
           this.reservations.forEach(reservacion => {
         this.events.push({
           title: reservacion.clientName,  //`${reservacion.clientName} - ${new Date(reservacion.startDate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`
@@ -2166,5 +2213,10 @@ export default {
     /* Aplica estilos para controlar el tamaño de los días */
     font-size: 14px; /* Tamaño de fuente */
     padding: 8px; /* Espaciado interno */
+}
+.fixed-size-calendar {
+  min-height:100%;  /* Ajustar según sea necesario */
+  min-width: 100%;   /* Ajustar según sea necesario */
+  width: 100%;       /* O establecer un ancho fijo */     /* O establecer un ancho fijo */
 }
 </style>

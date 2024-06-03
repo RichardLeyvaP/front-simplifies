@@ -205,6 +205,9 @@ export default {
           console.log(this.results);
         });
     }, 30000);
+    if(this.charge === 'Cajero (a)'){
+      this.$router.push({ path: 'box' });
+    }
   },
   beforeUnmount() {
     // Detener el intervalo cuando el componente se esté destruyendo para evitar fugas de memoria

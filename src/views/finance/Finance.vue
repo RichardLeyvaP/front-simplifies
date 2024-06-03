@@ -55,7 +55,7 @@
                                         <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.branch_id" :items="branches" clearable
                                             label="Sucursales" prepend-icon="mdi-office-building" item-title="name"
                                             item-value="id" variant="underlined" :rules="selectRules"
-                                            ></v-autocomplete><!--@update:model-value="selectBranches"-->
+                                            @update:model-value="selectBranches"></v-autocomplete><!--@update:model-value="selectBranches"-->
                                     </v-col>
                                 </v-row>
 
@@ -64,7 +64,7 @@
                                         <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.enrollment_id" :items="enrollments"
                                             clearable label="Academias" prepend-icon="mdi-school" item-title="name"
                                             item-value="id" variant="underlined" :rules="selectRules"
-                                            ></v-autocomplete><!--@update:model-value="selectEnrollments"-->
+                                            @update:model-value="selectEnrollments"></v-autocomplete><!--@update:model-value="selectEnrollments"-->
                                     </v-col>
                                 </v-row>
                                 <v-form v-model="valid" enctype="multipart/form-data">
@@ -160,8 +160,8 @@
         <v-row>
             <v-container>
                 <v-row>
-                    <v-col cols="12" md="8">
-                        <v-radio-group v-model="selectedOption" inline v-if="mostrarFila">
+                    <v-col cols="12" md="3">
+                        <!--<v-radio-group v-model="selectedOption" inline v-if="mostrarFila">
                         <v-radio v-model="selectedOption" :label="options[0]" :value="options[0]"
                             color="orange-darken-3" class="mr-10" />
                         <v-radio v-model="selectedOption" :label="options[1]" :value="options[1]"
@@ -170,8 +170,25 @@
                             color="orange-darken-3" class="mr-10" />
                         <v-radio v-model="selectedOption" :label="options[3]" :value="options[3]"
                             color="orange-darken-3" class="mr-10" />
-                    </v-radio-group>
+                    </v-radio-group>-->
+                    <v-select
+                        v-model="selectedOption"
+                        :items="options"
+                        class="ma-2"
+                        label="Tipo"
+                        variant="outlined"
+                        density="compact"
+                        hide-details
+                    ></v-select>
                     </v-col>
+                    <v-col cols="12" md="3">
+                    <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="outlined"
+                    prepend-inner-icon="mdi-calendar" @update:model-value="initialize()" density="compact" class="ma-2"></v-select><!--@update:model-value="initialize()"-->
+                </v-col>
+                <v-col cols="12" md="3">
+                    <v-select v-model="selectedMounth" :items="months" label="Selecciona un mes" variant="outlined"
+                    prepend-inner-icon="mdi-calendar" density="compact" class="ma-2" @update:model-value="initialize()"></v-select><!--@update:model-value="operationDetails()"-->
+                </v-col>
                     <!--<v-col cols="12" md="5">
                                             <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" elevation="2"
                                             prepend-inner-icon="mdi-file-excel" @click="exportToExcel">
@@ -356,6 +373,24 @@ export default {
         selectedOption: 'Todas',
         options: ['Negocio', 'Sucursal', 'Academia', 'Todas'],
         file: '',
+        selectedYear: null,
+        selectedMounth: '',
+        years: [],
+        months: [
+            { value: '', title: '' },
+            { value: 1, title: 'Enero' },
+            { value: 2, title: 'Febrero' },
+            { value: 3, title: 'Marzo' },
+            { value: 4, title: 'Abril' },
+            { value: 5, title: 'Mayo' },
+            { value: 6, title: 'Junio' },
+            { value: 7, title: 'Julio' },
+            { value: 8, title: 'Agosto' },
+            { value: 9, title: 'Septiembre' },
+            { value: 10, title: 'Octubre' },
+            { value: 11, title: 'Noviembre' },
+            { value: 12, title: 'Diciembre' }
+        ],
         mostrarFila: false,
         snackbar: false,
         sb_type: '',
@@ -523,6 +558,14 @@ export default {
                 this.revenues = response.data.revenues;
                 //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
             });
+            // Obtener el año actual
+        const currentYear = new Date().getFullYear();
+        // Llenar el arreglo years con los años, desde 2010 hasta el año actual
+        for (let year = 2023; year <= currentYear; year++) {
+            this.years.push(year);
+        }
+        // Establecer el año actual como el seleccionado por defecto
+        this.selectedYear = currentYear;
         /*axios
             .get('https://api2.simplifies.cl/api/show-business', {
                 params: {
@@ -600,7 +643,7 @@ export default {
   
   // Si no hay espacio, devuelve la cadena original
  return str;
-},
+    },
         filterResults(typeDetail) {
       this.search = typeDetail;
     },
@@ -747,7 +790,9 @@ export default {
                         branch_id: this.editedItem.branch_id,
                         business_id: this.editedItem.business_id,
                         enrollment_id: this.editedItem.enrollment_id,
-                        type: this.editedItem.type
+                        type: this.editedItem.type,
+                        year: this.selectedYear,
+                        mounth: this.selectedMounth
                     }
                 })
                 .then((response) => {
