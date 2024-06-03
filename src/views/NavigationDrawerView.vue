@@ -213,13 +213,13 @@ export default {
   
     ],
     gastosingresos:[
-      { title: "Operaciones de Gastos", icon: "mdi-cash-minus", to: "expense", permission: "view_expenses" },
-      { title: "Operaciones de Ingreso", icon: "mdi-cash-plus", to: "revenue", permission: "view_revenues" },
       { icon: "mdi-cash-multiple", title: "Gastos e Ingresos", to: "finance", value: "finance", permission: "view_finances" },   
       { icon: "mdi-currency-usd", title: "Finanzas por Sucursales", to: "finance-branches", value: "finance-branches", permission: "view_finance_branches" },
       { icon: "mdi-currency-usd", title: "Finanzas detalladas", to: "finance-branches-details", value: "finance-branches-details", permission: "view_finance_branches_details" },
       { icon: "mdi-currency-usd", title: "Detalles por operaciones", to: "details-operations", value: "details-operations", permission: "view_details_operations" },
       { icon: "mdi-currency-usd", title: "Finanzas por operaciones", to: "finance-detail-operation", value: "finance-detail-operation", permission: "view_finance_detal_operation" },
+      { title: "Operaciones de Gastos", icon: "mdi-cash-minus", to: "expense", permission: "view_expenses" },
+      { title: "Operaciones de Ingreso", icon: "mdi-cash-plus", to: "revenue", permission: "view_revenues" },
     ],
     professionals:[
       { icon: "mdi-account-tie-outline", title: "Profesionales", to: "person", value: "profesionals", permission: "view_professionals" },
