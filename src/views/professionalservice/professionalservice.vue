@@ -62,7 +62,7 @@
                             :class="{ 'selected-item': isProfessional(professional.id) }">
 
                             <v-list-item-content>
-                              <v-list-item-title>{{ professional.name + ' ' + professional.surname +' '+professional.second_surname }}</v-list-item-title>
+                              <v-list-item-title>{{ professional.name}}</v-list-item-title>
                             </v-list-item-content>
                           </v-list-item>
 
@@ -90,7 +90,7 @@
 
                       <!-- SERVICIOS DISPONIBLES -->
 
-                      <v-list item-props>
+                      <v-list item-props v-if="services.length > 0">
                         <v-list-item-group v-model="selectedA" active-class="deep-purple--text text--accent-4">
                           <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + service.image_service"
                             v-for="service in services" :key="service.id" @click="toggleService3(service)"
@@ -105,6 +105,11 @@
                             </v-list-item-content>
                           </v-list-item>
                         </v-list-item-group>
+                      </v-list>
+                      <v-list item-props v-else>
+                        <v-list-item>
+                        No hay servicios por asignar
+                        </v-list-item>
                       </v-list>
                       <v-col cols="12" md="4">
                       </v-col>
@@ -136,7 +141,7 @@
                     <!--          
         SERVICIOS ASIGNADOS -->
                     <v-window-item value="two">
-                      <v-list item-props>
+                      <v-list item-props v-if="servicesAsig.length > 0">
                         <v-list-item-group v-model="selected" active-class="deep-purple--text text--accent-4">
                           <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + serviceA.image_service"
                             v-for="serviceA in servicesAsig" :key="serviceA.id" @click="toggleService3(serviceA)"
@@ -152,6 +157,12 @@
                           </v-list-item>
                           <v-divider></v-divider>
                         </v-list-item-group>
+
+                      </v-list>
+                      <v-list item-props v-else>
+                        <v-list-item>
+                        No hay servicios asignados
+                        </v-list-item>
                       </v-list>
 
                       <v-card-actions>
