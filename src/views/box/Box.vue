@@ -1656,7 +1656,7 @@ export default {
       console.log('productsales');
       console.log(this.cashierSales);
       const total = montosPagados + productsales;
-      return total ? this.formatNumber(total) + " CPL" : " CPL";
+      return total ? this.formatNumber(total) + " CLP" : " CLP";
       //}
     },
 
