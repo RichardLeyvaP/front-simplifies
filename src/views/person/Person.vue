@@ -1205,6 +1205,7 @@ export default {
     type: 'month',
     types: [
       { title: 'Mes', value: 'month' },
+      { title: 'Semana', value: 'week' },
       { title: 'Día', value: 'day' }
     ],
     dayLabels: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
