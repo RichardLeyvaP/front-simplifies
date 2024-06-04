@@ -219,6 +219,16 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-row v-else>
+  <v-col cols="12">
+    <v-card class="mx-auto" max-width="500" elevation="2">
+      <v-card-text class="text-center">
+        <div class="headline font-weight-bold">¡Bienvenido a Administración Simplifies!</div>
+        <!-- Puedes agregar más texto o estilos aquí según tus necesidades -->
+      </v-card-text>
+    </v-card>
+  </v-col>
+</v-row>
     <!--Ganancias mounth-->
     <v-dialog v-model="dialogWinners" max-width="400px" transition="dialog-bottom-transition">
       <v-card>
