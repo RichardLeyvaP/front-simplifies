@@ -1635,8 +1635,8 @@ export default {
     } else {
       const temp = this.box.existence;
     console.log(temp);
-    return temp;
-    //return this.formatNumber(temp) + " CLP";
+    //return temp;
+    return this.formatNumber(temp) + " CLP";
     }
     },
 
