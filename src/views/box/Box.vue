@@ -1558,7 +1558,8 @@ export default {
         .filter(item => item.pay === 1)
         .reduce((total, item) => total + item.service, 0);
       this.editedCloseBox.totalService = montosPendientes;
-      return montosPendientes + " CLP";
+      const temp = montosPendientes;
+      return this.formatNumber(temp) + " CLP";
     },
 
     totalMountProducts() {
@@ -1567,7 +1568,8 @@ export default {
         .filter(item => item.pay === 1)
         .reduce((total, item) => total + item.product, 0);
       this.editedCloseBox.totalProduct = montosPendientes;
-      return montosPendientes + " CLP";
+      const temp = montosPendientes;
+      return this.formatNumber(temp) + " CLP";
     },
 
     totalMountTips() {
@@ -1576,7 +1578,8 @@ export default {
         .filter(item => item.pay === 1)
         .reduce((total, item) => total + item.tip, 0);
       this.editedCloseBox.totalTip = montosPendientes;
-      return montosPendientes + " CLP";
+      const temp = montosPendientes;
+      return this.formatNumber(temp) + " CLP";
     },
 
     totalMountCashs() {
@@ -1584,7 +1587,8 @@ export default {
       const montosPendientes = this.payments
         .reduce((total, item) => total + item.cash, 0);
       this.editedCloseBox.totalCash = montosPendientes;
-      return montosPendientes + " CLP";
+      const temp = montosPendientes;
+      return this.formatNumber(temp) + " CLP";
     },
 
     totalMountDebits() {
@@ -1592,7 +1596,8 @@ export default {
       const montosPendientes = this.payments
         .reduce((total, item) => total + item.debit, 0);
       this.editedCloseBox.totalDebit = montosPendientes;
-      return montosPendientes + " CLP";
+      const temp = montosPendientes;
+      return this.formatNumber(temp) + " CLP";
     },
 
     totalMountCreditCards() {
@@ -1600,7 +1605,8 @@ export default {
       const montosPendientes = this.payments
         .reduce((total, item) => total + item.creditCard, 0);
       this.editedCloseBox.totalCreditCard = montosPendientes;
-      return montosPendientes + " CLP";
+      const temp = montosPendientes;
+      return this.formatNumber(temp) + " CLP";
     },
 
     totalMountTransfers() {
@@ -1608,7 +1614,8 @@ export default {
       const montosPendientes = this.payments
         .reduce((total, item) => total + item.transfer, 0);
       this.editedCloseBox.totalTransfer = montosPendientes;
-      return montosPendientes + " CLP";
+      const temp = montosPendientes;
+      return this.formatNumber(temp) + " CLP";
     },
 
     totalMountOthers() {
@@ -1616,7 +1623,8 @@ export default {
       const montosPendientes = this.payments
         .reduce((total, item) => total + item.other, 0);
       this.editedCloseBox.totalOther = montosPendientes;
-      return montosPendientes + " CLP";
+      const temp = montosPendientes;
+      return this.formatNumber(temp) + " CLP";
     },
 
     totalMountCardGif() {
@@ -1624,7 +1632,8 @@ export default {
       const montosPendientes = this.payments
         .reduce((total, item) => total + item.cardGif, 0);
       this.editedCloseBox.totalCardGif = montosPendientes;
-      return montosPendientes + " CLP";
+      const temp = montosPendientes;
+      return this.formatNumber(temp) + " CLP";
     },
 
     existence() {
