@@ -1631,6 +1631,7 @@ export default {
     showAddProfessional() {
       this.dialog = true;
       this.mostrar = true;
+      this.editedItem = Object.assign({}, this.defaultItem);
     },
     onFileSelected(event) {
       let file = event.target.files[0];
@@ -1790,6 +1791,7 @@ export default {
     },
     closedialogPas() {
       this.showPasswordForm = false;
+      this.professional_id = '';
       this.$nextTick(() => {
         this.password = "";
         this.password_new = "";

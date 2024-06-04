@@ -1947,7 +1947,7 @@ export default {
       })
     },
     markPagado() {
-      this.dialogDetallesCar = false
+      this.dialogDetallesCar = false;
       this.marcarComoPagado(this.car_ref)
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
