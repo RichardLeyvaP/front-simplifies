@@ -332,6 +332,12 @@
                 <template v-slot:item.comment="{ item }">
                     {{ getString(item.comment)}}
                 </template>
+                <template v-slot:item.revenue="{ item }">
+                {{ formatNumber(item.revenue)}}                                  
+                                          </template>
+                                          <template v-slot:item.expense="{ item }">
+                {{ formatNumber(item.expense)}}                                  
+                                          </template>
                 <template v-slot:top>
 
                     <v-divider class="mx-4" inset vertical></v-divider>
