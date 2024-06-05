@@ -199,10 +199,10 @@ export default {
   methods: {
 
     getString(str) {
-      if (str.startsWith('RE')) {
-        return 'RESERVA';
-      }
-      return str;
+      if (typeof str === 'string' && str.startsWith('RE')) {
+      return 'RESERVA';
+    }
+    return str;
     },
     fetchItems(valueClient) {
       console.log('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww ENTRE EN fetchItems');
