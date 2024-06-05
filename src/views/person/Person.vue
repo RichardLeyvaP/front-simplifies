@@ -1691,6 +1691,8 @@ export default {
     },
     showReservations() {//aqui cargo el componente del calendar
       this.professional_id = '';
+      this.type = 'month';
+      this.events = [];
       console.log('this.today');
       console.log(this.today);
       const today = new Date(this.today);
@@ -1714,9 +1716,6 @@ export default {
         .then((response) => {
           //this.reservations = response.data.reservaciones;
           this.professionals = response.data.professionals;
-        })
-        .finally(() => {
-          this.events = [];
         });
       },
       showReservationsProfessional() {//aqui cargo el componente del calendar
