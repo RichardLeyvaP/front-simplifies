@@ -298,6 +298,10 @@ export default {
       setTimeout(() => {
         this.parpadeando = false;
       }, 3000); // Detener el parpadeo después de 3 segundos
+   
+   // Crear una instancia del objeto Audio y reproducir el sonido
+   const audio = new Audio(require('@/assets/ALERT.mp3')); // Ruta al archivo de sonido
+      audio.play();
     },
 
     mostrarDupla(missingReservations) {
