@@ -110,7 +110,7 @@
 
 
 
-        <v-carousel height="800" show-arrows="hover" cycle="false" direction="vertical" interval="3000"
+        <v-carousel height="800" show-arrows="hover" cycle="false" direction="vertical" interval="5000"
           hide-delimiters="true">
 
           <v-carousel-item v-for="(itemGroup, index2) in items" :key="index2">
@@ -186,7 +186,7 @@ export default {
     // Establecer un intervalo para mostrar duplas cada 5 segundos    
     this.branch_id = LocalStorageService.getItem("branch_id");
     console.log('ESTOY ENTRANDO AL mounted()')
-    setInterval(this.callForTime, 5000);
+    setInterval(this.callForTime, 9000);
     // setInterval(this.mostrarDupla, 5000);
   },
 
