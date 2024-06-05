@@ -1108,7 +1108,7 @@
               <v-col cols="12" md="3">
                     <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id" :items="professionals" label="Profesional"
                       prepend-inner-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="outlined" density="compact" class="ma-2"
-                       @update:model-value="showReservationsProfessional()">
+                        :rules="selectRules"><!--@update:model-value="showReservationsProfessional()"-->
                       <template v-slot:item="{ props, item }">
                                                     <v-list-item
                                                         v-bind="props"
@@ -1130,6 +1130,11 @@
         hide-details
       ></v-select>
       </v-col>
+      <v-col cols="12" md="1" >
+                <v-btn :disabled="!this.professional_id" icon @click="showReservationsProfessional()" color="#F18254">
+                  <v-icon>mdi-magnify</v-icon></v-btn
+                >
+              </v-col>
       <!--<v-cols cols="6">
         <v-select
         v-model="weekday"
@@ -1707,21 +1712,11 @@ export default {
           },
         })
         .then((response) => {
-          this.reservations = response.data.reservaciones;
+          //this.reservations = response.data.reservaciones;
           this.professionals = response.data.professionals;
         })
         .finally(() => {
           this.events = [];
-          
-          this.reservations.forEach(reservacion => {
-        this.events.push({
-          title: reservacion.clientName,  //`${reservacion.clientName} - ${new Date(reservacion.startDate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`
-          start: new Date(reservacion.startDate),
-          end: new Date(reservacion.endDate),
-          color: this.colors[this.rnd(0, this.colors.length - 1)],
-          allDay: false
-        });
-      });
         });
       },
       showReservationsProfessional() {//aqui cargo el componente del calendar
