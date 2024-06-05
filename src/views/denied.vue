@@ -17,7 +17,7 @@
                 </div>
                 <h2 class="mt-3 mb-4 text-center">Solicitud Denegada</h2>
                 <p class="subtitle-1 justify-text">
-                  😔 Lamentamos informarle que su no pudo realizarse.<br>
+                  😔 Lamentamos informarle que la confirmación de su reservación no pudo realizarse.<br>
                   Esto se debe a que el plazo de confirmación ha expirado.<br>
                   Esperamos poder atenderle en el futuro y que considere volver a visitarnos. Si tiene alguna pregunta o necesita más información, no dude en ponerse en contacto con nosotros.
                 </p>
