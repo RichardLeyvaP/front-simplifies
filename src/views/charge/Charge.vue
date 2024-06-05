@@ -199,7 +199,7 @@
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar cargo"></v-btn>
           <v-btn density="comfortable" icon="mdi-lock" @click="showPermission(item)" color="green" variant="tonal"
             elevation="1" title="Mostrar permisos asignados"></v-btn>
-            <v-btn density="comfortable" icon="mdi-delete" @click="(item.name === 'Barbero' || item.name === 'Encargado' || item.name === 'Tecnico' || item.name === 'Coordinador' || item.name === 'Administrador' || item.name === 'Barbero y Encargado' || item.name === 'Cajero (a)') ? '': deleteItem(item)" :color="(item.name === 'Barbero' || item.name === 'Encargado' || item.name === 'Tecnico' || item.name === 'Coordinador' || item.name === 'Administrador' || item.name === 'Barbero y Encargado' || item.name === 'Cajero (a)') ? 'grey' : 'red'" variant="tonal"
+            <v-btn density="comfortable" icon="mdi-delete" @click="(item.name === 'Barbero' || item.name === 'Encargado' || item.name === 'Tecnico' || item.name === 'Coordinador' || item.name === 'Administrador' || item.name === 'Barbero y Encargado' || item.name === 'Cajero (a)' || item.name === 'Pizarra') ? '': deleteItem(item)" :color="(item.name === 'Barbero' || item.name === 'Encargado' || item.name === 'Tecnico' || item.name === 'Coordinador' || item.name === 'Administrador' || item.name === 'Barbero y Encargado' || item.name === 'Cajero (a)')  || item.name === 'Pizarra' ? 'grey' : 'red'" variant="tonal"
             elevation="1" title="Eliminar cargo"></v-btn>
         </template>
       </v-data-table>

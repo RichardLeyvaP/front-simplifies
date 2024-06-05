@@ -208,6 +208,12 @@ export default {
     if(this.charge === 'Cajero (a)'){
       this.$router.push({ path: 'box' });
     }
+    if(this.charge === 'TOTEM' || this.charge === 'Tottem'){
+      this.$router.push({ path: 'totem' });
+    }
+    if(this.charge === 'Pizarra'){
+      this.$router.push({ path: 'shift-board' });
+    }
   },
   beforeUnmount() {
     // Detener el intervalo cuando el componente se esté destruyendo para evitar fugas de memoria

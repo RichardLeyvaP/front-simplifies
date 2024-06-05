@@ -257,7 +257,7 @@
                       <v-list-item-title><v-icon>mdi-cog</v-icon>Asistencia Técnica: {{ formatNumber(carDetail.technical_assistance)
                         }}</v-list-item-title>
                       <v-list-item-title><v-icon>mdi-briefcase</v-icon>Total: {{ formatNumber(carDetail.total) }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-chair-rolling</v-icon>Ganancias: {{ formatNumber(carDetail.utilidad)
+                      <v-list-item-title><v-icon>mdi-chair-rolling</v-icon>Utilidades: {{ formatNumber(carDetail.utilidad)
                         }}</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
@@ -278,7 +278,7 @@
                       <v-list-item-title><v-icon>mdi-cog</v-icon>Asistencia Técnica: {{ formatNumber(carDetail.technical_assistance)
                         }}</v-list-item-title>
                       <v-list-item-title><v-icon>mdi-briefcase</v-icon>Total: {{ formatNumber(carDetail.total) }}</v-list-item-title> 
-                      <v-list-item-title><v-icon>mdi-chair-rolling</v-icon>Ganancias: {{ formatNumber(carDetail.utilidad)
+                      <v-list-item-title><v-icon>mdi-chair-rolling</v-icon>Utilidades: {{ formatNumber(carDetail.utilidad)
                         }}</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>

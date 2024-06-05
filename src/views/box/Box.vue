@@ -570,10 +570,10 @@
               </template>
                 </v-autocomplete>
                     <v-text-field v-model="product_exit" clearable label="Existencia"
-                      prepend-icon="mdi-currency-usd" variant="underlined" disabled="true">
+                      prepend-icon="mdi-cube-outline" variant="underlined" disabled="true">
                     </v-text-field>
                     <v-text-field v-model="cant" clearable label="Cantidad"
-                      prepend-icon="mdi-currency-usd" variant="underlined" :rules=[validateCantidad]>
+                      prepend-icon="mdi-cart" variant="underlined" :rules=[validateCantidad]>
                     </v-text-field>
                 </v-col>
                 
