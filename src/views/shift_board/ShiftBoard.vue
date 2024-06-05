@@ -296,13 +296,23 @@ export default {
 
       this.parpadeando = true;
       // Crear una instancia del objeto Audio y reproducir el sonido
-   const audio = new Audio(require('@/assets/ALERT.mp3')); // Ruta al archivo de sonido
-      audio.play();
+  /* const audio = new Audio(require('@/assets/ALERT.mp3')); // Ruta al archivo de sonido
+      audio.play();*/
+      this.run_sound();
       setTimeout(() => {
         this.parpadeando = false;
       }, 3000); // Detener el parpadeo después de 3 segundos
    
    
+    },
+
+    run_sound(){
+       // Crear una instancia del objeto Audio y reproducir el sonido
+       const audio = new Audio('/beep.mp3'); // Ruta al archivo de sonido
+      audio.play().catch(error => {
+        console.error('Error playing audio:', error);
+      });
+
     },
 
     mostrarDupla(missingReservations) {
