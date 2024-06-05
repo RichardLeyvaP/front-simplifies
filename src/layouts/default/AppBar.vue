@@ -216,7 +216,7 @@ export default {
     }
   },
   beforeUnmount() {
-    // Detener el intervalo cuando el componente se esté destruyendo para evitar fugas de memoria
+    //Detener el intervalo cuando el componente se esté destruyendo para evitar fugas de memoria
     clearInterval(this.intervalId);
   },
   computed: {
