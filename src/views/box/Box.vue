@@ -251,6 +251,10 @@
         <v-icon left>mdi-refresh</v-icon>
         Refrescar
       </v-btn>
+      <v-btn v-if="this.ejecutado" @click="showBonus" class="mt-1 mb-1 ml-1" color="#F18254">
+        <v-icon left>mdi-cash-multiple</v-icon>
+        Bonos a pagar
+      </v-btn>
 
       <v-spacer></v-spacer>
 
@@ -333,7 +337,7 @@
           </v-menu>-->
           <v-btn density="comfortable" icon="mdi-eye" @click="(item.active != 3) &&  showDetails(item)" :color="(item.active != 3) ? 'blue' : 'grey'" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Mostrar detalles del carro"></v-btn>
-          <v-btn density="comfortable" icon="mdi-credit-card" @click="(item.active != 3) && payItem(item)" :color="(item.active != 3) ? 'green-darken-1' : 'grey'"
+          <v-btn density="comfortable" icon="mdi-credit-card" @click="(item.active != 3 && item.state == 1) && payItem(item)" :color="(item.active != 3 && item.state == 1) ? 'green-darken-1' : 'grey'"
             variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Pagar el carro"></v-btn>
           <v-btn density="comfortable" icon="mdi-delete" @click="(item.active != 3) && deleteItemSolicitud(item)" :color="(item.active != 3) ? 'red-darken-4' : 'grey'" variant="tonal"
             elevation="1" title="Solicitud de eliminar carro"></v-btn>
@@ -1332,6 +1336,19 @@ export default {
   },
 
   methods: {
+    showBonus(){
+      axios
+        .get('https://api2.simplifies.cl/api/branch-payment-show-bonus', {
+          params: {
+            branch_id: this.branch_id
+          }
+        })
+        .then((response) => {          
+            this.bonus = response.data.bonus;
+        }).finally(() => {
+          this.showDialogBonus = true;
+          });
+    },
     formatNumber(value) {
       // Si el valor es menor que 1000, devuelve el valor original sin formato
   if (value < 1000) {
@@ -1751,6 +1768,7 @@ export default {
     },
 
     payItem(item) {
+      this.car_ref = [];
       this.initialize();
       console.log('Carro a pagar');
       console.log(item);
@@ -2001,8 +2019,8 @@ export default {
         .then(() => {
         }).finally(() => {
           this.showAlert("success", "Servicio agregado correctamente", 3000);
-           /*this.initialize();
-         let temp = this.results.filter(item => item.id == this.car_ref.id);
+           this.initialize();
+         /*let temp = this.results.filter(item => item.id == this.car_ref.id);
           console.log('tempsddasdasd');
           console.log(temp[0]);*/
           this.showDetails(this.car_ref);
@@ -2069,8 +2087,8 @@ export default {
         .then(() => {
         }).finally(() => {
           this.showAlert("success", "Producto agregado correctamente", 3000);
-          /*this.initialize();
-          let temp= this.results.filter(item => item.id == this.car_ref.id);
+          this.initialize();
+          /*let temp= this.results.filter(item => item.id == this.car_ref.id);
           console.log('tempsddasdasd');
           console.log(temp[0]);*/
           this.showDetails(this.car_ref);
