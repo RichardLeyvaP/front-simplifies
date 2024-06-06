@@ -27,7 +27,7 @@
  <template v-slot:activator="{ props }">
           <div class="text-center">
             <v-btn @click="showDialogProduct" color="#E7E9E9" variant="flat" elevation="2"
-                  prepend-icon="mdi-cart">
+                  prepend-icon="mdi-cart" :disabled="ejecutado">
                   Venta Productos
                 </v-btn>
                 <v-btn @click="dialogDetallesCarPagado = true" color="#E7E9E9" variant="flat" elevation="2"
