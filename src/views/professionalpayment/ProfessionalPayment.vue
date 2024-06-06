@@ -265,7 +265,7 @@
                 <v-container>
                     <v-row>
                         <!-- Primera columna -->
-                        <v-col cols="12" sm="6" md="3">
+                        <v-col cols="12" sm="6" md="2">
                             <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40"
                                 transition="scale-transition" offset-y min-width="290px">
                                 <template v-slot:activator="{ props }">
@@ -280,7 +280,7 @@
                             </v-menu>
                         </v-col>
                         <!-- Segunda columna -->
-                        <v-col cols="12" sm="6" md="3">
+                        <v-col cols="12" sm="6" md="2">
                             <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40"
                                 transition="scale-transition" offset-y min-width="290px">
                                 <template v-slot:activator="{ props }">
@@ -299,6 +299,39 @@
                             <v-btn icon @click="showProfessionalPeriodo()" color="#F18254">
                                 <v-icon>mdi-magnify</v-icon></v-btn>
                         </v-col>
+                        <v-col cols="2" class="pa-1" md="2">
+            <v-card class="pa-2" elevation="2"  @click="filterResults('Bono convivencias')">
+                <v-list-item :subtitle="formatNumber(bonoconvivencia)" title="Bono convivencias">
+                    <template v-slot:prepend>
+                        <v-avatar color="green">
+                            <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
+                        </v-avatar>
+                    </template>
+                </v-list-item>
+            </v-card>
+        </v-col>
+        <v-col cols="2" class="pa-1" md="2">
+            <v-card class="pa-2" elevation="2"  @click="filterResults('Bono servicios')">
+                <v-list-item :subtitle="formatNumber(bonoservicios)" title="Bono servicios">
+                    <template v-slot:prepend>
+                        <v-avatar color="green">
+                            <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
+                        </v-avatar>
+                    </template>
+                </v-list-item>
+            </v-card>
+        </v-col>
+        <v-col cols="2" class="pa-1" md="2">
+            <v-card class="pa-2" elevation="2"  @click="filterResults('Bono productos')">
+                <v-list-item :subtitle="formatNumber(bonoproductos)" title="Bono productos">
+                    <template v-slot:prepend>
+                        <v-avatar color="green">
+                            <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
+                        </v-avatar>
+                    </template>
+                </v-list-item>
+            </v-card>
+        </v-col>
                     </v-row>
                 </v-container>
                 <v-card-text>
@@ -465,7 +498,7 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-        <v-dialog v-model="dialogDeleteCashier" max-width="500px">
+        <v-dialog v-model="dialogDeleteCashier" fullscreen>
             <v-card>
 
                 <v-toolbar color="red">
@@ -487,7 +520,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="dialogCashierCars" max-width="95%" max-height="100%" transition="dialog-bottom-transition">
+        <v-dialog v-model="dialogCashierCars" fullscreen transition="dialog-bottom-transition">
             <v-card>
                 <v-toolbar color="#F18254">
                     <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
@@ -685,6 +718,9 @@ export default {
         cars: [],
         cars1: [],
         professionalPayment: [],
+        bonoconvivencia: 0,
+        bonoservicios: 0,
+        bonoproductos: 0,
         search: '',
         search3: '',
         search5: '',
@@ -897,6 +933,9 @@ export default {
     },
 
     methods: {
+        filterResults(typeDetail) {
+      this.search3 = typeDetail;
+    },
         updateDate(val) {
             this.input = val;
             this.menu = false;
@@ -1131,6 +1170,40 @@ export default {
                         this.mostrarCars = true;
                         //this.mostrarType = true;
                     }*/
+                }).finally(() =>{
+                    this.bonoconvivencia = this.professionalPayment.reduce((total, item) => {
+                        // Verifica si el campo "revenue" tiene un valor numérico
+                        if (item.type === 'Bono convivencias') {
+                            // Suma el valor de "revenue" al total
+                            return total + parseInt(item.amount);
+                        } else {
+                            // Si el campo "revenue" no es un número, no suma nada
+                            return total;
+                        }
+                    }, 0);
+
+                    this.bonoservicios = this.professionalPayment.reduce((total, item) => {
+                        // Verifica si el campo "revenue" tiene un valor numérico
+                        if (item.type === 'Bono servicios') {
+                            // Suma el valor de "revenue" al total
+                            return total + parseInt(item.amount);
+                        } else {
+                            // Si el campo "revenue" no es un número, no suma nada
+                            return total;
+                        }
+                    }, 0);
+
+                    this.bonoproductos = this.professionalPayment.reduce((total, item) => {
+                        // Verifica si el campo "revenue" tiene un valor numérico
+                        if (item.type === 'Bono productos') {
+                            // Suma el valor de "revenue" al total
+                            return total + parseInt(item.amount);
+                        } else {
+                            // Si el campo "revenue" no es un número, no suma nada
+                            return total;
+                        }
+                    }, 0);
+
                 });
             this.dialogBarberoEncargado = true;
         },
