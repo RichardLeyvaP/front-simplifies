@@ -135,7 +135,7 @@
                                             </v-col>
                                             <v-col cols="12" md="4">
                                                     <v-text-field v-model="editedItem.amountAcadem" clearable label="Monto"
-                                                        prepend-icon="mdi-cash" variant="underlined" :rules="pago">
+                                                        prepend-icon="mdi-cash" variant="underlined" :rules="[...pago, validateAmount]">
                                                     </v-text-field>
                                                 </v-col>
                                             <!--<v-col cols="12" md="5">
@@ -933,6 +933,22 @@ export default {
     },
 
     methods: {
+        validateAmount(value) {
+      if (this.selectedCourse.length === 0) {
+        return true; // No hay curso seleccionado, no validar aún.
+      }
+            const selectedItem = this.courses.find(course => course.id === this.selectedCourse[0]);
+            console.log(' selectedItem');
+      console.log(selectedItem.price);
+      console.log(' this.selectedCourse');
+      console.log(this.selectedCourse);
+      //const selectedItem = this.selectedCourse[0].price;
+      console.log('value del monto');
+      console.log(value);
+      console.log(' parseInt(selectedItem.price)');
+      console.log( selectedItem.price);
+      return parseInt(value) <= parseInt(selectedItem.price) || 'El monto debe ser menor o igual al precio del curso seleccionado';
+    },
         filterResults(typeDetail) {
       this.search3 = typeDetail;
     },

@@ -40,7 +40,7 @@
                     <v-row>
                       <v-col cols="12" md="6">
                         <v-text-field v-model="editedItem.name" clearable label="Nombre del Cargo"
-                          prepend-icon="mdi-family-tree" variant="underlined" :rules="nameRules" :disabled="(editedItem.name === 'Barbero' || editedItem.name === 'Encargado' || editedItem.name === 'Tecnico' || editedItem.name === 'Coordinador' || editedItem.name === 'Administrador' || editedItem.name === 'Cajero (a)')">
+                          prepend-icon="mdi-family-tree" variant="underlined" :rules="nameRules" :disabled="(editedItem.name === 'Barbero' || editedItem.name === 'Encargado' || editedItem.name === 'Tecnico' || editedItem.name === 'Coordinador' || editedItem.name === 'Administrador' || editedItem.name === 'Cajero (a)' || editedItem.name === 'Totem' || editedItem.name === 'Barbero y Encargado')">
                         </v-text-field>
                       </v-col>
 

@@ -208,7 +208,7 @@ export default {
     if(this.charge === 'Cajero (a)'){
       this.$router.push({ path: 'box' });
     }
-    if(this.charge === 'TOTEM' || this.charge === 'Tottem'){
+    if(this.charge === 'Totem'){
       this.$router.push({ path: 'totem' });
     }
     if(this.charge === 'Pizarra'){
