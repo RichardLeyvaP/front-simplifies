@@ -987,7 +987,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="#E7E9E9" variant="flat" @click="showDialogBonus=false">
-              Volver
+              Cerrar
             </v-btn>
           </v-card-actions>
         </v-card>
