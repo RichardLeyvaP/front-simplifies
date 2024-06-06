@@ -1208,6 +1208,7 @@ export default {
             this.dialogBarberoEncargado = true;
         },
         showProfessionalPeriodo() {
+            this.search3 = '';
             const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
             const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
             axios
