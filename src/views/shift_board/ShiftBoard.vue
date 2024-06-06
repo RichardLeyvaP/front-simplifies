@@ -12,11 +12,13 @@
           <v-col cols="12" md="6"></v-col>
         </v-row>
  <!-- Botón para reproducir sonido -->
- <v-row class="mt-6">
+<!--
+  <v-row class="mt-6">
       <v-col cols="12" md="12" class="text-center">
         <v-btn color="primary" @click="run_sound">Reproducir Sonido</v-btn>
       </v-col>
     </v-row>
+-->
         <v-row class="mt-6">
           <v-col cols="12" md="12">
             <p class="text-h4 font-weight-black mb-2 " style="text-align: center;">
