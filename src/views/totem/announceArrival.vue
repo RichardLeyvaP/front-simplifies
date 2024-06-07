@@ -35,7 +35,12 @@
                   <template v-slot:item="{ props, item }">
                     <v-list-item v-bind="props"
                       :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.client_image"
-                      :subtitle="'Email: ' + item.raw.email" :title="item.raw.name"></v-list-item>
+                      :title="item.raw.name">
+                      <v-list-item-subtitle class="d-flex justify-space-between">
+                        <span>Email: {{ item.raw.email }}</span>
+                        <span>Hora de inicio: {{ item.raw.start_time }}</span>
+                      </v-list-item-subtitle>
+                      </v-list-item>
                   </template>
                 </v-autocomplete>
               </v-col>
@@ -189,7 +194,7 @@ export default {
     shipping: 0,
     step: 1,
     items: [
-      'Ingrese el código de su reserva',
+      'Seleccione su reservación',
     ],
     products: [
       {
@@ -363,7 +368,7 @@ export default {
 
           }
           else if (code === 5) {
-            this.showAlert("warning", "Su reservación no pudo ser confirmada", 3000);
+            this.showAlert("warning", "Su reservación no pudo ser confirmada, dirijase al funcionario mas cercano", 3000);
             this.clearTextClient();
             //console.log("LA RESERVA NO ES VALIDA, NO COINCIDE");
             this.changeStep(1);

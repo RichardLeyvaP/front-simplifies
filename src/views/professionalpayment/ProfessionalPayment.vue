@@ -81,13 +81,18 @@
                                                     no-results-text="No hay datos disponibles"
                                                     no-data-text="No hay datos disponibles" show-select>
                                                     <template v-slot:item.clientName="{ item }">
-
                                                         <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
                                                             <v-img
                                                                 :src="'https://api2.simplifies.cl/api/images/' + item.client_image"
                                                                 alt="image"></v-img>
                                                         </v-avatar>
                                                         {{ item.clientName }}
+                                                    </template>
+                                                    <template v-slot:item.meta="{ item }">
+                                                    <div class="text-center">
+                                                        <v-chip :color="item.meta === 'Si' ? 'green' : 'red'" :text="item.meta"
+                                                        class="text-uppercase" size="small" label></v-chip>
+                                                    </div>
                                                     </template>
                                                     <template v-slot:item.pay="{ item }">                                                    
                                                         {{ formatNumber(Number(item.totalServices) + Number(item.tip)) }}
@@ -821,6 +826,7 @@ export default {
             { title: 'Cantidad Servicios', align: 'end', value: 'services' },
             { title: 'Monto Generado', align: 'end', value: 'amountGenerate' },
             { title: 'Propina (80%)', align: 'end', value: 'tip' },
+            { title: 'Convivencia', align: 'end', value: 'meta' },
             { title: 'Monto a Pagar', align: 'end', value: 'pay' },
         ],
         search2: '',
@@ -1295,6 +1301,13 @@ export default {
             console.log('this.ironValues');
             console.log(this.selected2);
             //console.log(this.selectedOption);
+            this.cars.forEach(car => {
+                if (car.meta === 'Si') {
+                    if (!this.selected2.includes(car.id)) {
+                        this.selected2.push(car.id);
+                    }
+                }
+            });
             console.log(this.selected);
             this.data.professional_id = this.professional_id;
             this.data.branch_id = this.branch_id;
