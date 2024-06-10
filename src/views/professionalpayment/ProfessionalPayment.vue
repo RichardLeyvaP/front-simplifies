@@ -79,7 +79,8 @@
                                                     :items-per-page-text="'Elementos por páginas'" :search="search2"
                                                     :items="cars" class="elevation-1"
                                                     no-results-text="No hay datos disponibles"
-                                                    no-data-text="No hay datos disponibles" show-select
+                                                    no-data-text="No hay datos disponibles" 
+                                                    item-selectable="selectable" show-select
                                                     >
                                                     <template v-slot:item.clientName="{ item }">
                                                         <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
@@ -106,13 +107,6 @@
                                     </template>
                                     <template v-slot:item.tip ="{ item }">
                          {{ formatNumber(item.tip)}}
-                                    </template>
-                                    <template v-slot:item.data-table-select="{ item, isSelected, select, isDisabled }">
-                                    <v-checkbox
-                                        :input-value="isSelected"
-                                        @click="select(!isSelected)"
-                                        :disabled="item.meta === 'Si'"
-                                    ></v-checkbox>
                                     </template>
                                                 </v-data-table>
                                             </v-col>
