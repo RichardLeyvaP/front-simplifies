@@ -829,9 +829,12 @@
                   <v-list-item
                     v-bind="props"
                     :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_product"
-                    :subtitle="'Existencia: '+item.raw.product_exit"
                     :title="item.raw.name"
-                  ></v-list-item>
+                  ><v-list-item-subtitle class="d-flex justify-space-between">
+                        Existencia: {{ item.raw.product_exit }}
+                        Precio: {{ this.formatNumber(item.raw.price )}}
+                      </v-list-item-subtitle>
+                  </v-list-item>
                 </template>
                   </v-autocomplete>
                       <v-text-field v-model="product_exit" clearable label="Existencia"

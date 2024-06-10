@@ -192,7 +192,8 @@ export default {
     this.fetchItems(this.clientes);
     // Establecer un intervalo para mostrar duplas cada 5 segundos    
     this.branch_id = LocalStorageService.getItem("branch_id");
-    console.log('ESTOY ENTRANDO AL mounted()')
+    console.log('ESTOY ENTRANDO AL mounted()');
+    this.callForTime();
     setInterval(this.callForTime, 9000);
     // setInterval(this.mostrarDupla, 5000);
   },
