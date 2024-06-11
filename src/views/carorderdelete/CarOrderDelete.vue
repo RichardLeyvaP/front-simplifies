@@ -19,7 +19,7 @@
         <v-toolbar color="#F18254">
             <v-row align="center">
                 <v-col cols="12" md="5" class="grow ml-4 t">
-                    <span class="text-subtitle-1"> <strong>Solicitudes de eliminación de Órdenes y
+                    <span class="text-subtitle-1"> <strong>Solicitudes de eliminación de Órdenes, Productos y
                             Carros</strong></span>
                 </v-col>
             </v-row>
@@ -40,6 +40,7 @@
                             elevation="6"><!-- @click="handleTabChange"-->
                             <v-tab value="one">Solicitud de carros</v-tab>
                             <v-tab value="two">Solicitud ordenes</v-tab>
+                            <v-tab value="tree">Solicitud Productos</v-tab>
                         </v-tabs>
                         <v-card-text>
                             <v-window v-model="tabBar">
@@ -154,7 +155,48 @@
                                         </template>
                                     </v-data-table>
                                 </v-window-item>
+                                <v-window-item value="tree">
+                                    <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify"
+                                        label="Buscar" single-line hide-details></v-text-field>
 
+
+                                    <v-data-table :headers="headers2" :items-per-page-text="'Elementos por páginas'"
+                                        :items="results2" :search="search3" class="elevation-1"
+                                        no-results-text="No hay datos disponibles"
+                                        no-data-text="No hay datos disponibles">
+
+                                        <template v-slot:item.professionalName="{ item }">
+
+                                            <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
+                                                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url"
+                                                    alt="image"></v-img>
+                                            </v-avatar>
+                                            {{ item.professionalName }}
+                                        </template>
+                                        <template v-slot:item.productName="{ item }">
+
+                                            <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
+                                                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product"
+                                                    alt="image"></v-img>
+                                            </v-avatar>
+                                            {{ item.productName }}
+                                        </template>
+                                        <template v-slot:item.price="{ item }">
+                {{ formatNumber(item.price)}}                                  
+                                          </template>
+                                        <template v-slot:top>
+                                            <v-divider class="mx-4" inset vertical></v-divider>
+                                            <v-spacer></v-spacer>
+                                        </template>
+
+                                        <template v-slot:item.actions="{ item }">
+                                            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-close" @click="editItemProduct(item)"
+                                                color="red-darken-4" variant="tonal" elevation="1" title="Denegar Solicitud"></v-btn>
+                                            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-check" @click="deleteItemProduct(item)"
+                                                color="primary" variant="tonal" elevation="1" title="Aceptar la solicitud y eliminar la producto"></v-btn>
+                                        </template>
+                                    </v-data-table>
+                                </v-window-item>
                             </v-window>
                         </v-card-text>
                     </v-card>
@@ -185,6 +227,7 @@ export default {
         branches: [],
         search: '',
         search2: '',
+        search3: '',
         mostrarFila: false,
         headers: [
             { title: 'No', value: 'id' },
@@ -208,8 +251,18 @@ export default {
             { title: 'Importe', value: 'price' },
             { title: 'Acciones', key: 'actions', sortable: false },
         ],
+        headers2: [
+            { title: 'No', value: 'id' },
+            { title: 'Sucursal', value: 'nameBranch' },
+            { title: 'Profesional', value: 'professionalName' },
+            { title: 'Producto', value: 'productName' },
+            { title: 'Precio', value: 'price' },
+            { title: 'Cantidad', value: 'cant' },
+            { title: 'Acciones', key: 'actions', sortable: false },
+        ],
         results: [],
         results1: [],
+        results2: [],
     }),
 
     computed: {
@@ -283,6 +336,9 @@ export default {
                 .then((response) => {
                     this.results = response.data.cars;
                     this.results1 = response.data.orders;
+                    this.results2 = response.data.cashier;
+                    console.log('this.results2 productos');
+                    console.log(this.results2);
                 });
         },
 
@@ -339,6 +395,36 @@ export default {
             };
             axios
                 .post('https://api2.simplifies.cl/api/order-denegar', request)
+                .then(() => {
+                }).finally(() => {
+                    this.initialize();
+                    this.showAlert("success", "Solicitud denegada correctamente", 3000)
+                });
+        },
+
+         //eliminar orden
+         deleteItemProduct(item) {
+            let request = {
+                id: item.id,
+                professional_id: this.professional_id
+            };
+            axios
+                .post('https://api2.simplifies.cl/api/cashiersale-destroy', request)
+                .then(() => {
+                    //this.initialize();
+                }).finally(() => {
+                    this.initialize();
+                    this.showAlert("success", "Productos eliminados correctamente", 3000);
+                });
+        },
+        //eliminar productos
+        editItemProduct(item) {
+            let request = {
+                id: item.id,
+                professional_id: this.professional_id
+            };
+            axios
+                .post('https://api2.simplifies.cl/api/cashiersale-denegar', request)
                 .then(() => {
                 }).finally(() => {
                     this.initialize();

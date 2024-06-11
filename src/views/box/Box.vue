@@ -790,8 +790,8 @@
           {{ item.name }}
         </template>
         <template v-slot:item.pay="{ item }">
-          <v-chip :color="parseInt(item.pay) === 0 ? 'red' : 'green'" :text="item.pay" class="text-uppercase" label size="small">
-            {{ parseInt(item.pay) === 0 ? 'Pendiente' : 'Pagado' }}
+          <v-chip :color="parseInt(item.pay) === 0 ? 'red' : (parseInt(item.pay) === 1 ? 'green' : 'gray')" :text="item.pay" class="text-uppercase" label size="small">
+            {{ parseInt(item.pay) === 0 ? 'Pendiente' : (parseInt(item.pay) === 1 ? 'Pagado' : 'Solicitud') }}
           </v-chip>
         </template>
         <template v-slot:item.price="{ item }">
@@ -800,6 +800,10 @@
                                           <template v-slot:item.sale_price="{ item }">
                 {{ formatNumber(item.sale_price)}}                                  
                                           </template>
+                                          <template v-slot:item.actions="{ item }">
+                                            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-close" @click="(item.pay == 0) ? editItemProduct(item) : ''"
+                                            :color="(item.pay !=0) ? 'grey' : 'red-darken-4'" variant="tonal" elevation="1" title="Solicitar Eliminar Producto"></v-btn>
+                                        </template>
         <template v-slot:top>
 
           <v-divider class="mx-4" inset vertical></v-divider>
@@ -1115,6 +1119,7 @@ export default {
       { title: 'Cantidad', value: 'cant' },
       { title: 'Importe', value: 'price' },
       { title: 'Estado', value: 'pay' },
+      { title: 'Acciones', value: 'actions' },
     ],
     headers8: [
       { title: 'Profesional', value: 'name' },
@@ -1476,6 +1481,26 @@ export default {
           });
     },
 
+    editItemProduct(item){
+       //this.dialogRequest = true
+      //this.editedItem.order_id = item.id
+      let request = {
+        id: item.id,
+        nameProfessional: this.nameProfessional,
+        branch_id: this.branch_id,
+        professional_id: this.professional_id
+      };
+      axios
+        .post('https://api2.simplifies.cl/api/cashiersale-destroy-solicitud', request)
+        .then(() => {          
+          this.showSaleProducts = false;
+        }).finally(() => {
+          this.showAlert("success", "Solicitud de eliminación de productos hecha correctamente", 3000);          
+          this.initialize();
+          this.showDialogProduct();
+          });
+    },
+
     requestDelete() {
       this.loading = true
       let request = {
@@ -1567,7 +1592,7 @@ export default {
       const montosPendientes = this.results
         .filter(item => item.pay === 0)
         .reduce((total, item) => total + item.amount, 0);
-        const productsales = this.cashierSales.filter(item => item.pay === 0).reduce((total, item) => total + item.price, 0);
+        const productsales = this.cashierSales.filter(item => (item.pay === 0 || item.pay === 3)).reduce((total, item) => total + item.price, 0);
       const pendiente = montosPendientes+productsales;
       if (!pendiente) {
         this.closed_box = false;
@@ -2234,7 +2259,7 @@ export default {
         .then(() => {
         }).finally(() => {
           this.showAlert("success", "Producto agregado correctamente", 3000);
-          /*this.initialize();
+          this.initialize();/*
           let temp= this.results.filter(item => item.id == this.car_ref.id);
           console.log('tempsddasdasd');
           console.log(temp[0]);*/
