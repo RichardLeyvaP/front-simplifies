@@ -1198,11 +1198,6 @@ this.changeStep(1);
               })
               .catch((err) => {
                   console.log(err, "error");
-                  /*  this.displayNotification(
-                      "error",
-                      "Error",
-                      "Error al obtener el calendario de la Sucursal"
-                    );*/
               });
       },
 
