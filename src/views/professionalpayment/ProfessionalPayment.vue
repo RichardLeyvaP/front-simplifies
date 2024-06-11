@@ -91,10 +91,7 @@
                                                         {{ item.clientName }}
                                                     </template>
                                                     <template v-slot:item.meta="{ item }">
-                                                    <div class="text-center">
-                                                        <v-chip :color="item.meta === 'Si' ? 'green' : 'red'" :text="item.meta"
-                                                        class="text-uppercase" size="small" label></v-chip>
-                                                    </div>
+                                                        <div class="text-center" v-html="formatMeta(item.meta)"></div>
                                                     </template>
                                                     <template v-slot:item.pay="{ item }">                                                    
                                                         {{ formatNumber(Number(item.totalServices) + Number(item.tip)) }}
@@ -826,6 +823,7 @@ export default {
             { title: 'Fecha', align: 'end', value: 'data' },
             { title: 'Ganancias Servicios', align: 'end', value: 'totalServices' },
             { title: 'Cantidad Servicios', align: 'end', value: 'services' },
+            { title: 'Cantidad Productos', align: 'end', value: 'products' },
             { title: 'Monto Generado', align: 'end', value: 'amountGenerate' },
             { title: 'Propina (80%)', align: 'end', value: 'tip' },
             { title: 'Convivencia', align: 'end', value: 'meta' },
@@ -941,6 +939,13 @@ export default {
     },
 
     methods: {
+        formatMeta(meta) {
+      if (meta === 'Si') {
+        return `<span class="green-text">${meta}</span>`;
+      } else {
+        return `<span class="black-text">${meta}</span>`;
+      }
+    },
         validateAmount(value) {
       if (this.selectedCourse.length === 0) {
         return true; // No hay curso seleccionado, no validar aún.
@@ -1679,5 +1684,13 @@ export default {
 .list-item-spacing {
     margin-bottom: 8px;
     /* Ajusta según necesites */
+}
+.green-text {
+  color: green;
+  text-transform: uppercase;
+}
+.black-text {
+  color: black;
+  text-transform: uppercase;
 }
 </style>

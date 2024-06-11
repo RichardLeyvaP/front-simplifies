@@ -512,13 +512,15 @@
                 {{ formatNumber(item.price)}}                                  
                                           </template>
               <template v-slot:item.actions="{ item }">
-                <v-btn density="comfortable" icon="mdi-cancel"
-                :color="(item.request_delete != 3) ? 'red-darken-4' : 'grey'" title="Solicitar eliminar orden"
-                  @click="item.request_delete != 3 && deleteOrder(item)" elevation="1" class="mr-1 mt-1 mb-1"></v-btn>
+                <template v-if="item.id !== null">
+                  <v-btn density="comfortable" icon="mdi-cancel"
+                    :color="(item.request_delete != 3) ? 'red-darken-4' : 'grey'" title="Solicitar eliminar orden"
+                    @click="item.request_delete != 3 && deleteOrder(item)" elevation="1" class="mr-1 mt-1 mb-1">
+                  </v-btn>
 
-                <!--<v-btn :color="(item.request_delete && !this.car_ref.pay) ? 'blue' : 'grey'" density="comfortable" icon="mdi-check"
-                  title="Denegar solicitud" @click="(item.request_delete && !this.car_ref.pay) && requestCancel(item)" elevation="1" class="mr-1 mt-1 mb-1"></v-btn>-->
-
+                  <!--<v-btn :color="(item.request_delete && !this.car_ref.pay) ? 'blue' : 'grey'" density="comfortable" icon="mdi-check"
+                    title="Denegar solicitud" @click="(item.request_delete && !this.car_ref.pay) && requestCancel(item)" elevation="1" class="mr-1 mt-1 mb-1"></v-btn>-->
+                </template>
               </template>
 
             </v-data-table>
@@ -564,9 +566,13 @@
                 <v-list-item
                   v-bind="props"
                   :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_product"
-                  :subtitle="'Existencia: '+item.raw.product_exit"
                   :title="item.raw.name"
-                ></v-list-item>
+                >
+                <v-list-item-subtitle class="d-flex justify-space-between">
+                        Existencia: {{ item.raw.product_exit }}
+                        Precio: {{ this.formatNumber(item.raw.price )}}
+                      </v-list-item-subtitle>
+                </v-list-item>
               </template>
                 </v-autocomplete>
                     <v-text-field v-model="product_exit" clearable label="Existencia"
@@ -791,6 +797,9 @@
         <template v-slot:item.price="{ item }">
                 {{ formatNumber(item.price)}}                                  
                                           </template>
+                                          <template v-slot:item.sale_price="{ item }">
+                {{ formatNumber(item.sale_price)}}                                  
+                                          </template>
         <template v-slot:top>
 
           <v-divider class="mx-4" inset vertical></v-divider>
@@ -942,9 +951,9 @@
           </v-card-text>
         </v-card>
       </v-dialog>
-<!--endSaleProduct-->
-<!--Bonus-->
-<v-dialog v-model="showDialogBonus" max-width="800px" transition="dialog-bottom-transition">
+      <!--endSaleProduct-->
+      <!--Bonus-->
+      <v-dialog v-model="showDialogBonus" max-width="800px" transition="dialog-bottom-transition">
         <v-card>
           <v-toolbar color="#F18254">
             <v-row>
@@ -1102,6 +1111,7 @@ export default {
     ],
     headers4: [
       { title: 'Producto', value: 'name' },
+      { title: 'Precio', value: 'sale_price' },
       { title: 'Cantidad', value: 'cant' },
       { title: 'Importe', value: 'price' },
       { title: 'Estado', value: 'pay' },
@@ -1587,8 +1597,11 @@ export default {
       const montosPendientes = this.results
         .filter(item => item.pay === 1)
         .reduce((total, item) => total + item.product, 0);
-      this.editedCloseBox.totalProduct = montosPendientes;
-      const temp = montosPendientes;
+      const cashierSales = this.cashierSales
+        .filter(item => item.pay === 1)
+        .reduce((total, item) => total + item.price, 0);
+      this.editedCloseBox.totalProduct = montosPendientes + cashierSales;
+      const temp = montosPendientes + cashierSales;
       return this.formatNumber(temp) + " CLP";
     },
 
@@ -1909,8 +1922,8 @@ export default {
             console.log('this.bonus');
             console.log(this.bonus);
         }).finally(() => {
-          this.showAlert("success", "Cierre de caja efectuado correctamente", 3000);
           this.showDialogBonus = true;
+          this.showAlert("success", "Cierre de caja efectuado correctamente", 3000);
           //this.initialize();
           });
       this.$nextTick(() => {
