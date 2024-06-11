@@ -117,30 +117,32 @@
 
 
 
-        <v-carousel height="800" show-arrows="hover" cycle="false" direction="vertical" interval="5000"
-          hide-delimiters="true">
-
-          <v-carousel-item v-for="(itemGroup, index2) in items" :key="index2">
-            <v-col md="10" v-for="(item, index) in itemGroup" :key="index">
-              <v-row>
-                <v-col md="4" class="offset-md-1">
-                  <p class="font-weight-black" 
-              style="text-align: justify; font-size: 40px; font-family: 'Poppins', sans-serif; font-weight: bold; color: #ffffff;">
-                    {{ getString(item.code) }}
-                  </p>
-                </v-col>
-               
-                <v-col md="6" class="offset-md-1">
-                  <p class=" font-weight-black" 
-              style="text-align: justify; font-size: 40px; font-family: 'Poppins', sans-serif; font-weight: bold; color: #ffffff;">
-                    {{ item.client_name }}
-                  </p>
-                </v-col>
-              </v-row>
+        
+  <v-carousel height="800" show-arrows="hover" cycle="false" direction="vertical" interval="6000" hide-delimiters="true">
+    <v-carousel-item transition="tab-transition" v-for="(itemGroup, index2) in items" :key="index2">
+      <v-col md="10" v-for="(item, index) in itemGroup" :key="index">
+        <transition name="fade" mode="out-in">
+          <v-row class="credit-scroll">
+            <v-col md="4" class="offset-md-1">
+              <p class="font-weight-black" 
+                style="text-align: justify; font-size: 40px; font-family: 'Poppins', sans-serif; font-weight: bold; color: #ffffff;">
+                {{ getString(item.code) }}
+              </p>
             </v-col>
-          </v-carousel-item>
+            <v-col md="6" class="offset-md-1">
+              <p class="font-weight-black" 
+                style="text-align: justify; font-size: 40px; font-family: 'Poppins', sans-serif; font-weight: bold; color: #ffffff;">
+                {{ item.client_name }}
+              </p>
+            </v-col>
+          </v-row>
+        </transition>
+      </v-col>
+    </v-carousel-item>
+  </v-carousel>
 
-        </v-carousel>
+
+
 
         <v-row class="mt-10">
           <v-col cols="12" md="12">
@@ -396,5 +398,38 @@ export default {
   100% {
     opacity: 1;
   }
+}
+</style>
+
+<style scoped>
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.v-carousel-item .fade-enter-active,
+.v-carousel-item .fade-leave-active {
+  transition: opacity 1s ease;
+}
+
+.v-carousel-item .fade-enter, 
+.v-carousel-item .fade-leave-to {
+  opacity: 0;
+}
+
+.credit-scroll {
+  animation: slide-up 7s ease-out;
+}
+</style>
+<style>
+.fade-transition-enter-active, .fade-transition-leave-active {
+  transition: opacity 1s ease;
+}
+.fade-transition-enter, .fade-transition-leave-to {
+  opacity: 0;
 }
 </style>
