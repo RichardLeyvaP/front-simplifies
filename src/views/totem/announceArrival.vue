@@ -36,10 +36,10 @@
                     <v-list-item v-bind="props"
                       :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.client_image"
                       :title="item.raw.name">
-                      <v-list-item-subtitle class="d-flex justify-space-between">
-                        <span>Email: {{ item.raw.email }}</span>
-                        <span>Hora de inicio: {{ item.raw.start_time }}</span>
-                      </v-list-item-subtitle>
+                      <v-list-item-subtitle class="d-flex flex-column">
+                      <div>Email: {{ item.raw.email }}</div>
+                      <div>Hora de inicio: {{ item.raw.start_time }}</div>
+                    </v-list-item-subtitle>
                       </v-list-item>
                   </template>
                 </v-autocomplete>
