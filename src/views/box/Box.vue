@@ -1700,10 +1700,14 @@ export default {
     if (!this.box) {    
         return "0 CLP";
     } else {
-      const temp = this.box.existence;
+      if(!this.box.existence){
+        return "0 CLP";
+      }else{
+        const temp = this.box.existence;
     console.log(temp);
     //return temp;
     return this.formatNumber(temp) + " CLP";
+      }
     }
     },
 
