@@ -819,7 +819,7 @@ export default {
     headers2: [
       { title: 'Nombre', value: 'name' },
       { title: 'Correo', value: 'email' },
-      { title: 'Teléfono', value: 'phone' },
+      //{ title: 'Teléfono', value: 'phone' },
       { title: 'Matriculado', value: 'enrollment_confirmed' },
       { title: 'Pago de Reserva', value: 'reservation_payment' },
       { title: 'Pago Total', value: 'total_payment' },

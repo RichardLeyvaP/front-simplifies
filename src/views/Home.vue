@@ -249,15 +249,16 @@
                 <v-list-item-group>
                   <v-list-item v-for="(carDetail, index) in winners" :key="index">
                     <v-list-item-content>
-                      <v-list-item-title> <v-icon>mdi-tag</v-icon>Productos: {{ formatNumber(carDetail.productsAmount)
+                      <v-list-item-title> <v-icon style="margin-right: 4px;">mdi-tag</v-icon>Productos: {{ formatNumber(carDetail.productsAmount)
                         }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-hair-dryer</v-icon>Servicios: {{ formatNumber(carDetail.servicesAmount)
+                      <v-list-item-title><v-icon style="margin-right: 4px;">mdi-hair-dryer</v-icon>Servicios: {{ formatNumber(carDetail.servicesAmount)
                         }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-cash</v-icon>Propina: {{ formatNumber(carDetail.tip) }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-cog</v-icon>Asistencia Técnica: {{ formatNumber(carDetail.technical_assistance)
+                      <v-list-item-title><v-icon style="margin-right: 4px;">mdi-cash</v-icon>Propina: {{ formatNumber(carDetail.tip) }}</v-list-item-title>
+                      <v-list-item-title><v-icon style="margin-right: 4px;">mdi-cog</v-icon>Asistencia Técnica: {{ formatNumber(carDetail.technical_assistance)
                         }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-briefcase</v-icon>Total: {{ formatNumber(carDetail.total) }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-chair-rolling</v-icon>Utilidades: {{ formatNumber(carDetail.utilidad)
+                        <v-list-item-title v-if="carDetail.type"><v-icon style="margin-right: 4px;">mdi-school</v-icon>Academia: {{ formatNumber(carDetail.academia) }}</v-list-item-title>
+                      <v-list-item-title><v-icon style="margin-right: 4px;">mdi-briefcase</v-icon>Total: {{ formatNumber(carDetail.total) }}</v-list-item-title>
+                      <v-list-item-title><v-icon style="margin-right: 4px;">mdi-chair-rolling</v-icon>Utilidades: {{ formatNumber(carDetail.utilidad)
                         }}</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
@@ -270,15 +271,16 @@
                 <v-list-item-group>
                   <v-list-item v-for="(carDetail, index) in winnersAnt" :key="index">
                     <v-list-item-content>
-                      <v-list-item-title> <v-icon>mdi-tag</v-icon>Productos: {{ formatNumber(carDetail.productsAmount)
+                      <v-list-item-title> <v-icon style="margin-right: 4px;">mdi-tag</v-icon>Productos: {{ formatNumber(carDetail.productsAmount)
                         }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-hair-dryer</v-icon>Servicios: {{ formatNumber(carDetail.servicesAmount)
+                      <v-list-item-title><v-icon style="margin-right: 4px;">mdi-hair-dryer</v-icon>Servicios: {{ formatNumber(carDetail.servicesAmount)
                         }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-cash</v-icon>Propina: {{ formatNumber(carDetail.tip) }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-cog</v-icon>Asistencia Técnica: {{ formatNumber(carDetail.technical_assistance)
+                      <v-list-item-title><v-icon style="margin-right: 4px;">mdi-cash</v-icon>Propina: {{ formatNumber(carDetail.tip) }}</v-list-item-title>
+                      <v-list-item-title><v-icon style="margin-right: 4px;">mdi-cog</v-icon>Asistencia Técnica: {{ formatNumber(carDetail.technical_assistance)
                         }}</v-list-item-title>
-                      <v-list-item-title><v-icon>mdi-briefcase</v-icon>Total: {{ formatNumber(carDetail.total) }}</v-list-item-title> 
-                      <v-list-item-title><v-icon>mdi-chair-rolling</v-icon>Utilidades: {{ formatNumber(carDetail.utilidad)
+                        <v-list-item-title v-if="carDetail.type"><v-icon style="margin-right: 4px;">mdi-school</v-icon>Academia: {{ formatNumber(carDetail.academia) }}</v-list-item-title>
+                      <v-list-item-title><v-icon style="margin-right: 4px;">mdi-briefcase</v-icon>Total: {{ formatNumber(carDetail.total) }}</v-list-item-title> 
+                      <v-list-item-title><v-icon style="margin-right: 4px;">mdi-chair-rolling</v-icon>Utilidades: {{ formatNumber(carDetail.utilidad)
                         }}</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
