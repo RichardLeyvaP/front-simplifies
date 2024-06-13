@@ -835,6 +835,7 @@ export default {
             { title: 'Academia', align: 'start', value: 'nameEnrollment' },
             { title: 'Nombre Curso', value: 'nameCourse' },
             { title: 'Precio Curso', value: 'price' },
+            { title: 'Total Pagado', value: 'totalPayment' },
             { title: 'Descripción', value: 'description' },
             { title: 'Fecha Inicio', align: 'end', value: 'startDate' },
             { title: 'Fecha Terminación', align: 'end', value: 'endDate' }

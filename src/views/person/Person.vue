@@ -1156,15 +1156,6 @@
         class="fixed-size-calendar" 
         hide-day-header="false"     
       >
-      <template #day-label="{ day }">
-          {{ dayLabels[day] }}
-        </template>
-        <template #month-label="{ month }">
-          {{ monthLabels[month] }}
-        </template>
-        <template #weekday-label="{ weekday }">
-          {{ dayLabels[weekday] }}
-        </template>
       </v-calendar>
       <!--<v-sheet>
         :weekdays="weekday"
@@ -1210,8 +1201,8 @@ export default {
     type: 'month',
     types: [
       { title: 'Mes', value: 'month' },
-      { title: 'Semana', value: 'week' },
-      { title: 'Día', value: 'day' }
+      //{ title: 'Semana', value: 'week' },
+      //{ title: 'Día', value: 'day' }
     ],
     dayLabels: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
     monthLabels: [
@@ -1718,19 +1709,14 @@ export default {
           this.professionals = response.data.professionals;
         });
       },
-      showReservationsProfessional() {//aqui cargo el componente del calendar
+      showReservationsProfessional() {//aqui cargo el componente del calendar        
+        this.events = [];
       console.log('this.today');
       console.log(this.today);
       const today = new Date(this.today);
       const range = this.getMonthDateRange(today);
       const startDate = range.start.toISOString().split('T')[0];
       const endDate = range.end.toISOString().split('T')[0];
-      /*const startDate = this.input
-        ? format(this.input, "yyyy-MM-dd")
-        : format(new Date(), "yyyy-MM-dd");
-      const endDate = this.input2
-        ? format(this.input2, "yyyy-MM-dd")
-        : format(new Date(), "yyyy-MM-dd");*/
       axios
         .get("https://api2.simplifies.cl/api/professional-reservations-periodo", {
           params: {
@@ -1742,18 +1728,21 @@ export default {
         })
         .then((response) => {
           this.reservations = response.data.reservaciones;
-        })
-        .finally(() => {
-          this.events = [];
-          this.reservations.forEach(reservacion => {
-        this.events.push({
+          console.log('Reservaciones');
+          console.log(this.reservations);
+          let tempEvents = [];
+
+ 
+        this.reservations.forEach(reservacion => {
+          tempEvents.push({
           title: reservacion.clientName,
           start: new Date(reservacion.startDate),
           end: new Date(reservacion.endDate),
-          color: this.colors[this.rnd(0, this.colors.length - 1)],
+          color: 'red',
           allDay: false
         });
       });
+      this.events = tempEvents;
         });
       },
     deleteItem(item) {
