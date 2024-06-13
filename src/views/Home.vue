@@ -234,7 +234,7 @@
       <v-card>
         <v-toolbar color="#F18254">
           <v-col cols="12" md="9" class="grow ml-4">
-            <span class="text-h8"> <strong>Ganancias del mes</strong></span>
+            <span class="text-h8"> <strong>Generado en el mes</strong></span>
           </v-col>
           <v-spacer></v-spacer>
         </v-toolbar>
