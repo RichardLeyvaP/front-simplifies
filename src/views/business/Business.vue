@@ -179,6 +179,16 @@
 												class="text-uppercase font-weight-bold" size="small" label> {{
 								formatNumber(item.total)}}</v-chip>
 										</template>
+                    <template v-slot:item.academia="{ item }">
+											<v-chip v-if="item.academia > 0"
+												class="text-uppercase font-weight-bold" size="small" label> {{
+								formatNumber(item.academia)}}</v-chip>
+										</template>
+                    <template v-slot:item.technical_assistance="{ item }">
+											<v-chip v-if="item.technical_assistance > 0"
+												class="text-uppercase font-weight-bold" size="small" label> {{
+								formatNumber(item.technical_assistance)}}</v-chip>
+										</template>
             </v-data-table>
           </v-card-text>
           <v-divider></v-divider>
@@ -331,6 +341,7 @@ export default {
       { title: 'Propina', key: 'tip', sortable: false },
       { title: 'Monto', key: 'earnings', sortable: false },
       { title: 'Asistencia Técnica', key: 'technical_assistance', sortable: false },
+      { title: 'Academia', key: 'academia', sortable: false },
       { title: 'Total', key: 'total', sortable: false }
     ],
     headers2: [
@@ -551,7 +562,25 @@ export default {
 
     //reporte Ganancias 
     formatNumber(value) {
-            return value.toLocaleString('es-ES');
+            //return value.toLocaleString('es-ES');
+            // Si el valor es menor que 1000, devuelve el valor original sin formato
+            if (value < 1000) {
+                return value;
+            }
+
+            // Primero, redondea el valor a dos decimales
+            value = Math.round((value + Number.EPSILON) * 100) / 100;
+
+            // Separa la parte entera de la parte decimal
+            let parts = value.toString().split(".");
+            let integerPart = parts[0];
+            let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+
+            // Agrega los separadores de miles
+            integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+            // Combina la parte entera y la parte decimal
+            return integerPart + decimalPart;
         },
     showWinner() {      
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");

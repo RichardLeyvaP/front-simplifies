@@ -1344,7 +1344,7 @@ export default {
     headers1: [
       { title: "Profesional", key: "name", sortable: false },
       //{ title: "Sucursal", key: "branchName", sortable: false },
-      { title: "Ingreso Total", key: "amountGenerate", sortable: true },
+      { title: "Total Servicios", key: "amountGenerate", sortable: true },
       { title: "Ganancia del barbero", key: "amount", sortable: true },
       { title: "Retención", key: "retention", sortable: true },
       { title: "Propina", key: "tip", sortable: true },
