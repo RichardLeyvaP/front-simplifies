@@ -1547,7 +1547,7 @@ export default {
       })
     },
     openDialogBox() {
-      axios
+      /*axios
         .get('https://api2.simplifies.cl/api/box-show', {
           params: {
             branch_id: this.branch_id
@@ -1555,11 +1555,11 @@ export default {
         })
         .then((response) => {
           this.box = response.data.box;
-        });
+        });*/
       this.dialogBox = true;
       this.editedBox.id = this.box.id;
       this.editedBox.cashFound = '';
-      this.editedBox.existence = this.box.reduce((total, item) => total + item.existence, 0);
+      this.editedBox.existence = this.box.existence;
       this.editedBox.extraction = '';
     },
     closeDialogBox() {
