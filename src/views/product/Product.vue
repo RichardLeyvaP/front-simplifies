@@ -1,16 +1,8 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
-  <v-snackbar
-    class="mt-12"
-    location="right top"
-    :timeout="sb_timeout"
-    :color="sb_type"
-    elevation="24"
-    :multi-line="true"
-    vertical
-    v-model="snackbar"
-  >
+  <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24"
+    :multi-line="true" vertical v-model="snackbar">
     <v-row>
       <v-col md="2">
         <v-avatar :icon="sb_icon" color="sb_type" size="40"></v-avatar>
@@ -29,20 +21,14 @@
             <span class="text-subtitle-1"> <strong>Listado de Productos</strong></span>
           </v-col>
           <v-col cols="12" md="7" class="text-right">
-            <v-btn class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2"
-                        prepend-icon="mdi-trending-up" @click="showMostSold">
-                        Más y menos vendidos
-                    </v-btn>
+            <v-btn class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-trending-up"
+              @click="showMostSold">
+              Más y menos vendidos
+            </v-btn>
             <v-dialog v-model="dialog" max-width="1000px">
               <template v-slot:activator="{ props }">
-                <v-btn
-                  v-bind="props"
-                  class="text-subtitle-1 ml-1"
-                  color="#E7E9E9"
-                  variant="flat"
-                  elevation="2"
-                  prepend-icon="mdi-plus-circle"
-                >
+                <v-btn v-bind="props" class="text-subtitle-1 ml-1" color="#E7E9E9" variant="flat" elevation="2"
+                  prepend-icon="mdi-plus-circle">
                   Agregar Producto
                 </v-btn>
               </template>
@@ -54,131 +40,62 @@
                   <v-form v-model="valid" enctype="multipart/form-data">
                     <v-row>
                       <v-col cols="12" md="4">
-                        <v-text-field
-                          v-model="editedItem.name"
-                          clearable
-                          label="Nombre"
-                          prepend-icon="mdi-form-textbox"
-                          variant="underlined"
-                          :rules="nameRules"
-                        >
+                        <v-text-field v-model="editedItem.name" clearable label="Nombre" prepend-icon="mdi-form-textbox"
+                          variant="underlined" :rules="nameRules">
                         </v-text-field>
                       </v-col>
                       <v-col cols="12" md="4">
-                        <v-text-field
-                          v-model="editedItem.reference"
-                          clearable
-                          label="Referencia"
-                          prepend-icon="mdi-shopping"
-                          variant="underlined"
-                          :rules="nameRules"
-                        >
+                        <v-text-field v-model="editedItem.reference" clearable label="Referencia"
+                          prepend-icon="mdi-shopping" variant="underlined" :rules="nameRules">
                         </v-text-field>
                       </v-col>
                       <v-col cols="12" md="4">
-                        <v-text-field
-                          v-model="editedItem.code"
-                          clearable
-                          label="Codigo"
-                          prepend-icon="mdi-barcode"
-                          variant="underlined"
-                          :rules="requiredRules"
-                        >
+                        <v-text-field v-model="editedItem.code" clearable label="Codigo" prepend-icon="mdi-barcode"
+                          variant="underlined" :rules="requiredRules">
                         </v-text-field>
                       </v-col>
                     </v-row>
                     <v-row>
                       <v-col cols="12" md="4">
-                        <v-select
-                          label="Estado"
-                          v-model="editedItem.status_product"
-                          :items="['En venta', 'No en venta']"
-                          :item-value="['En venta', 'No en venta']"
-                          variant="underlined"
-                          density="compact"
-                          :rules="selectRules"
-                          prepend-icon="mdi-check-circle"
-                          @update:model-value="showPrice"
-                        ></v-select>
+                        <v-select label="Estado" v-model="editedItem.status_product"
+                          :items="['En venta', 'No en venta']" :item-value="['En venta', 'No en venta']"
+                          variant="underlined" density="compact" :rules="selectRules" prepend-icon="mdi-check-circle"
+                          @update:model-value="showPrice"></v-select>
                       </v-col>
                       <v-col cols="12" md="4">
-                        <v-text-field
-                          v-model="editedItem.purchase_price"
-                          clearable
-                          label="Precio de Compra"
-                          prepend-icon="mdi-cash"
-                          variant="underlined"
-                          :rules="requiredRules"
-                        >
+                        <v-text-field v-model="editedItem.purchase_price" clearable label="Precio de Compra"
+                          prepend-icon="mdi-cash" variant="underlined" :rules="requiredRules">
                         </v-text-field>
                       </v-col>
                       <v-col cols="12" md="4">
-                        <v-text-field
-                          v-if="mostrarFila"
-                          v-model="editedItem.sale_price"
-                          clearable
-                          label="Precio de Venta"
-                          prepend-icon="mdi-currency-usd"
-                          variant="underlined"
-                          :rules="requiredRules"
-                        >
+                        <v-text-field v-if="mostrarFila" v-model="editedItem.sale_price" clearable
+                          label="Precio de Venta" prepend-icon="mdi-currency-usd" variant="underlined"
+                          :rules="requiredRules">
                         </v-text-field>
                       </v-col>
                       <v-col cols="12" md="4">
-                        <v-autocomplete
-                          :no-data-text="'No hay datos disponibles'"
-                          v-model="editedItem.product_category_id"
-                          :items="productCategories"
-                          clearable
-                          label="Categoría"
-                          prepend-icon="mdi-tag"
-                          item-title="name"
-                          item-value="id"
-                          variant="underlined"
-                          :rules="selectRules"
-                        ></v-autocomplete>
+                        <v-autocomplete :no-data-text="'No hay datos disponibles'"
+                          v-model="editedItem.product_category_id" :items="productCategories" clearable
+                          label="Categoría" prepend-icon="mdi-tag" item-title="name" item-value="id"
+                          variant="underlined" :rules="selectRules"></v-autocomplete>
                       </v-col>
                       <v-col cols="12" md="8">
-                        <v-text-field
-                          v-model="editedItem.description"
-                          clearable
-                          label="Descripción"
-                          prepend-icon="mdi-information"
-                          variant="underlined"
-                          :rules="dirRules"
-                        >
+                        <v-text-field v-model="editedItem.description" clearable label="Descripción"
+                          prepend-icon="mdi-information" variant="underlined" :rules="dirRules">
                         </v-text-field>
                       </v-col>
                     </v-row>
                     <v-row> </v-row>
                     <v-row>
                       <v-col cols="12" md="6">
-                        <v-file-input
-                          clearable
-                          v-model="file"
-                          ref="fileInput"
-                          label="Imagen del Productos"
-                          variant="underlined"
-                          density="compact"
-                          name="file"
-                          accept=".png, .jpg, .jpeg"
-                          @change="onFileSelected"
-                        >
+                        <v-file-input clearable v-model="file" ref="fileInput" label="Imagen del Productos"
+                          variant="underlined" density="compact" name="file" accept=".png, .jpg, .jpeg"
+                          @change="onFileSelected">
                         </v-file-input>
                       </v-col>
                       <v-col cols="12" md="6" align="center">
-                        <v-card
-                          elevation="6"
-                          class="mx-auto"
-                          max-width="120"
-                          max-height="120"
-                        >
-                          <img
-                            v-if="imagenDisponible()"
-                            :src="imgedit"
-                            height="120"
-                            width="120"
-                          />
+                        <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
+                          <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120" />
                         </v-card>
                       </v-col>
                     </v-row>
@@ -189,12 +106,7 @@
                       <v-btn color="#E7E9E9" variant="flat" @click="close">
                         Cancelar
                       </v-btn>
-                      <v-btn
-                        color="#F18254"
-                        variant="flat"
-                        @click="save"
-                        :disabled="!valid"
-                      >
+                      <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
                         Aceptar
                       </v-btn>
                     </v-card-actions>
@@ -210,8 +122,7 @@
                 </v-toolbar>
 
                 <v-card-text class="mt-2 mb-2">
-                  ¿Desea eliminar el Producto seleccionado?</v-card-text
-                >
+                  ¿Desea eliminar el Producto seleccionado?</v-card-text>
                 <v-divider></v-divider>
                 <v-card-actions>
                   <v-spacer></v-spacer>
@@ -229,43 +140,27 @@
       </v-toolbar>
 
       <v-card-text>
-        <v-text-field
-          class="mt-1 mb-1"
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Buscar"
-          single-line
-          hide-details
-        >
+        <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
+          hide-details>
         </v-text-field>
-        <v-data-table
-          :headers="headers"
-          :items-per-page-text="'Elementos por páginas'"
-          :search="search"
-          :items="results"
-          class="elevation-1"
-          no-results-text="No hay datos disponibles"
-          no-data-text="No hay datos disponibles"
-        >
-        <template v-slot:item.purchase_price ="{ item }">
-                         {{ formatNumber(item.purchase_price)}}
-                                    </template>
-                                    <template v-slot:item.sale_price ="{ item }">
-                         {{ formatNumber(item.sale_price)}}
-                                    </template>
+        <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search"
+          :items="results" class="elevation-1" no-results-text="No hay datos disponibles"
+          no-data-text="No hay datos disponibles">
+          <template v-slot:item.purchase_price="{ item }">
+            {{ formatNumber(item.purchase_price) }}
+          </template>
+          <template v-slot:item.sale_price="{ item }">
+            {{ formatNumber(item.sale_price) }}
+          </template>
           <template v-slot:top>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
           </template>
           <template v-slot:item.name="{ item }">
             <v-avatar class="mr-2" elevation="3" color="grey-lighten-4">
-              <v-img
-                :src="
-                  'https://api2.simplifies.cl/api/images/' +
-                  item.image_product
-                "
-                alt="image"
-              ></v-img><!-- +
+              <v-img :src="'https://api2.simplifies.cl/api/images/' +
+                item.image_product
+                " alt="image"></v-img><!-- +
                   '?$' +
                   Date.now()-->
             </v-avatar>
@@ -278,25 +173,10 @@
        <v-icon size="25" color="red" @click="deleteItem(item)">
          mdi-delete
        </v-icon>-->
-            <v-btn
-              density="comfortable"
-              icon="mdi-pencil"
-              @click="editItem(item)"
-              color="primary"
-              variant="tonal"
-              elevation="1"
-              class="mr-1 mt-1 mb-1"
-              title="Editar Producto"
-            ></v-btn>
-            <v-btn
-              density="comfortable"
-              icon="mdi-delete"
-              @click="deleteItem(item)"
-              color="red-darken-4"
-              variant="tonal"
-              elevation="1"
-              title="Eliminar Producto"
-            ></v-btn>
+            <v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary" variant="tonal"
+              elevation="1" class="mr-1 mt-1 mb-1" title="Editar Producto"></v-btn>
+            <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4"
+              variant="tonal" elevation="1" title="Eliminar Producto"></v-btn>
           </template>
         </v-data-table>
       </v-card-text>
@@ -309,19 +189,12 @@
               <v-row align="center">
                 <v-col cols="12" md="8" class="grow ml-4">
                   <span class="text-h8">
-                    <strong>Productos más vendidos y menos vendidos</strong></span
-                  >
+                    <strong>Productos más vendidos y menos vendidos</strong></span>
                 </v-col>
                 <v-spacer></v-spacer>
                 <v-col cols="12" md="3">
-                  <v-btn
-                    class="text-subtitle-1"
-                    color="#E7E9E9"
-                    variant="flat"
-                    elevation="2"
-                    prepend-icon="mdi-file-excel"
-                    @click="exportToExcel1"
-                  >
+                  <v-btn class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2"
+                    prepend-icon="mdi-file-excel" @click="exportToExcel1">
                     Exportar a Excel
                   </v-btn>
                 </v-col>
@@ -333,73 +206,37 @@
               <v-row>
                 <!-- Primera columna -->
                 <v-col cols="12" sm="6" md="3">
-                  <v-menu
-                    v-model="menu"
-                    :close-on-content-click="false"
-                    :nudge-right="40"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="290px"
-                  >
+                  <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
+                    offset-y min-width="290px">
                     <template v-slot:activator="{ props }">
-                      <v-text-field
-                        v-bind="props"
-                        :modelValue="dateFormatted"
-                        variant="outlined"
-                        append-inner-icon="mdi-calendar"
-                        label="Fecha inicial"
-                      ></v-text-field>
+                      <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined"
+                        append-inner-icon="mdi-calendar" label="Fecha inicial"></v-text-field>
                     </template>
                     <v-locale-provider locale="es">
-                      <v-date-picker
-                        header="Calendario"
-                        title="Seleccione la fecha"
-                        color="orange lighten-2"
-                        :modelValue="input"
-                        @update:model-value="updateDate"
-                        format="yyyy-MM-dd"
-                        :max="dateFormatted2"
-                      ></v-date-picker>
+                      <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                        :modelValue="input" @update:model-value="updateDate" format="yyyy-MM-dd"
+                        :max="dateFormatted2"></v-date-picker>
                     </v-locale-provider>
                   </v-menu>
                 </v-col>
                 <!-- Segunda columna -->
                 <v-col cols="12" sm="6" md="3">
-                  <v-menu
-                    v-model="menu2"
-                    :close-on-content-click="false"
-                    :nudge-right="40"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="290px"
-                  >
+                  <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40"
+                    transition="scale-transition" offset-y min-width="290px">
                     <template v-slot:activator="{ props }">
-                      <v-text-field
-                        v-bind="props"
-                        :modelValue="dateFormatted2"
-                        variant="outlined"
-                        append-inner-icon="mdi-calendar"
-                        label="Fecha final"
-                      ></v-text-field>
+                      <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
+                        append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
                     </template>
                     <v-locale-provider locale="es">
-                      <v-date-picker
-                        header="Calendario"
-                        title="Seleccione la fecha"
-                        color="orange lighten-2"
-                        :modelValue="getDate2"
-                        format="yyyy-MM-dd"
-                        :min="dateFormatted"
-                        @update:model-value="updateDate1"
-                      ></v-date-picker
-                      ><!--@update:model-value="updateDate2"-->
+                      <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                        :modelValue="getDate2" format="yyyy-MM-dd" :min="dateFormatted"
+                        @update:model-value="updateDate1"></v-date-picker><!--@update:model-value="updateDate2"-->
                     </v-locale-provider>
                   </v-menu>
                 </v-col>
                 <v-col cols="12" md="1">
                   <v-btn icon @click="updateDate2" color="#F18254">
-                    <v-icon>mdi-magnify</v-icon></v-btn
-                  >
+                    <v-icon>mdi-magnify</v-icon></v-btn>
                 </v-col>
               </v-row>
               <v-row>
@@ -410,32 +247,16 @@
                     </v-alert>
                   </v-container>
                   <v-card-text>
-                    <v-text-field
-                      class="mt-1 mb-1"
-                      v-model="search2"
-                      append-icon="mdi-magnify"
-                      label="Buscar"
-                      single-line
-                      hide-details
-                    >
+                    <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar"
+                      single-line hide-details>
                     </v-text-field>
-                    <v-data-table
-                      :headers="headers1"
-                      :items-per-page-text="'Elementos por páginas'"
-                      :items="results1"
-                      :search="search2"
-                      class="elevation-2"
-                      no-results-text="No hay datos disponibles"
-                      no-data-text="No hay datos disponibles"
-                    >
+                    <v-data-table :headers="headers1" :items-per-page-text="'Elementos por páginas'" :items="results1"
+                      :search="search2" class="elevation-2" no-results-text="No hay datos disponibles"
+                      no-data-text="No hay datos disponibles">
                       <template v-slot:item.name="{ item }">
                         <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                          <v-img
-                            :src="
-                              'https://api2.simplifies.cl/api/images/' + item.image_product
-                            "
-                            alt="image"
-                          ></v-img>
+                          <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product
+                            " alt="image"></v-img>
                         </v-avatar>
                         {{ item.name }}
                       </template>
@@ -612,33 +433,27 @@ export default {
 
   methods: {
     formatNumber(value) {
-      // Si el valor es menor que 1000, devuelve el valor original sin formato
-  if (value < 1000) {
-    return value;
-  }
+      // Si el valor es menor que 1000, devuelve el valor original con dos decimales
+      if (value < 1000) {
+        return (Math.round((value + Number.EPSILON) * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
 
-  // Primero, redondea el valor a dos decimales
-  value = Math.round((value + Number.EPSILON) * 100) / 100;
+      // Primero, redondea el valor a dos decimales
+      value = Math.round((value + Number.EPSILON) * 100) / 100;
 
-  // Separa la parte entera de la parte decimal
-  let parts = value.toString().split(".");
-  let integerPart = parts[0];
-  let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+      // Convierte el valor a cadena con formato de número local (en-US)
+      let formattedValue = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-  // Agrega los separadores de miles
-  integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
-  // Combina la parte entera y la parte decimal
-  return integerPart + decimalPart;
-        },
+      return formattedValue;
+    },
     updateDate(val) {
-            this.input = val;
-            this.menu = false;
-        },
-        updateDate1(val) {
-            this.input2 = val;
-            this.menu2 = false;
-        },
+      this.input = val;
+      this.menu = false;
+    },
+    updateDate1(val) {
+      this.input2 = val;
+      this.menu2 = false;
+    },
     showPrice() {
       console.log("this.editedItem.status_product");
       console.log(this.editedItem.status_product);
@@ -795,76 +610,76 @@ export default {
 
     //Productos mas vendidos
     showMostSold() {
-            console.log('Entra aqui a mejores aisitencias');
-            this.editedIndex1 = 1;
-            axios
-                .get('https://api2.simplifies.cl/api/product-mostSold')
-                .then((response) => {
-                    this.results1 = response.data;
-                });
-            this.dialogMostSold = true;
-        },
-        closeDialogMostSold() {
-            this.dialogMostSold = false;
-            this.results1 = [];
-            this.input = null;
-            this.input2  = null;
-        },
-        updateDate2() {
-            this.editedIndex1 = 2;
-            const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-            const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-            axios
-                .get('https://api2.simplifies.cl/api/product-mostSold-periodo', {
-                    params: {
-                        //branch_id: this.branch_id,
-                        startDate: startDate,
-                        endDate: endDate
-                    }
-                })
-                .then((response) => {
-                    this.results1 = response.data;
-                });
-        },
-        exportToExcel1() {
-            // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
-            let rows = [];
+      console.log('Entra aqui a mejores aisitencias');
+      this.editedIndex1 = 1;
+      axios
+        .get('https://api2.simplifies.cl/api/product-mostSold')
+        .then((response) => {
+          this.results1 = response.data;
+        });
+      this.dialogMostSold = true;
+    },
+    closeDialogMostSold() {
+      this.dialogMostSold = false;
+      this.results1 = [];
+      this.input = null;
+      this.input2 = null;
+    },
+    updateDate2() {
+      this.editedIndex1 = 2;
+      const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+      axios
+        .get('https://api2.simplifies.cl/api/product-mostSold-periodo', {
+          params: {
+            //branch_id: this.branch_id,
+            startDate: startDate,
+            endDate: endDate
+          }
+        })
+        .then((response) => {
+          this.results1 = response.data;
+        });
+    },
+    exportToExcel1() {
+      // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
+      let rows = [];
 
-            // Construye un objeto para los encabezados basado en la estructura de 'headers'
-            let headerRow = {};
-            this.headers1.forEach(header1 => {
-                headerRow[header1.key] = header1.title; // Usa 'key' para el mapeo y 'title' para el texto del encabezado
-            });
-            rows.push(headerRow);
+      // Construye un objeto para los encabezados basado en la estructura de 'headers'
+      let headerRow = {};
+      this.headers1.forEach(header1 => {
+        headerRow[header1.key] = header1.title; // Usa 'key' para el mapeo y 'title' para el texto del encabezado
+      });
+      rows.push(headerRow);
 
-            // Ahora, mapea los datos de los items para que coincidan con los encabezados
-            this.results1.forEach(item => {
-                let rowData = {};
-                this.headers1.forEach(header1 => {
-                    rowData[header1.key] = item[header1.key] || ''; // Asegura que cada celda se mapee correctamente; usa '' para datos faltantes
-                });
-                rows.push(rowData);
-            });
+      // Ahora, mapea los datos de los items para que coincidan con los encabezados
+      this.results1.forEach(item => {
+        let rowData = {};
+        this.headers1.forEach(header1 => {
+          rowData[header1.key] = item[header1.key] || ''; // Asegura que cada celda se mapee correctamente; usa '' para datos faltantes
+        });
+        rows.push(rowData);
+      });
 
-            let nameReport = {
-                // eslint-disable-next-line vue/no-use-computed-property-like-method
-                name: this.formTitle1, // Asume que 'name' es una de tus claves; ajusta según sea necesario
-                reference: '',
-                orders_count: ''
-            };
-            rows.push(nameReport);
+      let nameReport = {
+        // eslint-disable-next-line vue/no-use-computed-property-like-method
+        name: this.formTitle1, // Asume que 'name' es una de tus claves; ajusta según sea necesario
+        reference: '',
+        orders_count: ''
+      };
+      rows.push(nameReport);
 
-            // Convierte la matriz de filas en una hoja de trabajo Excel
-            const ws = XLSX.utils.json_to_sheet(rows, { skipHeader: true }); // 'skipHeader: true' porque ya agregamos manualmente los encabezados
+      // Convierte la matriz de filas en una hoja de trabajo Excel
+      const ws = XLSX.utils.json_to_sheet(rows, { skipHeader: true }); // 'skipHeader: true' porque ya agregamos manualmente los encabezados
 
-            // Crea un nuevo libro de trabajo y añade la hoja de trabajo con los datos
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Report" + this.fecha);
+      // Crea un nuevo libro de trabajo y añade la hoja de trabajo con los datos
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Report" + this.fecha);
 
-            // Escribe el libro de trabajo a un archivo y desencadena la descarga
-            //XLSX.writeFile(wb, "report.xlsx");
-            XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
-        }, 
+      // Escribe el libro de trabajo a un archivo y desencadena la descarga
+      //XLSX.writeFile(wb, "report.xlsx");
+      XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
+    },
   },
 };
 </script>

@@ -10,7 +10,7 @@
                 <v-spacer></v-spacer>
                 <v-col cols="12" md="3">
                     <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" elevation="2"
-                    prepend-icon="mdi-file-excel" @click="exportToExcel">
+                        prepend-icon="mdi-file-excel" @click="exportToExcel">
                         Exportar a Excel
                     </v-btn>
                 </v-col>
@@ -20,30 +20,32 @@
             <v-row>
                 <v-col cols="12" md="3">
                     <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="outlined"
-                    prepend-inner-icon="mdi-calendar" @update:model-value="initialize()"></v-select><!--@update:model-value="initialize()"-->
+                        prepend-inner-icon="mdi-calendar"
+                        @update:model-value="initialize()"></v-select><!--@update:model-value="initialize()"-->
                 </v-col>
                 <v-col cols="12" md="3">
                     <v-select v-model="selectedMounth" :items="months" label="Selecciona un mes" variant="outlined"
-                    prepend-inner-icon="mdi-calendar"></v-select><!--@update:model-value="operationDetails()"-->
+                        prepend-inner-icon="mdi-calendar"></v-select><!--@update:model-value="operationDetails()"-->
                 </v-col>
                 <v-col cols="12" md="3">
-                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" 
-                        label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+                        v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
+                        item-title="name" item-value="id"
                         variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
                 </v-col>
                 <v-col cols="12" md="1">
-                        <v-btn icon @click="operationDetails()" color="#F18254">
-                    <v-icon>mdi-magnify</v-icon></v-btn>
+                    <v-btn icon @click="operationDetails()" color="#F18254">
+                        <v-icon>mdi-magnify</v-icon></v-btn>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col cols="12" md="12">
-                        <v-alert border type="info" variant="outlined" density="compact">
-                            <p v-html="formTitle"></p>
-                        </v-alert>
+                    <v-alert border type="info" variant="outlined" density="compact">
+                        <p v-html="formTitle"></p>
+                    </v-alert>
                 </v-col>
                 <v-col cols="12" md="12">
-                        <!--<v-row>
+                    <!--<v-row>
                             <v-col cols="12" md="8"></v-col>
                             <v-col cols="12" md="2">
                                 <v-card class="pa-2 pl-0 mb-2" elevation="2">
@@ -54,24 +56,24 @@
                                             </v-avatar>
                                         </template>
 
-                                    </v-list-item>
-                                </v-card>
-                            </v-col>
-                            <v-col cols="12" md="2">
-                                <v-card class="pa-2 pl-0 mb-2" elevation="2">
-                                    <v-list-item :subtitle="formatNumber(totalGastos)" title="Gastos">
-                                        <template v-slot:prepend>
+</v-list-item>
+</v-card>
+</v-col>
+<v-col cols="12" md="2">
+    <v-card class="pa-2 pl-0 mb-2" elevation="2">
+        <v-list-item :subtitle="formatNumber(totalGastos)" title="Gastos">
+            <template v-slot:prepend>
                                             <v-avatar color="red">
                                                 <v-icon color="white">{{'mdi-minus-circle'}}</v-icon>
                                             </v-avatar>
                                         </template>
 
-                                    </v-list-item>
-                                </v-card>
-                            </v-col>
-                        </v-row>-->
-                        <v-container>
-                            <v-card class="mx-auto  overflow-visible">
+        </v-list-item>
+    </v-card>
+</v-col>
+</v-row>-->
+                    <v-container>
+                        <v-card class="mx-auto  overflow-visible">
                             <v-card-text>
                                 <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify"
                                     label="Buscar" single-line hide-details>
@@ -82,23 +84,24 @@
                                     <template v-slot:item.ingreso="{ item }">
                                         <v-chip v-if="item.ingreso > 0" :color="'green'"
                                             class="text-uppercase font-weight-bold" size="small" label>{{
-                            formatNumber(item.ingreso) }}</v-chip>
+                                                formatNumber(item.ingreso) }}</v-chip>
                                     </template>
                                     <template v-slot:item.gasto="{ item }">
                                         <v-chip v-if="item.gasto > 0" :color="'red'"
                                             class="text-uppercase font-weight-bold" size="small" label> {{
-                            formatNumber(item.gasto)}}</v-chip>
+                                                formatNumber(item.gasto)}}</v-chip>
                                     </template>
                                     <template v-slot:item.file="{ item }">
-                    <v-icon v-if="item.file" @click="openDoc(item)" color="green">mdi-file-document-outline</v-icon>
-                    <!--<v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                                        <v-icon v-if="item.file" @click="openDoc(item)"
+                                            color="green">mdi-file-document-outline</v-icon>
+                                        <!--<v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
                         <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
                     </v-avatar>-->
-                </template>
+                                    </template>
                                 </v-data-table>
                             </v-card-text>
                         </v-card>
-                        </v-container>
+                    </v-container>
                 </v-col>
             </v-row>
         </v-container>
@@ -178,10 +181,10 @@ export default {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
                 //return 'Reporte de Ingresos y Gastos detallados en el mes ' + this.selectedMounth + '-' + this.selectedYear;
                 //const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      //const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
-        return `Reporte por detalle de operación en el mes [<strong>${this.selectedYear}</strong> - <strong>${this.selectedMounth}</strong>]`;		
+                //const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+                // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+                //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
+                return `Reporte por detalle de operación en el mes [<strong>${this.selectedYear}</strong> - <strong>${this.selectedMounth}</strong>]`;
             }
             /*else if (this.editedIndex === 3) {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -211,31 +214,31 @@ export default {
         this.business_id = parseInt(LocalStorageService.getItem("business_id"));
         this.charge_id = parseInt(LocalStorageService.getItem('charge_id'));
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
-        
-        axios
-      .get('https://api2.simplifies.cl/api/show-business', {
-        params: {
-          business_id: this.business_id
-        }
-      })
-      .then((response) => {
-        this.branches = response.data.branches;
 
-      }).finally(() => {
-        if (this.charge === 'Administrador') {
-          this.branch_id = this.branches[0].id;
-            this.mostrarFila = true;
-        } 
-    // Obtener el año actual
-    const currentYear = new Date().getFullYear();
-        // Llenar el arreglo years con los años, desde 2010 hasta el año actual
-        for (let year = 2000; year <= currentYear; year++) {
-            this.years.push(year);
-        }
-        // Establecer el año actual como el seleccionado por defecto
-        this.selectedYear = currentYear;
-        this.initialize();
-          });
+        axios
+            .get('https://api2.simplifies.cl/api/show-business', {
+                params: {
+                    business_id: this.business_id
+                }
+            })
+            .then((response) => {
+                this.branches = response.data.branches;
+
+            }).finally(() => {
+                if (this.charge === 'Administrador') {
+                    this.branch_id = this.branches[0].id;
+                    this.mostrarFila = true;
+                }
+                // Obtener el año actual
+                const currentYear = new Date().getFullYear();
+                // Llenar el arreglo years con los años, desde 2010 hasta el año actual
+                for (let year = 2000; year <= currentYear; year++) {
+                    this.years.push(year);
+                }
+                // Establecer el año actual como el seleccionado por defecto
+                this.selectedYear = currentYear;
+                this.initialize();
+            });
     },
 
     methods: {
@@ -244,25 +247,18 @@ export default {
             window.open(url, '_blanK');
         },
         formatNumber(value) {
-             //return value.toLocaleString('es-ES');
-            // Si el valor es menor que 1000, devuelve el valor original sin formato
+            // Si el valor es menor que 1000, devuelve el valor original con dos decimales
             if (value < 1000) {
-                return value;
+                return (Math.round((value + Number.EPSILON) * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             }
 
             // Primero, redondea el valor a dos decimales
             value = Math.round((value + Number.EPSILON) * 100) / 100;
 
-            // Separa la parte entera de la parte decimal
-            let parts = value.toString().split(".");
-            let integerPart = parts[0];
-            let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+            // Convierte el valor a cadena con formato de número local (en-US)
+            let formattedValue = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-            // Agrega los separadores de miles
-            integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
-            // Combina la parte entera y la parte decimal
-            return integerPart + decimalPart;
+            return formattedValue;
         },
         exportToExcel() {
             // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
@@ -299,7 +295,7 @@ export default {
         initialize() {
             this.editedIndex = 1;
             console.log('this.branch_id')
-        console.log(this.branch_id)
+            console.log(this.branch_id)
             axios
                 .get('https://api2.simplifies.cl/api/finances-detail-operation', {
                     params: {

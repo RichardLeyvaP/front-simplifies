@@ -25,13 +25,14 @@
                         prepend-inner-icon="mdi-calendar"></v-select><!--@update:model-value="initialize()"-->
                 </v-col>
                 <v-col cols="12" md="3">
-                    <v-text-field v-model="saldoInicial"  label="Saldo Anterior" prepend-icon="mdi-arrow-left"
+                    <v-text-field v-model="saldoInicial" label="Saldo Anterior" prepend-icon="mdi-arrow-left"
                         variant="underlined" :style="{ color: saldoInicial < 0 ? '#FF7043' : '' }" disabled="true">
                     </v-text-field>
                 </v-col>
                 <v-col cols="12" sm="12" md="3">
-                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" 
-                        label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+                        v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
+                        item-title="name" item-value="id"
                         variant="underlined"></v-autocomplete><!--@update:model-value="initialize()"-->
                 </v-col>
                 <v-col cols="12" md="1">
@@ -65,18 +66,18 @@
                                             <td>
                                                 <div class="d-flex justify-center">
                                                     <v-chip :color="item.difference > 0 ? 'green' : '#FF7043'"
-                                                        class="text-uppercase font-weight-bold" size="small"
-                                                        label>{{ formatNumber(item.difference) }}</v-chip>
+                                                        class="text-uppercase font-weight-bold" size="small" label>{{
+                                                        formatNumber(item.difference) }}</v-chip>
                                                 </div>
                                             </td>
                                         </template>
                                         <template v-slot:item.total_revenues="{ item }">
                                             <v-chip class="text-uppercase font-weight-bold" size="small" label>{{
-                            formatNumber(item.total_revenues) }}</v-chip>
+                                                formatNumber(item.total_revenues) }}</v-chip>
                                         </template>
                                         <template v-slot:item.total_expenses="{ item }">
                                             <v-chip class="text-uppercase font-weight-bold" size="small" label> {{
-                            formatNumber(item.total_expenses) }}</v-chip>
+                                                formatNumber(item.total_expenses) }}</v-chip>
                                         </template>
                                     </v-data-table>
                                 </v-card-text>
@@ -170,10 +171,10 @@ export default {
                 //this.fecha = format(this.input, "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
                 //return 'Monto generado por Negocios en el período  ' + format(this.input, "yyyy-MM-dd") + '-' + format(this.input2, "yyyy-MM-dd");
                 const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
-        return `Monto generado por Negocios en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;		
+                const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+                // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+                //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
+                return `Monto generado por Negocios en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;
             }
             /*else if (this.editedIndex === 3) {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -213,28 +214,39 @@ export default {
             })
             .then((response) => {
                 this.branches = response.data.branches;
-              
+
             }).finally(() => {
-        if (this.charge === 'Administrador') {
-          this.branch_id = this.branches[0].id;
-      this.mostrarFila = true;
-    } 
-    // Obtener el año actual
-    const currentYear = new Date().getFullYear();
-        // Llenar el arreglo years con los años, desde 2010 hasta el año actual
-        for (let year = 2000; year <= currentYear; year++) {
-            this.years.push(year);
-        }
-        // Establecer el año actual como el seleccionado por defecto
-        this.selectedYear = currentYear;
-        this.initialize();
-          });
-        
+                if (this.charge === 'Administrador') {
+                    this.branch_id = this.branches[0].id;
+                    this.mostrarFila = true;
+                }
+                // Obtener el año actual
+                const currentYear = new Date().getFullYear();
+                // Llenar el arreglo years con los años, desde 2010 hasta el año actual
+                for (let year = 2000; year <= currentYear; year++) {
+                    this.years.push(year);
+                }
+                // Establecer el año actual como el seleccionado por defecto
+                this.selectedYear = currentYear;
+                this.initialize();
+            });
+
     },
 
     methods: {
         formatNumber(value) {
-            return value.toLocaleString('es-ES');
+            // Si el valor es menor que 1000, devuelve el valor original con dos decimales
+            if (value < 1000) {
+                return (Math.round((value + Number.EPSILON) * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+
+            // Primero, redondea el valor a dos decimales
+            value = Math.round((value + Number.EPSILON) * 100) / 100;
+
+            // Convierte el valor a cadena con formato de número local (en-US)
+            let formattedValue = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            return formattedValue;
         },
         generateChartData() {
             const labels = this.results.map(item => item.month);

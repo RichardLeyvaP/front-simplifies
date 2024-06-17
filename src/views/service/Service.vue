@@ -2,8 +2,8 @@
 <!-- eslint-disable vue/valid-v-slot -->
 
 <template>
-  <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24" :multi-line="true"
-    vertical v-model="snackbar">
+  <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24"
+    :multi-line="true" vertical v-model="snackbar">
     <v-row>
       <v-col md="2">
         <v-avatar :icon="sb_icon" color="sb_type" size="40"></v-avatar>
@@ -14,180 +14,180 @@
 
       </v-col>
     </v-row>
-  </v-snackbar>  
-<v-container>
-  <v-card elevation="6" class="mx-5" width='auto'>
-    <v-toolbar color="#F18254">
-      <v-row align="center">
-        <v-col cols="12" md="4" class="grow ml-4">
-          <span class="text-subtitle-1"> <strong>Listado de Servicios</strong></span>
-        </v-col>
-        <v-col cols="12" md="5"></v-col>
-        <v-col cols="12" md="2">
+  </v-snackbar>
+  <v-container>
+    <v-card elevation="6" class="mx-5" width='auto'>
+      <v-toolbar color="#F18254">
+        <v-row align="center">
+          <v-col cols="12" md="4" class="grow ml-4">
+            <span class="text-subtitle-1"> <strong>Listado de Servicios</strong></span>
+          </v-col>
+          <v-col cols="12" md="5"></v-col>
+          <v-col cols="12" md="2">
 
-          <v-dialog v-model="dialog" max-width="1000px">
-            <template v-slot:activator="{ props }">
+            <v-dialog v-model="dialog" max-width="1000px">
+              <template v-slot:activator="{ props }">
 
-              <v-btn v-bind="props" class="text-subtitle-1  ml-12  " color="#E7E9E9" variant="flat" elevation="2"
-                prepend-icon="mdi-plus-circle">
-                Agregar Servicio
-              </v-btn>
+                <v-btn v-bind="props" class="text-subtitle-1  ml-12  " color="#E7E9E9" variant="flat" elevation="2"
+                  prepend-icon="mdi-plus-circle">
+                  Agregar Servicio
+                </v-btn>
 
-            </template>
-            <v-card>
-              <v-toolbar color="#F18254">
-                <span class="text-subtitle-2 ml-4"> Servicio</span>
-              </v-toolbar>
-              <v-card-text>
-                <v-form v-model="valid" enctype="multipart/form-data">
-                  <v-row>
-                    <v-col cols="12" md="4">
-                      <v-text-field v-model="editedItem.name" clearable label="Nombre" prepend-icon="mdi-form-textbox"
-                        variant="underlined" :rules="nameRules">
-                      </v-text-field>
-                    </v-col>
-                    <v-col cols="12" md="4">
-                      <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.simultaneou" :items="options" clearable label="Simultaneo"
-                        prepend-icon="mdi-format-list-bulleted-square" item-title="name" item-value="id"
-                        variant="underlined"></v-autocomplete>
-                    </v-col>
-                    <v-col cols="12" md="4">
-                      <v-text-field v-model="editedItem.price_service" clearable label="Precio"
-                        prepend-icon="mdi-currency-usd" variant="underlined" :rules="requiredRules">
-                      </v-text-field>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <!--<v-col cols="12" md="4">
+              </template>
+              <v-card>
+                <v-toolbar color="#F18254">
+                  <span class="text-subtitle-2 ml-4"> Servicio</span>
+                </v-toolbar>
+                <v-card-text>
+                  <v-form v-model="valid" enctype="multipart/form-data">
+                    <v-row>
+                      <v-col cols="12" md="4">
+                        <v-text-field v-model="editedItem.name" clearable label="Nombre" prepend-icon="mdi-form-textbox"
+                          variant="underlined" :rules="nameRules">
+                        </v-text-field>
+                      </v-col>
+                      <v-col cols="12" md="4">
+                        <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.simultaneou"
+                          :items="options" clearable label="Simultaneo" prepend-icon="mdi-format-list-bulleted-square"
+                          item-title="name" item-value="id" variant="underlined"></v-autocomplete>
+                      </v-col>
+                      <v-col cols="12" md="4">
+                        <v-text-field v-model="editedItem.price_service" clearable label="Precio"
+                          prepend-icon="mdi-currency-usd" variant="underlined" :rules="requiredRules">
+                        </v-text-field>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <!--<v-col cols="12" md="4">
                       <v-select clearable label="Tipo" v-model="editedItem.type_service"
                         :items="['Especial', 'Regular']" variant="underlined" prepend-icon="mdi-view-grid"
                         :rules="selectRules"></v-select>
                     </v-col>-->
-                    <v-col cols="12" md="4">
-                      <v-text-field v-model="editedItem.duration_service" clearable label="Duración"
-                        prepend-icon="mdi-clock-time-eight" variant="underlined" :rules="requiredRules">
-                      </v-text-field>
-                    </v-col>
-                    <!--<v-col cols="12" md="4">
+                      <v-col cols="12" md="4">
+                        <v-text-field v-model="editedItem.duration_service" clearable label="Duración"
+                          prepend-icon="mdi-clock-time-eight" variant="underlined" :rules="requiredRules">
+                        </v-text-field>
+                      </v-col>
+                      <!--<v-col cols="12" md="4">
                       <v-text-field v-model="editedItem.ponderation" clearable label="Ponderación"
                         prepend-icon="mdi-arrow-collapse-vertical" variant="underlined" :rules="pago">
                       </v-text-field>
                     </v-col>-->
-                    <v-col cols="12" md="4">
-                      <v-text-field v-model="editedItem.profit_percentaje"
-                        clearable label="% Ganancia" prepend-icon="mdi-percent" variant="underlined"
-                        :rules="requiredRules">
-                      </v-text-field>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="12" md="12">
-                      <v-text-field v-model="editedItem.service_comment" clearable label="Descripción"
-                        prepend-icon="mdi-book-open" variant="underlined" :rules="requiredRules">
-                      </v-text-field>
-                    </v-col>
-                    <v-col cols="12" md="6">
-                      <v-file-input clearable v-model="file" ref="fileInput" label="Imagen del Servicio"
-                        variant="underlined" name="file" accept=".png, .jpg, .jpeg" @change="onFileSelected">
-                      </v-file-input>
-                    </v-col>
-                    <v-col cols="12" md="6">
-                      <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
-                        <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
-                      </v-card>
-                    </v-col>
-                  </v-row>
-                  <v-divider></v-divider>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
+                      <v-col cols="12" md="4">
+                        <v-text-field v-model="editedItem.profit_percentaje" clearable label="% Ganancia"
+                          prepend-icon="mdi-percent" variant="underlined" :rules="requiredRules">
+                        </v-text-field>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col cols="12" md="12">
+                        <v-text-field v-model="editedItem.service_comment" clearable label="Descripción"
+                          prepend-icon="mdi-book-open" variant="underlined" :rules="requiredRules">
+                        </v-text-field>
+                      </v-col>
+                      <v-col cols="12" md="6">
+                        <v-file-input clearable v-model="file" ref="fileInput" label="Imagen del Servicio"
+                          variant="underlined" name="file" accept=".png, .jpg, .jpeg" @change="onFileSelected">
+                        </v-file-input>
+                      </v-col>
+                      <v-col cols="12" md="6">
+                        <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
+                          <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
+                        </v-card>
+                      </v-col>
+                    </v-row>
+                    <v-divider></v-divider>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
 
-                    <v-btn color="#E7E9E9" variant="flat" @click="close">
-                      Cancelar
-                    </v-btn>
-                    <v-btn color="warning" variant="flat" @click="save" :disabled="!valid">
-                      Aceptar
-                    </v-btn>
-                  </v-card-actions>
-                </v-form>
-              </v-card-text>
-            </v-card>
-          </v-dialog>
+                      <v-btn color="#E7E9E9" variant="flat" @click="close">
+                        Cancelar
+                      </v-btn>
+                      <v-btn color="warning" variant="flat" @click="save" :disabled="!valid">
+                        Aceptar
+                      </v-btn>
+                    </v-card-actions>
+                  </v-form>
+                </v-card-text>
+              </v-card>
+            </v-dialog>
 
-          <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-              <v-toolbar color="red">
-                <span class="text-subtitle-2 ml-4"> Eliminar Servicio</span>
-              </v-toolbar>
+            <v-dialog v-model="dialogDelete" max-width="500px">
+              <v-card>
+                <v-toolbar color="red">
+                  <span class="text-subtitle-2 ml-4"> Eliminar Servicio</span>
+                </v-toolbar>
 
-              <v-card-text class="mt-2 mb-2"> ¿Desea eliminar el Servicio seleccionado?</v-card-text>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
-                  Cancelar
-                </v-btn>
-                <v-btn color="warning" variant="flat" @click="deleteItemConfirm">
-                  Aceptar
-                </v-btn>
+                <v-card-text class="mt-2 mb-2"> ¿Desea eliminar el Servicio seleccionado?</v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
+                    Cancelar
+                  </v-btn>
+                  <v-btn color="warning" variant="flat" @click="deleteItemConfirm">
+                    Aceptar
+                  </v-btn>
 
 
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-col>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-col>
 
-      </v-row>
+        </v-row>
 
-    </v-toolbar>
+      </v-toolbar>
 
-    <v-card-text>
-      <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
-              hide-details></v-text-field>
-              
-      <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search" :items="results"
-        class="elevation-1 responsive-table" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
-        <template v-slot:item.price_service ="{ item }">
-                         {{ formatNumber(item.price_service)}}
-                                    </template>
-        <template v-slot:top>
+      <v-card-text>
+        <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
+          hide-details></v-text-field>
 
-          <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
-        </template>
+        <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search"
+          :items="results" class="elevation-1 responsive-table" no-results-text="No hay datos disponibles"
+          no-data-text="No hay datos disponibles">
+          <template v-slot:item.price_service="{ item }">
+            {{ formatNumber(item.price_service) }}
+          </template>
+          <template v-slot:top>
 
-        <template v-slot:item.simultaneou="{ item }">
-          <div class="text-center">
-            <v-chip :color="item.simultaneou ? 'green' : 'red'" :text="item.simultaneou ? 'Si ' : 'No'"
-              class="text-uppercase" size="small" label></v-chip>
-          </div>
-        </template>
-        <template v-slot:item.name="{ item }">
-          <!--this.items = data.map(item => ({
+            <v-divider class="mx-4" inset vertical></v-divider>
+            <v-spacer></v-spacer>
+          </template>
+
+          <template v-slot:item.simultaneou="{ item }">
+            <div class="text-center">
+              <v-chip :color="item.simultaneou ? 'green' : 'red'" :text="item.simultaneou ? 'Si ' : 'No'"
+                class="text-uppercase" size="small" label></v-chip>
+            </div>
+          </template>
+          <template v-slot:item.name="{ item }">
+            <!--this.items = data.map(item => ({
   ...item,
   imageUrl: ${item.imageUrl}?${Date.now()}
 }));-->
-          <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_service" alt="image"></v-img>
-          </v-avatar><!--+'?$'+Date.now()-->
-          {{ item.name }}
-        </template>
+            <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_service" alt="image"></v-img>
+            </v-avatar><!--+'?$'+Date.now()-->
+            {{ item.name }}
+          </template>
 
-        <template v-slot:item.actions="{ item }">
-          <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
+          <template v-slot:item.actions="{ item }">
+            <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
             mdi-pencil
           </v-icon>
           <v-icon size="25" color="red" @click="deleteItem(item)">
             mdi-delete
           </v-icon>-->
-          <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
-            elevation="1" class="mr-1 mt-1 mb-1" title="Editar servicio"></v-btn>
-          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
-            elevation="1" title="Eliminar servicio"></v-btn>
-        </template>
-      </v-data-table>
-    </v-card-text>
-  </v-card>
-</v-container>
+            <v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary" variant="tonal"
+              elevation="1" class="mr-1 mt-1 mb-1" title="Editar servicio"></v-btn>
+            <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4"
+              variant="tonal" elevation="1" title="Eliminar servicio"></v-btn>
+          </template>
+        </v-data-table>
+      </v-card-text>
+    </v-card>
+  </v-container>
 
 
 
@@ -208,7 +208,7 @@ export default {
     sb_timeout: 2000,
     sb_title: '',
     sb_icon: '',
-    search:'',
+    search: '',
     dialog: false,
     editando: false,
     message_delete: true,
@@ -304,28 +304,22 @@ export default {
 
   methods: {
     formatNumber(value) {
-      // Si el valor es menor que 1000, devuelve el valor original sin formato
-  if (value < 1000) {
-    return value;
-  }
+      // Si el valor es menor que 1000, devuelve el valor original con dos decimales
+      if (value < 1000) {
+        return (Math.round((value + Number.EPSILON) * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
 
-  // Primero, redondea el valor a dos decimales
-  value = Math.round((value + Number.EPSILON) * 100) / 100;
+      // Primero, redondea el valor a dos decimales
+      value = Math.round((value + Number.EPSILON) * 100) / 100;
 
-  // Separa la parte entera de la parte decimal
-  let parts = value.toString().split(".");
-  let integerPart = parts[0];
-  let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+      // Convierte el valor a cadena con formato de número local (en-US)
+      let formattedValue = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-  // Agrega los separadores de miles
-  integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
-  // Combina la parte entera y la parte decimal
-  return integerPart + decimalPart;
-        },
+      return formattedValue;
+    },
     imagenDisponible() {
       if (this.imgedit !== undefined && this.imgedit !== '') {
-      
+
         // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
         let img = new Image();
         img.src = this.imgedit;
@@ -406,8 +400,8 @@ export default {
         .then(() => {
           this.showAlert("success", "Servicio eliminado correctamente", 3000)
         }).finally(() => {
-            this.initialize();
-          });
+          this.initialize();
+        });
       this.closeDelete()
     },
     close() {
@@ -416,7 +410,7 @@ export default {
         this.editedIndex = -1;
         this.imgMiniatura = '';
         this.file = null;
-      this.dialog = false;
+        this.dialog = false;
       })
     },
     closeDelete() {
@@ -440,8 +434,8 @@ export default {
           .then(() => {
             this.showAlert("success", "Servicio editado correctamente", 3000);
             this.imgMiniatura = '';
-            this.file = null;        
-            
+            this.file = null;
+
           }).finally(() => {
             this.initialize();
           });

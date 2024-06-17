@@ -21,40 +21,42 @@
             <v-row>
                 <v-col cols="12" md="3">
                     <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="outlined"
-                        prepend-inner-icon="mdi-calendar" ></v-select><!--@update:model-value="initialize()"-->
+                        prepend-inner-icon="mdi-calendar"></v-select><!--@update:model-value="initialize()"-->
                 </v-col>
                 <v-col cols="12" md="3">
                     <v-select v-model="selectedMounth" :items="months" label="Selecciona un mes" variant="outlined"
                         prepend-inner-icon="mdi-calendar"></v-select><!--@update:model-value="operationDetailsMonth()"-->
                 </v-col>
                 <v-col cols="12" sm="12" md="3">
-                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" 
-                        label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+                        v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
+                        item-title="name" item-value="id"
                         variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
                 </v-col>
                 <v-col cols="12" md="1">
-                        <v-btn icon @click="operationDetailsMonth()" color="#F18254" >
-                    <v-icon>mdi-magnify</v-icon></v-btn>
+                    <v-btn icon @click="operationDetailsMonth()" color="#F18254">
+                        <v-icon>mdi-magnify</v-icon></v-btn>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col cols="12" md="12">
-                        <v-alert border type="info" variant="outlined" density="compact">
-                            <p v-html="formTitle"></p>
-                        </v-alert>
-                </v-col>                
+                    <v-alert border type="info" variant="outlined" density="compact">
+                        <p v-html="formTitle"></p>
+                    </v-alert>
+                </v-col>
             </v-row>
             <v-row>
                 <v-col cols="12" md="12">
-                    
+
                     <v-card class="overflow-visible">
                         <v-card-text>
                             <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar"
                                 single-line hide-details>
                             </v-text-field>
-                            <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
-                                :group-by="groupBy" :search="search" no-results-text="No hay datos disponibles"
-                                no-data-text="No hay datos disponibles" :hide-default-footer="true">
+                            <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'"
+                                :items="results" :group-by="groupBy" :search="search"
+                                no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles"
+                                :hide-default-footer="true">
                                 <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
                                     <tr>
                                         <td>
@@ -64,71 +66,60 @@
                                             {{ item.value }}
                                         </td>
                                         <!-- Mostrar los totales para el grupo actual -->
-                                        <td v-for="(header, index) in columns.slice(1)" :key="index" class="text-uppercase font-weight-bold">
+                                        <td v-for="(header, index) in columns.slice(1)" :key="index"
+                                            class="text-uppercase font-weight-bold">
                                             {{ formatNumber(calculateGroupTotal(item.value, header.value)) }}
                                         </td>
                                     </tr>
                                 </template>
-                                <template v-slot:item.Enero ="{ item }">
-                                        <v-chip
-                                            class="text-uppercase" size="small" label> {{
-                            formatNumber(item.Enero)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.Febrero ="{ item }">
-                                        <v-chip
-                                            class="text-uppercase" size="small" label> {{
-                            formatNumber(item.Febrero)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.Marzo ="{ item }">
-                                        <v-chip
-                                            class="text-uppercase" size="small" label> {{
-                            formatNumber(item.Marzo)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.Abril ="{ item }">
-                                        <v-chip
-                                            class="text-uppercase" size="small" label> {{
-                            formatNumber(item.Abril)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.Mayo ="{ item }">
-                                        <v-chip
-                                            class="text-uppercase" size="small" label> {{
-                            formatNumber(item.Mayo)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.Junio ="{ item }">
-                                        <v-chip
-                                            class="text-uppercase" size="small" label> {{
-                            formatNumber(item.Junio)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.Julio ="{ item }">
-                                        <v-chip
-                                            class="text-uppercase" size="small" label> {{
-                            formatNumber(item.Julio)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.Agosto ="{ item }">
-                                        <v-chip
-                                            class="text-uppercase" size="small" label> {{
-                            formatNumber(item.Agosto)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.Septiembre ="{ item }">
-                                        <v-chip
-                                            class="text-uppercase" size="small" label> {{
-                            formatNumber(item.Septiembre)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.Octubre ="{ item }">
-                                        <v-chip
-                                            class="text-uppercase" size="small" label> {{
-                            formatNumber(item.Octubre)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.Noviembre ="{ item }">
-                                        <v-chip
-                                            class="text-uppercase" size="small" label> {{
-                            formatNumber(item.Noviembre)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.Diciembre ="{ item }">
-                                        <v-chip
-                                            class="text-uppercase" size="small" label> {{
-                            formatNumber(item.Diciembre)}}</v-chip>
-                                    </template>
+                                <template v-slot:item.Enero="{ item }">
+                                    <v-chip class="text-uppercase" size="small" label> {{
+                                        formatNumber(item.Enero)}}</v-chip>
+                                </template>
+                                <template v-slot:item.Febrero="{ item }">
+                                    <v-chip class="text-uppercase" size="small" label> {{
+                                        formatNumber(item.Febrero)}}</v-chip>
+                                </template>
+                                <template v-slot:item.Marzo="{ item }">
+                                    <v-chip class="text-uppercase" size="small" label> {{
+                                        formatNumber(item.Marzo)}}</v-chip>
+                                </template>
+                                <template v-slot:item.Abril="{ item }">
+                                    <v-chip class="text-uppercase" size="small" label> {{
+                                        formatNumber(item.Abril)}}</v-chip>
+                                </template>
+                                <template v-slot:item.Mayo="{ item }">
+                                    <v-chip class="text-uppercase" size="small" label> {{
+                                        formatNumber(item.Mayo)}}</v-chip>
+                                </template>
+                                <template v-slot:item.Junio="{ item }">
+                                    <v-chip class="text-uppercase" size="small" label> {{
+                                        formatNumber(item.Junio)}}</v-chip>
+                                </template>
+                                <template v-slot:item.Julio="{ item }">
+                                    <v-chip class="text-uppercase" size="small" label> {{
+                                        formatNumber(item.Julio)}}</v-chip>
+                                </template>
+                                <template v-slot:item.Agosto="{ item }">
+                                    <v-chip class="text-uppercase" size="small" label> {{
+                                        formatNumber(item.Agosto)}}</v-chip>
+                                </template>
+                                <template v-slot:item.Septiembre="{ item }">
+                                    <v-chip class="text-uppercase" size="small" label> {{
+                                        formatNumber(item.Septiembre)}}</v-chip>
+                                </template>
+                                <template v-slot:item.Octubre="{ item }">
+                                    <v-chip class="text-uppercase" size="small" label> {{
+                                        formatNumber(item.Octubre)}}</v-chip>
+                                </template>
+                                <template v-slot:item.Noviembre="{ item }">
+                                    <v-chip class="text-uppercase" size="small" label> {{
+                                        formatNumber(item.Noviembre)}}</v-chip>
+                                </template>
+                                <template v-slot:item.Diciembre="{ item }">
+                                    <v-chip class="text-uppercase" size="small" label> {{
+                                        formatNumber(item.Diciembre)}}</v-chip>
+                                </template>
                             </v-data-table>
                         </v-card-text>
                     </v-card>
@@ -226,10 +217,10 @@ export default {
                 //this.fecha = format(this.input3, "yyyy-MM");
                 //return 'Reporte de Ingresos y Gastos detallados por operaciones en el mes ' + this.selectedYear+'-'+this.selectedMounth;
                 //const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      //const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
-        return `Reporte de Ingresos y Gastos detallados por operaciones en el mes [<strong>${this.selectedYear}</strong> - <strong>${this.selectedMounth}</strong>]`;		
+                //const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+                // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+                //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
+                return `Reporte de Ingresos y Gastos detallados por operaciones en el mes [<strong>${this.selectedYear}</strong> - <strong>${this.selectedMounth}</strong>]`;
             }
             else {
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -280,26 +271,37 @@ export default {
             .then((response) => {
                 this.branches = response.data.branches;
             }).finally(() => {
-        if (this.charge === 'Administrador') {
-          this.branch_id = this.branches[0].id;
-      this.mostrarFila = true;
-    } 
-    const currentYear = new Date().getFullYear();
-        // Llenar el arreglo years con los años, desde 2010 hasta el año actual
-        for (let year = 2000; year <= currentYear; year++) {
-            this.years.push(year);
-        }
-        // Establecer el año actual como el seleccionado por defecto
-        this.selectedYear = currentYear;
-        this.initialize();
-          });
+                if (this.charge === 'Administrador') {
+                    this.branch_id = this.branches[0].id;
+                    this.mostrarFila = true;
+                }
+                const currentYear = new Date().getFullYear();
+                // Llenar el arreglo years con los años, desde 2010 hasta el año actual
+                for (let year = 2000; year <= currentYear; year++) {
+                    this.years.push(year);
+                }
+                // Establecer el año actual como el seleccionado por defecto
+                this.selectedYear = currentYear;
+                this.initialize();
+            });
         // Obtener el año actual
-        
+
     },
 
     methods: {
         formatNumber(value) {
-            return value.toLocaleString('es-ES');
+            // Si el valor es menor que 1000, devuelve el valor original con dos decimales
+            if (value < 1000) {
+                return (Math.round((value + Number.EPSILON) * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+
+            // Primero, redondea el valor a dos decimales
+            value = Math.round((value + Number.EPSILON) * 100) / 100;
+
+            // Convierte el valor a cadena con formato de número local (en-US)
+            let formattedValue = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            return formattedValue;
         },
         getTotalRowForGroup(groupKey) {
             // Filtrar los resultados para incluir solo los elementos del grupo actual con operación "Total"
@@ -315,7 +317,7 @@ export default {
             // Retornar el valor correspondiente a la columna
             return totalRow ? totalRow[columnKey] : 0;
         },
-       
+
         exportToExcel() {
             // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
             let rows = [];
@@ -357,7 +359,7 @@ export default {
             //XLSX.writeFile(wb, "report.xlsx");
             XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
         },
-        
+
         initialize() {
             this.editedIndex = 1;
             axios
@@ -374,24 +376,24 @@ export default {
                     console.log(this.results);
                 })
         },
-        operationDetailsMonth(){
+        operationDetailsMonth() {
             this.editedIndex = 3;
-            if(this.selectedMounth){
+            if (this.selectedMounth) {
                 axios
-                .get('https://api2.simplifies.cl/api/details-operations-month', {
-                    params: {
-                        branch_id: this.branch_id,
-                        year: this.selectedYear,
-                        month: this.selectedMounth
-                    }
-                })
-                .then((response) => {
-                    this.results = response.data;
-                    //this.saldoInicial = response.data.last_year_difference;
-                    console.log('this.results');
-                    console.log(this.results);
-                })
-            }else{
+                    .get('https://api2.simplifies.cl/api/details-operations-month', {
+                        params: {
+                            branch_id: this.branch_id,
+                            year: this.selectedYear,
+                            month: this.selectedMounth
+                        }
+                    })
+                    .then((response) => {
+                        this.results = response.data;
+                        //this.saldoInicial = response.data.last_year_difference;
+                        console.log('this.results');
+                        console.log(this.results);
+                    })
+            } else {
                 this.initialize();
             }
         },

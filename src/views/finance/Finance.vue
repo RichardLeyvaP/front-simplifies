@@ -15,153 +15,158 @@
         </v-row>
     </v-snackbar>
     <v-container>
-    <v-card elevation="6" class="mx-5" width='auto'>
-        <v-toolbar color="#F18254">
-            <v-row align="center">
-                <v-col cols="12" md="6" class="grow ml-2">
-                    <span class="text-subtitle-1"> <strong>Detalles de operaciones de
-                            {{ this.editedItem.type }}</strong></span>
-                </v-col>
-                <v-col cols="12" md="5" class="text-right">
+        <v-card elevation="6" class="mx-5" width='auto'>
+            <v-toolbar color="#F18254">
+                <v-row align="center">
+                    <v-col cols="12" md="6" class="grow ml-2">
+                        <span class="text-subtitle-1"> <strong>Detalles de operaciones de
+                                {{ this.editedItem.type }}</strong></span>
+                    </v-col>
+                    <v-col cols="12" md="5" class="text-right">
 
-                    <v-dialog v-model="dialog" max-width="800px">
-                        <template v-slot:activator="{ props }">
-                            <v-btn class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat" elevation="2"
-                            prepend-icon="mdi-file-excel" @click="exportToExcel">
-                                                Exportar a Excel
+                        <v-dialog v-model="dialog" max-width="800px">
+                            <template v-slot:activator="{ props }">
+                                <v-btn class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat" elevation="2"
+                                    prepend-icon="mdi-file-excel" @click="exportToExcel">
+                                    Exportar a Excel
+                                </v-btn>
+                                <v-btn v-bind="props" class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat"
+                                    elevation="2" prepend-icon="mdi-plus-circle">
+                                    Agregar operación
+                                </v-btn>
+
+                            </template>
+                            <v-card>
+                                <v-toolbar color="#F18254">
+                                    <span class="text-subtitle-2 ml-2"> {{ formTitle }}</span>
+                                </v-toolbar>
+                                <v-card-text>
+                                    <v-radio-group v-model="selectedOption" inline v-if="mostrarFila">
+                                        <v-radio v-model="selectedOption" :label="options[0]" :value="options[0]"
+                                            color="orange-darken-3" class="mr-10" />
+                                        <v-radio v-model="selectedOption" :label="options[1]" :value="options[1]"
+                                            color="orange-darken-3" class="mr-10" />
+                                        <v-radio v-model="selectedOption" :label="options[2]" :value="options[2]"
+                                            color="orange-darken-3" class="mr-10" />
+                                    </v-radio-group>
+
+                                    <v-row v-if="selectedOption === 'Sucursal' && mostrarFila">
+                                        <v-col>
+                                            <v-autocomplete :no-data-text="'No hay datos disponibles'"
+                                                v-model="editedItem.branch_id" :items="branches" clearable
+                                                label="Sucursales" prepend-icon="mdi-office-building" item-title="name"
+                                                item-value="id" variant="underlined" :rules="selectRules"
+                                                @update:model-value="selectBranches"></v-autocomplete><!--@update:model-value="selectBranches"-->
+                                        </v-col>
+                                    </v-row>
+
+                                    <v-row v-if="selectedOption === 'Academia' && mostrarFila">
+                                        <v-col>
+                                            <v-autocomplete :no-data-text="'No hay datos disponibles'"
+                                                v-model="editedItem.enrollment_id" :items="enrollments" clearable
+                                                label="Academias" prepend-icon="mdi-school" item-title="name"
+                                                item-value="id" variant="underlined" :rules="selectRules"
+                                                @update:model-value="selectEnrollments"></v-autocomplete><!--@update:model-value="selectEnrollments"-->
+                                        </v-col>
+                                    </v-row>
+                                    <v-form v-model="valid" enctype="multipart/form-data">
+
+                                        <v-row>
+                                            <v-col cols="12" md="6">
+                                                <v-select label="Tipo de operación" v-model="editedItem.operation"
+                                                    :items="['Ingreso', 'Gasto']" item-value="['Ingreso', 'Gasto']"
+                                                    variant="underlined" density="compact" :rules="selectRules"
+                                                    prepend-icon="mdi-cash-multiple"></v-select>
+                                            </v-col>
+                                            <v-col cols="12" md="6" v-if="editedItem.operation === 'Ingreso'">
+                                                <v-autocomplete :no-data-text="'No hay datos disponibles'"
+                                                    v-model="editedItem.revenue_id" :items="revenues" clearable
+                                                    label="Ingresos" prepend-icon="mdi-cash-plus" item-title="name"
+                                                    item-value="id" variant="underlined" density="compact"
+                                                    :rules="selectRules"></v-autocomplete>
+                                            </v-col>
+                                            <v-col cols="12" md="6" v-if="editedItem.operation === 'Gasto'">
+                                                <v-autocomplete :no-data-text="'No hay datos disponibles'"
+                                                    v-model="editedItem.expense_id" :items="expenses" clearable
+                                                    label="Gastos" prepend-icon="mdi-cash-plus" item-title="name"
+                                                    item-value="id" variant="underlined" density="compact"
+                                                    :rules="selectRules"></v-autocomplete>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row>
+                                            <v-col cols="12" md="6">
+                                                <v-text-field v-model="editedItem.amount" clearable label="Monto"
+                                                    prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago">
+                                                </v-text-field>
+                                            </v-col>
+                                            <v-col cols="12" md="6">
+                                                <v-text-field v-model="editedItem.control" clearable label="No.Control"
+                                                    prepend-icon="mdi-security" variant="underlined" :disabled="true">
+                                                </v-text-field>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row>
+                                            <v-col cols="12" md="12">
+                                                <v-text-field v-model="editedItem.comment" clearable label="Comentario"
+                                                    prepend-icon="mdi-information" variant="underlined"
+                                                    :rules="nameRules">
+                                                </v-text-field>
+                                            </v-col>
+                                            <v-col cols="12" md="12">
+                                                <v-file-input clearable v-model="file" ref="fileInput"
+                                                    label="Comprobante" variant="underlined" density="compact"
+                                                    name="file" accept=".docx, .doc, .pdf" @change="onFileSelected">
+                                                </v-file-input>
+                                            </v-col>
+                                        </v-row>
+                                        <v-divider></v-divider>
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+
+                                            <v-btn color="#E7E9E9" variant="flat" @click="close">
+                                                Cancelar
                                             </v-btn>
-                            <v-btn v-bind="props" class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat"
-                                elevation="2" prepend-icon="mdi-plus-circle">
-                                Agregar operación
-                            </v-btn>
+                                            <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
+                                                Aceptar
+                                            </v-btn>
+                                        </v-card-actions>
+                                    </v-form>
+                                </v-card-text>
+                            </v-card>
+                        </v-dialog>
 
-                        </template>
-                        <v-card>
-                            <v-toolbar color="#F18254">
-                                <span class="text-subtitle-2 ml-2"> {{ formTitle }}</span>
-                            </v-toolbar>
-                            <v-card-text>
-                                         <v-radio-group v-model="selectedOption" inline v-if="mostrarFila">
-                                    <v-radio v-model="selectedOption" :label="options[0]" :value="options[0]"
-                                        color="orange-darken-3" class="mr-10" />
-                                    <v-radio v-model="selectedOption" :label="options[1]" :value="options[1]"
-                                        color="orange-darken-3" class="mr-10" />
-                                    <v-radio v-model="selectedOption" :label="options[2]" :value="options[2]"
-                                        color="orange-darken-3" class="mr-10" />
-                                </v-radio-group>
-                               
-                                <v-row v-if="selectedOption === 'Sucursal' && mostrarFila">
-                                    <v-col>
-                                        <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.branch_id" :items="branches" clearable
-                                            label="Sucursales" prepend-icon="mdi-office-building" item-title="name"
-                                            item-value="id" variant="underlined" :rules="selectRules"
-                                            @update:model-value="selectBranches"></v-autocomplete><!--@update:model-value="selectBranches"-->
-                                    </v-col>
-                                </v-row>
+                        <v-dialog v-model="dialogDelete" max-width="500px">
+                            <v-card>
+                                <v-toolbar color="red">
+                                    <span class="text-subtitle-2 ml-4"> Eliminar operación</span>
+                                </v-toolbar>
 
-                                <v-row v-if="selectedOption === 'Academia' && mostrarFila">
-                                    <v-col>
-                                        <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.enrollment_id" :items="enrollments"
-                                            clearable label="Academias" prepend-icon="mdi-school" item-title="name"
-                                            item-value="id" variant="underlined" :rules="selectRules"
-                                            @update:model-value="selectEnrollments"></v-autocomplete><!--@update:model-value="selectEnrollments"-->
-                                    </v-col>
-                                </v-row>
-                                <v-form v-model="valid" enctype="multipart/form-data">
-
-                                    <v-row>
-                                        <v-col cols="12" md="6">
-                                            <v-select label="Tipo de operación" v-model="editedItem.operation"
-                                                :items="['Ingreso', 'Gasto']" item-value="['Ingreso', 'Gasto']"
-                                                variant="underlined" density="compact" :rules="selectRules"
-                                                prepend-icon="mdi-cash-multiple"></v-select>
-                                        </v-col>
-                                        <v-col cols="12" md="6" v-if="editedItem.operation === 'Ingreso'">
-                                            <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.revenue_id" :items="revenues" clearable
-                                                label="Ingresos" prepend-icon="mdi-cash-plus" item-title="name"
-                                                item-value="id" variant="underlined" density="compact"
-                                                :rules="selectRules"></v-autocomplete>
-                                        </v-col>
-                                        <v-col cols="12" md="6" v-if="editedItem.operation === 'Gasto'">
-                                            <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.expense_id" :items="expenses" clearable
-                                                label="Gastos" prepend-icon="mdi-cash-plus" item-title="name"
-                                                item-value="id" variant="underlined" density="compact"
-                                                :rules="selectRules"></v-autocomplete>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row>
-                                        <v-col cols="12" md="6">
-                                            <v-text-field v-model="editedItem.amount" clearable label="Monto"
-                                                prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago">
-                                            </v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" md="6">
-                                            <v-text-field v-model="editedItem.control" clearable label="No.Control"
-                                                prepend-icon="mdi-security" variant="underlined" :disabled="true">
-                                            </v-text-field>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row>
-                                        <v-col cols="12" md="12">
-                                            <v-text-field v-model="editedItem.comment" clearable label="Comentario"
-                                                prepend-icon="mdi-information" variant="underlined" :rules="nameRules">
-                                            </v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" md="12">
-                                            <v-file-input clearable v-model="file" ref="fileInput" label="Comprobante"
-                                                variant="underlined" density="compact" name="file"
-                                                accept=".docx, .doc, .pdf" @change="onFileSelected">
-                                            </v-file-input>
-                                        </v-col>
-                                    </v-row>
-                                    <v-divider></v-divider>
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-
-                                        <v-btn color="#E7E9E9" variant="flat" @click="close">
-                                            Cancelar
-                                        </v-btn>
-                                        <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
-                                            Aceptar
-                                        </v-btn>
-                                    </v-card-actions>
-                                </v-form>
-                            </v-card-text>
-                        </v-card>
-                    </v-dialog>
-
-                    <v-dialog v-model="dialogDelete" max-width="500px">
-                        <v-card>
-                            <v-toolbar color="red">
-                                <span class="text-subtitle-2 ml-4"> Eliminar operación</span>
-                            </v-toolbar>
-
-                            <v-card-text class="mt-2 mb-2"> ¿Desea deshacer la operación?</v-card-text>
-                            <v-divider></v-divider>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
-                                    Cancelar
-                                </v-btn>
-                                <v-btn color="warning" variant="flat" @click="deleteItemConfirm">
-                                    Aceptar
-                                </v-btn>
+                                <v-card-text class="mt-2 mb-2"> ¿Desea deshacer la operación?</v-card-text>
+                                <v-divider></v-divider>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
+                                        Cancelar
+                                    </v-btn>
+                                    <v-btn color="warning" variant="flat" @click="deleteItemConfirm">
+                                        Aceptar
+                                    </v-btn>
 
 
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
-                </v-col>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                    </v-col>
 
-            </v-row>
+                </v-row>
 
-        </v-toolbar>
+            </v-toolbar>
 
-        <v-row>
-            <v-container>
-                <v-row>
-                    <v-col cols="12" md="3">
-                        <!--<v-radio-group v-model="selectedOption" inline v-if="mostrarFila">
+            <v-row>
+                <v-container>
+                    <v-row>
+                        <v-col cols="12" md="3">
+                            <!--<v-radio-group v-model="selectedOption" inline v-if="mostrarFila">
                         <v-radio v-model="selectedOption" :label="options[0]" :value="options[0]"
                             color="orange-darken-3" class="mr-10" />
                         <v-radio v-model="selectedOption" :label="options[1]" :value="options[1]"
@@ -171,123 +176,126 @@
                         <v-radio v-model="selectedOption" :label="options[3]" :value="options[3]"
                             color="orange-darken-3" class="mr-10" />
                     </v-radio-group>-->
-                    <v-select
-                        v-model="selectedOption"
-                        :items="options"
-                        class="ma-2"
-                        label="Tipo"
-                        variant="outlined"
-                        density="compact"
-                        hide-details
-                    ></v-select>
-                    </v-col>
-                    <v-col cols="12" md="3">
-                    <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="outlined"
-                    prepend-inner-icon="mdi-calendar" @update:model-value="initialize()" density="compact" class="ma-2"></v-select><!--@update:model-value="initialize()"-->
-                </v-col>
-                <v-col cols="12" md="3">
-                    <v-select v-model="selectedMounth" :items="months" label="Selecciona un mes" variant="outlined"
-                    prepend-inner-icon="mdi-calendar" density="compact" class="ma-2" @update:model-value="initialize()"></v-select><!--@update:model-value="operationDetails()"-->
-                </v-col>
-                    <!--<v-col cols="12" md="5">
+                            <v-select v-model="selectedOption" :items="options" class="ma-2" label="Tipo"
+                                variant="outlined" density="compact" hide-details></v-select>
+                        </v-col>
+                        <v-col cols="12" md="3">
+                            <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="outlined"
+                                prepend-inner-icon="mdi-calendar" @update:model-value="initialize()" density="compact"
+                                class="ma-2"></v-select><!--@update:model-value="initialize()"-->
+                        </v-col>
+                        <v-col cols="12" md="3">
+                            <v-select v-model="selectedMounth" :items="months" label="Selecciona un mes"
+                                variant="outlined" prepend-inner-icon="mdi-calendar" density="compact" class="ma-2"
+                                @update:model-value="initialize()"></v-select><!--@update:model-value="operationDetails()"-->
+                        </v-col>
+                        <!--<v-col cols="12" md="5">
                                             <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" elevation="2"
                                             prepend-inner-icon="mdi-file-excel" @click="exportToExcel">
                                                 Exportar a Excel
                                             </v-btn>
                                     </v-col>-->
-                </v-row>
-                    
-                   
+                    </v-row>
+
+
                     <v-row v-if="selectedOption === 'Sucursal' && mostrarFila">
                         <v-col cols="12" md="4">
-                            <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.branch_id" :items="branches" clearable
-                                label="Sucursales" prepend-icon="mdi-office-building" item-title="name" item-value="id"
-                                variant="underlined" :rules="selectRules"
+                            <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.branch_id"
+                                :items="branches" clearable label="Sucursales" prepend-icon="mdi-office-building"
+                                item-title="name" item-value="id" variant="underlined" :rules="selectRules"
                                 @update:model-value="selectBranches"></v-autocomplete>
                         </v-col>
                     </v-row>
 
                     <v-row v-if="selectedOption === 'Academia' && mostrarFila">
                         <v-col cols="12" md="4">
-                            <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.enrollment_id" :items="enrollments" clearable
-                                label="Academias" prepend-icon="mdi-school" item-title="name" item-value="id"
-                                variant="underlined" :rules="selectRules"
-                                @update:model-value="selectEnrollments"></v-autocomplete>
+                            <v-autocomplete :no-data-text="'No hay datos disponibles'"
+                                v-model="editedItem.enrollment_id" :items="enrollments" clearable label="Academias"
+                                prepend-icon="mdi-school" item-title="name" item-value="id" variant="underlined"
+                                :rules="selectRules" @update:model-value="selectEnrollments"></v-autocomplete>
                         </v-col>
                     </v-row>
-            </v-container>
-        </v-row>
+                </v-container>
+            </v-row>
             <v-col cols="12">
                 <v-row class="d-flex flex-wrap">
-        <v-col cols="2" class="pa-1">
-            <v-card class="pa-2" elevation="2" v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'" @click="filterResults('IP')">
-                <v-list-item :subtitle="formatNumber(ingresoProducts)" title="Ingreso Productos">
-                    <template v-slot:prepend>
-                        <v-avatar color="green">
-                            <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
-                        </v-avatar>
-                    </template>
-                </v-list-item>
-            </v-card>
-        </v-col>
-        <v-col cols="2" class="pa-1">
-            <v-card class="pa-2" elevation="2" v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'" @click="filterResults('GP')">
-                <v-list-item :subtitle="formatNumber(gastoProducts)" title="Gasto Productos">
-                    <template v-slot:prepend>
-                        <v-avatar color="red">
-                            <v-icon color="white">{{ 'mdi-minus-circle' }}</v-icon>
-                        </v-avatar>
-                    </template>
-                </v-list-item>
-            </v-card>
-        </v-col>
-        <v-col cols="2" class="pa-1">
-            <v-card class="pa-2" elevation="2" v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'" @click="filterResults('IS')">
-                <v-list-item :subtitle="formatNumber(ingresoServices)" title="Ingreso Servicio">
-                    <template v-slot:prepend>
-                        <v-avatar color="green">
-                            <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
-                        </v-avatar>
-                    </template>
-                </v-list-item>
-            </v-card>
-        </v-col>
-        <v-col cols="2" class="pa-1">
-            <v-card class="pa-2" elevation="2" v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'" @click="filterResults('GS')">
-                <v-list-item :subtitle="formatNumber(gastoServices)" title="Gasto Servicio">
-                    <template v-slot:prepend>
-                        <v-avatar color="red">
-                            <v-icon color="white">{{ 'mdi-minus-circle' }}</v-icon>
-                        </v-avatar>
-                    </template>
-                </v-list-item>
-            </v-card>
-        </v-col>
-        <v-col cols="2" class="pa-1">
-                <v-card class="pa-2" elevation="2">
-                    <v-list-item :subtitle="formatNumber(utilidades)" title="Utilidades">
-                        <template v-slot:prepend>
-                            <v-avatar color="green">
-                                <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
-                            </v-avatar>
-                        </template>
+                    <v-col cols="2" class="pa-1">
+                        <v-card class="pa-2" elevation="2"
+                            v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'"
+                            @click="filterResults('IP')">
+                            <v-list-item :subtitle="formatNumber(ingresoProducts)" title="Ingreso Productos">
+                                <template v-slot:prepend>
+                                    <v-avatar color="green">
+                                        <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
+                                    </v-avatar>
+                                </template>
+                            </v-list-item>
+                        </v-card>
+                    </v-col>
+                    <v-col cols="2" class="pa-1">
+                        <v-card class="pa-2" elevation="2"
+                            v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'"
+                            @click="filterResults('GP')">
+                            <v-list-item :subtitle="formatNumber(gastoProducts)" title="Gasto Productos">
+                                <template v-slot:prepend>
+                                    <v-avatar color="red">
+                                        <v-icon color="white">{{ 'mdi-minus-circle' }}</v-icon>
+                                    </v-avatar>
+                                </template>
+                            </v-list-item>
+                        </v-card>
+                    </v-col>
+                    <v-col cols="2" class="pa-1">
+                        <v-card class="pa-2" elevation="2"
+                            v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'"
+                            @click="filterResults('IS')">
+                            <v-list-item :subtitle="formatNumber(ingresoServices)" title="Ingreso Servicio">
+                                <template v-slot:prepend>
+                                    <v-avatar color="green">
+                                        <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
+                                    </v-avatar>
+                                </template>
+                            </v-list-item>
+                        </v-card>
+                    </v-col>
+                    <v-col cols="2" class="pa-1">
+                        <v-card class="pa-2" elevation="2"
+                            v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'"
+                            @click="filterResults('GS')">
+                            <v-list-item :subtitle="formatNumber(gastoServices)" title="Gasto Servicio">
+                                <template v-slot:prepend>
+                                    <v-avatar color="red">
+                                        <v-icon color="white">{{ 'mdi-minus-circle' }}</v-icon>
+                                    </v-avatar>
+                                </template>
+                            </v-list-item>
+                        </v-card>
+                    </v-col>
+                    <v-col cols="2" class="pa-1">
+                        <v-card class="pa-2" elevation="2">
+                            <v-list-item :subtitle="formatNumber(utilidades)" title="Utilidades">
+                                <template v-slot:prepend>
+                                    <v-avatar color="green">
+                                        <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
+                                    </v-avatar>
+                                </template>
 
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="2" class="pa-1">
-                <v-card class="pa-2" elevation="2">
-                    <v-list-item :subtitle="formatNumber(totalGastos)" title="Gastos">
-                        <template v-slot:prepend>
-                            <v-avatar color="red">
-                                <v-icon color="white">{{ 'mdi-minus-circle' }}</v-icon>
-                            </v-avatar>
-                        </template>
+                            </v-list-item>
+                        </v-card>
+                    </v-col>
+                    <v-col cols="2" class="pa-1">
+                        <v-card class="pa-2" elevation="2">
+                            <v-list-item :subtitle="formatNumber(totalGastos)" title="Gastos">
+                                <template v-slot:prepend>
+                                    <v-avatar color="red">
+                                        <v-icon color="white">{{ 'mdi-minus-circle' }}</v-icon>
+                                    </v-avatar>
+                                </template>
 
-                    </v-list-item>
-                </v-card>
-            </v-col>
-    </v-row>
+                            </v-list-item>
+                        </v-card>
+                    </v-col>
+                </v-row>
             </v-col>
             <!--<v-col cols="12" md="2">
                 <v-card class="pa-2 pl-0 mb-2" elevation="2">
@@ -313,57 +321,60 @@
                     </v-list-item>
                 </v-card>
             </v-col>-->
-        <v-row>
-            <v-col cols="12" md="12">
-                <v-container>
-                    <v-card-text>
-            <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
-                hide-details>
-            </v-text-field>
-            <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
-                :search="search" class="elevation-1" no-data-text="No hay datos disponibles"
-                no-results-text="No hay datos disponibles">
-                <template v-slot:item.file="{ item }">
-                    <v-icon v-if="item.file" @click="openDoc(item)" color="green">mdi-file-document-outline</v-icon>
-                    <!--<v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+            <v-row>
+                <v-col cols="12" md="12">
+                    <v-container>
+                        <v-card-text>
+                            <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar"
+                                single-line hide-details>
+                            </v-text-field>
+                            <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'"
+                                :items="results" :search="search" class="elevation-1"
+                                no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles">
+                                <template v-slot:item.file="{ item }">
+                                    <v-icon v-if="item.file" @click="openDoc(item)"
+                                        color="green">mdi-file-document-outline</v-icon>
+                                    <!--<v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
                         <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
                     </v-avatar>-->
-                </template>
-                <template v-slot:item.comment="{ item }">
-                    {{ getString(item.comment)}}
-                </template>
-                <template v-slot:item.revenue="{ item }">
-                {{ formatNumber(item.revenue)}}                                  
-                                          </template>
-                                          <template v-slot:item.expense="{ item }">
-                {{ formatNumber(item.expense)}}                                  
-                                          </template>
-                <template v-slot:top>
+                                </template>
+                                <template v-slot:item.comment="{ item }">
+                                    {{ getString(item.comment) }}
+                                </template>
+                                <template v-slot:item.revenue="{ item }">
+                                    {{ formatNumber(item.revenue) }}
+                                </template>
+                                <template v-slot:item.expense="{ item }">
+                                    {{ formatNumber(item.expense) }}
+                                </template>
+                                <template v-slot:top>
 
-                    <v-divider class="mx-4" inset vertical></v-divider>
-                    <v-spacer></v-spacer>
-                </template>
+                                    <v-divider class="mx-4" inset vertical></v-divider>
+                                    <v-spacer></v-spacer>
+                                </template>
 
-                <template v-slot:item.actions="{ item }">
-                    <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
+                                <template v-slot:item.actions="{ item }">
+                                    <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
                         mdi-pencil
                     </v-icon>
                     <v-icon size="25" color="red" @click="deleteItem(item)">
                         mdi-delete
                     </v-icon>-->
-                    <v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary"
-                        variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Editar operación"></v-btn>
-                    <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4"
-                        variant="tonal" elevation="1" title="Eliminar operación"></v-btn>
-                </template>
-            </v-data-table>
-        </v-card-text>
-                </v-container>
-            </v-col>
-        </v-row>
+                                    <v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)"
+                                        color="primary" variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
+                                        title="Editar operación"></v-btn>
+                                    <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)"
+                                        color="red-darken-4" variant="tonal" elevation="1"
+                                        title="Eliminar operación"></v-btn>
+                                </template>
+                            </v-data-table>
+                        </v-card-text>
+                    </v-container>
+                </v-col>
+            </v-row>
 
 
-    </v-card>
+        </v-card>
     </v-container>
 </template>
 <script>
@@ -557,14 +568,14 @@ export default {
                 }
             })
             .then((response) => {
-                this.branches = response.data.branches;                
+                this.branches = response.data.branches;
                 this.enrollments = response.data.enrollments;
                 this.business = response.data.business;
                 this.expenses = response.data.expenses;
                 this.revenues = response.data.revenues;
                 //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
             });
-            // Obtener el año actual
+        // Obtener el año actual
         const currentYear = new Date().getFullYear();
         // Llenar el arreglo years con los años, desde 2010 hasta el año actual
         for (let year = 2023; year <= currentYear; year++) {
@@ -639,20 +650,20 @@ export default {
 
     methods: {
         getString(str) {
-  // Encuentra la posición del primer espacio en la cadena
-  const firstSpaceIndex = str.indexOf(' ');
-  
-  // Si se encuentra un espacio, devuelve la subcadena después del espacio
-  if (firstSpaceIndex !== -1) {
-    return str.substring(firstSpaceIndex + 1);
-  }
-  
-  // Si no hay espacio, devuelve la cadena original
- return str;
-    },
+            // Encuentra la posición del primer espacio en la cadena
+            const firstSpaceIndex = str.indexOf(' ');
+
+            // Si se encuentra un espacio, devuelve la subcadena después del espacio
+            if (firstSpaceIndex !== -1) {
+                return str.substring(firstSpaceIndex + 1);
+            }
+
+            // Si no hay espacio, devuelve la cadena original
+            return str;
+        },
         filterResults(typeDetail) {
-      this.search = typeDetail;
-    },
+            this.search = typeDetail;
+        },
         exportToExcel() {
             // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
             let rows = [];
@@ -694,25 +705,18 @@ export default {
             XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
         },
         formatNumber(value) {
-            //return value.toLocaleString('es-ES');
-            // Si el valor es menor que 1000, devuelve el valor original sin formato
+            // Si el valor es menor que 1000, devuelve el valor original con dos decimales
             if (value < 1000) {
-                return value;
+                return (Math.round((value + Number.EPSILON) * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             }
 
             // Primero, redondea el valor a dos decimales
             value = Math.round((value + Number.EPSILON) * 100) / 100;
 
-            // Separa la parte entera de la parte decimal
-            let parts = value.toString().split(".");
-            let integerPart = parts[0];
-            let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+            // Convierte el valor a cadena con formato de número local (en-US)
+            let formattedValue = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-            // Agrega los separadores de miles
-            integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
-            // Combina la parte entera y la parte decimal
-            return integerPart + decimalPart;
+            return formattedValue;
         },
         selectBusiness() {
             this.editedItem.type = 'Negocio'
@@ -805,7 +809,7 @@ export default {
                     this.results = response.data.finances;
 
                     this.editedItem.control = this.results.length !== 0 ? this.results[0].control + 1 : 1;
-                    
+
                     //this.visibility = !this.editedItem.control ? false : true;
 
                     //this.editedItem.control = !this.results ? 0 : this.results[0].control + 1 ;// Obtener el numero de control realizado
@@ -903,7 +907,7 @@ export default {
                 }).finally(() => {
                     this.showAlert("success", "Operación eliminada correctamente", 3000);
                     //this.initialize();
-          });
+                });
             this.closeDelete()
         },
         close() {
@@ -913,13 +917,13 @@ export default {
             this.dialog = false;
             this.file = '';
             this.editedItem.amount = '';
-                this.editedItem.comment = '';
-                this.editedItem.file = '';
-                this.editedItem.expense_id = '';
-                this.editedItem.revenue_id = '';
-                this.editedItem.id = '';
-                //this.selectedOption = 'Negocio',
-                //this.initialize();
+            this.editedItem.comment = '';
+            this.editedItem.file = '';
+            this.editedItem.expense_id = '';
+            this.editedItem.revenue_id = '';
+            this.editedItem.id = '';
+            //this.selectedOption = 'Negocio',
+            //this.initialize();
         },
         closeDelete() {
             this.dialogDelete = false;
@@ -951,10 +955,10 @@ export default {
                             this.editedItem.expense_id = '',
                             this.editedItem.revenue_id = '',
                             this.editedItem.id = '',
-                        this.file = '';
+                            this.file = '';
                     }).finally(() => {
                         this.showAlert("success", "Operación editada correctamente", 3000);
-                            this.initialize();
+                        this.initialize();
                     });
             } else {
                 this.valid = false;
@@ -977,11 +981,11 @@ export default {
                             this.editedItem.expense_id = '',
                             this.editedItem.revenue_id = '',
                             this.editedItem.id = '',
-                        this.file = '';
+                            this.file = '';
                     }).finally(() => {
                         this.showAlert("success", "Registro de operación creado correctamente", 3000);
-                            this.initialize();
-          });
+                        this.initialize();
+                    });
                 //})
             }
             this.close()
@@ -989,4 +993,3 @@ export default {
     },
 }
 </script>
-

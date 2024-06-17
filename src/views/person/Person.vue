@@ -1,16 +1,8 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
-  <v-snackbar
-    class="mt-12"
-    location="right top"
-    :timeout="sb_timeout"
-    :color="sb_type"
-    elevation="24"
-    :multi-line="true"
-    vertical
-    v-model="snackbar"
-  >
+  <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24"
+    :multi-line="true" vertical v-model="snackbar">
     <v-row>
       <v-col md="2">
         <v-avatar :icon="sb_icon" color="sb_type" size="40"></v-avatar>
@@ -27,48 +19,23 @@
         <v-row align="center">
           <v-col cols="12" md="3" class="grow ml-3">
             <span class="text-subtitle-1">
-              <strong>Listado de Profesionales</strong></span
-            >
+              <strong>Listado de Profesionales</strong></span>
           </v-col>
           <v-col cols="12" md="8" class="text-right">
-            <v-btn
-              class="text-subtitle-1"
-              color="#E7E9E9"
-              variant="flat"
-              elevation="2"
-              prepend-icon="mdi-finance"
-              @click="showWinner()"
-            >
+            <v-btn class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-finance"
+              @click="showWinner()">
               Ganancias
             </v-btn>
-            <v-btn
-              class="text-subtitle-1 ml-1"
-              color="#E7E9E9"
-              variant="flat"
-              elevation="2"
-              prepend-icon="mdi-clipboard-text"
-              @click="chargeData()"
-            >
+            <v-btn class="text-subtitle-1 ml-1" color="#E7E9E9" variant="flat" elevation="2"
+              prepend-icon="mdi-clipboard-text" @click="chargeData()">
               Reservaciones
             </v-btn>
-            <v-btn
-              class="text-subtitle-1 ml-1"
-              color="#E7E9E9"
-              variant="flat"
-              elevation="2"
-              prepend-icon="mdi-timer"
-              @click="showAsist()"
-            >
+            <v-btn class="text-subtitle-1 ml-1" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-timer"
+              @click="showAsist()">
               Asistencias
             </v-btn>
-            <v-btn
-              class="text-subtitle-1 ml-1"
-              color="#E7E9E9"
-              variant="flat"
-              elevation="2"
-              prepend-icon="mdi-plus-circle"
-              @click="showAddProfessional()"
-            >
+            <v-btn class="text-subtitle-1 ml-1" color="#E7E9E9" variant="flat" elevation="2"
+              prepend-icon="mdi-plus-circle" @click="showAddProfessional()">
               Agregar Profesional
             </v-btn>
             <v-dialog v-model="dialog" max-width="1000px">
@@ -80,14 +47,8 @@
                   <v-form v-model="valid" enctype="multipart/form-data">
                     <v-row>
                       <v-col cols="12" md="6">
-                        <v-text-field
-                          v-model="editedItem.name"
-                          clearable
-                          label="Nombre y Apellidos"
-                          prepend-icon="mdi-account-tie-outline"
-                          variant="underlined"
-                          :rules="nameRules"
-                        >
+                        <v-text-field v-model="editedItem.name" clearable label="Nombre y Apellidos"
+                          prepend-icon="mdi-account-tie-outline" variant="underlined" :rules="nameRules">
                         </v-text-field>
                       </v-col>
                       <!--<v-col cols="12" md="6">
@@ -113,107 +74,51 @@
                         </v-text-field>
                       </v-col>-->
                       <v-col cols="12" md="6">
-                        <v-text-field
-                          v-model="editedItem.email"
-                          clearable
-                          label="Correo Electrónico"
-                          prepend-icon="mdi-email-outline"
-                          variant="underlined"
-                          :rules="emailRules"
-                          @change="handleEmailChange"
-                        >
+                        <v-text-field v-model="editedItem.email" clearable label="Correo Electrónico"
+                          prepend-icon="mdi-email-outline" variant="underlined" :rules="emailRules"
+                          @change="handleEmailChange">
                         </v-text-field>
                       </v-col>
 
                       <v-col cols="12" md="6">
-                        <v-text-field
-                          v-model="editedItem.user"
-                          clearable
-                          label="Usuario"
-                          prepend-icon="mdi-email-outline"
-                          variant="underlined"
-                        >
+                        <v-text-field v-model="editedItem.user" clearable label="Usuario"
+                          prepend-icon="mdi-email-outline" variant="underlined">
                         </v-text-field>
                       </v-col>
                       <v-col cols="12" md="6">
-                        <v-text-field
-                          v-if="mostrar"
-                          v-model="editedItem.password"
-                          clearable
-                          label="Contraseña"
-                          prepend-icon="mdi-form-textbox-password"
-                          variant="underlined"
-                        >
+                        <v-text-field v-if="mostrar" v-model="editedItem.password" clearable label="Contraseña"
+                          prepend-icon="mdi-form-textbox-password" variant="underlined">
                         </v-text-field>
                       </v-col>
                     </v-row>
                     <v-row>
                       <v-col cols="12" md="4">
-                        <v-text-field
-                          v-model="editedItem.phone"
-                          clearable
-                          label="Teléfono"
-                          prepend-icon="mdi-phone-outline"
-                          placeholder="+56912345678"
-                          variant="underlined"
-                          :rules="mobileRules"
-                        >
+                        <v-text-field v-model="editedItem.phone" clearable label="Teléfono"
+                          prepend-icon="mdi-phone-outline" placeholder="+56912345678" variant="underlined"
+                          :rules="mobileRules">
                         </v-text-field>
                       </v-col>
                       <v-col cols="12" md="4">
-                        <v-autocomplete
-                          :no-data-text="'No hay datos disponibles'"
-                          v-model="editedItem.charge_id"
-                          :items="charges"
-                          clearable
-                          label="Cargo"
-                          prepend-icon="mdi-account-tie-outline"
-                          item-title="name"
-                          item-value="id"
-                          variant="underlined"
-                          :rules="selectRules"
-                        ></v-autocomplete>
+                        <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.charge_id"
+                          :items="charges" clearable label="Cargo" prepend-icon="mdi-account-tie-outline"
+                          item-title="name" item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
                       </v-col>
                       <v-col cols="12" md="4">
-                        <v-text-field
-                          v-model="editedItem.retention"
-                          clearable
-                          label="% Impuesto"
-                          prepend-icon="mdi-percent"
-                          variant="underlined"
-                          :rules="pago"
-                        >
+                        <v-text-field v-model="editedItem.retention" clearable label="% Impuesto"
+                          prepend-icon="mdi-percent" variant="underlined" :rules="pago">
                         </v-text-field>
                       </v-col>
                     </v-row>
                     <v-row>
                       <v-col cols="12" md="6">
-                        <v-file-input
-                          clearable
-                          v-model="file"
-                          ref="fileInput"
-                          label="Avatar Profesional"
-                          variant="underlined"
-                          density="compact"
-                          name="file"
-                          accept=".png, .jpg, .jpeg"
-                          @change="onFileSelected"
-                        >
+                        <v-file-input clearable v-model="file" ref="fileInput" label="Avatar Profesional"
+                          variant="underlined" density="compact" name="file" accept=".png, .jpg, .jpeg"
+                          @change="onFileSelected">
                         </v-file-input>
                       </v-col>
                       <v-col cols="12" md="6">
-                        <v-card
-                          elevation="6"
-                          class="mx-auto"
-                          max-width="120"
-                          max-height="120"
-                        >
-                          <img
-                            v-if="imagenDisponible()"
-                            :src="imgedit"
-                            height="120"
-                            width="120"
-                          />
+                        <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
+                          <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120" />
                         </v-card>
                       </v-col>
                     </v-row>
@@ -224,12 +129,7 @@
                       <v-btn color="#E7E9E9" variant="flat" @click="close">
                         Cancelar
                       </v-btn>
-                      <v-btn
-                        color="#F18254"
-                        variant="flat"
-                        @click="save"
-                        :disabled="!valid"
-                      >
+                      <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
                         Aceptar
                       </v-btn>
                     </v-card-actions>
@@ -245,8 +145,7 @@
                 </v-toolbar>
 
                 <v-card-text class="mt-2 mb-2">
-                  ¿Desea eliminar el Profesional seleccionado?</v-card-text
-                >
+                  ¿Desea eliminar el Profesional seleccionado?</v-card-text>
                 <v-divider></v-divider>
                 <v-card-actions>
                   <v-spacer></v-spacer>
@@ -272,34 +171,20 @@
                     <v-container>
                       <v-row>
                         <v-col cols="12">
-                          <v-text-field
-                            v-model="confirmPassword"
-                            label="Nueva Contraseña"
+                          <v-text-field v-model="confirmPassword" label="Nueva Contraseña"
                             :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
                             :type="showConfirmPassword ? 'text' : 'password'"
                             @click:append="showConfirmPassword = !showConfirmPassword"
                             hint="Haz clic en el ícono para mostrar/ocultar la contraseña"
-                            variant="underlined"
-                          ></v-text-field>
+                            variant="underlined"></v-text-field>
                         </v-col>
                         <v-col cols="12">
-                          <v-text-field
-                            v-model="confirmNewPassword"
-                            label="Confirmar Nueva Contraseña"
-                            :append-icon="
-                              showConfirmNewPassword ? 'mdi-eye' : 'mdi-eye-off'
-                            "
-                            :type="showConfirmNewPassword ? 'text' : 'password'"
-                            @click:append="
+                          <v-text-field v-model="confirmNewPassword" label="Confirmar Nueva Contraseña" :append-icon="showConfirmNewPassword ? 'mdi-eye' : 'mdi-eye-off'
+                            " :type="showConfirmNewPassword ? 'text' : 'password'" @click:append="
                               showConfirmNewPassword = !showConfirmNewPassword
-                            "
-                            hint="Haz clic en el ícono para mostrar/ocultar la contraseña"
-                            variant="underlined"
-                          ></v-text-field>
-                          <v-alert
-                            v-if="confirmPassword !== confirmNewPassword"
-                            type="error"
-                          >
+                              " hint="Haz clic en el ícono para mostrar/ocultar la contraseña"
+                            variant="underlined"></v-text-field>
+                          <v-alert v-if="confirmPassword !== confirmNewPassword" type="error">
                             Las contraseñas no coinciden.
                           </v-alert>
                         </v-col>
@@ -311,12 +196,8 @@
                       <v-btn color="#E7E9E9" variant="flat" @click="closedialogPas">
                         Cancelar
                       </v-btn>
-                      <v-btn
-                        color="#F18254"
-                        variant="flat"
-                        @click="shangePassword"
-                        :disabled="confirmPassword !== confirmNewPassword"
-                      >
+                      <v-btn color="#F18254" variant="flat" @click="shangePassword"
+                        :disabled="confirmPassword !== confirmNewPassword">
                         Aceptar
                       </v-btn>
                     </v-card-actions>
@@ -328,34 +209,18 @@
         </v-row>
       </v-toolbar>
       <v-card-text>
-        <v-text-field
-          class="mt-1 mb-1"
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Buscar"
-          single-line
-          hide-details
-        >
+        <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
+          hide-details>
         </v-text-field>
-        <v-data-table
-          :headers="headers"
-          :items-per-page-text="'Elementos por páginas'"
-          :search="search"
-          :items="results"
-          class="elevation-1"
-          no-results-text="No hay datos disponibles"
-          no-data-text="No hay datos disponibles"
-        >
+        <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search"
+          :items="results" class="elevation-1" no-results-text="No hay datos disponibles"
+          no-data-text="No hay datos disponibles">
           <template v-slot:item.retention="{ item }">
             {{ item.retention ? item.retention + "%" : "" }}
           </template>
           <template v-slot:item.name="{ item }">
             <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-              <v-img
-                :src="'https://api2.simplifies.cl/api/images/' + item.image_url"
-                alt="image"
-              ></v-img
-              ><!--+ '?$' + Date.now()
+              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img><!--+ '?$' + Date.now()
                 -->
             </v-avatar>
             {{ item.name }}
@@ -370,46 +235,14 @@
           <v-icon size="25" color="red" @click="deleteItem(item)">
             mdi-delete
           </v-icon>-->
-            <v-btn
-              density="comfortable"
-              icon="mdi-pencil"
-              @click="editItem(item)"
-              color="primary"
-              variant="tonal"
-              elevation="1"
-              class="mr-1 mt-1 mb-1"
-              title="Editar Profesional"
-            ></v-btn>
-            <v-btn
-              density="comfortable"
-              icon="mdi-calendar-blank"
-              @click="showFreeday(item)"
-              color="green"
-              variant="tonal"
-              elevation="1"
-              class="mr-1 mt-1 mb-1"
-              title="Días libres"
-            ></v-btn>
-            <v-btn
-              density="comfortable"
-              icon="mdi-lock-reset"
-              @click="changePass(item)"
-              color="teal"
-              variant="tonal"
-              elevation="1"
-              class="mr-1 mt-1 mb-1"
-              title="Modificar contraseña"
-            ></v-btn>
-            <v-btn
-              density="comfortable"
-              icon="mdi-timer-off"
-              @click="showLater(item)"
-              color="orange"
-              variant="tonal"
-              elevation="1"
-              class="mr-1 mt-1 mb-1"
-              title="Legadas tardes por sucursal"
-            ></v-btn>
+            <v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary" variant="tonal"
+              elevation="1" class="mr-1 mt-1 mb-1" title="Editar Profesional"></v-btn>
+            <v-btn density="comfortable" icon="mdi-calendar-blank" @click="showFreeday(item)" color="green"
+              variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Días libres"></v-btn>
+            <v-btn density="comfortable" icon="mdi-lock-reset" @click="changePass(item)" color="teal" variant="tonal"
+              elevation="1" class="mr-1 mt-1 mb-1" title="Modificar contraseña"></v-btn>
+            <v-btn density="comfortable" icon="mdi-timer-off" @click="showLater(item)" color="orange" variant="tonal"
+              elevation="1" class="mr-1 mt-1 mb-1" title="Legadas tardes por sucursal"></v-btn>
             <!--<v-btn
               density="comfortable"
               icon="mdi-clipboard-text"
@@ -420,15 +253,8 @@
               class="mr-1 mt-1 mb-1"
               title="Ver Reservaciones"
             ></v-btn>-->
-            <v-btn
-              density="comfortable"
-              icon="mdi-delete"
-              @click="deleteItem(item)"
-              color="red-darken-4"
-              variant="tonal"
-              elevation="1"
-              title="Eliminar Profesional"
-            ></v-btn>
+            <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4"
+              variant="tonal" elevation="1" title="Eliminar Profesional"></v-btn>
           </template>
         </v-data-table>
       </v-card-text>
@@ -440,8 +266,7 @@
             <v-row align="center">
               <v-col cols="12" md="8" class="grow ml-4">
                 <span class="text-h8">
-                  <strong>Monto generado por Profesionales</strong></span
-                >
+                  <strong>Monto generado por Profesionales</strong></span>
               </v-col>
               <v-spacer></v-spacer>
               <!--<v-col cols="12" md="3">
@@ -462,77 +287,43 @@
             <v-row>
               <!-- Primera columna -->
               <v-col cols="12" sm="6" md="3">
-                <v-menu
-                  v-model="menu"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
+                <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
+                  offset-y min-width="290px">
                   <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-bind="props"
-                      :modelValue="dateFormatted"
-                      variant="outlined"
-                      append-inner-icon="mdi-calendar"
-                      label="Fecha inicial"
-                    ></v-text-field>
+                    <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined"
+                      append-inner-icon="mdi-calendar" label="Fecha inicial"></v-text-field>
                   </template>
                   <v-locale-provider locale="es">
-                    <v-date-picker
-                      header="Calendario"
-                      title="Seleccione la fecha"
-                      color="orange lighten-2"
-                      :modelValue="input"
-                      @update:modelValue="updateDate"
-                      format="yyyy-MM-dd"
-                      :max="dateFormatted2"
-                    ></v-date-picker>
+                    <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                      :modelValue="input" @update:modelValue="updateDate" format="yyyy-MM-dd"
+                      :max="dateFormatted2"></v-date-picker>
                   </v-locale-provider>
                 </v-menu>
               </v-col>
               <!-- Segunda columna -->
               <v-col cols="12" sm="6" md="3">
-                <v-menu
-                  v-model="menu2"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
+                <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
+                  offset-y min-width="290px">
                   <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-bind="props"
-                      :modelValue="dateFormatted2"
-                      variant="outlined"
-                      append-inner-icon="mdi-calendar"
-                      label="Fecha final"
-                    ></v-text-field>
+                    <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
+                      append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
                   </template>
                   <v-locale-provider locale="es">
-                    <v-date-picker
-                      header="Calendario"
-                      title="Seleccione la fecha"
-                      color="orange lighten-2"
-                      :modelValue="getDate2"
-                      @update:modelValue="updateDate1"
-                      format="yyyy-MM-dd"
-                      :min="dateFormatted"
-                    ></v-date-picker>
+                    <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                      :modelValue="getDate2" @update:modelValue="updateDate1" format="yyyy-MM-dd"
+                      :min="dateFormatted"></v-date-picker>
                   </v-locale-provider>
                 </v-menu>
               </v-col>
               <v-col cols="12" sm="12" md="3">
-          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
-            label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
-            variant="outlined"></v-autocomplete><!-- @update:model-value="initialize()">-->
-        </v-col>
+                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+                  v-if="this.mostrarFila" clearable label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
+                  item-title="name" item-value="id"
+                  variant="outlined"></v-autocomplete><!-- @update:model-value="initialize()">-->
+              </v-col>
               <v-col cols="12" md="1">
                 <v-btn icon @click="updateDate2" color="#F18254">
-                  <v-icon>mdi-magnify</v-icon></v-btn
-                >
+                  <v-icon>mdi-magnify</v-icon></v-btn>
               </v-col>
               <v-col cols="12">
                 <v-alert border type="info" variant="outlined" density="compact">
@@ -540,114 +331,56 @@
                 </v-alert>
                 <v-card class="mx-auto overflow-visible">
                   <v-card-text>
-                    <v-text-field
-                      class="mt-1 mb-1"
-                      v-model="search2"
-                      append-icon="mdi-magnify"
-                      label="Buscar"
-                      single-line
-                      hide-details
-                    >
+                    <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar"
+                      single-line hide-details>
                     </v-text-field>
-                    <v-data-table
-                      :headers="headers1"
-                      :items-per-page-text="'Elementos por páginas'"
-                      :items="winner"
-                      
-                      :search="search2"
-                      class="elevation-2"
-                      no-results-text="No hay datos disponibles"
-                      no-data-text="No hay datos disponibles"
-                    ><!--:group-by="groupBy"-->
-                      <template
-                        v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }"
-                      >
+                    <v-data-table :headers="headers1" :items-per-page-text="'Elementos por páginas'" :items="winner"
+                      :search="search2" class="elevation-2" no-results-text="No hay datos disponibles"
+                      no-data-text="No hay datos disponibles"><!--:group-by="groupBy"-->
+                      <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
                         <tr>
                           <td :colspan="columns.length">
-                            <VBtn
-                              size="small"
-                              variant="text"
-                              :icon="isGroupOpen(item) ? '$expand' : '$next'"
-                              @click="toggleGroup(item)"
-                            ></VBtn>
+                            <VBtn size="small" variant="text" :icon="isGroupOpen(item) ? '$expand' : '$next'"
+                              @click="toggleGroup(item)"></VBtn>
                             {{ item.value }}
                           </td>
                         </tr>
                       </template>
                       <template v-slot:item.tip="{ item }">
-                        <v-chip
-                          class="text-uppercase font-weight-bold"
-                          size="small"
-                          label
-                        >
-                          {{ formatNumber(item.tip) }}</v-chip
-                        >
+                        <v-chip class="text-uppercase font-weight-bold" size="small" label>
+                          {{ formatNumber(item.tip) }}</v-chip>
                       </template>
                       <template v-slot:item.bonus="{ item }">
-                        <v-chip
-                          class="text-uppercase font-weight-bold"
-                          size="small"
-                          label
-                        >
-                          {{ formatNumber(item.bonus) }}</v-chip
-                        >
+                        <v-chip class="text-uppercase font-weight-bold" size="small" label>
+                          {{ formatNumber(item.bonus) }}</v-chip>
                       </template>
                       <template v-slot:item.amount="{ item }">
-                        <v-chip
-                          class="text-uppercase font-weight-bold"
-                          size="small"
-                          label
-                        >
-                          {{ formatNumber(item.amount) }}</v-chip
-                        >
+                        <v-chip class="text-uppercase font-weight-bold" size="small" label>
+                          {{ formatNumber(item.amount) }}</v-chip>
                       </template>
                       <template v-slot:item.amountGenerate="{ item }">
-                        <v-chip
-                          class="text-uppercase font-weight-bold"
-                          size="small"
-                          label
-                        >
-                          {{ formatNumber(item.amountGenerate) }}</v-chip
-                        >
+                        <v-chip class="text-uppercase font-weight-bold" size="small" label>
+                          {{ formatNumber(item.amountGenerate) }}</v-chip>
                       </template>
                       <template v-slot:item.retention="{ item }">
-                        <v-chip
-                          class="text-uppercase font-weight-bold"
-                          size="small"
-                          label
-                        >
-                          {{ formatNumber(item.retention) }}</v-chip
-                        >
+                        <v-chip class="text-uppercase font-weight-bold" size="small" label>
+                          {{ formatNumber(item.retention) }}</v-chip>
                       </template>
                       <template v-slot:item.tip80="{ item }">
-                        <v-chip
-                          class="text-uppercase font-weight-bold"
-                          size="small"
-                          label
-                        >
-                          {{ formatNumber(item.tip80) }}</v-chip
-                        >
+                        <v-chip class="text-uppercase font-weight-bold" size="small" label>
+                          {{ formatNumber(item.tip80) }}</v-chip>
                       </template>
                       <template v-slot:item.total="{ item }">
-                        <v-chip
-                          class="text-uppercase font-weight-bold"
-                          size="small"
-                          label
-                        >
-                          {{ formatNumber(item.total) }}</v-chip
-                        >
+                        <v-chip class="text-uppercase font-weight-bold" size="small" label>
+                          {{ formatNumber(item.total) }}</v-chip>
                       </template>
                       <template v-slot:item.name="{ item }">
-                      <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                        <v-img
-                          :src="'https://api2.simplifies.cl/api/images/' + item.image_url"
-                          alt="image"
-                        ></v-img
-                        ><!--+ '?$' + Date.now()
+                        <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
+                          <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img><!--+ '?$' + Date.now()
                           -->
-                      </v-avatar>
-                      {{ item.name }}
-                    </template>
+                        </v-avatar>
+                        {{ item.name }}
+                      </template>
                     </v-data-table>
                   </v-card-text>
                 </v-card>
@@ -669,19 +402,12 @@
             <v-row align="center">
               <v-col cols="12" md="8" class="grow ml-4">
                 <span class="text-h8">
-                  <strong>Llegadas tardes por sucursal</strong></span
-                >
+                  <strong>Llegadas tardes por sucursal</strong></span>
               </v-col>
               <v-spacer></v-spacer>
               <v-col cols="12" md="3">
-                <v-btn
-                  class="text-subtitle-1 ml-12"
-                  color="#E7E9E9"
-                  variant="flat"
-                  elevation="2"
-                  prepend-icon="mdi-file-excel"
-                  @click="exportToExcel1"
-                >
+                <v-btn class="text-subtitle-1 ml-12" color="#E7E9E9" variant="flat" elevation="2"
+                  prepend-icon="mdi-file-excel" @click="exportToExcel1">
                   Exportar a Excel
                 </v-btn>
               </v-col>
@@ -691,86 +417,43 @@
             <v-row>
               <!-- Primera columna -->
               <v-col cols="12" sm="6" md="3">
-                <v-menu
-                  v-model="menu"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
+                <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
+                  offset-y min-width="290px">
                   <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-bind="props"
-                      :modelValue="dateFormatted"
-                      variant="outlined"
-                      append-inner-icon="mdi-calendar"
-                      label="Fecha inicial"
-                    ></v-text-field>
+                    <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined"
+                      append-inner-icon="mdi-calendar" label="Fecha inicial"></v-text-field>
                   </template>
                   <v-locale-provider locale="es">
-                    <v-date-picker
-                      header="Calendario"
-                      title="Seleccione la fecha"
-                      color="orange lighten-2"
-                      :modelValue="input"
-                      @update:modelValue="updateDate"
-                      format="yyyy-MM-dd"
-                      :max="dateFormatted2"
-                    ></v-date-picker>
+                    <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                      :modelValue="input" @update:modelValue="updateDate" format="yyyy-MM-dd"
+                      :max="dateFormatted2"></v-date-picker>
                   </v-locale-provider>
                 </v-menu>
               </v-col>
               <!-- Segunda columna -->
               <v-col cols="12" sm="6" md="3">
-                <v-menu
-                  v-model="menu2"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
+                <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
+                  offset-y min-width="290px">
                   <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-bind="props"
-                      :modelValue="dateFormatted2"
-                      variant="outlined"
-                      append-inner-icon="mdi-calendar"
-                      label="Fecha final"
-                    ></v-text-field>
+                    <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
+                      append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
                   </template>
                   <v-locale-provider locale="es">
-                    <v-date-picker
-                      header="Calendario"
-                      title="Seleccione la fecha"
-                      color="orange lighten-2"
-                      :modelValue="getDate2"
-                      @update:modelValue="updateDate1"
-                      format="yyyy-MM-dd"
-                      :min="dateFormatted"
-                    ></v-date-picker>
+                    <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                      :modelValue="getDate2" @update:modelValue="updateDate1" format="yyyy-MM-dd"
+                      :min="dateFormatted"></v-date-picker>
                   </v-locale-provider>
                 </v-menu>
               </v-col>
               <v-col cols="12" sm="12" md="3">
-                <v-autocomplete
-                  :no-data-text="'No hay datos disponibles'"
-                  v-model="branch_id"
-                  :items="branches"
-                  v-if="this.mostrarFila"
-                  label="Seleccione una Sucursal"
-                  prepend-inner-icon="mdi-store"
-                  item-title="name"
-                  item-value="id"
-                  variant="outlined"
-                ></v-autocomplete
-                ><!--@update:model-value="initialize()"-->
+                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+                  v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
+                  item-title="name" item-value="id"
+                  variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
               </v-col>
               <v-col cols="12" md="1">
                 <v-btn icon @click="updateDate3" color="#F18254">
-                  <v-icon>mdi-magnify</v-icon></v-btn
-                >
+                  <v-icon>mdi-magnify</v-icon></v-btn>
               </v-col>
               <v-col cols="12">
                 <v-alert border type="info" variant="outlined" density="compact">
@@ -779,24 +462,12 @@
               </v-col>
             </v-row>
             <v-card-text>
-              <v-text-field
-                class="mt-1 mb-1"
-                v-model="search3"
-                append-icon="mdi-magnify"
-                label="Buscar"
-                single-line
-                hide-details
-              >
+              <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar" single-line
+                hide-details>
               </v-text-field>
-              <v-data-table
-                :headers="headers2"
-                :items-per-page-text="'Elementos por páginas'"
-                :items="laters"
-                :search="search3"
-                class="elevation-2"
-                no-results-text="No hay datos disponibles"
-                no-data-text="No hay datos disponibles"
-              >
+              <v-data-table :headers="headers2" :items-per-page-text="'Elementos por páginas'" :items="laters"
+                :search="search3" class="elevation-2" no-results-text="No hay datos disponibles"
+                no-data-text="No hay datos disponibles">
               </v-data-table>
             </v-card-text>
           </v-container>
@@ -812,100 +483,53 @@
       <v-dialog v-model="dialogAsist" fullscreen transition="dialog-bottom-transition">
         <v-card>
           <v-toolbar color="#F18254">
-            <span class="text-subtitle-1 ml-4"
-              >Asistencias de profesionales por sucursales</span
-            >
+            <span class="text-subtitle-1 ml-4">Asistencias de profesionales por sucursales</span>
             <v-spacer></v-spacer>
           </v-toolbar>
           <v-container>
             <v-row>
               <!-- Primera columna -->
               <v-col cols="12" sm="6" md="3">
-                <v-menu
-                  v-model="menu"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
+                <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
+                  offset-y min-width="290px">
                   <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-bind="props"
-                      :modelValue="dateFormatted"
-                      variant="outlined"
-                      append-inner-icon="mdi-calendar"
-                      label="Fecha inicial"
-                    ></v-text-field>
+                    <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined"
+                      append-inner-icon="mdi-calendar" label="Fecha inicial"></v-text-field>
                   </template>
                   <v-locale-provider locale="es">
-                    <v-date-picker
-                      header="Calendario"
-                      title="Seleccione la fecha"
-                      color="orange lighten-2"
-                      :modelValue="input"
-                      @update:model-value="updateDate"
-                      format="yyyy-MM-dd"
-                      :max="dateFormatted2"
-                    ></v-date-picker>
+                    <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                      :modelValue="input" @update:model-value="updateDate" format="yyyy-MM-dd"
+                      :max="dateFormatted2"></v-date-picker>
                   </v-locale-provider>
                 </v-menu>
               </v-col>
               <!-- Segunda columna -->
               <v-col cols="12" sm="6" md="3">
-                <v-menu
-                  v-model="menu2"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
+                <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
+                  offset-y min-width="290px">
                   <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-bind="props"
-                      :modelValue="dateFormatted2"
-                      variant="outlined"
-                      append-inner-icon="mdi-calendar"
-                      label="Fecha final"
-                    ></v-text-field>
+                    <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
+                      append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
                   </template>
                   <v-locale-provider locale="es">
-                    <v-date-picker
-                      header="Calendario"
-                      title="Seleccione la fecha"
-                      color="orange lighten-2"
-                      :modelValue="getDate2"
-                      format="yyyy-MM-dd"
-                      :min="dateFormatted"
-                      @update:model-value="updateDate1"
-                    ></v-date-picker
-                    ><!--@update:model-value="updateDate2"-->
+                    <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                      :modelValue="getDate2" format="yyyy-MM-dd" :min="dateFormatted"
+                      @update:model-value="updateDate1"></v-date-picker><!--@update:model-value="updateDate2"-->
                   </v-locale-provider>
                 </v-menu>
               </v-col>
               <v-col cols="12" sm="12" md="3">
-                <v-autocomplete
-                  :no-data-text="'No hay datos disponibles'"
-                  v-model="branch_id"
-                  :items="branches"
-                  label="Seleccione una Sucursal"
-                  prepend-inner-icon="mdi-store"
-                  item-title="name"
-                  item-value="id"
-                  variant="outlined"
-                ></v-autocomplete
-                ><!--@update:model-value="onBranchChange"-->
+                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+                  label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
+                  variant="outlined"></v-autocomplete><!--@update:model-value="onBranchChange"-->
               </v-col>
               <v-col cols="12" md="1">
                 <v-btn icon @click="updateDate5" color="#F18254">
-                  <v-icon>mdi-magnify</v-icon></v-btn
-                >
+                  <v-icon>mdi-magnify</v-icon></v-btn>
               </v-col>
               <v-col cols="12" md="12">
                 <v-card elevation="2">
-                  <v-tabs v-model="tabBar" color="rgb(241, 130, 84)" elevation="6"
-                    ><!-- @click="handleTabChange"-->
+                  <v-tabs v-model="tabBar" color="rgb(241, 130, 84)" elevation="6"><!-- @click="handleTabChange"-->
                     <v-tab value="one">Llegadas tardes por profesional</v-tab>
                     <v-tab value="two">Mejores asistencias por profesional</v-tab>
                   </v-tabs>
@@ -916,24 +540,12 @@
                           <p v-html="formTitleAsist1"></p>
                         </v-alert>
                         <v-card-text>
-                          <v-text-field
-                            class="mt-1 mb-1"
-                            v-model="search5"
-                            append-icon="mdi-magnify"
-                            label="Buscar"
-                            single-line
-                            hide-details
-                          >
+                          <v-text-field class="mt-1 mb-1" v-model="search5" append-icon="mdi-magnify" label="Buscar"
+                            single-line hide-details>
                           </v-text-field>
-                          <v-data-table
-                            :headers="headers3"
-                            :items-per-page-text="'Elementos por páginas'"
-                            :items="asistLate"
-                            :search="search5"
-                            class="elevation-2"
-                            no-results-text="No hay datos disponibles"
-                            no-data-text="No hay datos disponibles"
-                          >
+                          <v-data-table :headers="headers3" :items-per-page-text="'Elementos por páginas'"
+                            :items="asistLate" :search="search5" class="elevation-2"
+                            no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
                           </v-data-table>
                         </v-card-text>
                       </v-window-item>
@@ -943,24 +555,12 @@
                           <p v-html="formTitleAsist2"></p>
                         </v-alert>
                         <v-card-text>
-                          <v-text-field
-                            class="mt-1 mb-1"
-                            v-model="search6"
-                            append-icon="mdi-magnify"
-                            label="Buscar"
-                            single-line
-                            hide-details
-                          >
+                          <v-text-field class="mt-1 mb-1" v-model="search6" append-icon="mdi-magnify" label="Buscar"
+                            single-line hide-details>
                           </v-text-field>
-                          <v-data-table
-                            :headers="headers4"
-                            :items-per-page-text="'Elementos por páginas'"
-                            :items="asistTime"
-                            :search="search6"
-                            class="elevation-2"
-                            no-results-text="No hay datos disponibles"
-                            no-data-text="No hay datos disponibles"
-                          >
+                          <v-data-table :headers="headers4" :items-per-page-text="'Elementos por páginas'"
+                            :items="asistTime" :search="search6" class="elevation-2"
+                            no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
                           </v-data-table>
                         </v-card-text>
                       </v-window-item>
@@ -999,13 +599,8 @@
                 <tr v-for="(freeday, index) in freedays" :key="index">
                   <td>{{ freeday.nombre }}</td>
                   <td>
-                    <v-switch
-                      class="mx-0 pa-0"
-                      density="compact"
-                      inset
-                      color="amber-darken-4"
-                      v-model="freeday.esLaboral"
-                    ></v-switch>
+                    <v-switch class="mx-0 pa-0" density="compact" inset color="amber-darken-4"
+                      v-model="freeday.esLaboral"></v-switch>
                   </td>
                   <td v-if="freeday.esLaboral">Descanso</td>
                   <td v-else>Laboral</td>
@@ -1018,14 +613,8 @@
               <v-btn color="#E7E9E9" variant="flat" @click="closeFreeday">
                 Cancelar
               </v-btn>
-              <v-btn
-                @click="saveFreeday"
-                class="text-subtitle-1 ml-1"
-                color="#F18254"
-                variant="flat"
-                elevation="2"
-                prepend-icon="mdi-plus-circle"
-              >
+              <v-btn @click="saveFreeday" class="text-subtitle-1 ml-1" color="#F18254" variant="flat" elevation="2"
+                prepend-icon="mdi-plus-circle">
                 Actualizar
               </v-btn>
             </v-card-actions>
@@ -1035,107 +624,86 @@
 
       <!--Para verificar el email existe-->
       <v-dialog v-model="dialogEmail" @click:outside="closeEmail" max-width="500px">
-              <v-card>
-                <v-toolbar color="#F18254">
-                  <span class="text-subtitle-2 ml-4">Información!!!</span>
-                </v-toolbar>
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-2 ml-4">Información!!!</span>
+          </v-toolbar>
 
-                <v-card-text class="mt-2">
-                  <span>Ya existe un cliente con este correo, ¿desea continuar?</span>
-                </v-card-text>
+          <v-card-text class="mt-2">
+            <span>Ya existe un cliente con este correo, ¿desea continuar?</span>
+          </v-card-text>
 
-                <v-card-text class="d-flex align-center mt-2">
-                  <v-avatar class="mr-2">
-                    <v-img :src="'https://api2.simplifies.cl/api/images/' + clientImage" alt="Avatar del cliente"></v-img>
-                  </v-avatar>
-                  <span>{{ clientName }}</span>
-                </v-card-text>
-                <v-divider></v-divider>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="#E7E9E9" variant="flat" @click="closeEmail">
-                    Cancelar
-                  </v-btn>
-                  <v-btn color="#F18254" variant="flat" @click="acceptEmail">
-                    Aceptar
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
+          <v-card-text class="d-flex align-center mt-2">
+            <v-avatar class="mr-2">
+              <v-img :src="'https://api2.simplifies.cl/api/images/' + clientImage" alt="Avatar del cliente"></v-img>
+            </v-avatar>
+            <span>{{ clientName }}</span>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="closeEmail">
+              Cancelar
+            </v-btn>
+            <v-btn color="#F18254" variant="flat" @click="acceptEmail">
+              Aceptar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
-            <!--ver reservaciones de profesionales-->
-            <v-dialog v-model="showReserPrpfessional" fullscreen transition="dialog-bottom-transition">
+      <!--ver reservaciones de profesionales-->
+      <v-dialog v-model="showReserPrpfessional" fullscreen transition="dialog-bottom-transition">
 
-              <v-card>
+        <v-card>
 
           <v-toolbar color="#F18254">
             <v-row align="center">
               <v-col cols="12" md="8" class="grow ml-4">
                 <span class="text-h8">
-                  <strong>Reservas del profesional</strong></span
-                >
+                  <strong>Reservas del profesional</strong></span>
               </v-col>
             </v-row>
           </v-toolbar>
           <v-container>
             <v-card-text>
               <v-row>
-              
-            <v-row>
-              
-            </v-row>
-                <div class="fixed-size-calendar">
-    <v-sheet>
 
-    <v-row>
-      <v-col cols="12" sm="12" md="3">
-                <v-autocomplete
-                  :no-data-text="'No hay datos disponibles'"
-                  v-model="branch_id"
-                  :items="branches"
-                  v-if="this.mostrarFila"
-                  label="Seleccione una Sucursal"
-                  prepend-inner-icon="mdi-store"
-                  item-title="name"
-                  item-value="id"
-                  density="compact"
-                  class="ma-2"
-                  variant="outlined"
-                  @update:model-value="showReservations()"
-                ></v-autocomplete
-                ><!--@update:model-value="initialize()"-->
-              </v-col>
-              <v-col cols="12" md="3">
-                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id" :items="professionals" label="Profesional"
-                      prepend-inner-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="outlined" density="compact" class="ma-2"
-                        :rules="selectRules"><!--@update:model-value="showReservationsProfessional()"-->
-                      <template v-slot:item="{ props, item }">
-                                                    <v-list-item
-                                                        v-bind="props"
-                                                        :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_url"
-                                                        :subtitle="'Cargo: '+item.raw.charge"
-                                                        :title="item.raw.name"
-                                                    ></v-list-item>
-                                                    </template>
-                      </v-autocomplete>
+                <v-row>
+
+                </v-row>
+                <div class="fixed-size-calendar">
+                  <v-sheet>
+
+                    <v-row>
+                      <v-col cols="12" sm="12" md="3">
+                        <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+                          v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
+                          item-title="name" item-value="id" density="compact" class="ma-2" variant="outlined"
+                          @update:model-value="showReservations()"></v-autocomplete><!--@update:model-value="initialize()"-->
                       </v-col>
-      <v-col cols="12" md="3">
-        <v-select
-        v-model="type"
-        :items="types"
-        class="ma-2"
-        label="Modo de vista"
-        variant="outlined"
-        density="compact"
-        hide-details
-      ></v-select>
-      </v-col>
-      <v-col cols="12" md="1" >
-                <v-btn :disabled="!this.professional_id" icon @click="showReservationsProfessional()" color="#F18254">
-                  <v-icon>mdi-magnify</v-icon></v-btn
-                >
-              </v-col>
-      <!--<v-cols cols="6">
+                      <v-col cols="12" md="3">
+                        <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id"
+                          :items="professionals" label="Profesional" prepend-inner-icon="mdi-account-tie-outline"
+                          item-title="name" item-value="id" variant="outlined" density="compact" class="ma-2"
+                          :rules="selectRules"><!--@update:model-value="showReservationsProfessional()"-->
+                          <template v-slot:item="{ props, item }">
+                            <v-list-item v-bind="props"
+                              :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_url"
+                              :subtitle="'Cargo: ' + item.raw.charge" :title="item.raw.name"></v-list-item>
+                          </template>
+                        </v-autocomplete>
+                      </v-col>
+                      <v-col cols="12" md="3">
+                        <v-select v-model="type" :items="types" class="ma-2" label="Modo de vista" variant="outlined"
+                          density="compact" hide-details></v-select>
+                      </v-col>
+                      <v-col cols="12" md="1">
+                        <v-btn :disabled="!this.professional_id" icon @click="showReservationsProfessional()"
+                          color="#F18254">
+                          <v-icon>mdi-magnify</v-icon></v-btn>
+                      </v-col>
+                      <!--<v-cols cols="6">
         <v-select
         v-model="weekday"
         :items="weekdays"
@@ -1146,18 +714,11 @@
         hide-details
       ></v-select>
       </v-cols>-->
-    </v-row>
-      <v-calendar
-        ref="calendar"
-        v-model="value"
-        :events="events"
-        :view-mode="type"
-        :event-color="getEventColor" 
-        class="fixed-size-calendar" 
-        hide-day-header="false"     
-      >
-      </v-calendar>
-      <!--<v-sheet>
+                    </v-row>
+                    <v-calendar ref="calendar" v-model="value" :events="events" :view-mode="type"
+                      :event-color="getEventColor" class="fixed-size-calendar" hide-day-header="false">
+                    </v-calendar>
+                    <!--<v-sheet>
         :weekdays="weekday"
       <v-calendar
         ref="calendar"
@@ -1167,19 +728,19 @@
         :weekdays="weekday"
       ></v-calendar>
     </v-sheet>-->
-    </v-sheet>
-  </div>
-            
-            </v-row>
+                  </v-sheet>
+                </div>
+
+              </v-row>
             </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="#E7E9E9" variant="flat" @click="closeCalendar"> Volver </v-btn>
-          </v-card-actions>
-        </v-container>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="#E7E9E9" variant="flat" @click="closeCalendar"> Volver </v-btn>
+            </v-card-actions>
+          </v-container>
         </v-card>
-            </v-dialog>
+      </v-dialog>
     </v-card>
   </v-container>
 </template>
@@ -1213,24 +774,24 @@ export default {
     focus: '',
     value: [new Date()],
     weekday: [0, 1, 2, 3, 4, 5, 6],
-      weekdays: [
-        { title: 'Dom - Sáb', value: [0, 1, 2, 3, 4, 5, 6] },
-        { title: 'Lun - Dom', value: [1, 2, 3, 4, 5, 6, 0] },
-        { title: 'Lun - Vie', value: [1, 2, 3, 4, 5] },
-        { title: 'Lun, Mié, Vie', value: [1, 3, 5] },
-      ],
-      events: [],
-      professionals: [],
-      colors: [
-        'blue',
-        'green',
-        'orange',
-        'grey darken-1',
-        'indigo',
-        'deep-purple',
-        'cyan',
-        
-      ],
+    weekdays: [
+      { title: 'Dom - Sáb', value: [0, 1, 2, 3, 4, 5, 6] },
+      { title: 'Lun - Dom', value: [1, 2, 3, 4, 5, 6, 0] },
+      { title: 'Lun - Vie', value: [1, 2, 3, 4, 5] },
+      { title: 'Lun, Mié, Vie', value: [1, 3, 5] },
+    ],
+    events: [],
+    professionals: [],
+    colors: [
+      'blue',
+      'green',
+      'orange',
+      'grey darken-1',
+      'indigo',
+      'deep-purple',
+      'cyan',
+
+    ],
     // aqui va lo del calendar
     tabBar: null,
     valid: true,
@@ -1401,8 +962,8 @@ export default {
       v => /^\+569\d{8}$/.test(v) || 'Formato de número móvil inválido. Ejemplo: +56912345678'
     ],
     selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
-    pago: [(value) => /^\d+(\.\d+)?$/.test(value) || "Debe ser un número con punto decimal (10.00)",          
-      (value) => !isNaN(parseFloat(value)) || "Debe ser un número"],
+    pago: [(value) => /^\d+(\.\d+)?$/.test(value) || "Debe ser un número con punto decimal (10.00)",
+    (value) => !isNaN(parseFloat(value)) || "Debe ser un número"],
   }),
 
   computed: {
@@ -1535,17 +1096,17 @@ export default {
     },
     // aqui lo del calendario
     getEventColor(event) {
-        return event.color
-      },
-      rnd(a, b) {
-        return Math.floor((b - a + 1) * Math.random()) + a
-      },
-      closeCalendar(){
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.reservations = [];
-        this.events = [];
-        this.showReserPrpfessional = false;
-      },
+      return event.color
+    },
+    rnd(a, b) {
+      return Math.floor((b - a + 1) * Math.random()) + a
+    },
+    closeCalendar() {
+      this.editedItem = Object.assign({}, this.defaultItem);
+      this.reservations = [];
+      this.events = [];
+      this.showReserPrpfessional = false;
+    },
     // aqui lo del calendario
     handleEmailChange() {
       axios
@@ -1561,22 +1122,22 @@ export default {
           this.typeUser = response.data.type;
         })
         .finally(() => {
-          if(this.typeUser === 'Client'){
+          if (this.typeUser === 'Client') {
             this.dialogEmail = true;
             //this.showAlert("success", "Este correo ya esta asignado a un cliente", 3000);
           }
-          if(this.typeUser === 'Professional'){
+          if (this.typeUser === 'Professional') {
             this.dialogEmail = false;
             this.showAlert("warning", "Ya existe un professional con este correo", 3000);
           }
         });
     },
-    closeEmail(){
+    closeEmail() {
       this.dialogEmail = false;
       this.userId = '',
-      this.close();
+        this.close();
     },
-    acceptEmail(){
+    acceptEmail() {
       this.editedItem.user_id = this.userId;
       this.dialogEmail = false;
     },
@@ -1676,8 +1237,8 @@ export default {
     },
     chargeData(item) {//aqui cargo el componente del calendar
 
-      this.editedItem = Object.assign({}, item);      
-      this.showReserPrpfessional = true;      
+      this.editedItem = Object.assign({}, item);
+      this.showReserPrpfessional = true;
       this.showReservations();
     },
     showReservations() {//aqui cargo el componente del calendar
@@ -1708,9 +1269,9 @@ export default {
           //this.reservations = response.data.reservaciones;
           this.professionals = response.data.professionals;
         });
-      },
-      showReservationsProfessional() {//aqui cargo el componente del calendar        
-        this.events = [];
+    },
+    showReservationsProfessional() {//aqui cargo el componente del calendar        
+      this.events = [];
       console.log('this.today');
       console.log(this.today);
       const today = new Date(this.today);
@@ -1732,19 +1293,19 @@ export default {
           console.log(this.reservations);
           let tempEvents = [];
 
- 
-        this.reservations.forEach(reservacion => {
-          tempEvents.push({
-          title: reservacion.clientName,
-          start: new Date(reservacion.startDate),
-          end: new Date(reservacion.endDate),
-          color: 'red',
-          allDay: false
+
+          this.reservations.forEach(reservacion => {
+            tempEvents.push({
+              title: reservacion.clientName,
+              start: new Date(reservacion.startDate),
+              end: new Date(reservacion.endDate),
+              color: 'red',
+              allDay: false
+            });
+          });
+          this.events = tempEvents;
         });
-      });
-      this.events = tempEvents;
-        });
-      },
+    },
     deleteItem(item) {
       this.editedIndex = -1;
       this.editedItem.id = item.id;
@@ -1815,7 +1376,7 @@ export default {
           .catch((error) => {
             if (error.response.status === 400)
               this.showAlert("warning", "Usuario ya existe", 3000);
-              else if (error.response.status === 401)
+            else if (error.response.status === 401)
               this.showAlert("warning", "Correo ya existe", 3000);
           });
       } else {
@@ -1843,13 +1404,13 @@ export default {
           })
           .catch((error) => {
             console.log(error.response);
-            if (error.response.status === 400){
+            if (error.response.status === 400) {
               this.showAlert("warning", "Usuario ya existe", 3000);
-            }else if (error.response.status === 401) {
+            } else if (error.response.status === 401) {
               this.showAlert("warning", "Correo ya existe", 3000);
             }
           });
-          
+
       }
       this.close();
     },
@@ -1872,28 +1433,19 @@ export default {
     closeWinner() {
       this.dialogWinner = false;
     },
-    /*formatNumber(value) {
-      return value.toLocaleString("es-ES");
-    },*/
     formatNumber(value) {
-      // Si el valor es menor que 1000, devuelve el valor original sin formato
+      // Si el valor es menor que 1000, devuelve el valor original con dos decimales
       if (value < 1000) {
-        return value;
+        return (Math.round((value + Number.EPSILON) * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       }
 
       // Primero, redondea el valor a dos decimales
       value = Math.round((value + Number.EPSILON) * 100) / 100;
 
-      // Separa la parte entera de la parte decimal
-      let parts = value.toString().split(".");
-      let integerPart = parts[0];
-      let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+      // Convierte el valor a cadena con formato de número local (en-US)
+      let formattedValue = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-      // Agrega los separadores de miles
-      integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
-      // Combina la parte entera y la parte decimal
-      return integerPart + decimalPart;
+      return formattedValue;
     },
     exportToExcel() {
       // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
@@ -2129,8 +1681,8 @@ export default {
           this.freedays = this.freedays.map((schedule) => ({
             nombre: schedule.day,
             esLaboral: parseInt(schedule.state) !== 0,
-          }));          
-      this.dialogfreeday = true;
+          }));
+          this.dialogfreeday = true;
         });
     },
     closeFreeday() {
@@ -2195,14 +1747,22 @@ export default {
   margin: 0;
   /* Ajusta el margen del switch si es necesario */
 }
+
 .custom-calendar .vc-day {
-    /* Aplica estilos para controlar el tamaño de los días */
-    font-size: 14px; /* Tamaño de fuente */
-    padding: 8px; /* Espaciado interno */
+  /* Aplica estilos para controlar el tamaño de los días */
+  font-size: 14px;
+  /* Tamaño de fuente */
+  padding: 8px;
+  /* Espaciado interno */
 }
+
 .fixed-size-calendar {
-  min-height:100%;  /* Ajustar según sea necesario */
-  min-width: 100%;   /* Ajustar según sea necesario */
-  width: 100%;       /* O establecer un ancho fijo */     /* O establecer un ancho fijo */
+  min-height: 100%;
+  /* Ajustar según sea necesario */
+  min-width: 100%;
+  /* Ajustar según sea necesario */
+  width: 100%;
+  /* O establecer un ancho fijo */
+  /* O establecer un ancho fijo */
 }
 </style>

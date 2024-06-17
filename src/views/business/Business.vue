@@ -1,8 +1,8 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
-  <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24" :multi-line="true"
-    vertical v-model="snackbar">
+  <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24"
+    :multi-line="true" vertical v-model="snackbar">
     <v-row>
       <v-col md="2">
         <v-avatar :icon="sb_icon" color="sb_type" size="40"></v-avatar>
@@ -22,21 +22,21 @@
           <span class="text-subtitle-1"> <strong>Negocios</strong></span>
         </v-col>
         <v-col cols="12" md="6" class="text-right">
-          <v-btn class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2"
-                prepend-icon="mdi-finance" @click="showWinnerBranch()">
-                Ganancias Por Sucursales
-              </v-btn>
-              <v-btn class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat" elevation="2"
-                prepend-icon="mdi-plus-circle" :disabled="mostrar" @click="showAddProfessional()">
-                Nuevo Negocio
-              </v-btn>
+          <v-btn class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-finance"
+            @click="showWinnerBranch()">
+            Ganancias Por Sucursales
+          </v-btn>
+          <v-btn class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat" elevation="2"
+            prepend-icon="mdi-plus-circle" :disabled="mostrar" @click="showAddProfessional()">
+            Nuevo Negocio
+          </v-btn>
           <v-dialog v-model="dialog" max-width="800px">
             <v-card>
-                <v-toolbar color="#F18254">
-                  <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
-                </v-toolbar>
-                <v-card-text>
-                  <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+              <v-toolbar color="#F18254">
+                <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
+              </v-toolbar>
+              <v-card-text>
+                <v-form ref="form" v-model="valid" enctype="multipart/form-data">
                   <v-container>
                     <v-row>
                       <v-col cols="12" md="12">
@@ -54,22 +54,24 @@
                     </v-row>
                     <v-row>
                       <v-col cols="12" md="12">
-                        <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.professional_id" :items="professionals" clearable label="Propietario" prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
+                        <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.professional_id"
+                          :items="professionals" clearable label="Propietario" prepend-icon="mdi-account-tie-outline"
+                          item-title="name" item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
                       </v-col>
                     </v-row>
                   </v-container>
-                <v-divider></v-divider>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="#E7E9E9" variant="flat" @click="close">
-                    Cancelar
-                  </v-btn>
-                  <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
-                    Aceptar
-                  </v-btn>
-                </v-card-actions>
-              </v-form>              
-            </v-card-text>
+                  <v-divider></v-divider>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="#E7E9E9" variant="flat" @click="close">
+                      Cancelar
+                    </v-btn>
+                    <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
+                      Aceptar
+                    </v-btn>
+                  </v-card-actions>
+                </v-form>
+              </v-card-text>
             </v-card>
           </v-dialog>
           <v-dialog v-model="dialogDelete" max-width="500px">
@@ -97,11 +99,13 @@
       </v-row>
     </v-toolbar>
     <v-card-text>
-      <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" class="elevation-1" :locale="locale" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+      <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
+        class="elevation-1" :locale="locale" no-results-text="No hay datos disponibles"
+        no-data-text="No hay datos disponibles">
         <template v-slot:item.actions="{ item }">
-          <v-btn density="comfortable" icon="mdi-finance"  @click="showWinner()" color="green" variant="tonal"
+          <v-btn density="comfortable" icon="mdi-finance" @click="showWinner()" color="green" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Ganancias del Negocio"></v-btn>
-            <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
+          <v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar Negocio"></v-btn>
           <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
             elevation="1" title="Eliminar Negocio"></v-btn>
@@ -110,203 +114,201 @@
     </v-card-text>
     <!--Reportes Ganancia Business-->
     <v-dialog v-model="dialogShowWinner" fullscreen transition="dialog-bottom-transition">
-        <v-card>
-          <v-toolbar color="#F18254">
-            <span class="text-h6 ml-4">Monto generado</span>
-            <v-spacer></v-spacer>
-            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-file-excel"
-            @click="exportToExcel">
+      <v-card>
+        <v-toolbar color="#F18254">
+          <span class="text-h6 ml-4">Monto generado</span>
+          <v-spacer></v-spacer>
+          <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" elevation="2"
+            prepend-icon="mdi-file-excel" @click="exportToExcel">
             Exportar a Excel
           </v-btn>
-          </v-toolbar>
-          <v-container>
-      <v-row>
-        <!-- Primera columna -->
-        <v-col cols="12" sm="6" md="3">
-          <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-            min-width="290px" multiple>
-            <template v-slot:activator="{ props }">
-              <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined" append-inner-icon="mdi-calendar"
-                label="Fecha inicial" multiple></v-text-field>
-            </template>
-            <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input @update:modelValue="updateDate"
-                format="yyyy-MM-dd" :max="dateFormatted2"></v-date-picker>
-            </v-locale-provider>
-          </v-menu>
-        </v-col>
-        <!-- Segunda columna -->
-        <v-col cols="12" sm="6" md="3">
-          <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-            min-width="290px">
-            <template v-slot:activator="{ props }">
-              <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
-                append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
-            </template>
-            <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" @update:modelValue="updateDate1"
-                format="yyyy-MM-dd" :min="dateFormatted"></v-date-picker>
-            </v-locale-provider>
-          </v-menu>
-        </v-col>
-        <v-col cols="12" md="1">
-                        <v-btn icon @click="updateDate2" color="#F18254" >
-                    <v-icon>mdi-magnify</v-icon></v-btn>
-                </v-col>
-      </v-row>
+        </v-toolbar>
+        <v-container>
+          <v-row>
+            <!-- Primera columna -->
+            <v-col cols="12" sm="6" md="3">
+              <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
+                offset-y min-width="290px" multiple>
+                <template v-slot:activator="{ props }">
+                  <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined"
+                    append-inner-icon="mdi-calendar" label="Fecha inicial" multiple></v-text-field>
+                </template>
+                <v-locale-provider locale="es">
+                  <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                    :modelValue=input @update:modelValue="updateDate" format="yyyy-MM-dd"
+                    :max="dateFormatted2"></v-date-picker>
+                </v-locale-provider>
+              </v-menu>
+            </v-col>
+            <!-- Segunda columna -->
+            <v-col cols="12" sm="6" md="3">
+              <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
+                offset-y min-width="290px">
+                <template v-slot:activator="{ props }">
+                  <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
+                    append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
+                </template>
+                <v-locale-provider locale="es">
+                  <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                    :modelValue="getDate2" @update:modelValue="updateDate1" format="yyyy-MM-dd"
+                    :min="dateFormatted"></v-date-picker>
+                </v-locale-provider>
+              </v-menu>
+            </v-col>
+            <v-col cols="12" md="1">
+              <v-btn icon @click="updateDate2" color="#F18254">
+                <v-icon>mdi-magnify</v-icon></v-btn>
+            </v-col>
+          </v-row>
         </v-container>
         <v-container>
-            <v-alert border type="info" variant="outlined" density="compact">
-              <p v-html="formTitleWin"></p>
-                        </v-alert>  
-          </v-container>
+          <v-alert border type="info" variant="outlined" density="compact">
+            <p v-html="formTitleWin"></p>
+          </v-alert>
+        </v-container>
         <v-card-text>
-            <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
-              hide-details></v-text-field>
-            <v-data-table :headers="headers1" :items-per-page-text="'Elementos por páginas'" :items="winners" :search="search2" class="elevation-2"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles" >
-              <template v-slot:item.tip="{ item }">
-											<v-chip v-if="item.tip > 0"
-												class="text-uppercase font-weight-bold" size="small" label> {{
-								formatNumber(item.tip)}}</v-chip>
-										</template>
-                    <template v-slot:item.earnings="{ item }">
-											<v-chip v-if="item.earnings > 0"
-												class="text-uppercase font-weight-bold" size="small" label> {{
-								formatNumber(item.earnings)}}</v-chip>
-										</template>
-                    <template v-slot:item.total="{ item }">
-											<v-chip v-if="item.total > 0"
-												class="text-uppercase font-weight-bold" size="small" label> {{
-								formatNumber(item.total)}}</v-chip>
-										</template>
-                    <template v-slot:item.academia="{ item }">
-											<v-chip v-if="item.academia > 0"
-												class="text-uppercase font-weight-bold" size="small" label> {{
-								formatNumber(item.academia)}}</v-chip>
-										</template>
-                    <template v-slot:item.technical_assistance="{ item }">
-											<v-chip v-if="item.technical_assistance > 0"
-												class="text-uppercase font-weight-bold" size="small" label> {{
-								formatNumber(item.technical_assistance)}}</v-chip>
-										</template>
-            </v-data-table>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="#E7E9E9" variant="flat" @click="closeShowWinner">
-              Volver
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <!--end Ganancias Busuness-->
-      <!--Reporte Ganancias Branches-->
-      <v-dialog v-model="dialogShowWinnerBranches" fullscreen transition="dialog-bottom-transition">
-        <v-card>
-          <v-toolbar color="#F18254">
-            <span class="text-h6 ml-4">Monto generado por sucursales</span>
-            <v-spacer></v-spacer>
-            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-file-excel"
-            @click="exportToExcel1">
+          <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
+            hide-details></v-text-field>
+          <v-data-table :headers="headers1" :items-per-page-text="'Elementos por páginas'" :items="winners"
+            :search="search2" class="elevation-2" no-results-text="No hay datos disponibles"
+            no-data-text="No hay datos disponibles">
+            <template v-slot:item.tip="{ item }">
+              <v-chip v-if="item.tip > 0" class="text-uppercase font-weight-bold" size="small" label> {{
+                formatNumber(item.tip)}}</v-chip>
+            </template>
+            <template v-slot:item.earnings="{ item }">
+              <v-chip v-if="item.earnings > 0" class="text-uppercase font-weight-bold" size="small" label> {{
+                formatNumber(item.earnings)}}</v-chip>
+            </template>
+            <template v-slot:item.total="{ item }">
+              <v-chip v-if="item.total > 0" class="text-uppercase font-weight-bold" size="small" label> {{
+                formatNumber(item.total)}}</v-chip>
+            </template>
+            <template v-slot:item.academia="{ item }">
+              <v-chip v-if="item.academia > 0" class="text-uppercase font-weight-bold" size="small" label> {{
+                formatNumber(item.academia)}}</v-chip>
+            </template>
+            <template v-slot:item.technical_assistance="{ item }">
+              <v-chip v-if="item.technical_assistance > 0" class="text-uppercase font-weight-bold" size="small" label>
+                {{
+                  formatNumber(item.technical_assistance)}}</v-chip>
+            </template>
+          </v-data-table>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="#E7E9E9" variant="flat" @click="closeShowWinner">
+            Volver
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!--end Ganancias Busuness-->
+    <!--Reporte Ganancias Branches-->
+    <v-dialog v-model="dialogShowWinnerBranches" fullscreen transition="dialog-bottom-transition">
+      <v-card>
+        <v-toolbar color="#F18254">
+          <span class="text-h6 ml-4">Monto generado por sucursales</span>
+          <v-spacer></v-spacer>
+          <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" elevation="2"
+            prepend-icon="mdi-file-excel" @click="exportToExcel1">
             Exportar a Excel
           </v-btn>
-          </v-toolbar>
-          <v-container>
-      <v-row>
-        <!-- Primera columna -->
-        <v-col cols="12" md="3">
-          <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-            min-width="290px" multiple>
-            <template v-slot:activator="{ props }">
-              <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined" append-inner-icon="mdi-calendar"
-                label="Fecha inicial" multiple></v-text-field>
-            </template>
-            <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input @update:modelValue="updateDate"
-                format="yyyy-MM-dd" :max="dateFormatted2"></v-date-picker>
-            </v-locale-provider>
-          </v-menu>
-        </v-col>
-        <!-- Segunda columna -->
-        <v-col cols="12" md="3">
-          <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-            min-width="290px">
-            <template v-slot:activator="{ props }">
-              <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
-                append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
-            </template>
-            <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" @update:modelValue="updateDate1"
-                format="yyyy-MM-dd" :min="dateFormatted"></v-date-picker>
-            </v-locale-provider>
-          </v-menu>
-        </v-col>
-        <v-col cols="12" md="1">
-                        <v-btn icon @click="updateDate3" color="#F18254" >
-                    <v-icon>mdi-magnify</v-icon></v-btn>
-                </v-col>
-      </v-row>
+        </v-toolbar>
+        <v-container>
+          <v-row>
+            <!-- Primera columna -->
+            <v-col cols="12" md="3">
+              <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
+                offset-y min-width="290px" multiple>
+                <template v-slot:activator="{ props }">
+                  <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined"
+                    append-inner-icon="mdi-calendar" label="Fecha inicial" multiple></v-text-field>
+                </template>
+                <v-locale-provider locale="es">
+                  <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                    :modelValue=input @update:modelValue="updateDate" format="yyyy-MM-dd"
+                    :max="dateFormatted2"></v-date-picker>
+                </v-locale-provider>
+              </v-menu>
+            </v-col>
+            <!-- Segunda columna -->
+            <v-col cols="12" md="3">
+              <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
+                offset-y min-width="290px">
+                <template v-slot:activator="{ props }">
+                  <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
+                    append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
+                </template>
+                <v-locale-provider locale="es">
+                  <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                    :modelValue="getDate2" @update:modelValue="updateDate1" format="yyyy-MM-dd"
+                    :min="dateFormatted"></v-date-picker>
+                </v-locale-provider>
+              </v-menu>
+            </v-col>
+            <v-col cols="12" md="1">
+              <v-btn icon @click="updateDate3" color="#F18254">
+                <v-icon>mdi-magnify</v-icon></v-btn>
+            </v-col>
+          </v-row>
         </v-container>
         <v-row>
           <v-col cols="12" md="12">
             <v-container>
-                <v-alert border type="info" variant="outlined" density="compact">
-                  <p v-html="formTitleWinB"></p>
-                            </v-alert>  
-              </v-container>
+              <v-alert border type="info" variant="outlined" density="compact">
+                <p v-html="formTitleWinB"></p>
+              </v-alert>
+            </v-container>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="12" md="12">
             <v-card-text>
-            <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar" single-line
-              hide-details></v-text-field>
-            <v-data-table :headers="headers2" :items-per-page-text="'Elementos por páginas'" :items="winnersbranches" :search="search3" class="elevation-2"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles" >
-              <template v-slot:item.tip="{ item }">
-                                        <v-chip
-                                            class="text-uppercase font-weight-bold" size="small" label> {{
-                            formatNumber(item.tip)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.earnings="{ item }">
-                                        <v-chip
-                                            class="text-uppercase font-weight-bold" size="small" label> {{
-                            formatNumber(item.earnings)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.technical_assistance="{ item }">
-                                        <v-chip
-                                            class="text-uppercase font-weight-bold" size="small" label> {{
-                            formatNumber(item.technical_assistance)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.servicesAmount="{ item }">
-                                        <v-chip
-                                            class="text-uppercase font-weight-bold" size="small" label> {{
-                            formatNumber(item.servicesAmount)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.productsAmount="{ item }">
-                                        <v-chip
-                                            class="text-uppercase font-weight-bold" size="small" label> {{
-                            formatNumber(item.productsAmount)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.total="{ item }">
-                                        <v-chip
-                                            class="text-uppercase font-weight-bold" size="small" label> {{
-                            formatNumber(item.total)}}</v-chip>
-                                    </template>
-            </v-data-table>
-          </v-card-text>
+              <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar" single-line
+                hide-details></v-text-field>
+              <v-data-table :headers="headers2" :items-per-page-text="'Elementos por páginas'" :items="winnersbranches"
+                :search="search3" class="elevation-2" no-results-text="No hay datos disponibles"
+                no-data-text="No hay datos disponibles">
+                <template v-slot:item.tip="{ item }">
+                  <v-chip class="text-uppercase font-weight-bold" size="small" label> {{
+                    formatNumber(item.tip) }}</v-chip>
+                </template>
+                <template v-slot:item.earnings="{ item }">
+                  <v-chip class="text-uppercase font-weight-bold" size="small" label> {{
+                    formatNumber(item.earnings) }}</v-chip>
+                </template>
+                <template v-slot:item.technical_assistance="{ item }">
+                  <v-chip class="text-uppercase font-weight-bold" size="small" label> {{
+                    formatNumber(item.technical_assistance) }}</v-chip>
+                </template>
+                <template v-slot:item.servicesAmount="{ item }">
+                  <v-chip class="text-uppercase font-weight-bold" size="small" label> {{
+                    formatNumber(item.servicesAmount) }}</v-chip>
+                </template>
+                <template v-slot:item.productsAmount="{ item }">
+                  <v-chip class="text-uppercase font-weight-bold" size="small" label> {{
+                    formatNumber(item.productsAmount) }}</v-chip>
+                </template>
+                <template v-slot:item.total="{ item }">
+                  <v-chip class="text-uppercase font-weight-bold" size="small" label> {{
+                    formatNumber(item.total) }}</v-chip>
+                </template>
+              </v-data-table>
+            </v-card-text>
           </v-col>
         </v-row>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="#E7E9E9" variant="flat" @click="closeShowWinnerBranches">
-              Volver
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <!--end Ganancias Branches-->
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="#E7E9E9" variant="flat" @click="closeShowWinnerBranches">
+            Volver
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!--end Ganancias Branches-->
   </v-card>
 </template>
 
@@ -323,8 +325,8 @@ export default {
     sb_type: '',
     sb_message: '',
     sb_timeout: 2000,
-    sb_title:'',
-    sb_icon:'',
+    sb_title: '',
+    sb_icon: '',
     mostrar: false,
 
     dialog: false,
@@ -354,10 +356,10 @@ export default {
       { title: 'Total', key: 'total', sortable: false }
     ],
     locale: {
-        itemsPerPageText: 'Elementos por página:',
-        pageText: '{0}-{1} de {2}',
-        noDataText: 'No hay datos disponibles',
-      },
+      itemsPerPageText: 'Elementos por página:',
+      pageText: '{0}-{1} de {2}',
+      noDataText: 'No hay datos disponibles',
+    },
     results: [],
 
     professionals: [],
@@ -394,20 +396,20 @@ export default {
     //endReporte
 
     nameRules: [
-     (v) => !!v || "El campo es requerido",
-     (v) => (v && v.length <= 50) ||
-       "El campo debe tener menos de 51 caracteres",
-       (v) => (v && v.length >= 3) ||
-       "El campo debe tener al menos de 3 caracteres",
-   ],
+      (v) => !!v || "El campo es requerido",
+      (v) => (v && v.length <= 50) ||
+        "El campo debe tener menos de 51 caracteres",
+      (v) => (v && v.length >= 3) ||
+        "El campo debe tener al menos de 3 caracteres",
+    ],
     dirRules: [
       (v) => !!v || "El campo es requerido",
       (v) => (v && v.length <= 250) ||
         "El campo debe tener menos de 251 caracteres",
-        (v) => (v && v.length >= 3) ||
+      (v) => (v && v.length >= 3) ||
         "El campo debe tener al menos de 3 caracteres",
-      ],
-   selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
+    ],
+    selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
   }),
 
   computed: {
@@ -415,20 +417,20 @@ export default {
       return this.editedIndex === -1 ? 'Nuevo Negocio' : 'Editar Negocio'
     },
     formTitleWin() {
-      if (this.editedIndexWin === 2){
+      if (this.editedIndexWin === 2) {
         const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+        const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
         return `Monto generado en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;
       }
-      else{
+      else {
         return `Monto generado en día`;
       }
     },
     formTitleWinB() {
       if (this.editedIndex === 2) {
         const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-        return `Monto generado por Sucursales en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;		
+        const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+        return `Monto generado por Sucursales en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;
       }
       else {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -486,13 +488,13 @@ export default {
         });
 
     },
-    showAddProfessional(){
+    showAddProfessional() {
       axios
         .get('https://api2.simplifies.cl/api/professional-show-autocomplete')
         .then((response) => {
           this.professionals = response.data.professionals;
         });
-        this.dialog = true;
+      this.dialog = true;
     },
     editItem(item) {
       this.editedIndex = 1;
@@ -514,7 +516,7 @@ export default {
         .then(() => {
         }).finally(() => {
           this.initialize();
-          });
+        });
       this.closeDelete()
     },
     close() {
@@ -562,27 +564,20 @@ export default {
 
     //reporte Ganancias 
     formatNumber(value) {
-            //return value.toLocaleString('es-ES');
-            // Si el valor es menor que 1000, devuelve el valor original sin formato
-            if (value < 1000) {
-                return value;
-            }
+      // Si el valor es menor que 1000, devuelve el valor original con dos decimales
+      if (value < 1000) {
+        return (Math.round((value + Number.EPSILON) * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
 
-            // Primero, redondea el valor a dos decimales
-            value = Math.round((value + Number.EPSILON) * 100) / 100;
+      // Primero, redondea el valor a dos decimales
+      value = Math.round((value + Number.EPSILON) * 100) / 100;
 
-            // Separa la parte entera de la parte decimal
-            let parts = value.toString().split(".");
-            let integerPart = parts[0];
-            let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+      // Convierte el valor a cadena con formato de número local (en-US)
+      let formattedValue = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-            // Agrega los separadores de miles
-            integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
-            // Combina la parte entera y la parte decimal
-            return integerPart + decimalPart;
-        },
-    showWinner() {      
+      return formattedValue;
+    },
+    showWinner() {
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       axios
@@ -594,9 +589,9 @@ export default {
         })
         .then((response) => {
           this.winners = response.data;
-        }).finally(() => {         
+        }).finally(() => {
           this.dialogShowWinner = true;
-          });
+        });
     },
     updateDate(val) {
       this.input = val;
@@ -622,8 +617,8 @@ export default {
         })
     },
     closeShowWinner() {
-      this.dialogShowWinner = false; 
-          this.editedIndexWin = -1;
+      this.dialogShowWinner = false;
+      this.editedIndexWin = -1;
       //this.showPermission(this.chargeSelect);
     },
     exportToExcel() {
@@ -668,7 +663,7 @@ export default {
       XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
     },
     //monto por branches
-    showWinnerBranch() {  
+    showWinnerBranch() {
       axios
         .get('https://api2.simplifies.cl/api/company_winner', {
           params: {
@@ -677,13 +672,13 @@ export default {
         })
         .then((response) => {
           this.winnersbranches = response.data;
-        }).finally(() => {         
+        }).finally(() => {
           this.dialogShowWinnerBranches = true;
-          });    
-        },
+        });
+    },
     closeShowWinnerBranches() {
-      this.dialogShowWinnerBranches = false; 
-          this.editedIndexWinB = -1;
+      this.dialogShowWinnerBranches = false;
+      this.editedIndexWinB = -1;
     },
     updateDate3() {
       this.editedIndex = 2;

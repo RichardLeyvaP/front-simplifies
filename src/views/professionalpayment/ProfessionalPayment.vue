@@ -1030,29 +1030,20 @@ export default {
             console.log('this.chargeProfessional');
             console.log(this.chargeProfessional);
         },*/
-        /*formatNumber(value) {
-            return value.toLocaleString('es-ES');
-        },*/
         formatNumber(value) {
-      // Si el valor es menor que 1000, devuelve el valor original sin formato
+            // Si el valor es menor que 1000, devuelve el valor original con dos decimales
             if (value < 1000) {
-                return value;
+                return (Math.round((value + Number.EPSILON) * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             }
 
             // Primero, redondea el valor a dos decimales
             value = Math.round((value + Number.EPSILON) * 100) / 100;
 
-            // Separa la parte entera de la parte decimal
-            let parts = value.toString().split(".");
-            let integerPart = parts[0];
-            let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+            // Convierte el valor a cadena con formato de número local (en-US)
+            let formattedValue = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-            // Agrega los separadores de miles
-            integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
-            // Combina la parte entera y la parte decimal
-            return integerPart + decimalPart;
-        },
+            return formattedValue;
+            },
         showAlert(sb_type, sb_message, sb_timeout) {
             this.sb_type = sb_type
 

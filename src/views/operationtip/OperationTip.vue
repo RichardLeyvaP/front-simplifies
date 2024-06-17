@@ -27,10 +27,10 @@
                         prepend-icon="mdi-account-cash" @click="showPay">
                         Pagos realizados
                     </v-btn>
-                            <v-btn class="text-subtitle-1  ml-1 " color="#E7E9E9" variant="flat"
-                                elevation="2" prepend-icon="mdi-plus-circle" @click="showAddOperationTip()">
-                                Nuevo Pago
-                            </v-btn>
+                    <v-btn class="text-subtitle-1  ml-1 " color="#E7E9E9" variant="flat" elevation="2"
+                        prepend-icon="mdi-plus-circle" @click="showAddOperationTip()">
+                        Nuevo Pago
+                    </v-btn>
                     <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition">
                         <v-card>
                             <v-toolbar color="#F18254">
@@ -41,15 +41,16 @@
                                     <v-container>
                                         <v-row>
                                             <v-col cols="12" sm="12" md="3">
-                                                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
-                                                    v-if="this.mostrarFila" clearable label="Seleccione una Sucursal"
-                                                    prepend-icon="mdi-store" item-title="name" item-value="id"
-                                                    variant="underlined"
+                                                <v-autocomplete :no-data-text="'No hay datos disponibles'"
+                                                    v-model="branch_id" :items="branches" v-if="this.mostrarFila"
+                                                    clearable label="Seleccione una Sucursal" prepend-icon="mdi-store"
+                                                    item-title="name" item-value="id" variant="underlined"
                                                     @update:model-value="showAddOperationTip()"></v-autocomplete>
                                             </v-col>
                                             <v-col cols="12" sm="12" md="3">
-                                                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id" :items="professionals"
-                                                    clearable label="Seleccione un cajero (a)"
+                                                <v-autocomplete :no-data-text="'No hay datos disponibles'"
+                                                    v-model="professional_id" :items="professionals" clearable
+                                                    label="Seleccione un cajero (a)"
                                                     prepend-icon="mdi-account-tie-outline" item-title="name"
                                                     item-value="id" variant="underlined"
                                                     :rules="selectRules"></v-autocomplete><!--@update:model-value="carsEarrings()"-->
@@ -142,9 +143,10 @@
         <v-card-text>
             <v-row>
                 <v-col cols="12" sm="12" md="4">
-                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
-                        label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
-                        variant="underlined" @update:model-value="initialize()"></v-autocomplete>
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+                        v-if="this.mostrarFila" clearable label="Seleccione una Sucursal" prepend-icon="mdi-store"
+                        item-title="name" item-value="id" variant="underlined"
+                        @update:model-value="initialize()"></v-autocomplete>
                 </v-col>
             </v-row>
             <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
@@ -153,8 +155,8 @@
                 :items="results" class="elevation-1" no-results-text="No hay datos disponibles"
                 no-data-text="No hay datos disponibles">
                 <template v-slot:item.amount="{ item }"> {{
-								formatNumber(item.amount)}}
-										</template>
+                    formatNumber(item.amount)}}
+                </template>
                 <template v-slot:item.nameClient="{ item }">
 
                     <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
@@ -238,9 +240,9 @@
                                     </v-menu>
                                 </v-col>
                                 <v-col cols="12" sm="12" md="3">
-                                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
-                                        label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name"
-                                        item-value="id"
+                                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id"
+                                        :items="branches" label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
+                                        item-title="name" item-value="id"
                                         variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
                                 </v-col>
                                 <v-col cols="12" md="1">
@@ -262,10 +264,10 @@
                                             no-results-text="No hay datos disponibles"
                                             no-data-text="No hay datos disponibles">
                                             <template v-slot:item.nameProfessional="{ item }">
-                                            <span :class="{'bold-row': item.nameProfessional == 'Total'}">
-                                            {{ item.nameProfessional }}
-                                            </span>
-                                        </template>
+                                                <span :class="{ 'bold-row': item.nameProfessional == 'Total' }">
+                                                    {{ item.nameProfessional }}
+                                                </span>
+                                            </template>
                                         </v-data-table>
                                     </v-card-text>
                                 </v-col>
@@ -435,20 +437,31 @@ export default {
             .then((response) => {
                 this.branches = response.data.branches;
                 //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-                
+
             }).finally(() => {
-            if (this.charge === 'Administrador') {
+                if (this.charge === 'Administrador') {
                     this.branch_id = this.branches[0].id;
                     this.mostrarFila = true;
                 }
                 this.initialize()
-          });
+            });
 
     },
 
     methods: {
         formatNumber(value) {
-            return value.toLocaleString('es-ES');
+            // Si el valor es menor que 1000, devuelve el valor original con dos decimales
+            if (value < 1000) {
+                return (Math.round((value + Number.EPSILON) * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+
+            // Primero, redondea el valor a dos decimales
+            value = Math.round((value + Number.EPSILON) * 100) / 100;
+
+            // Convierte el valor a cadena con formato de número local (en-US)
+            let formattedValue = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            return formattedValue;
         },
         updateDate(val) {
             this.input = val;
@@ -489,9 +502,6 @@ export default {
             console.log('this.chargeProfessional');
             console.log(this.chargeProfessional);
         },*/
-        formatNumber(value) {
-            return value.toLocaleString('es-ES');
-        },
         showAlert(sb_type, sb_message, sb_timeout) {
             this.sb_type = sb_type
 
@@ -540,7 +550,7 @@ export default {
                 });*/
 
         },
-        showAddOperationTip(){
+        showAddOperationTip() {
             axios
                 .get('https://api2.simplifies.cl/api/cashier-car-notpay', {
                     params: {
@@ -552,16 +562,16 @@ export default {
                     this.professionals = response.data.professionals
                 });
 
-                /*axios
-                .get('https://api2.simplifies.cl/api/branch_professionals_cashier', {
-                    params: {
-                        branch_id: this.branch_id
-                    }
-                })
-                .then((response) => {
-                    this.professionals = response.data.professionals;
-                });*/
-                this.dialog = true;
+            /*axios
+            .get('https://api2.simplifies.cl/api/branch_professionals_cashier', {
+                params: {
+                    branch_id: this.branch_id
+                }
+            })
+            .then((response) => {
+                this.professionals = response.data.professionals;
+            });*/
+            this.dialog = true;
         },
         /*editItem(item) {
             axios
@@ -593,7 +603,7 @@ export default {
                 }).finally(() => {
                     this.showAlert("success", "Pago eliminado correctamente", 3000);
                     this.initialize();
-          });
+                });
             this.closeDelete()
         },
         close() {
@@ -664,7 +674,7 @@ export default {
                 }).finally(() => {
                     this.showAlert("success", "Pago realizado correctamente", 3000);
                     this.updatedBranch();
-          });
+                });
             //}
             /*this.valid = false;
             this.data.name = this.editedItem.name;
@@ -782,6 +792,6 @@ export default {
 }
 
 .bold-row {
-  font-weight: bold;
+    font-weight: bold;
 }
 </style>

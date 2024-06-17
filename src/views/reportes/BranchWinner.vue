@@ -2,19 +2,19 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
   <v-container>
-  <v-card elevation="6" class="mx-5">
-    <v-toolbar color="#F18254">
-      <v-row align="center">
-        <v-col cols="12" md="4" class="grow ml-4">
-          <span class="text-subtitle-1"> <strong>Ganancias de la Sucursal (Día, Período)</strong></span>
-        </v-col>
-        <v-col cols="12" md="4" class="mr-12"></v-col>
-      </v-row>
-    </v-toolbar>
+    <v-card elevation="6" class="mx-5">
+      <v-toolbar color="#F18254">
+        <v-row align="center">
+          <v-col cols="12" md="4" class="grow ml-4">
+            <span class="text-subtitle-1"> <strong>Ganancias de la Sucursal (Día, Período)</strong></span>
+          </v-col>
+          <v-col cols="12" md="4" class="mr-12"></v-col>
+        </v-row>
+      </v-toolbar>
       <v-container>
-    <v-row>
-           <!-- Primera columna -->
-           <v-col cols="12" md="3">
+        <v-row>
+          <!-- Primera columna -->
+          <v-col cols="12" md="3">
             <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
               offset-y min-width="290px">
               <template v-slot:activator="{ props }">
@@ -22,8 +22,9 @@
                   append-inner-icon="mdi-calendar" label="Fecha inicial"></v-text-field>
               </template>
               <v-locale-provider locale="es">
-                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input
-                  @update:modelValue="updateDate" format="yyyy-MM-dd" scrollable :max="dateFormatted2"></v-date-picker>
+                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                  :modelValue=input @update:modelValue="updateDate" format="yyyy-MM-dd" scrollable
+                  :max="dateFormatted2"></v-date-picker>
               </v-locale-provider>
             </v-menu>
           </v-col>
@@ -37,41 +38,44 @@
               </template>
               <v-locale-provider locale="es">
                 <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
-                  :modelValue="getDate2" @update:modelValue="updateDate1" format="yyyy-MM-dd" scrollable :min="dateFormatted"></v-date-picker>
+                  :modelValue="getDate2" @update:modelValue="updateDate1" format="yyyy-MM-dd" scrollable
+                  :min="dateFormatted"></v-date-picker>
               </v-locale-provider>
             </v-menu>
           </v-col>
           <v-col cols="12" md="4">
-            <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"  label="Seleccione una Sucursal"
-              prepend-inner-icon="mdi-store" item-title="name" item-value="id" variant="outlined"
-              ></v-autocomplete><!--@update:model-value="initialize()"-->
-          </v-col>  
+            <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+              label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
+              variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
+          </v-col>
           <v-col cols="12" md="1">
-                        <v-btn icon @click="updateDate2" color="#F18254" >
-                    <v-icon>mdi-magnify</v-icon></v-btn>
-                </v-col>  
-    </v-row>
-    <v-row>
-      <v-container>
-      <v-alert border type="info" variant="outlined" density="compact">
+            <v-btn icon @click="updateDate2" color="#F18254">
+              <v-icon>mdi-magnify</v-icon></v-btn>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-container>
+            <v-alert border type="info" variant="outlined" density="compact">
               <p v-html="formTitle"></p>
-                        </v-alert>
-                      </v-container>
-    </v-row> 
-    <v-row>
-              <v-col cols="12" md="4" v-for="(item, key) in results" :key="key">
-                    <v-card class="mx-auto pa-4 ml-0" :subtitle="key=='Monto Generado' || key=='Monto Servicios Especiales' ? formatNumber(item.value) : item.value" :title="key">                  
-                    <template v-slot:prepend>
-                      <v-avatar :color="item.color">
-                        <v-icon color="white">{{ item.icon }}</v-icon>
-                      </v-avatar>
-                    </template>                
-                </v-card>
-              </v-col>
-            </v-row>
+            </v-alert>
+          </v-container>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="4" v-for="(item, key) in results" :key="key">
+            <v-card class="mx-auto pa-4 ml-0"
+              :subtitle="key == 'Monto Generado' || key == 'Monto Servicios Especiales' ? formatNumber(item.value) : item.value"
+              :title="key">
+              <template v-slot:prepend>
+                <v-avatar :color="item.color">
+                  <v-icon color="white">{{ item.icon }}</v-icon>
+                </v-avatar>
+              </template>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-container>
-  </v-card>
-</v-container>
+    </v-card>
+  </v-container>
 </template>
 <script>
 
@@ -127,11 +131,11 @@ export default {
         //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
         //return 'Ganancias de la Sucursal en el período ' + this.fecha;
         const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+        const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
         return `Ganancias de la Sucursal en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;
-		
+
       }
       /*else if (this.editedIndex === 3) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -188,19 +192,30 @@ export default {
       .then((response) => {
         this.branches = response.data.branches;
       }).finally(() => {
-            if (this.charge === 'Administrador') {
-                    this.branch_id = this.branches[0].id;
-                }
-                this.initialize()
-          });
+        if (this.charge === 'Administrador') {
+          this.branch_id = this.branches[0].id;
+        }
+        this.initialize()
+      });
 
     console.log(this.business_id);
   },
 
   methods: {
     formatNumber(value) {
-            return value.toLocaleString('es-ES');
-        },
+      // Si el valor es menor que 1000, devuelve el valor original con dos decimales
+      if (value < 1000) {
+        return (Math.round((value + Number.EPSILON) * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+
+      // Primero, redondea el valor a dos decimales
+      value = Math.round((value + Number.EPSILON) * 100) / 100;
+
+      // Convierte el valor a cadena con formato de número local (en-US)
+      let formattedValue = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      return formattedValue;
+    },
     updateDate(val) {
       this.input = val;
       this.menu = false;
@@ -250,9 +265,12 @@ export default {
 </script>
 <style>
 .title-size {
-  font-size: 1em; /* Cambia este valor según el tamaño deseado */
+  font-size: 1em;
+  /* Cambia este valor según el tamaño deseado */
 }
+
 .subtitle-size {
-  font-size: 0.9em; /* Cambia este valor según el tamaño deseado */
+  font-size: 0.9em;
+  /* Cambia este valor según el tamaño deseado */
 }
 </style>

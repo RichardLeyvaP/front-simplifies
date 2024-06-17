@@ -1,8 +1,8 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
-  <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24" :multi-line="true"
-    vertical v-model="snackbar">
+  <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24"
+    :multi-line="true" vertical v-model="snackbar">
     <v-row>
       <v-col md="2">
         <v-avatar :icon="sb_icon" color="sb_type" size="40"></v-avatar>
@@ -15,27 +15,28 @@
 
     </v-row>
   </v-snackbar>
-<v-container>
-  <v-card elevation="6" class="mx-5">
+  <v-container>
+    <v-card elevation="6" class="mx-5">
 
-    <v-toolbar color="#F18254">
-      <v-row >
-        <v-col cols="12" md="5" class="mt-4">
-          <span class="ml-3"> <strong>Listado de Sucursales</strong></span>
-        </v-col>
-        
-        <v-col cols="12" md="7" class="text-right"> 
-          <v-btn class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2"
-                prepend-icon="mdi-plus-circle" @click="showWinner()" v-if="this.charge === 'Administrador' || this.charge === 'Administrador de Sucursal'">
-                Estadísticas Sucursal
-              </v-btn>        
-          <v-btn class="text-subtitle-1  ml-1 mr-1 " color="#E7E9E9" variant="flat" elevation="2"
-                prepend-icon="mdi-plus-circle" @click="showAddBranch()">
-                Agregar Sucursal
-              </v-btn>
-        </v-col>
-        
-        <v-dialog v-model="dialog" max-width="1000px">
+      <v-toolbar color="#F18254">
+        <v-row>
+          <v-col cols="12" md="5" class="mt-4">
+            <span class="ml-3"> <strong>Listado de Sucursales</strong></span>
+          </v-col>
+
+          <v-col cols="12" md="7" class="text-right">
+            <v-btn class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-plus-circle"
+              @click="showWinner()"
+              v-if="this.charge === 'Administrador' || this.charge === 'Administrador de Sucursal'">
+              Estadísticas Sucursal
+            </v-btn>
+            <v-btn class="text-subtitle-1  ml-1 mr-1 " color="#E7E9E9" variant="flat" elevation="2"
+              prepend-icon="mdi-plus-circle" @click="showAddBranch()">
+              Agregar Sucursal
+            </v-btn>
+          </v-col>
+
+          <v-dialog v-model="dialog" max-width="1000px">
             <v-card>
               <v-toolbar color="#F18254">
                 <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
@@ -51,7 +52,8 @@
                       </v-col>
                       <v-col cols="12" md="6">
                         <v-text-field v-model="editedItem.phone" clearable label="Teléfono"
-                          prepend-icon="mdi-phone-outline" variant="underlined"  placeholder="+56912345678" :rules="mobileRules">
+                          prepend-icon="mdi-phone-outline" variant="underlined" placeholder="+56912345678"
+                          :rules="mobileRules">
                         </v-text-field>
                       </v-col>
                       <v-col cols="12" md="6">
@@ -62,37 +64,38 @@
 
                       <v-col cols="12" md="6">
 
-                        <v-autocomplete :no-data-text="'No hay datos disponibles'" clearable label="Negocio" variant="underlined" prepend-icon="mdi-domain"
-                          v-model="editedItem.business_id" :items="business" item-title="name" item-value="id"
-                          :rules="selectRules">
+                        <v-autocomplete :no-data-text="'No hay datos disponibles'" clearable label="Negocio"
+                          variant="underlined" prepend-icon="mdi-domain" v-model="editedItem.business_id"
+                          :items="business" item-title="name" item-value="id" :rules="selectRules">
                         </v-autocomplete>
                       </v-col>
 
 
                       <v-col cols="12" md="6">
 
-                        <v-autocomplete :no-data-text="'No hay datos disponibles'" clearable label="Tipo de Negocio" variant="underlined" prepend-icon="mdi-domain"
-                          v-model="editedItem.business_type_id" :items="businessTypes" item-title="name" item-value="id"
-                          :rules="selectRules">
+                        <v-autocomplete :no-data-text="'No hay datos disponibles'" clearable label="Tipo de Negocio"
+                          variant="underlined" prepend-icon="mdi-domain" v-model="editedItem.business_type_id"
+                          :items="businessTypes" item-title="name" item-value="id" :rules="selectRules">
                         </v-autocomplete>
-                        <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.useTechnical" :items="options" clearable label="Técnico"
-                        prepend-icon="mdi-hair-dryer" item-title="name" item-value="id" variant="underlined"
-                        ></v-autocomplete>
+                        <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.useTechnical"
+                          :items="options" clearable label="Técnico" prepend-icon="mdi-hair-dryer" item-title="name"
+                          item-value="id" variant="underlined"></v-autocomplete>
                         <v-text-field v-model="editedItem.location" clearable label="Localización (Google Maps)"
                           prepend-icon="mdi-map-marker" variant="underlined">
                         </v-text-field>
                       </v-col>
 
                       <v-col cols="12" md="6">
-                        <v-file-input clearable v-model="file" ref="fileInput" label="Imagen Sucursal" variant="underlined"
-                          density="compact" name="file" accept=".png, .jpg, .jpeg" @change="onFileSelected">
+                        <v-file-input clearable v-model="file" ref="fileInput" label="Imagen Sucursal"
+                          variant="underlined" density="compact" name="file" accept=".png, .jpg, .jpeg"
+                          @change="onFileSelected">
                         </v-file-input>
                         <!--<v-avatar elevation="3" color="grey-lighten-4" size="large">
                           <img v-if="imgedit" :src="imgedit" height="70" width="70">
                         </v-avatar>-->
                         <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
-                        <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
-                      </v-card>
+                          <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
+                        </v-card>
                       </v-col>
                     </v-row>
                   </v-container>
@@ -112,304 +115,212 @@
             </v-card>
 
           </v-dialog>
-      </v-row>
+        </v-row>
 
-    </v-toolbar>
+      </v-toolbar>
 
-    <v-card-text>
-            <v-container>
-      <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
-                hide-details>
-            </v-text-field>
-      <v-data-table :headers="headers" :search="search" :items="results" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
-        <template v-slot:item.name="{ item }">
+      <v-card-text>
+        <v-container>
+          <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
+            hide-details>
+          </v-text-field>
+          <v-data-table :headers="headers" :search="search" :items="results" class="elevation-1"
+            :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
+            no-data-text="No hay datos disponibles">
+            <template v-slot:item.name="{ item }">
 
-          <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_data" alt="image"></v-img>
-          </v-avatar>
-          {{ item.name }}
-        </template>
-        
-        <template v-slot:item.useTechnical="{ item }">
-          <div class="text-end">
-            <v-chip :color="item.useTechnical ? 'green' : 'red'" :text="item.useTechnical ? 'Si ' : 'No'"
-              class="text-uppercase" size="small" label style="text-align: center;"></v-chip>
-          </div>
-        </template>
-        <template v-slot:item.actions="{ item }">
-          <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-pencil" @click="editItem(item)" color="primary" variant="darken-1"
-            elevation="1" title="Editar Sucursal"></v-btn>
-          <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-account-tie" @click="showProfessionals(item)" color="indigo" variant="darken-2"
-            elevation="1" title="Agregar Trabajdor"></v-btn>  
-          <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-store-outline" @click="showStores(item)" color="green" variant="tonal"
-            elevation="1" title="Agregar Almacén"></v-btn>  
-          <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-handshake" @click="showAssociates(item)" color="orange" variant="tonal"
-            elevation="1" title="Agregar Asociado"></v-btn>  
-            <!--<v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-finance" @click="showWinner(item)" color="teal" variant="tonal"
-            elevation="1" title="Finanzas de la  sucursal"></v-btn>-->  
-          <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
-            elevation="1" title="Eliminar Sucursal"></v-btn>
-        </template>
-      </v-data-table>
-      </v-container>
-      <v-dialog v-model="dialogDelete" max-width="600px">
-            <v-card>
-              <v-toolbar color="red">
-                <span class="text-subtitle-2 ml-4"> Eliminar Sucursal</span>
-              </v-toolbar>
+              <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
+                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_data" alt="image"></v-img>
+              </v-avatar>
+              {{ item.name }}
+            </template>
 
-              <v-card-text class="mt-2 mb-2"> ¿Desea eliminar la Sucursal seleccionada?</v-card-text>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
-                  Cancelar
-                </v-btn>
-                <v-btn color="#F18254" variant="flat" @click="deleteItemConfirm">
-                  Aceptar
-                </v-btn>
+            <template v-slot:item.useTechnical="{ item }">
+              <div class="text-end">
+                <v-chip :color="item.useTechnical ? 'green' : 'red'" :text="item.useTechnical ? 'Si ' : 'No'"
+                  class="text-uppercase" size="small" label style="text-align: center;"></v-chip>
+              </div>
+            </template>
+            <template v-slot:item.actions="{ item }">
+              <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-pencil" @click="editItem(item)"
+                color="primary" variant="darken-1" elevation="1" title="Editar Sucursal"></v-btn>
+              <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-account-tie"
+                @click="showProfessionals(item)" color="indigo" variant="darken-2" elevation="1"
+                title="Agregar Trabajdor"></v-btn>
+              <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-store-outline" @click="showStores(item)"
+                color="green" variant="tonal" elevation="1" title="Agregar Almacén"></v-btn>
+              <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-handshake" @click="showAssociates(item)"
+                color="orange" variant="tonal" elevation="1" title="Agregar Asociado"></v-btn>
+              <!--<v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-finance" @click="showWinner(item)" color="teal" variant="tonal"
+            elevation="1" title="Finanzas de la  sucursal"></v-btn>-->
+              <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-delete" @click="deleteItem(item)"
+                color="red-darken-4" variant="tonal" elevation="1" title="Eliminar Sucursal"></v-btn>
+            </template>
+          </v-data-table>
+        </v-container>
+        <v-dialog v-model="dialogDelete" max-width="600px">
+          <v-card>
+            <v-toolbar color="red">
+              <span class="text-subtitle-2 ml-4"> Eliminar Sucursal</span>
+            </v-toolbar>
 
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-      <!--Professionals-->
-      <v-dialog v-model="dialogProfessionals" fullscreen transition="dialog-bottom-transition">
-        <v-card>
-          <v-toolbar color="#F18254">
-            <span class="text-subtitle-2 ml-4"> Trabajadores de la Sucursal</span>
-            <v-spacer></v-spacer>
-            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAddProfessionals()">
-              Agregar Trabajador
-            </v-btn>
-          </v-toolbar>
+            <v-card-text class="mt-2 mb-2"> ¿Desea eliminar la Sucursal seleccionada?</v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
+                Cancelar
+              </v-btn>
+              <v-btn color="#F18254" variant="flat" @click="deleteItemConfirm">
+                Aceptar
+              </v-btn>
 
-          <v-card-text class="mt-2 mb-2">
-            <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
-              hide-details></v-text-field>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <!--Professionals-->
+        <v-dialog v-model="dialogProfessionals" fullscreen transition="dialog-bottom-transition">
+          <v-card>
+            <v-toolbar color="#F18254">
+              <span class="text-subtitle-2 ml-4"> Trabajadores de la Sucursal</span>
+              <v-spacer></v-spacer>
+              <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAddProfessionals()">
+                Agregar Trabajador
+              </v-btn>
+            </v-toolbar>
 
-            <v-data-table :headers="headers2" :items="branchProfessionals" :search="search2" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
-              <template v-slot:item.ponderation="{ item }">
-                    {{ item.ponderation === 0 ? 1 : item.ponderation }}
-                    </template>
-              <template v-slot:item.name="{ item }">
+            <v-card-text class="mt-2 mb-2">
+              <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
+                hide-details></v-text-field>
 
-                <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
-                </v-avatar><!--+'?$'+Date.now()-->
-                {{ item.name}}
-              </template>
+              <v-data-table :headers="headers2" :items="branchProfessionals" :search="search2" class="elevation-1"
+                :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
+                no-data-text="No hay datos disponibles">
+                <template v-slot:item.ponderation="{ item }">
+                  {{ item.ponderation === 0 ? 1 : item.ponderation }}
+                </template>
+                <template v-slot:item.name="{ item }">
 
-              <template v-slot:item.actions="{ item }">
-                <v-btn density="comfortable" icon="mdi-pencil"  @click="editItemProfessional(item)" color="primary" variant="tonal"
-            elevation="1" class="mr-1 mt-1 mb-1" title="Editar asignación de profesional"></v-btn>
-                <v-btn density="comfortable" icon="mdi-delete" @click="deleteP(item)" color="red-darken-4" variant="tonal"
-            elevation="1" title="Eliminar afiliación del trabajador"></v-btn>
-                <!--<v-icon size="small" color="red" @click="deleteP(item)">
+                  <v-avatar elevation="3" color="grey-lighten-4" size="large">
+                    <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+                  </v-avatar><!--+'?$'+Date.now()-->
+                  {{ item.name }}
+                </template>
+
+                <template v-slot:item.actions="{ item }">
+                  <v-btn density="comfortable" icon="mdi-pencil" @click="editItemProfessional(item)" color="primary"
+                    variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
+                    title="Editar asignación de profesional"></v-btn>
+                  <v-btn density="comfortable" icon="mdi-delete" @click="deleteP(item)" color="red-darken-4"
+                    variant="tonal" elevation="1" title="Eliminar afiliación del trabajador"></v-btn>
+                  <!--<v-icon size="small" color="red" @click="deleteP(item)">
                   mdi-delete
                 </v-icon>-->
-              </template>
+                </template>
 
-            </v-data-table>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="#F18254" variant="flat" @click="closeDelete">
-              Volver
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <v-dialog v-model="dialogAddProf" width="500">
-        <v-card>
-          <v-toolbar color="#F18254">
-            <span class="text-subtitle-2 ml-4"> {{ formTitleProfessional }}</span>
-          </v-toolbar>
-          <v-card-text class="mt-2 mb-2">
-            <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-              <v-container>
-                <v-row>
-                  <v-col cols="12" md="12">
-                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.professional_id" :items="professionals" label="Profesional"
-                      prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined"
-                      :rules="selectRules" v-if="!editando" @update:model-value="bonusActiv">
-                      <template v-slot:item="{ props, item }">
-                                                    <v-list-item
-                                                        v-bind="props"
-                                                        :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_url"
-                                                        :subtitle="'Cargo: '+item.raw.charge"
-                                                        :title="item.raw.name"
-                                                    ></v-list-item>
-                                                    </template>
-                      </v-autocomplete>
-                      <v-text-field v-model="nameProfessional" label="Professional"
-                                        prepend-icon="mdi-account-tie-outline" variant="underlined" v-if="editando" disabled="true">
-                                    </v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="12">
-                                    <v-text-field v-show="bonus" v-model="editedItem.ponderation" clearable label="Ponderación"
-                                        prepend-icon="mdi-arrow-collapse-vertical" variant="underlined" :rules="pago">
-                                    </v-text-field>
-                                    <v-text-field v-show="bonus" v-model="editedItem.limit" clearable label="Meta de Productividad"
-                                        prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago" >
-                                    </v-text-field>
-                                     <v-text-field v-show="bonus" v-model="editedItem.mountpay" clearable label="Monto a Pagar"
-                                        prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago" >
-                                    </v-text-field>
-                                    </v-col>
-                </v-row>
-              </v-container>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="#E7E9E9" variant="flat" @click="closeP">
-                  Cancelar
-                </v-btn>
-                <v-btn color="#F18254" variant="flat" @click="saveP" :disabled="!valid">
-                  Aceptar
-                </v-btn>
-              </v-card-actions>
-            </v-form>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
-      <v-dialog v-model="dialogRequest" width="500">
-        <v-card>
-
-          <v-toolbar color="red">
-            <span class="text-subtitle-2 ml-4"> Eliminar afiliación del trabajador de esta sucursal</span>
-          </v-toolbar>
-
-          <v-card-text class="mt-2 mb-2"> ¿Desea eliminar esta afiliación del trabajador con la sucursal?</v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="#E7E9E9" variant="flat" @click="closerequest">
-              Cancelar
-            </v-btn>
-            <v-btn color="#F18254" variant="flat" @click="requestDelete">
-              Aceptar
-            </v-btn>
-
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-      <!--Store-->
-      <v-dialog v-model="dialogStores" fullscreen transition="dialog-bottom-transition">
-        <v-card>
-          <v-toolbar color="#F18254">
-            <span class="text-subtitle-1 ml-4"> Almacenes de la Sucursal</span>
-            <v-spacer></v-spacer>
-            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAddStores()">
-              Agregar Almacén
-            </v-btn>
-          </v-toolbar>
-          <v-card-text class="mt-2 mb-2">
-            <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar" single-line
-              hide-details></v-text-field>
-            <v-data-table :headers="headers3" :items="branchStores" :search="search3" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
-
-              <!--<template v-slot:item.name="{ item }">
-
-                    <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                      <v-img :src="'https://api2.simplifies.cl/api/images/'+item.image_url" alt="image"></v-img>
-                    </v-avatar>
-                    {{ item.name+' '+item.surname+' '+item.second_surname}}
-                  </template>-->
-
-              <template v-slot:item.actions="{ item }">
-          <v-btn density="comfortable" icon="mdi-delete" @click="closestoreRequest(item)" color="red-darken-4" variant="tonal"
-            elevation="1" title="Eliminar afiliación del almacén"></v-btn>
-              </template>
-
-            </v-data-table>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
-              Volver
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <v-dialog v-model="dialogAddStore" width="500">
-        <v-card>
-          <v-toolbar color="#F18254">
-            <span class="text-subtitle-2 ml-4">Agregar Almacén</span>
-          </v-toolbar>
-          <v-card-text class="mt-2 mb-2">
-            <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-              <v-container>
-                <v-row>
-                  <v-col cols="12" md="12">
-                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.store_id" :items="stores" label="Almacén"
-                      prepend-icon="mdi-store-outline" item-title="address" item-value="id" variant="underlined"
-                      :rules="selectRules">
-                      <template v-slot:item="{ props, item }">
-                        <v-list-item
-                          v-bind="props"
-                          :subtitle="'Referencia: '+item.raw.reference"
-                          :title="item.raw.address"
-                        ></v-list-item>
+              </v-data-table>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="#F18254" variant="flat" @click="closeDelete">
+                Volver
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialogAddProf" width="500">
+          <v-card>
+            <v-toolbar color="#F18254">
+              <span class="text-subtitle-2 ml-4"> {{ formTitleProfessional }}</span>
+            </v-toolbar>
+            <v-card-text class="mt-2 mb-2">
+              <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+                <v-container>
+                  <v-row>
+                    <v-col cols="12" md="12">
+                      <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.professional_id"
+                        :items="professionals" label="Profesional" prepend-icon="mdi-account-tie-outline"
+                        item-title="name" item-value="id" variant="underlined" :rules="selectRules" v-if="!editando"
+                        @update:model-value="bonusActiv">
+                        <template v-slot:item="{ props, item }">
+                          <v-list-item v-bind="props"
+                            :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_url"
+                            :subtitle="'Cargo: ' + item.raw.charge" :title="item.raw.name"></v-list-item>
                         </template>
                       </v-autocomplete>
-                  </v-col>
-                </v-row>
-              </v-container>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="#E7E9E9" variant="flat" @click="closestore">
-                  Cancelar
-                </v-btn>
-                <v-btn color="#F18254" variant="flat" @click="saveStore" :disabled="!valid">
-                  Aceptar
-                </v-btn>
-              </v-card-actions>
-            </v-form>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
-      <v-dialog v-model="dialogRequestStore" width="500">
-        <v-card>
+                      <v-text-field v-model="nameProfessional" label="Professional"
+                        prepend-icon="mdi-account-tie-outline" variant="underlined" v-if="editando" disabled="true">
+                      </v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="12">
+                      <v-text-field v-show="bonus" v-model="editedItem.ponderation" clearable label="Ponderación"
+                        prepend-icon="mdi-arrow-collapse-vertical" variant="underlined" :rules="pago">
+                      </v-text-field>
+                      <v-text-field v-show="bonus" v-model="editedItem.limit" clearable label="Meta de Productividad"
+                        prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago">
+                      </v-text-field>
+                      <v-text-field v-show="bonus" v-model="editedItem.mountpay" clearable label="Monto a Pagar"
+                        prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago">
+                      </v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-container>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="#E7E9E9" variant="flat" @click="closeP">
+                    Cancelar
+                  </v-btn>
+                  <v-btn color="#F18254" variant="flat" @click="saveP" :disabled="!valid">
+                    Aceptar
+                  </v-btn>
+                </v-card-actions>
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialogRequest" width="500">
+          <v-card>
 
-          <v-toolbar color="red">
-            <span class="text-subtitle-2 ml-4"> Eliminar afiliación del almacén de esta sucursal</span>
-          </v-toolbar>
+            <v-toolbar color="red">
+              <span class="text-subtitle-2 ml-4"> Eliminar afiliación del trabajador de esta sucursal</span>
+            </v-toolbar>
 
-          <v-card-text class="mt-2 mb-2"> ¿Desea eliminar esta afiliación del almacén con la sucursal?</v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="#E7E9E9" variant="flat" @click="closerequestStore">
-              Cancelar
-            </v-btn>
-            <v-btn color="#F18254" variant="flat" @click="storeDelete">
-              Aceptar
-            </v-btn>
+            <v-card-text class="mt-2 mb-2"> ¿Desea eliminar esta afiliación del trabajador con la
+              sucursal?</v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="#E7E9E9" variant="flat" @click="closerequest">
+                Cancelar
+              </v-btn>
+              <v-btn color="#F18254" variant="flat" @click="requestDelete">
+                Aceptar
+              </v-btn>
 
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
 
-      <!--Associates-->
-      <v-dialog v-model="dialogAssociates" fullscreen transition="dialog-bottom-transition">
-        <v-card>
-          <v-toolbar color="#F18254">
-            <span class="text-subtitle-1 ml-4"> Asociados a la Sucursal</span>
-            <v-spacer></v-spacer>
-            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAddAssociates()">
-              Agregar Asociado
-            </v-btn>
-          </v-toolbar>
-          <v-card-text class="mt-2 mb-2">
-            <v-text-field class="mt-1 mb-1" v-model="search4" append-icon="mdi-magnify" label="Buscar" single-line
-              hide-details></v-text-field>
-            <v-data-table :headers="headers4" :items="branchAssociates" :search="search4" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+        <!--Store-->
+        <v-dialog v-model="dialogStores" fullscreen transition="dialog-bottom-transition">
+          <v-card>
+            <v-toolbar color="#F18254">
+              <span class="text-subtitle-1 ml-4"> Almacenes de la Sucursal</span>
+              <v-spacer></v-spacer>
+              <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAddStores()">
+                Agregar Almacén
+              </v-btn>
+            </v-toolbar>
+            <v-card-text class="mt-2 mb-2">
+              <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar" single-line
+                hide-details></v-text-field>
+              <v-data-table :headers="headers3" :items="branchStores" :search="search3" class="elevation-1"
+                :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
+                no-data-text="No hay datos disponibles">
 
-              <!--<template v-slot:item.name="{ item }">
+                <!--<template v-slot:item.name="{ item }">
 
                     <v-avatar elevation="3" color="grey-lighten-4" size="large">
                       <v-img :src="'https://api2.simplifies.cl/api/images/'+item.image_url" alt="image"></v-img>
@@ -417,157 +328,260 @@
                     {{ item.name+' '+item.surname+' '+item.second_surname}}
                   </template>-->
 
-              <template v-slot:item.actions="{ item }">
-          <v-btn density="comfortable" icon="mdi-delete" @click="closeassociateRequest(item)" color="red-darken-4" variant="tonal"
-            elevation="1" title="Eliminar afiliación del asociado"></v-btn>
-                <!--<v-icon size="small" color="red" @click="closestoreRequest(item)">
+                <template v-slot:item.actions="{ item }">
+                  <v-btn density="comfortable" icon="mdi-delete" @click="closestoreRequest(item)" color="red-darken-4"
+                    variant="tonal" elevation="1" title="Eliminar afiliación del almacén"></v-btn>
+                </template>
+
+              </v-data-table>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
+                Volver
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialogAddStore" width="500">
+          <v-card>
+            <v-toolbar color="#F18254">
+              <span class="text-subtitle-2 ml-4">Agregar Almacén</span>
+            </v-toolbar>
+            <v-card-text class="mt-2 mb-2">
+              <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+                <v-container>
+                  <v-row>
+                    <v-col cols="12" md="12">
+                      <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.store_id"
+                        :items="stores" label="Almacén" prepend-icon="mdi-store-outline" item-title="address"
+                        item-value="id" variant="underlined" :rules="selectRules">
+                        <template v-slot:item="{ props, item }">
+                          <v-list-item v-bind="props" :subtitle="'Referencia: ' + item.raw.reference"
+                            :title="item.raw.address"></v-list-item>
+                        </template>
+                      </v-autocomplete>
+                    </v-col>
+                  </v-row>
+                </v-container>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="#E7E9E9" variant="flat" @click="closestore">
+                    Cancelar
+                  </v-btn>
+                  <v-btn color="#F18254" variant="flat" @click="saveStore" :disabled="!valid">
+                    Aceptar
+                  </v-btn>
+                </v-card-actions>
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialogRequestStore" width="500">
+          <v-card>
+
+            <v-toolbar color="red">
+              <span class="text-subtitle-2 ml-4"> Eliminar afiliación del almacén de esta sucursal</span>
+            </v-toolbar>
+
+            <v-card-text class="mt-2 mb-2"> ¿Desea eliminar esta afiliación del almacén con la sucursal?</v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="#E7E9E9" variant="flat" @click="closerequestStore">
+                Cancelar
+              </v-btn>
+              <v-btn color="#F18254" variant="flat" @click="storeDelete">
+                Aceptar
+              </v-btn>
+
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+        <!--Associates-->
+        <v-dialog v-model="dialogAssociates" fullscreen transition="dialog-bottom-transition">
+          <v-card>
+            <v-toolbar color="#F18254">
+              <span class="text-subtitle-1 ml-4"> Asociados a la Sucursal</span>
+              <v-spacer></v-spacer>
+              <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAddAssociates()">
+                Agregar Asociado
+              </v-btn>
+            </v-toolbar>
+            <v-card-text class="mt-2 mb-2">
+              <v-text-field class="mt-1 mb-1" v-model="search4" append-icon="mdi-magnify" label="Buscar" single-line
+                hide-details></v-text-field>
+              <v-data-table :headers="headers4" :items="branchAssociates" :search="search4" class="elevation-1"
+                :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
+                no-data-text="No hay datos disponibles">
+
+                <!--<template v-slot:item.name="{ item }">
+
+                    <v-avatar elevation="3" color="grey-lighten-4" size="large">
+                      <v-img :src="'https://api2.simplifies.cl/api/images/'+item.image_url" alt="image"></v-img>
+                    </v-avatar>
+                    {{ item.name+' '+item.surname+' '+item.second_surname}}
+                  </template>-->
+
+                <template v-slot:item.actions="{ item }">
+                  <v-btn density="comfortable" icon="mdi-delete" @click="closeassociateRequest(item)"
+                    color="red-darken-4" variant="tonal" elevation="1" title="Eliminar afiliación del asociado"></v-btn>
+                  <!--<v-icon size="small" color="red" @click="closestoreRequest(item)">
                   mdi-delete
                 </v-icon>-->
-              </template>
+                </template>
 
-            </v-data-table>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
-              Volver
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <v-dialog v-model="dialogAddAssociate" width="500">
-        <v-card>
-          <v-toolbar color="#F18254">
-            <span class="text-subtitle-2 ml-4">Agregar Asociado</span>
-          </v-toolbar>
-          <v-card-text class="mt-2 mb-2">
-            <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-              <v-container>
-                <v-row>
-                  <v-col cols="12" md="12">
-                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="associated_id" :items="associates" label="Asociado"
-                      prepend-icon="mdi-handshake" item-title="name" item-value="id" variant="underlined"
-                      :rules="selectRules"></v-autocomplete>
-                  </v-col>
-                </v-row>
-              </v-container>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="#E7E9E9" variant="flat" @click="closeassociate">
-                  Cancelar
-                </v-btn>
-                <v-btn color="#F18254" variant="flat" @click="saveAssociated" :disabled="!valid">
-                  Aceptar
-                </v-btn>
-              </v-card-actions>
-            </v-form>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
-      <v-dialog v-model="dialogRequestAssociate" width="500">
-        <v-card>
+              </v-data-table>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
+                Volver
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialogAddAssociate" width="500">
+          <v-card>
+            <v-toolbar color="#F18254">
+              <span class="text-subtitle-2 ml-4">Agregar Asociado</span>
+            </v-toolbar>
+            <v-card-text class="mt-2 mb-2">
+              <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+                <v-container>
+                  <v-row>
+                    <v-col cols="12" md="12">
+                      <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="associated_id"
+                        :items="associates" label="Asociado" prepend-icon="mdi-handshake" item-title="name"
+                        item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
+                    </v-col>
+                  </v-row>
+                </v-container>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="#E7E9E9" variant="flat" @click="closeassociate">
+                    Cancelar
+                  </v-btn>
+                  <v-btn color="#F18254" variant="flat" @click="saveAssociated" :disabled="!valid">
+                    Aceptar
+                  </v-btn>
+                </v-card-actions>
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialogRequestAssociate" width="500">
+          <v-card>
 
-          <v-toolbar color="red">
-            <span class="text-subtitle-2 ml-4"> Eliminar afiliación del asociado de esta sucursal</span>
-          </v-toolbar>
+            <v-toolbar color="red">
+              <span class="text-subtitle-2 ml-4"> Eliminar afiliación del asociado de esta sucursal</span>
+            </v-toolbar>
 
-          <v-card-text class="mt-2 mb-2"> ¿Desea eliminar esta afiliación del asociado con la sucursal?</v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="#E7E9E9" variant="flat" @click="closerequestAssociate">
-              Cancelar
-            </v-btn>
-            <v-btn color="#F18254" variant="flat" @click="associateDelete">
-              Aceptar
-            </v-btn>
+            <v-card-text class="mt-2 mb-2"> ¿Desea eliminar esta afiliación del asociado con la sucursal?</v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="#E7E9E9" variant="flat" @click="closerequestAssociate">
+                Cancelar
+              </v-btn>
+              <v-btn color="#F18254" variant="flat" @click="associateDelete">
+                Aceptar
+              </v-btn>
 
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
 
-      <!--Finanzas-->
-      <v-dialog v-model="dialogWinners" fullscreen transition="dialog-bottom-transition">
-        <v-card>
-          <v-toolbar color="#F18254">
-            <span class="text-h6 ml-4">Ganancias de la Sucursal</span>
-            <v-spacer></v-spacer>
-          </v-toolbar>
-          <v-container>
-      <v-row>
-        <!-- Primera columna -->
-        <v-col cols="12" md="3">
-          <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-            min-width="290px" multiple>
-            <template v-slot:activator="{ props }">
-              <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined" append-inner-icon="mdi-calendar"
-                label="Fecha inicial" multiple></v-text-field>
-            </template>
-            <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input @update:modelValue="updateDate"
-                format="yyyy-MM-dd" :max="dateFormatted2"></v-date-picker>
-            </v-locale-provider>
-          </v-menu>
-        </v-col>
-        <!-- Segunda columna -->
-        <v-col cols="12" md="3">
-          <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-            min-width="290px">
-            <template v-slot:activator="{ props }">
-              <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
-                append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
-            </template>
-            <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" @update:modelValue="updateDate1"
-                format="yyyy-MM-dd" :min="dateFormatted"></v-date-picker>
-            </v-locale-provider>
-          </v-menu>
-        </v-col>
-        <v-col cols="12" sm="12" md="3">
-          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" v-if="mostrarFila" :items="results" clearable
-            label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
-            variant="outlined"></v-autocomplete><!-- @update:model-value="initialize()">-->
-        </v-col>
-        <v-col cols="12" md="1">
-                        <v-btn icon @click="updateDate3" color="#F18254" >
+        <!--Finanzas-->
+        <v-dialog v-model="dialogWinners" fullscreen transition="dialog-bottom-transition">
+          <v-card>
+            <v-toolbar color="#F18254">
+              <span class="text-h6 ml-4">Ganancias de la Sucursal</span>
+              <v-spacer></v-spacer>
+            </v-toolbar>
+            <v-container>
+              <v-row>
+                <!-- Primera columna -->
+                <v-col cols="12" md="3">
+                  <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
+                    offset-y min-width="290px" multiple>
+                    <template v-slot:activator="{ props }">
+                      <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined"
+                        append-inner-icon="mdi-calendar" label="Fecha inicial" multiple></v-text-field>
+                    </template>
+                    <v-locale-provider locale="es">
+                      <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                        :modelValue=input @update:modelValue="updateDate" format="yyyy-MM-dd"
+                        :max="dateFormatted2"></v-date-picker>
+                    </v-locale-provider>
+                  </v-menu>
+                </v-col>
+                <!-- Segunda columna -->
+                <v-col cols="12" md="3">
+                  <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40"
+                    transition="scale-transition" offset-y min-width="290px">
+                    <template v-slot:activator="{ props }">
+                      <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
+                        append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
+                    </template>
+                    <v-locale-provider locale="es">
+                      <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                        :modelValue="getDate2" @update:modelValue="updateDate1" format="yyyy-MM-dd"
+                        :min="dateFormatted"></v-date-picker>
+                    </v-locale-provider>
+                  </v-menu>
+                </v-col>
+                <v-col cols="12" sm="12" md="3">
+                  <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" v-if="mostrarFila"
+                    :items="results" clearable label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
+                    item-title="name" item-value="id"
+                    variant="outlined"></v-autocomplete><!-- @update:model-value="initialize()">-->
+                </v-col>
+                <v-col cols="12" md="1">
+                  <v-btn icon @click="updateDate3" color="#F18254">
                     <v-icon>mdi-magnify</v-icon></v-btn>
                 </v-col>
-            </v-row>
-              </v-container>
+              </v-row>
+            </v-container>
             <v-container>
               <v-row>
                 <v-col cols="12" md="12">
-            <v-alert border type="info" variant="outlined" density="compact">
+                  <v-alert border type="info" variant="outlined" density="compact">
                     <p v-html="formTitleWin"></p>
-                              </v-alert>
-                            </v-col>
-          </v-row> 
-          <v-row>
-              <v-col cols="12" md="3" v-for="(item, key) in winners" :key="key">
-                    <v-card class="mx-auto pa-2 ml-0" :subtitle="key=='Monto Generado' || key=='Monto Servicios Especiales' || key=='Total Retenciones' || key=='Utilidad de Productos Vendidos' || key=='Utilidad de Servicios' || key=='Utilidades' || key=='Monto Generado Servicios' || key=='Monto de Productos Vendidos' || key=='Monto de Propina' || key=='10% Propina' ? formatNumber(item.value) : item.value" :title="key">                  
+                  </v-alert>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" md="3" v-for="(item, key) in winners" :key="key">
+                  <v-card class="mx-auto pa-2 ml-0"
+                    :subtitle="key == 'Monto Generado' || key == 'Monto Servicios Especiales' || key == 'Total Retenciones' || key == 'Utilidad de Productos Vendidos' || key == 'Utilidad de Servicios' || key == 'Utilidades' || key == 'Monto Generado Servicios' || key == 'Monto de Productos Vendidos' || key == 'Monto de Propina' || key == '10% Propina' ? formatNumber(item.value) : item.value"
+                    :title="key">
                     <template v-slot:prepend>
                       <v-avatar :color="item.color">
                         <v-icon color="white">{{ item.icon }}</v-icon>
                       </v-avatar>
-                    </template>                
-                </v-card>
-              </v-col>
-            </v-row>
+                    </template>
+                  </v-card>
+                </v-col>
+              </v-row>
             </v-container>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="#E7E9E9" variant="flat" @click="closeShowWinner">
-              Volver
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-card-text>
-  </v-card>
-</v-container>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="#E7E9E9" variant="flat" @click="closeShowWinner">
+                Volver
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-card-text>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
@@ -589,7 +603,7 @@ export default {
     search4: '',
     business_id: '',
     search2: '',
-    search:'',
+    search: '',
     mostrarFila: false,
     charge: '',
     editando: false,
@@ -602,7 +616,7 @@ export default {
     dialogAddStore: false,
     dialogRequestStore: false,
     dialogRequestAssociate: false,
-    dialogAssociates : false,
+    dialogAssociates: false,
     dialogAddAssociate: false,
     associated_id: '',
     bonus: false,
@@ -610,7 +624,7 @@ export default {
     headers: [
       { title: 'Nombre', value: 'name' },
       { title: 'Teléfono', value: 'phone' },
-      { title: 'Dirección', value: 'address', width: '200px'  },
+      { title: 'Dirección', value: 'address', width: '200px' },
       { title: 'Tipo de Negocio', value: 'business_type.name' },
       { title: 'Técnico', value: 'useTechnical' },
       { title: 'Acciones', key: 'actions', sortable: false },
@@ -668,9 +682,9 @@ export default {
     },
     data: {},
     options: [
-        { name: 'SI', id: 1 },
-        { name: 'NO', id: 0 }
-      ],
+      { name: 'SI', id: 1 },
+      { name: 'NO', id: 0 }
+    ],
     defaultItem: {
       name: '',
       phone: '',
@@ -732,9 +746,9 @@ export default {
     formTitleWin() {
       if (this.editedIndexWin === 2) {
         const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+        const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
         return `Ganancias de la Sucursal en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;
-		
+
       }
       else {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -765,12 +779,12 @@ export default {
   },
 
   watch: {
-    'editedItem.ponderation': function(newValue) {
+    'editedItem.ponderation': function (newValue) {
       // Si el nuevo valor es 0, lo ajustamos a 1
       if (newValue === 0) {
         this.editedItem.ponderation = 1;
       }
-      else{
+      else {
         this.editedItem.ponderation;
       }
     },
@@ -787,42 +801,42 @@ export default {
     this.editedItem.business_id = this.business_id; // Establecer el primer negocio como valor predeterminado
     this.branch_id = parseInt(LocalStorageService.getItem("branch_id"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
-      //console.log('this.editedItem.business_id');
-      //console.log(this.editedItem.business_id);
-      axios
-        .get('https://api2.simplifies.cl/api/business')
-        .then((response) => {
-          this.business = response.data.business;     
-        }).finally(() => {
-          if (this.business.length > 0) {
-      this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
-    } 
-    if (this.charge === "Administrador") {
+    //console.log('this.editedItem.business_id');
+    //console.log(this.editedItem.business_id);
+    axios
+      .get('https://api2.simplifies.cl/api/business')
+      .then((response) => {
+        this.business = response.data.business;
+      }).finally(() => {
+        if (this.business.length > 0) {
+          this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
+        }
+        if (this.charge === "Administrador") {
           this.branch_id = this.business[0].id;
           this.mostrarFila = true;
         }
-    this.initialize();
-          });
+        this.initialize();
+      });
   },
 
   methods: {
-  bonusActiv(professional_id){
-    const selectedProfessional = this.professionals.find(prof => prof.id === professional_id);
+    bonusActiv(professional_id) {
+      const selectedProfessional = this.professionals.find(prof => prof.id === professional_id);
       if (selectedProfessional.charge == "Barbero y Encargado" || selectedProfessional.charge == "Barbero") {
         this.bonus = true;
       }
       else {
         this.bonus = false;
       }
-  },
+    },
     imagenDisponible() {
-        if (this.imgedit !== undefined && this.imgedit !== '') {
-            // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
-            let img = new Image();
-            img.src = this.imgedit;
-            return true; // Devuelve true si la imagen está disponible
-        }
-        return false; // Si la URL de la imagen no está definida o está vacía, devuelve false
+      if (this.imgedit !== undefined && this.imgedit !== '') {
+        // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
+        let img = new Image();
+        img.src = this.imgedit;
+        return true; // Devuelve true si la imagen está disponible
+      }
+      return false; // Si la URL de la imagen no está definida o está vacía, devuelve false
     },
     showAlert(sb_type, sb_message, sb_timeout) {
       this.sb_type = sb_type
@@ -856,19 +870,19 @@ export default {
           console.log('imprime sucursales');
           console.log(this.results);
         }).finally(() => {
-    if (this.charge === "Administrador") {
-          this.branch_id = this.results[0].id;
-          this.mostrarFila = true;
-        }
-          });
+          if (this.charge === "Administrador") {
+            this.branch_id = this.results[0].id;
+            this.mostrarFila = true;
+          }
+        });
     },
-    showAddBranch(){
+    showAddBranch() {
       axios
         .get('https://api2.simplifies.cl/api/business-type')
         .then((response) => {
           this.businessTypes = response.data.businessTypes;
         });
-        this.dialog = true;
+      this.dialog = true;
     },
     onFileSelected(event) {
       let file = event.target.files[0];
@@ -897,7 +911,7 @@ export default {
       this.editedItem = Object.assign({}, item);
       this.editedItem.business_type_id = parseInt(item.business_type_id);
       this.editedItem.business_id = parseInt(item.business_id);
-      
+
       this.dialog = true;
       this.editando = true;
     },
@@ -1018,7 +1032,7 @@ export default {
         });
       this.dialogProfessionals = true;
     },
-    showAddProfessionals(){
+    showAddProfessionals() {
       this.editedIndexP = -1;
       axios
         .get('https://api2.simplifies.cl/api/professional-show-autocomplete-Notin', {
@@ -1029,7 +1043,7 @@ export default {
         .then((response) => {
           this.professionals = response.data.professionals;
         });
-        this.dialogAddProf = true;
+      this.dialogAddProf = true;
     },
     editItemProfessional(item) {
       this.editedIndexP = 2;
@@ -1044,18 +1058,18 @@ export default {
         .then((response) => {
           this.professionals = response.data.professionals;
         });
-            this.editedIndex = 2;
-            this.editedItem.professional_id = parseInt(item.professional_id);
-            this.editedItem.ponderation = item.ponderation;
-            this.editedItem.limit = item.limit;
-            this.editedItem.mountpay = item.mountpay;
-            this.nameProfessional = item.name;
-            this.dialogAddProf = true;
-            this.editando = true;
-            if(item.charge === 'Barbero' || item.charge === 'Barbero y Encargado'){
-              this.bonus = true;
-            }
-            },
+      this.editedIndex = 2;
+      this.editedItem.professional_id = parseInt(item.professional_id);
+      this.editedItem.ponderation = item.ponderation;
+      this.editedItem.limit = item.limit;
+      this.editedItem.mountpay = item.mountpay;
+      this.nameProfessional = item.name;
+      this.dialogAddProf = true;
+      this.editando = true;
+      if (item.charge === 'Barbero' || item.charge === 'Barbero y Encargado') {
+        this.bonus = true;
+      }
+    },
     showStores(item) {
       this.branchSelect = item;
       console.log(this.branchSelect);
@@ -1073,7 +1087,7 @@ export default {
         });
       this.dialogStores = true;
     },
-    showAddStores(){
+    showAddStores() {
       axios
         .get('https://api2.simplifies.cl/api/branchstore-show-notInt', {
           params: {
@@ -1088,46 +1102,46 @@ export default {
     saveP() {
       if (this.editedIndexP == 2) {
         this.valid = false,
-        this.data.branch_id = this.branch_id;
-      this.data.professional_id = this.editedItem.professional_id;
-      this.data.ponderation = this.editedItem.ponderation;
-      this.data.limit = this.editedItem.limit ? this.editedItem.limit : 0;
-      this.data.mountpay = this.editedItem.mountpay ? this.editedItem.mountpay : 0;
-      axios
-        .put('https://api2.simplifies.cl/api/branchprofessional', this.data)
-        .then(() => {
-          this.$nextTick(() => {
-            this.editedItem = Object.assign({}, this.defaultItem)
-          }).finally(() => {
-          this.showAlert("success", "Asignación del trabajado a la sucursal editada correctamente", 3000);
-          this.showProfessionals(this.branchSelect);
-          });
-          this.dialogAddProf = false;
-          this.editando = false;
-          this.bonus = false;
-        this.editedIndex = -1;
-        })
-      }else{
+          this.data.branch_id = this.branch_id;
+        this.data.professional_id = this.editedItem.professional_id;
+        this.data.ponderation = this.editedItem.ponderation;
+        this.data.limit = this.editedItem.limit ? this.editedItem.limit : 0;
+        this.data.mountpay = this.editedItem.mountpay ? this.editedItem.mountpay : 0;
+        axios
+          .put('https://api2.simplifies.cl/api/branchprofessional', this.data)
+          .then(() => {
+            this.$nextTick(() => {
+              this.editedItem = Object.assign({}, this.defaultItem)
+            }).finally(() => {
+              this.showAlert("success", "Asignación del trabajado a la sucursal editada correctamente", 3000);
+              this.showProfessionals(this.branchSelect);
+            });
+            this.dialogAddProf = false;
+            this.editando = false;
+            this.bonus = false;
+            this.editedIndex = -1;
+          })
+      } else {
         this.valid = false,
-        this.data.branch_id = this.branch_id;
-      this.data.professional_id = this.editedItem.professional_id;
-      this.data.ponderation = this.editedItem.ponderation;
-      this.data.limit = this.editedItem.limit ? this.editedItem.limit : 0;
-      this.data.mountpay = this.editedItem.mountpay ? this.editedItem.mountpay : 0;
-      axios
-        .post('https://api2.simplifies.cl/api/branchprofessional', this.data)
-        .then(() => {
-          this.$nextTick(() => {
-            this.editedItem = Object.assign({}, this.defaultItem)
-          }).finally(() => {
-          this.showAlert("success", "Trabajdor afiliado correctamente a la sucursal", 3000);
-          this.showProfessionals(this.branchSelect);
-          });
-          this.dialogAddProf = false;
-          this.editando = false;
-          this.bonus = false;
-        this.editedIndex = -1;
-        })
+          this.data.branch_id = this.branch_id;
+        this.data.professional_id = this.editedItem.professional_id;
+        this.data.ponderation = this.editedItem.ponderation;
+        this.data.limit = this.editedItem.limit ? this.editedItem.limit : 0;
+        this.data.mountpay = this.editedItem.mountpay ? this.editedItem.mountpay : 0;
+        axios
+          .post('https://api2.simplifies.cl/api/branchprofessional', this.data)
+          .then(() => {
+            this.$nextTick(() => {
+              this.editedItem = Object.assign({}, this.defaultItem)
+            }).finally(() => {
+              this.showAlert("success", "Trabajdor afiliado correctamente a la sucursal", 3000);
+              this.showProfessionals(this.branchSelect);
+            });
+            this.dialogAddProf = false;
+            this.editando = false;
+            this.bonus = false;
+            this.editedIndex = -1;
+          })
       }
     },
     saveStore() {
@@ -1138,7 +1152,7 @@ export default {
         .post('https://api2.simplifies.cl/api/branchstore', this.data)
         .then(() => {
           this.dialogAddStore = false;
-          }).finally(() => {
+        }).finally(() => {
           this.showStores(this.branchSelect);
           this.showAlert("success", "Almacén afiliado correctamente a la sucursal", 3000);
           this.$nextTick(() => {
@@ -1171,7 +1185,7 @@ export default {
           })
           this.showProfessionals(this.branchSelect);
           this.showAlert("success", "Afiliación eliminada correctamente", 3000);
-          });
+        });
     },
     storeDelete() {
       let request = {
@@ -1188,7 +1202,7 @@ export default {
           })
           this.showStores(this.branchSelect);
           this.showAlert("success", "Afiliación eliminada correctamente", 3000);
-          });
+        });
     },
 
     closerequest() {
@@ -1221,7 +1235,7 @@ export default {
         });
       this.dialogAssociates = true;
     },
-    showAddAssociates(){
+    showAddAssociates() {
       axios
         .get('https://api2.simplifies.cl/api/associated-show', {
           params: {
@@ -1246,7 +1260,7 @@ export default {
         .post('https://api2.simplifies.cl/api/associate-branch', this.data)
         .then(() => {
           this.dialogAddAssociate = false;
-          }).finally(() => {
+        }).finally(() => {
           this.showAssociates(this.branchSelect);
           this.showAlert("success", "Asociado afiliado correctamente a la sucursal", 3000);
           this.associated_id = '';
@@ -1275,7 +1289,7 @@ export default {
           this.associated_id = '';
           this.showAssociates(this.branchSelect);
           this.showAlert("success", "Afiliación eliminada correctamente", 3000);
-          });
+        });
     },
     //Finanzas
     showWinner() {
@@ -1289,35 +1303,28 @@ export default {
         })
         .then((response) => {
           this.winners = response.data;
-        }).finally(() => {         
+        }).finally(() => {
           this.dialogWinners = true;
-          });
+        });
     },
     closeShowWinner() {
-      this.dialogWinners = false; 
-          this.editedIndexWin = -1;
+      this.dialogWinners = false;
+      this.editedIndexWin = -1;
     },
     formatNumber(value) {
-            //return value.toLocaleString('es-ES');
-            // Si el valor es menor que 1000, devuelve el valor original sin formato
-            if (value < 1000) {
-                return value;
-            }
+      // Si el valor es menor que 1000, devuelve el valor original con dos decimales
+      if (value < 1000) {
+        return (Math.round((value + Number.EPSILON) * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
 
-            // Primero, redondea el valor a dos decimales
-            value = Math.round((value + Number.EPSILON) * 100) / 100;
+      // Primero, redondea el valor a dos decimales
+      value = Math.round((value + Number.EPSILON) * 100) / 100;
 
-            // Separa la parte entera de la parte decimal
-            let parts = value.toString().split(".");
-            let integerPart = parts[0];
-            let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+      // Convierte el valor a cadena con formato de número local (en-US)
+      let formattedValue = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-            // Agrega los separadores de miles
-            integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
-            // Combina la parte entera y la parte decimal
-            return integerPart + decimalPart;
-        },
+      return formattedValue;
+    },
     updateDate(val) {
       this.input = val;
       this.menu = false;

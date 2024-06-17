@@ -595,26 +595,20 @@ export default {
     // this.renderChart(this.chartData, { responsive: true, maintainAspectRatio: false })
   },
   methods: {
-    formatNumber(value) {
-      // Si el valor es menor que 1000, devuelve el valor original sin formato
-      if (value < 1000) {
-        return value;
-      }
+   formatNumber(value) {
+  // Si el valor es menor que 1000, devuelve el valor original con dos decimales
+  if (value < 1000) {
+    return (Math.round((value + Number.EPSILON) * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
 
-      // Primero, redondea el valor a dos decimales
-      value = Math.round((value + Number.EPSILON) * 100) / 100;
+  // Primero, redondea el valor a dos decimales
+  value = Math.round((value + Number.EPSILON) * 100) / 100;
 
-      // Separa la parte entera de la parte decimal
-      let parts = value.toString().split(".");
-      let integerPart = parts[0];
-      let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+  // Convierte el valor a cadena con formato de número local (en-US)
+  let formattedValue = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-      // Agrega los separadores de miles
-      integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
-      // Combina la parte entera y la parte decimal
-      return integerPart + decimalPart;
-    },
+  return formattedValue;
+},
     //ganancias en la semana
     generateChartData1() {
       return {

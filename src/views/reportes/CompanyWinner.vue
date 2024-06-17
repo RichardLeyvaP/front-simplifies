@@ -7,7 +7,8 @@
       <v-container>
         <v-row align="center">
           <v-col cols="12" md="8" class="grow ml-4">
-            <span class="text-subtitle-1"> <strong>Monto generado por Sucursales por (Día, Mes o Período)</strong></span>
+            <span class="text-subtitle-1"> <strong>Monto generado por Sucursales por (Día, Mes o
+                Período)</strong></span>
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="12" md="3">
@@ -21,41 +22,43 @@
     </v-toolbar>
     <v-container>
       <v-container>
-      <v-row>
-        <!-- Primera columna -->
-        <v-col cols="12" sm="6" md="3">
-          <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-            min-width="290px">
-            <template v-slot:activator="{ props }">
-              <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined" append-inner-icon="mdi-calendar"
-                label="Fecha inicial"></v-text-field>
-            </template>
-            <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue=input @update:modelValue="updateDate"
-                format="yyyy-MM-dd" :max="dateFormatted2"></v-date-picker>
-            </v-locale-provider>
-          </v-menu>
-        </v-col>
-        <!-- Segunda columna -->
-        <v-col cols="12" sm="6" md="3">
-          <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-            min-width="290px">
-            <template v-slot:activator="{ props }">
-              <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
-                append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
-            </template>
-            <v-locale-provider locale="es">
-              <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" @update:modelValue="updateDate1"
-                format="yyyy-MM-dd" :min="dateFormatted"></v-date-picker>
-            </v-locale-provider>
-          </v-menu>
-        </v-col>
-        <v-col cols="12" md="1">
-                        <v-btn icon @click="updateDate2" color="#F18254" >
-                    <v-icon>mdi-magnify</v-icon></v-btn>
-                </v-col>
-        <!-- Tercera columna -->
-        <!--<v-col cols="12" sm="6" md="4">
+        <v-row>
+          <!-- Primera columna -->
+          <v-col cols="12" sm="6" md="3">
+            <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
+              offset-y min-width="290px">
+              <template v-slot:activator="{ props }">
+                <v-text-field v-bind="props" :modelValue="dateFormatted" variant="outlined"
+                  append-inner-icon="mdi-calendar" label="Fecha inicial"></v-text-field>
+              </template>
+              <v-locale-provider locale="es">
+                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                  :modelValue=input @update:modelValue="updateDate" format="yyyy-MM-dd"
+                  :max="dateFormatted2"></v-date-picker>
+              </v-locale-provider>
+            </v-menu>
+          </v-col>
+          <!-- Segunda columna -->
+          <v-col cols="12" sm="6" md="3">
+            <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
+              offset-y min-width="290px">
+              <template v-slot:activator="{ props }">
+                <v-text-field v-bind="props" :modelValue="dateFormatted2" variant="outlined"
+                  append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
+              </template>
+              <v-locale-provider locale="es">
+                <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                  :modelValue="getDate2" @update:modelValue="updateDate1" format="yyyy-MM-dd"
+                  :min="dateFormatted"></v-date-picker>
+              </v-locale-provider>
+            </v-menu>
+          </v-col>
+          <v-col cols="12" md="1">
+            <v-btn icon @click="updateDate2" color="#F18254">
+              <v-icon>mdi-magnify</v-icon></v-btn>
+          </v-col>
+          <!-- Tercera columna -->
+          <!--<v-col cols="12" sm="6" md="4">
           <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
             min-width="290px">
             <template v-slot:activator="{ props }">
@@ -68,42 +71,40 @@
             </v-locale-provider>
           </v-menu>
         </v-col>-->
-      </v-row>
+        </v-row>
       </v-container>
       <v-row>
         <v-col cols="12">
           <v-container>
             <v-alert border type="info" variant="outlined" density="compact">
               <p v-html="formTitle"></p>
-                        </v-alert>
+            </v-alert>
           </v-container>
         </v-col>
         <v-col cols="12" md="12">
           <v-card-text>
             <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details></v-text-field>
-            <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search2" class="elevation-2"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
-            
+            <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
+              :search="search2" class="elevation-2" no-results-text="No hay datos disponibles"
+              no-data-text="No hay datos disponibles">
+
               <template v-slot:item.tip="{ item }">
-                                        <v-chip
-                                            class="text-uppercase font-weight-bold" size="small" label> {{
-                            formatNumber(item.tip)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.earnings="{ item }">
-                                        <v-chip
-                                            class="text-uppercase font-weight-bold" size="small" label> {{
-                            formatNumber(item.earnings)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.technical_assistance="{ item }">
-                                        <v-chip
-                                            class="text-uppercase font-weight-bold" size="small" label> {{
-                            formatNumber(item.technical_assistance)}}</v-chip>
-                                    </template>
-                                    <template v-slot:item.total="{ item }">
-                                        <v-chip
-                                            class="text-uppercase font-weight-bold" size="small" label> {{
-                            formatNumber(item.total)}}</v-chip>
-                                    </template>
+                <v-chip class="text-uppercase font-weight-bold" size="small" label> {{
+                  formatNumber(item.tip) }}</v-chip>
+              </template>
+              <template v-slot:item.earnings="{ item }">
+                <v-chip class="text-uppercase font-weight-bold" size="small" label> {{
+                  formatNumber(item.earnings) }}</v-chip>
+              </template>
+              <template v-slot:item.technical_assistance="{ item }">
+                <v-chip class="text-uppercase font-weight-bold" size="small" label> {{
+                  formatNumber(item.technical_assistance) }}</v-chip>
+              </template>
+              <template v-slot:item.total="{ item }">
+                <v-chip class="text-uppercase font-weight-bold" size="small" label> {{
+                  formatNumber(item.total) }}</v-chip>
+              </template>
             </v-data-table>
           </v-card-text>
         </v-col>
@@ -157,10 +158,10 @@ export default {
         //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
         //return 'Monto generado por Sucursales en el período ' + this.fecha;
         const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
+        const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
-        return `Monto generado por Sucursales en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;		
+        return `Monto generado por Sucursales en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;
       }
       /*else if (this.editedIndex === 3) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -215,15 +216,26 @@ export default {
   },
 
   mounted() {
-    
+
     this.business_id = parseInt(LocalStorageService.getItem("business_id"));
     this.initialize();
   },
 
   methods: {
     formatNumber(value) {
-            return value.toLocaleString('es-ES');
-        },
+      // Si el valor es menor que 1000, devuelve el valor original con dos decimales
+      if (value < 1000) {
+        return (Math.round((value + Number.EPSILON) * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+
+      // Primero, redondea el valor a dos decimales
+      value = Math.round((value + Number.EPSILON) * 100) / 100;
+
+      // Convierte el valor a cadena con formato de número local (en-US)
+      let formattedValue = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      return formattedValue;
+    },
     exportToExcel() {
       // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
       let rows = [];

@@ -24,22 +24,23 @@
           <v-col cols="12" md="5" class="mr-12"></v-col>
           <v-col cols="12" md="2">
 
-                <v-btn class="text-subtitle-1 " color="#E7E9E9" variant="flat" elevation="2"
-                  prepend-icon="mdi-plus-circle" @click="showAddCurso()">
-                  Agregar Curso
-                </v-btn>
+            <v-btn class="text-subtitle-1 " color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-plus-circle"
+              @click="showAddCurso()">
+              Agregar Curso
+            </v-btn>
             <v-dialog v-model="dialog" transition="dialog-bottom-transition" fullscreen>
               <v-card>
                 <v-toolbar color="#F18254">
-                  <span class="text-subtitle-2 ml-4"> {{formTitle}}</span>
+                  <span class="text-subtitle-2 ml-4"> {{ formTitle }}</span>
                 </v-toolbar>
                 <v-card-text>
                   <v-form v-model="valid" enctype="multipart/form-data">
                     <v-row>
                       <v-col cols="12" md="12">
-                        <v-autocomplete :no-data-text="'No hay datos disponibles'" clearable v-model="editedItem.enrollment_id" :items="enrollments"
-                          label="Academia" prepend-icon="mdi-school-outline" item-title="name" item-value="id"
-                          variant="underlined" :rules="selectRules"></v-autocomplete>
+                        <v-autocomplete :no-data-text="'No hay datos disponibles'" clearable
+                          v-model="editedItem.enrollment_id" :items="enrollments" label="Academia"
+                          prepend-icon="mdi-school-outline" item-title="name" item-value="id" variant="underlined"
+                          :rules="selectRules"></v-autocomplete>
                       </v-col>
                       <v-col cols="12" md="6">
                         <v-text-field v-model="editedItem.name" clearable label="Nombre"
@@ -105,13 +106,14 @@
                               prepend-icon="mdi-calendar" label="Fecha inicial"></v-text-field>
                           </template>
                           <v-locale-provider locale="es">
-                            <v-date-picker color="orange lighten-2" @input="menu1" v-model=editedItem.startDate  header="Calendario" title="Seleccione la fecha" :min="new Date(
-                        Date.now() -
-                        new Date().getTimezoneOffset() * 60000
-                      )
-                        .toISOString()
-                        .substr(0, 10)
-                        " @update:modelValue="updateDate1"></v-date-picker>
+                            <v-date-picker color="orange lighten-2" @input="menu1" v-model=editedItem.startDate
+                              header="Calendario" title="Seleccione la fecha" :min="new Date(
+                                Date.now() -
+                                new Date().getTimezoneOffset() * 60000
+                              )
+                                .toISOString()
+                                .substr(0, 10)
+                                " @update:modelValue="updateDate1"></v-date-picker>
                           </v-locale-provider>
                         </v-menu>
                       </v-col>
@@ -123,13 +125,14 @@
                               prepend-icon="mdi-calendar" label="Fecha final"></v-text-field>
                           </template>
                           <v-locale-provider locale="es">
-                            <v-date-picker color="orange lighten-2" @input="menu" v-model=editedItem.endDate  header="Calendario" title="Seleccione la fecha"  :min="new Date(
-                        Date.now() -
-                        new Date().getTimezoneOffset() * 60000
-                      )
-                        .toISOString()
-                        .substr(0, 10)
-                        " @update:modelValue="updateDate"></v-date-picker>
+                            <v-date-picker color="orange lighten-2" @input="menu" v-model=editedItem.endDate
+                              header="Calendario" title="Seleccione la fecha" :min="new Date(
+                                Date.now() -
+                                new Date().getTimezoneOffset() * 60000
+                              )
+                                .toISOString()
+                                .substr(0, 10)
+                                " @update:modelValue="updateDate"></v-date-picker>
                           </v-locale-provider>
                         </v-menu>
                       </v-col>
@@ -141,8 +144,8 @@
                       </v-col>
                       <v-col cols="12" md="6">
                         <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
-                        <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
-                      </v-card>
+                          <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
+                        </v-card>
                       </v-col>
                     </v-row>
                     <v-divider></v-divider>
@@ -190,11 +193,11 @@
 
 
       <v-card-text>
-        <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar"
-                                single-line hide-details>
-                            </v-text-field>
-        <v-data-table :headers="headers" :items="results" :search="search" class="elevation-1" no-data-text="No hay datos disponibles"
-          no-results-text="No hay datos disponibles">
+        <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
+          hide-details>
+        </v-text-field>
+        <v-data-table :headers="headers" :items="results" :search="search" class="elevation-1"
+          no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles">
           <template v-slot:top>
 
             <v-divider class="mx-4" inset vertical></v-divider>
@@ -207,24 +210,25 @@
             </v-avatar>
             {{ item.name }}
           </template>
-          <template v-slot:item.reservation_price ="{ item }">
-                         {{ formatNumber(item.reservation_price)}}
-                                    </template>
-                                    <template v-slot:item.price ="{ item }">
-                         {{ formatNumber(item.price)}}
-                                    </template>
+          <template v-slot:item.reservation_price="{ item }">
+            {{ formatNumber(item.reservation_price) }}
+          </template>
+          <template v-slot:item.price="{ item }">
+            {{ formatNumber(item.price) }}
+          </template>
           <template v-slot:item.actions="{ item }">
 
-            <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
-            elevation="1" class="mr-1 mt-1 mb-1" title="Editar Curso"></v-btn>
-            <v-btn density="comfortable" icon="mdi-account-school"  @click="showStudents(item)" color="green" variant="tonal"
-            elevation="1" class="mr-1 mt-1 mb-1" title="Estudiantes inscritos"></v-btn>
+            <v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary" variant="tonal"
+              elevation="1" class="mr-1 mt-1 mb-1" title="Editar Curso"></v-btn>
+            <v-btn density="comfortable" icon="mdi-account-school" @click="showStudents(item)" color="green"
+              variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Estudiantes inscritos"></v-btn>
             <!--<v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-storefront" @click="showProducts(item)" color="orange-darken-1" variant="tonal"
             elevation="1" title="Vender productos a estudiantes"></v-btn>-->
-            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-account-tie" @click="showAddProfessional(item)" color="indigo" variant="darken-2"
-            elevation="1" title="Asignar Professional"></v-btn>  
-          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
-            elevation="1" title="Eliminar Curso"></v-btn>
+            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-account-tie"
+              @click="showAddProfessional(item)" color="indigo" variant="darken-2" elevation="1"
+              title="Asignar Professional"></v-btn>
+            <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4"
+              variant="tonal" elevation="1" title="Eliminar Curso"></v-btn>
           </template>
         </v-data-table>
 
@@ -269,8 +273,8 @@
                   </v-col>
                   <v-col cols="12" md="12">
                     <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
-                        <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
-                      </v-card>
+                      <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
+                    </v-card>
 
 
                   </v-col>
@@ -317,13 +321,14 @@
                 </template>
 
                 <template v-slot:item.image_url="{ item }">
-            <!-- Verifica si image_url cumple las condiciones -->
-            <!--<v-icon color="green" v-if="item.image_url && item.image_url !== 'image/default.png'" @click="openModal(item.image_url)">
+                  <!-- Verifica si image_url cumple las condiciones -->
+                  <!--<v-icon color="green" v-if="item.image_url && item.image_url !== 'image/default.png'" @click="openModal(item.image_url)">
               mdi-eye
             </v-icon>-->
-              <v-btn density="comfortable" icon="mdi-eye" color="green" v-if="item.image_url && item.image_url !== 'image/default.png'" @click="openModal(item.image_url)" variant="tonal"
-                  elevation="1" class="mr-1 mt-1 mb-1" title="Ver detalles"></v-btn>
-            </template>
+                  <v-btn density="comfortable" icon="mdi-eye" color="green"
+                    v-if="item.image_url && item.image_url !== 'image/default.png'" @click="openModal(item.image_url)"
+                    variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Ver detalles"></v-btn>
+                </template>
 
                 <template v-slot:item.enrollment_confirmed="{ item }">
                   <div class="text-center">
@@ -334,41 +339,43 @@
                 </template>
                 <template v-slot:item.enabled="{ item }">
                   <div class="text-center">
-                    {{parseInt(item.enabled) ? 'Habilitado' : 'No Habilitado'}}
+                    {{ parseInt(item.enabled) ? 'Habilitado' : 'No Habilitado' }}
                   </div>
                 </template>
                 <template v-slot:item.status="{ item }">
                   <div class="text-center">
-                    {{parseInt(item.status) ? 'Ok' : 'Retrasado'}}
+                    {{ parseInt(item.status) ? 'Ok' : 'Retrasado' }}
                   </div>
                 </template>
                 <template v-slot:item.amount_pay="{ item }">
                   <div class="text-center">
-                    {{formatNumber(item.amount_pay)}}
+                    {{ formatNumber(item.amount_pay) }}
                   </div>
                 </template>
-                <template v-slot:item.reservation_payment ="{ item }">
-                         {{ formatNumber(item.reservation_payment)}}
-                                    </template>
-                                    <template v-slot:item.total_payment ="{ item }">
-                         {{ formatNumber(item.total_payment)}}
-                                    </template>
+                <template v-slot:item.reservation_payment="{ item }">
+                  {{ formatNumber(item.reservation_payment) }}
+                </template>
+                <template v-slot:item.total_payment="{ item }">
+                  {{ formatNumber(item.total_payment) }}
+                </template>
                 <template v-slot:item.actions="{ item }">
-                 <!--<v-icon size="25" color="primary" @click="editS(item)">
+                  <!--<v-icon size="25" color="primary" @click="editS(item)">
                     mdi-pencil
                   </v-icon>
                   <v-icon size="25" color="red" @click="deleteS(item)">
                     mdi-delete
                   </v-icon>-->
-                  <v-btn density="comfortable" icon="mdi-pencil"  @click="editS(item)" color="primary" variant="tonal"
-                  elevation="1" class="mr-1 mt-1 mb-1" title="Editar Asignación"></v-btn>
-                  <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-storefront" @click="showProducts(item)" color="orange-darken-1" variant="tonal"
-            elevation="1" title="Asignar productos al estudiante"></v-btn>
-            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-checkbox-marked-circle" @click="editState(item)" color="green-darken-1" variant="tonal"
-            elevation="1" title="Editar estado en el curso"></v-btn>
-                <v-btn density="comfortable" icon="mdi-delete" @click="deleteS(item)" color="red-darken-4" variant="tonal"
-                  elevation="1" title="Eliminar asignación"></v-btn>
-                      </template>
+                  <v-btn density="comfortable" icon="mdi-pencil" @click="editS(item)" color="primary" variant="tonal"
+                    elevation="1" class="mr-1 mt-1 mb-1" title="Editar Asignación"></v-btn>
+                  <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-storefront" @click="showProducts(item)"
+                    color="orange-darken-1" variant="tonal" elevation="1"
+                    title="Asignar productos al estudiante"></v-btn>
+                  <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-checkbox-marked-circle"
+                    @click="editState(item)" color="green-darken-1" variant="tonal" elevation="1"
+                    title="Editar estado en el curso"></v-btn>
+                  <v-btn density="comfortable" icon="mdi-delete" @click="deleteS(item)" color="red-darken-4"
+                    variant="tonal" elevation="1" title="Eliminar asignación"></v-btn>
+                </template>
 
               </v-data-table>
             </v-card-text>
@@ -391,17 +398,15 @@
                 <v-container>
                   <v-row>
                     <v-col cols="12" md="12">
-                      <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedStudent.student_id" :items="students" label="Estudiante"
-                        prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined"
-                        :rules="selectRules">
+                      <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedStudent.student_id"
+                        :items="students" label="Estudiante" prepend-icon="mdi-account-tie-outline" item-title="name"
+                        item-value="id" variant="underlined" :rules="selectRules">
                         <template v-slot:item="{ props, item }">
-                          <v-list-item
-                            v-bind="props"
-                            :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.client_image"
-                            :title="item.raw.name"
-                          ></v-list-item>
+                          <v-list-item v-bind="props"
+                            :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.client_image"
+                            :title="item.raw.name"></v-list-item>
                         </template>
-                        </v-autocomplete>
+                      </v-autocomplete>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -443,37 +448,39 @@
 
       </v-card-text>
     </v-card>
-      <!-- Modal para mostrar la imagen -->
-      <v-dialog v-model="dialogPhoto" persistent max-width="600px">
-        <v-card>
-              <v-toolbar color="#F18254">
-                <span class="text-subtitle-2 ml-4"> Comprobante de Transferencia</span> <v-spacer></v-spacer>
-                <v-btn  @click="dialogPhoto = false">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-              </v-toolbar>
-        
-          <v-card-text>
-            <v-img :src="selectedImageUrl" aspect-ratio="1.5"></v-img>
-          </v-card-text>
-        </v-card>
+    <!-- Modal para mostrar la imagen -->
+    <v-dialog v-model="dialogPhoto" persistent max-width="600px">
+      <v-card>
+        <v-toolbar color="#F18254">
+          <span class="text-subtitle-2 ml-4"> Comprobante de Transferencia</span> <v-spacer></v-spacer>
+          <v-btn @click="dialogPhoto = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+
+        <v-card-text>
+          <v-img :src="selectedImageUrl" aspect-ratio="1.5"></v-img>
+        </v-card-text>
+      </v-card>
     </v-dialog>
 
     <!--Venta Productos-->
     <v-dialog v-model="dialogProducts" fullscreen transition="dialog-bottom-transition">
-        <v-card>
-          <v-toolbar color="#F18254">
-            <span class="text-subtitle-1 ml-4">Productos asignados al estudiante</span>
-            <v-spacer></v-spacer>
-            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAddProduct()">
-              Asignar Producto
-            </v-btn>
-          </v-toolbar>
-          <v-card-text class="mt-2 mb-2">
-            <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar" single-line
-              hide-details></v-text-field>
-            <v-data-table :headers="headers3" :items="productSales" :search="search3" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles" >
-              <!--<template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">:group-by="groupBy"
+      <v-card>
+        <v-toolbar color="#F18254">
+          <span class="text-subtitle-1 ml-4">Productos asignados al estudiante</span>
+          <v-spacer></v-spacer>
+          <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAddProduct()">
+            Asignar Producto
+          </v-btn>
+        </v-toolbar>
+        <v-card-text class="mt-2 mb-2">
+          <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar" single-line
+            hide-details></v-text-field>
+          <v-data-table :headers="headers3" :items="productSales" :search="search3" class="elevation-1"
+            :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
+            no-data-text="No hay datos disponibles">
+            <!--<template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">:group-by="groupBy"
               <tr>
                 <td :colspan="columns.length">
                   <VBtn size="small" variant="text" :icon="isGroupOpen(item) ? '$expand' : '$next'"
@@ -482,15 +489,15 @@
                 </td>
               </tr>
             </template>-->
-            <template v-slot:item.price ="{ item }">
-                         {{ formatNumber(item.price)}}
-                                    </template>
+            <template v-slot:item.price="{ item }">
+              {{ formatNumber(item.price) }}
+            </template>
             <template v-slot:item.nameProduct="{ item }">
 
-            <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
-            </v-avatar>
-            {{ item.nameProduct }}
+              <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
+              </v-avatar>
+              {{ item.nameProduct }}
             </template>
 
             <!--<template v-slot:item.nameStudent="{ item }">
@@ -501,246 +508,242 @@
             {{ item.nameStudent }}
             </template>-->
 
-              <template v-slot:item.actions="{ item }">
-                <!--<v-btn density="comfortable" icon="mdi-pencil"  @click="editItemProduct(item)" color="primary" variant="tonal"
+            <template v-slot:item.actions="{ item }">
+              <!--<v-btn density="comfortable" icon="mdi-pencil"  @click="editItemProduct(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar existencia"></v-btn>-->
-          <v-btn density="comfortable" icon="mdi-delete" @click="closeproductRequest(item)" color="red-darken-4" variant="tonal"
-            elevation="1" title="Eliminar existencia de producto"></v-btn>
-                <!--<v-icon size="small" color="red" @click="closestoreRequest(item)">
+              <v-btn density="comfortable" icon="mdi-delete" @click="closeproductRequest(item)" color="red-darken-4"
+                variant="tonal" elevation="1" title="Eliminar existencia de producto"></v-btn>
+              <!--<v-icon size="small" color="red" @click="closestoreRequest(item)">
                   mdi-delete
                 </v-icon>-->
-              </template>
+            </template>
 
-            </v-data-table>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="#E7E9E9" variant="flat" @click="(this.dialogProducts = false) && (this.productSelect = '')">
-              Volver
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <v-dialog v-model="dialogAddProduct" width="500">
-        <v-card>
-          <v-toolbar color="#F18254">
-            <span class="text-subtitle-2 ml-4">{{formTitle}}</span>
-          </v-toolbar>
-          <v-card-text class="mt-2 mb-2">
-            <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-              <v-container>
-                <v-row>
-                  <v-col cols="12" md="12">
-                    <!--<v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="student_id" :items="studentsCourse" label="Estudiantes"
+          </v-data-table>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="#E7E9E9" variant="flat" @click="(this.dialogProducts = false) && (this.productSelect = '')">
+            Volver
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogAddProduct" width="500">
+      <v-card>
+        <v-toolbar color="#F18254">
+          <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
+        </v-toolbar>
+        <v-card-text class="mt-2 mb-2">
+          <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+            <v-container>
+              <v-row>
+                <v-col cols="12" md="12">
+                  <!--<v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="student_id" :items="studentsCourse" label="Estudiantes"
                       prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined"
                       :rules="selectRules"></v-autocomplete>-->
-                  <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="product_id" :items="products" clearable label="Productos"
-                        prepend-icon="mdi-tag" item-title="name" item-value="id" variant="underlined"
-                        :rules="selectRules" @update:model-value="cantExist">
-                        <template v-slot:item="{ props, item }">
-                          <v-list-item
-                            v-bind="props"
-                            :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_product"
-                            :subtitle="'Existencia: '+item.raw.product_exit"
-                            :title="item.raw.name"
-                          ></v-list-item>
-                        </template>
-                        </v-autocomplete>
-                        <v-text-field v-model="product_exit" clearable label="Existencia"
-                      prepend-icon="mdi-currency-usd" variant="underlined" disabled="true">
-                    </v-text-field>
-                    <v-text-field v-model="cant" clearable label="Cantidad"
-                      prepend-icon="mdi-currency-usd" variant="underlined" :rules=[validateCantidad]>
-                    </v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="#E7E9E9" variant="flat" @click="closeproduct">
-                  Cancelar
-                </v-btn>
-                <v-btn color="#F18254" variant="flat" @click="saveProduct" :disabled="!valid">
-                  Aceptar
-                </v-btn>
-              </v-card-actions>
-            </v-form>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
-      <v-dialog v-model="dialogRequestProduct" width="500">
-        <v-card>
-
-          <v-toolbar color="red">
-            <span class="text-subtitle-2 ml-4"> Eliminar asignación de producto</span>
-          </v-toolbar>
-
-          <v-card-text class="mt-2 mb-2"> ¿Desea eliminar la asignación del producto?</v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="#E7E9E9" variant="flat" @click="closerequestProduct">
-              Cancelar
-            </v-btn>
-            <v-btn color="#F18254" variant="flat" @click="deleteProduct">
-              Aceptar
-            </v-btn>
-
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-      <!--Professionals-->
-      <v-dialog v-model="dialogAddProfessional" fullscreen transition="dialog-bottom-transition">
-        <v-card>
-          <v-toolbar color="#F18254">
-            <span class="text-subtitle-2 ml-4">Profesionales asignados al curso</span>
-            <v-spacer></v-spacer>
-            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAdddialogProfessionals()">
-              Asignar Profesional
-            </v-btn>
-          </v-toolbar>
-
-          <v-card-text class="mt-2 mb-2">
-            <v-text-field class="mt-1 mb-1" v-model="search4" append-icon="mdi-magnify" label="Buscar" single-line
-              hide-details></v-text-field>
-
-            <v-data-table :headers="headers4" :items="courseprofessionals" :search="search4" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
-              <template v-slot:item.ponderation="{ item }">
-                    {{ item.ponderation === 0 ? 1 : item.ponderation }}
+                  <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="product_id" :items="products"
+                    clearable label="Productos" prepend-icon="mdi-tag" item-title="name" item-value="id"
+                    variant="underlined" :rules="selectRules" @update:model-value="cantExist">
+                    <template v-slot:item="{ props, item }">
+                      <v-list-item v-bind="props"
+                        :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_product"
+                        :subtitle="'Existencia: ' + item.raw.product_exit" :title="item.raw.name"></v-list-item>
                     </template>
-              <template v-slot:item.name="{ item }">
+                  </v-autocomplete>
+                  <v-text-field v-model="product_exit" clearable label="Existencia" prepend-icon="mdi-currency-usd"
+                    variant="underlined" disabled="true">
+                  </v-text-field>
+                  <v-text-field v-model="cant" clearable label="Cantidad" prepend-icon="mdi-currency-usd"
+                    variant="underlined" :rules=[validateCantidad]>
+                  </v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="#E7E9E9" variant="flat" @click="closeproduct">
+                Cancelar
+              </v-btn>
+              <v-btn color="#F18254" variant="flat" @click="saveProduct" :disabled="!valid">
+                Aceptar
+              </v-btn>
+            </v-card-actions>
+          </v-form>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogRequestProduct" width="500">
+      <v-card>
 
-                <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
-                </v-avatar><!--+'?$'+Date.now()-->
-                {{ item.name}}
-              </template>
+        <v-toolbar color="red">
+          <span class="text-subtitle-2 ml-4"> Eliminar asignación de producto</span>
+        </v-toolbar>
 
-              <template v-slot:item.actions="{ item }">
-                <v-btn density="comfortable" icon="mdi-delete" @click="deleteProfessional(item)" color="red-darken-4" variant="tonal"
-            elevation="1" title="Eliminar afiliación del professional"></v-btn>
-                <!--<v-icon size="small" color="red" @click="deleteP(item)">
+        <v-card-text class="mt-2 mb-2"> ¿Desea eliminar la asignación del producto?</v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="#E7E9E9" variant="flat" @click="closerequestProduct">
+            Cancelar
+          </v-btn>
+          <v-btn color="#F18254" variant="flat" @click="deleteProduct">
+            Aceptar
+          </v-btn>
+
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!--Professionals-->
+    <v-dialog v-model="dialogAddProfessional" fullscreen transition="dialog-bottom-transition">
+      <v-card>
+        <v-toolbar color="#F18254">
+          <span class="text-subtitle-2 ml-4">Profesionales asignados al curso</span>
+          <v-spacer></v-spacer>
+          <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAdddialogProfessionals()">
+            Asignar Profesional
+          </v-btn>
+        </v-toolbar>
+
+        <v-card-text class="mt-2 mb-2">
+          <v-text-field class="mt-1 mb-1" v-model="search4" append-icon="mdi-magnify" label="Buscar" single-line
+            hide-details></v-text-field>
+
+          <v-data-table :headers="headers4" :items="courseprofessionals" :search="search4" class="elevation-1"
+            :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
+            no-data-text="No hay datos disponibles">
+            <template v-slot:item.ponderation="{ item }">
+              {{ item.ponderation === 0 ? 1 : item.ponderation }}
+            </template>
+            <template v-slot:item.name="{ item }">
+
+              <v-avatar elevation="3" color="grey-lighten-4" size="large">
+                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+              </v-avatar><!--+'?$'+Date.now()-->
+              {{ item.name }}
+            </template>
+
+            <template v-slot:item.actions="{ item }">
+              <v-btn density="comfortable" icon="mdi-delete" @click="deleteProfessional(item)" color="red-darken-4"
+                variant="tonal" elevation="1" title="Eliminar afiliación del professional"></v-btn>
+              <!--<v-icon size="small" color="red" @click="deleteP(item)">
                   mdi-delete
                 </v-icon>-->
-              </template>
+            </template>
 
-            </v-data-table>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="#F18254" variant="flat" @click="closeProfessional">
-              Volver
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <v-dialog v-model="dialogAddProf" width="500">
-        <v-card>
-          <v-toolbar color="#F18254">
-            <span class="text-subtitle-2 ml-4"> {{ formTitleProfessional }}</span>
-          </v-toolbar>
-          <v-card-text class="mt-2 mb-2">
-            <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-              <v-container>
-                <v-row>
-                  <v-col cols="12" md="12">
-                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id" :items="professionals" label="Profesional"
-                      prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined"
-                      :rules="selectRules">
-                      <template v-slot:item="{ props, item }">
-                <v-list-item
-                  v-bind="props"
-                  :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_url"
-                  :subtitle="'Cargo: '+item.raw.charge"
-                  :title="item.raw.name"
-                ></v-list-item>
-              </template>
-                      </v-autocomplete>
-                  </v-col>
-                </v-row>
-              </v-container>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="#E7E9E9" variant="flat" @click="closeAdddialogProfessionals">
-                  Cancelar
-                </v-btn>
-                <v-btn color="#F18254" variant="flat" @click="saveProfessional" :disabled="!valid">
-                  Aceptar
-                </v-btn>
-              </v-card-actions>
-            </v-form>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
-      <v-dialog v-model="dialogRequestProfessional" width="500">
-        <v-card>
+          </v-data-table>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="#F18254" variant="flat" @click="closeProfessional">
+            Volver
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogAddProf" width="500">
+      <v-card>
+        <v-toolbar color="#F18254">
+          <span class="text-subtitle-2 ml-4"> {{ formTitleProfessional }}</span>
+        </v-toolbar>
+        <v-card-text class="mt-2 mb-2">
+          <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+            <v-container>
+              <v-row>
+                <v-col cols="12" md="12">
+                  <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id"
+                    :items="professionals" label="Profesional" prepend-icon="mdi-account-tie-outline" item-title="name"
+                    item-value="id" variant="underlined" :rules="selectRules">
+                    <template v-slot:item="{ props, item }">
+                      <v-list-item v-bind="props"
+                        :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_url"
+                        :subtitle="'Cargo: ' + item.raw.charge" :title="item.raw.name"></v-list-item>
+                    </template>
+                  </v-autocomplete>
+                </v-col>
+              </v-row>
+            </v-container>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="#E7E9E9" variant="flat" @click="closeAdddialogProfessionals">
+                Cancelar
+              </v-btn>
+              <v-btn color="#F18254" variant="flat" @click="saveProfessional" :disabled="!valid">
+                Aceptar
+              </v-btn>
+            </v-card-actions>
+          </v-form>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogRequestProfessional" width="500">
+      <v-card>
 
-          <v-toolbar color="red">
-            <span class="text-subtitle-2 ml-4"> Eliminar afiliación del profesional al curso</span>
-          </v-toolbar>
+        <v-toolbar color="red">
+          <span class="text-subtitle-2 ml-4"> Eliminar afiliación del profesional al curso</span>
+        </v-toolbar>
 
-          <v-card-text class="mt-2 mb-2"> ¿Desea eliminar esta afiliación del profesional con el curso?</v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="#E7E9E9" variant="flat" @click="closerequestProfessional">
-              Cancelar
-            </v-btn>
-            <v-btn color="#F18254" variant="flat" @click="requestDeleteProfessional">
-              Aceptar
-            </v-btn>
+        <v-card-text class="mt-2 mb-2"> ¿Desea eliminar esta afiliación del profesional con el curso?</v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="#E7E9E9" variant="flat" @click="closerequestProfessional">
+            Cancelar
+          </v-btn>
+          <v-btn color="#F18254" variant="flat" @click="requestDeleteProfessional">
+            Aceptar
+          </v-btn>
 
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
-      <!--editar estado del estudainte--> 
-      <v-dialog v-model="dialogUpdateState" max-width="700px">
-          <v-card>
-            <v-toolbar color="#F18254">
-              <span class="text-subtitle-2 ml-4">Actualizar Estado en el Curso</span>
-            </v-toolbar>
-            <v-card-text>
-              <v-form v-model="valid" enctype="multipart/form-data">
-                <v-row>
-                  <v-col cols="12" md="6">
-                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="enabled" :items="options" clearable label="Habilitado"
-                        prepend-icon="mdi-format-list-bulleted-square" item-title="name" item-value="id"
-                        variant="underlined"></v-autocomplete>
-                  </v-col>
+    <!--editar estado del estudainte-->
+    <v-dialog v-model="dialogUpdateState" max-width="700px">
+      <v-card>
+        <v-toolbar color="#F18254">
+          <span class="text-subtitle-2 ml-4">Actualizar Estado en el Curso</span>
+        </v-toolbar>
+        <v-card-text>
+          <v-form v-model="valid" enctype="multipart/form-data">
+            <v-row>
+              <v-col cols="12" md="6">
+                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="enabled" :items="options" clearable
+                  label="Habilitado" prepend-icon="mdi-format-list-bulleted-square" item-title="name" item-value="id"
+                  variant="underlined"></v-autocomplete>
+              </v-col>
 
-                  <v-col cols="12" md="6">
-                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="payment_status" :items="options1" clearable label="Estado de los Pagos"
-                        prepend-icon="mdi-format-list-bulleted-square" item-title="name" item-value="id"
-                        variant="underlined"></v-autocomplete>
-                  </v-col>
+              <v-col cols="12" md="6">
+                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="payment_status" :items="options1"
+                  clearable label="Estado de los Pagos" prepend-icon="mdi-format-list-bulleted-square" item-title="name"
+                  item-value="id" variant="underlined"></v-autocomplete>
+              </v-col>
 
-                  <v-col cols="12" md="6">
-                    <v-text-field v-show="payment_status === 0" v-model="amount_pay" clearable label="Monto a pagar"
-                      prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago">
-                    </v-text-field>
-                  </v-col>
-                </v-row>
-                <v-divider></v-divider>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
+              <v-col cols="12" md="6">
+                <v-text-field v-show="payment_status === 0" v-model="amount_pay" clearable label="Monto a pagar"
+                  prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago">
+                </v-text-field>
+              </v-col>
+            </v-row>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
 
-                  <v-btn color="#E7E9E9" variant="flat" @click="closeState">
-                    Cancelar
-                  </v-btn>
-                  <v-btn color="#F18254" variant="flat" @click="StateSave" :disabled="!valid">
-                    Aceptar
-                  </v-btn>
-                </v-card-actions>
-              </v-form>
-            </v-card-text>
-          </v-card>
-        </v-dialog>
+              <v-btn color="#E7E9E9" variant="flat" @click="closeState">
+                Cancelar
+              </v-btn>
+              <v-btn color="#F18254" variant="flat" @click="StateSave" :disabled="!valid">
+                Aceptar
+              </v-btn>
+            </v-card-actions>
+          </v-form>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <script>
@@ -753,7 +756,7 @@ export default {
 
     dialogPhoto: false, // Controla la visibilidad del modal
     selectedImageUrl: '', // URL de la imagen seleccionada para mostrar en el modal
-    
+
     menu: false,
     courseSelect: "",
     input: null,
@@ -792,7 +795,7 @@ export default {
     enrollment_id: '',
     dialogRequestProduct: false,
     products: [],
-    product_id:'',
+    product_id: '',
     productsale_id: '',
     cant: '',
     product_exit: '',
@@ -832,7 +835,7 @@ export default {
 
     results: [],
     courseStudents: [],
-    enrollments : [],
+    enrollments: [],
     editedIndex: 1,
     users: [],
     students: [],
@@ -857,18 +860,18 @@ export default {
     editedStudent: {
       student_id: '',
       course_id: '',
-      id:'',
+      id: '',
     },
     defaultStudent: {
       student_id: '',
       course_id: '',
-      id:'',
+      id: '',
     },
     data: {},
-    
+
     enabled: '',
-      payment_status: '',
-      amount_pay: '',
+    payment_status: '',
+    amount_pay: '',
     editedItemS: {
       reservation_payment: '',
       total_payment: '',
@@ -894,7 +897,7 @@ export default {
       duration: '',
       practical_percentage: '',
       theoretical_percentage: '',
-      id:'',
+      id: '',
 
     },
     //professional
@@ -938,16 +941,16 @@ export default {
       (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
   }),
   setup() {
-        const adapter = useDate()
+    const adapter = useDate()
 
     const parseDate = (dateString) => {
       return adapter.parseISO(dateString)
     }
 
     return {
-     parseDate
+      parseDate
     }
-    },
+  },
 
   computed: {
     imgedit() {
@@ -964,41 +967,41 @@ export default {
       if (this.editedIndex == 1) {
         return 'Nuevo curso';
       }
-      else{
+      else {
         return 'Asiganar estudiante al curso'
       }
       //return this.editedIndex === -1 ? 'Nuevo Curso' : 'Editar Curso'
     },
-  
+
     formattedStartDate() {
-            if (this.editedItem.startDate) {
-              console.log('this.editedItem.startDate datos');
-              console.log(this.editedItem.startDate);
-                const date = new Date(this.editedItem.startDate); 
-                const year = date.getFullYear();
-                const month = String(date.getMonth() + 1).padStart(2, "0");
-                const day = String(date.getDate()).padStart(2, "0");
-                console.log(`${year}-${month}-${day}`);
+      if (this.editedItem.startDate) {
+        console.log('this.editedItem.startDate datos');
+        console.log(this.editedItem.startDate);
+        const date = new Date(this.editedItem.startDate);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        console.log(`${year}-${month}-${day}`);
 
-                return `${year}-${month}-${day}`;
-            }
-            return "";
-            
-        },
-        formattedEndDate() {
-            if (this.editedItem.endDate) {
-              console.log('this.editedItem.endDate');
-              console.log(this.editedItem.endDate);
-                const date = new Date(this.editedItem.endDate);
-                const year = date.getFullYear();
-                const month = String(date.getMonth() + 1).padStart(2, "0");
-                const day = String(date.getDate()).padStart(2, "0");
-                console.log(`${year}-${month}-${day}`);
-                return `${year}-${month}-${day}`;
+        return `${year}-${month}-${day}`;
+      }
+      return "";
 
-            }
-            return "";
-        },
+    },
+    formattedEndDate() {
+      if (this.editedItem.endDate) {
+        console.log('this.editedItem.endDate');
+        console.log(this.editedItem.endDate);
+        const date = new Date(this.editedItem.endDate);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        console.log(`${year}-${month}-${day}`);
+        return `${year}-${month}-${day}`;
+
+      }
+      return "";
+    },
   },
 
   watch: {
@@ -1017,28 +1020,22 @@ export default {
 
   methods: {
     formatNumber(value) {
-      // Si el valor es menor que 1000, devuelve el valor original sin formato
-  if (value < 1000) {
-    return value;
-  }
+      // Si el valor es menor que 1000, devuelve el valor original con dos decimales
+      if (value < 1000) {
+        return (Math.round((value + Number.EPSILON) * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
 
-  // Primero, redondea el valor a dos decimales
-  value = Math.round((value + Number.EPSILON) * 100) / 100;
+      // Primero, redondea el valor a dos decimales
+      value = Math.round((value + Number.EPSILON) * 100) / 100;
 
-  // Separa la parte entera de la parte decimal
-  let parts = value.toString().split(".");
-  let integerPart = parts[0];
-  let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+      // Convierte el valor a cadena con formato de número local (en-US)
+      let formattedValue = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-  // Agrega los separadores de miles
-  integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
-  // Combina la parte entera y la parte decimal
-  return integerPart + decimalPart;
-        },
+      return formattedValue;
+    },
     imagenDisponible() {
       if (this.imgedit !== undefined && this.imgedit !== '') {
-      
+
         // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
         let img = new Image();
         img.src = this.imgedit;
@@ -1055,12 +1052,12 @@ export default {
     },
     validateCantidad(value) {
       if (value == 0) {
-    return "El valor no puede ser nulo";
-  } else if (value <= this.product_exit) {
-    return true; // La cantidad es válida
-  } else {
-    return "La cantidad debe ser menor o igual que la existencia (" + this.product_exit + ")";
-  }
+        return "El valor no puede ser nulo";
+      } else if (value <= this.product_exit) {
+        return true; // La cantidad es válida
+      } else {
+        return "La cantidad debe ser menor o igual que la existencia (" + this.product_exit + ")";
+      }
     },
     cantExist() {
       let exist = this.products.filter(item => item.id == this.product_id);
@@ -1069,29 +1066,29 @@ export default {
       console.log(exist[0].product_exit);
     },
     imagenDisponible() {
-        if (this.imgedit !== undefined && this.imgedit !== '') {
-            // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
-            let img = new Image();
-            img.src = this.imgedit;
-            return true; // Devuelve true si la imagen está disponible
-        }
-        return false; // Si la URL de la imagen no está definida o está vacía, devuelve false
+      if (this.imgedit !== undefined && this.imgedit !== '') {
+        // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
+        let img = new Image();
+        img.src = this.imgedit;
+        return true; // Devuelve true si la imagen está disponible
+      }
+      return false; // Si la URL de la imagen no está definida o está vacía, devuelve false
     },
 
     openModal(imageUrl) {
-      
+
       var img = new Image();
       img.src = 'https://api2.simplifies.cl/api/images/' + imageUrl;
       img.onload = () => {
-      this.selectedImageUrl = 'https://api2.simplifies.cl/api/images/' + imageUrl; 
+        this.selectedImageUrl = 'https://api2.simplifies.cl/api/images/' + imageUrl;
       };
       img.onerror = () => {
         this.selectedImageUrl = '';
       };
-     // alert(this.selectedImageUrl)// Establece la imagen seleccionada
+      // alert(this.selectedImageUrl)// Establece la imagen seleccionada
       this.dialogPhoto = true; // Abre el modal
     },
-    
+
     showStudents(item) {
       this.courseSelect = item;
       /*console.log('this.courseSelect');
@@ -1112,17 +1109,17 @@ export default {
         });
       this.dialogStudents = true;
     },
-    showAddStudent(){
-          axios
-          .get('https://api2.simplifies.cl/api/student-show', {
-            params: {
-              course_id: this.courseSelect.id
-            }
-          })
-          .then((response) => {
-            this.students = response.data.students;
-          });
-          this.dialogAddStudent = true;
+    showAddStudent() {
+      axios
+        .get('https://api2.simplifies.cl/api/student-show', {
+          params: {
+            course_id: this.courseSelect.id
+          }
+        })
+        .then((response) => {
+          this.students = response.data.students;
+        });
+      this.dialogAddStudent = true;
     },
     deleteS(item) {
       this.dialogRequest = true
@@ -1141,9 +1138,9 @@ export default {
       //this.editedItemS.image_url = item.image_url;
       this.editedItemS.student_id = item.id;
       var img = new Image();
-      img.src = 'https://api2.simplifies.cl/api/images/'+item.image_url;
+      img.src = 'https://api2.simplifies.cl/api/images/' + item.image_url;
       img.onload = () => {
-        this.imgMiniatura = 'https://api2.simplifies.cl/api/images/'+item.image_url;
+        this.imgMiniatura = 'https://api2.simplifies.cl/api/images/' + item.image_url;
       };
       img.onerror = () => {
         this.imgMiniatura = '';
@@ -1179,7 +1176,7 @@ export default {
         }).finally(() => {
           this.showAlert("success", "Estudiante matriculado correctamente al curso", 3000);
           this.showStudents(this.courseSelect);
-          });
+        });
     },
 
     saveStatus() {
@@ -1191,10 +1188,10 @@ export default {
       let formData = new FormData();
       console.log('this.editedItemS------------');
       console.log(this.editedItemS);
-      formData.append('file', this.editedItemS.image_url); 
+      formData.append('file', this.editedItemS.image_url);
 
       for (let key in this.editedItemS) {
-         formData.append(key, this.editedItemS[key]);
+        formData.append(key, this.editedItemS[key]);
       }
       axios
         .post('https://api2.simplifies.cl/api/course-student-update', formData)
@@ -1203,8 +1200,8 @@ export default {
         }).finally(() => {
           this.showAlert("success", "Estudiante actualizado correctamente", 3000);
           this.showStudents(this.courseSelect);
-          });
-          this.closeUpdateS();
+        });
+      this.closeUpdateS();
     },
     closerequest() {
       this.dialogRequest = false;
@@ -1225,7 +1222,7 @@ export default {
         }).finally(() => {
           this.showAlert("success", "Estudiante  eliminado del curso correctamente", 3000);
           this.showStudents(this.courseSelect);
-          });
+        });
     },
 
     showAlert(sb_type, sb_message, sb_timeout) {
@@ -1259,18 +1256,18 @@ export default {
         .then((response) => {
           this.results = response.data.courses;
         });
-      
+
     },
-    showAddCurso(){
+    showAddCurso() {
       axios
-              .get('https://api2.simplifies.cl/api/enrollment-show', {
-                params: {
-                  business_id: this.business_id
-                }
-              })
-              .then((response) => {
-                this.enrollments = response.data.enrollments;
-              });
+        .get('https://api2.simplifies.cl/api/enrollment-show', {
+          params: {
+            business_id: this.business_id
+          }
+        })
+        .then((response) => {
+          this.enrollments = response.data.enrollments;
+        });
       this.dialog = true;
     },
     onFileSelected(event) {
@@ -1320,7 +1317,7 @@ export default {
         }).finally(() => {
           this.showAlert("success", "Curso eliminado correctamente", 3000);
           this.initialize();
-          });
+        });
       this.closeDelete()
     },
     close() {
@@ -1346,7 +1343,7 @@ export default {
       this.dialogProducts = false;
       this.imgMiniatura = '';
       this.file = null;
-        this.editedIndex = 1
+      this.editedIndex = 1
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedStudent = Object.assign({}, this.defaultStudent)
@@ -1372,7 +1369,7 @@ export default {
           .post('https://api2.simplifies.cl/api/course-update', formData)
           .then(() => {
             this.imgMiniatura = '';
-            this.file = null;            
+            this.file = null;
           }).finally(() => {
             this.showAlert("success", "Curso editado correctamente", 3000);
             this.initialize();
@@ -1408,8 +1405,8 @@ export default {
       console.log('this.courseSelect');
       console.log(this.courseSelect);
       this.productSelect = item;
-      console.log( 'this.productSelect');
-      console.log( this.productSelect);
+      console.log('this.productSelect');
+      console.log(this.productSelect);
       console.log('this.courseSelect[0].enrollment_confirmed');
       console.log(this.courseSelect.enrollment_id);
       this.course_id = this.courseSelect.id;
@@ -1428,30 +1425,30 @@ export default {
         .then((response) => {
           this.productSales = response.data.productsales;
         });
-        /*axios
-        .get('https://api2.simplifies.cl/api/course-student-product-show',{
+      /*axios
+      .get('https://api2.simplifies.cl/api/course-student-product-show',{
+        params: {
+          course_id: item.id
+        }
+      })
+      .then((response) => {
+        this.studentsCourse = response.data.students;
+      });*/
+
+      this.editedIndex = 3;
+      this.dialogProducts = true;
+    },
+    showAddProduct() {
+      axios
+        .get('https://api2.simplifies.cl/api/products-academy-show', {
           params: {
-            course_id: item.id
+            enrollment_id: this.courseSelect.enrollment_id
           }
         })
         .then((response) => {
-          this.studentsCourse = response.data.students;
-        });*/
-        
-        this.editedIndex = 3;
-      this.dialogProducts = true;
-    },
-    showAddProduct(){
-        axios
-                .get('https://api2.simplifies.cl/api/products-academy-show', {
-                  params: {
-                    enrollment_id: this.courseSelect.enrollment_id
-                  }
-                })
-                .then((response) => {
-                  this.products = response.data.products;
-                });
-                this.dialogAddProduct = true;
+          this.products = response.data.products;
+        });
+      this.dialogAddProduct = true;
     },
     closeproduct() {
       this.dialogAddProduct = false;
@@ -1463,26 +1460,26 @@ export default {
     saveProduct() {
       if (this.editedIndex == 3) {
         this.valid = false,
-        /*console.log('this.course_id');
-      console.log(this.course_id);*/
-        this.data.enrollment_id = this.enrollment_id;
-      this.data.student_id = this.student_id;
-      this.data.id = this.product_id;
-      this.data.cant = this.cant;
-      this.data.course_id = this.course_id;
-      /*console.log('this.data');
-      console.log(this.data);*/
-      axios
+          /*console.log('this.course_id');
+        console.log(this.course_id);*/
+          this.data.enrollment_id = this.enrollment_id;
+        this.data.student_id = this.student_id;
+        this.data.id = this.product_id;
+        this.data.cant = this.cant;
+        this.data.course_id = this.course_id;
+        /*console.log('this.data');
+        console.log(this.data);*/
+        axios
           .post('https://api2.simplifies.cl/api/productsale', this.data)
           .then(() => {
-          this.dialogAddProduct = false;
-          this.student_id = '',
-          this.product_id = '';
-          this.cant = ''; 
-          this.product_exit = '';
-        }).finally(() => {
-          this.showAlert("success", "Producto asignado correctamente al estudiante", 3000);
-          this.showProducts(this.productSelect);
+            this.dialogAddProduct = false;
+            this.student_id = '',
+              this.product_id = '';
+            this.cant = '';
+            this.product_exit = '';
+          }).finally(() => {
+            this.showAlert("success", "Producto asignado correctamente al estudiante", 3000);
+            this.showProducts(this.productSelect);
           });
       }
       /*if (this.editedIndex == 4){
@@ -1526,24 +1523,24 @@ export default {
           this.dialogRequestProduct = false;
           this.productsale_id = '';
         }).finally(() => {
-          this.showAlert("success", "Asignación eliminada correctamente", 3000);  
-          this.showProducts(this.productSelect); 
-          });
+          this.showAlert("success", "Asignación eliminada correctamente", 3000);
+          this.showProducts(this.productSelect);
+        });
     },
 
     //professionals
-    showAddProfessional(item){
+    showAddProfessional(item) {
       this.courseSelect = item;
-          axios
-          .get('https://api2.simplifies.cl/api/course-professional', {
-            params: {
-              course_id: this.courseSelect.id
-            }
-          })
-          .then((response) => {
-            this.courseprofessionals = response.data.courseProfessionals;
-          });
-          this.dialogAddProfessional = true;
+      axios
+        .get('https://api2.simplifies.cl/api/course-professional', {
+          params: {
+            course_id: this.courseSelect.id
+          }
+        })
+        .then((response) => {
+          this.courseprofessionals = response.data.courseProfessionals;
+        });
+      this.dialogAddProfessional = true;
     },
     closeProfessional() {
       this.dialogAddProfessional = false;
@@ -1565,9 +1562,9 @@ export default {
         }).finally(() => {
           this.showAddProfessional(this.courseSelect);
           this.showAlert("success", "Professional asignado correctamente al curso", 3000);
-          });
+        });
     },
-    showAdddialogProfessionals(){
+    showAdddialogProfessionals() {
       axios
         .get('https://api2.simplifies.cl/api/course-professional-show-Notin', {
           params: {
@@ -1577,9 +1574,9 @@ export default {
         .then((response) => {
           this.professionals = response.data.professionals;
         });
-        this.dialogAddProf = true;
+      this.dialogAddProf = true;
     },
-    closeAdddialogProfessionals(){
+    closeAdddialogProfessionals() {
       this.dialogAddProf = false;
     },
     deleteProfessional(item) {
@@ -1598,9 +1595,9 @@ export default {
           this.dialogRequestProfessional = false;
         }).finally(() => {
           this.professional_id = '',
-          this.showAddProfessional(this.courseSelect);
+            this.showAddProfessional(this.courseSelect);
           this.showAlert("success", "Afiliación eliminada correctamente", 3000);
-          });
+        });
     },
     closerequestProfessional() {
       this.dialogRequestProfessional = false;
@@ -1640,7 +1637,7 @@ export default {
 
       console.log('this.data------------');
       console.log(this.data);
-   
+
       axios
         .post('https://api2.simplifies.cl/api/course-student-update2', this.data)
         .then(() => {
@@ -1648,8 +1645,8 @@ export default {
         }).finally(() => {
           this.showAlert("success", "Estado en el curso actualizado correctamente", 3000);
           this.showStudents(this.courseSelect);
-          });
-          this.closeState();
+        });
+      this.closeState();
     },
   },//endMethods
 }

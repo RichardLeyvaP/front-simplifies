@@ -2,8 +2,8 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
-  <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24" :multi-line="true"
-    vertical v-model="snackbar">
+  <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24"
+    :multi-line="true" vertical v-model="snackbar">
     <v-row>
       <v-col md="2">
         <v-avatar :icon="sb_icon" color="sb_type" size="40"></v-avatar>
@@ -22,16 +22,17 @@
         <v-col cols="12" md="4" class="mt-4">
           <span class="ml-4"> <strong>Caja <!--- {{ this.nameBranch }}--></strong></span>
         </v-col>
-        <v-col cols="12" md="8" class="text-right">           
+        <v-col cols="12" md="8" class="text-right">
           <v-dialog v-model="dialog" max-width="1000px">
- <template v-slot:activator="{ props }">
-          <div class="text-center">
-            <v-btn @click="showDialogProduct" color="#E7E9E9" variant="flat" elevation="2"
-                  prepend-icon="mdi-cart" :disabled="ejecutado">
+            <template v-slot:activator="{ props }">
+              <div class="text-center">
+                <v-btn @click="showDialogProduct" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-cart"
+                  :disabled="ejecutado">
                   Venta Productos
                 </v-btn>
                 <v-btn @click="dialogDetallesCarPagado = true" color="#E7E9E9" variant="flat" elevation="2"
-                  prepend-icon="mdi-account-star-outline" :disabled="filteredItemsPay.length !== 0 ? false : true" class="ml-1">
+                  prepend-icon="mdi-account-star-outline" :disabled="filteredItemsPay.length !== 0 ? false : true"
+                  class="ml-1">
                   Clientes atendidos
                 </v-btn>
                 <v-btn :disabled="(closed_box || ejecutado)" v-bind="props" color="#E7E9E9" variant="flat" elevation="2"
@@ -41,7 +42,8 @@
                 <v-btn @click="openDialogBox" color="#E7E9E9" variant="flat" elevation="2"
                   prepend-icon="mdi-cash-register" class="ml-1">
                   Caja
-                </v-btn></div>
+                </v-btn>
+              </div>
             </template>
             <v-card>
               <v-toolbar color="#F18254">
@@ -239,110 +241,110 @@
 
       <v-row>
         <v-col cols="12" sm="12" md="4">
-          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
-            label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
-            variant="underlined" @update:model-value="initialize()"></v-autocomplete>
+          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+            v-if="this.mostrarFila" clearable label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name"
+            item-value="id" variant="underlined" @update:model-value="initialize()"></v-autocomplete>
         </v-col>
       </v-row>
-      <v-row>        
+      <v-row>
         <v-col cols="12" md="12">
           <v-card-title class="d-flex align-center pe-2">
             <v-btn @click="initialize" class="mt-1 mb-1" color="#F18254">
-        <v-icon left>mdi-refresh</v-icon>
-        Refrescar
-      </v-btn>
-      <v-btn v-if="this.ejecutado" @click="showBonus" class="mt-1 mb-1 ml-1" color="#F18254">
-        <v-icon left>mdi-cash-multiple</v-icon>
-        Bonos a pagar
-      </v-btn>
+              <v-icon left>mdi-refresh</v-icon>
+              Refrescar
+            </v-btn>
+            <v-btn v-if="this.ejecutado" @click="showBonus" class="mt-1 mb-1 ml-1" color="#F18254">
+              <v-icon left>mdi-cash-multiple</v-icon>
+              Bonos a pagar
+            </v-btn>
 
-      <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
 
-      <v-text-field
-        v-model="search"
-        density="compact"
-        label="Search"
-        prepend-inner-icon="mdi-magnify"
-        variant="solo-filled"
-        flat
-        hide-details
-        single-line
-      ></v-text-field>
-    </v-card-title>
+            <v-text-field v-model="search" density="compact" label="Search" prepend-inner-icon="mdi-magnify"
+              variant="solo-filled" flat hide-details single-line></v-text-field>
+          </v-card-title>
           <!--<v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
         hide-details></v-text-field>-->
 
 
-      <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="filteredItems" :search="search"
-        class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+          <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="filteredItems"
+            :search="search" class="elevation-1" no-results-text="No hay datos disponibles"
+            no-data-text="No hay datos disponibles">
 
-        <template v-slot:item.professionalName="{ item }">
+            <template v-slot:item.professionalName="{ item }">
 
-          <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
-          </v-avatar>
-          {{ item.professionalName }}
-        </template>
+              <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
+                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+              </v-avatar>
+              {{ item.professionalName }}
+            </template>
 
-        <template v-slot:item.clientName="{ item }">
+            <template v-slot:item.clientName="{ item }">
 
-          <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.client_image" alt="image"></v-img>
-          </v-avatar>
-          {{ item.clientName }}
-        </template>
-        <template v-slot:item.technical_assistance="{ item }">
-                {{ formatNumber(item.technical_assistance)}}                                  
-                                          </template>
-                                          <template v-slot:item.product="{ item }">
-                {{ formatNumber(item.product)}}                                  
-                                          </template>
-                                          <template v-slot:item.service="{ item }">
-                {{ formatNumber(item.service)}}                                  
-                                          </template>
-                                          <template v-slot:item.amount="{ item }">
-                {{ formatNumber(item.amount)}}                                  
-                                          </template>
-        <template v-slot:item.state="{ item }">
-          <v-chip :color="getColor(item.state)" class="text-uppercase" label size="small">
-            {{ getText(item.state) }}
-          </v-chip>
-          <!--<v-chip :color="item.pay != 0 ? 'green' : 'red'" :text="item.pay" class="text-uppercase" label size="small">
+              <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
+                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.client_image" alt="image"></v-img>
+              </v-avatar>
+              {{ item.clientName }}
+            </template>
+            <template v-slot:item.technical_assistance="{ item }">
+              {{ formatNumber(item.technical_assistance) }}
+            </template>
+            <template v-slot:item.product="{ item }">
+              {{ formatNumber(item.product) }}
+            </template>
+            <template v-slot:item.service="{ item }">
+              {{ formatNumber(item.service) }}
+            </template>
+            <template v-slot:item.amount="{ item }">
+              {{ formatNumber(item.amount) }}
+            </template>
+            <template v-slot:item.state="{ item }">
+              <v-chip :color="getColor(item.state)" class="text-uppercase" label size="small">
+                {{ getText(item.state) }}
+              </v-chip>
+              <!--<v-chip :color="item.pay != 0 ? 'green' : 'red'" :text="item.pay" class="text-uppercase" label size="small">
             {{ item.pay === 0 ? 'Pendiente' : 'Pagado' }}
           </v-chip>-->
-        </template>
+            </template>
 
-        <template v-slot:top>
+            <template v-slot:top>
 
-          <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
-        </template>
+              <v-divider class="mx-4" inset vertical></v-divider>
+              <v-spacer></v-spacer>
+            </template>
 
-        <template v-slot:item.actions="{ item }">
-          <!--<v-menu>
+            <template v-slot:item.actions="{ item }">
+              <!--<v-menu>
             <template v-slot:activator="{ props }">
               <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
             </template>
 
-            <v-list>
-              <v-list-item>
-                <v-btn density="comfortable" icon="mdi-eye" @click="(item.active != 3) &&  showDetails(item)" :color="(item.active != 3) ? 'blue' : 'grey'" variant="tonal"
-            elevation="1" class="mr-1 mt-1 mb-1" title="Mostrar detalles del carro"></v-btn>
-          <v-btn density="comfortable" icon="mdi-credit-card" @click="(item.active != 3) && payItem(item)" :color="(item.active != 3) ? 'green-darken-1' : 'grey'"
-            variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Pagar el carro"></v-btn>
-          <v-btn density="comfortable" icon="mdi-delete" @click="(item.active != 3) && deleteItemSolicitud(item)" :color="(item.active != 3) ? 'red-darken-4' : 'grey'" variant="tonal"
-            elevation="1" title="Solicitud de eliminar carro"></v-btn>
-              </v-list-item>
-            </v-list>
-          </v-menu>-->
-          <v-btn density="comfortable" icon="mdi-eye" @click="(item.active != 3) &&  showDetails(item)" :color="(item.active != 3) ? 'blue' : 'grey'" variant="tonal"
-            elevation="1" class="mr-1 mt-1 mb-1" title="Mostrar detalles del carro"></v-btn>
-          <v-btn density="comfortable" icon="mdi-credit-card" @click="(item.active != 3 && item.state == 1) && payItem(item)" :color="(item.active != 3 && item.state == 1) ? 'green-darken-1' : 'grey'"
-            variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Pagar el carro"></v-btn>
-          <v-btn density="comfortable" icon="mdi-delete" @click="(item.active != 3) && deleteItemSolicitud(item)" :color="(item.active != 3) ? 'red-darken-4' : 'grey'" variant="tonal"
-            elevation="1" title="Solicitud de eliminar carro"></v-btn>
-        </template>
-      </v-data-table>
+        <v-list>
+          <v-list-item>
+            <v-btn density="comfortable" icon="mdi-eye" @click="(item.active != 3) &&  showDetails(item)"
+              :color="(item.active != 3) ? 'blue' : 'grey'" variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
+              title="Mostrar detalles del carro"></v-btn>
+            <v-btn density="comfortable" icon="mdi-credit-card" @click="(item.active != 3) && payItem(item)"
+              :color="(item.active != 3) ? 'green-darken-1' : 'grey'" variant="tonal" elevation="1"
+              class="mr-1 mt-1 mb-1" title="Pagar el carro"></v-btn>
+            <v-btn density="comfortable" icon="mdi-delete" @click="(item.active != 3) && deleteItemSolicitud(item)"
+              :color="(item.active != 3) ? 'red-darken-4' : 'grey'" variant="tonal" elevation="1"
+              title="Solicitud de eliminar carro"></v-btn>
+          </v-list-item>
+        </v-list>
+        </v-menu>-->
+              <v-btn density="comfortable" icon="mdi-eye" @click="(item.active != 3) && showDetails(item)"
+                :color="(item.active != 3) ? 'blue' : 'grey'" variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
+                title="Mostrar detalles del carro"></v-btn>
+              <v-btn density="comfortable" icon="mdi-credit-card"
+                @click="(item.active != 3 && item.state == 1) && payItem(item)"
+                :color="(item.active != 3 && item.state == 1) ? 'green-darken-1' : 'grey'" variant="tonal" elevation="1"
+                class="mr-1 mt-1 mb-1" title="Pagar el carro"></v-btn>
+              <v-btn density="comfortable" icon="mdi-delete" @click="(item.active != 3) && deleteItemSolicitud(item)"
+                :color="(item.active != 3) ? 'red-darken-4' : 'grey'" variant="tonal" elevation="1"
+                title="Solicitud de eliminar carro"></v-btn>
+            </template>
+          </v-data-table>
         </v-col>
       </v-row>
       <v-dialog v-model="dialogRequest" width="500">
@@ -443,7 +445,7 @@
                 <v-row>
                   <v-col cols="12" md="4">
                     <v-text-field clearable v-model="editedCard.cardGiftUser_id" label="Tarjeta de regalo (código)"
-                    prepend-icon="mdi-gift" variant="underlined" ></v-text-field><!--@input="onCardGiftSelected"-->
+                      prepend-icon="mdi-gift" variant="underlined"></v-text-field><!--@input="onCardGiftSelected"-->
                   </v-col>
                   <v-col cols="12" md="4">
                     <v-text-field v-if="mostrarOtroCampo" v-model="editedCard.value" clearable label="Valor"
@@ -451,12 +453,13 @@
                     </v-text-field>
                   </v-col>
                   <v-col cols="12" md="4">
-                    <v-text-field v-model="editedItem.cardGif" clearable label="Cantidad" prepend-icon="mdi-currency-usd"
-                      variant="underlined" :rules=[customValidation] v-if="mostrarOtroCampo">
+                    <v-text-field v-model="editedItem.cardGif" clearable label="Cantidad"
+                      prepend-icon="mdi-currency-usd" variant="underlined" :rules=[customValidation]
+                      v-if="mostrarOtroCampo">
                     </v-text-field>
                   </v-col>
                 </v-row>
-                  
+
               </v-container>
               <v-divider></v-divider>
               <v-card-actions>
@@ -486,7 +489,8 @@
                   prepend-icon="mdi-list-box-outline" class="mr-1" :disabled="this.car_ref.pay == 1 ? true : false">
                   Agregar Servicio
                 </v-btn>
-                <v-btn color="#E7E9E9" variant="flat" @click="showProduct(this.car_ref)" prepend-icon="mdi-tag-outline" :disabled="this.car_ref.pay == 1 ? true : false">
+                <v-btn color="#E7E9E9" variant="flat" @click="showProduct(this.car_ref)" prepend-icon="mdi-tag-outline"
+                  :disabled="this.car_ref.pay == 1 ? true : false">
                   Agregar Producto
                 </v-btn>
               </v-col>
@@ -509,8 +513,8 @@
 
               </template>
               <template v-slot:item.price="{ item }">
-                {{ formatNumber(item.price)}}                                  
-                                          </template>
+                {{ formatNumber(item.price) }}
+              </template>
               <template v-slot:item.actions="{ item }">
                 <template v-if="item.id !== null">
                   <v-btn density="comfortable" icon="mdi-cancel"
@@ -549,12 +553,10 @@
             <v-form v-model="valid" enctype="multipart/form-data">
               <v-row>
                 <v-col cols="12" md="12">
-                  <v-autocomplete
-                  :no-data-text="'No hay datos disponibles'" v-model="product_store_id" :items="products" clearable label="Productos"
-                    prepend-icon="mdi-tag-outline" item-title="name" item-value="id" variant="underlined"
-                    :rules="selectRules"  @update:model-value="cantExist" 
-                  >
-                  <!--chips
+                  <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="product_store_id"
+                    :items="products" clearable label="Productos" prepend-icon="mdi-tag-outline" item-title="name"
+                    item-value="id" variant="underlined" :rules="selectRules" @update:model-value="cantExist">
+                    <!--chips
               closable-chips<template v-slot:chip="{ props, item }">
                 <v-chip
                   v-bind="props"
@@ -562,28 +564,26 @@
                   :text="item.raw.name"
                 ></v-chip>
               </template>-->
-              <template v-slot:item="{ props, item }">
-                <v-list-item
-                  v-bind="props"
-                  :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_product"
-                  :title="item.raw.name"
-                >
-                <v-list-item-subtitle class="d-flex justify-space-between">
-                        Existencia: {{ item.raw.product_exit }}
-                        Precio: {{ this.formatNumber(item.raw.price )}}
-                      </v-list-item-subtitle>
-                </v-list-item>
-              </template>
-                </v-autocomplete>
-                    <v-text-field v-model="product_exit" clearable label="Existencia"
-                      prepend-icon="mdi-cube-outline" variant="underlined" disabled="true">
-                    </v-text-field>
-                    <v-text-field v-model="cant" clearable label="Cantidad"
-                      prepend-icon="mdi-cart" variant="underlined" :rules=[validateCantidad]>
-                    </v-text-field>
+                    <template v-slot:item="{ props, item }">
+                      <v-list-item v-bind="props"
+                        :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_product"
+                        :title="item.raw.name">
+                        <v-list-item-subtitle class="d-flex justify-space-between">
+                          Existencia: {{ item.raw.product_exit }}
+                          Precio: {{ this.formatNumber(item.raw.price) }}
+                        </v-list-item-subtitle>
+                      </v-list-item>
+                    </template>
+                  </v-autocomplete>
+                  <v-text-field v-model="product_exit" clearable label="Existencia" prepend-icon="mdi-cube-outline"
+                    variant="underlined" disabled="true">
+                  </v-text-field>
+                  <v-text-field v-model="cant" clearable label="Cantidad" prepend-icon="mdi-cart" variant="underlined"
+                    :rules=[validateCantidad]>
+                  </v-text-field>
                 </v-col>
-                
-                
+
+
               </v-row>
               <v-divider></v-divider>
               <v-card-actions>
@@ -612,17 +612,14 @@
             <v-form v-model="valid" enctype="multipart/form-data">
               <v-row>
                 <v-col cols="12" md="12">
-                  <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_service_professional_id" :items="services" clearable label="Servicios"
-                    prepend-icon="mdi-list-box-outline" item-title="name" item-value="id" variant="underlined"
-                    :rules="selectRules">
+                  <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_service_professional_id"
+                    :items="services" clearable label="Servicios" prepend-icon="mdi-list-box-outline" item-title="name"
+                    item-value="id" variant="underlined" :rules="selectRules">
                     <template v-slot:item="{ props, item }">
-                <v-list-item
-                  v-bind="props"
-                  :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_service"
-                  :subtitle="'Precio: '+item.raw.price_service"
-                  :title="item.raw.name"
-                ></v-list-item>
-              </template>
+                      <v-list-item v-bind="props"
+                        :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_service"
+                        :subtitle="'Precio: ' + item.raw.price_service" :title="item.raw.name"></v-list-item>
+                    </template>
                   </v-autocomplete>
                 </v-col>
               </v-row>
@@ -695,55 +692,57 @@
           </v-toolbar>
 
           <v-card-text class="mt-2 mb-2">
-          
+
             <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar" single-line
-        hide-details></v-text-field>
+              hide-details></v-text-field>
 
 
-      <v-data-table :headers="headers3" :items-per-page-text="'Elementos por páginas'" :items="filteredItemsPay" :search="search3"
-        class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+            <v-data-table :headers="headers3" :items-per-page-text="'Elementos por páginas'" :items="filteredItemsPay"
+              :search="search3" class="elevation-1" no-results-text="No hay datos disponibles"
+              no-data-text="No hay datos disponibles">
 
-        <template v-slot:item.professionalName="{ item }">
+              <template v-slot:item.professionalName="{ item }">
 
-          <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
-          </v-avatar>
-          {{ item.professionalName }}
-        </template>
+                <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+                </v-avatar>
+                {{ item.professionalName }}
+              </template>
 
-        <template v-slot:item.clientName="{ item }">
+              <template v-slot:item.clientName="{ item }">
 
-          <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.client_image" alt="image"></v-img>
-          </v-avatar>
-          {{ item.clientName }}
-        </template>
+                <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.client_image" alt="image"></v-img>
+                </v-avatar>
+                {{ item.clientName }}
+              </template>
 
-        <template v-slot:item.pay="{ item }">
-          <v-chip :color="parseInt(item.pay) === '0' ? 'red' : 'green'" :text="item.pay" class="text-uppercase" label size="small">
-            {{ item.pay === '0' ? 'Pendiente' : 'Pagado' }}
-          </v-chip>
-        </template>
-        <template v-slot:item.technical_assistance="{ item }">
-                {{ formatNumber(item.technical_assistance)}}                                  
-                                          </template>
-                                          <template v-slot:item.product="{ item }">
-                {{ formatNumber(item.product)}}                                  
-                                          </template>
-                                          <template v-slot:item.service="{ item }">
-                {{ formatNumber(item.service)}}                                  
-                                          </template>
-                                          <template v-slot:item.tip="{ item }">
-                {{ formatNumber(item.tip)}}                                  
-                                          </template>
-                                          <template v-slot:item.amount="{ item }">
-                {{ formatNumber(item.amount)}}                                  
-                                          </template>
-        <template v-slot:top>
+              <template v-slot:item.pay="{ item }">
+                <v-chip :color="parseInt(item.pay) === '0' ? 'red' : 'green'" :text="item.pay" class="text-uppercase"
+                  label size="small">
+                  {{ item.pay === '0' ? 'Pendiente' : 'Pagado' }}
+                </v-chip>
+              </template>
+              <template v-slot:item.technical_assistance="{ item }">
+                {{ formatNumber(item.technical_assistance) }}
+              </template>
+              <template v-slot:item.product="{ item }">
+                {{ formatNumber(item.product) }}
+              </template>
+              <template v-slot:item.service="{ item }">
+                {{ formatNumber(item.service) }}
+              </template>
+              <template v-slot:item.tip="{ item }">
+                {{ formatNumber(item.tip) }}
+              </template>
+              <template v-slot:item.amount="{ item }">
+                {{ formatNumber(item.amount) }}
+              </template>
+              <template v-slot:top>
 
-          <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
-        </template>
+                <v-divider class="mx-4" inset vertical></v-divider>
+                <v-spacer></v-spacer>
+              </template>
 
             </v-data-table>
           </v-card-text>
@@ -766,8 +765,7 @@
                 <span class="text-subtitle-2 ml-3">Venta de productos</span>
               </v-col>
               <v-col cols="12" md="3" class="text-center">
-                <v-btn @click="showSalegProduct" color="#E7E9E9" variant="flat" elevation="2"
-                  prepend-icon="mdi-cart">
+                <v-btn @click="showSalegProduct" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-cart">
                   Productos
                 </v-btn>
               </v-col>
@@ -776,48 +774,52 @@
 
           <v-card-text class="mt-2 mb-2">
             <v-text-field class="mt-1 mb-1" v-model="search4" append-icon="mdi-magnify" label="Buscar" single-line
-        hide-details></v-text-field>
+              hide-details></v-text-field>
 
 
-      <v-data-table v-model="selected" :headers="headers4" :items-per-page-text="'Elementos por páginas'" :items="cashierSalesProf" :search="search4"
-        class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles" :item-selectable="isSelectable" show-select>
+            <v-data-table v-model="selected" :headers="headers4" :items-per-page-text="'Elementos por páginas'"
+              :items="cashierSalesProf" :search="search4" class="elevation-1" no-results-text="No hay datos disponibles"
+              no-data-text="No hay datos disponibles" :item-selectable="isSelectable" show-select>
 
-        <template v-slot:item.name="{ item }">
+              <template v-slot:item.name="{ item }">
 
-          <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
-          </v-avatar>
-          {{ item.name }}
-        </template>
-        <template v-slot:item.pay="{ item }">
-          <v-chip :color="parseInt(item.pay) === 0 ? 'red' : (parseInt(item.pay) === 1 ? 'green' : 'gray')" :text="item.pay" class="text-uppercase" label size="small">
-            {{ parseInt(item.pay) === 0 ? 'Pendiente' : (parseInt(item.pay) === 1 ? 'Pagado' : 'Solicitud') }}
-          </v-chip>
-        </template>
-        <template v-slot:item.price="{ item }">
-                {{ formatNumber(item.price)}}                                  
-                                          </template>
-                                          <template v-slot:item.sale_price="{ item }">
-                {{ formatNumber(item.sale_price)}}                                  
-                                          </template>
-                                          <template v-slot:item.actions="{ item }">
-                                            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-close" @click="(item.pay == 0) ? editItemProduct(item) : ''"
-                                            :color="(item.pay !=0) ? 'grey' : 'red-darken-4'" variant="tonal" elevation="1" title="Solicitar Eliminar Producto"></v-btn>
-                                        </template>
-        <template v-slot:top>
+                <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
+                </v-avatar>
+                {{ item.name }}
+              </template>
+              <template v-slot:item.pay="{ item }">
+                <v-chip :color="parseInt(item.pay) === 0 ? 'red' : (parseInt(item.pay) === 1 ? 'green' : 'gray')"
+                  :text="item.pay" class="text-uppercase" label size="small">
+                  {{ parseInt(item.pay) === 0 ? 'Pendiente' : (parseInt(item.pay) === 1 ? 'Pagado' : 'Solicitud') }}
+                </v-chip>
+              </template>
+              <template v-slot:item.price="{ item }">
+                {{ formatNumber(item.price) }}
+              </template>
+              <template v-slot:item.sale_price="{ item }">
+                {{ formatNumber(item.sale_price) }}
+              </template>
+              <template v-slot:item.actions="{ item }">
+                <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-close"
+                  @click="(item.pay == 0) ? editItemProduct(item) : ''"
+                  :color="(item.pay != 0) ? 'grey' : 'red-darken-4'" variant="tonal" elevation="1"
+                  title="Solicitar Eliminar Producto"></v-btn>
+              </template>
+              <template v-slot:top>
 
-          <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
-        </template>
+                <v-divider class="mx-4" inset vertical></v-divider>
+                <v-spacer></v-spacer>
+              </template>
 
             </v-data-table>
           </v-card-text>
           <v-divider></v-divider>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="#F18254" variant="flat" @click="openDialogPaySales" :disabled="!selected.length>0">
-                Pagar
-              </v-btn>
+            <v-btn color="#F18254" variant="flat" @click="openDialogPaySales" :disabled="!selected.length > 0">
+              Pagar
+            </v-btn>
             <v-btn color="#E7E9E9" variant="flat" @click="closeDialogSaleProduct">
               Volver
             </v-btn>
@@ -825,56 +827,52 @@
         </v-card>
       </v-dialog>
       <v-dialog v-model="showSaleProducts" max-width="500px">
-          <v-card>
-            <v-toolbar color="#F18254">
-              <span class="text-subtitle-2 ml-4"> Agregar Producto</span>
-            </v-toolbar>
-            <v-card-text>
-              <v-form v-model="valid" enctype="multipart/form-data">
-                <v-row>
-                  <v-col cols="12" md="12">
-                    <v-autocomplete
-                    :no-data-text="'No hay datos disponibles'" v-model="product_store_id" :items="products" clearable label="Productos"
-                      prepend-icon="mdi-tag-outline" item-title="name" item-value="id" variant="underlined"
-                      :rules="selectRules"  @update:model-value="cantExist" 
-                    >
-                <template v-slot:item="{ props, item }">
-                  <v-list-item
-                    v-bind="props"
-                    :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_product"
-                    :title="item.raw.name"
-                  ><v-list-item-subtitle class="d-flex justify-space-between">
-                        Existencia: {{ item.raw.product_exit }}
-                        Precio: {{ this.formatNumber(item.raw.price )}}
-                      </v-list-item-subtitle>
-                  </v-list-item>
-                </template>
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-2 ml-4"> Agregar Producto</span>
+          </v-toolbar>
+          <v-card-text>
+            <v-form v-model="valid" enctype="multipart/form-data">
+              <v-row>
+                <v-col cols="12" md="12">
+                  <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="product_store_id"
+                    :items="products" clearable label="Productos" prepend-icon="mdi-tag-outline" item-title="name"
+                    item-value="id" variant="underlined" :rules="selectRules" @update:model-value="cantExist">
+                    <template v-slot:item="{ props, item }">
+                      <v-list-item v-bind="props"
+                        :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_product"
+                        :title="item.raw.name"><v-list-item-subtitle class="d-flex justify-space-between">
+                          Existencia: {{ item.raw.product_exit }}
+                          Precio: {{ this.formatNumber(item.raw.price) }}
+                        </v-list-item-subtitle>
+                      </v-list-item>
+                    </template>
                   </v-autocomplete>
-                      <v-text-field v-model="product_exit" clearable label="Existencia"
-                        prepend-icon="mdi-cube-outline" variant="underlined" disabled="true">
-                      </v-text-field>
-                      <v-text-field v-model="cant" clearable label="Cantidad"
-                        prepend-icon="mdi-cart" variant="underlined" :rules=[validateCantidad]>
-                      </v-text-field>
-                  </v-col>
-                  
-                  
-                </v-row>
-                <v-divider></v-divider>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
+                  <v-text-field v-model="product_exit" clearable label="Existencia" prepend-icon="mdi-cube-outline"
+                    variant="underlined" disabled="true">
+                  </v-text-field>
+                  <v-text-field v-model="cant" clearable label="Cantidad" prepend-icon="mdi-cart" variant="underlined"
+                    :rules=[validateCantidad]>
+                  </v-text-field>
+                </v-col>
 
-                  <v-btn color="#E7E9E9" variant="flat" @click="closeSaleProduct">
-                    Cancelar
-                  </v-btn>
-                  <v-btn color="#F18254" variant="flat" @click="saveProductSale" :disabled="!valid">
-                    Aceptar
-                  </v-btn>
-                </v-card-actions>
-              </v-form>
-            </v-card-text>
-          </v-card>
-          </v-dialog>
+
+              </v-row>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+
+                <v-btn color="#E7E9E9" variant="flat" @click="closeSaleProduct">
+                  Cancelar
+                </v-btn>
+                <v-btn color="#F18254" variant="flat" @click="saveProductSale" :disabled="!valid">
+                  Aceptar
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
       <v-dialog v-model="dialogPaySales" max-width="800px">
         <v-card>
           <v-toolbar color="#F18254">
@@ -926,7 +924,7 @@
                 <v-row>
                   <v-col cols="12" md="4">
                     <v-text-field clearable v-model="editedCard.cardGiftUser_id" label="Tarjeta de regalo (código)"
-                    prepend-icon="mdi-gift" variant="underlined" ></v-text-field><!--@input="onCardGiftSelected"-->
+                      prepend-icon="mdi-gift" variant="underlined"></v-text-field><!--@input="onCardGiftSelected"-->
                   </v-col>
                   <v-col cols="12" md="4">
                     <v-text-field v-if="mostrarOtroCampo" v-model="editedCard.value" clearable label="Valor"
@@ -934,12 +932,13 @@
                     </v-text-field>
                   </v-col>
                   <v-col cols="12" md="4">
-                    <v-text-field v-model="editedItem.cardGif" clearable label="Cantidad" prepend-icon="mdi-currency-usd"
-                      variant="underlined" :rules=[customValidation] v-if="mostrarOtroCampo">
+                    <v-text-field v-model="editedItem.cardGif" clearable label="Cantidad"
+                      prepend-icon="mdi-currency-usd" variant="underlined" :rules=[customValidation]
+                      v-if="mostrarOtroCampo">
                     </v-text-field>
                   </v-col>
                 </v-row>
-                  
+
               </v-container>
               <v-divider></v-divider>
               <v-card-actions>
@@ -975,34 +974,35 @@
 
           <v-card-text class="mt-2 mb-2">
             <v-text-field class="mt-1 mb-1" v-model="search8" append-icon="mdi-magnify" label="Buscar" single-line
-        hide-details></v-text-field>
+              hide-details></v-text-field>
 
 
-      <v-data-table :headers="headers8" :items-per-page-text="'Elementos por páginas'" :items="bonus" :search="search8"
-        class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+            <v-data-table :headers="headers8" :items-per-page-text="'Elementos por páginas'" :items="bonus"
+              :search="search8" class="elevation-1" no-results-text="No hay datos disponibles"
+              no-data-text="No hay datos disponibles">
 
-        <template v-slot:item.name="{ item }">
+              <template v-slot:item.name="{ item }">
 
-          <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
-          </v-avatar>
-          {{ item.name }}
-        </template>
-        <template v-slot:item.amount="{ item }">
-                {{ formatNumber(item.amount)}}                                  
-                                          </template>
-        <template v-slot:top>
+                <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+                </v-avatar>
+                {{ item.name }}
+              </template>
+              <template v-slot:item.amount="{ item }">
+                {{ formatNumber(item.amount) }}
+              </template>
+              <template v-slot:top>
 
-          <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
-        </template>
+                <v-divider class="mx-4" inset vertical></v-divider>
+                <v-spacer></v-spacer>
+              </template>
 
             </v-data-table>
           </v-card-text>
           <v-divider></v-divider>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="#E7E9E9" variant="flat" @click="showDialogBonus=false">
+            <v-btn color="#E7E9E9" variant="flat" @click="showDialogBonus = false">
               Cerrar
             </v-btn>
           </v-card-actions>
@@ -1066,7 +1066,7 @@ export default {
     branch_service_professional_id: '',
     showAddProducts: false,
     products: [],
-    product_exit:'',
+    product_exit: '',
     cant: '',
     priceService: '',
     product_store_id: '',
@@ -1212,7 +1212,7 @@ export default {
       //(value) => !!value || 'Campo requerido',
       (value) => !value || (/^\d+(\.\d+)?$/.test(value)) || "Debe ser un número con punto decimal (10.00)",
       (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
-      pago1: [
+    pago1: [
       (value) => !!value || 'Campo requerido',
       (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número',
       (value) => /^\d+(\.\d+)?$/.test(value) || "Debe ser un número con punto decimal (10.00)",],
@@ -1230,13 +1230,13 @@ export default {
       return 'Cierre de Caja'
     },
     validateCantidadCard(value) {
-      if (this.editedCard.value){
-      return value <= this.editedItem.value || "La cantidad debe ser menor o igual que la existencia (" + this.editedItem.value + ")";
-    }
-    else{
-      return true;
-    }
-  },
+      if (this.editedCard.value) {
+        return value <= this.editedItem.value || "La cantidad debe ser menor o igual que la existencia (" + this.editedItem.value + ")";
+      }
+      else {
+        return true;
+      }
+    },
     rulesCampo1() {
 
       if (this.editedCard.value) {
@@ -1253,7 +1253,7 @@ export default {
   },
 
   watch: {
-    'editedCard.value': function(newVal) {
+    'editedCard.value': function (newVal) {
       if (newVal !== '') {
         this.customValidation(); // Llamar a la validación solo cuando editedCard.value tenga un valor
       }
@@ -1278,8 +1278,8 @@ export default {
     },
     'editedCard.cardGiftUser_id'(newValue, oldValue) {
       // Llama a la función cuando cambia el valor de cardGiftUser_id
-      if(newValue){
-      this.onCardGiftSelected(newValue);
+      if (newValue) {
+        this.onCardGiftSelected(newValue);
       }
     },
     /*selected() {
@@ -1311,41 +1311,41 @@ export default {
           this.mostrarFila = true;
         }
         this.initialize();
-          });
+      });
 
-          //this.intervalId = setInterval(this.initialize, 60000);
-          this.intervalId = setInterval(() => {
-            axios
+    //this.intervalId = setInterval(this.initialize, 60000);
+    this.intervalId = setInterval(() => {
+      axios
         .get('https://api2.simplifies.cl/api/branch-cars', {
           params: {
             branch_id: this.branch_id
           }
         })
-        .then((response) => {          
-            this.results = response.data.cars;
+        .then((response) => {
+          this.results = response.data.cars;
           this.box = response.data.box;
           this.payments = response.data.payments;
-            this.cashierSales = response.data.cashierSales;
+          this.cashierSales = response.data.cashierSales;
           console.log('this.box');
           console.log(this.box);
         }).finally(() => {
-            if (this.box === null) {
+          if (this.box === null) {
             this.ejecutado = false;
-        } else {
+          } else {
             // Si this.box no es null, verificar si box_close es null
             if (this.box.box_close === null) {
-                this.ejecutado = false;
-                console.log('this.box.box_close false');
-        //console.log(this.box.box_close);
+              this.ejecutado = false;
+              console.log('this.box.box_close false');
+              //console.log(this.box.box_close);
             } else {
-                this.ejecutado = true;
-                console.log('this.box.box_close true');
-        //console.log(this.box);
+              this.ejecutado = true;
+              console.log('this.box.box_close true');
+              //console.log(this.box);
             }
-        }
-        console.log('this.ejecutado');
-        console.log(this.ejecutado);
-          });
+          }
+          console.log('this.ejecutado');
+          console.log(this.ejecutado);
+        });
     }, 60000);
   },
   beforeUnmount() {
@@ -1354,39 +1354,33 @@ export default {
   },
 
   methods: {
-    showBonus(){
+    showBonus() {
       axios
         .get('https://api2.simplifies.cl/api/branch-payment-show-bonus', {
           params: {
             branch_id: this.branch_id
           }
         })
-        .then((response) => {          
-            this.bonus = response.data.bonus;
+        .then((response) => {
+          this.bonus = response.data.bonus;
         }).finally(() => {
           this.showDialogBonus = true;
-          });
+        });
     },
     formatNumber(value) {
-      // Si el valor es menor que 1000, devuelve el valor original sin formato
-  if (value < 1000) {
-    return value;
-  }
+      // Si el valor es menor que 1000, devuelve el valor original con dos decimales
+      if (value < 1000) {
+        return (Math.round((value + Number.EPSILON) * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
 
-  // Primero, redondea el valor a dos decimales
-  value = Math.round((value + Number.EPSILON) * 100) / 100;
+      // Primero, redondea el valor a dos decimales
+      value = Math.round((value + Number.EPSILON) * 100) / 100;
 
-  // Separa la parte entera de la parte decimal
-  let parts = value.toString().split(".");
-  let integerPart = parts[0];
-  let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+      // Convierte el valor a cadena con formato de número local (en-US)
+      let formattedValue = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-  // Agrega los separadores de miles
-  integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
-  // Combina la parte entera y la parte decimal
-  return integerPart + decimalPart;
-        },
+      return formattedValue;
+    },
     customValidation() {
       if (this.editedCard.value !== '' && parseInt(this.editedItem.cardGif) > parseInt(this.editedCard.value)) {
         return 'El valor de la tarjeta de regalo no puede ser mayor que ' + this.formatNumber(this.editedCard.value);
@@ -1394,31 +1388,31 @@ export default {
       return true;
     },
     getColor(state) {
-    switch (state) {
-      case 1:
-        return 'red';
-      case 2:
-        return 'blue';
-      case 3:
-        return 'yellow';
-      default:
-        return 'grey';
-    }
-  },
-  getText(state) {
-    switch (state) {
-      case 1:
-        return 'Por Pagar';
-      case 2:
-        return 'Atendiéndose';
-      case 3:
-        return 'En Cola';
-      default:
-        return 'Desconocido';
-    }
-  },
+      switch (state) {
+        case 1:
+          return 'red';
+        case 2:
+          return 'blue';
+        case 3:
+          return 'yellow';
+        default:
+          return 'grey';
+      }
+    },
+    getText(state) {
+      switch (state) {
+        case 1:
+          return 'Por Pagar';
+        case 2:
+          return 'Atendiéndose';
+        case 3:
+          return 'En Cola';
+        default:
+          return 'Desconocido';
+      }
+    },
     /*formatNumber(value) {
-            return value.toLocaleString('es-ES');
+            return value.toLocaleString('en-US');
         },*/
     onCardGiftSelected(code) {
       // Realiza cualquier lógica adicional aquí
@@ -1433,17 +1427,17 @@ export default {
           this.editedCard.value = response.data
           console.log('Elemento seleccionado:', this.editedCard.value);
         }).finally(() => {
-                if (this.editedCard.value) {
-                  this.mostrarOtroCampo = true;
-                }
-                else{
-                  this.editedCard.value = 0;
-                  this.editedItem.cardGif = '';
-                  this.mostrarOtroCampo = false;
-                }
-          });
+          if (this.editedCard.value) {
+            this.mostrarOtroCampo = true;
+          }
+          else {
+            this.editedCard.value = 0;
+            this.editedItem.cardGif = '';
+            this.mostrarOtroCampo = false;
+          }
+        });
       // Muestra otro campo y asigna un valor
-      
+
       //this.otroCampoValor = item.valor;  // Asigna el valor que desees
     },
 
@@ -1460,7 +1454,7 @@ export default {
         }).finally(() => {
           this.initialize();
           this.showAlert("success", "Carro pagado correctamente", 3000);
-          });
+        });
     },
     deleteOrder(item) {
       //this.dialogRequest = true
@@ -1478,11 +1472,11 @@ export default {
         }).finally(() => {
           this.showDetails(this.car_ref);
           this.showAlert("success", "Solicitud de eliminación de orden hecha correctamente", 3000);
-          });
+        });
     },
 
-    editItemProduct(item){
-       //this.dialogRequest = true
+    editItemProduct(item) {
+      //this.dialogRequest = true
       //this.editedItem.order_id = item.id
       let request = {
         id: item.id,
@@ -1492,13 +1486,13 @@ export default {
       };
       axios
         .post('https://api2.simplifies.cl/api/cashiersale-destroy-solicitud', request)
-        .then(() => {          
+        .then(() => {
           this.showSaleProducts = false;
         }).finally(() => {
-          this.showAlert("success", "Solicitud de eliminación de productos hecha correctamente", 3000);          
+          this.showAlert("success", "Solicitud de eliminación de productos hecha correctamente", 3000);
           this.initialize();
           this.showDialogProduct();
-          });
+        });
     },
 
     requestDelete() {
@@ -1516,7 +1510,7 @@ export default {
         }).finally(() => {
           this.showDetails(this.car_ref);
           this.showAlert("success", "Orden eliminada correctamente", 3000);
-          });
+        });
       this.dialogRequest = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
@@ -1535,11 +1529,11 @@ export default {
       axios
         .put('https://api2.simplifies.cl/api/order-web', request)
         .then(() => {
-        }).finally(() => {          
+        }).finally(() => {
           this.showAlert("success", "Orden denegada para ser eliminada correctamente", 3000);
           //this.initialize();
           this.showDetails(this.car_ref)
-          });
+        });
       this.dialogRequest = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
@@ -1572,9 +1566,9 @@ export default {
       //console.log("boxxxxxx");
       //console.log(this.results);
       //if (!this.results) {   
-        const amount = this.results.reduce((total, item) => total + item.amount, 0);
-        const productsales = this.cashierSales.reduce((total, item) => total + item.price, 0);
-      const temp = amount+productsales;
+      const amount = this.results.reduce((total, item) => total + item.amount, 0);
+      const productsales = this.cashierSales.reduce((total, item) => total + item.price, 0);
+      const temp = amount + productsales;
       this.editedCloseBox.totalMount = temp;
       return this.formatNumber(temp) + " CLP";
       //}
@@ -1592,11 +1586,11 @@ export default {
       const montosPendientes = this.results
         .filter(item => item.pay === 0)
         .reduce((total, item) => total + item.amount, 0);
-        const productsales = this.cashierSales.filter(item => (item.pay === 0 || item.pay === 3)).reduce((total, item) => total + item.price, 0);
-      const pendiente = montosPendientes+productsales;
+      const productsales = this.cashierSales.filter(item => (item.pay === 0 || item.pay === 3)).reduce((total, item) => total + item.price, 0);
+      const pendiente = montosPendientes + productsales;
       if (!pendiente) {
         this.closed_box = false;
-       // this.ejecutado = false;
+        // this.ejecutado = false;
         console.log(this.closed_box)
       }
       else {
@@ -1695,20 +1689,20 @@ export default {
     },
 
     existence() {
-    console.log('imprime existence');
-    console.log(this.box);
-    if (!this.box) {    
+      console.log('imprime existence');
+      console.log(this.box);
+      if (!this.box) {
         return "0 CLP";
-    } else {
-      if(!this.box.existence){
-        return "0 CLP";
-      }else{
-        const temp = this.box.existence;
-    console.log(temp);
-    //return temp;
-    return this.formatNumber(temp) + " CLP";
+      } else {
+        if (!this.box.existence) {
+          return "0 CLP";
+        } else {
+          const temp = this.box.existence;
+          console.log(temp);
+          //return temp;
+          return this.formatNumber(temp) + " CLP";
+        }
       }
-    }
     },
 
     totalMountPagado() {
@@ -1722,8 +1716,8 @@ export default {
         .filter(item => item.pay === 1)
         .reduce((total, item) => total + item.amount, 0);
       const productsales = this.cashierSales
-      .filter(item => item.pay === 1)
-      .reduce((total, item) => total + item.price, 0);
+        .filter(item => item.pay === 1)
+        .reduce((total, item) => total + item.price, 0);
       console.log('productsales');
       console.log(this.cashierSales);
       const total = montosPagados + productsales;
@@ -1762,27 +1756,27 @@ export default {
             branch_id: this.branch_id
           }
         })
-        .then((response) => {          
-            this.results = response.data.cars;
-            this.box = response.data.box;
-            this.payments = response.data.payments;
-            this.cashierSales = response.data.cashierSales;
-            console.log('this.box');
+        .then((response) => {
+          this.results = response.data.cars;
+          this.box = response.data.box;
+          this.payments = response.data.payments;
+          this.cashierSales = response.data.cashierSales;
+          console.log('this.box');
           console.log(this.box);
         }).finally(() => {
-            if (this.box === null) {
+          if (this.box === null) {
             this.ejecutado = false;
-        } else {
+          } else {
             // Si this.box no es null, verificar si box_close es null
             if (this.box.box_close === null) {
-                this.ejecutado = false;
+              this.ejecutado = false;
             } else {
-                this.ejecutado = true;
+              this.ejecutado = true;
             }
-        }
-        console.log('this.ejecutado');
-        console.log(this.ejecutado);
-          });
+          }
+          console.log('this.ejecutado');
+          console.log(this.ejecutado);
+        });
     },
     editItem(item) {
       this.editedIndex = 1;
@@ -1809,7 +1803,7 @@ export default {
         }).finally(() => {
           this.initialize();
           this.showAlert("success", "Solicitud de eliminacion hecha correctamente", 3000)
-          });
+        });
     },
 
     payItem(item) {
@@ -1867,9 +1861,9 @@ export default {
           console.log('imprime oreders');
           console.log(this.orders);
         }).finally(() => {
-        //this.priceService = this.orders.reduce((total, item) => total + item.price, 0);
-        this.dialogDetallesCar = true;
-          });
+          //this.priceService = this.orders.reduce((total, item) => total + item.price, 0);
+          this.dialogDetallesCar = true;
+        });
     },
     deleteItemConfirm() {
       let request = {
@@ -1882,7 +1876,7 @@ export default {
         .then(() => {
         }).finally(() => {
           this.showAlert("success", "Carro eliminado correctamente", 3000)
-          });
+        });
       this.dialogDelete = false;
     },
     savePay() {
@@ -1907,14 +1901,14 @@ export default {
           axios
             .put('https://api2.simplifies.cl/api/payment', this.data)
             .then(() => {
-              }).finally(() => {
+            }).finally(() => {
               this.showAlert("success", "Pago efectuado correctamente", 3000);
               this.initialize();
               this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem);
                 this.editedCard = Object.assign({}, this.defaultCard);
                 this.mostrarOtroCampo = false;
-                });
+              });
             });
           this.dialogPay = false;
           this.dialogDetallesCar = false;
@@ -1946,20 +1940,20 @@ export default {
       console.log(this.data);
       axios
         .post('https://api2.simplifies.cl/api/closebox', this.data)
-        .then((response) => {          
-            this.bonus = response.data.bonus;
-            console.log('this.bonus');
-            console.log(this.bonus);
+        .then((response) => {
+          this.bonus = response.data.bonus;
+          console.log('this.bonus');
+          console.log(this.bonus);
         }).finally(() => {
           this.showDialogBonus = true;
           this.showAlert("success", "Cierre de caja efectuado correctamente", 3000);
           //this.initialize();
-          });
+        });
       this.$nextTick(() => {
         this.editedCloseBox = Object.assign({}, this.defaultCloseBox)
 
       });
-          this.ejecutado = true;
+      this.ejecutado = true;
       this.dialog = false;
     },
     saveBox() {
@@ -2064,26 +2058,26 @@ export default {
         .then(() => {
         }).finally(() => {
           this.showAlert("success", "Servicio agregado correctamente", 3000);
-           this.initialize();
-         /*let temp = this.results.filter(item => item.id == this.car_ref.id);
-          console.log('tempsddasdasd');
-          console.log(temp[0]);*/
+          this.initialize();
+          /*let temp = this.results.filter(item => item.id == this.car_ref.id);
+           console.log('tempsddasdasd');
+           console.log(temp[0]);*/
           this.showDetails(this.car_ref);
           this.showAddServices = false;
           this.branch_service_professional_id = '';
           this.cant = '';
-          });
+        });
     },
     //endAddService
     //addProduct
     validateCantidad(value) {
-    if (value <= 0) {
-    return "La cantidad debe ser mayor que cero";
-  }else if (value <= this.product_exit) {
-    return true; // La cantidad es válida
-  } else {
-    return "La cantidad debe ser menor o igual que la existencia (" + this.product_exit + ")";
-  }
+      if (value <= 0) {
+        return "La cantidad debe ser mayor que cero";
+      } else if (value <= this.product_exit) {
+        return true; // La cantidad es válida
+      } else {
+        return "La cantidad debe ser menor o igual que la existencia (" + this.product_exit + ")";
+      }
     },
     cantExist() {
       console.log('this.product_store_id');
@@ -2140,7 +2134,7 @@ export default {
           this.showAddProducts = false;
           this.product_store_id = '';
           this.cant = '';
-          });
+        });
     },
     //endAddProduct
     //sale Product
@@ -2181,7 +2175,7 @@ export default {
       this.showDialogSaleProducts = true;
     },
     closeDialogSaleProduct() {
-      this.showDialogSaleProducts = false;      
+      this.showDialogSaleProducts = false;
       this.initialize();
     },
     showSalegProduct() {
@@ -2203,7 +2197,7 @@ export default {
       this.showSaleProducts = false;
       this.product_store_id = '';
       this.cant = '';
-      
+
     },
     savePaySales() {
       {
@@ -2230,13 +2224,13 @@ export default {
           axios
             .post('https://api2.simplifies.cl/api/payment-product-sales', this.data)
             .then(() => {
-              }).finally(() => {
+            }).finally(() => {
               this.showAlert("success", "Pago efectuado correctamente", 3000);
-              this.initialize();              
-          this.showDialogProduct();
+              this.initialize();
+              this.showDialogProduct();
               this.$nextTick(() => {
                 this.mostrarOtroCampo = false;
-                });
+              });
             });
           this.dialogPaySales = false;
           this.selected = [];
@@ -2271,49 +2265,49 @@ export default {
           this.product_store_id = '';
           this.cant = '';
           this.product_exit = '';
-          this. showDialogProduct();
-          });
+          this.showDialogProduct();
+        });
     },
     exportToExcel() {
-            console.log('Entra aqui a exportar');
-            // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
-            let rows = [];
+      console.log('Entra aqui a exportar');
+      // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
+      let rows = [];
 
-            // Construye un objeto para los encabezados basado en la estructura de 'headers'
-            let headerRow = {};
-            this.headers8.forEach(header => {
-                headerRow[header.value] = header.title; // Usa 'key' para el mapeo y 'title' para el texto del encabezado
-            });
-            rows.push(headerRow);
+      // Construye un objeto para los encabezados basado en la estructura de 'headers'
+      let headerRow = {};
+      this.headers8.forEach(header => {
+        headerRow[header.value] = header.title; // Usa 'key' para el mapeo y 'title' para el texto del encabezado
+      });
+      rows.push(headerRow);
 
-            // Ahora, mapea los datos de los items para que coincidan con los encabezados
-            this.bonus.forEach(item => {
-                let rowData = {};
-                this.headers8.forEach(header => {
-                    rowData[header.value] = item[header.value] || ''; // Asegura que cada celda se mapee correctamente; usa '' para datos faltantes
-                });
-                rows.push(rowData);
-            });
+      // Ahora, mapea los datos de los items para que coincidan con los encabezados
+      this.bonus.forEach(item => {
+        let rowData = {};
+        this.headers8.forEach(header => {
+          rowData[header.value] = item[header.value] || ''; // Asegura que cada celda se mapee correctamente; usa '' para datos faltantes
+        });
+        rows.push(rowData);
+      });
 
-            let nameReport = {
-                // eslint-disable-next-line vue/no-use-computed-property-like-method
-                name: 'Pago a profesional bonos', // Asume que 'name' es una de tus claves; ajusta según sea necesario
-                type: '',
-                amount: ''
-            };
-            rows.push(nameReport);
+      let nameReport = {
+        // eslint-disable-next-line vue/no-use-computed-property-like-method
+        name: 'Pago a profesional bonos', // Asume que 'name' es una de tus claves; ajusta según sea necesario
+        type: '',
+        amount: ''
+      };
+      rows.push(nameReport);
 
-            // Convierte la matriz de filas en una hoja de trabajo Excel
-            const ws = XLSX.utils.json_to_sheet(rows, { skipHeader: true }); // 'skipHeader: true' porque ya agregamos manualmente los encabezados
+      // Convierte la matriz de filas en una hoja de trabajo Excel
+      const ws = XLSX.utils.json_to_sheet(rows, { skipHeader: true }); // 'skipHeader: true' porque ya agregamos manualmente los encabezados
 
-            // Crea un nuevo libro de trabajo y añade la hoja de trabajo con los datos
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Report" + format(new Date(), "yyyy-MM-dd"));
+      // Crea un nuevo libro de trabajo y añade la hoja de trabajo con los datos
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Report" + format(new Date(), "yyyy-MM-dd"));
 
-            // Escribe el libro de trabajo a un archivo y desencadena la descarga
-            //XLSX.writeFile(wb, "report.xlsx");
-            XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
-        },
+      // Escribe el libro de trabajo a un archivo y desencadena la descarga
+      //XLSX.writeFile(wb, "report.xlsx");
+      XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
+    },
   },
 }
 </script>
