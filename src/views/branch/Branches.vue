@@ -15,6 +15,16 @@
 
     </v-row>
   </v-snackbar>
+  <v-overlay
+      :model-value="loading"
+      class="align-center justify-center"
+    >
+      <v-progress-circular
+        color="amber-darken-1"
+        size="64"
+        indeterminate
+      ></v-progress-circular>
+    </v-overlay>
   <v-container>
     <v-card elevation="6" class="mx-5">
 
@@ -592,6 +602,7 @@ import LocalStorageService from "@/LocalStorageService";
 export default {
   data: () => ({
     valid: true,
+    loading: false,
     branchSelect: "",
     snackbar: false,
     sb_type: '',
@@ -779,6 +790,11 @@ export default {
   },
 
   watch: {
+    loading (val) {
+        val && setTimeout(() => {
+          this.loading = false
+        }, 2000)
+      },
     'editedItem.ponderation': function (newValue) {
       // Si el nuevo valor es 0, lo ajustamos a 1
       if (newValue === 0) {
@@ -1293,6 +1309,7 @@ export default {
     },
     //Finanzas
     showWinner() {
+      this.loading = true;
       //this.branchSelect = item;
       this.editedIndexWin = -1;
       axios
@@ -1303,6 +1320,7 @@ export default {
         })
         .then((response) => {
           this.winners = response.data;
+          this.loading = false;
         }).finally(() => {
           this.dialogWinners = true;
         });
@@ -1334,6 +1352,7 @@ export default {
       this.menu2 = false;
     },
     updateDate3() {
+      this.loading = true;
       this.editedIndexWin = 2;
       //this.input2 = val;
       this.input = this.input ? new Date(this.input) : new Date();
@@ -1349,6 +1368,7 @@ export default {
         })
         .then((response) => {
           this.winners = response.data;
+          this.loading = false;
         })
       //this.menu2 = false;
     },

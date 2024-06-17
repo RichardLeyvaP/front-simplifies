@@ -94,7 +94,7 @@
                                                         <div class="text-center" v-html="formatMeta(item.meta)"></div>
                                                     </template>
                                                     <template v-slot:item.pay="{ item }">                                                    
-                                                        {{ formatNumber(Number(item.totalServices) + Number(item.tip)) }}
+                                                        <strong>{{ formatNumber(Number(item.totalServices) + Number(item.tip)) }}</strong>
                                                     </template>
                                                     <template v-slot:item.totalServices ="{ item }">
                          {{ formatNumber(item.totalServices)}}

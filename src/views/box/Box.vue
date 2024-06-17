@@ -1692,10 +1692,10 @@ export default {
       console.log('imprime existence');
       console.log(this.box);
       if (!this.box) {
-        return "0 CLP";
+        return "0.00 CLP";
       } else {
         if (!this.box.existence) {
-          return "0 CLP";
+          return "0.00 CLP";
         } else {
           const temp = this.box.existence;
           console.log(temp);
@@ -1721,7 +1721,7 @@ export default {
       console.log('productsales');
       console.log(this.cashierSales);
       const total = montosPagados + productsales;
-      return total ? this.formatNumber(total) + " CLP" : " CLP";
+      return total ? this.formatNumber(total) + " CLP" : "0.00 CLP";
       //}
     },
 
