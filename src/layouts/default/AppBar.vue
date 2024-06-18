@@ -240,6 +240,8 @@ export default {
     if (!LocalStorageService.getIsLocked()) {
       LocalStorageService.setIsLocked(true); // Bloquear antes de hacer la petición
       const token = LocalStorageService.getItem('token');
+      console.log('Este es el token');
+      console.log(token);
       axios
         .get('https://api2.simplifies.cl/api/notification-professional-web', {
           headers: {
@@ -386,6 +388,8 @@ export default {
     },
     initialize(){
       const token = LocalStorageService.getItem('token');
+      console.log('Este es el token');
+      console.log(token);
       axios
         .get('https://api2.simplifies.cl/api/notification-professional-web', {
           headers: {
