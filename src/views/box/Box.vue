@@ -1356,12 +1356,14 @@ export default {
   beforeUnmount() {
     // Detener el intervalo cuando el componente se esté destruyendo para evitar fugas de memoria
     clearInterval(this.intervalId);
+    LocalStorageService.setIsLocked(false);
   },
 
   methods: {
     stopInterval() {
       console.log('Detener intervalo');
     clearInterval(this.intervalId);
+    LocalStorageService.setIsLocked(false);
   },
   startInterval() {
     console.log('Reiniciar intervalo');
