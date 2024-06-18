@@ -324,10 +324,18 @@
             <v-row>
                 <v-col cols="12" md="12">
                     <v-container>
+                        <v-card>
                         <v-card-text>
-                            <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar"
+                            <v-text-field  v-if="!loading" class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar"
                                 single-line hide-details>
                             </v-text-field>
+                            <v-progress-linear
+        :active="loading"
+        :indeterminate="loading"
+        color="amber-darken-1"
+        absolute
+        bottom
+      ></v-progress-linear>
                             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'"
                                 :items="results" :search="search" class="elevation-1"
                                 no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles">
@@ -369,6 +377,7 @@
                                 </template>
                             </v-data-table>
                         </v-card-text>
+                        </v-card>
                     </v-container>
                 </v-col>
             </v-row>
@@ -387,6 +396,7 @@ export default {
     data: () => ({
         valid: true,
         //visibility: true,
+        loading: true,
         selectedOption: 'Todas',
         options: ['Negocio', 'Sucursal', 'Academia', 'Todas'],
         file: '',
@@ -792,6 +802,7 @@ export default {
         initialize() {
             this.totalIngresos = 0;
             this.totalGastos = 0;
+            this.loading = true;
             console.log('this.editedItem--------');
             console.log(this.editedItem);
             axios
@@ -809,7 +820,7 @@ export default {
                     this.results = response.data.finances;
 
                     this.editedItem.control = this.results.length !== 0 ? this.results[0].control + 1 : 1;
-
+                    
                     //this.visibility = !this.editedItem.control ? false : true;
 
                     //this.editedItem.control = !this.results ? 0 : this.results[0].control + 1 ;// Obtener el numero de control realizado
@@ -822,6 +833,7 @@ export default {
                     /*console.log('this.editedItem.control');
                     console.log(this.editedItem.control);*/
                 }).finally(() => {
+                    this.loading = false;
                     this.totalIngresos = this.results.reduce((total, item) => {
                         // Verifica si el campo "revenue" tiene un valor numérico
                         if (typeof item.revenue === 'number') {
