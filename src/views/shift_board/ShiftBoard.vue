@@ -277,9 +277,13 @@ export default {
 
 
     callForTime() {
+      const token = LocalStorageService.getItem('token');
       console.log('AQUI SI ESTOY ENTRANDO -callForTime()');
       axios
-        .get('https://api2.simplifies.cl/api/tail_branch_attended', {
+        .get('https://api2.simplifies.cl/api/tail_branch_attended_shiftboard', {
+          headers: {
+                'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
+            },
           params: {
             branch_id: this.branch_id
           }
