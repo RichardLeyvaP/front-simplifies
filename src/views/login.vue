@@ -216,6 +216,18 @@ export default {
       this.snackbar = true
     },
     logout() {
+      const token = LocalStorageService.getItem('token');
+      console.log('Este es el token');
+      console.log(token);
+      console.log('Este es el token Bearer');
+      console.log(`Bearer ${token}`);
+      axios
+        .get('https://api2.simplifies.cl/api/logout', {
+          headers: {
+                'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
+            }
+                })
+        .then();
       LocalStorageService.logout();
     },
     save() {
