@@ -247,7 +247,7 @@ export default {
       axios
         .get('https://api2.simplifies.cl/api/notification-professional-web', {
           headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
             },
           params: {
             branch_id: this.branch_id,
@@ -397,7 +397,7 @@ export default {
       axios
         .get('https://api2.simplifies.cl/api/notification-professional-web', {
           headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
             },
                     params: {
                         branch_id: this.branch_id,
