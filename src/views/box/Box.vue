@@ -1259,7 +1259,12 @@ export default {
       }
     },
     dialog(val) {
-      val || this.close()
+      if (val) {
+      this.stopInterval();
+    } else {
+      this.close();
+      this.startInterval();
+    }
     },
     dialogDelete(val) {
       val || this.closeDelete()
@@ -1312,9 +1317,9 @@ export default {
         }
         this.initialize();
       });
-
+      this.startInterval();
     //this.intervalId = setInterval(this.initialize, 60000);
-    this.intervalId = setInterval(() => {
+    /*this.intervalId = setInterval(() => {
       axios
         .get('https://api2.simplifies.cl/api/branch-cars', {
           params: {
@@ -1346,7 +1351,7 @@ export default {
           console.log('this.ejecutado');
           console.log(this.ejecutado);
         });
-    }, 60000);
+    }, 60000);*/
   },
   beforeUnmount() {
     // Detener el intervalo cuando el componente se esté destruyendo para evitar fugas de memoria
@@ -1354,6 +1359,48 @@ export default {
   },
 
   methods: {
+    stopInterval() {
+      console.log('Detener intervalo');
+    clearInterval(this.intervalId);
+  },
+  startInterval() {
+    console.log('Reiniciar intervalo');
+    this.intervalId = setInterval(() => {
+      if (!LocalStorageService.getIsLocked()) {
+      LocalStorageService.setIsLocked(true); // Bloquear antes de hacer la petición
+      axios
+        .get('https://api2.simplifies.cl/api/branch-cars', {
+          params: {
+            branch_id: this.branch_id
+          }
+        })
+        .then((response) => {
+          this.results = response.data.cars;
+          this.box = response.data.box;
+          this.payments = response.data.payments;
+          this.cashierSales = response.data.cashierSales;
+          console.log('this.box');
+          console.log(this.box);
+        }).finally(() => {
+          if (this.box === null) {
+            this.ejecutado = false;
+          } else {
+            if (this.box.box_close === null) {
+              this.ejecutado = false;
+              console.log('this.box.box_close false');
+            } else {
+              this.ejecutado = true;
+              console.log('this.box.box_close true');
+            }
+          }
+          console.log('this.ejecutado');
+          console.log(this.ejecutado);
+          LocalStorageService.setIsLocked(false); // Desbloquear después de la petición
+          console.log('isLocked después de la solicitud Box:', LocalStorageService.getIsLocked());
+        });
+      }
+    }, 60000);
+  },
     showBonus() {
       axios
         .get('https://api2.simplifies.cl/api/branch-payment-show-bonus', {
@@ -1947,6 +1994,7 @@ export default {
         }).finally(() => {
           this.showDialogBonus = true;
           this.showAlert("success", "Cierre de caja efectuado correctamente", 3000);
+          this.startInterval();
           //this.initialize();
         });
       this.$nextTick(() => {

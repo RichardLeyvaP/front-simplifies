@@ -143,6 +143,7 @@
 import LocalStorageService from "@/LocalStorageService";
 //import { UserTokenStore } from "@/store/UserTokenStore";
 import axios from "axios";
+
 //import router from '@/router/index';
 //const userTokenStore = UserTokenStore();
 export default {
@@ -191,7 +192,12 @@ export default {
     console.log(this.imageUrl);
     // Otros datos que hayas almacenado
     this.initialize();
-    this.intervalId = setInterval(() => {
+    // Iniciar el intervalo con la lógica de bloqueo
+    this.startInterval();
+    
+    // Redirigir según el cargo
+    this.redirectBasedOnCharge();
+    /*this.intervalId = setInterval(() => {
       axios
         .get('https://api2.simplifies.cl/api/notification-professional-web', {
                     params: {
@@ -205,7 +211,7 @@ export default {
           console.log(this.results);
         });
     }, 30000);
-    if(this.charge === 'Cajero (a)'){
+    /*if(this.charge === 'Cajero (a)'){
       this.$router.push({ path: 'box' });
     }
     if(this.charge === 'Totem'){
@@ -213,7 +219,7 @@ export default {
     }
     if(this.charge === 'Pizarra'){
       this.$router.push({ path: 'shift-board' });
-    }
+    }*/
   },
   beforeUnmount() {
     //Detener el intervalo cuando el componente se esté destruyendo para evitar fugas de memoria
@@ -225,6 +231,43 @@ export default {
     }
   },
   methods: {
+    startInterval() {
+  this.intervalId = setInterval(() => {
+    if (!LocalStorageService.getIsLocked()) {
+      LocalStorageService.setIsLocked(true); // Bloquear antes de hacer la petición
+      axios
+        .get('https://api2.simplifies.cl/api/notification-professional-web', {
+          params: {
+            branch_id: this.branch_id,
+            professional_id: this.professional_id
+          }
+        })
+        .then((response) => {
+          this.results = response.data.notifications;
+        })
+        .catch((error) => {
+          console.error('Error al obtener notificaciones:', error);
+        })
+        .finally(() => {
+          LocalStorageService.setIsLocked(false); // Desbloquear después de la petición
+          console.log('isLocked después de la solicitud Bar:', LocalStorageService.getIsLocked());
+        });
+    }
+  }, 30000);
+},
+    redirectBasedOnCharge() {
+      switch (this.charge) {
+        case 'Cajero (a)':
+          this.$router.push({ path: 'box' });
+          break;
+        case 'Totem':
+          this.$router.push({ path: 'totem' });
+          break;
+        case 'Pizarra':
+          this.$router.push({ path: 'shift-board' });
+          break;
+      }
+    },
     handleItemClickNotif(item) {
       let request = {
         id: item.id,
