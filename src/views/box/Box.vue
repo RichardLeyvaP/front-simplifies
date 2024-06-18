@@ -1366,12 +1366,16 @@ export default {
     LocalStorageService.setIsLocked(false);
   },
   startInterval() {
+    const token = LocalStorageService.getItem('token');
     console.log('Reiniciar intervalo');
     this.intervalId = setInterval(() => {
       if (!LocalStorageService.getIsLocked()) {
       LocalStorageService.setIsLocked(true); // Bloquear antes de hacer la petición
       axios
         .get('https://api2.simplifies.cl/api/branch-cars', {
+          headers: {
+                'Authorization': `Bearer ${token}`
+            },
           params: {
             branch_id: this.branch_id
           }
@@ -1798,9 +1802,14 @@ export default {
     },
 
     initialize() {
-
+      const token = LocalStorageService.getItem('token');
+      if (!LocalStorageService.getIsLocked()) {
+      LocalStorageService.setIsLocked(true); // Bloquear antes de hacer la petición
       axios
         .get('https://api2.simplifies.cl/api/branch-cars', {
+          headers: {
+                'Authorization': `Bearer ${token}`
+            },
           params: {
             branch_id: this.branch_id
           }
@@ -1825,7 +1834,10 @@ export default {
           }
           console.log('this.ejecutado');
           console.log(this.ejecutado);
+          LocalStorageService.setIsLocked(false);
+          console.log('isLocked después de la solicitud Box:', LocalStorageService.getIsLocked());
         });
+      }
     },
     editItem(item) {
       this.editedIndex = 1;

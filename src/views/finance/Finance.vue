@@ -800,6 +800,7 @@ export default {
             this.snackbar = true
         },
         initialize() {
+            const token = LocalStorageService.getItem('token');
             this.totalIngresos = 0;
             this.totalGastos = 0;
             this.loading = true;
@@ -807,6 +808,9 @@ export default {
             console.log(this.editedItem);
             axios
                 .get('https://api2.simplifies.cl/api/finance-show', {
+                    headers: {
+                'Authorization': `Bearer ${token}`
+            },
                     params: {
                         branch_id: this.editedItem.branch_id,
                         business_id: this.editedItem.business_id,

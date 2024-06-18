@@ -231,12 +231,20 @@ export default {
     }
   },
   methods: {
+
+    
+
+
     startInterval() {
   this.intervalId = setInterval(() => {
     if (!LocalStorageService.getIsLocked()) {
       LocalStorageService.setIsLocked(true); // Bloquear antes de hacer la petición
+      const token = LocalStorageService.getItem('token');
       axios
         .get('https://api2.simplifies.cl/api/notification-professional-web', {
+          headers: {
+                'Authorization': `Bearer ${token}`
+            },
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id
@@ -377,8 +385,12 @@ export default {
       });
     },
     initialize(){
+      const token = LocalStorageService.getItem('token');
       axios
         .get('https://api2.simplifies.cl/api/notification-professional-web', {
+          headers: {
+                'Authorization': `Bearer ${token}`
+            },
                     params: {
                         branch_id: this.branch_id,
                         professional_id: this.professional_id
