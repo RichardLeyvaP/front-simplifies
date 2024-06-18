@@ -242,6 +242,8 @@ export default {
       const token = LocalStorageService.getItem('token');
       console.log('Este es el token');
       console.log(token);
+      console.log('Este es el token Bearer');
+      console.log(`Bearer ${token}`);
       axios
         .get('https://api2.simplifies.cl/api/notification-professional-web', {
           headers: {
@@ -390,6 +392,8 @@ export default {
       const token = LocalStorageService.getItem('token');
       console.log('Este es el token');
       console.log(token);
+      console.log('Este es el token Bearer');
+      console.log(`Bearer ${token}`);
       axios
         .get('https://api2.simplifies.cl/api/notification-professional-web', {
           headers: {
