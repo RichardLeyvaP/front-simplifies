@@ -143,7 +143,16 @@
 import LocalStorageService from "@/LocalStorageService";
 //import { UserTokenStore } from "@/store/UserTokenStore";
 import axios from "axios";
-
+// Interceptor para agregar el token a cada solicitud
+axios.interceptors.request.use(config => {
+  const token = localStorage.getItem('token'); // Suponiendo que guardaste el token en localStorage
+  if (token) {
+    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
+  }
+  return config;
+}, error => {
+  return Promise.reject(error);
+});
 //import router from '@/router/index';
 //const userTokenStore = UserTokenStore();
 export default {
@@ -191,9 +200,11 @@ export default {
     this.imageUrl = `https://api2.simplifies.cl/api/images/${cleanedImage}`;
     console.log(this.imageUrl);
     // Otros datos que hayas almacenado
-    this.initialize();
     // Iniciar el intervalo con la lógica de bloqueo
+    if (this.charge !== 'Totem' && this.charge !== 'Pizarra') {        
+    this.initialize();    
     this.startInterval();
+    }
     
     // Redirigir según el cargo
     this.redirectBasedOnCharge();
@@ -239,16 +250,11 @@ export default {
   this.intervalId = setInterval(() => {
     if (!LocalStorageService.getIsLocked()) {
       LocalStorageService.setIsLocked(true); // Bloquear antes de hacer la petición
-      const token = LocalStorageService.getItem('token');
-      console.log('Este es el token');
-      console.log(token);
-      console.log('Este es el token Bearer');
-      console.log(`Bearer ${token}`);
       axios
         .get('https://api2.simplifies.cl/api/notification-professional-web', {
-          headers: {
+          /*headers: {
                 'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
-            },
+            },*/
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id
@@ -396,9 +402,9 @@ export default {
       console.log(`Bearer ${token}`);
       axios
         .get('https://api2.simplifies.cl/api/notification-professional-web', {
-          headers: {
+          /*headers: {
                 'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
-            },
+            },*/
                     params: {
                         branch_id: this.branch_id,
                         professional_id: this.professional_id

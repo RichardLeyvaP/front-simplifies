@@ -249,7 +249,7 @@
       <v-row>
         <v-col cols="12" md="12">
           <v-card-title class="d-flex align-center pe-2">
-            <v-btn @click="initialize" class="mt-1 mb-1" color="#F18254">
+            <v-btn @click="initialize()" class="mt-1 mb-1" color="#F18254">
               <v-icon left>mdi-refresh</v-icon>
               Refrescar
             </v-btn>
@@ -269,7 +269,7 @@
 
           <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="filteredItems"
             :search="search" class="elevation-1" no-results-text="No hay datos disponibles"
-            no-data-text="No hay datos disponibles">
+            no-data-text="No hay datos disponibles" :loading="loadingcar" loading-text="Cargando datos...">
 
             <template v-slot:item.professionalName="{ item }">
 
@@ -592,7 +592,7 @@
                 <v-btn color="#E7E9E9" variant="flat" @click="closeAddProduct">
                   Cancelar
                 </v-btn>
-                <v-btn color="#F18254" variant="flat" @click="saveAddProduct" :disabled="!valid">
+                <v-btn color="#F18254" variant="flat" @click="saveAddProduct" :disabled="!valid" :loading="loadingProd">
                   Aceptar
                 </v-btn>
               </v-card-actions>
@@ -630,7 +630,7 @@
                 <v-btn color="#E7E9E9" variant="flat" @click="closeAddService">
                   Cancelar
                 </v-btn>
-                <v-btn color="#F18254" variant="flat" @click="saveAddServie" :disabled="!valid">
+                <v-btn color="#F18254" variant="flat" @click="saveAddServie" :disabled="!valid" :loading="loadingServ">
                   Aceptar
                 </v-btn>
               </v-card-actions>
@@ -865,7 +865,7 @@
                 <v-btn color="#E7E9E9" variant="flat" @click="closeSaleProduct">
                   Cancelar
                 </v-btn>
-                <v-btn color="#F18254" variant="flat" @click="saveProductSale" :disabled="!valid">
+                <v-btn color="#F18254" variant="flat" @click="saveProductSale" :disabled="!valid" :loading="loadingProd">
                   Aceptar
                 </v-btn>
               </v-card-actions>
@@ -1020,12 +1020,24 @@ import axios from "axios";
 import LocalStorageService from "@/LocalStorageService";
 import * as XLSX from 'xlsx';
 import { format } from "date-fns";
-/*import { UserTokenStore } from "@/store/UserTokenStore";
 
-const userTokenStore = UserTokenStore();*/
+// Interceptor para agregar el token a cada solicitud
+axios.interceptors.request.use(config => {
+  const token = localStorage.getItem('token'); // Suponiendo que guardaste el token en localStorage
+  if (token) {
+    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
+  }
+  return config;
+}, error => {
+  return Promise.reject(error);
+});
+
 export default {
   data: () => ({
     valid: true,
+    loadingcar:true,
+    loadingProd: false,
+    loadingServ: false,
     mostrarFila: false,
     car_ref: "",
     snackbar: false,
@@ -1318,40 +1330,6 @@ export default {
         this.initialize();
       });
       this.startInterval();
-    //this.intervalId = setInterval(this.initialize, 60000);
-    /*this.intervalId = setInterval(() => {
-      axios
-        .get('https://api2.simplifies.cl/api/branch-cars', {
-          params: {
-            branch_id: this.branch_id
-          }
-        })
-        .then((response) => {
-          this.results = response.data.cars;
-          this.box = response.data.box;
-          this.payments = response.data.payments;
-          this.cashierSales = response.data.cashierSales;
-          console.log('this.box');
-          console.log(this.box);
-        }).finally(() => {
-          if (this.box === null) {
-            this.ejecutado = false;
-          } else {
-            // Si this.box no es null, verificar si box_close es null
-            if (this.box.box_close === null) {
-              this.ejecutado = false;
-              console.log('this.box.box_close false');
-              //console.log(this.box.box_close);
-            } else {
-              this.ejecutado = true;
-              console.log('this.box.box_close true');
-              //console.log(this.box);
-            }
-          }
-          console.log('this.ejecutado');
-          console.log(this.ejecutado);
-        });
-    }, 60000);*/
   },
   beforeUnmount() {
     // Detener el intervalo cuando el componente se esté destruyendo para evitar fugas de memoria
@@ -1366,16 +1344,17 @@ export default {
     LocalStorageService.setIsLocked(false);
   },
   startInterval() {
-    const token = LocalStorageService.getItem('token');
+    //const token = LocalStorageService.getItem('token');
     console.log('Reiniciar intervalo');
     this.intervalId = setInterval(() => {
       if (!LocalStorageService.getIsLocked()) {
+        this.loadingcar = true;
       LocalStorageService.setIsLocked(true); // Bloquear antes de hacer la petición
       axios
         .get('https://api2.simplifies.cl/api/branch-cars', {
-          headers: {
+          /*headers: {
                 'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
-            },
+            },*/
           params: {
             branch_id: this.branch_id
           }
@@ -1403,9 +1382,10 @@ export default {
           console.log(this.ejecutado);
           LocalStorageService.setIsLocked(false); // Desbloquear después de la petición
           console.log('isLocked después de la solicitud Box:', LocalStorageService.getIsLocked());
+          this.loadingcar = false;
         });
       }
-    }, 60000);
+    }, 30000);
   },
     showBonus() {
       axios
@@ -1802,14 +1782,15 @@ export default {
     },
 
     initialize() {
-      const token = LocalStorageService.getItem('token');
+      //const token = LocalStorageService.getItem('token');
       if (!LocalStorageService.getIsLocked()) {
+        this.loadingcar = true;
       LocalStorageService.setIsLocked(true); // Bloquear antes de hacer la petición
       axios
         .get('https://api2.simplifies.cl/api/branch-cars', {
-          headers: {
+          /*headers: {
                 'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
-            },
+            },*/
           params: {
             branch_id: this.branch_id
           }
@@ -1836,6 +1817,7 @@ export default {
           console.log(this.ejecutado);
           LocalStorageService.setIsLocked(false);
           console.log('isLocked después de la solicitud Box:', LocalStorageService.getIsLocked());
+          this.loadingcar = false;
         });
       }
     },
@@ -2006,9 +1988,9 @@ export default {
           console.log('this.bonus');
           console.log(this.bonus);
         }).finally(() => {
-          this.showDialogBonus = true;
           this.showAlert("success", "Cierre de caja efectuado correctamente", 3000);
-          this.startInterval();
+          this.showDialogBonus = true;
+          //this.startInterval();
           //this.initialize();
         });
       this.$nextTick(() => {
@@ -2106,6 +2088,7 @@ export default {
     },
 
     saveAddServie() {
+      this.loadingServ = true;
       this.data.car_id = this.car_ref.id;
       this.data.service_id = this.branch_service_professional_id;
       this.data.product_id = 0;
@@ -2120,6 +2103,7 @@ export default {
         .then(() => {
         }).finally(() => {
           this.showAlert("success", "Servicio agregado correctamente", 3000);
+          this.loadingServ = false;
           this.initialize();
           /*let temp = this.results.filter(item => item.id == this.car_ref.id);
            console.log('tempsddasdasd');
@@ -2174,6 +2158,7 @@ export default {
       this.product_store_id = '';
     },
     saveAddProduct() {
+      this.loadingProd = true;
       this.data.car_id = this.car_ref.id;
       this.data.service_id = 0;
       this.data.product_id = this.product_store_id;
@@ -2187,6 +2172,7 @@ export default {
         .post('https://api2.simplifies.cl/api/order-web', this.data)
         .then(() => {
         }).finally(() => {
+          this.loadingProd = false;
           this.showAlert("success", "Producto agregado correctamente", 3000);
           this.initialize();
           /*let temp= this.results.filter(item => item.id == this.car_ref.id);
@@ -2309,6 +2295,7 @@ export default {
       }
     },
     saveProductSale() {
+      this.loadingProd = true;
       this.data.product_store_id = this.product_store_id;
       this.data.nameProfessional = this.nameProfessional;
       this.data.branch_id = this.branch_id;
@@ -2318,7 +2305,9 @@ export default {
         .post('https://api2.simplifies.cl/api/cashiersale', this.data)
         .then(() => {
         }).finally(() => {
+
           this.showAlert("success", "Producto agregado correctamente", 3000);
+          this.loadingProd = false;
           this.initialize();/*
           let temp= this.results.filter(item => item.id == this.car_ref.id);
           console.log('tempsddasdasd');

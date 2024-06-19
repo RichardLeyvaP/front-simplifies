@@ -145,7 +145,7 @@
         </v-text-field>
         <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search"
           :items="results" class="elevation-1" no-results-text="No hay datos disponibles"
-          no-data-text="No hay datos disponibles">
+          no-data-text="No hay datos disponibles" :loading="loading" loading-text="Cargando datos...">
           <template v-slot:item.purchase_price="{ item }">
             {{ formatNumber(item.purchase_price) }}
           </template>
@@ -293,7 +293,7 @@ export default {
     sb_timeout: 2000,
     sb_title: "",
     sb_icon: "",
-
+    loading:true,
     dialog: false,
     editando: false,
     message_delete: true,
@@ -501,6 +501,8 @@ export default {
     initialize() {
       axios.get("https://api2.simplifies.cl/api/product").then((response) => {
         this.results = response.data.products;
+      }).finally(() => {        
+        this.loading = false;
       });
     },
     onFileSelected(event) {

@@ -326,19 +326,12 @@
                     <v-container>
                         <v-card>
                         <v-card-text>
-                            <v-text-field  v-if="!loading" class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar"
+                            <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar"
                                 single-line hide-details>
                             </v-text-field>
-                            <v-progress-linear
-        :active="loading"
-        :indeterminate="loading"
-        color="amber-darken-1"
-        absolute
-        bottom
-      ></v-progress-linear>
                             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'"
                                 :items="results" :search="search" class="elevation-1"
-                                no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles">
+                                no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles" :loading="loading" loading-text="Cargando datos...">
                                 <template v-slot:item.file="{ item }">
                                     <v-icon v-if="item.file" @click="openDoc(item)"
                                         color="green">mdi-file-document-outline</v-icon>

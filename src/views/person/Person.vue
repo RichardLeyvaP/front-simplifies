@@ -214,7 +214,7 @@
         </v-text-field>
         <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search"
           :items="results" class="elevation-1" no-results-text="No hay datos disponibles"
-          no-data-text="No hay datos disponibles">
+          no-data-text="No hay datos disponibles" :loading="loading">
           <template v-slot:item.retention="{ item }">
             {{ item.retention ? item.retention + "%" : "" }}
           </template>
@@ -794,6 +794,7 @@ export default {
     ],
     // aqui va lo del calendar
     tabBar: null,
+    loading: true,
     valid: true,
     snackbar: false,
     sb_type: "",
@@ -1183,7 +1184,9 @@ export default {
     initialize() {
       axios.get("https://api2.simplifies.cl/api/professional").then((response) => {
         this.results = response.data.professionals;
-      });
+      }).finally(() => {
+          this.loading = false;
+        });
     },
     showAddProfessional() {
       this.dialog = true;

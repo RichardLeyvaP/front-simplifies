@@ -145,9 +145,12 @@
 
         <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search"
           :items="results" class="elevation-1 responsive-table" no-results-text="No hay datos disponibles"
-          no-data-text="No hay datos disponibles">
+          no-data-text="No hay datos disponibles" :loading="loading" loading-text="Cargando datos...">
           <template v-slot:item.price_service="{ item }">
             {{ formatNumber(item.price_service) }}
+          </template>
+          <template v-slot:item.duration_service="{ item }">
+            {{ convertirMinutosAHorasYMinutos(item.duration_service) }}
           </template>
           <template v-slot:top>
 
@@ -202,6 +205,7 @@ import axios from "axios";
 export default {
   data: () => ({
     valid: true,
+    loading:true,
     snackbar: false,
     sb_type: '',
     sb_message: '',
@@ -303,6 +307,34 @@ export default {
   },
 
   methods: {
+    convertirMinutosAHorasYMinutos(minutos) {
+
+//console.log("estos son los minutos")
+//console.log(minutos)
+// Calcular las horas
+var horas = Math.floor(minutos / 60);
+// Calcular los minutos restantes después de convertir a horas
+var minutosRestantes = minutos % 60;
+
+// Construir el mensaje de salida
+var mensaje = "";
+if (horas > 0) {
+  mensaje += horas + " hora";
+  if (horas !== 1) {
+    mensaje += "s"; // plural si hay más de una hora
+  }
+}
+if (minutosRestantes > 0) {
+  if (mensaje !== "") {
+    mensaje += " y ";
+  }
+  mensaje += minutosRestantes + " minuto";
+  if (minutosRestantes !== 1) {
+    mensaje += "s"; // plural si hay más de un minuto
+  }
+}
+return mensaje;
+},
     formatNumber(value) {
       // Si el valor es menor que 1000, devuelve el valor original con dos decimales
       if (value < 1000) {
@@ -355,7 +387,9 @@ export default {
         .get('https://api2.simplifies.cl/api/service')
         .then((response) => {
           this.results = response.data.services;
-        });
+        }).finally(() => {        
+        this.loading = false;
+      });
     },
     onFileSelected(event) {
       let file = event.target.files[0];

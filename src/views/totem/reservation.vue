@@ -282,7 +282,7 @@
         <v-spacer></v-spacer>
       </v-row>
     </v-container>
-    <v-dialog v-model="dialogEncuesta" transition="dialog-bottom-transition" max-width="600"
+    <v-dialog v-model="dialogEncuesta" max-width="600"
       @click:outside="closeEncuesta">
       <v-card>
         <v-toolbar color="orange lighten-2" dark>Como supo de nosotros</v-toolbar>
