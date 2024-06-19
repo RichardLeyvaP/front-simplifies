@@ -385,6 +385,17 @@ import axios from "axios";
 import * as XLSX from 'xlsx';
 import LocalStorageService from "@/LocalStorageService";
 
+
+axios.interceptors.request.use(config => {
+  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
+  if (token) {
+    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
+  }
+  return config;
+}, error => {
+  return Promise.reject(error);
+});
+
 export default {
     data: () => ({
         valid: true,
@@ -793,7 +804,7 @@ export default {
             this.snackbar = true
         },
         initialize() {
-            const token = LocalStorageService.getItem('token');
+            //const token = LocalStorageService.getItem('token');
             this.totalIngresos = 0;
             this.totalGastos = 0;
             this.loading = true;
@@ -801,9 +812,9 @@ export default {
             console.log(this.editedItem);
             axios
                 .get('https://api2.simplifies.cl/api/finance-show', {
-                    headers: {
+                    /*headers: {
                 'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
-            },
+            },*/
                     params: {
                         branch_id: this.editedItem.branch_id,
                         business_id: this.editedItem.business_id,

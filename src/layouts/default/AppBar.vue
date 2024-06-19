@@ -145,7 +145,7 @@ import LocalStorageService from "@/LocalStorageService";
 import axios from "axios";
 // Interceptor para agregar el token a cada solicitud
 axios.interceptors.request.use(config => {
-  const token = localStorage.getItem('token'); // Suponiendo que guardaste el token en localStorage
+  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
   if (token) {
     config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
   }

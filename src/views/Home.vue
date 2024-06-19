@@ -475,6 +475,17 @@ import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, Li
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement,)
 import LocalStorageService from "@/LocalStorageService";
 import axios from "axios";
+
+axios.interceptors.request.use(config => {
+  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
+  if (token) {
+    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
+  }
+  return config;
+}, error => {
+  return Promise.reject(error);
+});
+
 export default {
   name: 'LoginPage',
   components: { Bar, LineChart },

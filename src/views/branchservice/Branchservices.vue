@@ -260,6 +260,16 @@
 import axios from "axios";
 import LocalStorageService from "@/LocalStorageService";
 
+axios.interceptors.request.use(config => {
+  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
+  if (token) {
+    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
+  }
+  return config;
+}, error => {
+  return Promise.reject(error);
+});
+
 export default {
     data: () => ({
         valid: true,
@@ -501,82 +511,6 @@ export default {
             this.close();
 
         },
-
-        //professionals
-
-        /*showProfessionals(item) {
-            this.branchServiceSelect = item;
-            console.log(this.branchServiceSelect);
-            this.branch_service_id = item.id;
-            console.log(item.id);
-            axios
-                .get('https://api2.simplifies.cl/api/branch-service-professionals', {
-                    params: {
-                        branch_service_id: item.id
-                    }
-                })
-                .then((response) => {
-                    this.branchServiceProfessionals = response.data.professionals;
-                    console.log('imprime permissions');
-                });
-            axios
-                .get('https://api2.simplifies.cl/api/professionals-branch-service', {
-                    params: {
-                        branch_service_id: item.id
-                    }
-                })
-                .then((response) => {
-                    this.professionals = response.data.professionals;
-                });
-            this.dialogProfessionals = true;
-        },
-        closeProfessional() {
-            this.dialogAddProfessionals = false;
-            this.branch_service_id = '';
-            this.showProfessionals(this.branchServiceSelect);
-        },
-        saveProfessional() {
-            this.valid = false,
-                this.data.professional_id = this.professional_id;
-            this.data.branch_service_id = this.branch_service_id;
-            axios
-                .post('https://api2.simplifies.cl/api/professionalservice', this.data)
-                .then(() => {
-                    this.professional_id = '',
-                        this.dialogAddProfessionals = false;
-                    this.showProfessionals(this.branchServiceSelect);
-                    this.showAlert("success", "Permiso asignado correctamente", 3000);
-                })
-        },
-        closeProfessionalRequest(item) {
-            console.log(item);
-            this.dialogDeleteProfessional = true
-            //this.editedItem.branch_id=item.id
-            this.professional_id = item.professional_id;
-            this.branch_service_id = item.branch_service_id;
-        },
-        closerequestProfessional() {
-            this.dialogDeleteProfessional = false;
-            this.branch_service_id = '',
-                this.professional_id_id = '',
-                this.showPermission(this.branchServiceSelect)
-        },
-        professionalsDelete() {
-            let request = {
-                professional_id: this.professional_id,
-                branch_service_id: this.branch_service_id
-            };
-            axios
-                .post('https://api2.simplifies.cl/api/professionalservice-destroy', request)
-                .then(() => {
-                    this.dialogDeleteProfessional = false
-                    this.charge_id = '',
-                        this.permission_id = '',
-                        console.log(this.branchServiceSelect);
-                    this.showProfessionals(this.branchServiceSelect)
-                    this.showAlert("success", "Asignación de profesional a servicio hecha correctamente", 3000)
-                })
-        },*/
     },
 }
 </script>

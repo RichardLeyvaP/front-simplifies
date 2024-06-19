@@ -88,6 +88,17 @@ import axios from "axios";
 import LocalStorageService from "@/LocalStorageService";
 import { format } from "date-fns";
 import * as XLSX from 'xlsx';
+
+axios.interceptors.request.use(config => {
+  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
+  if (token) {
+    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
+  }
+  return config;
+}, error => {
+  return Promise.reject(error);
+});
+
 export default {
   props: {
     value: {
