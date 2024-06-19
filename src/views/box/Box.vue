@@ -616,9 +616,13 @@
                     :items="services" clearable label="Servicios" prepend-icon="mdi-list-box-outline" item-title="name"
                     item-value="id" variant="underlined" :rules="selectRules">
                     <template v-slot:item="{ props, item }">
-                      <v-list-item v-bind="props"
+                        <v-list-item v-bind="props"
                         :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_service"
-                        :subtitle="'Precio: ' + item.raw.price_service" :title="item.raw.name"></v-list-item>
+                        :title="item.raw.name">
+                        <v-list-item-subtitle class="d-flex justify-space-between">
+                          Precio: {{ this.formatNumber(item.raw.price_service) }}
+                        </v-list-item-subtitle>
+                      </v-list-item>
                     </template>
                   </v-autocomplete>
                 </v-col>
