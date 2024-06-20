@@ -1870,6 +1870,7 @@ export default {
     },
 
     payItem(item) {
+      this.stopInterval();
       this.car_ref = [];
       this.initialize();
       console.log('Carro a pagar');
@@ -1973,6 +1974,7 @@ export default {
               LocalStorageService.setIsLocked(false);
               this.showAlert("success", "Pago efectuado correctamente", 3000);
               this.initialize();
+              this.startInterval();
               this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem);
                 this.editedCard = Object.assign({}, this.defaultCard);
@@ -2070,6 +2072,7 @@ export default {
     },
     closeDialogPay() {
       this.dialogPay = false;
+      this.startInterval();
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedCard = Object.assign({}, this.defaultCard);
