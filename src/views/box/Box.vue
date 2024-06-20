@@ -1392,6 +1392,7 @@ export default {
     }, 30000);
   },
     showBonus() {
+      LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/branch-payment-show-bonus', {
           params: {
@@ -1402,6 +1403,7 @@ export default {
           this.bonus = response.data.bonus;
         }).finally(() => {
           this.showDialogBonus = true;
+          LocalStorageService.setIsLocked(false);
         });
     },
     formatNumber(value) {
@@ -1452,6 +1454,7 @@ export default {
             return value.toLocaleString('en-US');
         },*/
     onCardGiftSelected(code) {
+      LocalStorageService.setIsLocked(true);
       // Realiza cualquier lógica adicional aquí
       console.log('Elemento seleccionado:', code);
       axios
@@ -1464,6 +1467,7 @@ export default {
           this.editedCard.value = response.data
           console.log('Elemento seleccionado:', this.editedCard.value);
         }).finally(() => {
+            LocalStorageService.setIsLocked(false);
           if (this.editedCard.value) {
             this.mostrarOtroCampo = true;
           }
@@ -1482,6 +1486,7 @@ export default {
       return this.results.every(item => item.pay === '1');
     },
     marcarComoPagado(item) {
+      LocalStorageService.setIsLocked(true);
       let request = {
         id: item.id
       };
@@ -1489,11 +1494,13 @@ export default {
         .put('https://api2.simplifies.cl/api/car', request)
         .then(() => {
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.initialize();
           this.showAlert("success", "Carro pagado correctamente", 3000);
         });
     },
     deleteOrder(item) {
+      LocalStorageService.setIsLocked(true);
       //this.dialogRequest = true
       //this.editedItem.order_id = item.id
       let request = {
@@ -1507,12 +1514,14 @@ export default {
         .then(() => {
           //this.initialize();
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.showDetails(this.car_ref);
           this.showAlert("success", "Solicitud de eliminación de orden hecha correctamente", 3000);
         });
     },
 
     editItemProduct(item) {
+      LocalStorageService.setIsLocked(true);
       //this.dialogRequest = true
       //this.editedItem.order_id = item.id
       let request = {
@@ -1526,6 +1535,7 @@ export default {
         .then(() => {
           this.showSaleProducts = false;
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.showAlert("success", "Solicitud de eliminación de productos hecha correctamente", 3000);
           this.initialize();
           this.showDialogProduct();
@@ -1533,6 +1543,7 @@ export default {
     },
 
     requestDelete() {
+      LocalStorageService.setIsLocked(true);
       this.loading = true
       let request = {
         id: this.editedItem.order_id,
@@ -1545,6 +1556,7 @@ export default {
         .then(() => {
           //this.initialize();
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.showDetails(this.car_ref);
           this.showAlert("success", "Orden eliminada correctamente", 3000);
         });
@@ -1556,6 +1568,7 @@ export default {
     },
 
     requestCancel(item) {
+      LocalStorageService.setIsLocked(true);
       this.loading = true
       let request = {
         id: item.id,
@@ -1567,6 +1580,7 @@ export default {
         .put('https://api2.simplifies.cl/api/order-web', request)
         .then(() => {
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.showAlert("success", "Orden denegada para ser eliminada correctamente", 3000);
           //this.initialize();
           this.showDetails(this.car_ref)
@@ -1837,6 +1851,7 @@ export default {
       this.dialogDelete = true;
     },
     deleteItemSolicitud(item) {
+      LocalStorageService.setIsLocked(true);
       this.editedItem.id = item.id;
       let request = {
         id: this.editedItem.id,
@@ -1848,8 +1863,9 @@ export default {
         .post('https://api2.simplifies.cl/api/car-destroy-solicitud', request)
         .then(() => {
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.initialize();
-          this.showAlert("success", "Solicitud de eliminacion hecha correctamente", 3000)
+          this.showAlert("success", "Solicitud de eliminacion hecha correctamente", 3000);
         });
     },
 
@@ -1893,6 +1909,7 @@ export default {
         });*/
     },
     showDetails(item) {
+      LocalStorageService.setIsLocked(true);
       console.log('carro a ver details');
       console.log(item);
       this.car_ref = item
@@ -1910,9 +1927,11 @@ export default {
         }).finally(() => {
           //this.priceService = this.orders.reduce((total, item) => total + item.price, 0);
           this.dialogDetallesCar = true;
+          LocalStorageService.setIsLocked(false);
         });
     },
     deleteItemConfirm() {
+      LocalStorageService.setIsLocked(true);
       let request = {
         id: this.editedItem.id,
         nameProfessional: this.nameProfessional,
@@ -1922,7 +1941,8 @@ export default {
         .post('https://api2.simplifies.cl/api/car-destroy', request)
         .then(() => {
         }).finally(() => {
-          this.showAlert("success", "Carro eliminado correctamente", 3000)
+          this.showAlert("success", "Carro eliminado correctamente", 3000);
+          LocalStorageService.setIsLocked(false);
         });
       this.dialogDelete = false;
     },
@@ -1944,11 +1964,13 @@ export default {
         console.log(suma);
         console.log(this.editedItem.amount + this.data.tip);
         if (suma === this.editedItem.amount + this.data.tip) {
+        LocalStorageService.setIsLocked(true);
           this.valid = true;
           axios
             .put('https://api2.simplifies.cl/api/payment', this.data)
             .then(() => {
             }).finally(() => {
+              LocalStorageService.setIsLocked(false);
               this.showAlert("success", "Pago efectuado correctamente", 3000);
               this.initialize();
               this.$nextTick(() => {
@@ -1971,6 +1993,7 @@ export default {
       }
     },
     saveCloseBox() {
+      LocalStorageService.setIsLocked(true);
       //this.data.box_id = this.editedBox.id;
       this.data.totalCash = this.editedCloseBox.totalCash;
       this.data.totalCreditCard = this.editedCloseBox.totalCreditCard;
@@ -1992,6 +2015,7 @@ export default {
           console.log('this.bonus');
           console.log(this.bonus);
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.showAlert("success", "Cierre de caja efectuado correctamente", 3000);
           this.showDialogBonus = true;
           //this.startInterval();
@@ -2006,6 +2030,7 @@ export default {
     },
     saveBox() {
       {
+        LocalStorageService.setIsLocked(true);
         this.data.branch_id = this.branch_id;
         this.data.cashFound = this.editedBox.cashFound;
         this.data.existence = this.editedBox.existence;
@@ -2015,6 +2040,7 @@ export default {
           .put('https://api2.simplifies.cl/api/box', this.data)
           .then(() => {
           }).finally(() => {
+            LocalStorageService.setIsLocked(false);
             this.showAlert("success", "Caja Actualizada correctamente", 3000);
             this.initialize();
           });
@@ -2069,6 +2095,7 @@ export default {
 
     //addServices
     showService(car) {
+      LocalStorageService.setIsLocked(true);
       console.log('imprime Carro');
       console.log(car);
 
@@ -2081,6 +2108,8 @@ export default {
         })
         .then((response) => {
           this.services = response.data.branchServicesPro;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
       this.showAddServices = true;
 
@@ -2092,6 +2121,7 @@ export default {
     },
 
     saveAddServie() {
+      LocalStorageService.setIsLocked(true);
       this.loadingServ = true;
       this.data.car_id = this.car_ref.id;
       this.data.service_id = this.branch_service_professional_id;
@@ -2108,6 +2138,7 @@ export default {
         }).finally(() => {
           this.showAlert("success", "Servicio agregado correctamente", 3000);
           this.loadingServ = false;
+          LocalStorageService.setIsLocked(false);
           this.initialize();
           /*let temp = this.results.filter(item => item.id == this.car_ref.id);
            console.log('tempsddasdasd');
@@ -2140,7 +2171,7 @@ export default {
     showProduct(car) {
       console.log('imprime Carro');
       console.log(car);
-
+      LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/productstore-show-web', {
           params: {
@@ -2152,6 +2183,8 @@ export default {
 
           console.log('imprime Productos');
           console.log(this.products);
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
       this.showAddProducts = true;
 
@@ -2162,6 +2195,7 @@ export default {
       this.product_store_id = '';
     },
     saveAddProduct() {
+      LocalStorageService.setIsLocked(true);
       this.loadingProd = true;
       this.data.car_id = this.car_ref.id;
       this.data.service_id = 0;
@@ -2176,6 +2210,7 @@ export default {
         .post('https://api2.simplifies.cl/api/order-web', this.data)
         .then(() => {
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.loadingProd = false;
           this.showAlert("success", "Producto agregado correctamente", 3000);
           this.initialize();
@@ -2213,6 +2248,7 @@ export default {
       this.dialogPaySales = false;
     },
     showDialogProduct() {
+      LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/cashiersale-show', {
           params: {
@@ -2223,6 +2259,8 @@ export default {
         .then((response) => {
           this.cashierSalesProf = response.data.sales;
           console.log(this.cashierSalesProf);
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
       this.showDialogSaleProducts = true;
     },
@@ -2231,6 +2269,7 @@ export default {
       this.initialize();
     },
     showSalegProduct() {
+      LocalStorageService.setIsLocked(false);
       axios
         .get('https://api2.simplifies.cl/api/productstore-show-web', {
           params: {
@@ -2242,6 +2281,8 @@ export default {
 
           console.log('imprime Productos');
           console.log(this.products);
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
       this.showSaleProducts = true;
     },
@@ -2272,11 +2313,13 @@ export default {
         console.log(suma);
         console.log(this.amountSales + this.data.tip);
         if (suma === this.amountSales + this.data.tip) {
+          LocalStorageService.setIsLocked(true);
           this.valid = true;
           axios
             .post('https://api2.simplifies.cl/api/payment-product-sales', this.data)
             .then(() => {
             }).finally(() => {
+              LocalStorageService.setIsLocked(false);
               this.showAlert("success", "Pago efectuado correctamente", 3000);
               this.initialize();
               this.showDialogProduct();
@@ -2299,6 +2342,7 @@ export default {
       }
     },
     saveProductSale() {
+      LocalStorageService.setIsLocked(true);
       this.loadingProd = true;
       this.data.product_store_id = this.product_store_id;
       this.data.nameProfessional = this.nameProfessional;
@@ -2309,7 +2353,7 @@ export default {
         .post('https://api2.simplifies.cl/api/cashiersale', this.data)
         .then(() => {
         }).finally(() => {
-
+          LocalStorageService.setIsLocked(false);
           this.showAlert("success", "Producto agregado correctamente", 3000);
           this.loadingProd = false;
           this.initialize();/*
