@@ -898,12 +898,12 @@ export default {
           this.results = response.data.branches;
           console.log('imprime sucursales');
           console.log(this.results);
-        }).finally(() => {
+        }).finally(() => {          
+          LocalStorageService.setIsLocked(false);
           if (this.charge === "Administrador") {
             this.branch_id = this.results[0].id;
             this.mostrarFila = true;
             this.loadingBranch = false;
-            LocalStorageService.setIsLocked(false);
           }
         });
     },
