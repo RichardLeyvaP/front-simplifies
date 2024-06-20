@@ -217,7 +217,7 @@ export default {
     },
     logout() {
       const token = LocalStorageService.getItem('token');
-      if(token != null){
+      if(token){
         axios
         .get('https://api2.simplifies.cl/api/logout', {
           headers: {

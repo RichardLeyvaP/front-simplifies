@@ -1787,7 +1787,7 @@ export default {
 
     initialize() {
       //const token = LocalStorageService.getItem('token');
-      if (!LocalStorageService.getIsLocked()) {
+      //if (!LocalStorageService.getIsLocked()) {
         this.loadingcar = true;
       LocalStorageService.setIsLocked(true); // Bloquear antes de hacer la petición
       axios
@@ -1823,7 +1823,7 @@ export default {
           console.log('isLocked después de la solicitud Box:', LocalStorageService.getIsLocked());
           this.loadingcar = false;
         });
-      }
+      //}
     },
     editItem(item) {
       this.editedIndex = 1;

@@ -136,7 +136,7 @@
           </v-text-field>
           <v-data-table :headers="headers" :search="search" :items="results" class="elevation-1"
             :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
-            no-data-text="No hay datos disponibles">
+            no-data-text="No hay datos disponibles" :loading="loadingBranch" loading-text="Cargando datos...">
             <template v-slot:item.name="{ item }">
 
               <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
@@ -614,6 +614,7 @@ export default {
   data: () => ({
     valid: true,
     loading: false,
+    loadingBranch: true,
     branchSelect: "",
     snackbar: false,
     sb_type: '',
@@ -830,6 +831,7 @@ export default {
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     //console.log('this.editedItem.business_id');
     //console.log(this.editedItem.business_id);
+    LocalStorageService.setIsLocked(true);
     axios
       .get('https://api2.simplifies.cl/api/business')
       .then((response) => {
@@ -889,7 +891,7 @@ export default {
     },
 
     initialize() {
-
+      LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/branch')
         .then((response) => {
@@ -900,14 +902,19 @@ export default {
           if (this.charge === "Administrador") {
             this.branch_id = this.results[0].id;
             this.mostrarFila = true;
+            this.loadingBranch = false;
+            LocalStorageService.setIsLocked(false);
           }
         });
     },
     showAddBranch() {
+      LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/business-type')
         .then((response) => {
           this.businessTypes = response.data.businessTypes;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
       this.dialog = true;
     },
@@ -948,6 +955,7 @@ export default {
       this.dialogDelete = true;
     },
     deleteItemConfirm() {
+      LocalStorageService.setIsLocked(true);
       //this.results.splice(this.editedIndex, 1)
       let request = {
         id: this.editedItem.id
@@ -957,7 +965,9 @@ export default {
         .then(() => {
           this.initialize();
           this.showAlert("success", "Sucursal eliminada correctamente", 3000)
-        })
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
       this.closeDelete()
     },
     close() {
@@ -998,6 +1008,7 @@ export default {
       this.branch_id = 0;
     },
     save() {
+      LocalStorageService.setIsLocked(true);
       if (this.editedIndex > -1) {
         this.valid = false;
         /*this.data.id = this.editedItem.id;
@@ -1018,6 +1029,7 @@ export default {
           }).finally(() => {
             this.showAlert("success", "Sucursal modificada correctamente", 3000);
             this.initialize();
+            LocalStorageService.setIsLocked(false);
           });
       } else {
         this.valid = false;
@@ -1038,11 +1050,13 @@ export default {
           }).finally(() => {
             this.showAlert("success", "Sucursal creada correctamente", 3000);
             this.initialize();
+            LocalStorageService.setIsLocked(false);
           });
       }
       this.close()
     },
     showProfessionals(item) {
+      LocalStorageService.setIsLocked(true);
       this.branchSelect = item;
       console.log(this.branchSelect);
       this.branch_id = item.id;
@@ -1056,10 +1070,13 @@ export default {
         .then((response) => {
           this.branchProfessionals = response.data.professionals;
           console.log('imprime professionals');
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
       this.dialogProfessionals = true;
     },
     showAddProfessionals() {
+      LocalStorageService.setIsLocked(true);
       this.editedIndexP = -1;
       axios
         .get('https://api2.simplifies.cl/api/professional-show-autocomplete-Notin', {
@@ -1069,10 +1086,13 @@ export default {
         })
         .then((response) => {
           this.professionals = response.data.professionals;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
       this.dialogAddProf = true;
     },
     editItemProfessional(item) {
+      LocalStorageService.setIsLocked(true);
       this.editedIndexP = 2;
       console.log('Professional');
       console.log(item);
@@ -1084,6 +1104,8 @@ export default {
         })
         .then((response) => {
           this.professionals = response.data.professionals;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
       this.editedIndex = 2;
       this.editedItem.professional_id = parseInt(item.professional_id);
@@ -1098,6 +1120,7 @@ export default {
       }
     },
     showStores(item) {
+            LocalStorageService.setIsLocked(true);
       this.branchSelect = item;
       console.log(this.branchSelect);
       this.branch_id = item.id;
@@ -1111,10 +1134,13 @@ export default {
         .then((response) => {
           this.branchStores = response.data.stores;
           console.log('imprime professionals');
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
       this.dialogStores = true;
     },
     showAddStores() {
+      LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/branchstore-show-notInt', {
           params: {
@@ -1123,10 +1149,13 @@ export default {
         })
         .then((response) => {
           this.stores = response.data.stores;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
       this.dialogAddStore = true;
     },
     saveP() {
+      LocalStorageService.setIsLocked(true);
       if (this.editedIndexP == 2) {
         this.valid = false,
           this.data.branch_id = this.branch_id;
@@ -1142,6 +1171,7 @@ export default {
             }).finally(() => {
               this.showAlert("success", "Asignación del trabajado a la sucursal editada correctamente", 3000);
               this.showProfessionals(this.branchSelect);
+              LocalStorageService.setIsLocked(false);
             });
             this.dialogAddProf = false;
             this.editando = false;
@@ -1163,6 +1193,7 @@ export default {
             }).finally(() => {
               this.showAlert("success", "Trabajdor afiliado correctamente a la sucursal", 3000);
               this.showProfessionals(this.branchSelect);
+              LocalStorageService.setIsLocked(false);
             });
             this.dialogAddProf = false;
             this.editando = false;
@@ -1172,6 +1203,7 @@ export default {
       }
     },
     saveStore() {
+      LocalStorageService.setIsLocked(true);
       this.valid = false,
         this.data.branch_id = this.branch_id;
       this.data.store_id = this.editedItem.store_id;
@@ -1183,8 +1215,9 @@ export default {
           this.showStores(this.branchSelect);
           this.showAlert("success", "Almacén afiliado correctamente a la sucursal", 3000);
           this.$nextTick(() => {
-            this.editedItem = Object.assign({}, this.defaultItem)
+            this.editedItem = Object.assign({}, this.defaultItem);
           });
+          LocalStorageService.setIsLocked(false);
         })
     },
     deleteP(item) {
@@ -1198,6 +1231,7 @@ export default {
       this.editedItem.store_id = item.id
     },
     requestDelete() {
+      LocalStorageService.setIsLocked(true);
       let request = {
         branch_id: this.branch_id,
         professional_id: this.editedItem.professional_id
@@ -1212,9 +1246,11 @@ export default {
           })
           this.showProfessionals(this.branchSelect);
           this.showAlert("success", "Afiliación eliminada correctamente", 3000);
+          LocalStorageService.setIsLocked(false);
         });
     },
     storeDelete() {
+      LocalStorageService.setIsLocked(true);
       let request = {
         branch_id: this.branch_id,
         store_id: this.editedItem.store_id
@@ -1229,6 +1265,7 @@ export default {
           })
           this.showStores(this.branchSelect);
           this.showAlert("success", "Afiliación eliminada correctamente", 3000);
+          LocalStorageService.setIsLocked(false);
         });
     },
 
@@ -1248,6 +1285,7 @@ export default {
     },
     //Asociados
     showAssociates(item) {
+      LocalStorageService.setIsLocked(true);
       this.branchSelect = item;
       this.branch_id = item.id;
       axios
@@ -1259,10 +1297,13 @@ export default {
         .then((response) => {
           this.branchAssociates = response.data.associates;
           console.log('imprime professionals');
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
       this.dialogAssociates = true;
     },
     showAddAssociates() {
+      LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/associated-show', {
           params: {
@@ -1271,6 +1312,8 @@ export default {
         })
         .then((response) => {
           this.associates = response.data.associates;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
       this.dialogAddAssociate = true;
     },
@@ -1280,6 +1323,7 @@ export default {
       //this.showAssociates(this.branchSelect)
     },
     saveAssociated() {
+      LocalStorageService.setIsLocked(true);
       this.valid = false,
         this.data.branch_id = this.branch_id;
       this.data.associated_id = this.associated_id;
@@ -1291,6 +1335,7 @@ export default {
           this.showAssociates(this.branchSelect);
           this.showAlert("success", "Asociado afiliado correctamente a la sucursal", 3000);
           this.associated_id = '';
+          LocalStorageService.setIsLocked(false);
         });
     },
     closeassociateRequest(item) {
@@ -1304,6 +1349,7 @@ export default {
       //this.showAssociates(this.branchSelect)
     },
     associateDelete() {
+      LocalStorageService.setIsLocked(true);
       let request = {
         branch_id: this.branch_id,
         associated_id: this.associated_id
@@ -1316,10 +1362,12 @@ export default {
           this.associated_id = '';
           this.showAssociates(this.branchSelect);
           this.showAlert("success", "Afiliación eliminada correctamente", 3000);
+          LocalStorageService.setIsLocked(false);
         });
     },
     //Finanzas
     showWinner() {
+      LocalStorageService.setIsLocked(true);
       this.loading = true;
       //this.branchSelect = item;
       this.editedIndexWin = -1;
@@ -1334,6 +1382,7 @@ export default {
           this.loading = false;
         }).finally(() => {
           this.dialogWinners = true;
+          LocalStorageService.setIsLocked(false);
         });
     },
     closeShowWinner() {
@@ -1363,6 +1412,7 @@ export default {
       this.menu2 = false;
     },
     updateDate3() {
+      LocalStorageService.setIsLocked(true);
       this.loading = true;
       this.editedIndexWin = 2;
       //this.input2 = val;
@@ -1380,7 +1430,9 @@ export default {
         .then((response) => {
           this.winners = response.data;
           this.loading = false;
-        })
+        }).finally(() => {
+          LocalStorageService.setIsLocked(false);
+        });
       //this.menu2 = false;
     },
   },

@@ -602,7 +602,9 @@ export default {
     this.formattedDateAnt = today.getDate() + '-' + (today.getMonth()) + '-' + today.getFullYear();
     this.formattedDateMonth = (today.getMonth() + 1) + '-' + today.getFullYear();
     this.formattedDateMonthAnt = (today.getMonth()) + '-' + today.getFullYear();
-    this.initialize();
+    if (this.charge !== 'Totem' && this.charge !== 'Pizarra') {        
+    this.initialize();    
+    }
     // this.renderChart(this.chartData, { responsive: true, maintainAspectRatio: false })
   },
   methods: {

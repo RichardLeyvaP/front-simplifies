@@ -208,29 +208,6 @@ export default {
     
     // Redirigir según el cargo
     this.redirectBasedOnCharge();
-    /*this.intervalId = setInterval(() => {
-      axios
-        .get('https://api2.simplifies.cl/api/notification-professional-web', {
-                    params: {
-                        branch_id: this.branch_id,
-                        professional_id: this.professional_id
-                    }
-                })
-        .then((response) => {
-          this.results = response.data.notifications;
-          console.log('this.results notificaciones');
-          console.log(this.results);
-        });
-    }, 30000);
-    /*if(this.charge === 'Cajero (a)'){
-      this.$router.push({ path: 'box' });
-    }
-    if(this.charge === 'Totem'){
-      this.$router.push({ path: 'totem' });
-    }
-    if(this.charge === 'Pizarra'){
-      this.$router.push({ path: 'shift-board' });
-    }*/
   },
   beforeUnmount() {
     //Detener el intervalo cuando el componente se esté destruyendo para evitar fugas de memoria
