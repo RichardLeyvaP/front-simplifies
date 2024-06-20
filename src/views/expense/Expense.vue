@@ -214,11 +214,14 @@ export default {
    },
 
    initialize() {
+    LocalStorageService.setIsLocked(true);
      axios
        .get('https://api2.simplifies.cl/api/expense')
        .then((response) => {
          this.results = response.data.expenses;
-       })
+       }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
    },
    editItem(item) {
      this.editedIndex = 1;
@@ -231,6 +234,7 @@ export default {
      this.dialogDelete = true;
    },
    deleteItemConfirm() {
+    LocalStorageService.setIsLocked(true);
      //this.results.splice(this.editedIndex, 1)
      let request = {
        id: this.editedItem.id
@@ -238,6 +242,7 @@ export default {
      axios
        .post('https://api2.simplifies.cl/api/expense-destroy', request)
        .then(() => {
+        LocalStorageService.setIsLocked(false);
          this.initialize();
          this.showAlert("success","Operación de Gasto eliminada correctamente", 3000)
        }).catch(()=>{
@@ -260,6 +265,7 @@ export default {
      })
    },
     save() {    
+      LocalStorageService.setIsLocked(true);
        if (this.editedIndex > -1) {
          this.valid = false,
          this.data.id = this.editedItem.id;
@@ -268,6 +274,7 @@ export default {
            .put('https://api2.simplifies.cl/api/expense', this.data)
            .then(() => {
            }).finally(() => {
+            LocalStorageService.setIsLocked(false);
              this.showAlert("success","Operación de gasto actualizada correctamente", 3000);
              this.initialize();
           });
@@ -278,6 +285,7 @@ export default {
            .post('https://api2.simplifies.cl/api/expense', this.data)
            .then(() => {
            }).finally(() => {
+            LocalStorageService.setIsLocked(false);
              this.showAlert("success","Operación de gasto registrada correctamente", 3000);
              this.initialize();
           });

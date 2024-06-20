@@ -439,6 +439,7 @@ export default {
         this.branch_id = LocalStorageService.getItem('branch_id');
         this.charge_id = LocalStorageService.getItem('charge_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
+        LocalStorageService.setIsLocked(true);
         axios
             .get('https://api2.simplifies.cl/api/show-business', {
                 params: {
@@ -450,6 +451,7 @@ export default {
                 //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
 
             }).finally(() => {
+                LocalStorageService.setIsLocked(false);
                 if (this.charge === 'Administrador') {
                     this.branch_id = this.branches[0].id;
                     this.mostrarFila = true;
@@ -536,6 +538,7 @@ export default {
         },
 
         initialize() {
+            LocalStorageService.setIsLocked(true);
             this.professionals = [];
             this.professional_id = '';
 
@@ -547,7 +550,9 @@ export default {
                 })
                 .then((response) => {
                     this.results = response.data;
-                });
+                }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
             /*axios
                 .get('https://api2.simplifies.cl/api/cashier-car-notpay', {
                     params: {
@@ -562,6 +567,7 @@ export default {
 
         },
         showAddOperationTip() {
+            LocalStorageService.setIsLocked(true);
             axios
                 .get('https://api2.simplifies.cl/api/cashier-car-notpay', {
                     params: {
@@ -571,7 +577,9 @@ export default {
                 .then((response) => {
                     this.cars = response.data.cars;
                     this.professionals = response.data.professionals
-                });
+                }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
 
             /*axios
             .get('https://api2.simplifies.cl/api/branch_professionals_cashier', {
@@ -604,6 +612,7 @@ export default {
             this.dialogDelete = true;
         },
         deleteItemConfirm() {
+            LocalStorageService.setIsLocked(true);
             //this.results.splice(this.editedIndex, 1)
             let request = {
                 id: this.editedItem.id
@@ -612,6 +621,7 @@ export default {
                 .post('https://api2.simplifies.cl/api/operation-tip-destroy', request)
                 .then(() => {
                 }).finally(() => {
+                    LocalStorageService.setIsLocked(false);
                     this.showAlert("success", "Pago eliminado correctamente", 3000);
                     this.initialize();
                 });
@@ -644,6 +654,7 @@ export default {
 
         },
         save() {
+            LocalStorageService.setIsLocked(true);
             this.valid = false;
             /* if (this.editedIndex > -1) {
                  this.data.id = this.editedItem.id;
@@ -683,6 +694,7 @@ export default {
                     this.professional_id = '';
                     this.mostrarCars = false;
                 }).finally(() => {
+                    LocalStorageService.setIsLocked(false);
                     this.showAlert("success", "Pago realizado correctamente", 3000);
                     this.updatedBranch();
                 });
@@ -701,6 +713,7 @@ export default {
         },
         //reporte
         showPay() {
+            LocalStorageService.setIsLocked(true);
             console.log('Entra aqui a pagos realizados');
             //this.editedIndex1 = 1;
             //this.state=true;
@@ -718,7 +731,9 @@ export default {
                 })
                 .then((response) => {
                     this.results1 = response.data;
-                });
+                }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
             this.dialogPay = true;
         },
         closeDialogPay() {

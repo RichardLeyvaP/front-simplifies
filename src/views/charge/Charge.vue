@@ -332,12 +332,15 @@ export default {
     },
 
     initialize() {
+      LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/charge')
         .then((response) => {
           console.log("entra a Buscar cargos")
           this.results = response.data.charges;
-        })
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
     },
     editItem(item) {
       this.editedIndex = 1;
@@ -350,6 +353,7 @@ export default {
       this.dialogDelete = true;
     },
     deleteItemConfirm() {
+      LocalStorageService.setIsLocked(true);
       //this.results.splice(this.editedIndex, 1)
       let request = {
         id: this.editedItem.id
@@ -357,6 +361,7 @@ export default {
       axios
         .post('https://api2.simplifies.cl/api/charge-destroy', request)
         .then(() => {
+          LocalStorageService.setIsLocked(false);
           this.initialize();
           this.showAlert("success", "Cargo eliminado correctamente", 3000)
         }).catch(() => {
@@ -380,6 +385,7 @@ export default {
       })
     },
     save() {
+      LocalStorageService.setIsLocked(true);
       if (this.editedIndex > -1) {
         this.valid = false;
         this.data.id = this.editedItem.id;
@@ -390,6 +396,7 @@ export default {
           .put('https://api2.simplifies.cl/api/charge', this.data)
           .then(() => {
           }).finally(() => {
+            LocalStorageService.setIsLocked(false);
             this.showAlert("success", "Cargo editado correctamente", 3000);
             this.initialize();
           });
@@ -401,6 +408,7 @@ export default {
           .post('https://api2.simplifies.cl/api/charge', this.data)
           .then(() => {
           }).finally(() => {
+            LocalStorageService.setIsLocked(false);
             this.showAlert("success", "Cargo registrado correctamente", 3000);
             this.initialize();
           });
@@ -413,6 +421,7 @@ export default {
       //this.showPermission(this.chargeSelect);
     },
     showPermission(item) {
+      LocalStorageService.setIsLocked(true);
       this.chargeSelect = item;
       console.log(this.chargeSelect);
       this.charge_id = item.id;
@@ -425,11 +434,14 @@ export default {
         })
         .then((response) => {
           this.chargePermissions = response.data.permissions;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
         
       this.dialogPermissions = true;
     },
     showAddPermission(){
+      LocalStorageService.setIsLocked(true);
     axios
             .get('https://api2.simplifies.cl/api/charge-permission-NOTIN', {
               params: {
@@ -438,10 +450,13 @@ export default {
             })
             .then((response) => {
               this.permissions = response.data.permissions;
-            });
+            }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
             this.dialogAddPermission = true;
     },
     savePermission() {
+      LocalStorageService.setIsLocked(true);
       this.valid = false,
         this.data.charge_id = this.charge_id;
       this.data.permission_id = this.permission_id;
@@ -452,6 +467,7 @@ export default {
          this.permission_id = '',
           this.dialogAddPermission = false;
         }).finally(() => {
+          LocalStorageService.setIsLocked(true);
           this.showAlert("success", "Permiso asignado correctamente", 3000);
           this.showPermission(this.chargeSelect);
           });
@@ -464,6 +480,7 @@ export default {
       this.charge_id = item.charge_id;
     },
     permissionDelete() {
+      LocalStorageService.setIsLocked(true);
       let request = {
         charge_id: this.charge_id,
         permission_id: this.permission_id
@@ -477,7 +494,9 @@ export default {
           console.log(this.chargeSelect);
           this.showPermission(this.chargeSelect)
           this.showAlert("success", "Permiso eliminado a este cargo correctamente", 3000)
-        })
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
     },
     closerequestPermission() {
       this.dialogDeletePermission = false;

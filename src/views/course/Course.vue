@@ -1076,15 +1076,6 @@ export default {
 
       console.log(exist[0].product_exit);
     },
-    imagenDisponible() {
-      if (this.imgedit !== undefined && this.imgedit !== '') {
-        // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
-        let img = new Image();
-        img.src = this.imgedit;
-        return true; // Devuelve true si la imagen está disponible
-      }
-      return false; // Si la URL de la imagen no está definida o está vacía, devuelve false
-    },
 
     openModal(imageUrl) {
 
@@ -1101,6 +1092,7 @@ export default {
     },
 
     showStudents(item) {
+      LocalStorageService.setIsLocked(true);
       this.courseSelect = item;
       /*console.log('this.courseSelect');
       console.log(this.courseSelect);*/
@@ -1117,10 +1109,13 @@ export default {
           /*console.log('imprime estudiantes');
           console.log(response.data.students);*/
 
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
       this.dialogStudents = true;
     },
     showAddStudent() {
+      LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/student-show', {
           params: {
@@ -1129,6 +1124,8 @@ export default {
         })
         .then((response) => {
           this.students = response.data.students;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
       this.dialogAddStudent = true;
     },
@@ -1172,6 +1169,7 @@ export default {
       //this.showStudents(this.courseSelect)
     },
     saveS() {
+      LocalStorageService.setIsLocked(true);
       this.valid = false,
         this.data.course_id = this.course_id;
       this.data.student_id = this.editedStudent.student_id;
@@ -1185,12 +1183,14 @@ export default {
           this.dialogAddStudent = false;
           //this.initialize();
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.showAlert("success", "Estudiante matriculado correctamente al curso", 3000);
           this.showStudents(this.courseSelect);
         });
     },
 
     saveStatus() {
+      LocalStorageService.setIsLocked(true);
       this.valid = false,
         this.data.course_id = this.course_id;
       this.data.student_id = this.editedStudent.student_id;
@@ -1209,6 +1209,7 @@ export default {
         .then(() => {
           this.dialogAddStudent = false;
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.showAlert("success", "Estudiante actualizado correctamente", 3000);
           this.showStudents(this.courseSelect);
         });
@@ -1222,6 +1223,7 @@ export default {
       //this.showStudents(this.courseSelect)
     },
     requestDelete() {
+      LocalStorageService.setIsLocked(true);
       let request = {
         course_id: this.course_id,
         student_id: this.editedStudent.student_id
@@ -1231,6 +1233,7 @@ export default {
         .then(() => {
           this.dialogRequest = false;
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.showAlert("success", "Estudiante  eliminado del curso correctamente", 3000);
           this.showStudents(this.courseSelect);
         });
@@ -1258,6 +1261,7 @@ export default {
       this.snackbar = true
     },
     initialize() {
+      LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/course-show', {
           params: {
@@ -1266,10 +1270,13 @@ export default {
         })
         .then((response) => {
           this.results = response.data.courses;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
 
     },
     showAddCurso() {
+      LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/enrollment-show', {
           params: {
@@ -1278,6 +1285,8 @@ export default {
         })
         .then((response) => {
           this.enrollments = response.data.enrollments;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
       this.dialog = true;
     },
@@ -1318,6 +1327,7 @@ export default {
     },
 
     deleteItemConfirm() {
+      LocalStorageService.setIsLocked(true);
       //this.results.splice(this.editedIndex, 1)
       let request = {
         id: this.editedItem.id
@@ -1326,6 +1336,7 @@ export default {
         .post('https://api2.simplifies.cl/api/course-destroy', request)
         .then(() => {
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.showAlert("success", "Curso eliminado correctamente", 3000);
           this.initialize();
         });
@@ -1361,6 +1372,7 @@ export default {
       })
     },
     save() {
+      LocalStorageService.setIsLocked(true);
       if (this.editedIndex == 2) {
         this.valid = false;
         /*this.data.id = this.editedItem.id;
@@ -1382,6 +1394,7 @@ export default {
             this.imgMiniatura = '';
             this.file = null;
           }).finally(() => {
+            LocalStorageService.setIsLocked(false);
             this.showAlert("success", "Curso editado correctamente", 3000);
             this.initialize();
           });
@@ -1405,6 +1418,7 @@ export default {
             this.imgMiniatura = '';
             this.file = null;
           }).finally(() => {
+            LocalStorageService.setIsLocked(false);
             this.showAlert("success", "Curso registrado correctamente", 3000);
             this.initialize();
           });
@@ -1413,6 +1427,7 @@ export default {
     },
     //venta productos
     showProducts(item) {
+      LocalStorageService.setIsLocked(true);
       console.log('this.courseSelect');
       console.log(this.courseSelect);
       this.productSelect = item;
@@ -1435,6 +1450,8 @@ export default {
         })
         .then((response) => {
           this.productSales = response.data.productsales;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
       /*axios
       .get('https://api2.simplifies.cl/api/course-student-product-show',{
@@ -1450,6 +1467,7 @@ export default {
       this.dialogProducts = true;
     },
     showAddProduct() {
+      LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/products-academy-show', {
           params: {
@@ -1458,6 +1476,8 @@ export default {
         })
         .then((response) => {
           this.products = response.data.products;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
       this.dialogAddProduct = true;
     },
@@ -1469,6 +1489,7 @@ export default {
       //this.showProducts(this.productSelect)
     },
     saveProduct() {
+      LocalStorageService.setIsLocked(true);
       if (this.editedIndex == 3) {
         this.valid = false,
           /*console.log('this.course_id');
@@ -1489,6 +1510,7 @@ export default {
             this.cant = '';
             this.product_exit = '';
           }).finally(() => {
+            LocalStorageService.setIsLocked(false);
             this.showAlert("success", "Producto asignado correctamente al estudiante", 3000);
             this.showProducts(this.productSelect);
           });
@@ -1525,6 +1547,7 @@ export default {
       //this.showProducts(this.productSelect)
     },
     deleteProduct() {
+      LocalStorageService.setIsLocked(true);
       let request = {
         id: this.productsale_id
       };
@@ -1534,6 +1557,7 @@ export default {
           this.dialogRequestProduct = false;
           this.productsale_id = '';
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.showAlert("success", "Asignación eliminada correctamente", 3000);
           this.showProducts(this.productSelect);
         });
@@ -1541,6 +1565,7 @@ export default {
 
     //professionals
     showAddProfessional(item) {
+      LocalStorageService.setIsLocked(true);
       this.courseSelect = item;
       axios
         .get('https://api2.simplifies.cl/api/course-professional', {
@@ -1550,6 +1575,8 @@ export default {
         })
         .then((response) => {
           this.courseprofessionals = response.data.courseProfessionals;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
       this.dialogAddProfessional = true;
     },
@@ -1561,6 +1588,7 @@ export default {
       //this.showStudents(this.courseSelect)
     },
     saveProfessional() {
+      LocalStorageService.setIsLocked(true);
       this.valid = false,
         this.data.course_id = this.courseSelect.id;
       this.data.professional_id = this.professional_id;
@@ -1571,11 +1599,13 @@ export default {
           this.dialogAddProf = false;
           //this.initialize();
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.showAddProfessional(this.courseSelect);
           this.showAlert("success", "Professional asignado correctamente al curso", 3000);
         });
     },
     showAdddialogProfessionals() {
+      LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/course-professional-show-Notin', {
           params: {
@@ -1584,6 +1614,8 @@ export default {
         })
         .then((response) => {
           this.professionals = response.data.professionals;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
       this.dialogAddProf = true;
     },
@@ -1596,6 +1628,7 @@ export default {
       this.professional_id = item.professional_id
     },
     requestDeleteProfessional() {
+      LocalStorageService.setIsLocked(true);
       let request = {
         course_id: this.courseSelect.id,
         professional_id: this.professional_id
@@ -1605,6 +1638,7 @@ export default {
         .then(() => {
           this.dialogRequestProfessional = false;
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.professional_id = '',
             this.showAddProfessional(this.courseSelect);
           this.showAlert("success", "Afiliación eliminada correctamente", 3000);
@@ -1639,6 +1673,7 @@ export default {
       //this.showStudents(this.courseSelect)
     },
     StateSave() {
+      LocalStorageService.setIsLocked(true);
       this.valid = false,
         this.data.course_id = this.course_id;
       this.data.student_id = this.editedStudent.student_id;
@@ -1654,6 +1689,7 @@ export default {
         .then(() => {
           this.dialogUpdateState = false;
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.showAlert("success", "Estado en el curso actualizado correctamente", 3000);
           this.showStudents(this.courseSelect);
         });

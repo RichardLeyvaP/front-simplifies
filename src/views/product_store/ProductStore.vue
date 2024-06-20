@@ -500,12 +500,14 @@ export default {
     this.charge_id = LocalStorageService.getItem('charge_id');
     this.branch_id = LocalStorageService.getItem('branch_id');
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
+    LocalStorageService.setIsLocked(true);
           axios
         .get('https://api2.simplifies.cl/api/show-stores-products')
         .then((response) => {
           this.products = response.data.products;
           this.stores = response.data.stores;
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
                 this.initialize();
           });
     ///console.log(this.charge_id);
@@ -535,10 +537,13 @@ export default {
       this.snackbar = true
     },
     initialize() {
+      LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/productstore-show')
         .then((response) => {
           this.results = response.data.products;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
 
     },
@@ -552,6 +557,7 @@ export default {
       this.editando = true;
     },
     moverItem(item) {
+      LocalStorageService.setIsLocked(true);
       this.mover = false;
       this.moverEdit = true;
       this.editedIndex = 2;
@@ -568,6 +574,8 @@ export default {
         })
         .then((response) => {
           this.stores1 = response.data.stores;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
     },
     deleteItem(item) {
@@ -581,12 +589,14 @@ export default {
       return value != this.editedItem.store_id || "Debe seleccionar un almacen distinto al actual";
     },
     deleteItemConfirm() {
+      LocalStorageService.setIsLocked(true);
       this.data.product_id = this.editedItem.product_id;
       this.data.store_id = this.editedItem.store_id;
       //this.data.branch_id = this.branch_id;
       axios
         .post('https://api2.simplifies.cl/api/productstore-destroy', this.data)
         .then(() => {
+          LocalStorageService.setIsLocked(false);
           this.message_delete = true;
           this.showAlert("success", "Asignación eliminada correctamente", 3000);       
           this.initialize();
@@ -612,6 +622,7 @@ export default {
       })
     },
     save() {
+      LocalStorageService.setIsLocked(true);
       if (this.editedIndex === 3) {
         this.valid = false;
         this.data.product_id = this.editedItem.product_id;
@@ -624,6 +635,7 @@ export default {
         axios
           .put('https://api2.simplifies.cl/api/productstore', this.data)
           .then(() => {
+            LocalStorageService.setIsLocked(false);
             this.initialize();
             this.showAlert("success", "Asignacion editada correctamente", 3000)
           });
@@ -642,6 +654,7 @@ export default {
         axios
           .post('https://api2.simplifies.cl/api/move-product-store', this.data)
           .then(() => {
+            LocalStorageService.setIsLocked(false);
             this.showAlert("success", "Producto asignado correctamente", 3000)
             this.mover = true;
             this.moverEdit = true;
@@ -660,6 +673,7 @@ export default {
         axios
           .post('https://api2.simplifies.cl/api/productstore', this.data)
           .then(() => {
+            LocalStorageService.setIsLocked(false);
             this.showAlert("success", "Producto asignado correctamente", 3000);
             this.initialize();
           });
@@ -670,6 +684,7 @@ export default {
     },
     //reposicion
     showReposition() {
+      LocalStorageService.setIsLocked(true);
             console.log('Entra aqui a reposicion');
             axios
                 .get('https://api2.simplifies.cl/api/product-stock'/*, {
@@ -680,7 +695,9 @@ export default {
                 }*/)
                 .then((response) => {
                     this.results2 = response.data;
-                });
+                }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
             this.dialogReposition = true;
         },
     closeDialogReposition() {
@@ -729,6 +746,7 @@ export default {
 
         //movimiento de productos
     showMove() {
+      LocalStorageService.setIsLocked(true);
            // Obtener el año actual
         const currentYear = new Date().getFullYear();
         // Llenar el arreglo years con los años, desde 2010 hasta el año actual
@@ -748,7 +766,9 @@ export default {
                 })
                 .then((response) => {
                     this.results3 = response.data.movimientos;
-                })
+                }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
             this.dialogMove = true;
         },
     closeDialogMove() {
@@ -756,6 +776,7 @@ export default {
             this.results3 = [];
         },
         moveProductsMounth() {
+          LocalStorageService.setIsLocked(true);
             if (this.selectedMounth) {
               console.log('Mes seleccionado');
                 this.editedIndexMov = 2;
@@ -769,7 +790,9 @@ export default {
                     })
                     .then((response) => {
                         this.results3 = response.data.movimientos;
-                    })
+                    }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
             } else {
                 this.showMove();
             }

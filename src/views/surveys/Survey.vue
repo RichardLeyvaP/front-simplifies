@@ -211,11 +211,14 @@ export default {
    },
 
    initialize() {
+    LocalStorageService.setIsLocked(true);
      axios
        .get('https://api2.simplifies.cl/api/survey')
        .then((response) => {
          this.results = response.data.surveys;
-       })
+       }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
    },
    editItem(item) {
      this.editedIndex = 1;
@@ -228,6 +231,7 @@ export default {
      this.dialogDelete = true;
    },
    deleteItemConfirm() {
+    LocalStorageService.setIsLocked(true);
      //this.results.splice(this.editedIndex, 1)
      let request = {
        id: this.editedItem.id
@@ -235,6 +239,7 @@ export default {
      axios
        .post('https://api2.simplifies.cl/api/survey-destroy', request)
        .then(() => {
+        LocalStorageService.setIsLocked(false);
          this.initialize();
          this.showAlert("success","Item eliminado correctamente", 3000)
        }).catch(()=>{
@@ -257,6 +262,7 @@ export default {
      })
    },
     save() {    
+      LocalStorageService.setIsLocked(true);
        if (this.editedIndex > -1) {
          this.valid = false,
          this.data.id = this.editedItem.id;
@@ -264,6 +270,7 @@ export default {
          axios
            .put('https://api2.simplifies.cl/api/survey', this.data)
            .then(() => {
+            LocalStorageService.setIsLocked(false);
              this.initialize();
              this.showAlert("success","Item actualizado correctamente", 3000)
            })
@@ -273,6 +280,7 @@ export default {
          axios
            .post('https://api2.simplifies.cl/api/survey', this.data)
            .then(() => {
+            LocalStorageService.setIsLocked(false);
              this.initialize();
              this.showAlert("success","Item registrado correctamente", 3000)
            })

@@ -374,6 +374,7 @@ export default {
         this.branch_id = LocalStorageService.getItem('branch_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
+        LocalStorageService.setIsLocked(true);
         axios
             .get('https://api2.simplifies.cl/api/show-business', {
                 params: {
@@ -383,6 +384,7 @@ export default {
             .then((response) => {
                 this.branches = response.data.branches;
             }).finally(() => {
+                LocalStorageService.setIsLocked(false);
                 //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
                 if (this.charge === 'Administrador') {
                     this.branch_id = this.branches[0].id;
@@ -417,6 +419,7 @@ export default {
             this.snackbar = true
         },
         initialize() {
+            LocalStorageService.setIsLocked(true);
             axios
                 .get('https://api2.simplifies.cl/api/professionalservice-show', {
                     params: {
@@ -425,9 +428,12 @@ export default {
                 })
                 .then((response) => {
                     this.results = response.data.branchServices;
-                });
+                }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
         },
         showAddService(){
+            LocalStorageService.setIsLocked(true);
             axios
                 .get('https://api2.simplifies.cl/api/branch-service-show', {
                     params: {
@@ -436,7 +442,9 @@ export default {
                 })
                 .then((response) => {
                     this.services = response.data.services;
-                });
+                }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
                 this.dialog = true;
         },
         editItem(item) {
@@ -451,6 +459,7 @@ export default {
             this.dialogDelete = true;
         },
         deleteItemConfirm() {
+            LocalStorageService.setIsLocked(true);
             this.data.branch_id = this.branch_id;
             this.data.service_id = this.editedItem.service_id;
             axios
@@ -458,6 +467,7 @@ export default {
                 .then(() => {
                     this.message_delete = true;
                 }).finally(() => {
+                    LocalStorageService.setIsLocked(false);
                     this.showAlert("success", "Asignación eliminada correctamente", 3000);
                     this.initialize();
           });
@@ -481,6 +491,7 @@ export default {
             })
         },
         save() {
+            LocalStorageService.setIsLocked(true);
             if (this.editedIndex === -1) {
                 console.log('insertar');
                 this.valid = false;
@@ -491,6 +502,7 @@ export default {
                     .post('https://api2.simplifies.cl/api/branchservice', this.data)
                     .then(() => {
                     }).finally(() => {
+                        LocalStorageService.setIsLocked(false);
                         this.showAlert("success", "Servicio asignado correctamente", 3000);
                         this.initialize();
           });
@@ -504,6 +516,7 @@ export default {
                     .put('https://api2.simplifies.cl/api/branchservice', this.data)
                     .then(() => {
                     }).finally(() => {
+                        LocalStorageService.setIsLocked(false);
                         this.showAlert("success", "Asignación editada correctamente", 3000);
                         this.initialize();
           });

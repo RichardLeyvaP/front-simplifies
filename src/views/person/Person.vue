@@ -1077,6 +1077,7 @@ export default {
     this.branch_id = parseInt(LocalStorageService.getItem("branch_id"));
     this.business_id = parseInt(LocalStorageService.getItem("business_id"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
+    LocalStorageService.setIsLocked(true);
     axios
       .get("https://api2.simplifies.cl/api/charge-web", {
         params: {
@@ -1089,6 +1090,7 @@ export default {
         //this.branch_id = this.branches[0].id;
       })
       .finally(() => {
+        LocalStorageService.setIsLocked(false);
         if (this.charge === "Administrador") {
           this.branch_id = this.branches[0].id;
           this.mostrarFila = true;
@@ -1118,6 +1120,7 @@ export default {
     },
     // aqui lo del calendario
     handleEmailChange() {
+      LocalStorageService.setIsLocked(true);
       axios
         .get("https://api2.simplifies.cl/api/professional-email", {
           params: {
@@ -1131,6 +1134,7 @@ export default {
           this.typeUser = response.data.type;
         })
         .finally(() => {
+          LocalStorageService.setIsLocked(false);
           if (this.typeUser === 'Client') {
             this.dialogEmail = true;
             //this.showAlert("success", "Este correo ya esta asignado a un cliente", 3000);
@@ -1151,6 +1155,7 @@ export default {
       this.dialogEmail = false;
     },
     shangePassword() {
+      LocalStorageService.setIsLocked(true);
       console.log(this.editedItem.user_id);
       axios
         .get("https://api2.simplifies.cl/api/change_password", {
@@ -1160,6 +1165,7 @@ export default {
           },
         })
         .then((response) => {
+          LocalStorageService.setIsLocked(false);
           console.log(response);
           this.showAlert("success", "Contraseña modificada correctamente", 3000);
           this.confirmPassword = "";
@@ -1190,9 +1196,11 @@ export default {
       this.snackbar = true;
     },
     initialize() {
+      LocalStorageService.setIsLocked(true);
       axios.get("https://api2.simplifies.cl/api/professional").then((response) => {
         this.results = response.data.professionals;
       }).finally(() => {
+        LocalStorageService.setIsLocked(false);
           this.loading = false;
         });
     },
@@ -1268,6 +1276,7 @@ export default {
       const endDate = this.input2
         ? format(this.input2, "yyyy-MM-dd")
         : format(new Date(), "yyyy-MM-dd");*/
+        LocalStorageService.setIsLocked(true);
       axios
         .get("https://api2.simplifies.cl/api/branch-reservations-periodo", {
           params: {
@@ -1279,9 +1288,12 @@ export default {
         .then((response) => {
           //this.reservations = response.data.reservaciones;
           this.professionals = response.data.professionals;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
     },
-    showReservationsProfessional() {//aqui cargo el componente del calendar        
+    showReservationsProfessional() {//aqui cargo el componente del calendar  
+      LocalStorageService.setIsLocked(true);      
       this.events = [];
       console.log('this.today');
       console.log(this.today);
@@ -1315,6 +1327,8 @@ export default {
             });
           });
           this.events = tempEvents;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
     },
     deleteItem(item) {
@@ -1324,11 +1338,13 @@ export default {
     },
 
     deleteItemConfirm() {
+      LocalStorageService.setIsLocked(true);
       //this.results.splice(this.editedIndex, 1)
       let request = {
         id: this.editedItem.id,
       };
       axios.post("https://api2.simplifies.cl/api/professional-destroy", request).then(() => {
+        LocalStorageService.setIsLocked(false);
         this.initialize();
         this.message_delete = true;
         this.showAlert("success", "Profesional eliminado correctamente", 3000);
@@ -1360,6 +1376,7 @@ export default {
       });
     },
     save() {
+      LocalStorageService.setIsLocked(true);
       if (this.editedIndex > -1) {
         this.valid = false;
         /*this.data.id = this.editedItem.id;
@@ -1378,6 +1395,7 @@ export default {
         axios
           .post("https://api2.simplifies.cl/api/professional-update", formData)
           .then(() => {
+            LocalStorageService.setIsLocked(false);
             this.initialize();
             this.showAlert("success", "Profesional editado correctamente", 3000);
             this.mostrar = true;
@@ -1408,6 +1426,7 @@ export default {
         axios
           .post("https://api2.simplifies.cl/api/register_professional", formData)
           .then(() => {
+            LocalStorageService.setIsLocked(false);
             this.initialize();
             this.showAlert("success", "Profesional registrado correctamente", 3000);
             this.imgMiniatura = "";
@@ -1427,6 +1446,7 @@ export default {
     },
     //winner
     showWinner() {
+      LocalStorageService.setIsLocked(true);
       this.editedIndexWin = -1;
       axios
         .get("https://api2.simplifies.cl/api/branch_professionals_winner", {
@@ -1438,6 +1458,7 @@ export default {
           this.winner = response.data;
         })
         .finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.dialogWinner = true;
         });
     },
@@ -1513,6 +1534,7 @@ export default {
       this.menu2 = false;
     },
     updateDate2() {
+      LocalStorageService.setIsLocked(true);
       //this.input2 = val;
       this.editedIndexWin = 2;
       const startDate = this.input
@@ -1530,6 +1552,7 @@ export default {
           },
         })
         .then((response) => {
+          LocalStorageService.setIsLocked(false);
           this.winner = response.data;
         });
     },
@@ -1559,6 +1582,7 @@ export default {
       this.dialogLater = false;
     },
     updateDate3() {
+      LocalStorageService.setIsLocked(true);
       //this.input2 = val;
       this.editedIndexLater = 2;
       const startDate = this.input
@@ -1577,6 +1601,7 @@ export default {
           },
         })
         .then((response) => {
+          LocalStorageService.setIsLocked(false);
           this.laters = response.data;
         });
     },
@@ -1626,6 +1651,7 @@ export default {
 
     //asistencias
     showAsist() {
+      LocalStorageService.setIsLocked(true);
       this.editedIndexAsist1 = -1;
       this.editedIndexAsist2 = -1;
       axios
@@ -1639,6 +1665,7 @@ export default {
           this.asistLate = response.data.tardes;
         })
         .finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.dialogAsist = true;
         });
     },
@@ -1646,6 +1673,7 @@ export default {
       this.dialogAsist = false;
     },
     updateDate5() {
+      LocalStorageService.setIsLocked(true);
       console.log("Entra aqui a mejores aisitencias del periodo");
       //this.input2 = val;
       this.editedIndexAsist1 = 2;
@@ -1667,6 +1695,7 @@ export default {
           },
         })
         .then((response) => {
+          LocalStorageService.setIsLocked(false);
           this.asistTime = response.data.tiempo;
           this.asistLate = response.data.tardes;
         });
@@ -1675,6 +1704,7 @@ export default {
 
     //dias libres
     showFreeday(item) {
+      LocalStorageService.setIsLocked(true);
       this.selectedProfessional = item;
       this.professional_id = item.id;
       axios
@@ -1689,6 +1719,7 @@ export default {
           console.log(this.freedays);
         })
         .finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.freedays = this.freedays.map((schedule) => ({
             nombre: schedule.day,
             esLaboral: parseInt(schedule.state) !== 0,
@@ -1702,6 +1733,7 @@ export default {
       this.dialogfreeday = false;
     },
     saveFreeday() {
+      LocalStorageService.setIsLocked(true);
       //const start_time;
       //const closing_time;
 
@@ -1733,6 +1765,7 @@ export default {
           this.showAlert("warning", "Error interno del sistema", 3000);
         })
         .finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.showFreeday(this.selectedProfessional);
         });
     },

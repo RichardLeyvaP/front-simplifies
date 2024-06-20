@@ -533,6 +533,7 @@
     },
   
     mounted() {
+      LocalStorageService.setIsLocked(true);
       this.business_id = LocalStorageService.getItem('business_id');
       this.editItem.business_id = this.business_id;
       axios
@@ -543,6 +544,7 @@
               }).finally(() => {
                 if (this.business.length > 0) {
             this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
+            LocalStorageService.setIsLocked(false);
             this.initialize();
             }  
           });
@@ -595,6 +597,7 @@
       reader.readAsDataURL(file);
     },
     initialize() {
+      LocalStorageService.setIsLocked(true);
         axios
           .get('https://api2.simplifies.cl/api/enrollment-show', {
             params: {
@@ -603,7 +606,9 @@
           })
           .then((response) => {
             this.results = response.data.enrollments;
-          });  
+          }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });  
       },
       editItem(item) {
         this.file = null;
@@ -628,6 +633,7 @@
         this.dialogDelete = true;
       },
       deleteItemConfirm() {
+        LocalStorageService.setIsLocked(true);
         //this.results.splice(this.editedIndex, 1)
         let request = {
           id: this.editedItem.id
@@ -635,9 +641,11 @@
         axios
           .post('https://api2.simplifies.cl/api/enrollment-destroy', request)
           .then(() => {
+          }).finally(() => {
+            LocalStorageService.setIsLocked(false);            
             this.initialize();
             this.showAlert("success","Academia eliminada correctamente", 3000)
-          })
+        });
         this.closeDelete()
       },
       close() {
@@ -661,6 +669,8 @@
         this.enrollment_id = ';'
       },
       save() {
+        
+        LocalStorageService.setIsLocked(true);
         if (this.editedIndex == 2) {
           this.valid = false;
           /*this.data.id = this.editedItem.id;
@@ -678,7 +688,8 @@
             .then(() => {
               this.file = null;
             this.imgMiniatura = '';
-            }).finally(() => {
+            }).finally(() => {              
+            LocalStorageService.setIsLocked(false);
               this.showAlert("success","Academia actualizada correctamente", 3000);
               this.initialize();
           });
@@ -698,6 +709,7 @@
               this.file = null;
             this.imgMiniatura = '';
             }).finally(() => {
+            LocalStorageService.setIsLocked(false);
               this.showAlert("success","Academia creada correctamente", 3000);
               this.initialize();
           });
@@ -705,7 +717,8 @@
         this.close()
       },
       //Stores logica
-    showStores(item){
+    showStores(item){      
+      LocalStorageService.setIsLocked(true);
       this.editedIndex = 5;
         this.enrollmentSelect = item;
         console.log(this.enrollmentSelect);
@@ -719,10 +732,13 @@
           })
           .then((response) => {
             this.enrollmentStores = response.data.enrollmentStores;
-          });
+          }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
         this.dialogStores = true;
     },
     showAddStores(){
+      LocalStorageService.setIsLocked(true);
       axios
           .get('https://api2.simplifies.cl/api/enrollmentstore-show-notIn', {
           params: {
@@ -731,7 +747,9 @@
         })
           .then((response) => {
             this.stores = response.data.stores;
-          });
+          }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
 
           this.dialogAddStore = true;
     },
@@ -741,6 +759,7 @@
       //this.showStores(this.enrollmentSelect)
     },
     saveStore() {
+      LocalStorageService.setIsLocked(true);
       this.valid = false,
         this.data.enrollment_id = this.enrollment_id;
       this.data.store_id = this.store_id;
@@ -751,7 +770,8 @@
         .then(() => {
           this.dialogAddStore = false;
           this.store_id = '';
-        }).finally(() => {            
+        }).finally(() => {       
+          LocalStorageService.setIsLocked(false);     
           this.showStores(this.enrollmentSelect);
           this.showAlert("success", "Almacén afiliado correctamente a la academia", 3000);
           });
@@ -767,6 +787,7 @@
       //this.showStores(this.enrollmentSelect)
     },
     storeDelete() {
+      LocalStorageService.setIsLocked(true);
       let request = {
         enrollment_id: this.enrollment_id,
         store_id: this.store_id
@@ -777,12 +798,13 @@
           this.dialogRequestStore = false;
           this.store_id = '';
           //console.log(this.branchSelect);
-        }).finally(() => {            
+        }).finally(() => {  
+          LocalStorageService.setIsLocked(false);          
           this.showStores(this.enrollmentSelect)
           this.showAlert("success", "Afiliación eliminada correctamente", 3000);
           });
     },//endStores
-    /*//Asignar Productos
+   /*//Asignar Productos
     showProducts(item){
       this.editedIndex = 3;
         this.enrollmentSelect = item;

@@ -394,11 +394,13 @@ return mensaje;
       this.snackbar = true
     },
     initialize() {
+      LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/service')
         .then((response) => {
           this.results = response.data.services;
-        }).finally(() => {        
+        }).finally(() => { 
+          LocalStorageService.setIsLocked(false);       
         this.loading = false;
       });
     },
@@ -436,6 +438,7 @@ return mensaje;
     },
 
     deleteItemConfirm() {
+      LocalStorageService.setIsLocked(true);
       //this.results.splice(this.editedIndex, 1)
       let request = {
         id: this.editedItem.id
@@ -445,6 +448,7 @@ return mensaje;
         .then(() => {
           this.showAlert("success", "Servicio eliminado correctamente", 3000)
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.initialize();
         });
       this.closeDelete()
@@ -466,6 +470,7 @@ return mensaje;
       })
     },
     save() {
+      LocalStorageService.setIsLocked(true);
       if (this.editedIndex > -1) {
         this.valid = false;
         this.editedItem.profit_percentaje = this.editedItem.profit_percentaje ? this.editedItem.profit_percentaje : '';
@@ -482,6 +487,7 @@ return mensaje;
             this.file = null;
 
           }).finally(() => {
+            LocalStorageService.setIsLocked(false);
             this.initialize();
           });
 
@@ -497,6 +503,7 @@ return mensaje;
         axios
           .post('https://api2.simplifies.cl/api/service', formData)
           .then(() => {
+            LocalStorageService.setIsLocked(false);
             this.showAlert("success", "Servicio registrado correctamente", 3000);
             this.imgMiniatura = '';
             this.file = null;

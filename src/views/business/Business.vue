@@ -491,19 +491,24 @@ export default {
   methods: {
 
     initialize() {
-
+      LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/business')
         .then((response) => {
           this.results = response.data.business;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
 
     },
     showAddProfessional() {
+      LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/professional-show-autocomplete')
         .then((response) => {
           this.professionals = response.data.professionals;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
       this.dialog = true;
     },
@@ -518,6 +523,7 @@ export default {
       this.dialogDelete = true;
     },
     deleteItemConfirm() {
+      LocalStorageService.setIsLocked(true);
       //this.results.splice(this.editedIndex, 1)
       let request = {
         id: this.editedItem.id
@@ -526,6 +532,7 @@ export default {
         .post('https://api2.simplifies.cl/api/business-destroy', request)
         .then(() => {
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.initialize();
         });
       this.closeDelete()
@@ -545,6 +552,7 @@ export default {
       })
     },
     save() {
+      LocalStorageService.setIsLocked(true);
       if (this.editedIndex > -1) {
         this.valid = false;
         this.data.id = this.editedItem.id;
@@ -555,6 +563,7 @@ export default {
           .put('https://api2.simplifies.cl/api/business', this.data)
           .then(() => {
           }).finally(() => {
+            LocalStorageService.setIsLocked(false);
             this.initialize();
           });
       } else {
@@ -567,6 +576,7 @@ export default {
           .post('https://api2.simplifies.cl/api/business', this.data)
           .then(() => {
           }).finally(() => {
+            LocalStorageService.setIsLocked(false);
             this.initialize();
           });
       }
@@ -589,6 +599,7 @@ export default {
       return formattedValue;
     },
     showWinner() {
+      LocalStorageService.setIsLocked(true);
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       axios
@@ -601,6 +612,7 @@ export default {
         .then((response) => {
           this.winners = response.data;
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.dialogShowWinner = true;
         });
     },
@@ -613,6 +625,7 @@ export default {
       this.menu2 = false;
     },
     updateDate2() {
+      LocalStorageService.setIsLocked(true);
       this.editedIndexWin = 2;
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
@@ -625,7 +638,9 @@ export default {
         })
         .then((response) => {
           this.winners = response.data;
-        })
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
     },
     closeShowWinner() {
       this.dialogShowWinner = false;
@@ -675,6 +690,7 @@ export default {
     },
     //monto por branches
     showWinnerBranch() {
+      LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/company_winner', {
           params: {
@@ -684,6 +700,7 @@ export default {
         .then((response) => {
           this.winnersbranches = response.data;
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.dialogShowWinnerBranches = true;
         });
     },
@@ -692,6 +709,7 @@ export default {
       this.editedIndexWinB = -1;
     },
     updateDate3() {
+      LocalStorageService.setIsLocked(true);
       this.editedIndex = 2;
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
@@ -705,6 +723,8 @@ export default {
         })
         .then((response) => {
           this.winnersbranches = response.data;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
     },
     exportToExcel1() {

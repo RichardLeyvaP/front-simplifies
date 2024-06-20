@@ -367,29 +367,18 @@ export default {
             return `${year}-${month}-${day}`;*/
         //},*/
         initialize() {
+            LocalStorageService.setIsLocked(true);
             if (this.charge == 'Administrador') {
-                /*axios
-                    .get('https://api2.simplifies.cl/api/professional-show-autocomplete')
-                    .then((response) => {
-                        this.professionals = response.data.professionals;
-                    });*/
                 axios
                     .get('https://api2.simplifies.cl/api/vacation')
                     .then((response) => {
                         this.results = response.data.vacations;
                         this.professionals = response.data.professionals;
-                    });
+                    }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
             } else {
                 console.log('No es administrador');
-                /*axios
-                    .get('https://api2.simplifies.cl/api/professional-show-autocomplete-branch', {
-                        params: {
-                            branch_id: this.branch_id
-                        }
-                    })
-                    .then((response) => {
-                        this.professionals = response.data.professionals;
-                    });*/
                 axios
                     .get('https://api2.simplifies.cl/api/vacation-show', {
                         params: {
@@ -399,7 +388,9 @@ export default {
                     .then((response) => {
                         this.results = response.data.vacations;
                         this.professionals = response.data.professionals;
-                    });
+                    }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
             }
 
 
@@ -420,6 +411,7 @@ export default {
             this.dialogDelete = true;
         },
         deleteItemConfirm() {
+            LocalStorageService.setIsLocked(true);
             //this.results.splice(this.editedIndex, 1)
             let request = {
                 id: this.id
@@ -427,6 +419,7 @@ export default {
             axios
                 .post('https://api2.simplifies.cl/api/vacation-destroy', request)
                 .then(() => {
+                    LocalStorageService.setIsLocked(false);
                     this.showAlert("success", "Días de permisos eliminados correctamente", 3000)
                     this.initialize();
                 })
@@ -449,6 +442,7 @@ export default {
             })
         },
         save() {
+            LocalStorageService.setIsLocked(true);
             if (this.editedIndex > -1) {
                 this.valid = false;
                 this.data.id = this.id,
@@ -460,6 +454,7 @@ export default {
                 axios
                     .put('https://api2.simplifies.cl/api/vacation', this.data)
                     .then(() => {
+                        LocalStorageService.setIsLocked(false);
                         this.initialize();
                         this.professional_id = '',
                         this.description = '';
@@ -478,6 +473,7 @@ export default {
                 axios
                     .post('https://api2.simplifies.cl/api/vacation', this.data)
                     .then(() => {
+                        LocalStorageService.setIsLocked(false);
                         this.professional_id = '',
                         this.description = '';
                         this.startDate = null,

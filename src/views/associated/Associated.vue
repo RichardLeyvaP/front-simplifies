@@ -223,11 +223,14 @@ export default {
    },
 
    initialize() {
+    LocalStorageService.setIsLocked(true);
      axios
        .get('https://api2.simplifies.cl/api/associated')
        .then((response) => {
          this.results = response.data.associates;
-       })
+       }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
    },
    editItem(item) {
      this.editedIndex = 1;
@@ -240,6 +243,7 @@ export default {
      this.dialogDelete = true;
    },
    deleteItemConfirm() {
+    LocalStorageService.setIsLocked(true);
      //this.results.splice(this.editedIndex, 1)
      let request = {
        id: this.editedItem.id
@@ -247,6 +251,7 @@ export default {
      axios
        .post('https://api2.simplifies.cl/api/associated-destroy', request)
        .then(() => {
+        LocalStorageService.setIsLocked(false);
          this.initialize();
          this.showAlert("success","Asociado eliminado correctamente", 3000)
        }).catch(()=>{
@@ -268,7 +273,8 @@ export default {
        this.editedIndex = -1
      })
    },
-    save() {    
+    save() {   
+      LocalStorageService.setIsLocked(true); 
        if (this.editedIndex > -1) {
          this.valid = false,
          this.data.id = this.editedItem.id;
@@ -277,6 +283,7 @@ export default {
          axios
            .put('https://api2.simplifies.cl/api/associated', this.data)
            .then(() => {
+            LocalStorageService.setIsLocked(false);
              this.initialize();
              this.showAlert("success","Asociado editado correctamente", 3000)
            }).catch((error) => {
@@ -291,6 +298,7 @@ export default {
          axios
            .post('https://api2.simplifies.cl/api/associated', this.data)
            .then(() => {
+            LocalStorageService.setIsLocked(false);
              this.initialize();
              this.showAlert("success","Asociado registrado correctamente", 3000)
            }).catch((error) => {

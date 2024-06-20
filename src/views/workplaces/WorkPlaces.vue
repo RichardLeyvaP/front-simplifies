@@ -189,6 +189,7 @@ axios.interceptors.request.use(config => {
         this.branch_id = LocalStorageService.getItem('branch_id');        
         this.charge_id = LocalStorageService.getItem('charge_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
+        LocalStorageService.setIsLocked(true);
         axios
             .get('https://api2.simplifies.cl/api/show-business', {
                 params: {
@@ -198,6 +199,7 @@ axios.interceptors.request.use(config => {
             .then((response) => {
                 this.branches = response.data.branches;
             }).finally(() => {
+              LocalStorageService.setIsLocked(false);
             if (this.charge === 'Administrador') {
                     this.branch_id = this.branches[0].id;
                     this.mostrarFila = true;
@@ -230,7 +232,7 @@ axios.interceptors.request.use(config => {
     },
   
       initialize() {
-
+        LocalStorageService.setIsLocked(true);
         axios
           .get('https://api2.simplifies.cl/api/branch-show', {
             params:{
@@ -239,16 +241,9 @@ axios.interceptors.request.use(config => {
           })
           .then((response) => {
             this.results = response.data.workplaces;
-          });
-          /*axios
-     .get('https://api2.simplifies.cl/api/show-business', {
-       params: {
-         business_id: this.business_id
-       }
-     })
-     .then((response) => {
-       this.branches = response.data.branches;
-     });*/
+          }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
   
       },
       editItem(item) {
@@ -262,6 +257,7 @@ axios.interceptors.request.use(config => {
         this.dialogDelete = true;
       },
       deleteItemConfirm() {
+        LocalStorageService.setIsLocked(true);
         //this.results.splice(this.editedIndex, 1)
         let request = {
           id: this.editedItem.id
@@ -270,6 +266,7 @@ axios.interceptors.request.use(config => {
           .post('https://api2.simplifies.cl/api/workplace-destroy', request)
           .then(() => {
           }).finally(() => {
+            LocalStorageService.setIsLocked(false);
               this.showAlert("success", "Puesto de trabajo eliminado correctamente", 3000);
               this.initialize();
           });
@@ -290,6 +287,7 @@ axios.interceptors.request.use(config => {
         })
       },
       save() {
+        LocalStorageService.setIsLocked(true);
         if (this.editedIndex > -1) {
           this.valid = false;
           this.data.id = this.editedItem.id;
@@ -298,6 +296,7 @@ axios.interceptors.request.use(config => {
             .put('https://api2.simplifies.cl/api/workplace', this.data)
             .then(() => {
             }).finally(() => {
+              LocalStorageService.setIsLocked(false);
                     this.showAlert("success", "Puesto de trabajo editado correctamente", 3000);
                     this.initialize();
           });
@@ -310,6 +309,7 @@ axios.interceptors.request.use(config => {
             .post('https://api2.simplifies.cl/api/workplace', this.data)
             .then(() => {
             }).finally(() => {
+              LocalStorageService.setIsLocked(false);
                     this.showAlert("success", "Puesto de trabajo creado correctamente", 3000);
                     this.initialize();
           });

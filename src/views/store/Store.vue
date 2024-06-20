@@ -232,12 +232,15 @@ export default {
     },
 
     initialize() {
+      LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/store')
         .then((response) => {
           console.log("entra a Buscar almacenes")
           this.results = response.data.stores;
-        })
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
     },
     editItem(item) {
       this.editedIndex = 1;
@@ -250,6 +253,7 @@ export default {
       this.dialogDelete = true;
     },
     deleteItemConfirm() {
+      LocalStorageService.setIsLocked(true);
       //this.results.splice(this.editedIndex, 1)
       let request = {
         id: this.editedItem.id
@@ -257,6 +261,7 @@ export default {
       axios
         .post('https://api2.simplifies.cl/api/store-destroy', request)
         .then(() => {
+          LocalStorageService.setIsLocked(false);
           this.initialize();
           this.showAlert("success", "Almacén eliminado correctamente", 3000)
         }).catch(() => {
@@ -279,6 +284,7 @@ export default {
       })
     },
     save() {
+      LocalStorageService.setIsLocked(true);
       if (this.editedIndex > -1) {
         this.valid = false;
         this.data.id = this.editedItem.id;
@@ -288,6 +294,7 @@ export default {
         axios
           .put('https://api2.simplifies.cl/api/store', this.data)
           .then(() => {
+            LocalStorageService.setIsLocked(false);
             this.initialize();
             this.showAlert("success", "Almacén editado correctamente", 3000)
           })
@@ -299,6 +306,7 @@ export default {
         axios
           .post('https://api2.simplifies.cl/api/store', this.data)
           .then(() => {
+            LocalStorageService.setIsLocked(false);
             this.initialize();
             this.showAlert("success", "Almacén registrado correctamente", 3000)
           })

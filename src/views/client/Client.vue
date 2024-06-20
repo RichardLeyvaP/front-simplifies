@@ -728,6 +728,7 @@ export default {
     this.business_id = parseInt(LocalStorageService.getItem("business_id"));
     this.charge_id = parseInt(LocalStorageService.getItem('charge_id'));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
+    LocalStorageService.setIsLocked(true);
     axios
       .get('https://api2.simplifies.cl/api/show-business', {
         params: {
@@ -737,6 +738,7 @@ export default {
       .then((response) => {
         this.branches = response.data.branches;
       }).finally(() => {
+        LocalStorageService.setIsLocked(false);
         if (this.charge === 'Administrador') {
           this.branch_id = this.branches[0].id;
       this.mostrarFila = true;
@@ -747,6 +749,7 @@ export default {
 
   methods: {
     handleEmailChange() {
+      LocalStorageService.setIsLocked(true);
       axios
         .get("https://api2.simplifies.cl/api/client-email", {
           params: {
@@ -760,6 +763,7 @@ export default {
           this.typeUser = response.data.type;
         })
         .finally(() => {
+          LocalStorageService.setIsLocked(false);
           if(this.typeUser === 'Client'){
             this.dialogEmail = false;
             this.showAlert("warning", "Ya existe un cliente con este correo", 3000);
@@ -820,9 +824,12 @@ export default {
       this.snackbar = true;
     },
     initialize() {
+      LocalStorageService.setIsLocked(true);
       axios.get("https://api2.simplifies.cl/api/client").then((response) => {
         this.results = response.data.clients;
-      });
+      }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
       /*axios
         .get('https://api2.simplifies.cl/api/usuario')
         .then((response) => {
@@ -864,6 +871,7 @@ export default {
     },
 
     deleteItemConfirm() {
+      LocalStorageService.setIsLocked(true);
       //this.results.splice(this.editedIndex, 1)
       let request = {
         id: this.editedItem.id,
@@ -872,6 +880,7 @@ export default {
         .post("https://api2.simplifies.cl/api/client-destroy", request)
         .then(() => {})
         .finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.showAlert("success", "Cliente eliminado correctamente", 3000);
           this.initialize();
         });
@@ -894,6 +903,7 @@ export default {
       });
     },
     save() {
+      LocalStorageService.setIsLocked(true);
       if (this.editedIndex > -1) {
         this.valid = false;
         /*this.data.id = this.editedItem.id;
@@ -910,6 +920,7 @@ export default {
           .post("https://api2.simplifies.cl/api/client-update", formData)
           .then(() => {})
           .finally(() => {
+            LocalStorageService.setIsLocked(false);
             this.showAlert("success", "Cliente editado correctamente", 3000);
             this.initialize();
           });
@@ -928,6 +939,7 @@ export default {
         axios
           .post("https://api2.simplifies.cl/api/client", formData)
           .then(() => {
+            LocalStorageService.setIsLocked(false);
             this.initialize();
             this.showAlert("success", "Cliente registrado correctamente", 3000);
           })
@@ -942,6 +954,7 @@ export default {
       this.close();
     },
     showHistory(item) {
+      LocalStorageService.setIsLocked(true);
       console.log("Client History");
       axios
         .get("https://api2.simplifies.cl/api/client-history", {
@@ -954,6 +967,7 @@ export default {
           this.history = response.data.clientHistory;
         })
         .finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.dialogHistory = true;
         });
     },
@@ -961,6 +975,7 @@ export default {
       this.dialogHistory = false;
     },
     ClientsFrecuence() {
+      LocalStorageService.setIsLocked(true);
       this.editedIndex = 2;
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
@@ -975,6 +990,7 @@ export default {
         .then((response) => {
           this.frecuence = response.data;
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.dialogFrecuence = true;
           });
     },
@@ -991,6 +1007,7 @@ export default {
       this.menu2 = false;
     },
     updateDate2() {
+      LocalStorageService.setIsLocked(true);
       this.editedIndexF = 2;
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
@@ -1004,6 +1021,8 @@ export default {
         })
         .then((response) => {
           this.frecuence = response.data;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
     },
     exportToExcel() {

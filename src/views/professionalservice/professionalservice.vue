@@ -389,6 +389,7 @@ export default {
     this.charge_id = LocalStorageService.getItem('charge_id');
     this.branch_id = LocalStorageService.getItem('branch_id');
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
+    LocalStorageService.setIsLocked(true);
     axios
       .get('https://api2.simplifies.cl/api/show-business', {
         params: {
@@ -398,6 +399,7 @@ export default {
       .then((response) => {
         this.branches = response.data.branches;
       }).finally(() => {
+        LocalStorageService.setIsLocked(false);
         if (this.charge === 'Administrador') {
           this.branch_id = this.branches[0].id;
           this.mostrarFila = true;
@@ -470,7 +472,7 @@ export default {
     },
 
     desasignService() {
-
+      LocalStorageService.setIsLocked(true);
       console.log('*********DATOS POARA ENVIAR PARA LA API***************');
       console.log('this.professional');
       console.log(this.professional[0]);
@@ -484,6 +486,7 @@ export default {
       axios
         .post('https://api2.simplifies.cl/api/professionalservice-destroy', request)
         .then(() => {
+          LocalStorageService.setIsLocked(false);
           this.showAlert("success", "Desasignado correctamente", 3000);
           this.profitPercen = '';
           this.getServicesProfessional();
@@ -500,6 +503,7 @@ export default {
     },
     asignService()//todooo
     {
+      LocalStorageService.setIsLocked(true);
       console.log('*********DATOS POARA ENVIAR PARA LA API***************');
       console.log('this.profitPercen');
       console.log(this.profitPercen);
@@ -530,6 +534,7 @@ export default {
 
       axios.post('https://api2.simplifies.cl/api/professionalservice', request)
         .then(() => {
+          LocalStorageService.setIsLocked(false);
           this.showAlert("success", "Servicio asignado correctamente", 3000);
           this.profitPercen = '';
           //this.professional = '';
@@ -546,7 +551,7 @@ export default {
         });
     },
     metaService() {
-
+      LocalStorageService.setIsLocked(true);
         console.log('*********DATOS POARA ENVIAR PARA LA API***************');
         console.log('this.professional');
         console.log(this.professional[0]);
@@ -561,6 +566,7 @@ export default {
         axios
           .post('https://api2.simplifies.cl/api/professionalservice-meta', request)
           .then(() => {
+            LocalStorageService.setIsLocked(false);
             this.showAlert("success", "Servicio Asignado como meta", 3000);
             this.profitPercen = '';
             this.getServicesProfessional();
@@ -577,7 +583,7 @@ export default {
     },
 
     metaServiceDelete() {
-
+      LocalStorageService.setIsLocked(true);
 console.log('*********DATOS POARA ENVIAR PARA LA API***************');
 console.log('this.professional');
 console.log(this.professional[0]);
@@ -592,6 +598,7 @@ let request = {
 axios
   .post('https://api2.simplifies.cl/api/professionalservice-meta', request)
   .then(() => {
+    LocalStorageService.setIsLocked(false);
     this.showAlert("success", "Servicio Asignado como meta", 3000);
     this.profitPercen = '';
     this.getServicesProfessional();
@@ -667,6 +674,7 @@ axios
     },
 
     getServicesProfessional() {
+      LocalStorageService.setIsLocked(true);
       //LLAMAR AL METODO
       //DADO EL ID DEL PROFESSIONAL Y LA BRANCH
       const idProfessional = this.professional[0];
@@ -686,6 +694,7 @@ axios
           }
         })
         .then((response) => {
+          LocalStorageService.setIsLocked(false);
           console.log(response.data.metaData)
           //this.services = response.data.branchServices;
           this.servicesAsig = response.data.assignedServices;
@@ -776,7 +785,7 @@ axios
     },*/
 
     chargeProfessionals() {
-
+      LocalStorageService.setIsLocked(true);
       //const newArrayService = valueServices.map(item => parseInt(item)); // Convertir a enteros si es necesario
       //console.log(newArrayService);
       this.servicesAsig = [];
@@ -801,6 +810,7 @@ axios
           params: data
         })
         .then((response) => {
+          LocalStorageService.setIsLocked(false);
           this.professionals = response.data.professionals;
           console.log('estos son los profesionales');
           console.log(response.data);

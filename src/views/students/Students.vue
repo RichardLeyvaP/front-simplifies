@@ -317,19 +317,6 @@ methods: {
     this.loadingImage = false;
   };
 },
-  /*openModal(imageUrl) {
-      
-      var img = new Image();
-      img.src = 'https://api2.simplifies.cl/api/images/' + imageUrl;
-      img.onload = () => {
-      this.selectedImageUrl = 'https://api2.simplifies.cl/api/images/' + imageUrl; 
-      };
-      img.onerror = () => {
-        this.selectedImageUrl = '';
-      };
-     // alert(this.selectedImageUrl)// Establece la imagen seleccionada
-      this.dialogPhoto = true; // Abre el modal
-    },*/
   imagenDisponible() {
       if (this.imgedit !== undefined && this.imgedit !== '') {
       
@@ -367,16 +354,14 @@ showAlert(sb_type,sb_message, sb_timeout)
  this.snackbar= true
 },
 initialize() {
+  LocalStorageService.setIsLocked(true);
  axios
    .get('https://api2.simplifies.cl/api/student')
    .then((response) => {
      this.results = response.data.clients;
-   });
-   /*axios
-   .get('https://api2.simplifies.cl/api/usuario')
-   .then((response) => {
-     this.users = response.data.users;
-   });*/
+   }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
 },
 onFileSelected(event) {
       let file = event.target.files[0];
@@ -412,6 +397,7 @@ deleteItem(item) {
 },
 
 deleteItemConfirm() {
+  LocalStorageService.setIsLocked(true);
  //this.results.splice(this.editedIndex, 1)
  let request = {
    id: this.editedItem.id
@@ -419,6 +405,7 @@ deleteItemConfirm() {
  axios
    .post('https://api2.simplifies.cl/api/student-destroy', request)
    .then(() => {
+    LocalStorageService.setIsLocked(false);
      this.initialize();
      this.message_delete = true
      this.showAlert("success","Estudiante eliminado correctamente", 3000)
@@ -442,6 +429,7 @@ closeDelete() {
  })
 },
 save() {
+  LocalStorageService.setIsLocked(true);
  if (this.editedIndex > -1) {
    this.valid = false;
    const formData = new FormData();
@@ -451,6 +439,7 @@ save() {
    axios
      .post('https://api2.simplifies.cl/api/student-update', formData)
      .then(() => {
+      LocalStorageService.setIsLocked(false);
        this.initialize();
       this.showAlert("success","Estudiante editado correctamente", 3000)
       this.imgMiniatura = '';
@@ -469,6 +458,7 @@ save() {
    axios
      .post('https://api2.simplifies.cl/api/student', formData)
      .then(() => {
+      LocalStorageService.setIsLocked(false);
        this.initialize();
        this.showAlert("success","Estudiante registrado correctamente", 3000)
        this.imgMiniatura = '';

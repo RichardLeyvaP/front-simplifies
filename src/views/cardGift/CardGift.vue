@@ -604,6 +604,7 @@ export default {
 
   methods: {
     handleEmailChange() {
+      LocalStorageService.setIsLocked(true);
       axios
         .get("https://api2.simplifies.cl/api/client-email", {
           params: {
@@ -617,6 +618,7 @@ export default {
           this.typeUser = response.data.type;
         })
         .finally(() => {
+          LocalStorageService.setIsLocked(false);
           if(this.typeUser === 'Client'){
             this.dialogEmail = false;
             this.showAlert("warning", "Ya existe un cliente con este correo", 3000);
@@ -679,10 +681,13 @@ export default {
       this.snackbar = true
     },
     initialize() {
+      LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/card-gift')
         .then((response) => {
           this.results = response.data.cardGifts;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
     },
     //Users
@@ -710,10 +715,13 @@ export default {
       this.dialogCardGitfUser = true;
     },
     showAddClient(){
+      LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/client-autocomplete')
         .then((response) => {
           this.users = response.data.clients;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
         this.dialogAddCardGift = true;
     },
@@ -758,6 +766,7 @@ export default {
     },
 
     deleteItemConfirm() {
+      LocalStorageService.setIsLocked(true);
       //this.results.splice(this.editedIndex, 1)
       let request = {
         id: this.editedItem.id
@@ -767,6 +776,7 @@ export default {
         .then(() => {
           this.dialogDelete = false;
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.showAlert("success", "Tarjeta de regalo eliminada correctamente", 3000);
           this.initialize();
           });
@@ -804,6 +814,7 @@ export default {
       this.dialogDelete = false;
     },
     requestDelete() {
+      LocalStorageService.setIsLocked(true);
       let request = {
         id: this.editedCardGiftUser.id
       };
@@ -812,6 +823,7 @@ export default {
         .then(() => {
           this.dialogRequestStore = false;
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.showCardGifts(this.cardSelect);
           this.showAlert("success", "Asignacion eliminada correctamente", 3000);
           this.$nextTick(() => {
@@ -820,6 +832,7 @@ export default {
           });
     },
     save() {
+      LocalStorageService.setIsLocked(true);
       if (this.editedIndex > -1) {
         //console.log(this.editedItem.id);
         this.valid = false;
@@ -835,6 +848,7 @@ export default {
             this.file = null;
 
           }).finally(() => {
+            LocalStorageService.setIsLocked(false);
             this.showAlert("success", "Tarjeta de Regalo editada correctamente", 3000);
             this.initialize();
           });
@@ -848,6 +862,7 @@ export default {
           .post('https://api2.simplifies.cl/api/card-gift', formData)
           .then(() => {
           }).finally(() => {
+            LocalStorageService.setIsLocked(false);
             this.showAlert("success", "Tarjeta de Regalo registrada correctamente", 3000);
             this.initialize();
           });
@@ -869,6 +884,7 @@ export default {
       //this.showCardGifts(this.cardSelect)
     },
     saveStore() {
+      LocalStorageService.setIsLocked(true);
       this.valid = false,
         this.data.card_gift_id = this.cardSelect.id;
       this.data.user_id = this.editedCardGiftUser.user_id;
@@ -885,6 +901,7 @@ export default {
           });
           this.dialogAddCardGift = false;
         }).finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.showAlert("success", "Tarjeta asignada correctamente al usuario", 3000);
           this.showCardGifts(this.cardSelect);
           });
@@ -900,6 +917,7 @@ export default {
     },
     saveClient()
       {
+        LocalStorageService.setIsLocked(true);
         this.valid = false;
         /*this.data.name = this.editedItem.name;
         this.data.name = this.editedItem.name;
@@ -920,6 +938,8 @@ export default {
           }).catch(error => {
             if(error.response.status == '400')
           this.showAlert("warning", 'Correo ya existe', 3000);
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
         //this.showCardGifts(this.cardSelect);
         this.closeClient();

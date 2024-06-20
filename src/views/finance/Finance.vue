@@ -571,6 +571,7 @@ export default {
     },
 
     mounted() {
+        LocalStorageService.setIsLocked(true);
         this.business_id = parseInt(LocalStorageService.getItem('business_id'));
         this.charge_id = parseInt(LocalStorageService.getItem('charge_id'));
         this.branch_id = parseInt(LocalStorageService.getItem('branch_id'));
@@ -588,7 +589,9 @@ export default {
                 this.expenses = response.data.expenses;
                 this.revenues = response.data.revenues;
                 //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-            });
+            }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
         // Obtener el año actual
         const currentYear = new Date().getFullYear();
         // Llenar el arreglo years con los años, desde 2010 hasta el año actual
@@ -597,36 +600,6 @@ export default {
         }
         // Establecer el año actual como el seleccionado por defecto
         this.selectedYear = currentYear;
-        /*axios
-            .get('https://api2.simplifies.cl/api/show-business', {
-                params: {
-                    business_id: this.business_id
-                }
-            })
-            .then((response) => {
-                this.branches = response.data.branches;
-                //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-            });
-        axios
-            .get('https://api2.simplifies.cl/api/enrollment-show', {
-                params: {
-                    business_id: this.business_id
-                }
-            })
-            .then((response) => {
-                this.enrollments = response.data.enrollments;
-                console.log('this.enrollments');
-                console.log(this.enrollments);
-
-            });
-        axios
-            .get('https://api2.simplifies.cl/api/business')
-            .then((response) => {
-                this.business = response.data.business;
-                console.log('this.business');
-                console.log(this.business);
-
-            });*/
         if (this.charge === 'Administrador') {
             // Mostrar la fila con Autocomplete
             this.editedItem.type = 'Negocio';
@@ -645,20 +618,6 @@ export default {
             this.mostrarFila = false;
             this.initialize();
         }
-        /*axios
-            .get('https://api2.simplifies.cl/api/expense')
-            .then((response) => {
-                this.expenses = response.data.expenses;
-                console.log('this.expenses');
-                console.log(this.expenses);
-            });
-        axios
-            .get('https://api2.simplifies.cl/api/revenue')
-            .then((response) => {
-                this.revenues = response.data.revenues;
-            });*/
-
-        //this.initialize();
         console.log(this.charge_id);
     },
 
@@ -804,6 +763,7 @@ export default {
             this.snackbar = true
         },
         initialize() {
+            LocalStorageService.setIsLocked(true);
             //const token = LocalStorageService.getItem('token');
             this.totalIngresos = 0;
             this.totalGastos = 0;
@@ -841,6 +801,7 @@ export default {
                     /*console.log('this.editedItem.control');
                     console.log(this.editedItem.control);*/
                 }).finally(() => {
+                    LocalStorageService.setIsLocked(false);
                     this.loading = false;
                     this.totalIngresos = this.results.reduce((total, item) => {
                         // Verifica si el campo "revenue" tiene un valor numérico
@@ -919,6 +880,7 @@ export default {
             console.log(this.editedItem);
         },
         deleteItemConfirm() {
+            LocalStorageService.setIsLocked(true);
             this.data.id = this.editedItem.id;
             axios
                 .post('https://api2.simplifies.cl/api/finance-destroy', this.data)
@@ -927,6 +889,7 @@ export default {
                 }).finally(() => {
                     this.showAlert("success", "Operación eliminada correctamente", 3000);
                     //this.initialize();
+                    LocalStorageService.setIsLocked(false);
                 });
             this.closeDelete()
         },
@@ -955,6 +918,7 @@ export default {
             //this.initialize();
         },
         save() {
+            LocalStorageService.setIsLocked(true);
             if (this.editedIndex > -1) {
                 this.valid = false;
                 //this.editedItem.branch_id = this.branch_id;  
@@ -977,6 +941,7 @@ export default {
                             this.editedItem.id = '',
                             this.file = '';
                     }).finally(() => {
+                        LocalStorageService.setIsLocked(false);
                         this.showAlert("success", "Operación editada correctamente", 3000);
                         this.initialize();
                     });
@@ -1003,6 +968,7 @@ export default {
                             this.editedItem.id = '',
                             this.file = '';
                     }).finally(() => {
+                        LocalStorageService.setIsLocked(false);
                         this.showAlert("success", "Registro de operación creado correctamente", 3000);
                         this.initialize();
                     });

@@ -933,6 +933,7 @@ export default {
         this.branch_id = LocalStorageService.getItem('branch_id');
         this.charge_id = LocalStorageService.getItem('charge_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
+        LocalStorageService.setIsLocked(true);
         axios
             .get('https://api2.simplifies.cl/api/show-business', {
                 params: {
@@ -942,6 +943,7 @@ export default {
             .then((response) => {
                 this.branches = response.data.branches;
             }).finally(() => {
+                LocalStorageService.setIsLocked(false);
                 if (this.charge === 'Administrador') {
                     this.branch_id = this.branches[0].id;
                     this.mostrarFila = true;
@@ -1078,6 +1080,7 @@ export default {
         },
 
         initialize() {
+            LocalStorageService.setIsLocked(true);
             this.professionals = [];
             this.professional_id = '';
 
@@ -1089,10 +1092,13 @@ export default {
                 })
                 .then((response) => {
                     this.results = response.data.professionals;
-                });
+                }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
         },
         showAddPago() {
             if (this.charge == 'Barbero' || this.charge == 'Barbero y Encargado') {
+                LocalStorageService.setIsLocked(true);
                 axios
                     .get('https://api2.simplifies.cl/api/professional-car-notpay', {
                         params: {
@@ -1113,7 +1119,9 @@ export default {
                         }*/
                         this.mostrarCars = true;
                         this.mostrarDoc = true;
-                    });
+                    }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
                 this.dialog = true;
             } else {
                 this.dialogOtros = true;
@@ -1185,6 +1193,7 @@ export default {
         },
 
         showProfessional() {
+            LocalStorageService.setIsLocked(true);
             axios
                 .get('https://api2.simplifies.cl/api/professional-payment-show', {
                     params: {
@@ -1203,6 +1212,7 @@ export default {
                         //this.mostrarType = true;
                     }*/
                 }).finally(() =>{
+                    LocalStorageService.setIsLocked(false);
                     this.bonoconvivencia = this.professionalPayment.reduce((total, item) => {
                         // Verifica si el campo "revenue" tiene un valor numérico
                         if (item.type === 'Bono convivencias') {
@@ -1240,6 +1250,7 @@ export default {
             this.dialogBarberoEncargado = true;
         },
         showProfessionalPeriodo() {
+            LocalStorageService.setIsLocked(true);
             this.search3 = '';
             const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
             const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
@@ -1254,7 +1265,9 @@ export default {
                 })
                 .then((response) => {
                     this.professionalPayment = response.data;
-                });
+                }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
         },
         deleteItem(item) {
             this.editedIndex = -1;
@@ -1262,6 +1275,7 @@ export default {
             this.dialogDelete = true;
         },
         deleteItemConfirm() {
+            LocalStorageService.setIsLocked(true);
             //this.results.splice(this.editedIndex, 1)
             let request = {
                 id: this.editedItem.id
@@ -1271,6 +1285,7 @@ export default {
                 .then(() => {
                     this.showAlert("success", "Pago eliminado correctamente", 3000);
                 }).finally(() => {
+                    LocalStorageService.setIsLocked(false);
                     this.showProfessional();
                 });
             this.closeDelete()
@@ -1307,6 +1322,7 @@ export default {
 
         },
         save() {
+            LocalStorageService.setIsLocked(true);
             this.valid = false;
             console.log('this.ironValues');
             console.log(this.selected2);
@@ -1341,6 +1357,7 @@ export default {
                     this.selected2 = [];
                     this.mostrarCars = false;
                 }).finally(() => {
+                    LocalStorageService.setIsLocked(false);
                     this.showAlert("success", "Pago realizado correctamente", 3000);
                     this.showProfessional();
                 });
@@ -1348,6 +1365,7 @@ export default {
         },
         //course
         saveCourse() {
+            LocalStorageService.setIsLocked(true);
             this.valid = false;
             /* if (this.editedIndex > -1) {
                  this.data.id = this.editedItem.id;
@@ -1382,6 +1400,7 @@ export default {
                     this.selectedCourse = [];
                     this.mostrarDoc = false;
                 }).finally(() => {
+                    LocalStorageService.setIsLocked(false);
                     this.showAlert("success", "Pago realizado correctamente", 3000);
                     this.showProfessional();
                 });
@@ -1399,6 +1418,7 @@ export default {
             this.close();
         },
         saveOtros() {
+            LocalStorageService.setIsLocked(true);
             this.valid = false;
         
             this.data.professional_id = this.professional_id;
@@ -1417,6 +1437,7 @@ export default {
                     this.type = null;
                     this.mostrarCars = false;
                 }).finally(() => {
+                    LocalStorageService.setIsLocked(false);
                     this.showAlert("success", "Pago realizado correctamente", 3000);
                     this.showProfessional();
                 });
@@ -1464,6 +1485,7 @@ export default {
         },
         //cajeros
         showCashier() {
+            LocalStorageService.setIsLocked(true);
             axios
                 .get('https://api2.simplifies.cl/api/operation-tip', {
                     params: {
@@ -1473,10 +1495,13 @@ export default {
                 })
                 .then((response) => {
                     this.results1 = response.data;
-                });
+                }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
             this.dialogCashier = true;
         },
         showPay() {
+            LocalStorageService.setIsLocked(true);
             console.log('Entra aqui a pagos realizados');
             //this.editedIndex1 = 1;
             //this.state=true;
@@ -1495,7 +1520,9 @@ export default {
                 })
                 .then((response) => {
                     this.results1 = response.data;
-                });
+                }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
         },
         cashierDelete() {
             this.dialogCashier = false;
@@ -1508,6 +1535,7 @@ export default {
             this.dialogDeleteCashier = true;
         },
         deleteItemConfirmCashier() {
+            LocalStorageService.setIsLocked(true);
             //this.results.splice(this.editedIndex, 1)
             let request = {
                 id: this.editedItem.id,
@@ -1517,12 +1545,14 @@ export default {
                 .post('https://api2.simplifies.cl/api/operation-tip-destroy', request)
                 .then(() => {
                 }).finally(() => {
+                    LocalStorageService.setIsLocked(false);
                     this.showAlert("success", "Pago eliminado correctamente", 3000);
                     this.showCashier();
                 });
             this.closeDelete()
         },
         showAddOperationTip() {
+            LocalStorageService.setIsLocked(true);
             axios
                 .get('https://api2.simplifies.cl/api/cashier-car-notpay', {
                     params: {
@@ -1533,10 +1563,13 @@ export default {
                 .then((response) => {
                     this.cars1 = response.data.cars;
                     this.cashierSales = response.data.sales;
-                });
+                }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
             this.dialogCashierCars = true;
         },
         saveCashier() {
+            LocalStorageService.setIsLocked(true);
             this.valid = false;
             /* if (this.editedIndex > -1) {
                  this.data.id = this.editedItem.id;
@@ -1581,6 +1614,7 @@ export default {
                     this.selected2 = [];
                     this.mostrarCars = false;
                 }).finally(() => {
+                    LocalStorageService.setIsLocked(false);
                     this.showAlert("success", "Pago realizado correctamente", 3000);
                     this.showCashier();
                 });
@@ -1598,6 +1632,7 @@ export default {
             this.close();
         },
         saveCashierProduct() {
+            LocalStorageService.setIsLocked(true);
             this.valid = false;
             this.data.professional_id = this.professional_id;
             this.data.branch_id = this.branch_id;
@@ -1618,6 +1653,7 @@ export default {
                     this.selected2 = [];
                     this.mostrarCars = false;
                 }).finally(() => {
+                    LocalStorageService.setIsLocked(false);
                     this.showAlert("success", "Pago realizado correctamente", 3000);
                     this.showCashier();
                 });

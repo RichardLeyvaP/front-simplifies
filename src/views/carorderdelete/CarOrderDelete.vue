@@ -337,7 +337,7 @@ export default {
         },
 
         initialize() {
-
+            LocalStorageService.setIsLocked(true);
             axios
                 .get('https://api2.simplifies.cl/api/branch-cars-delete', {
                     params: {
@@ -350,10 +350,13 @@ export default {
                     this.results2 = response.data.cashier;
                     console.log('this.results2 productos');
                     console.log(this.results2);
-                });
+                }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
         },
 
         deleteItem(item) {
+            LocalStorageService.setIsLocked(true);
             let request = {
                 id: item.id,
                 professional_id: this.professional_id
@@ -362,12 +365,14 @@ export default {
                 .post('https://api2.simplifies.cl/api/car-destroy', request)
                 .then(() => {
                 }).finally(() => {
+                    LocalStorageService.setIsLocked(false);
                     this.initialize();
                     this.showAlert("success", "Carro eliminado correctamente", 3000)
                 });
         },
 
         editItem(item) {
+            LocalStorageService.setIsLocked(true);
             let request = {
                 id: item.id,
                 professional_id: this.professional_id
@@ -376,6 +381,7 @@ export default {
                 .post('https://api2.simplifies.cl/api/car-denegada', request)
                 .then(() => {
                 }).finally(() => {
+                    LocalStorageService.setIsLocked(false);
                     this.initialize();
                     this.showAlert("success", "Solicitud denegada correctamente", 3000)
                 });
@@ -385,6 +391,7 @@ export default {
 
         //eliminar orden
         deleteItemOrder(item) {
+            LocalStorageService.setIsLocked(true);
             let request = {
                 id: item.id,
                 professional_id: this.professional_id
@@ -394,12 +401,14 @@ export default {
                 .then(() => {
                     //this.initialize();
                 }).finally(() => {
+                    LocalStorageService.setIsLocked(false);
                     this.initialize();
                     this.showAlert("success", "Orden eliminada correctamente", 3000);
                 });
         },
 
         editItemOrder(item) {
+            LocalStorageService.setIsLocked(true);
             let request = {
                 id: item.id,
                 professional_id: this.professional_id
@@ -408,6 +417,7 @@ export default {
                 .post('https://api2.simplifies.cl/api/order-denegar', request)
                 .then(() => {
                 }).finally(() => {
+                    LocalStorageService.setIsLocked(false);
                     this.initialize();
                     this.showAlert("success", "Solicitud denegada correctamente", 3000)
                 });
@@ -415,6 +425,7 @@ export default {
 
          //eliminar orden
          deleteItemProduct(item) {
+            LocalStorageService.setIsLocked(true);
             let request = {
                 id: item.id,
                 professional_id: this.professional_id
@@ -424,12 +435,14 @@ export default {
                 .then(() => {
                     //this.initialize();
                 }).finally(() => {
+                    LocalStorageService.setIsLocked(false);
                     this.initialize();
                     this.showAlert("success", "Productos eliminados correctamente", 3000);
                 });
         },
         //eliminar productos
         editItemProduct(item) {
+            LocalStorageService.setIsLocked(true);
             let request = {
                 id: item.id,
                 professional_id: this.professional_id
@@ -438,6 +451,7 @@ export default {
                 .post('https://api2.simplifies.cl/api/cashiersale-denegar', request)
                 .then(() => {
                 }).finally(() => {
+                    LocalStorageService.setIsLocked(false);
                     this.initialize();
                     this.showAlert("success", "Solicitud denegada correctamente", 3000)
                 });

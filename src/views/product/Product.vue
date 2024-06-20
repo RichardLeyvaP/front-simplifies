@@ -432,12 +432,14 @@ export default {
   },
 
   mounted() {
+    LocalStorageService.setIsLocked(true);
     axios
       .get("https://api2.simplifies.cl/api/product-category")
       .then((response) => {
         this.productCategories = response.data.productcategories;
       })
       .finally(() => {
+        LocalStorageService.setIsLocked(false);
         this.initialize();
       });
   },
@@ -510,9 +512,11 @@ export default {
       this.snackbar = true;
     },
     initialize() {
+      LocalStorageService.setIsLocked(true);
       axios.get("https://api2.simplifies.cl/api/product").then((response) => {
         this.results = response.data.products;
-      }).finally(() => {        
+      }).finally(() => {  
+        LocalStorageService.setIsLocked(false);      
         this.loading = false;
       });
     },
@@ -557,11 +561,13 @@ export default {
     },
 
     deleteItemConfirm() {
+      LocalStorageService.setIsLocked(true);
       //this.results.splice(this.editedIndex, 1)
       let request = {
         id: this.editedItem.id,
       };
       axios.post("https://api2.simplifies.cl/api/product-destroy", request).then(() => {
+        LocalStorageService.setIsLocked(false);
         this.initialize();
         this.message_delete = true;
         this.showAlert("success", "Producto eliminado correctamente", 3000);
@@ -588,6 +594,7 @@ export default {
       });
     },
     save() {
+      LocalStorageService.setIsLocked(true);
       if (this.editedIndex > -1) {
         this.valid = false;
         this.editedItem.sale_price = this.editedItem.sale_price
@@ -598,6 +605,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios.post("https://api2.simplifies.cl/api/product-update", formData).then(() => {
+          LocalStorageService.setIsLocked(false);
           this.initialize();
           this.showAlert("success", "Producto editado correctamente", 3000);
           this.imgMiniatura = "";
@@ -611,6 +619,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios.post("https://api2.simplifies.cl/api/product", formData).then(() => {
+          LocalStorageService.setIsLocked(false);
           this.initialize();
           this.showAlert("success", "Producto registrado correctamente", 3000);
           this.imgMiniatura = "";
@@ -623,12 +632,15 @@ export default {
 
     //Productos mas vendidos
     showMostSold() {
+      LocalStorageService.setIsLocked(true);
       console.log('Entra aqui a mejores aisitencias');
       this.editedIndex1 = 1;
       axios
         .get('https://api2.simplifies.cl/api/product-mostSold')
         .then((response) => {
           this.results1 = response.data;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
       this.dialogMostSold = true;
     },
@@ -639,6 +651,7 @@ export default {
       this.input2 = null;
     },
     updateDate2() {
+      LocalStorageService.setIsLocked(true);
       this.editedIndex1 = 2;
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
@@ -652,6 +665,8 @@ export default {
         })
         .then((response) => {
           this.results1 = response.data;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
         });
     },
     exportToExcel1() {

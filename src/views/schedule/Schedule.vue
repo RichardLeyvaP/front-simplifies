@@ -148,6 +148,7 @@ export default {
         this.charge_id = LocalStorageService.getItem('charge_id');
         this.branch_id = LocalStorageService.getItem('branch_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
+        LocalStorageService.setIsLocked(true);
         axios
             .get('https://api2.simplifies.cl/api/show-business', {
                 params: {
@@ -157,6 +158,7 @@ export default {
             .then((response) => {
                 this.branches = response.data.branches;
             }).finally(() => {
+                LocalStorageService.setIsLocked(false);
             if (this.charge === 'Administrador') {
                     this.branch_id = this.branches[0].id;
                     this.mostrarFila = true;
@@ -187,6 +189,7 @@ export default {
             this.snackbar = true
         },
         initialize() {
+            LocalStorageService.setIsLocked(true);
             axios
                 .get('https://api2.simplifies.cl/api/show_schedule_branch', {
                     params: {
@@ -196,6 +199,7 @@ export default {
                 .then((response) => {
                     this.results = response.data;
                 }).finally(() => {
+                    LocalStorageService.setIsLocked(false);
                     this.dias = this.results.Schedules.map(schedule => ({
                         nombre: schedule.day,
                         esLaboral: schedule.start_time !== null || schedule.closing_time !== null,
@@ -208,26 +212,10 @@ export default {
         },
 
         save() {
-            //const start_time;
-            //const closing_time;
+            LocalStorageService.setIsLocked(true);
 
             const updatedData = this.dias.map(dia => {
-                /*const start_time = null;
-                    const closing_time = null;
-                    console.log('dia.esLaboral');
-                console.log(dia.esLaboral);
-                if(dia.esLaboral === false){
-                    const start_time = null;
-                    const closing_time = null;
-                }
-                else{
-                    const start_time = (dia.entradaHora || dia.entradaMinuto) ? `${dia.entradaHora}:${dia.entradaMinuto}` : null;
-                    const closing_time = (dia.salidaHora || dia.salidaMinuto) ? `${dia.salidaHora}:${dia.salidaMinuto}` : null;
-                }*/
-                /*console.log('start_time');
-                console.log(start_time);
-                console.log('closing_time');
-                console.log(closing_time);*/
+        
                 console.log('`${dia.entradaHora}:${dia.entradaMinuto}`');
                 console.log(`${dia.entradaHora}:${dia.entradaMinuto}`);
                 console.log('`${dia.salidaHora}:${dia.salidaMinuto}`');
@@ -255,22 +243,13 @@ export default {
             console.log(request);
             axios.put('https://api2.simplifies.cl/api/schedule', request)
                 .then(() => {
+                    LocalStorageService.setIsLocked(false);
                     this.initialize();
                     this.showAlert("success", "Horario actualizado correctamente", 3000);
                 }).catch(error => {
                     // Maneja cualquier error que ocurra al enviar los datos al servidor
                     this.showAlert("warning", "Error interno del sistema", 3000);
                 });
-            /*// Envía los datos actualizados al servidor utilizando Axios o Fetch
-            axios.put('http://tu-api.com/actualizar-todos-los-datos', updatedData)
-                .then(response => {
-                    // Maneja la respuesta del servidor si es necesario
-                    console.log('Datos actualizados correctamente en el servidor');
-                })
-                .catch(error => {
-                    // Maneja cualquier error que ocurra al enviar los datos al servidor
-                    console.error('Error al actualizar datos en el servidor:', error);
-                });*/
         }
     },
 };

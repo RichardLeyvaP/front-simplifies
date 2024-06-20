@@ -214,6 +214,7 @@ export default {
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         this.branch_id = LocalStorageService.getItem('branch_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
+        LocalStorageService.setIsLocked(true);
         axios
             .get('https://api2.simplifies.cl/api/show-business', {
                 params: {
@@ -223,6 +224,7 @@ export default {
             .then((response) => {
                 this.branches = response.data.branches;                
             }).finally(() => {
+                LocalStorageService.setIsLocked(false);
         if (this.charge === 'Administrador') 
             {
                 this.branch_id = this.branches[0].id;
@@ -260,6 +262,7 @@ export default {
             this.snackbar = true
         },
         initialize() {
+            LocalStorageService.setIsLocked(true);
             axios
                 .get('https://api2.simplifies.cl/api/branch_rules', {
                     params: {
@@ -268,10 +271,13 @@ export default {
                 })
                 .then((response) => {
                     this.results = response.data.rules;
-                });
+                }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
         },
 
         showAddRules(){
+            LocalStorageService.setIsLocked(true);
             axios
                 .get('https://api2.simplifies.cl/api/branch-rules-noIn', {
                     params: {
@@ -280,7 +286,9 @@ export default {
                 })
                 .then((response) => {
                     this.rules = response.data.rules;
-                });
+                }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
                 this.dialog = true;
         },
         deleteItem(item) {
@@ -290,6 +298,7 @@ export default {
             console.log(this.editedItem);
         },
         deleteItemConfirm() {
+            LocalStorageService.setIsLocked(true);
             this.data.branch_id = this.branch_id;
             this.data.rule_id = this.editedItem.rule_id;
             axios
@@ -297,6 +306,7 @@ export default {
                 .then(() => {
                     this.message_delete = true;
                 }).finally(() => {
+                    LocalStorageService.setIsLocked(false);
                     this.showAlert("success", "Asignación eliminada correctamente", 3000);
                     this.initialize();
           });
@@ -319,6 +329,7 @@ export default {
             })
         },
         save() {
+            LocalStorageService.setIsLocked(true);
             if (this.editedIndex === -1) {
                 console.log('insertar');
                 this.valid = false;
@@ -328,6 +339,7 @@ export default {
                     .post('https://api2.simplifies.cl/api/branchrule', this.data)
                     .then(() => {
                     }).finally(() => {
+                        LocalStorageService.setIsLocked(false);
                         this.showAlert("success", "Regla de convivencia asignada correctamente", 3000);
                         this.initialize();
                 });
