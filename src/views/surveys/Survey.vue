@@ -88,7 +88,7 @@
           <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details></v-text-field>
    <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search" :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
-     no-results-text="No hay datos disponibles">
+     no-results-text="No hay datos disponibles" :loading="loadingSurvey" loading-text="Cargando datos...">
      <template v-slot:item.actions="{ item }">
        <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
          mdi-pencil
@@ -123,6 +123,7 @@ axios.interceptors.request.use(config => {
 export default {
 
  data: () => ({
+  loadingSurvey: true,
    valid: true,
    snackbar: false,
    sb_type: '',
@@ -211,6 +212,7 @@ export default {
    },
 
    initialize() {
+    this.loadingSurvey = true;
     LocalStorageService.setIsLocked(true);
      axios
        .get('https://api2.simplifies.cl/api/survey')
@@ -218,6 +220,7 @@ export default {
          this.results = response.data.surveys;
        }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingSurvey = false;
         });
    },
    editItem(item) {

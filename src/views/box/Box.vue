@@ -503,7 +503,7 @@
 
             <v-data-table :headers="headers2" :items="orders" :search="search2" class="elevation-1"
               :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
-              no-data-text="No hay datos disponibles">
+              no-data-text="No hay datos disponibles" :loading="loadingOrders" loading-text="Cargando datos...">
 
               <template v-slot:item.image="{ item }">
 
@@ -783,7 +783,7 @@
 
             <v-data-table v-model="selected" :headers="headers4" :items-per-page-text="'Elementos por páginas'"
               :items="cashierSalesProf" :search="search4" class="elevation-1" no-results-text="No hay datos disponibles"
-              no-data-text="No hay datos disponibles" :item-selectable="isSelectable" show-select>
+              no-data-text="No hay datos disponibles" :item-selectable="isSelectable" show-select :loading="loadingCashier" loading-text="Cargando datos...">
 
               <template v-slot:item.name="{ item }">
 
@@ -983,7 +983,7 @@
 
             <v-data-table :headers="headers8" :items-per-page-text="'Elementos por páginas'" :items="bonus"
               :search="search8" class="elevation-1" no-results-text="No hay datos disponibles"
-              no-data-text="No hay datos disponibles">
+              no-data-text="No hay datos disponibles" :loading="loadingBonus" loading-text="Cargando datos...">
 
               <template v-slot:item.name="{ item }">
 
@@ -1040,6 +1040,9 @@ export default {
   data: () => ({
     valid: true,
     loadingcar:true,
+    loadingOrders: true,
+    loadingCashier: true,
+    loadingBonus: true,
     loadingProd: false,
     loadingServ: false,
     mostrarFila: false,
@@ -1392,6 +1395,7 @@ export default {
     }, 30000);
   },
     showBonus() {
+      this.loadingBonus = true;
       LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/branch-payment-show-bonus', {
@@ -1403,6 +1407,7 @@ export default {
           this.bonus = response.data.bonus;
         }).finally(() => {
           this.showDialogBonus = true;
+          this.loadingBonus = false;
           LocalStorageService.setIsLocked(false);
         });
     },
@@ -1928,6 +1933,7 @@ export default {
         }).finally(() => {
           //this.priceService = this.orders.reduce((total, item) => total + item.price, 0);
           this.dialogDetallesCar = true;
+          this.loadingOrders = true,
           LocalStorageService.setIsLocked(false);
         });
     },
@@ -2014,12 +2020,14 @@ export default {
         .post('https://api2.simplifies.cl/api/closebox', this.data)
         .then((response) => {
           this.bonus = response.data.bonus;
+          this.loadingBonus = true;
           console.log('this.bonus');
           console.log(this.bonus);
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
           this.showAlert("success", "Cierre de caja efectuado correctamente", 3000);
           this.showDialogBonus = true;
+          this.loadingBonus = false;
           //this.startInterval();
           //this.initialize();
         });
@@ -2263,6 +2271,7 @@ export default {
           this.cashierSalesProf = response.data.sales;
           console.log(this.cashierSalesProf);
         }).finally(() => {
+          this.loadingCashier = false;
             LocalStorageService.setIsLocked(false);
         });
       this.showDialogSaleProducts = true;

@@ -148,7 +148,7 @@
       </v-text-field>
       <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :group-by="groupBy"
         :search="search" class="elevation-1" no-data-text="No hay datos disponibles"
-        no-results-text="No hay datos disponibles" show-expand>
+        no-results-text="No hay datos disponibles" show-expand :loading="loadingProducts" loading-text="Cargando datos...">
         <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
           <tr>
             <td :colspan="columns.length">
@@ -218,7 +218,7 @@
                         </v-text-field>
                         <v-data-table :headers="headers2" :items-per-page-text="'Elementos por páginas'" :items="results2"
                             :search="search2" class="elevation-2" no-results-text="No hay datos disponibles"
-                            no-data-text="No hay datos disponibles">
+                            no-data-text="No hay datos disponibles" :loading="loadingagot" loading-text="Cargando datos...">
                             <template v-slot:item.name="{ item }">
 
                                 <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
@@ -293,7 +293,7 @@
                             </v-text-field>
                             <v-data-table :headers="headers3" :items-per-page-text="'Elementos por páginas'"
                                 :items="results3" :search="search3" no-results-text="No hay datos disponibles"
-                                no-data-text="No hay datos disponibles">
+                                no-data-text="No hay datos disponibles" :loading="loadingMove" loading-text="Cargando datos...">
 
                             </v-data-table>
                         </v-card-text>
@@ -341,6 +341,9 @@ export default {
   data: () => ({
     texttitle: 'Cantidad',
     valid: true,
+    loadingProducts: true,
+    loadingMove: true,
+    loadingagot: true,
     mover: true,
     moverEdit : false,
     mostrarFila: false,
@@ -537,6 +540,7 @@ export default {
       this.snackbar = true
     },
     initialize() {
+      this.loadingProducts = true;
       LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/productstore-show')
@@ -544,6 +548,7 @@ export default {
           this.results = response.data.products;
         }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingProducts = false;
         });
 
     },
@@ -684,6 +689,7 @@ export default {
     },
     //reposicion
     showReposition() {
+      this.loadingagot = true;
       LocalStorageService.setIsLocked(true);
             console.log('Entra aqui a reposicion');
             axios
@@ -697,6 +703,7 @@ export default {
                     this.results2 = response.data;
                 }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingagot = false;
         });
             this.dialogReposition = true;
         },
@@ -746,6 +753,7 @@ export default {
 
         //movimiento de productos
     showMove() {
+      this.loadingMove = true;
       LocalStorageService.setIsLocked(true);
            // Obtener el año actual
         const currentYear = new Date().getFullYear();
@@ -768,6 +776,7 @@ export default {
                     this.results3 = response.data.movimientos;
                 }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingMove = false;
         });
             this.dialogMove = true;
         },
@@ -776,6 +785,7 @@ export default {
             this.results3 = [];
         },
         moveProductsMounth() {
+          this.loadingMove = true;
           LocalStorageService.setIsLocked(true);
             if (this.selectedMounth) {
               console.log('Mes seleccionado');
@@ -792,6 +802,7 @@ export default {
                         this.results3 = response.data.movimientos;
                     }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingMove = false;
         });
             } else {
                 this.showMove();

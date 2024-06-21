@@ -100,7 +100,7 @@
           <v-card-text class="mt-2 mb-2">
             <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details></v-text-field>
-            <v-data-table :headers="headers2" :items="chargePermissions" :search="search2" class="elevation-1" :items-per-page-text="'Elementos por páginas'"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+            <v-data-table :headers="headers2" :items="chargePermissions" :search="search2" class="elevation-1" :items-per-page-text="'Elementos por páginas'"  no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles" :loading="loadingPermission" loading-text="Cargando datos...">
               <template v-slot:item.actions="{ item }">
                 <!--<v-icon size="25" color="red" @click="closePermissosRequest(item)">
                   mdi-delete
@@ -180,7 +180,7 @@
                 hide-details>
             </v-text-field>
       <v-data-table :headers="headers" :search="search" :items-per-page-text="'Elementos por páginas'" :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
-        no-results-text="No hay datos disponibles">
+        no-results-text="No hay datos disponibles" :loading="loadingCharge" loading-text="Cargando datos...">
         <template v-slot:item.actions="{ item }">
           <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
             mdi-pencil
@@ -224,7 +224,8 @@ axios.interceptors.request.use(config => {
 export default {
 
   data: () => ({
-
+    loadingPermission: true,
+    loadingCharge: true,
     snackbar: false,
     sb_type: '',
     sb_message: '',
@@ -332,6 +333,7 @@ export default {
     },
 
     initialize() {
+      this.loadingCharge = true;
       LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/charge')
@@ -340,6 +342,7 @@ export default {
           this.results = response.data.charges;
         }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingCharge = false;
         });
     },
     editItem(item) {
@@ -421,6 +424,7 @@ export default {
       //this.showPermission(this.chargeSelect);
     },
     showPermission(item) {
+      this.loadingPermission = true;
       LocalStorageService.setIsLocked(true);
       this.chargeSelect = item;
       console.log(this.chargeSelect);
@@ -436,6 +440,7 @@ export default {
           this.chargePermissions = response.data.permissions;
         }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingPermission = false;
         });
         
       this.dialogPermissions = true;

@@ -130,7 +130,7 @@
                                 single-line hide-details>
                             </v-text-field>
  <v-data-table :headers="headers"  :items="results" :search="search" class="elevation-1" no-data-text="No hay datos disponibles"
-   no-results-text="No hay datos disponibles">
+   no-results-text="No hay datos disponibles" :loading="loadingStudent" loading-text="Cargando datos...">
    <template v-slot:top>
 
      <v-divider class="mx-4" inset vertical></v-divider>
@@ -209,7 +209,7 @@ axios.interceptors.request.use(config => {
 
 export default {
 data: () => ({
-
+  loadingStudent: true,
 valid: true,
 snackbar: false,
 sb_type: '',
@@ -354,6 +354,7 @@ showAlert(sb_type,sb_message, sb_timeout)
  this.snackbar= true
 },
 initialize() {
+  this.loadingStudent = true;
   LocalStorageService.setIsLocked(true);
  axios
    .get('https://api2.simplifies.cl/api/student')
@@ -361,6 +362,7 @@ initialize() {
      this.results = response.data.clients;
    }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingStudent = false;
         });
 },
 onFileSelected(event) {

@@ -102,7 +102,7 @@
             hide-details>
           </v-text-field>
       <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" class="elevation-1" :search="search" no-data-text="No hay datos disponibles"
-        no-results-text="No hay datos disponibles">
+        no-results-text="No hay datos disponibles" :loading="loadingPermission" loading-text="Cargando datos...">
         <template v-slot:item.actions="{ item }">
           <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
             mdi-pencil
@@ -138,6 +138,7 @@ axios.interceptors.request.use(config => {
 export default {
 
   data: () => ({
+    loadingPermission: true,
     valid: true,
     snackbar: false,
     sb_type: '',
@@ -240,6 +241,7 @@ export default {
     },
 
     initialize() {
+      this.loadingPermission = true;
       LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/permission')
@@ -248,6 +250,7 @@ export default {
           this.results = response.data;
         }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingPermission = false;
         });
     },
     editItem(item) {

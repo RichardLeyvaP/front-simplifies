@@ -73,7 +73,7 @@
 
         <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
           :search="search2" class="elevation-2" no-results-text="No hay datos disponibles"
-          no-data-text="No hay datos disponibles">
+          no-data-text="No hay datos disponibles" :loading="loadingOperationTip" loading-text="Cargando datos...">
           <template v-slot:item.amount="{ item }">
             {{ formatNumber(parseInt(item.amount)) }}
           </template>
@@ -106,6 +106,7 @@ export default {
     },
   },
   data: () => ({
+    loadingOperationTip: true,
     menu: false,
     menu2: false,
     menu3: false,
@@ -293,6 +294,7 @@ export default {
       this.menu2 = false;
     },
     updateDate2() {
+      this.loadingOperationTip = true;
       this.editedIndex = 2;
       //this.input2 = val;
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
@@ -309,7 +311,9 @@ export default {
         })
         .then((response) => {
           this.results = response.data.traces;
-        })
+        }).finally(() => {
+          this.loadingOperationTip = false;
+        });
     },
     /*updateDate3(val) {
       this.editedIndex = 3;
@@ -344,7 +348,9 @@ export default {
         })
         .then((response) => {
           this.results = response.data.traces;
-        })
+        }).finally( () => {
+          this.loadingOperationTip= false;
+        });
     }
   },
 }

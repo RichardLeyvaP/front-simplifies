@@ -205,7 +205,7 @@
 
               <v-data-table :headers="headers2" :items="branchProfessionals" :search="search2" class="elevation-1"
                 :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
-                no-data-text="No hay datos disponibles">
+                no-data-text="No hay datos disponibles" :loading="loadingProfessionals" loading-text="Cargando datos...">
                 <template v-slot:item.ponderation="{ item }">
                   {{ item.ponderation === 0 ? 1 : item.ponderation }}
                 </template>
@@ -328,7 +328,7 @@
                 hide-details></v-text-field>
               <v-data-table :headers="headers3" :items="branchStores" :search="search3" class="elevation-1"
                 :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
-                no-data-text="No hay datos disponibles">
+                no-data-text="No hay datos disponibles" :loading="loadingStore" loading-text="Cargando datos...">
 
                 <!--<template v-slot:item.name="{ item }">
 
@@ -426,7 +426,7 @@
                 hide-details></v-text-field>
               <v-data-table :headers="headers4" :items="branchAssociates" :search="search4" class="elevation-1"
                 :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
-                no-data-text="No hay datos disponibles">
+                no-data-text="No hay datos disponibles" :loading="loadingAssociates" loading-text="Cargando datos...">
 
                 <!--<template v-slot:item.name="{ item }">
 
@@ -615,6 +615,9 @@ export default {
     valid: true,
     loading: false,
     loadingBranch: true,
+    loadingStore: true,
+    loadingProfessionals: true,
+    loadingAssociates: true,
     branchSelect: "",
     snackbar: false,
     sb_type: '',
@@ -891,6 +894,7 @@ export default {
     },
 
     initialize() {
+      this.loadingBranch = true;
       LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/branch')
@@ -1071,6 +1075,7 @@ export default {
           this.branchProfessionals = response.data.professionals;
           console.log('imprime professionals');
         }).finally(() => {
+          this.loadingProfessionals = false;
             LocalStorageService.setIsLocked(false);
         });
       this.dialogProfessionals = true;
@@ -1135,6 +1140,7 @@ export default {
           this.branchStores = response.data.stores;
           console.log('imprime professionals');
         }).finally(() => {
+          this.loadingStore = false;
             LocalStorageService.setIsLocked(false);
         });
       this.dialogStores = true;
@@ -1298,6 +1304,7 @@ export default {
           this.branchAssociates = response.data.associates;
           console.log('imprime professionals');
         }).finally(() => {
+          this.loadingAssociates = false,
             LocalStorageService.setIsLocked(false);
         });
       this.dialogAssociates = true;

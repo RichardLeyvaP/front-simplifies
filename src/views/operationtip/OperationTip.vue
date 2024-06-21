@@ -88,7 +88,7 @@
                                                     :items-per-page-text="'Elementos por páginas'" :search="search2"
                                                     :items="cars" class="elevation-1"
                                                     no-results-text="No hay datos disponibles"
-                                                    no-data-text="No hay datos disponibles" show-select>
+                                                    no-data-text="No hay datos disponibles" show-select :loading="loadingCashier" loading-text="Cargando datos...">
                                                     <template v-slot:item.clientName="{ item }">
 
                                                         <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
@@ -153,7 +153,7 @@
                 hide-details></v-text-field>
             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search"
                 :items="results" class="elevation-1" no-results-text="No hay datos disponibles"
-                no-data-text="No hay datos disponibles">
+                no-data-text="No hay datos disponibles" :loading="loadingPCashier" loading-text="Cargando datos...">
                 <template v-slot:item.amount="{ item }"> {{
                     formatNumber(item.amount)}}
                 </template>
@@ -262,7 +262,7 @@
                                         <v-data-table :headers="headers1" :items-per-page-text="'Elementos por páginas'"
                                             :items="results1" :search="search2" class="elevation-2"
                                             no-results-text="No hay datos disponibles"
-                                            no-data-text="No hay datos disponibles">
+                                            no-data-text="No hay datos disponibles" :loading="loadingPay" loading-text="Cargando datos...">
                                             <template v-slot:item.nameProfessional="{ item }">
                                                 <span :class="{ 'bold-row': item.nameProfessional == 'Total' }">
                                                     {{ item.nameProfessional }}
@@ -306,6 +306,9 @@ axios.interceptors.request.use(config => {
 
 export default {
     data: () => ({
+        loadingCashier: true,
+        loadingPCashier: true,
+        loadingPay: true,
         valid: true,
         snackbar: false,
         sb_type: '',
@@ -538,6 +541,7 @@ export default {
         },
 
         initialize() {
+            this.loadingPCashier = true;
             LocalStorageService.setIsLocked(true);
             this.professionals = [];
             this.professional_id = '';
@@ -552,6 +556,7 @@ export default {
                     this.results = response.data;
                 }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingPCashier = false;
         });
             /*axios
                 .get('https://api2.simplifies.cl/api/cashier-car-notpay', {
@@ -567,6 +572,7 @@ export default {
 
         },
         showAddOperationTip() {
+            this.loadingCashier = true;
             LocalStorageService.setIsLocked(true);
             axios
                 .get('https://api2.simplifies.cl/api/cashier-car-notpay', {
@@ -577,6 +583,7 @@ export default {
                 .then((response) => {
                     this.cars = response.data.cars;
                     this.professionals = response.data.professionals
+                    this.loadingCashier = false;
                 }).finally(() => {
             LocalStorageService.setIsLocked(false);
         });
@@ -713,6 +720,7 @@ export default {
         },
         //reporte
         showPay() {
+            this.loadingPay = true;
             LocalStorageService.setIsLocked(true);
             console.log('Entra aqui a pagos realizados');
             //this.editedIndex1 = 1;
@@ -733,6 +741,7 @@ export default {
                     this.results1 = response.data;
                 }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingPay = false;
         });
             this.dialogPay = true;
         },

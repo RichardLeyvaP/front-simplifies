@@ -214,7 +214,7 @@
         </v-text-field>
         <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search"
           :items="results" class="elevation-1" no-results-text="No hay datos disponibles"
-          no-data-text="No hay datos disponibles" :loading="loading">
+          no-data-text="No hay datos disponibles" :loading="loading" loading-text="Cargando datos...">
           <template v-slot:item.retention="{ item }">
             {{ item.retention ? item.retention + "%" : "" }}
           </template>
@@ -336,7 +336,7 @@
                     </v-text-field>
                     <v-data-table :headers="headers1" :items-per-page-text="'Elementos por páginas'" :items="winner"
                       :search="search2" class="elevation-2" no-results-text="No hay datos disponibles"
-                      no-data-text="No hay datos disponibles"><!--:group-by="groupBy"-->
+                      no-data-text="No hay datos disponibles" :loading="loadingGenerate" loading-text="Cargando datos..."><!--:group-by="groupBy"-->
                       <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
                         <tr>
                           <td :colspan="columns.length">
@@ -467,7 +467,7 @@
               </v-text-field>
               <v-data-table :headers="headers2" :items-per-page-text="'Elementos por páginas'" :items="laters"
                 :search="search3" class="elevation-2" no-results-text="No hay datos disponibles"
-                no-data-text="No hay datos disponibles">
+                no-data-text="No hay datos disponibles" :loading="loadingLaters" loading-text="Cargando datos...">
               </v-data-table>
             </v-card-text>
           </v-container>
@@ -545,7 +545,7 @@
                           </v-text-field>
                           <v-data-table :headers="headers3" :items-per-page-text="'Elementos por páginas'"
                             :items="asistLate" :search="search5" class="elevation-2"
-                            no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+                            no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles" :loading="loadingAsistLate" loading-text="Cargando datos...">
                           </v-data-table>
                         </v-card-text>
                       </v-window-item>
@@ -560,7 +560,7 @@
                           </v-text-field>
                           <v-data-table :headers="headers4" :items-per-page-text="'Elementos por páginas'"
                             :items="asistTime" :search="search6" class="elevation-2"
-                            no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+                            no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles" :loading="loadingAsist" loading-text="Cargando datos...">
                           </v-data-table>
                         </v-card-text>
                       </v-window-item>
@@ -803,6 +803,10 @@ export default {
     // aqui va lo del calendar
     tabBar: null,
     loading: true,
+    loadingGenerate: true,
+    loadingAsistLate: true,
+    loadingLaters: true,
+    loadingAsist: true,
     valid: true,
     snackbar: false,
     sb_type: "",
@@ -1196,6 +1200,7 @@ export default {
       this.snackbar = true;
     },
     initialize() {
+      this.loading = true;
       LocalStorageService.setIsLocked(true);
       axios.get("https://api2.simplifies.cl/api/professional").then((response) => {
         this.results = response.data.professionals;
@@ -1446,6 +1451,7 @@ export default {
     },
     //winner
     showWinner() {
+      this.loadingGenerate = true;
       LocalStorageService.setIsLocked(true);
       this.editedIndexWin = -1;
       axios
@@ -1460,6 +1466,7 @@ export default {
         .finally(() => {
           LocalStorageService.setIsLocked(false);
           this.dialogWinner = true;
+          this.loadingGenerate = false;
         });
     },
     closeWinner() {
@@ -1534,6 +1541,7 @@ export default {
       this.menu2 = false;
     },
     updateDate2() {
+      this.loadingGenerate = true;
       LocalStorageService.setIsLocked(true);
       //this.input2 = val;
       this.editedIndexWin = 2;
@@ -1552,36 +1560,38 @@ export default {
           },
         })
         .then((response) => {
-          LocalStorageService.setIsLocked(false);
           this.winner = response.data;
+        }).finally( () => {
+          this.loadingGenerate = false;
+          LocalStorageService.setIsLocked(false);
         });
     },
     //later
     showLater(item) {
       this.professional_id = item.id;
       this.editedIndexLater = -1;
-      this.dialogLater = true;
-      /*axios
-      .get('https://api2.simplifies.cl/api/show-business', {
-        params: {
-          business_id: this.business_id
-        }
-      })
-        .then((response) => {
-          this.branches = response.data.branches;
-          //this.branch_id = this.branches[0].id;
+      this.loadingLaters = true;
+      LocalStorageService.setIsLocked(true);
+      axios
+        .get("https://api2.simplifies.cl/api/arriving-late-professional-date", {
+          params: {
+            branch_id: this.branch_id,
+            professional_id: this.professional_id
+          },
         })
-        .finally(() => {
-          if (this.charge === 'Administrador') {
-          this.branch_id = this.branches[0].id;
-          this.mostrarFila = true;
-        }
-        });*/
+        .then((response) => {
+          LocalStorageService.setIsLocked(false);
+          this.laters = response.data;
+        }).finally(()=>{
+      this.dialogLater = true;
+          this.loadingLaters = false;
+        });
     },
     closeLater() {
       this.dialogLater = false;
     },
     updateDate3() {
+      this.loadingLaters = true;
       LocalStorageService.setIsLocked(true);
       //this.input2 = val;
       this.editedIndexLater = 2;
@@ -1603,6 +1613,8 @@ export default {
         .then((response) => {
           LocalStorageService.setIsLocked(false);
           this.laters = response.data;
+        }).finally(()=>{
+          this.loadingLaters = false;
         });
     },
     exportToExcel1() {
@@ -1651,11 +1663,13 @@ export default {
 
     //asistencias
     showAsist() {
+      this.loadingAsistLate = true;
+      this.loadingAsist = true;
       LocalStorageService.setIsLocked(true);
       this.editedIndexAsist1 = -1;
       this.editedIndexAsist2 = -1;
       axios
-        .get("https://api2.simplifies.cl/api/branch_professionals_winner", {
+        .get("https://api2.simplifies.cl/api/arriving-branch-date", {
           params: {
             branch_id: this.branch_id,
           },
@@ -1667,12 +1681,16 @@ export default {
         .finally(() => {
           LocalStorageService.setIsLocked(false);
           this.dialogAsist = true;
+          this.loadingAsistLate = false;
+          this.loadingAsist = false;
         });
     },
     closeAsist() {
       this.dialogAsist = false;
     },
     updateDate5() {
+      this.loadingAsistLate = true;
+      this.loadingAsist = true;
       LocalStorageService.setIsLocked(true);
       console.log("Entra aqui a mejores aisitencias del periodo");
       //this.input2 = val;
@@ -1698,6 +1716,9 @@ export default {
           LocalStorageService.setIsLocked(false);
           this.asistTime = response.data.tiempo;
           this.asistLate = response.data.tardes;
+        }).finally(()=>{
+          this.loadingAsistLate = false;
+          this.loadingAsist = false;
         });
       //this.menu2 = false;
     },

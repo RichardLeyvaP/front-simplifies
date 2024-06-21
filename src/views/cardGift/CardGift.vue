@@ -119,7 +119,7 @@
       <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details>
       </v-text-field>
       <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search" class="elevation-1"
-        no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles">
+        no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles" :loading="loadingCardGift" loading-text="Cargando datos...">
         <template v-slot:top>
 
           <v-divider class="mx-4" inset vertical></v-divider>
@@ -171,7 +171,7 @@
 
             <v-data-table :headers="headers2" :items="cardgiftUser" :search="search2" class="elevation-1"
               :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
-              no-data-text="No hay datos disponibles">
+              no-data-text="No hay datos disponibles" :loading="loadingUser" loading-text="Cargando datos...">
 
               <template v-slot:item.name="{ item }">
 
@@ -438,6 +438,8 @@ axios.interceptors.request.use(config => {
 
 export default {
   data: () => ({
+    loadingCardGift: true,
+    loadingUser: true,
     typeUser: '',
     userId: '',
     profesName: '',
@@ -681,6 +683,7 @@ export default {
       this.snackbar = true
     },
     initialize() {
+      this.loadingCardGift = true;
       LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/card-gift')
@@ -688,6 +691,7 @@ export default {
           this.results = response.data.cardGifts;
         }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingCardGift = false;
         });
     },
     //Users
@@ -711,6 +715,7 @@ export default {
         })
         .then((response) => {
           this.cardgiftUser = response.data.cardgiftUser;
+          this.loadingUser = false;
         });
       this.dialogCardGitfUser = true;
     },

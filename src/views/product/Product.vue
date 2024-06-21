@@ -252,7 +252,7 @@
                     </v-text-field>
                     <v-data-table :headers="headers1" :items-per-page-text="'Elementos por páginas'" :items="results1"
                       :search="search2" class="elevation-2" no-results-text="No hay datos disponibles"
-                      no-data-text="No hay datos disponibles">
+                      no-data-text="No hay datos disponibles" :loading="loadingProducts" loading-text="Cargando datos...">
                       <template v-slot:item.name="{ item }">
                         <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
                           <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product
@@ -305,6 +305,7 @@ export default {
     sb_title: "",
     sb_icon: "",
     loading:true,
+    loadingProducts: true,
     dialog: false,
     editando: false,
     message_delete: true,
@@ -512,6 +513,7 @@ export default {
       this.snackbar = true;
     },
     initialize() {
+      this.loading = true;
       LocalStorageService.setIsLocked(true);
       axios.get("https://api2.simplifies.cl/api/product").then((response) => {
         this.results = response.data.products;
@@ -632,6 +634,7 @@ export default {
 
     //Productos mas vendidos
     showMostSold() {
+      this.loadingProducts = true;
       LocalStorageService.setIsLocked(true);
       console.log('Entra aqui a mejores aisitencias');
       this.editedIndex1 = 1;
@@ -641,6 +644,7 @@ export default {
           this.results1 = response.data;
         }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingProducts = false;
         });
       this.dialogMostSold = true;
     },
@@ -651,6 +655,7 @@ export default {
       this.input2 = null;
     },
     updateDate2() {
+      this.loadingProducts = true,
       LocalStorageService.setIsLocked(true);
       this.editedIndex1 = 2;
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
@@ -667,6 +672,7 @@ export default {
           this.results1 = response.data;
         }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingProducts = false;
         });
     },
     exportToExcel1() {

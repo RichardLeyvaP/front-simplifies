@@ -119,7 +119,7 @@
             </v-text-field>
             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
                 :search="search" class="elevation-1" no-data-text="No hay datos disponibles"
-                no-results-text="No hay datos disponibles">
+                no-results-text="No hay datos disponibles" :loading="loadingService" loading-text="Cargando datos...">
                 <template v-slot:top>
 
                     <v-divider class="mx-4" inset vertical></v-divider>
@@ -152,102 +152,6 @@
                 </template>
             </v-data-table>
         </v-card-text>
-
-        <!--Professionals-->
-        <!--<v-dialog v-model="dialogProfessionals" fullscreen transition="dialog-bottom-transition">
-            <v-card>
-                <v-toolbar color="#F18254">
-                    <span class="text-h6 ml-4"> Trabajadores que realizan servicio</span>
-                    <v-spacer></v-spacer>
-                    <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat"
-                        @click="this.dialogAddProfessionals = true">
-                        Asignar Trabajador
-                    </v-btn>
-                </v-toolbar>
-                <v-card-text class="mt-2 mb-2">
-                    <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
-                        hide-details></v-text-field>
-                    <v-data-table :headers="headers2" :items="branchServiceProfessionals" :search="search2"
-                        class="elevation-1" :items-per-page-text="'Elementos por páginas'"
-                        no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
-                        <template v-slot:item.name="{ item }">
-
-                            <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
-                            </v-avatar>
-                            {{ item.name }}
-                        </template>
-                        <template v-slot:item.actions="{ item }">
-                            <v-icon size="25" color="red" @click="closeProfessionalRequest(item)">
-                                mdi-delete
-                            </v-icon>
-                            <v-btn density="comfortable" icon="mdi-delete" @click="closeProfessionalRequest(item)"
-                                color="red-darken-4" variant="tonal" elevation="1" title="Eliminar asignación"></v-btn>
-                        </template>
-
-                    </v-data-table>
-                </v-card-text>
-                <v-divider></v-divider>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
-                        Volver
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-
-        <v-dialog v-model="dialogAddProfessionals" width="500">
-            <v-card>
-                <v-toolbar color="#F18254">
-                    <span class="text-subtitle-2 ml-4">Asignar Trabajador</span>
-                </v-toolbar>
-                <v-card-text class="mt-2 mb-2">
-                    <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-                        <v-container>
-                            <v-row>
-                                <v-col cols="12" md="12">
-                                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id" :items="professionals" label="Profesional"
-                                        prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id"
-                                        variant="underlined" :rules="selectRules"></v-autocomplete>
-                                </v-col>
-                            </v-row>
-                        </v-container>
-                        <v-divider></v-divider>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="#E7E9E9" variant="flat" @click="closeProfessional">
-                                Cancelar
-                            </v-btn>
-                            <v-btn color="#F18254" variant="flat" @click="saveProfessional" :disabled="!valid">
-                                Aceptar
-                            </v-btn>
-                        </v-card-actions>
-                    </v-form>
-                </v-card-text>
-            </v-card>
-        </v-dialog>
-        <v-dialog v-model="dialogDeleteProfessional" width="500">
-            <v-card>
-
-                <v-toolbar color="red">
-                    <span class="text-subtitle-2 ml-4"> Eliminar Servicio asignado a profesional</span>
-                </v-toolbar>
-
-                <v-card-text class="mt-2 mb-2"> ¿Desea eliminar este servicio a este professional?</v-card-text>
-                <v-divider></v-divider>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="#E7E9E9" variant="flat" @click="closerequestProfessional">
-                        Cancelar
-                    </v-btn>
-                    <v-btn color="#F18254" variant="flat" @click="professionalsDelete">
-                        Aceptar
-                    </v-btn>
-
-                </v-card-actions>
-            </v-card>
-        </v-dialog>-->
     </v-card>
 
 
@@ -272,6 +176,7 @@ axios.interceptors.request.use(config => {
 
 export default {
     data: () => ({
+        loadingService: true,
         valid: true,
         mover: true,
         mostrarFila: false,
@@ -419,6 +324,7 @@ export default {
             this.snackbar = true
         },
         initialize() {
+            this.loadingService = true;
             LocalStorageService.setIsLocked(true);
             axios
                 .get('https://api2.simplifies.cl/api/professionalservice-show', {
@@ -429,6 +335,7 @@ export default {
                 .then((response) => {
                     this.results = response.data.branchServices;
                 }).finally(() => {
+                    this.loadingService = false;
             LocalStorageService.setIsLocked(false);
         });
         },

@@ -87,7 +87,7 @@
             <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details></v-text-field>
     <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search" :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
-      no-results-text="No hay datos disponibles">
+      no-results-text="No hay datos disponibles" :loading="loadingType" loading-text="Cargando datos...">
       <template v-slot:item.actions="{ item }">
         <!--<v-icon size="small" color="blue" class="me-2" @click="editItem(item)">
           mdi-pencil
@@ -122,6 +122,7 @@ axios.interceptors.request.use(config => {
 export default {
 
   data: () => ({
+    loadingType: true,
     valid: true,
     snackbar: false,
     sb_type: '',
@@ -210,6 +211,7 @@ export default {
     },
 
     initialize() {
+      this.loadingType = true;
       LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/business-type')
@@ -217,6 +219,7 @@ export default {
           this.results = response.data.businessTypes;
         }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingType = false;
         });
     },
     editItem(item) {

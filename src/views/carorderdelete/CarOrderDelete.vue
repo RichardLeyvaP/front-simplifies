@@ -52,7 +52,7 @@
                                     <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'"
                                         :items="results" :search="search" class="elevation-1"
                                         no-results-text="No hay datos disponibles"
-                                        no-data-text="No hay datos disponibles">
+                                        no-data-text="No hay datos disponibles" :loading="loadingCar" loading-text="Cargando datos...">
 
                                         <template v-slot:item.professionalName="{ item }">
 
@@ -112,7 +112,7 @@
                                     <v-data-table :headers="headers1" :items-per-page-text="'Elementos por páginas'"
                                         :items="results1" :search="search2" class="elevation-1"
                                         no-results-text="No hay datos disponibles"
-                                        no-data-text="No hay datos disponibles">
+                                        no-data-text="No hay datos disponibles" :loading="loadingOrder" loading-text="Cargando datos...">
 
                                         <template v-slot:item.professionalName="{ item }">
 
@@ -163,7 +163,7 @@
                                     <v-data-table :headers="headers2" :items-per-page-text="'Elementos por páginas'"
                                         :items="results2" :search="search3" class="elevation-1"
                                         no-results-text="No hay datos disponibles"
-                                        no-data-text="No hay datos disponibles">
+                                        no-data-text="No hay datos disponibles" :loading="loadingProduct" loading-text="Cargando datos...">
 
                                         <template v-slot:item.professionalName="{ item }">
 
@@ -223,6 +223,9 @@ axios.interceptors.request.use(config => {
 
 export default {
     data: () => ({
+        loadingCar: true,
+        loadingOrder: true,
+        loadingProduct: true,
         tabBar: null,
         valid: true,
         snackbar: false,
@@ -337,6 +340,9 @@ export default {
         },
 
         initialize() {
+            this.loadingCar = true;
+            this.loadingOrder = true;
+            this.loadingProduct = true;
             LocalStorageService.setIsLocked(true);
             axios
                 .get('https://api2.simplifies.cl/api/branch-cars-delete', {
@@ -352,6 +358,9 @@ export default {
                     console.log(this.results2);
                 }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingCar = false;
+            this.loadingOrder = false;
+            this.loadingProduct = false;
         });
         },
 

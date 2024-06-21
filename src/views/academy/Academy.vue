@@ -127,7 +127,7 @@
         <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar"
                                 single-line hide-details>
                             </v-text-field>
-        <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search" class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+        <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search" class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles" :loading="loading" loading-text="Cargando datos...">
           <template v-slot:item.name="{ item }">
 
 <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
@@ -166,7 +166,7 @@
           <v-card-text class="mt-2 mb-2">
             <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details></v-text-field>
-            <v-data-table :headers="headers2" :items="enrollmentStores" :search="search2" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+            <v-data-table :headers="headers2" :items="enrollmentStores" :search="search2" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles" :loading="loadingStore" loading-text="Cargando datos...">
 
               <!--<template v-slot:item.name="{ item }">
 
@@ -254,117 +254,6 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <!--endStores-->
-      <!--Products-->
-      <!--<v-dialog v-model="dialogStoresProducts" fullscreen transition="dialog-bottom-transition">
-        <v-card>
-          <v-toolbar color="#F18254">
-            <span class="text-subtitle-1 ml-4"> Productos por almacenes de la Academia</span>
-            <v-spacer></v-spacer>
-            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="this.dialogAddProduct = true">
-              Asignar Producto
-            </v-btn>
-          </v-toolbar>
-          <v-card-text class="mt-2 mb-2">
-            <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar" single-line
-              hide-details></v-text-field>
-            <v-data-table :headers="headers3" :items="enrollmentStoresProducts" :search="search3" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles"  :group-by="groupBy">
-              <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
-              <tr>
-                <td :colspan="columns.length">
-                  <VBtn size="small" variant="text" :icon="isGroupOpen(item) ? '$expand' : '$next'"
-                    @click="toggleGroup(item)"></VBtn>
-                  {{ item.value }}
-                </td>
-              </tr>
-            </template>
-            <template v-slot:item.name="{ item }">
-
-            <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
-            </v-avatar>
-            {{ item.name }}
-            </template>
-
-              <template v-slot:item.actions="{ item }">
-                <v-btn density="comfortable" icon="mdi-pencil"  @click="editItemProduct(item)" color="primary" variant="tonal"
-            elevation="1" class="mr-1 mt-1 mb-1" title="Editar existencia"></v-btn>
-          <v-btn density="comfortable" icon="mdi-delete" @click="closeproductRequest(item)" color="red-darken-4" variant="tonal"
-            elevation="1" title="Eliminar existencia de producto"></v-btn>
-                <v-icon size="small" color="red" @click="closestoreRequest(item)">
-                  mdi-delete
-                </v-icon>
-              </template>
-
-            </v-data-table>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
-              Volver
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <v-dialog v-model="dialogAddProduct" width="500">
-        <v-card>
-          <v-toolbar color="#F18254">
-            <span class="text-subtitle-2 ml-4">{{formTitle}}</span>
-          </v-toolbar>
-          <v-card-text class="mt-2 mb-2">
-            <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-              <v-container>
-                <v-row>
-                  <v-col cols="12" md="12">
-                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="store_id" :items="storesAcademy" label="Almacén"
-                      prepend-icon="mdi-store-outline" item-title="address" item-value="id" variant="underlined"
-                      :rules="selectRules"></v-autocomplete>
-                  <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="product_id" :items="products" clearable label="Productos"
-                        prepend-icon="mdi-tag" item-title="name" item-value="id" variant="underlined"
-                        :rules="selectRules"></v-autocomplete>
-                      <v-text-field v-model="product_quantity" clearable :label="this.texttitle"
-                        prepend-icon="mdi-tag-plus" variant="underlined">
-                      </v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="#E7E9E9" variant="flat" @click="closeproduct">
-                  Cancelar
-                </v-btn>
-                <v-btn color="#F18254" variant="flat" @click="saveProduct" :disabled="!valid">
-                  Aceptar
-                </v-btn>
-              </v-card-actions>
-            </v-form>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
-      <v-dialog v-model="dialogRequestProduct" width="500">
-        <v-card>
-
-          <v-toolbar color="red">
-            <span class="text-subtitle-2 ml-4"> Eliminar asignación de producto</span>
-          </v-toolbar>
-
-          <v-card-text class="mt-2 mb-2"> ¿Desea eliminar la asignación del producto?</v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="#E7E9E9" variant="flat" @click="closerequestProduct">
-              Cancelar
-            </v-btn>
-            <v-btn color="#F18254" variant="flat" @click="deleteProduct">
-              Aceptar
-            </v-btn>
-
-          </v-card-actions>
-        </v-card>
-      </v-dialog>-->
-      <!--endProducts-->
       </v-card-text>
     </v-card>
   </template>
@@ -387,6 +276,8 @@
 
   export default {
     data: () => ({
+      loading: true,
+      loadingStore: true,
       valid: true,
       snackbar: false,
       sb_type: '',
@@ -418,17 +309,6 @@
         key: 'direccionStore',
       },
     ],
-   /* headers3: [
-      //{ title: 'Almacén', align: 'start', value: 'direccionStore' },
-      { title: 'Nombre', key: 'name' },
-      { title: 'Referencia', key: 'reference' },
-      { title: 'Código', key: 'code' },
-      { title: 'Estado', key: 'status_product' },
-      { title: 'Precio compra', align: 'start', value: 'purchase_price' },
-      { title: 'Precio venta', align: 'start', value: 'sale_price' },
-      { title: 'Existencia', align: 'start', value: 'product_exit' },
-      { title: 'Acciones', key: 'actions', sortable: false },
-    ],*/
       headers: [
   
         { title: 'Academia', value: 'name' },
@@ -597,6 +477,7 @@
       reader.readAsDataURL(file);
     },
     initialize() {
+      this.loading = true;
       LocalStorageService.setIsLocked(true);
         axios
           .get('https://api2.simplifies.cl/api/enrollment-show', {
@@ -608,6 +489,7 @@
             this.results = response.data.enrollments;
           }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loading = false;
         });  
       },
       editItem(item) {
@@ -733,6 +615,7 @@
           .then((response) => {
             this.enrollmentStores = response.data.enrollmentStores;
           }).finally(() => {
+            this.loadingStore = false;
             LocalStorageService.setIsLocked(false);
         });
         this.dialogStores = true;

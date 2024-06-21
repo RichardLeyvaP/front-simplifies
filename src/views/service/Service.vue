@@ -394,6 +394,7 @@ return mensaje;
       this.snackbar = true
     },
     initialize() {
+      this.loading = true;
       LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/service')

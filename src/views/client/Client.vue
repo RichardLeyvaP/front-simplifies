@@ -213,6 +213,7 @@
         class="elevation-1"
         no-data-text="No hay datos disponibles"
         no-results-text="No hay datos disponibles"
+        :loading="loadingClient" loading-text="Cargando datos..."
       >
         <template v-slot:top>
           <v-divider class="mx-4" inset vertical></v-divider>
@@ -497,7 +498,7 @@
             </v-text-field>
             <v-data-table :headers="headers1" :items-per-page-text="'Elementos por páginas'" :items="frecuence"
               :search="search2" class="elevation-2" no-results-text="No hay datos disponibles"
-              no-data-text="No hay datos disponibles">
+              no-data-text="No hay datos disponibles" :loading="loadingVisit" loading-text="Cargando datos...">
            
               <template v-slot:item.name="{ item }">
 
@@ -575,6 +576,8 @@ axios.interceptors.request.use(config => {
 
 export default {
   data: () => ({
+    loadingVisit: true,
+    loadingClient: true,
     valid: true,
     snackbar: false,
     sb_type: "",
@@ -824,11 +827,13 @@ export default {
       this.snackbar = true;
     },
     initialize() {
+      this.loadingClient = true;
       LocalStorageService.setIsLocked(true);
       axios.get("https://api2.simplifies.cl/api/client").then((response) => {
         this.results = response.data.clients;
       }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingClient = false;
         });
       /*axios
         .get('https://api2.simplifies.cl/api/usuario')
@@ -975,6 +980,7 @@ export default {
       this.dialogHistory = false;
     },
     ClientsFrecuence() {
+      this.loadingVisit = true;
       LocalStorageService.setIsLocked(true);
       this.editedIndex = 2;
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
@@ -992,6 +998,7 @@ export default {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
           this.dialogFrecuence = true;
+          this.loadingVisit = false;
           });
     },
     closeClientFrecuence() {
@@ -1007,6 +1014,7 @@ export default {
       this.menu2 = false;
     },
     updateDate2() {
+      this.loadingVisit = true;
       LocalStorageService.setIsLocked(true);
       this.editedIndexF = 2;
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
@@ -1023,6 +1031,7 @@ export default {
           this.frecuence = response.data;
         }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingVisit = false;
         });
     },
     exportToExcel() {

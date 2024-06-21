@@ -763,6 +763,7 @@ export default {
             this.snackbar = true
         },
         initialize() {
+            this.loading = true;
             LocalStorageService.setIsLocked(true);
             //const token = LocalStorageService.getItem('token');
             this.totalIngresos = 0;

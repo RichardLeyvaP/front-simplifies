@@ -101,7 +101,7 @@
       <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details>
       </v-text-field>
       <v-data-table :headers="headers" :search="search" :items-per-page-text="'Elementos por páginas'" :items="results"
-        class="elevation-1" no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles">
+        class="elevation-1" no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles" :loading="loadingStore" loading-text="Cargando datos...">
         <template v-slot:item.actions="{ item }">
           <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
             mdi-pencil
@@ -137,6 +137,7 @@ export default {
 
   data: () => ({
     valid: true,
+    loadingStore: true,
     snackbar: false,
     sb_type: '',
     sb_message: '',
@@ -232,6 +233,7 @@ export default {
     },
 
     initialize() {
+      this.loadingStore = true;
       LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/store')
@@ -240,6 +242,7 @@ export default {
           this.results = response.data.stores;
         }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingStore = false;
         });
     },
     editItem(item) {

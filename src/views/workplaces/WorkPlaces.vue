@@ -94,7 +94,7 @@
    </v-row>
    <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details></v-text-field>
-        <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search" :items="results" class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+        <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search" :items="results" class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles" :loading="loadingWorkPlace" loading-text="Cargando datos...">
           <template v-slot:item.actions="{ item }">
             <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar Puesto de Trabajo"></v-btn>
@@ -129,6 +129,7 @@ axios.interceptors.request.use(config => {
 
   export default {
     data: () => ({
+      loadingWorkPlace: true,
       valid: true,
       snackbar: false,
       sb_type: '',
@@ -232,6 +233,7 @@ axios.interceptors.request.use(config => {
     },
   
       initialize() {
+        this.loadingWorkPlace = true;
         LocalStorageService.setIsLocked(true);
         axios
           .get('https://api2.simplifies.cl/api/branch-show', {
@@ -243,6 +245,7 @@ axios.interceptors.request.use(config => {
             this.results = response.data.workplaces;
           }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingWorkPlace = false;
         });
   
       },

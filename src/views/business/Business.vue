@@ -101,7 +101,7 @@
     <v-card-text>
       <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
         class="elevation-1" :locale="locale" no-results-text="No hay datos disponibles"
-        no-data-text="No hay datos disponibles">
+        no-data-text="No hay datos disponibles" :loading="loadingBusiness" loading-text="Cargando datos...">
         <template v-slot:item.actions="{ item }">
           <v-btn density="comfortable" icon="mdi-finance" @click="showWinner()" color="green" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Ganancias del Negocio"></v-btn>
@@ -171,7 +171,7 @@
             hide-details></v-text-field>
           <v-data-table :headers="headers1" :items-per-page-text="'Elementos por páginas'" :items="winners"
             :search="search2" class="elevation-2" no-results-text="No hay datos disponibles"
-            no-data-text="No hay datos disponibles">
+            no-data-text="No hay datos disponibles" :loading="loadingWinners" loading-text="Cargando datos...">
             <template v-slot:item.tip="{ item }">
               <v-chip v-if="item.tip > 0" class="text-uppercase font-weight-bold" size="small" label> {{
                 formatNumber(item.tip)}}</v-chip>
@@ -270,7 +270,7 @@
                 hide-details></v-text-field>
               <v-data-table :headers="headers2" :items-per-page-text="'Elementos por páginas'" :items="winnersbranches"
                 :search="search3" class="elevation-2" no-results-text="No hay datos disponibles"
-                no-data-text="No hay datos disponibles">
+                no-data-text="No hay datos disponibles" :loading="loadingWinnerBranch" loading-text="Cargando datos...">
                 <template v-slot:item.tip="{ item }">
                   <v-chip class="text-uppercase font-weight-bold" size="small" label> {{
                     formatNumber(item.tip) }}</v-chip>
@@ -331,6 +331,9 @@ axios.interceptors.request.use(config => {
 
 export default {
   data: () => ({
+    loadingBusiness: true,
+    loadingWinners: true,
+    loadingWinnerBranch: true,
     valid: true,
     snackbar: false,
     sb_type: '',
@@ -491,6 +494,7 @@ export default {
   methods: {
 
     initialize() {
+      this.loadingBusiness = true;
       LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/business')
@@ -498,6 +502,7 @@ export default {
           this.results = response.data.business;
         }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingBusiness = false;
         });
 
     },
@@ -599,6 +604,7 @@ export default {
       return formattedValue;
     },
     showWinner() {
+      this.loadingWinners = true;
       LocalStorageService.setIsLocked(true);
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
@@ -614,6 +620,7 @@ export default {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
           this.dialogShowWinner = true;
+          this.loadingWinners = false;
         });
     },
     updateDate(val) {
@@ -625,6 +632,7 @@ export default {
       this.menu2 = false;
     },
     updateDate2() {
+      this.loadingWinners = true;
       LocalStorageService.setIsLocked(true);
       this.editedIndexWin = 2;
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
@@ -640,6 +648,7 @@ export default {
           this.winners = response.data;
         }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingWinners = false;
         });
     },
     closeShowWinner() {
@@ -690,6 +699,7 @@ export default {
     },
     //monto por branches
     showWinnerBranch() {
+      this.loadingWinnerBranch = true;
       LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/company_winner', {
@@ -702,6 +712,7 @@ export default {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
           this.dialogShowWinnerBranches = true;
+          this.loadingWinnerBranch = false;
         });
     },
     closeShowWinnerBranches() {
@@ -709,6 +720,7 @@ export default {
       this.editedIndexWinB = -1;
     },
     updateDate3() {
+      this.loadingWinnerBranch = true;
       LocalStorageService.setIsLocked(true);
       this.editedIndex = 2;
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
@@ -725,6 +737,7 @@ export default {
           this.winnersbranches = response.data;
         }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingWinnerBranch = false;
         });
     },
     exportToExcel1() {

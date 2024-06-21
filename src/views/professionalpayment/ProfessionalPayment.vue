@@ -81,6 +81,7 @@
                                                     no-results-text="No hay datos disponibles"
                                                     no-data-text="No hay datos disponibles" 
                                                     item-selectable="selectable" show-select
+                                                    :loading="loadingProfessPay" loading-text="Cargando datos..."
                                                     >
                                                     <template v-slot:item.clientName="{ item }">
                                                         <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
@@ -164,7 +165,9 @@
                                                     :items-per-page-text="'Elementos por páginas'" :search="search4"
                                                     :items="courses" class="elevation-1"
                                                     no-results-text="No hay datos disponibles"
-                                                    no-data-text="No hay datos disponibles" select-strategy="single" show-select>
+                                                    no-data-text="No hay datos disponibles" select-strategy="single" show-select
+                                                    :loading="loadingCoursePay" loading-text="Cargando datos..."
+                                                    >
                                                     <template v-slot:item.price="{ item }">
                 {{ formatNumber(parseInt(item.price))}}                                  
                                           </template>
@@ -228,7 +231,7 @@
                 hide-details></v-text-field>
             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search"
                 :items="results" class="elevation-1" no-results-text="No hay datos disponibles"
-                no-data-text="No hay datos disponibles">
+                no-data-text="No hay datos disponibles" :loading="loadingPay" loading-text="Cargando datos...">
                 <template v-slot:item.name="{ item }">
 
                     <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
@@ -343,7 +346,7 @@
                         single-line hide-details></v-text-field>
                     <v-data-table :headers="headers3" :items="professionalPayment" :search="search3" class="elevation-1"
                         :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
-                        no-data-text="No hay datos disponibles">
+                        no-data-text="No hay datos disponibles" :loading="loadingPayment" loading-text="Cargando datos...">
                         <template v-slot:item.date="{ item }">
                             <span :class="{ 'bold-row': item.date == 'Total' }">
                                 {{ item.date }}
@@ -470,7 +473,7 @@
                                 </v-text-field>
                                 <v-data-table :headers="headers5" :items-per-page-text="'Elementos por páginas'"
                                     :items="results1" :search="search5" class="elevation-2"
-                                    no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles">
+                                    no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles" :loading="loadingCashier" loading-text="Cargando datos...">
                                     <template v-slot:item.date="{ item }">
                                         <span :class="{ 'bold-row': item.date == 'Total' }">
                                             {{ item.date }}
@@ -577,7 +580,7 @@
                                     <v-data-table v-model="selected2" :headers="headers6"
                                         :items-per-page-text="'Elementos por páginas'" :search="search6" :items="cars1"
                                         class="elevation-1" no-results-text="No hay datos disponibles"
-                                        no-data-text="No hay datos disponibles" show-select>
+                                        no-data-text="No hay datos disponibles" show-select :loading="loadingTip" loading-text="Cargando datos...">
                                         <template v-slot:item.clientName="{ item }">
 
                                             <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
@@ -650,7 +653,7 @@
                                     <v-data-table v-model="selectedCashier" :headers="headers7"
                                         :items-per-page-text="'Elementos por páginas'" :search="search7" :items="cashierSales"
                                         class="elevation-1" no-results-text="No hay datos disponibles"
-                                        no-data-text="No hay datos disponibles" show-select>
+                                        no-data-text="No hay datos disponibles" show-select :loading="loadingSale" loading-text="Cargando datos...">
                                         <template v-slot:item.name="{ item }">
 
                                             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
@@ -715,6 +718,13 @@ export default {
     data: () => ({
         tabBar: false,
         tabBarCashier: false,
+        loadingProfessPay: true,
+        loadingCoursePay: true,
+        loadingPayment: true,
+        loadingCashier: true,
+        loadingSale: true,
+        loadingTip: true,
+        loadingPay: true,
         valid: true,
         snackbar: false,
         sb_type: '',
@@ -1080,6 +1090,7 @@ export default {
         },
 
         initialize() {
+            this.loadingPay = true;
             LocalStorageService.setIsLocked(true);
             this.professionals = [];
             this.professional_id = '';
@@ -1094,10 +1105,13 @@ export default {
                     this.results = response.data.professionals;
                 }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingPay = false;
         });
         },
         showAddPago() {
             if (this.charge == 'Barbero' || this.charge == 'Barbero y Encargado') {
+                this.loadingProfessPay = true;
+                this.loadingCoursePay = true;
                 LocalStorageService.setIsLocked(true);
                 axios
                     .get('https://api2.simplifies.cl/api/professional-car-notpay', {
@@ -1121,6 +1135,8 @@ export default {
                         this.mostrarDoc = true;
                     }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingProfessPay = false;
+            this.loadingCoursePay = false;
         });
                 this.dialog = true;
             } else {
@@ -1128,54 +1144,6 @@ export default {
             }
 
         },
-        /*/*carsEarrings() {
-            this.editedItem.amount = '';
-            this.chargeProfessional = this.professionals.find(professional => professional.id == this.professional_id);
-            console.log('this.chargeProfessional');
-            console.log(this.chargeProfessional.charge);
-            this.mostrarCars = true;
-            
-            if(this.chargeProfessional.charge == 'Barbero' || this.chargeProfessional.charge == 'Barbero y Encargado'){
-                axios
-                .get('https://api2.simplifies.cl/api/professional-car-notpay', {
-                    params: {
-                        branch_id: this.branch_id,
-                        professional_id: this.professional_id
-                    }
-                })
-                .then((response) => {
-                    this.cars = response.data;
-                    /*if(this.cars.length == 0){
-                        //this.editedItem.type = 'Adelanto';
-                        this.mostrarCars = false;
-                        //this.mostrarType = false;
-                    }else{
-                        this.mostrarCars = true;
-                        //this.mostrarType = true;
-                    }*/
-
-        /*console.log('this.cars');
-        console.log(this.cars);
-    });
-}else{
-    this.mostrarCars = false;
-    //this.mostrarType = true;
-    console.log('es otro cargo');
-}
- 
-},*/
-        /*toggleService(serviceId) {
-            const index = this.selected.indexOf(serviceId);
-            console.log(this.selected);
-            if (index > -1) {
-                this.selected.splice(index, 1);
-            } else {
-                this.selected.push(serviceId);
-            }
-        },
-        isSelected(serviceId) {
-            return this.selected.includes(serviceId);
-        },*/
         editItem(item) {
             this.editedIndex = 1;
             this.editedItem = Object.assign({}, item)
@@ -1193,6 +1161,7 @@ export default {
         },
 
         showProfessional() {
+            this.loadingPayment = true;
             LocalStorageService.setIsLocked(true);
             axios
                 .get('https://api2.simplifies.cl/api/professional-payment-show', {
@@ -1213,6 +1182,7 @@ export default {
                     }*/
                 }).finally(() =>{
                     LocalStorageService.setIsLocked(false);
+                    this.loadingPayment = false;
                     this.bonoconvivencia = this.professionalPayment.reduce((total, item) => {
                         // Verifica si el campo "revenue" tiene un valor numérico
                         if (item.type === 'Bono convivencias') {
@@ -1250,6 +1220,7 @@ export default {
             this.dialogBarberoEncargado = true;
         },
         showProfessionalPeriodo() {
+            this.loadingPayment = true;
             LocalStorageService.setIsLocked(true);
             this.search3 = '';
             const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
@@ -1267,6 +1238,7 @@ export default {
                     this.professionalPayment = response.data;
                 }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingPayment = false;
         });
         },
         deleteItem(item) {
@@ -1485,6 +1457,7 @@ export default {
         },
         //cajeros
         showCashier() {
+            this.loadingCashier = true;
             LocalStorageService.setIsLocked(true);
             axios
                 .get('https://api2.simplifies.cl/api/operation-tip', {
@@ -1497,10 +1470,12 @@ export default {
                     this.results1 = response.data;
                 }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingCashier = false;
         });
             this.dialogCashier = true;
         },
         showPay() {
+            this.loadingCashier = true;
             LocalStorageService.setIsLocked(true);
             console.log('Entra aqui a pagos realizados');
             //this.editedIndex1 = 1;
@@ -1522,6 +1497,7 @@ export default {
                     this.results1 = response.data;
                 }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingCashier = false;
         });
         },
         cashierDelete() {
@@ -1552,6 +1528,8 @@ export default {
             this.closeDelete()
         },
         showAddOperationTip() {
+            this.loadingSale = true;
+            this.loadingTip = true;
             LocalStorageService.setIsLocked(true);
             axios
                 .get('https://api2.simplifies.cl/api/cashier-car-notpay', {
@@ -1565,6 +1543,8 @@ export default {
                     this.cashierSales = response.data.sales;
                 }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingTip = false;
+            this.loadingSale = false;
         });
             this.dialogCashierCars = true;
         },

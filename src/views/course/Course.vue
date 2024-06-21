@@ -197,7 +197,7 @@
           hide-details>
         </v-text-field>
         <v-data-table :headers="headers" :items="results" :search="search" class="elevation-1"
-          no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles">
+          no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles" :loading="loadingCourse" loading-text="Cargando datos...">
           <template v-slot:top>
 
             <v-divider class="mx-4" inset vertical></v-divider>
@@ -311,7 +311,8 @@
               <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
                 hide-details></v-text-field>
 
-              <v-data-table :headers="headers2" :items="courseStudents" :search="search2" class="elevation-1">
+              <v-data-table :headers="headers2" :items="courseStudents" :search="search2" class="elevation-1" 
+          no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles" :loading="loadingStudent" loading-text="Cargando datos...">
 
                 <template v-slot:item.name="{ item }">
                   <v-avatar elevation="3" color="grey-lighten-4" size="large">
@@ -479,7 +480,7 @@
             hide-details></v-text-field>
           <v-data-table :headers="headers3" :items="productSales" :search="search3" class="elevation-1"
             :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
-            no-data-text="No hay datos disponibles">
+            no-data-text="No hay datos disponibles" :loading="loadingProducts" loading-text="Cargando datos...">
             <!--<template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">:group-by="groupBy"
               <tr>
                 <td :colspan="columns.length">
@@ -613,7 +614,7 @@
 
           <v-data-table :headers="headers4" :items="courseprofessionals" :search="search4" class="elevation-1"
             :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
-            no-data-text="No hay datos disponibles">
+            no-data-text="No hay datos disponibles" :loading="loadingProfessionals" loading-text="Cargando datos...">
             <template v-slot:item.ponderation="{ item }">
               {{ item.ponderation === 0 ? 1 : item.ponderation }}
             </template>
@@ -764,10 +765,12 @@ axios.interceptors.request.use(config => {
 
 export default {
   data: () => ({
-
+    loadingCourse: true,
     dialogPhoto: false, // Controla la visibilidad del modal
     selectedImageUrl: '', // URL de la imagen seleccionada para mostrar en el modal
-
+    loadingStudent: true,
+    loadingProducts: true,
+    loadingProfessionals: true,
     menu: false,
     courseSelect: "",
     input: null,
@@ -1092,6 +1095,7 @@ export default {
     },
 
     showStudents(item) {
+      this.loadingStudent = true;
       LocalStorageService.setIsLocked(true);
       this.courseSelect = item;
       /*console.log('this.courseSelect');
@@ -1110,6 +1114,7 @@ export default {
           console.log(response.data.students);*/
 
         }).finally(() => {
+          this.loadingStudent = false;
             LocalStorageService.setIsLocked(false);
         });
       this.dialogStudents = true;
@@ -1261,6 +1266,7 @@ export default {
       this.snackbar = true
     },
     initialize() {
+      this.loadingCourse = true;
       LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/course-show', {
@@ -1272,6 +1278,7 @@ export default {
           this.results = response.data.courses;
         }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingCourse = false;
         });
 
     },
@@ -1427,6 +1434,7 @@ export default {
     },
     //venta productos
     showProducts(item) {
+      this.loadingProducts = true;
       LocalStorageService.setIsLocked(true);
       console.log('this.courseSelect');
       console.log(this.courseSelect);
@@ -1452,6 +1460,7 @@ export default {
           this.productSales = response.data.productsales;
         }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingProducts = false;
         });
       /*axios
       .get('https://api2.simplifies.cl/api/course-student-product-show',{
@@ -1565,6 +1574,7 @@ export default {
 
     //professionals
     showAddProfessional(item) {
+      this.loadingProfessionals = true;
       LocalStorageService.setIsLocked(true);
       this.courseSelect = item;
       axios
@@ -1577,6 +1587,7 @@ export default {
           this.courseprofessionals = response.data.courseProfessionals;
         }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingProfessionals = false;
         });
       this.dialogAddProfessional = true;
     },

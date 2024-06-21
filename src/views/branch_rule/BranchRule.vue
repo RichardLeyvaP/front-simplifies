@@ -103,7 +103,7 @@
             <v-card>
                 <v-card-text>
                     <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details></v-text-field>
-                    <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search" class="elevation-1" no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles">
+                    <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search" class="elevation-1" no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles" :loading="loadingrules" loading-text="Cargando datos...">
                         <template v-slot:top>
                             <v-divider class="mx-4" inset vertical></v-divider>
                             <v-spacer></v-spacer>
@@ -144,6 +144,7 @@ axios.interceptors.request.use(config => {
 
 export default {
     data: () => ({
+        loadingrules: true,
         valid: true,
         mover: true,
         mostrarFila: false,
@@ -262,6 +263,7 @@ export default {
             this.snackbar = true
         },
         initialize() {
+            this.loadingrules = true;
             LocalStorageService.setIsLocked(true);
             axios
                 .get('https://api2.simplifies.cl/api/branch_rules', {
@@ -272,6 +274,7 @@ export default {
                 .then((response) => {
                     this.results = response.data.rules;
                 }).finally(() => {
+                    this.loadingrules = false;
             LocalStorageService.setIsLocked(false);
         });
         },

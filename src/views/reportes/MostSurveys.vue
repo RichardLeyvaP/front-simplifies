@@ -91,7 +91,7 @@
               hide-details></v-text-field>
             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
               :search="search" class="elevation-2" no-results-text="No hay datos disponibles"
-              no-data-text="No hay datos disponibles">
+              no-data-text="No hay datos disponibles" :loading="loadingSurveyMost" loading-text="Cargando datos...">
             </v-data-table>
           </v-card-text>
         </v-col>
@@ -122,7 +122,7 @@ export default {
     },
   },
   data: () => ({
-
+    loadingSurveyMost: true,
     branches: '',
     branch_id: '',
     charge: '',
@@ -327,6 +327,7 @@ export default {
       this.menu3 = false;
     },*/
     initialize() {
+      this.loadingSurveyMost = true;
       this.editedIndex = 1;
       axios
         .get('https://api2.simplifies.cl/api/surveyCounts', {
@@ -336,6 +337,8 @@ export default {
         })
         .then((response) => {
           this.results = response.data;
+        }).finally(()=>{
+          this.loadingSurveyMost = false;
         })
     },
 

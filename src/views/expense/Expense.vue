@@ -90,7 +90,7 @@
           <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details></v-text-field>
    <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search" :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
-     no-results-text="No hay datos disponibles">
+     no-results-text="No hay datos disponibles" :loading="loadingExpense" loading-text="Cargando datos...">
      <template v-slot:item.actions="{ item }">
        <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
          mdi-pencil
@@ -126,6 +126,7 @@ axios.interceptors.request.use(config => {
 export default {
 
  data: () => ({
+  loadingExpense: true,
    valid: true,
    snackbar: false,
    sb_type: '',
@@ -214,6 +215,7 @@ export default {
    },
 
    initialize() {
+    this.loadingExpense = true;
     LocalStorageService.setIsLocked(true);
      axios
        .get('https://api2.simplifies.cl/api/expense')
@@ -221,6 +223,7 @@ export default {
          this.results = response.data.expenses;
        }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.loadingExpense = false;
         });
    },
    editItem(item) {
