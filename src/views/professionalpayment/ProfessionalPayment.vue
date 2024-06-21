@@ -157,7 +157,7 @@
                                                 </v-col>-->
                                         </v-row>
                                         <v-row>
-                                                <v-col cols="12" md="12" v-if="mostrarDoc">
+                                                <v-col cols="12" md="12">
                                                     <v-text-field class="mt-1 mb-1" v-model="search2"
                                                     append-icon="mdi-magnify" label="Buscar" single-line
                                                     hide-details></v-text-field>
@@ -1161,6 +1161,7 @@ export default {
         },
 
         showProfessional() {
+            this.professionalPayment = [];
             this.loadingPayment = true;
             LocalStorageService.setIsLocked(true);
             axios
@@ -1457,6 +1458,7 @@ export default {
         },
         //cajeros
         showCashier() {
+            this.results1 = [];
             this.loadingCashier = true;
             LocalStorageService.setIsLocked(true);
             axios
