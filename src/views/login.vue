@@ -166,7 +166,7 @@ export default {
     this.valid = true;
   },
   created() {
-    this.logout()
+    //this.logout()
     this.initialize()
   },
   methods: {
@@ -215,7 +215,7 @@ export default {
       this.sb_timeout = sb_timeout
       this.snackbar = true
     },
-    logout() {
+    /*logout() {
       const token = LocalStorageService.getItem('token');
       if(token){
         axios
@@ -227,7 +227,7 @@ export default {
         .then();
       }
       LocalStorageService.logout();
-    },
+    },*/
     save() {
       this.valid = false;
       this.loading = true;

@@ -183,7 +183,7 @@ export default {
     items: [
       //{ title: 'Mi Perfil', icon: "mdi-account-tie-outline" },     
       { title: 'Cambiar Contraseña', icon: "mdi-form-textbox-password"},
-      { title: 'Cerrar Sesión', icon: "mdi-exit-to-app", to:"/"},
+      { title: 'Cerrar Sesión', icon: "mdi-exit-to-app"},
     ],
   }),
   mounted() {
@@ -342,6 +342,19 @@ export default {
         console.log('Cambiar contraseña')
         // Aquí puedes mostrar el modal
         this.showPasswordForm = true; // Reemplaza 'modal' con la referencia a tu modal
+      }
+      if (item.title === 'Cerrar Sesión') {
+        const token = LocalStorageService.getItem('token');
+        console.log('Cerrar Sesión')
+        axios
+        .get('https://api2.simplifies.cl/api/logout', {
+          headers: {
+                'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
+            }
+                })
+        .then();
+      LocalStorageService.logout();
+        this.$router.push({ path: '/' });
       }
       if (item.title === 'Mi Perfil') {
         console.log('Mi Perfil')
