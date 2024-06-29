@@ -1916,6 +1916,7 @@ export default {
     },
     showDetails(item) {
       LocalStorageService.setIsLocked(true);
+      this.loadingOrders = true,
       console.log('carro a ver details');
       console.log(item);
       this.car_ref = item
@@ -1933,7 +1934,7 @@ export default {
         }).finally(() => {
           //this.priceService = this.orders.reduce((total, item) => total + item.price, 0);
           this.dialogDetallesCar = true;
-          this.loadingOrders = true,
+          this.loadingOrders = false,
           LocalStorageService.setIsLocked(false);
         });
     },
