@@ -1932,9 +1932,9 @@ export default {
           console.log('imprime oreders');
           console.log(this.orders);
         }).finally(() => {
+          this.loadingOrders = false;
           //this.priceService = this.orders.reduce((total, item) => total + item.price, 0);
           this.dialogDetallesCar = true;
-          this.loadingOrders = false,
           LocalStorageService.setIsLocked(false);
         });
     },
