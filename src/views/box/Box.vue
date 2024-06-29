@@ -1932,6 +1932,7 @@ export default {
           console.log('imprime oreders');
           console.log(this.orders);
         }).finally(() => {
+          console.log('this.loadingOrders = false;');
           this.loadingOrders = false;
           //this.priceService = this.orders.reduce((total, item) => total + item.price, 0);
           this.dialogDetallesCar = true;
