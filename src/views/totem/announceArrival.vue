@@ -378,7 +378,7 @@ export default {
 
           }
           else if (code === 5) {
-            this.showAlert("warning", "Su reservación expiró, por favor acérquese al coordinador más cercano disponible", 3000);
+            this.showAlert("warning", "No puede anunciar su llegada, por favor acérquese al coordinador más cercano disponible", 3000);
             this.clearTextClient();
             //console.log("LA RESERVA NO ES VALIDA, NO COINCIDE");
             this.changeStep(1);
