@@ -804,26 +804,10 @@ export default {
                 }).finally(() => {
                     LocalStorageService.setIsLocked(false);
                     this.loading = false;
-                    this.totalIngresos = this.results.reduce((total, item) => {
-                        // Verifica si el campo "revenue" tiene un valor numérico
-                        if (typeof item.revenue === 'number') {
-                            // Suma el valor de "revenue" al total
-                            return total + item.revenue;
-                        } else {
-                            // Si el campo "revenue" no es un número, no suma nada
-                            return total;
-                        }
-                    }, 0);
-                    this.totalGastos = this.results.reduce((total, item) => {
-                        // Verifica si el campo "revenue" tiene un valor numérico
-                        if (typeof item.expense === 'number') {
-                            // Suma el valor de "revenue" al total
-                            return total + item.expense;
-                        } else {
-                            // Si el campo "revenue" no es un número, no suma nada
-                            return total;
-                        }
-                    }, 0);
+                    this.totalIngresos = this.results.filter(item => item.operation === "Ingreso")
+    .reduce((total, item) => total + item.amount, 0);
+                    this.totalGastos = this.results.filter(item => item.operation === "Gasto")
+    .reduce((total, item) => total + item.amount, 0);
 
                     //Ingreso Productos
                     this.ingresoProducts = this.results.reduce((total, item) => {
