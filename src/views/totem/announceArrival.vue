@@ -48,19 +48,19 @@
             </v-row>
             <v-row v-if="showDetails">
               <v-col cols="12" md="3">
-                <v-text-field disabled="true" v-model="professionalName"
+                <v-text-field readonly v-model="professionalName"
                   label="Profesional" outlined></v-text-field>  
                   </v-col>                
               <v-col cols="12" md="3">
-                <v-text-field disabled="true" v-model="start_time"
+                <v-text-field readonly v-model="start_time"
                   label="Hora de inicio" outlined></v-text-field>
                   </v-col>
                   <v-col cols="12" md="3">
-                  <v-text-field disabled="true" v-model="final_hour"
+                  <v-text-field readonly v-model="final_hour"
                   label="Hora de finalización" outlined></v-text-field>
               </v-col>
               <v-col cols="12" md="3">
-                  <v-text-field disabled="true" v-model="services"
+                  <v-text-field readonly v-model="services"
                   label="Servicios seleccionados" outlined></v-text-field>
               </v-col>
 
