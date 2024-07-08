@@ -374,6 +374,7 @@ export default {
             this.showAlert("success", "Se ha confirmado su llegada.Espere ser atendido", 3000);
             //console.log("LA RESERVA FUE CONFIRMADA");
             this.startTimer();
+            this.showDetails = false;
             //MADAR MENSAJE Y EN 5 SEGUNDOS IR AL INICIO
 
           }
@@ -382,6 +383,7 @@ export default {
             this.clearTextClient();
             //console.log("LA RESERVA NO ES VALIDA, NO COINCIDE");
             this.changeStep(1);
+            this.showDetails = false;
           }
           /*else {
             this.changeStep(1);
@@ -393,6 +395,7 @@ export default {
         .catch(error => {
           this.showAlert("warning", "Error de conexión, vuelva a intentarlo", 3000);
           this.startTimer();
+          this.showDetails = false;
           this.clearTextClient();
           console.log('******error******');
           console.log(error);
