@@ -210,7 +210,7 @@
 
 
             </v-form>
-            <v-row>
+            <!--<v-row>
               <v-col cols="12" md="12">
                 <p style="color: #555; text-align: justify;">
                   <span
@@ -220,7 +220,7 @@
                   realizando.
                 </p>
               </v-col>
-            </v-row>
+            </v-row>-->
             <v-divider class="pt-4 mt-4"></v-divider>
             <v-container>
 
