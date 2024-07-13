@@ -13,7 +13,7 @@
       </v-col>
     </v-row>
   </v-snackbar>
-  <v-container>
+  <v-container fluid>
     <v-card elevation="6" class="mx-5">
       <v-toolbar color="#F18254">
         <v-row align="center">
@@ -168,7 +168,7 @@
 
                 <v-card-text class="mt-2 mb-2">
                   <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-                    <v-container>
+                    <v-container fluid>
                       <v-row>
                         <v-col cols="12">
                           <v-text-field v-model="confirmPassword" label="Nueva Contraseña"
@@ -283,7 +283,7 @@
               </v-col>-->
             </v-row>
           </v-toolbar>
-          <v-container>
+          <v-container fluid>
             <v-row>
               <!-- Primera columna -->
               <v-col cols="12" sm="6" md="3">
@@ -413,7 +413,7 @@
               </v-col>
             </v-row>
           </v-toolbar>
-          <v-container>
+          <v-container fluid>
             <v-row>
               <!-- Primera columna -->
               <v-col cols="12" sm="6" md="3">
@@ -486,7 +486,7 @@
             <span class="text-subtitle-1 ml-4">Asistencias de profesionales por sucursales</span>
             <v-spacer></v-spacer>
           </v-toolbar>
-          <v-container>
+          <v-container fluid>
             <v-row>
               <!-- Primera columna -->
               <v-col cols="12" sm="6" md="3">
@@ -665,7 +665,7 @@
               </v-col>
             </v-row>
           </v-toolbar>
-          <v-container>
+          <v-container fluid>
             <v-card-text>
               <v-row>
 

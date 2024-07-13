@@ -405,7 +405,7 @@
 
           <v-card-text>
             <v-form v-model="valid" enctype="multipart/form-data">
-              <v-container>
+              <v-container fluid>
                 <v-row>
                   <v-col cols="12" md="6">
                     <v-text-field v-model="editedItem.cash" clearable label="Efectivo" prepend-icon="mdi-cash"
@@ -651,7 +651,7 @@
 
           <v-card-text>
             <v-form v-model="valid" enctype="multipart/form-data">
-              <v-container>
+              <v-container fluid>
                 <v-row>
                   <v-col cols="12" md="4">
                     <v-text-field v-model="editedBox.cashFound" clearable label="Fondo en Caja" prepend-icon="mdi-safe"

@@ -14,8 +14,7 @@
       </v-col>
     </v-row>
   </v-snackbar>
-<v-container>
-  <v-card elevation="6" class="mx-5" width='auto'>
+  <v-card elevation="3" class="mx-5" width='auto'>
     <v-toolbar color="#F18254">
       <v-row align="center">
         <v-col cols="12" md="5" class="grow ml-4">
@@ -141,7 +140,7 @@
     </v-toolbar>
 
     <v-row>
-      <v-container>
+      <v-container class="fill-height" fluid>
         <v-col cols="12" md="12">
           <v-card-text>
       <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details>
@@ -188,7 +187,6 @@
     <v-dialog v-model="dialogReposition" fullscreen transition="dialog-bottom-transition">
                 <v-card elevation="6">
         <v-toolbar color="#F18254">
-            <v-container>
                 <v-row align="center">
                     <v-col cols="12" md="9" class="grow">
                         <span class="text-h8"> <strong>Reposición de productos</strong></span>
@@ -201,19 +199,15 @@
                         </v-btn>
                     </v-col>
                 </v-row>
-            </v-container>
         </v-toolbar>
-        <v-card-text class="mt-1 mb-1">
-        <v-container>
+        <v-card-text>
             <v-row>
                 <v-col cols="12">
-                    <v-container>
                         <v-alert border type="info" variant="outlined" density="compact">
                             <p><strong>Productos Próximos a agotarse</strong></p>
                         </v-alert>
-                    </v-container>
                     <v-card-text>
-                        <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar"
+                        <v-text-field v-model="search2" append-icon="mdi-magnify" label="Buscar"
                             single-line hide-details>
                         </v-text-field>
                         <v-data-table :headers="headers2" :items-per-page-text="'Elementos por páginas'" :items="results2"
@@ -232,7 +226,6 @@
                     </v-card-text>
                 </v-col>
             </v-row>
-        </v-container>
         </v-card-text>
         <v-divider></v-divider>
                     <v-card-actions>
@@ -248,7 +241,6 @@
     <v-dialog v-model="dialogMove" fullscreen transition="dialog-bottom-transition">
                 <v-card elevation="6">
         <v-toolbar color="#F18254">
-            <v-container>
                 <v-row align="center">
                     <v-col cols="12" md="9" class="grow">
                         <span class="text-h8"> <strong>Movimiento de Productos</strong></span>
@@ -261,10 +253,8 @@
                         </v-btn>
                     </v-col>
                 </v-row>
-            </v-container>
         </v-toolbar>
         <v-card-text class="mt-1 mb-1">
-        <v-container>
           <v-row>
                 <v-col cols="12" md="4">
                     <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="outlined"
@@ -300,7 +290,6 @@
                     </v-card>
                 </v-col>
             </v-row>
-        </v-container>
         </v-card-text>
         <v-divider></v-divider>
                     <v-card-actions>
@@ -311,8 +300,7 @@
                     </v-card-actions>
     </v-card>
             </v-dialog>
-            
-  </v-card></v-container>
+  </v-card>
 
 
 
@@ -857,3 +845,8 @@ export default {
   },
 }
 </script>
+<style>
+.fill-height {
+  height: 100%;
+}
+</style>

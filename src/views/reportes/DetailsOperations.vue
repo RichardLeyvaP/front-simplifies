@@ -17,7 +17,7 @@
                 </v-col>
             </v-row>
         </v-toolbar>
-        <v-container>
+        <v-container fluid>
             <v-row>
                 <v-col cols="12" md="3">
                     <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="outlined"

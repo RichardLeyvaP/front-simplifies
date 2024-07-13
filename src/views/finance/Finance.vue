@@ -14,7 +14,7 @@
             </v-col>
         </v-row>
     </v-snackbar>
-    <v-container>
+    <v-container fluid>
         <v-card elevation="6" class="mx-5" width='auto'>
             <v-toolbar color="#F18254">
                 <v-row align="center">
@@ -163,7 +163,7 @@
             </v-toolbar>
 
             <v-row>
-                <v-container>
+                <v-container fluid>
                     <v-row>
                         <v-col cols="12" md="3">
                             <!--<v-radio-group v-model="selectedOption" inline v-if="mostrarFila">
@@ -323,7 +323,7 @@
             </v-col>-->
             <v-row>
                 <v-col cols="12" md="12">
-                    <v-container>
+                    <v-container fluid>
                         <v-card>
                         <v-card-text>
                             <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar"

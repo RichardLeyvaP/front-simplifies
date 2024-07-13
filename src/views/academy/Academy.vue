@@ -15,7 +15,8 @@
   
       </v-row>
     </v-snackbar>
-    <v-card elevation="6" class="mx-5">
+    <v-card elevation="6" class="mx-5" width="auto">    
+      <v-container fluid>
       <v-toolbar color="#F18254">
         <v-row align="center">
           <v-col cols="12" md="4" class="grow ml-4 t">
@@ -37,7 +38,7 @@
                   </v-toolbar>
                   <v-card-text>
                     <v-form ref="form" v-model="valid"  enctype="multipart/form-data">
-                    <v-container>
+                    <v-container fluid>
                       <v-row>
                         <v-col cols="12" md="12">
                           <v-text-field v-model="editedItem.name" clearable label="Nombre de la Academia"
@@ -135,6 +136,15 @@
 </v-avatar>
 {{ item.name }}
 </template>
+<template v-slot:item.description="{ item }">
+  <div class="description-cell">{{ item.description }}</div>
+</template>
+<template v-slot:item.address="{ item }">
+  <div class="address-cell">{{ item.address }}</div>
+</template>
+<template v-slot:item.location="{ item }">
+  <div class="location-cell">{{ item.location }}</div>
+</template>
           <template v-slot:item.actions="{ item }">
             <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar Academia"></v-btn>
@@ -202,7 +212,7 @@
           </v-toolbar>
           <v-card-text class="mt-2 mb-2">
             <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-              <v-container>
+              <v-container fluid>
                 <v-row>
                   <v-col cols="12" md="12">
                     <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="store_id" :items="stores" label="Almacén"
@@ -255,6 +265,7 @@
         </v-card>
       </v-dialog>
       </v-card-text>
+    </v-container>
     </v-card>
   </template>
   
@@ -807,3 +818,21 @@
     },//endMethods
   }
   </script>
+
+  <style>
+.description-cell {
+    max-width: 400px; /* Define el ancho máximo del campo de descripción */
+    overflow: hidden; /* Oculta el texto que se desborda del campo de descripción */
+    text-overflow: ellipsis; /* Muestra puntos suspensivos (...) cuando el texto se recorta */
+}
+.address-cell {
+    max-width: 200px; /* Define el ancho máximo del campo de descripción */
+    overflow: hidden; /* Oculta el texto que se desborda del campo de descripción */
+    text-overflow: ellipsis; /* Muestra puntos suspensivos (...) cuando el texto se recorta */
+}
+.location-cell {
+    max-width: 200px; /* Define el ancho máximo del campo de descripción */
+    overflow: hidden; /* Oculta el texto que se desborda del campo de descripción */
+    text-overflow: ellipsis; /* Muestra puntos suspensivos (...) cuando el texto se recorta */
+}
+</style>

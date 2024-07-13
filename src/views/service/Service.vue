@@ -15,8 +15,7 @@
       </v-col>
     </v-row>
   </v-snackbar>
-  <v-container>
-    <v-card elevation="6" class="mx-5" width='auto'>
+    <v-card elevation="3" class="mx-5" width='auto'>    
       <v-toolbar color="#F18254">
         <v-row align="center">
           <v-col cols="12" md="4" class="grow ml-4">
@@ -138,7 +137,7 @@
         </v-row>
 
       </v-toolbar>
-
+      <v-container fluid>
       <v-card-text>
         <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
           hide-details></v-text-field>
@@ -189,8 +188,8 @@
           </template>
         </v-data-table>
       </v-card-text>
-    </v-card>
-  </v-container>
+    </v-container>
+      </v-card>
 
 
 

@@ -16,7 +16,7 @@
         </v-col>
       </v-row>
     </v-toolbar>
-    <v-container>
+    <v-container fluid>
       <v-row>
         <!-- Primera columna -->
         <v-col cols="12" sm="6" md="3">
@@ -60,7 +60,7 @@
       </v-row>
       <v-row>
         <v-col cols="12" md="12">
-          <v-container>
+          <v-container fluid>
             <v-alert border type="info" variant="outlined" density="compact">
               <p v-html="formTitle"></p>
             </v-alert>

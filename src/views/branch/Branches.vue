@@ -25,7 +25,7 @@
         indeterminate
       ></v-progress-circular>
     </v-overlay>
-  <v-container>
+  <v-container fluid>
     <v-card elevation="6" class="mx-5">
 
       <v-toolbar color="#F18254">
@@ -53,7 +53,7 @@
               </v-toolbar>
               <v-card-text>
                 <v-form v-model="valid" enctype="multipart/form-data">
-                  <v-container>
+                  <v-container fluid>
                     <v-row>
                       <v-col cols="12" md="6">
                         <v-text-field v-model="editedItem.name" clearable label="Nombre"
@@ -130,7 +130,7 @@
       </v-toolbar>
 
       <v-card-text>
-        <v-container>
+        <v-container fluid>
           <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
             hide-details>
           </v-text-field>
@@ -246,7 +246,7 @@
             </v-toolbar>
             <v-card-text class="mt-2 mb-2">
               <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-                <v-container>
+                <v-container fluid>
                   <v-row>
                     <v-col cols="12" md="12">
                       <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.professional_id"
@@ -361,7 +361,7 @@
             </v-toolbar>
             <v-card-text class="mt-2 mb-2">
               <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-                <v-container>
+                <v-container fluid>
                   <v-row>
                     <v-col cols="12" md="12">
                       <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.store_id"
@@ -462,7 +462,7 @@
             </v-toolbar>
             <v-card-text class="mt-2 mb-2">
               <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-                <v-container>
+                <v-container fluid>
                   <v-row>
                     <v-col cols="12" md="12">
                       <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="associated_id"
@@ -514,7 +514,7 @@
               <span class="text-h6 ml-4">Ganancias de la Sucursal</span>
               <v-spacer></v-spacer>
             </v-toolbar>
-            <v-container>
+            <v-container fluid>
               <v-row>
                 <!-- Primera columna -->
                 <v-col cols="12" md="3">
@@ -558,7 +558,7 @@
                 </v-col>
               </v-row>
             </v-container>
-            <v-container>
+            <v-container fluid>
               <v-row>
                 <v-col cols="12" md="12">
                   <v-alert border type="info" variant="outlined" density="compact">

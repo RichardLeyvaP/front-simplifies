@@ -15,7 +15,7 @@
 
         </v-row>
     </v-snackbar>
-    <v-card elevation="6" class="mx-5">
+    <v-card elevation="6" class="mx-5" width="auto">
         <v-toolbar color="#F18254">
             <v-row align="center">
                 <v-col cols="12" md="5" class="grow ml-4 t">
@@ -24,7 +24,7 @@
                 </v-col>
             </v-row>
         </v-toolbar>
-        <v-container>
+        <!--<v-container class="fill-height" fluid>-->
             <v-row>
                 <v-col cols="12" sm="12" md="4">
                     <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
@@ -34,6 +34,7 @@
                 </v-col>
             </v-row>
             <v-row>
+                <v-container class="fill-height" fluid>
                 <v-col cols="12" md="12">
                     <v-card elevation="2">
                         <v-tabs v-model="tabBar" color="rgb(241, 130, 84)"
@@ -201,8 +202,9 @@
                         </v-card-text>
                     </v-card>
                 </v-col>
+                </v-container>
             </v-row>
-        </v-container>
+        <!---->
     </v-card>
 </template>
 
@@ -469,3 +471,9 @@ export default {
     },
 }
 </script>
+
+<style>
+.fill-height {
+  height: 100%;
+}
+</style>

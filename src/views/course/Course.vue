@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
-  <v-container>
+  <v-container fluid>
     <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24"
       :multi-line="true" vertical v-model="snackbar">
       <v-row>
@@ -396,7 +396,7 @@
             </v-toolbar>
             <v-card-text class="mt-2 mb-2">
               <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-                <v-container>
+                <v-container fluid>
                   <v-row>
                     <v-col cols="12" md="12">
                       <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedStudent.student_id"
@@ -537,7 +537,7 @@
         </v-toolbar>
         <v-card-text class="mt-2 mb-2">
           <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-            <v-container>
+            <v-container fluid>
               <v-row>
                 <v-col cols="12" md="12">
                   <!--<v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="student_id" :items="studentsCourse" label="Estudiantes"
@@ -652,7 +652,7 @@
         </v-toolbar>
         <v-card-text class="mt-2 mb-2">
           <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-            <v-container>
+            <v-container fluid>
               <v-row>
                 <v-col cols="12" md="12">
                   <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id"

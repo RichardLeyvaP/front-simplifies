@@ -15,7 +15,7 @@
         </v-row>
 
     </v-snackbar>
-    <v-container>
+    <v-container fluid>
         <v-card elevation="6" class="mx-5">
             <v-toolbar color="#F18254">
                 <v-row align="center">
@@ -26,7 +26,7 @@
                 </v-row>
             </v-toolbar>
             <br>
-            <v-container>
+            <v-container fluid>
                 <v-row>
                     <v-col cols="12" md="6">
                         <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
@@ -91,7 +91,7 @@
                     </v-col>
                 </v-row>
             </v-container>
-            <v-container>
+            <v-container fluid>
                 <v-row>
                     <br>
                     <v-spacer></v-spacer>

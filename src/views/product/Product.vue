@@ -13,7 +13,7 @@
       </v-col>
     </v-row>
   </v-snackbar>
-  <v-container>
+  <v-container fluid>
     <v-card elevation="6" class="mx-5" width="auto">
       <v-toolbar color="#F18254">
         <v-row>
@@ -185,7 +185,7 @@
       <v-dialog v-model="dialogMostSold" fullscreen transition="dialog-bottom-transition">
         <v-card elevation="6">
           <v-toolbar color="#F18254">
-            <v-container>
+            <v-container fluid>
               <v-row align="center">
                 <v-col cols="12" md="8" class="grow ml-4">
                   <span class="text-h8">
@@ -202,7 +202,7 @@
             </v-container>
           </v-toolbar>
           <v-card-text class="mt-1 mb-1">
-            <v-container>
+            <v-container fluid>
               <v-row>
                 <!-- Primera columna -->
                 <v-col cols="12" sm="6" md="3">
@@ -241,7 +241,7 @@
               </v-row>
               <v-row>
                 <v-col cols="12">
-                  <v-container>
+                  <v-container fluid>
                     <v-alert border type="info" variant="outlined" density="compact">
                       <p v-html="formTitle1"></p>
                     </v-alert>

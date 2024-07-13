@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <v-container>
+  <v-container fluid>
     <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24"
       :multi-line="true" vertical v-model="snackbar">
       <v-row>
@@ -33,7 +33,7 @@
 
       <v-card-text>
         <v-row>
-          <v-container>
+          <v-container fluid>
             <v-col cols="12" sm="12" md="6">
               <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
                 v-if="this.mostrarFila" clearable label="Seleccione una Sucursal" prepend-icon="mdi-store"
@@ -43,7 +43,7 @@
 
           </v-container>
         </v-row>
-        <v-container>
+        <v-container fluid>
           <v-row>
             <v-col cols="12" md="5">
               <v-card elevation="2">
