@@ -28,6 +28,17 @@
           <span class="text-subtitle-1"> <strong>Listado de Clientes</strong></span>
         </v-col>
         <v-col cols="12" md="7" class="text-right">
+        <v-btn
+                v-bind="props"
+                class="text-subtitle-1 ml-1"
+                color="#E7E9E9"
+                variant="flat"
+                elevation="2"
+                prepend-icon="mdi-gift"
+                @click="showGiftCard()"
+              >
+                Tarjeta de Regalo
+              </v-btn>
           <v-btn
                 v-bind="props"
                 class="text-subtitle-1 ml-1"
@@ -39,6 +50,7 @@
               >
                 Frecuencia por Sucursal
               </v-btn>
+              
           <v-dialog v-model="dialog" max-width="1000px">
             <template v-slot:activator="{ props }">
               <v-btn
@@ -247,11 +259,13 @@
             class="mr-1 mt-1 mb-1"
             title="Editar cliente"
           ></v-btn>
+          <v-btn density="comfortable" icon="mdi-gift" @click="showUserCardGift(item)" color="green" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Asignar tarjeta de regalo"></v-btn>
           <v-btn
             density="comfortable"
             icon="mdi-history"
             @click="showHistory(item)"
-            color="green"
+            color="orange"
             variant="tonal"
             elevation="1"
             class="mr-1 mt-1 mb-1"
@@ -444,7 +458,7 @@
             </v-btn>
           </v-col>
       </v-toolbar>
-        <v-container>
+        <v-container fluid>
         <v-row>
          <!-- Primera columna -->
          <v-col cols="12" sm="6" md="3" >
@@ -486,12 +500,12 @@
       </v-row></v-container>
       <v-row>
         <v-col cols="12">
-          <v-container>
+          <v-container fluid>
             <v-alert border type="info" variant="outlined" density="compact">
               <p v-html="formTitleFrec"></p>
                         </v-alert>
           </v-container>
-          <v-container>
+          <v-container fluid>
           <v-card-text>
             <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details>
@@ -556,6 +570,437 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
+
+            <!--GiftCard-->
+    <v-dialog v-model="dialogGistCard" fullscreen transition="dialog-bottom-transition">
+      <v-card>
+        <v-toolbar color="#F18254">
+          <v-col cols="12" md="9" class="grow ml-4">
+            <span class="text-h8"> <strong>Tarjetas de Regalos</strong></span>
+          </v-col>
+          <v-spacer></v-spacer>
+          <v-col cols="12" md="3" class="right">
+            <v-btn class="text-subtitle-1  ml-12  " color="#E7E9E9" variant="flat" elevation="2"
+                prepend-icon="mdi-plus-circle" @click="showAddCardGiftCard()">
+                Crear Tarjeta
+              </v-btn>
+          </v-col>
+      </v-toolbar>
+        <v-container fluid>
+        <v-row>
+          <v-card-text>
+          <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar" single-line hide-details>
+      </v-text-field>
+      <v-data-table :headers="headers2" :items-per-page-text="'Elementos por páginas'" :items="cardGiftsData" :search="search3" class="elevation-1"
+        no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles" :loading="loadingCardGift" loading-text="Cargando datos...">
+        <template v-slot:top>
+
+          <v-divider class="mx-4" inset vertical></v-divider>
+          <v-spacer></v-spacer>
+        </template>
+        <template v-slot:item.image_cardgift="{ item }">
+
+          <v-card class="my-2" rounded elevation="10" width="100">
+            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_cardgift" alt="image" cover></v-img>
+          </v-card>
+        </template>
+        <template v-slot:item.actions="{ item }">
+          <v-btn density="comfortable" icon="mdi-pencil" @click="editItemCardGift(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar tarjeta de regalo"></v-btn>
+          <v-btn density="comfortable" icon="mdi-gift" @click="showCardGiftUser(item)" color="green" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Asignar tarjeta de regalo"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItemCardGift(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar tarjeta de regalo"></v-btn>
+        </template>
+      </v-data-table>
+    </v-card-text>
+        </v-row>
+        </v-container>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="#E7E9E9" variant="flat" @click="closeshowGiftCard"> Volver </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!--formulario addGiftCard-->
+    <v-dialog v-model="dialogAddCardGift" max-width="700px">
+            <v-card>
+              <v-toolbar color="#F18254">
+                <span class="text-subtitle-1 ml-4">Crear Tarjeta de Regalo</span>
+              </v-toolbar>
+              <v-card-text>
+                <v-form v-model="valid" enctype="multipart/form-data">
+                  <v-row>
+                    <v-col cols="12" md="12">
+                      <v-autocomplete :no-data-text="'No hay datos disponibles'" clearable v-model="editedItemCardGift.business_id" :items="business" label="Negocio"
+                        prepend-icon="mdi-domain" item-title="name" item-value="id" variant="underlined"
+                        :rules="selectRules"></v-autocomplete>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <v-text-field v-model="editedItemCardGift.name" clearable label="Nombre" prepend-icon="mdi-card"
+                        variant="underlined" :rules="nameRules">
+                      </v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <v-text-field v-model="editedItemCardGift.value" clearable label="Valor" prepend-icon="mdi-currency-usd"
+                        variant="underlined" :rules="pago">
+                      </v-text-field>
+                    </v-col>
+
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12" md="12">
+                      <v-file-input clearable v-model="file" ref="fileInput" label="Imagen de Tarjeta Regalo"
+                        variant="underlined" density="compact" name="file" accept=".png, .jpg, .jpeg"
+                        @change="onFileSelected">
+                      </v-file-input>
+                    </v-col>
+                    <v-col cols="12" md="12">
+                      <v-card elevation="6" class="mx-auto" max-width="210" max-height="120">
+                        <img v-if="imagenDisponible()" :src="imgedit" height="120" width="210">
+                      </v-card>
+
+
+                    </v-col>
+                  </v-row><br>
+                  <v-divider></v-divider>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn color="#E7E9E9" variant="flat" @click="closeAddCardGiftCard">
+                      Cancelar
+                    </v-btn>
+                    <v-btn color="#F18254" variant="flat" @click="saveCardGift" :disabled="!valid">
+                      Aceptar
+                    </v-btn>
+                  </v-card-actions>
+                </v-form>
+              </v-card-text>
+            </v-card>
+          </v-dialog>
+    <!--formulario dleeAddCardGift-->
+    <v-dialog v-model="dialogDeleteCardGift" max-width="500px">
+            <v-card>
+              <v-toolbar color="red">
+                <span class="text-subtitle-2 ml-4"> Eliminar Terjeta de Regalo</span>
+              </v-toolbar>
+
+              <v-card-text class="mt-2 mb-2"> ¿Desea eliminar la Trjeta de Regalo?</v-card-text>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="#E7E9E9" variant="flat" @click="closeDeleteCardGift">
+                  Cancelar
+                </v-btn>
+                <v-btn color="#F18254" variant="flat" @click="deleteItemConfirmCardGift">
+                  Aceptar
+                </v-btn>
+
+
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <!--cardgiftsUser-->
+      <v-dialog v-model="dialogCardGitfUser" fullscreen transition="dialog-bottom-transition">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-h6 ml-6"> Asignar Tarjeta de Regalo</span>
+            <v-spacer></v-spacer>
+            <v-btn class="ml-4" color="#E7E9E9" variant="flat" @click="showAddCardGiftClient()">
+              Asignar a Cliente
+            </v-btn>  
+          </v-toolbar>
+
+          <v-card-text class="mt-2 mb-2">
+
+            <v-text-field class="mt-1 mb-1" v-model="search4" append-icon="mdi-magnify" label="Buscar" single-line
+              hide-details></v-text-field>
+
+            <v-data-table :headers="headers3" :items="cardgiftUser" :search="search4" class="elevation-1"
+              :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
+              no-data-text="No hay datos disponibles" :loading="loadingCardGftUser" loading-text="Cargando datos...">
+
+              <template v-slot:item.name="{ item }">
+
+                <v-avatar elevation="3" color="grey-lighten-4" size="large">
+                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_cardgift" alt="image"></v-img>
+                </v-avatar>
+                {{ item.name }}
+              </template>
+
+              <template v-slot:item.userName="{ item }">
+
+                <v-avatar elevation="3" color="grey-lighten-4" size="large">
+                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+                </v-avatar>
+                {{ item.userName }}
+              </template>
+
+              <template v-slot:item.actions="{ item }">
+                <!--<v-icon size="25" color="red" @click="deleteS(item)">
+                  mdi-delete
+                </v-icon>-->
+                <v-btn density="comfortable" icon="mdi-delete" @click="deleteCardGiftUser(item)" color="red-darken-4" variant="tonal"
+                  elevation="1" title="Eliminar asignación"></v-btn>
+              </template>
+
+            </v-data-table>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#F18254" variant="flat" @click="closeCardGiftUser">
+              Volver
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!--dielogo desasignat tarjete-->
+      <v-dialog v-model="dialogDeleteCardGiftUser" width="500">
+        <v-card>
+
+          <v-toolbar color="red">
+            <span class="text-subtitle-2 ml-4"> Eliminar Tarjeta asignada al cliente</span>
+          </v-toolbar>
+
+          <v-card-text class="mt-2 mb-2"> ¿Desea eliminar esta asignación?</v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="closedeleteCardGiftUser">
+              Cancelar
+            </v-btn>
+            <v-btn color="#F18254" variant="flat" @click="requestDeleteCardGiftUser">
+              Aceptar
+            </v-btn>
+
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <!--Asignar tarjeta a cliente-->
+      <v-dialog v-model="dialogAddCardGiftClient" width="700">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-2 ml-4">Asignar a Cliente</span>
+          </v-toolbar>
+          <v-card-text class="mt-2 mb-2">
+            <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+              <v-container>
+                <v-row>
+                  <v-col cols="12" md="6">
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedCardGiftUser.user_id" :items="users" label="Cliente"
+                      prepend-icon="mdi-store-outline" item-title="name" item-value="user_id" variant="underlined"
+                      :rules="selectRules" @update:model-value="handleClientSelection">
+                      <template v-slot:item="{ props, item }">
+                                                    <v-list-item
+                                                        v-bind="props"
+                                                        :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.client_image"
+                                                        :title="item.raw.name"
+                                                    ></v-list-item>
+                                                    </template>
+                      </v-autocomplete>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
+                      offset-y min-width="290px">
+                      <template v-slot:activator="{ props }">
+                        <v-text-field v-bind="props" :model-value="dateFormatted" variant="underlined"
+                          append-icon="mdi-calendar" label="Fecha de Expiración"></v-text-field>
+                      </template>
+                      <v-locale-provider locale="es">
+                        <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                          :model-value=input @update:model-value="updateDate" format="yyyy-MM-dd" 
+                          :min="new Date(
+                        Date.now() -
+                        new Date().getTimezoneOffset() * 60000
+                      )
+                        .toISOString()
+                        .substr(0, 10)
+                        "></v-date-picker>
+                      </v-locale-provider>
+                    </v-menu>
+                  </v-col>
+                </v-row>
+                <v-row v-if="details && Object.keys(details).length > 0">
+    <v-col cols="12">
+      <v-card>
+  <v-card-title class="headline">Detalles del Cliente</v-card-title>
+  <v-divider></v-divider>
+  <v-card-text>
+    <v-row>
+      <v-col cols="12" sm="3" class="text-left">
+        <v-card elevation="3" max-width="130" max-height="130">
+          <v-img class="d-flex align-end text-white" height="130" :src="'https://api2.simplifies.cl/api/images/' + details.imageLook" cover>
+    <v-card-title class="pa-0">
+        <v-chip color="">
+            <v-icon icon="mdi-camera" class="mr-1"></v-icon>
+            <span class="caption">{{ nameClient }}</span>
+        </v-chip>
+    </v-card-title>
+</v-img>
+                  <!--<v-img :src="'https://api2.simplifies.cl/api/images/' + details.imageLook" alt="image"></v-img>-->
+                </v-card>
+      </v-col>
+      <v-col cols="12" sm="6" class="text-left">
+        <p><strong>Última vez atendido por:</strong> {{ details.professionalName }}</p>
+        <p><strong>Cantidad de Visitas:</strong> {{ details.cantVisit }}</p>
+        <p><strong>Última visita:</strong> {{ details.lastVisit }}</p>
+        <p><strong>Frecuencia:</strong> {{ details.frecuencia }}</p>
+      </v-col>
+    </v-row>
+  </v-card-text>
+</v-card>
+    </v-col>
+</v-row>
+              </v-container>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="#E7E9E9" variant="flat" @click="closedialogAddCardGiftUser">
+                  Cancelar
+                </v-btn>
+                <v-btn color="#F18254" variant="flat" @click="saveCardGiftUser" :disabled="!valid">
+                  Aceptar
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+
+      <!--Desde user asignar tarjeta-->
+      <v-dialog v-model="dialogUserCardGitf" fullscreen transition="dialog-bottom-transition">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-h6 ml-6"> Asignar Tarjeta de Regalo</span>
+            <v-spacer></v-spacer>
+            <v-btn class="ml-4" color="#E7E9E9" variant="flat" @click="showAddClientCardGift()">
+              Asignar Tarjeta
+            </v-btn>  
+          </v-toolbar>
+
+          <v-card-text class="mt-2 mb-2">
+
+            <v-text-field class="mt-1 mb-1" v-model="search4" append-icon="mdi-magnify" label="Buscar" single-line
+              hide-details></v-text-field>
+
+            <v-data-table :headers="headers4" :items="userCardgift" :search="search5" class="elevation-1"
+              :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
+              no-data-text="No hay datos disponibles" :loading="loadingUserCardGft" loading-text="Cargando datos...">
+
+              <template v-slot:item.name="{ item }">
+
+                <v-avatar elevation="3" color="grey-lighten-4" size="large">
+                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_cardgift" alt="image"></v-img>
+                </v-avatar>
+                {{ item.name }}
+              </template>
+
+              <template v-slot:item.actions="{ item }">
+                <!--<v-icon size="25" color="red" @click="deleteS(item)">
+                  mdi-delete
+                </v-icon>-->
+                <v-btn density="comfortable" icon="mdi-delete" @click="deleteUserCardGift(item)" color="red-darken-4" variant="tonal"
+                  elevation="1" title="Eliminar asignación"></v-btn>
+              </template>
+
+            </v-data-table>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#F18254" variant="flat" @click="closeUserCardGift">
+              Volver
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="dialogUserDeleteCardGift" width="500">
+        <v-card>
+
+          <v-toolbar color="red">
+            <span class="text-subtitle-2 ml-4"> Eliminar Tarjeta asignada al cliente</span>
+          </v-toolbar>
+
+          <v-card-text class="mt-2 mb-2"> ¿Desea eliminar esta asignación?</v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="closedeleteUserCardGift">
+              Cancelar
+            </v-btn>
+            <v-btn color="#F18254" variant="flat" @click="requestUserDeleteCardGift">
+              Aceptar
+            </v-btn>
+
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="dialogClientAddCardGift" width="700">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-2 ml-4">Asignar Tarjeta</span>
+          </v-toolbar>
+          <v-card-text class="mt-2 mb-2">
+            <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+              <v-container>
+                <v-row>
+                  <v-col cols="12" md="6">
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedCardGiftUser.card_gift_id" :items="cardGiftsData" label="Tarjeta de Regalo"
+                      prepend-icon="mdi-gift" item-title="name" item-value="id" variant="underlined"
+                      :rules="selectRules" @update:model-value="handleClientSelection">
+                      <template v-slot:item="{ props, item }">
+                      <v-list-item v-bind="props"
+                        :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_cardgift"
+                        :title="item.raw.name">
+                        <v-list-item-subtitle class="d-flex justify-space-between">
+                          Valor: {{ item.raw.value }}
+                        </v-list-item-subtitle>
+                      </v-list-item>
+                    </template>
+                      </v-autocomplete>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
+                      offset-y min-width="290px">
+                      <template v-slot:activator="{ props }">
+                        <v-text-field v-bind="props" :model-value="dateFormatted" variant="underlined"
+                          append-icon="mdi-calendar" label="Fecha de Expiración"></v-text-field>
+                      </template>
+                      <v-locale-provider locale="es">
+                        <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                          :model-value=input @update:model-value="updateDate" format="yyyy-MM-dd" 
+                          :min="new Date(
+                        Date.now() -
+                        new Date().getTimezoneOffset() * 60000
+                      )
+                        .toISOString()
+                        .substr(0, 10)
+                        "></v-date-picker>
+                      </v-locale-provider>
+                    </v-menu>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="#E7E9E9" variant="flat" @click="closedialogAddtUserCardGif">
+                  Cancelar
+                </v-btn>
+                <v-btn color="#F18254" variant="flat" @click="saveUserCardGift" :disabled="!valid">
+                  Aceptar
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
   </v-card>
 </template>
 <script>
@@ -578,6 +1023,10 @@ export default {
   data: () => ({
     loadingVisit: true,
     loadingClient: true,
+    loadingCardGift: true,
+    loadingCardGftUser: true,
+    dialogAddCardGift: false,
+    dialogDeleteCardGift: false,
     valid: true,
     snackbar: false,
     sb_type: "",
@@ -599,8 +1048,11 @@ export default {
       { title: "Acciones", key: "actions", sortable: false },
     ],
     results: [],
+    cardGiftsData: [],
+    business: [],
     editedIndex: -1,
     editedIndexF: -1,
+    editedIndexG: -1,
     users: [],
     file: null,
     imgMiniatura: "",
@@ -626,15 +1078,64 @@ export default {
       client_image: "",
     },
 
+    editedItemCardGift: {
+      business_id: '',
+      value: '',
+      id: '',
+      image_cardgift: '',
+      user_id: '',
+      name: ''
+    },
+
+    defaultItemCardGift: {
+      business_id: '',
+      value: '',
+      id: '',
+      image_cardgift: '',
+      user_id: '',
+      name: ''
+    },
+
+    cardSelect: '',
+    loadingUser: true,
+    dialogCardGitfUser: false,
+
+    editedCardGiftUser: {
+      user_id: '',
+      expiration_date: '',
+      card_gift_id: '',
+      id: ''
+    },
+    defaultCardGiftUser: {
+      student_id: '',
+      card_gift_id: '',
+      expiration_date: '',
+      id: ''
+    },
+    cardgiftUser: [],
+    dialogDeleteCardGiftUser: false,
+    dialogAddCardGiftClient: false,
+    dialogUserDeleteCardGift: false,
+
+    //user Card Gift
+    userSelect: '',
+    userCardgift: [],
+    dialogUserCardGitf: false,
+    loadingUserCardGft: true,
+    dialogClientAddCardGift: false,
     //reporte
     dialogHistory: false,
     dialogFrecuence: false,
+    dialogGistCard: false,
     frecuences: [],
     menu: false,
     menu2: false,
     input: null,
     input2: null,
     search2: '',
+    search3: '',
+    search4: '',
+    search5: '',
     charge: '',
     history: [],
     frecuence: [],
@@ -654,6 +1155,31 @@ export default {
       { title: 'Cantidad Visitas', key: 'cant_visist', sortable: true },
       { title: 'Última vez Atendido', key: 'data', sortable: true },
     ],
+    headers2: [
+      { title: 'Nombre', key: 'name' },
+      { title: 'Imagen', key: 'image_cardgift' },
+      { title: 'Valor', value: 'value' },
+      { title: 'Acciones', key: 'actions', sortable: false },
+    ],
+    headers3: [
+      { title: 'Nombre Tarjeta', value: 'name' },
+      { title: 'Nombre Usuario', value: 'userName' },
+      { title: 'Valor Inicial', value: 'value' },
+      { title: 'Estado', value: 'state' },
+      { title: 'Valor Actual', value: 'exist' },
+      { title: 'Fecha Asignada', value: 'issue_date' },
+      { title: 'Fecha Expiración', value: 'expiration_date' },
+      { title: 'Acciones', key: 'actions', sortable: false },
+    ],
+    headers4: [
+      { title: 'Nombre Tarjeta', value: 'name' },
+      { title: 'Valor Inicial', value: 'value' },
+      { title: 'Estado', value: 'state' },
+      { title: 'Valor Actual', value: 'exist' },
+      { title: 'Fecha Asignada', value: 'issue_date' },
+      { title: 'Fecha Expiración', value: 'expiration_date' },
+      { title: 'Acciones', key: 'actions', sortable: false },
+    ],
     nameRules: [
       (v) => !!v || "El campo es requerido",
       (v) => (v && v.length <= 50) || "El campo debe tener menos de 51 caracteres",
@@ -671,6 +1197,8 @@ export default {
       (v) => !!v || "El Teléfono es requerido",
       //(value) => this.validateTelefono(value) || "El número de teléfono no es válido",
     ],*/
+    pago: [(value) => /^\d+(\.\d+)?$/.test(value) || "Debe ser un número con punto decimal (10.00)",
+      (v) => !!v || (!isNaN(v) && isFinite(v)) || 'Ingresa un número válido'],
     selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
   }),
 
@@ -844,6 +1372,7 @@ export default {
     onFileSelected(event) {
       let file = event.target.files[0];
       this.editedItem.client_image = file;
+      this.editedItemCardGift.image_cardgift = file;
       console.log(this.editedItem.client_image);
       this.cargarImage(file);
     },
@@ -1076,7 +1605,310 @@ export default {
       //XLSX.writeFile(wb, "report.xlsx");
       XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
     },
-    
+    showGiftCard(){
+      this.dialogGistCard = true;
+      this.loadingCardGift = true;
+      LocalStorageService.setIsLocked(true);
+      axios
+        .get('https://api2.simplifies.cl/api/card-gift')
+        .then((response) => {
+          this.cardGiftsData = response.data.cardGifts;
+          this.business = response.data.business;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+            this.loadingCardGift = false;
+            if (this.business.length > 0) {
+            this.editedItemCardGift.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
+          }
+        });
+    },
+    closeshowGiftCard(){
+      this.dialogGistCard = false;
+    },
+    showAddCardGiftCard(){
+      this.dialogAddCardGift = true;
+    },
+    closeAddCardGiftCard() {
+      this.editedIndexG = -1;
+      this.dialogAddCardGift = false;
+      this.$nextTick(() => {
+          this.editedItemCardGift = Object.assign({}, this.defaultItemCardGift)
+          this.imgMiniatura = '';
+          this.file = null;
+        })
+    },
+    saveCardGift() {
+      LocalStorageService.setIsLocked(true);
+
+        //console.log(this.editedItem.id);
+        this.valid = false;
+        const formData = new FormData();
+        for (let key in this.editedItemCardGift) {
+          formData.append(key, this.editedItemCardGift[key]);
+        }
+        if( this.editedIndexG == -1){
+          axios
+          .post('https://api2.simplifies.cl/api/card-gift', formData)
+          .then(() => {
+            this.imgMiniatura = '';
+            this.file = null;
+
+          }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+            this.showAlert("success", "Tarjeta de Regalo editada correctamente", 3000);
+            this.showGiftCard();
+          });
+        }else{
+          axios
+          .post('https://api2.simplifies.cl/api/card-gift-update', formData)
+          .then(() => {
+            this.imgMiniatura = '';
+            this.file = null;
+
+          }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+            this.showAlert("success", "Tarjeta de Regalo editada correctamente", 3000);
+            this.showGiftCard();
+            this.editedIndexG = -1;
+          });
+        }
+      this.closeAddCardGiftCard()
+    },
+    editItemCardGift(item) {
+      this.editedIndexG = 1;
+      this.dialogAddCardGift = true;
+      this.file = null;
+      var img = new Image();
+      img.src = 'https://api2.simplifies.cl/api/images/' + item.image_cardgift;
+      img.onload = () => {
+        this.imgMiniatura = 'https://api2.simplifies.cl/api/images/' + item.image_cardgift;
+      };
+      img.onerror = () => {
+        this.imgMiniatura = '';
+      };
+      console.log('item de cardGift');
+      console.log(item);
+      this.editedItemCardGift = Object.assign({}, item);
+    },
+    deleteItemCardGift(item) {
+      this.editedItemCardGift.id = item.id;
+      this.dialogDeleteCardGift = true;
+    },
+    closeDeleteCardGift() {
+      this.$nextTick(() => {
+        this.editedItemCardGift = Object.assign({}, this.defaultItemCardGift)
+      })
+      //this.initialize();
+      this.dialogDeleteCardGift = false;
+    },
+    deleteItemConfirmCardGift() {
+      LocalStorageService.setIsLocked(true);
+      //this.results.splice(this.editedIndex, 1)
+      let request = {
+        id: this.editedItemCardGift.id
+      };
+      axios
+        .post('https://api2.simplifies.cl/api/card-gift-destroy', request)
+        .then(() => {
+          this.dialogDeleteCardGift = false;
+        }).finally(() => {
+          LocalStorageService.setIsLocked(false);
+          this.showAlert("success", "Tarjeta de regalo eliminada correctamente", 3000);
+          this.showGiftCard();
+          });
+    },
+    showCardGiftUser(item) {
+      this.cardSelect = item;
+      //console.log(this.cardSelect);
+      this.loadingCardGftUser = true;
+      console.log(item.id);
+      this.editedCardGiftUser.card_gift_id = item.id
+      this.data.card_gift_id = item.id
+      LocalStorageService.setIsLocked(true);
+      axios
+        .get('https://api2.simplifies.cl/api/card-gift-user-show', {
+          params: {
+            card_gift_id: item.id
+          }
+        })
+        .then((response) => {
+          this.cardgiftUser = response.data.cardgiftUser;
+          this.loadingCardGftUser = false;
+          LocalStorageService.setIsLocked(false);
+        });
+      this.dialogCardGitfUser = true;
+    },
+    closeCardGiftUser() {
+      this.$nextTick(() => {
+        this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser)
+      })
+      this.dialogCardGitfUser = false;
+      //this.showCardGifts(this.cardSelect)
+    },
+    deleteCardGiftUser(item) {
+      this.dialogDeleteCardGiftUser = true;
+      //this.editedItem.branch_id=item.id
+      this.editedCardGiftUser.id = item.id
+    },
+    closedeleteCardGiftUser() {
+      this.$nextTick(() => {
+        this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser)
+      })
+      this.dialogDeleteCardGiftUser = false;
+    },
+    requestDeleteCardGiftUser() {
+      LocalStorageService.setIsLocked(true);
+      let request = {
+        id: this.editedCardGiftUser.id
+      };
+      axios
+        .post('https://api2.simplifies.cl/api/card-gift-user-destroy', request)
+        .then(() => {
+          this.dialogDeleteCardGiftUser = false;
+        }).finally(() => {
+          LocalStorageService.setIsLocked(false);
+          this.showCardGiftUser(this.cardSelect);
+          this.showAlert("success", "Asignacion eliminada correctamente", 3000);
+          this.$nextTick(() => {
+            this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser)
+          });
+          });
+    },
+    showAddCardGiftClient(){
+      LocalStorageService.setIsLocked(true);
+      axios
+        .get('https://api2.simplifies.cl/api/client-autocomplete')
+        .then((response) => {
+          this.users = response.data.clients;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
+        this.dialogAddCardGiftClient = true;
+    },
+    closedialogAddCardGiftUser() {
+      this.dialogAddCardGiftClient = false;
+      this.details = '';
+      this.nameClient = '';
+      this.$nextTick(() => {
+        this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser)
+      })
+      //this.showCardGifts(this.cardSelect)
+    },
+    saveCardGiftUser() {
+      LocalStorageService.setIsLocked(true);
+      this.valid = false,
+        this.data.card_gift_id = this.cardSelect.id;
+      this.data.user_id = this.editedCardGiftUser.user_id;
+      this.data.expiration_date = this.editedCardGiftUser.expiration_date ? this.editedCardGiftUser.expiration_date : format(new Date(), "yyyy-MM-dd");/*this.input ? format(new Date(this.input), "") : new Date();*/
+      console.log('this.editedCardGiftUser.expiration_date');
+      console.log(this.data.expiration_date);
+      axios
+        .post('https://api2.simplifies.cl/api/card-gift-user', this.data)
+        .then(() => {
+          this.$nextTick(() => {
+            this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser);
+            this.details = '';
+            this.nameClient = '';
+          });
+          this.dialogAddCardGiftClient = false;
+        }).finally(() => {
+          LocalStorageService.setIsLocked(false);
+          this.showAlert("success", "Tarjeta asignada correctamente al usuario", 3000);
+          this.showCardGiftUser(this.cardSelect);
+          });
+    },
+
+    //User Card Gift
+    showUserCardGift(item) {
+      this.userSelect = item;
+      console.log(item.user_id);
+      this.loadingUserCardGft = true;
+      console.log(item.id);
+      this.editedCardGiftUser.user_id = item.user_id
+      this.data.user_id = item.user_id
+      LocalStorageService.setIsLocked(true);
+      axios
+        .get('https://api2.simplifies.cl/api/card-gift-user-cardgift', {
+          params: {
+            user_id: item.user_id,
+            business_id: this.business_id
+          }
+        })
+        .then((response) => {
+          this.userCardgift = response.data.cardgiftUser;
+          this.cardGiftsData = response.data.cardGifts;
+          this.loadingUserCardGft = false;
+          LocalStorageService.setIsLocked(false);
+        });
+      this.dialogUserCardGitf = true;
+    },
+    closeUserCardGift() {
+      this.$nextTick(() => {
+        this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser)
+      })
+      this.dialogUserCardGitf = false;
+      //this.showCardGifts(this.cardSelect)
+    },
+    deleteUserCardGift(item) {
+      this.dialogUserDeleteCardGift = true;
+      //this.editedItem.branch_id=item.id
+      this.editedCardGiftUser.id = item.id
+    },
+    closedeleteUserCardGift() {
+      this.$nextTick(() => {
+        this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser)
+      })
+      this.dialogUserDeleteCardGift = false;
+    },
+    requestUserDeleteCardGift() {
+      LocalStorageService.setIsLocked(true);
+      let request = {
+        id: this.editedCardGiftUser.id
+      };
+      axios
+        .post('https://api2.simplifies.cl/api/card-gift-user-destroy', request)
+        .then(() => {
+          this.dialogUserDeleteCardGift = false;
+        }).finally(() => {
+          LocalStorageService.setIsLocked(false);
+          this.showUserCardGift(this.userSelect);
+          this.showAlert("success", "Asignacion eliminada correctamente", 3000);
+          this.$nextTick(() => {
+            this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser)
+          });
+          });
+    },
+    showAddClientCardGift(){
+        this.dialogClientAddCardGift = true;
+    },
+    closedialogAddtUserCardGif() {
+      this.dialogClientAddCardGift = false;
+      this.$nextTick(() => {
+        this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser)
+      })
+      //this.showCardGifts(this.cardSelect)
+    },
+    saveUserCardGift() {
+      LocalStorageService.setIsLocked(true);
+      this.valid = false,
+        this.data.card_gift_id = this.editedCardGiftUser.card_gift_id;
+      this.data.user_id = this.userSelect.user_id;
+      this.data.expiration_date = this.editedCardGiftUser.expiration_date ? this.editedCardGiftUser.expiration_date : format(new Date(), "yyyy-MM-dd");/*this.input ? format(new Date(this.input), "") : new Date();*/
+      console.log('this.editedCardGiftUser.expiration_date');
+      console.log(this.data.expiration_date);
+      axios
+        .post('https://api2.simplifies.cl/api/card-gift-user', this.data)
+        .then(() => {
+          this.$nextTick(() => {
+            this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser);
+          });
+          this.dialogClientAddCardGift = false;
+        }).finally(() => {
+          LocalStorageService.setIsLocked(false);
+          this.showAlert("success", "Tarjeta asignada correctamente al cliente", 3000);
+          this.showUserCardGift(this.userSelect);
+          });
+    },
   },
 };
 </script>
