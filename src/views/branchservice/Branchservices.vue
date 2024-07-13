@@ -104,8 +104,8 @@
         </v-toolbar>
 
         <v-row>
-            <v-container>
-                <v-col cols="12" sm="12" md="6">
+            <v-container fluid>
+                <v-col cols="12" md="6">
                     <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
                         label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
                         variant="underlined" @update:model-value="initialize()"></v-autocomplete>
