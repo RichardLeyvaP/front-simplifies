@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-row v-if="mostrarFila">
       <v-col cols="12" md="4" lg="4">
         <v-flex>
