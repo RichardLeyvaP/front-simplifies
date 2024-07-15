@@ -727,6 +727,11 @@
                   {{ item.pay === '0' ? 'Pendiente' : 'Pagado' }}
                 </v-chip>
               </template>
+            <template v-slot:item.phone="{ item }">
+            <td>
+              <a href="#" @click.prevent="openWhatsApp(item.phone)">{{ item.phone }}</a>
+            </td>
+          </template>
               <template v-slot:item.technical_assistance="{ item }">
                 {{ formatNumber(item.technical_assistance) }}
               </template>
@@ -1116,6 +1121,7 @@ export default {
       { title: 'No', value: 'id' },
       { title: 'Profesional', value: 'professionalName' },
       { title: 'Cliente', value: 'clientName' },
+      { title: 'Teléfono', key: 'phone', sortable: false },
       { title: 'Técnico', value: 'technical_assistance' },
       { title: 'Productos', value: 'product' },
       { title: 'Servicios', value: 'service' },
@@ -1345,6 +1351,9 @@ export default {
   },
 
   methods: {
+    openWhatsApp(phone) {
+      window.open('http://wa.me/' + phone);
+    },
     stopInterval() {
       console.log('Detener intervalo');
     clearInterval(this.intervalId);
