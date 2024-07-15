@@ -437,10 +437,17 @@
                     </v-text-field>
                   </v-col>
                   <v-col cols="12" md="6">
-                    <v-text-field v-model="editedItem.tip" clearable label="Propina" prepend-icon="mdi-currency-usd"
-                      variant="underlined" :rules="pago">
-                    </v-text-field>
-                  </v-col>
+              <v-row>
+                <v-col cols="6">
+                  <v-text-field v-model="editedItem.tip" clearable label="Propina" prepend-icon="mdi-currency-usd"
+                    variant="underlined" :rules="pago">
+                  </v-text-field>
+                </v-col>
+                <v-col cols="6">
+                  <v-switch v-model="editedItem.tipByCash" :label="`Por ${editedItem.tipByCash ? 'Efectivo' : 'Débito'}`"></v-switch>
+                </v-col>
+              </v-row>
+            </v-col>
                 </v-row>
                 <v-row>
                   <v-col cols="12" md="4">
@@ -1168,7 +1175,8 @@ export default {
       professional_id: '',
       other: '',
       amount: '',
-      cardGif: ''
+      cardGif: '',
+      tipByCash: ''
     },
     editedCloseBox: {
       id: '',
@@ -1230,7 +1238,8 @@ export default {
       professional_id: '',
       other: '',
       amount: '',
-      cardGif: ''
+      cardGif: '',
+      tipByCash: ''
     },
 
     pago: [
@@ -1976,6 +1985,7 @@ export default {
         this.data.tip = parseFloat(this.editedItem.tip) || 0;
         this.data.code = this.editedCard.cardGiftUser_id || 0;  // Fix typo here
         this.data.nameProfessional = this.nameProfessional;
+        this.data.tipByCash = this.editedItem.tipByCash;
         this.data.branch_id = this.branch_id;
         const suma = this.data.cash + this.data.creditCard + this.data.debit + this.data.transfer + this.data.other + this.data.cardGift + this.data.tip;
 
