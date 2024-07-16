@@ -473,6 +473,13 @@ const routes = [
           import( "@/views/reportes/FinanceBranchDetail.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_finance_detal_operation"] },
       },
+      {
+        path: "/reservation-professional",
+        name: "Reservaciones por profesional",
+        component: () =>
+          import( "@/views/reservation/reservations.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_reservation_professional"] },
+      },
     ],
   },
 ];

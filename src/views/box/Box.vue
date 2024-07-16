@@ -19,15 +19,19 @@
   <v-card elevation="3" class="mx-5" width='auto'>
     <v-toolbar color="#F18254">
       <v-row>
-        <v-col cols="12" md="4" class="mt-4">
+        <v-col cols="12" md="3" class="mt-4">
           <span class="ml-4"> <strong>Caja <!--- {{ this.nameBranch }}--></strong></span>
         </v-col>
-        <v-col cols="12" md="8" class="text-right">
+        <v-col cols="12" md="9" class="text-right">
           <v-dialog v-model="dialog" max-width="1000px">
             <template v-slot:activator="{ props }">
               <div class="text-center">
+                <v-btn class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2"
+              prepend-icon="mdi-clipboard-text" @click="chargeData()">
+              Reservaciones
+            </v-btn>
                 <v-btn @click="showDialogProduct" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-cart"
-                  :disabled="ejecutado">
+                  :disabled="ejecutado" class="ml-1">
                   Venta Productos
                 </v-btn>
                 <v-btn @click="dialogDetallesCarPagado = true" color="#E7E9E9" variant="flat" elevation="2"
@@ -1024,6 +1028,96 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+
+      <!--ver reservaciones de profesionales-->
+      <v-dialog v-model="showReserPrpfessional" fullscreen transition="dialog-bottom-transition">
+
+  <v-card>
+
+  <v-toolbar color="#F18254">
+    <v-row align="center">
+      <v-col cols="12" md="8" class="grow ml-4">
+        <span class="text-h8">
+          <strong>Reservas del profesional</strong></span>
+      </v-col>
+    </v-row>
+  </v-toolbar>
+  <v-container>
+    <v-card-text>
+      <v-row>
+
+        <v-row>
+
+        </v-row>
+        <div class="fixed-size-calendar">
+          <v-sheet>
+
+            <v-row>
+              <v-col cols="12" sm="12" md="3">
+                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+                  v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
+                  item-title="name" item-value="id" density="compact" class="ma-2" variant="outlined"
+                  @update:model-value="showReservations()"></v-autocomplete><!--@update:model-value="initialize()"-->
+              </v-col>
+              <v-col cols="12" md="3">
+                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id"
+                  :items="professionals" label="Profesional" prepend-inner-icon="mdi-account-tie-outline"
+                  item-title="name" item-value="id" variant="outlined" density="compact" class="ma-2"
+                  :rules="selectRules"><!--@update:model-value="showReservationsProfessional()"-->
+                  <template v-slot:item="{ props, item }">
+                    <v-list-item v-bind="props"
+                      :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_url"
+                      :subtitle="'Cargo: ' + item.raw.charge" :title="item.raw.name"></v-list-item>
+                  </template>
+                </v-autocomplete>
+              </v-col>
+              <v-col cols="12" md="3">
+                <v-select v-model="type" :items="types" class="ma-2" label="Modo de vista" variant="outlined"
+                  density="compact" hide-details></v-select>
+              </v-col>
+              <v-col cols="12" md="1">
+                <v-btn :disabled="!this.professional_id" icon @click="showReservationsProfessional()"
+                  color="#F18254">
+                  <v-icon>mdi-magnify</v-icon></v-btn>
+              </v-col>
+              <!--<v-cols cols="6">
+<v-select
+v-model="weekday"
+:items="weekdays"
+class="ma-2"
+label="weekdays"
+variant="outlined"
+dense
+hide-details
+></v-select>
+</v-cols>-->
+            </v-row>
+            <v-calendar ref="calendar" v-model="value" :events="events" :view-mode="type"
+              :event-color="getEventColor" class="fixed-size-calendar" hide-day-header="false">
+            </v-calendar>
+            <!--<v-sheet>
+:weekdays="weekday"
+<v-calendar
+ref="calendar"
+v-model="value"
+:events="events"
+:view-mode="type"
+:weekdays="weekday"
+></v-calendar>
+</v-sheet>-->
+          </v-sheet>
+        </div>
+
+      </v-row>
+    </v-card-text>
+    <v-divider></v-divider>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn color="#E7E9E9" variant="flat" @click="closeCalendar"> Volver </v-btn>
+    </v-card-actions>
+  </v-container>
+</v-card>
+</v-dialog>
     </v-card-text>
 
 
@@ -1036,6 +1130,7 @@ import axios from "axios";
 import LocalStorageService from "@/LocalStorageService";
 import * as XLSX from 'xlsx';
 import { format } from "date-fns";
+import { VCalendar } from 'vuetify/labs/VCalendar'
 
 // Interceptor para agregar el token a cada solicitud
 axios.interceptors.request.use(config => {
@@ -1049,7 +1144,46 @@ axios.interceptors.request.use(config => {
 });
 
 export default {
+  components: {
+    VCalendar,
+  },
+
   data: () => ({
+    showReserPrpfessional: false,
+    reservations: [],
+    type: 'month',
+    types: [
+      { title: 'Mes', value: 'month' },
+      //{ title: 'Semana', value: 'week' },
+      //{ title: 'Día', value: 'day' }
+    ],
+    dayLabels: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+    monthLabels: [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ],
+    today: new Date(),
+    focus: '',
+    value: [new Date()],
+    weekday: [0, 1, 2, 3, 4, 5, 6],
+    weekdays: [
+      { title: 'Dom - Sáb', value: [0, 1, 2, 3, 4, 5, 6] },
+      { title: 'Lun - Dom', value: [1, 2, 3, 4, 5, 6, 0] },
+      { title: 'Lun - Vie', value: [1, 2, 3, 4, 5] },
+      { title: 'Lun, Mié, Vie', value: [1, 3, 5] },
+    ],
+    events: [],
+    professionals: [],
+    colors: [
+      'blue',
+      'green',
+      'orange',
+      'grey darken-1',
+      'indigo',
+      'deep-purple',
+      'cyan',
+
+    ],
     valid: true,
     loadingcar:true,
     loadingOrders: true,
@@ -1176,7 +1310,7 @@ export default {
       other: '',
       amount: '',
       cardGif: '',
-      tipByCash: ''
+      tipByCash: false
     },
     editedCloseBox: {
       id: '',
@@ -1239,7 +1373,7 @@ export default {
       other: '',
       amount: '',
       cardGif: '',
-      tipByCash: ''
+      tipByCash: false
     },
 
     pago: [
@@ -1360,8 +1494,100 @@ export default {
   },
 
   methods: {
+    getMonthDateRange(date) {
+      const start = new Date(date.getFullYear(), date.getMonth(), 1);
+      const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+      return { start, end };
+    },
+    // aqui lo del calendario
+    getEventColor(event) {
+      return event.color
+    },
+    rnd(a, b) {
+      return Math.floor((b - a + 1) * Math.random()) + a
+    },
+    closeCalendar() {
+      this.reservations = [];
+      this.events = [];
+      this.showReserPrpfessional = false;
+    },
+    chargeData() {//aqui cargo el componente del calendar
+this.showReserPrpfessional = true;
+this.showReservations();
+},
+showReservations() {//aqui cargo el componente del calendar
+this.professional_id = '';
+this.type = 'month';
+this.events = [];
+console.log('this.today');
+console.log(this.today);
+const today = new Date(this.today);
+const range = this.getMonthDateRange(today);
+const startDate = range.start.toISOString().split('T')[0];
+const endDate = range.end.toISOString().split('T')[0];
+/*const startDate = this.input
+  ? format(this.input, "yyyy-MM-dd")
+  : format(new Date(), "yyyy-MM-dd");
+const endDate = this.input2
+  ? format(this.input2, "yyyy-MM-dd")
+  : format(new Date(), "yyyy-MM-dd");*/
+  LocalStorageService.setIsLocked(true);
+axios
+  .get("https://api2.simplifies.cl/api/branch-reservations-periodo", {
+    params: {
+      branch_id: this.branch_id,
+      startDate: startDate,
+      endDate: endDate
+    },
+  })
+  .then((response) => {
+    //this.reservations = response.data.reservaciones;
+    this.professionals = response.data.professionals;
+  }).finally(() => {
+      LocalStorageService.setIsLocked(false);
+  });
+},
+showReservationsProfessional() {//aqui cargo el componente del calendar  
+LocalStorageService.setIsLocked(true);      
+this.events = [];
+console.log('this.today');
+console.log(this.today);
+const today = new Date(this.today);
+const range = this.getMonthDateRange(today);
+const startDate = range.start.toISOString().split('T')[0];
+const endDate = range.end.toISOString().split('T')[0];
+axios
+  .get("https://api2.simplifies.cl/api/professional-reservations-periodo", {
+    params: {
+      branch_id: this.branch_id,
+      professional_id: this.professional_id,
+      startDate: startDate,
+      endDate: endDate
+    },
+  })
+  .then((response) => {
+    this.reservations = response.data.reservaciones;
+    console.log('Reservaciones');
+    console.log(this.reservations);
+    let tempEvents = [];
+
+
+    this.reservations.forEach(reservacion => {
+      tempEvents.push({
+        title: reservacion.clientName,
+        start: new Date(reservacion.startDate),
+        end: new Date(reservacion.endDate),
+        color: 'red',
+        allDay: false
+      });
+    });
+    this.events = tempEvents;
+  }).finally(() => {
+      LocalStorageService.setIsLocked(false);
+  });
+},
     openWhatsApp(phone) {
-      window.open('http://wa.me/' + phone);
+      window.open('http://wa.me/'+'+' + phone);
     },
     stopInterval() {
       console.log('Detener intervalo');
