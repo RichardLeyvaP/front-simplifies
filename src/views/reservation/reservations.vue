@@ -9,7 +9,8 @@
         <strong>Reservas por profesional</strong></span>
     </v-col>
   </v-row>
-</v-toolbar><v-container>
+</v-toolbar>
+<v-container>
   <v-card-text>
         <v-sheet>
 
@@ -42,9 +43,11 @@
                 <v-icon>mdi-magnify</v-icon></v-btn>
             </v-col>
           </v-row>
-          <v-calendar ref="calendar" v-model="value" :events="events" :view-mode="type"
-            :event-color="getEventColor" class="fixed-size-calendar" hide-day-header="false">
-          </v-calendar>
+          <div class="calendar-container">
+            <v-calendar ref="calendar" v-model="value" :events="events" :view-mode="type"
+              :event-color="getEventColor" class="fixed-size-calendar" hide-day-header="false">
+            </v-calendar>
+          </div>
         </v-sheet>
   </v-card-text>
     </v-container>
@@ -235,11 +238,10 @@ export default {
 <style>
 .fixed-size-calendar {
   min-height: 100%;
-  /* Ajustar según sea necesario */
   min-width: 100%;
-  /* Ajustar según sea necesario */
   width: 100%;
-  /* O establecer un ancho fijo */
-  /* O establecer un ancho fijo */
+}
+.calendar-container {
+  overflow-y: auto;
 }
 </style>

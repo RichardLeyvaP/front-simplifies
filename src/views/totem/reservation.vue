@@ -140,7 +140,7 @@
                 </v-list-item>
               </v-list-item-group>
             </v-list>
-            <v-dialog v-model="showDialog" max-width="400px">
+            <!--<v-dialog v-model="showDialog" max-width="400px">
               <v-card title="Datos de Cliente">
                 <v-sheet class="mx-auto" width="300">
                   <v-form @submit.prevent>
@@ -154,13 +154,52 @@
 
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <!-- Establece isActive como false al hacer clic en Cancelar -->
                   <v-btn size="x-large" text="Cancelar"
                     @click="() => { this.selectedItem = 'option2'; this.radios = 'ClientNo'; showDialog = false; }"></v-btn>
 
                 </v-card-actions>
               </v-card>
-            </v-dialog>
+            </v-dialog>-->
+            <v-dialog v-model="showDialog" max-width="400px">
+    <v-card title="Datos de Cliente">
+      <v-sheet class="mx-auto" width="300">
+        <v-form @submit.prevent>
+          <template v-if="showTextField">
+          <v-text-field v-model="email_client2" label="Teléfono ó Correo Electrónico" outlined
+          required @input="fetchClients"></v-text-field>
+          </template>
+          <template v-else>
+            <v-autocomplete
+            v-model="email_client2"
+            :items="clientRegister"
+            item-title="name"
+            item-value="id"
+            label="Seleccione su nombre"
+            outlined
+            required
+          >
+          <!--<template v-slot:item="{ props, item }">
+                      <v-list-item v-bind="props"
+                        :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.client_image"
+                        :title="item.raw.name">
+                        <v-list-item-subtitle class="d-flex justify-space-between">
+                          Correo: {{ item.raw.email }}
+                        </v-list-item-subtitle>
+                      </v-list-item>
+                    </template>--></v-autocomplete>
+          </template>
+          <!--<v-btn size="x-large" color="orange lighten-2" class="mt-2" type="submit"
+            @click="() => { sendData(); isActive.value = false; }" block>Aceptar</v-btn>-->
+        </v-form>
+      </v-sheet>
+
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn size="x-large" text="Cancelar"
+          @click="() => { this.selectedItem = 'option2'; this.radios = 'ClientNo'; showDialog = false; }">Cancelar</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
           </v-sheet>
 
 
@@ -358,6 +397,7 @@ axios.interceptors.request.use(config => {
 export default {
 
   data: () => ({
+    showTextField: true,
     snackbar: false,
     sb_type: '',
     sb_message: '',
@@ -387,6 +427,7 @@ export default {
     name_client: "",
     email_client: "",
     email_client2: "",
+    client_id: 0,
     phone_client: '+569',
     selected_interval: "",
     surname_client: "",
@@ -480,9 +521,16 @@ export default {
         this.selectedItem = 'option2';
         // Realizar cualquier otra acción necesaria
       }
+    },
+    email_client2(newVal) {
+      if (this.clientRegister.length >0) {
+        const client = this.clientRegister.filter(item => item.id == newVal)
+        console.log('client seleccionado');
+        console.log(client);
+        this.updateClientData(client[0]);
+      }
     }
-  }
-  ,
+  },
 
   computed: {
     filteredProfessionals() {
@@ -586,6 +634,48 @@ export default {
 
   methods:
   {
+    fetchClients(query) {
+      this.clientRegister = [];
+      this.client_id = 0;
+      console.log(query.data);
+      if (query) {
+        axios.get(`https://api2.simplifies.cl/api/client-email-phone?email=${query.data}`)
+        .then(response => {
+          // Maneja la respuesta de la solicitud aquí
+          this.clientRegister = response.data.client;
+          console.log('-------------------------------clientRegister----------------------------------------');
+          console.log('this.clientRegister.length');
+          console.log(this.clientRegister);
+          if (this.clientRegister.length > 0) {
+            this.showTextField = false;
+
+          }
+        });
+      } else {
+        this.clientRegister = [];
+      }
+    },
+    updateClientData(client) {
+      console.log(client);
+      if (client) {
+        // Llamar a una función para actualizar datos con el cliente seleccionado
+        this.setClientData(client);
+      }
+    },
+    setClientData(client) {
+      console.log(client.id);
+      // Actualiza los campos con los datos del cliente seleccionado
+      this.name_client = client.name;
+            this.phone_client = client.phone;
+            this.client_id = client.id;
+            //this.second_surname = client.second_surname;
+            this.email_client = client.email;
+            this.showDialog = false;
+            this.verificate = true;
+            this.showTextField = true;
+            this.changeStep(4);
+      // Agrega más campos según sea necesario
+    },
     formatNumber(value) {
       // Si el valor es menor que 1000, devuelve el valor original con dos decimales
       if (value < 1000) {
@@ -689,6 +779,9 @@ export default {
       //this.surname_client = '';
       //this.second_surname = '';
       this.email_client = '';
+      this.email_client2 = '';
+      this.client_id = 0;
+      this.showTextField = true;
 
     },
     sendData() {
@@ -772,7 +865,7 @@ export default {
           email_client: this.email_client,
           phone_client: this.phone_client,
           name_client: this.name_client,
-          //surname_client:this.surname_client,
+          client_id:this.client_id,
           //second_surname:this.second_surname,
           select_professional: 0,
           services: newArrayService,
@@ -790,7 +883,7 @@ export default {
           email_client: this.email_client,
           phone_client: this.phone_client,
           name_client: this.name_client,
-          //surname_client:this.surname_client,
+          client_id:this.client_id,
           //second_surname:this.second_surname,
           services: newArrayService,
           from_home: 0
@@ -956,12 +1049,13 @@ return day ? day.day.toString().trim() : "";
     },
 
     prevStep() {
+      this.clearTextClient();
       if (this.step > 1) {
         this.step--;
       }
       if (this.step === 3) {
         this.selectedItem = 'option2';
-        this.clearTextClient();
+        //this.clearTextClient();
         this.verificate = false;
       }
     },

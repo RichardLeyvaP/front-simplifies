@@ -1042,7 +1042,7 @@
       </v-col>
     </v-row>
   </v-toolbar>
-  <v-container>
+  <v-container fluid>
     <v-card-text>
       <v-row>
 
@@ -2669,3 +2669,15 @@ axios
   },
 }
 </script>
+
+<style>
+.fixed-size-calendar {
+  min-height: 100%;
+  /* Ajustar según sea necesario */
+  min-width: 100%;
+  /* Ajustar según sea necesario */
+  width: 100%;
+  /* O establecer un ancho fijo */
+  /* O establecer un ancho fijo */
+}
+</style>
