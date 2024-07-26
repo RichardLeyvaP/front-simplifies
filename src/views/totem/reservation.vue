@@ -540,12 +540,12 @@ export default {
       }
       },
       email_clientText(newVal) {
-      //if (this.clientRegister.length >0) {
+      if (newVal) {
        
         console.log('correo seleccionado');
         console.log(newVal);
         this.fetchClients(newVal);
-      //}
+      }
     }
   },
 
