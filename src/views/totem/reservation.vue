@@ -162,11 +162,11 @@
             </v-dialog>-->
             <v-dialog v-model="showDialog" max-width="400px">
     <v-card title="Datos de Cliente">
-      <v-sheet class="mx-auto" width="300">
+      <v-card-text>
         <v-form @submit.prevent>
           <template v-if="showTextField">
-          <v-text-field v-model="email_client2" label="Teléfono ó Correo Electrónico" outlined
-          required @input="fetchClients"></v-text-field>
+          <v-text-field v-model="email_clientText" label="Teléfono ó Correo Electrónico" outlined
+          :rules="selectRules"></v-text-field>
           </template>
           <template v-else>
             <v-autocomplete
@@ -175,8 +175,9 @@
             item-title="name"
             item-value="id"
             label="Seleccione su nombre"
+            :no-data-text="'No hay datos disponibles'"
             outlined
-            required
+            :rules="selectRules"
           >
           <!--<template v-slot:item="{ props, item }">
                       <v-list-item v-bind="props"
@@ -191,12 +192,12 @@
           <!--<v-btn size="x-large" color="orange lighten-2" class="mt-2" type="submit"
             @click="() => { sendData(); isActive.value = false; }" block>Aceptar</v-btn>-->
         </v-form>
-      </v-sheet>
+      </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn size="x-large" text="Cancelar"
-          @click="() => { this.selectedItem = 'option2'; this.radios = 'ClientNo'; showDialog = false; }">Cancelar</v-btn>
+          @click="() => { this.selectedItem = 'option2'; this.radios = 'ClientNo'; showDialog = false; this.email_clientText = ''; this.showTextField = true}">Cancelar</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -324,14 +325,17 @@
     <v-dialog v-model="dialogEncuesta" max-width="600"
       @click:outside="closeEncuesta">
       <v-card>
-        <v-toolbar color="orange lighten-2" dark>Como supo de nosotros</v-toolbar>
-        <v-card-text>
+        <v-toolbar color="orange lighten-2" dark>
+                    <span class="text-subtitle-1 ml-8">Como supo de nosotros</span>
+                    </v-toolbar>
+                    <v-col cols="12" md="12" class="mt-2">
           <v-list-item v-for="survey in surveys" :key="survey.id" :class="['py-0', 'my-0', 'custom-list-item']">
             <v-list-item-content class="d-flex align-center">
               <v-checkbox v-model="selectedSurveys" :label="survey.name" :value="survey.id" dense
                 class="pa-0 ma-0"></v-checkbox>
             </v-list-item-content>
           </v-list-item>
+        </v-col>
           <!--<v-col cols="12" md="12" class="mt-2">
                 <v-checkbox
       v-for="survey in surveys"
@@ -343,7 +347,6 @@
       dense
     ></v-checkbox>
                     </v-col>-->
-        </v-card-text>
         <v-card-actions class="justify-end">
           <v-btn @click="closeEncuesta()" color="#E7E9E9" variant="flat">Cancelar</v-btn>
           <v-btn @click="addEncuesta()" :disabled="!selectedSurveys.length > 0" color="#F18254"
@@ -425,9 +428,10 @@ export default {
     message: "Los datos para realizar la reserva están completos. Se enviará correo electrónico con los datos de la reserva",
     checkbox: false,
     name_client: "",
+    email_clientText: "",
     email_client: "",
     email_client2: "",
-    client_id: 0,
+    client_id: "",
     phone_client: '+569',
     selected_interval: "",
     surname_client: "",
@@ -465,6 +469,7 @@ export default {
       v => !!v || 'El número de móvil es requerido',
       v => /^\+569\d{8}$/.test(v) || 'Formato de número móvil inválido. Ejemplo: +56912345678'
     ],
+    selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
     disabledIntervals: [],
     intervals: [],
     countInterval: 0,
@@ -519,6 +524,10 @@ export default {
         // El modal se ha cerrado
         console.log('El modal se ha cerrado');
         this.selectedItem = 'option2';
+        this.clientRegister = [];
+      this.client_id = '';
+      //this.email_client = '';
+      //this.email_clientText = '';
         // Realizar cualquier otra acción necesaria
       }
     },
@@ -529,6 +538,14 @@ export default {
         console.log(client);
         this.updateClientData(client[0]);
       }
+      },
+      email_clientText(newVal) {
+      //if (this.clientRegister.length >0) {
+       
+        console.log('correo seleccionado');
+        console.log(newVal);
+        this.fetchClients(newVal);
+      //}
     }
   },
 
@@ -636,10 +653,11 @@ export default {
   {
     fetchClients(query) {
       this.clientRegister = [];
-      this.client_id = 0;
-      console.log(query.data);
+      this.client_id = '';
+      console.log('query en la funcion');
+      console.log(query);
       if (query) {
-        axios.get(`https://api2.simplifies.cl/api/client-email-phone?email=${query.data}`)
+        axios.get(`https://api2.simplifies.cl/api/client-email-phone?email=${query}`)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.clientRegister = response.data.client;
@@ -662,14 +680,31 @@ export default {
         this.setClientData(client);
       }
     },
+    /*updateClientData(query) {
+      console.log('client seleccionado datos');
+        console.log(query);
+        let client;
+      if (this.clientRegister.length >0) {
+        client = this.clientRegister.filter(item => item.id == query)
+        console.log('client seleccionado datos');
+        console.log(client[0].id);
+      }
+      console.log(client);
+      if (client) {
+        // Llamar a una función para actualizar datos con el cliente seleccionado
+        this.setClientData(client);
+      }
+    },*/
     setClientData(client) {
-      console.log(client.id);
+      console.log('client seleccionado setclientData');
+      
       // Actualiza los campos con los datos del cliente seleccionado
       this.name_client = client.name;
             this.phone_client = client.phone;
             this.client_id = client.id;
             //this.second_surname = client.second_surname;
             this.email_client = client.email;
+            console.log(this.email_client);
             this.showDialog = false;
             this.verificate = true;
             this.showTextField = true;
@@ -778,9 +813,10 @@ export default {
       this.phone_client = '+569';
       //this.surname_client = '';
       //this.second_surname = '';
+      this.email_clientText = '';
       this.email_client = '';
       this.email_client2 = '';
-      this.client_id = 0;
+      this.client_id = '';
       this.showTextField = true;
 
     },
@@ -799,6 +835,7 @@ export default {
           console.log(this.clientRegister.length);
           if (this.clientRegister.length > 0) {
             const client = this.clientRegister[0];
+            console.log('client Seleccionado sendData');
             console.log(this.clientRegister[0]);
             //ASIGNO A LOS CAMPOS DEL FORMULARIO TDS LOS DATOS
             this.name_client = client.name;
