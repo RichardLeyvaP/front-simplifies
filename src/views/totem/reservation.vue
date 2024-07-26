@@ -196,7 +196,7 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn size="x-large" text="Aceptar" :disabled="!this.email_client"
+        <v-btn size="x-large" text="Aceptar" :disabled="!this.email_client" :loading="loadingClient"
           @click="fetchClients">Aceptar</v-btn>
         <v-btn size="x-large" text="Cancelar"
           @click="() => { this.selectedItem = 'option2'; this.radios = 'ClientNo'; showDialog = false; this.email_clientText = ''; this.showTextField = true}">Cancelar</v-btn>
@@ -410,6 +410,7 @@ export default {
     sb_title: '',
     sb_icon: '',
     loading: false,
+    loadingClient: false,
     horarioDisponibleActual: '',
     idProfesionalListo: '',
     showDialog: false,
@@ -653,12 +654,13 @@ export default {
 
   methods:
   {
-    fetchClients(query) {
+    fetchClients() {
+      this.loadingClient = true;
       this.clientRegister = [];
       this.client_id = '';
       console.log('query en la funcion');
       console.log(this.email_client);
-      if (query) {
+      //if (query) {
         axios.get(`https://api2.simplifies.cl/api/client-email-phone?email=${this.email_client}`)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
@@ -676,13 +678,9 @@ export default {
         this.showTextField = true;
         this.clientRegister = [];
       }
+      this.loadingClient = false;
         });
-      } else {
-        this.showAlert("warning", "No existe ninguún cliente con ese correo o teléfono", 2000);
-        this.email_clientText = '';
-        this.showTextField = true;
-        this.clientRegister = [];
-      }
+      //}
     },
     updateClientData(client) {
       console.log(client);
