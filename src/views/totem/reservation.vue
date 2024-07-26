@@ -165,7 +165,7 @@
       <v-card-text>
         <v-form @submit.prevent>
           <template v-if="showTextField">
-          <v-text-field v-model="email_clientText" label="Teléfono ó Correo Electrónico" outlined
+          <v-text-field v-model="email_client" label="Teléfono ó Correo Electrónico" outlined
           :rules="selectRules"></v-text-field>
           </template>
           <template v-else>
@@ -196,6 +196,8 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
+        <v-btn size="x-large" text="Aceptar" :disabled="!this.email_client"
+          @click="fetchClients">Aceptar</v-btn>
         <v-btn size="x-large" text="Cancelar"
           @click="() => { this.selectedItem = 'option2'; this.radios = 'ClientNo'; showDialog = false; this.email_clientText = ''; this.showTextField = true}">Cancelar</v-btn>
       </v-card-actions>
@@ -655,9 +657,9 @@ export default {
       this.clientRegister = [];
       this.client_id = '';
       console.log('query en la funcion');
-      console.log(query);
+      console.log(this.email_client);
       if (query) {
-        axios.get(`https://api2.simplifies.cl/api/client-email-phone?email=${query}`)
+        axios.get(`https://api2.simplifies.cl/api/client-email-phone?email=${this.email_client}`)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.clientRegister = response.data.client;
@@ -668,8 +670,17 @@ export default {
             this.showTextField = false;
 
           }
+          else {
+        this.showAlert("warning", "No existe ninguún cliente con ese correo o teléfono", 2000);
+        this.email_client = '';
+        this.showTextField = true;
+        this.clientRegister = [];
+      }
         });
       } else {
+        this.showAlert("warning", "No existe ninguún cliente con ese correo o teléfono", 2000);
+        this.email_clientText = '';
+        this.showTextField = true;
         this.clientRegister = [];
       }
     },
