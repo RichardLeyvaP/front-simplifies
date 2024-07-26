@@ -199,7 +199,7 @@
         <v-btn size="x-large" text="Aceptar" :disabled="!this.email_client" :loading="loadingClient"
           @click="fetchClients">Aceptar</v-btn>
         <v-btn size="x-large" text="Cancelar"
-          @click="() => { this.selectedItem = 'option2'; this.radios = 'ClientNo'; showDialog = false; this.email_clientText = ''; this.showTextField = true}">Cancelar</v-btn>
+          @click="() => { this.selectedItem = 'option2'; this.radios = 'ClientNo'; showDialog = false; this.email_client = ''; this.showTextField = true}">Cancelar</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -670,7 +670,7 @@ export default {
           console.log(this.clientRegister);
           if (this.clientRegister.length > 0) {
             this.showTextField = false;
-
+            this.email_client = '';
           }
           else {
         this.showAlert("warning", "No existe ninguún cliente con ese correo o teléfono", 2000);
