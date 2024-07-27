@@ -813,6 +813,9 @@ export default {
       this.radios = value;
       console.log(this.radios);
       if (value === 'ClientSi') {
+        this.email_client = '';
+        this.clientRegister = [];
+        this.showTextField = true;
         this.showDialog = true;
       }
 
