@@ -166,7 +166,7 @@
         <v-form @submit.prevent>
           <template v-if="showTextField">
           <v-text-field v-model="email_client" label="Teléfono ó Correo Electrónico" outlined
-          :rules="selectRules"></v-text-field>
+          required></v-text-field>
           </template>
           <template v-else>
             <v-autocomplete
