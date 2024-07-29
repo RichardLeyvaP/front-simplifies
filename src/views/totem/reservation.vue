@@ -527,8 +527,8 @@ export default {
         // El modal se ha cerrado
         console.log('El modal se ha cerrado');
         this.selectedItem = 'option2';
-        this.clientRegister = [];
-      this.client_id = '';
+        //this.clientRegister = [];
+      //this.client_id = '';
       //this.email_client = '';
       //this.email_clientText = '';
         // Realizar cualquier otra acción necesaria
@@ -538,7 +538,7 @@ export default {
       if (this.clientRegister.length >0) {
         const client = this.clientRegister.filter(item => item.id == newVal)
         console.log('client seleccionado');
-        console.log(client);
+        console.log(client[0]);
         this.updateClientData(client[0]);
       }
       },
@@ -706,6 +706,7 @@ export default {
     },*/
     setClientData(client) {
       console.log('client seleccionado setclientData');
+      console.log('client seleccionado setclientData:'+client.id);
       
       // Actualiza los campos con los datos del cliente seleccionado
       this.name_client = client.name;
@@ -814,6 +815,7 @@ export default {
       console.log(this.radios);
       if (value === 'ClientSi') {
         this.email_client = '';
+        this.client_id = '';
         this.clientRegister = [];
         this.showTextField = true;
         this.showDialog = true;
