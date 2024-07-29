@@ -40,7 +40,7 @@
                                     <v-card>
                             <v-card-text>
                                 <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-                                    <v-container>
+                                    <v-container fluid>
                                         <v-row>
                                             <v-col cols="12" md="3">
                                                 <v-select label="Tipo de pago" v-model="editedItem.type"
@@ -129,7 +129,7 @@
                                     <v-card>
                             <v-card-text>
                                 <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-                                    <v-container>
+                                    <v-container fluid>
                                         <v-row>
                                             <v-col cols="12" md="3">
                                                 <v-select label="Tipo de pago" v-model="editedItem.academia"
@@ -269,7 +269,7 @@
                         Nuevo Pago
                     </v-btn>
                 </v-toolbar>
-                <v-container>
+                <v-container fluid>
                     <v-row>
                         <!-- Primera columna -->
                         <v-col cols="12" sm="6" md="2">
@@ -379,7 +379,7 @@
                 </v-toolbar>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-                        <v-container>
+                        <v-container fluid>
                             <v-row>
                                 <v-col cols="12" md="6">
                                     <v-select label="Tipo de pago" v-model="editedItem.type"
@@ -425,7 +425,7 @@
                     </v-btn>
 
                 </v-toolbar>
-                <v-container>
+                <v-container fluid>
                     <v-row>
                         <!-- Primera columna -->
                         <v-col cols="12" sm="6" md="3">
@@ -545,7 +545,7 @@
                                     <v-card>
                                         <v-card-text>
                                             <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-                        <v-container>
+                        <v-container fluid>
                             <v-row>
                                 <v-col cols="12" md="3">
                                     <v-select label="Tipo de pago" v-model="editedItem.type"
@@ -574,7 +574,6 @@
                             <v-row>
 
                                 <v-col cols="12" md="12">
-                                <v-container>
                                     <v-text-field class="mt-1 mb-1" v-model="search6" append-icon="mdi-magnify"
                                         label="Buscar" single-line hide-details></v-text-field>
                                     <v-data-table v-model="selected2" :headers="headers6"
@@ -607,7 +606,6 @@
                 {{ formatNumber(parseInt(item.tipCoffe))}}                                  
                                           </template>
                                     </v-data-table>
-                                </v-container>
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -629,7 +627,7 @@
                                     <v-card>
                             <v-card-text>
                                 <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-                        <v-container>
+                        <v-container fluid>
                             <v-row>
                                 <v-col cols="12" md="3">
                                     <v-select label="Tipo de pago" v-model="editedItem.cashierproduct"
@@ -647,7 +645,6 @@
                             <v-row>
 
                                 <v-col cols="12" md="12">
-                                <v-container>
                                     <v-text-field class="mt-1 mb-1" v-model="search6" append-icon="mdi-magnify"
                                         label="Buscar" single-line hide-details></v-text-field>
                                     <v-data-table v-model="selectedCashier" :headers="headers7"
@@ -670,7 +667,6 @@
                                             <v-spacer></v-spacer>
                                             </template>
                                     </v-data-table>
-                                </v-container>
                                 </v-col>
                             </v-row>
                         </v-container>
