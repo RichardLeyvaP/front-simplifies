@@ -24,18 +24,6 @@
             </v-list-item>
 
           </v-list-group>
-          <!--Submeno Professionales-->
-          <v-list-group value="Profesionales" v-if="filteredMenuProfessionals.length !== 0">
-            <template v-slot:activator="{ props }">
-              <v-list-item v-bind="props" prepend-icon="mdi-account-tie-outline" title="Profesionales"></v-list-item>
-            </template>
-
-            <v-list-item v-for="item in filteredMenuProfessionals" style="padding-left: 20px !important;" :key="item.title" :prepend-icon="item.icon" :title="item.title"
-            :to="item.to" :value="item.value"> <!-- Filtrado directo usando v-if -->
-  
-            </v-list-item>
-
-          </v-list-group>
           <!--Suscursales sub menu-->
           <v-list-group value="Sucursales" v-if="filteredMenuSucursales.length !== 0">
             <template v-slot:activator="{ props }">
@@ -48,6 +36,36 @@
             </v-list-item>
 
           </v-list-group>
+          <!--Submeno Professionales-->
+          <v-list-group value="Profesionales" v-if="filteredMenuProfessionals.length !== 0">
+            <template v-slot:activator="{ props }">
+              <v-list-item v-bind="props" prepend-icon="mdi-account-tie-outline" title="Profesionales"></v-list-item>
+            </template>
+
+            <v-list-item v-for="item in filteredMenuProfessionals" style="padding-left: 20px !important;" :key="item.title" :prepend-icon="item.icon" :title="item.title"
+            :to="item.to" :value="item.value"> <!-- Filtrado directo usando v-if -->
+  
+            </v-list-item>
+
+          </v-list-group>
+          <!--Servicio-->
+          
+          <v-list-group value="Servicios" v-if="filteredMenuServices.length !== 0">
+            <template v-slot:activator="{ props }">
+              <v-list-item v-bind="props" prepend-icon="mdi-list-box-outline" title="Servicios"></v-list-item>
+            </template>
+
+            <v-list-item  v-for="item in filteredMenuServices" style="padding-left: 20px !important;" :key="item.title" :prepend-icon="item.icon" :title="item.title"
+            :to="item.to" :value="item.value"> <!-- Filtrado directo usando v-if -->
+  
+            </v-list-item>
+
+          </v-list-group>
+          <!--Clientes-->
+          <v-list-item v-if="filteredMenuClientes.length !== 0" v-for="item in filteredMenuClientes"  :key="item.title" :prepend-icon="item.icon" :title="item.title"
+            :to="item.to" :value="item.value"> <!-- Filtrado directo usando v-if -->
+  
+            </v-list-item>
           <!--Caja-->
           <v-list-group value="Caja" v-if="filteredMenuCajas.length !== 0">
             <template v-slot:activator="{ props }">
@@ -77,18 +95,6 @@
             </template>
 
             <v-list-item v-for="item in filteredMenuAlmacenes" style="padding-left: 20px !important;" :key="item.title" :prepend-icon="item.icon" :title="item.title"
-            :to="item.to" :value="item.value"> <!-- Filtrado directo usando v-if -->
-  
-            </v-list-item>
-
-          </v-list-group>
-
-          <v-list-group value="Servicios" v-if="filteredMenuServices.length !== 0">
-            <template v-slot:activator="{ props }">
-              <v-list-item v-bind="props" prepend-icon="mdi-list-box-outline" title="Servicios"></v-list-item>
-            </template>
-
-            <v-list-item v-for="item in filteredMenuServices" style="padding-left: 20px !important;" :key="item.title" :prepend-icon="item.icon" :title="item.title"
             :to="item.to" :value="item.value"> <!-- Filtrado directo usando v-if -->
   
             </v-list-item>
@@ -199,7 +205,7 @@ export default {
       //{ icon: "mdi-store", title: "Asignar Productos", to: "product-store", value: "product-store", permission: "view_product_store" },
       { icon: "mdi-security", title: "Permisos del Sistema", to: "permission", value: "permission", permission: "view_permissions" },
       //{ icon: "mdi-account-tie-outline", title: "Profesionales", to: "person", value: "profesionals", permission: "view_professionals" },
-      { icon: "mdi-account-star-outline", title: "Clientes", to: "client", value: "clients", permission: "view_clients" },
+      //{ icon: "mdi-account-star-outline", title: "Clientes", to: "client", value: "clients", permission: "view_clients" },
       { icon: "mdi-handshake", title: "Asociados", to: "associated", value: "associated", permission: "view_associates" },
       //{ icon: "mdi-calendar-check", title: "Permisos Asistencia", to: "vacation", value: "vacation", permission: "view_vacations" },      
       //{ icon: "mdi-cash-multiple", title: "Gastos e Ingresos", to: "finance", value: "finance", permission: "view_finances" },      
@@ -232,6 +238,9 @@ export default {
       { icon: "mdi mdi-delete-outline", title: "Solicitudes de eliminación", to: "car-order-delete", value: "car-order-delete", permission: "view_carorder_delete" },
       { icon: "mdi-currency-usd", title: "Operaciones en la caja", to: "branch-traces", value: "branch-traces", permission: "view_branch_traces" },
     ],
+    clientes:[
+      { icon: "mdi-account-star-outline", title: "Clientes", to: "client", value: "clients", permission: "view_clients" },
+      ],
     services:[
     { icon: "mdi-list-box-outline", title: "Servicios", to: "service", value: "services", permission: "view_services" },
     { icon: "mdi-list-box-outline", title: "Asignar servicios a professional", to: "professional-service", value: "professional-service", permission: "view_service_professional" },
@@ -256,7 +265,7 @@ export default {
   computed: {
     // Filtra los ítems de menú basándose en los permisos permitidos
     filteredMenuAdministracion() {
-      console.log(this.permissionsUser);
+      //console.log(this.permissionsUser);
       return this.administracion.filter(item => this.permissionsUser.includes(item.permission));
     },
     filteredMenuAcademia() {
@@ -288,6 +297,9 @@ export default {
     },
     filteredMenuCajas() {
       return this.caja.filter(item => this.permissionsUser.includes(item.permission));
+    },
+    filteredMenuClientes() {
+      return this.clientes.filter(item => this.permissionsUser.includes(item.permission));
     }
 },
   created() {
