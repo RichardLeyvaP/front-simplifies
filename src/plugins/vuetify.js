@@ -9,6 +9,9 @@ import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/styles";
 import { createVuetify } from "vuetify";
 
+import { es } from 'vuetify/locale';
+
+
 // Composables
 //import { createVuetify } from "vuetify";
 
@@ -24,9 +27,12 @@ export default createVuetify({
       },
     },
   },
+  locale: {
+    locale: 'es', // Configura el idioma predeterminado a español
+    fallback: 'es',
+    messages: { es }, // Incluye la traducción en español
+  },
   components: {
   
   },
 });
-
-

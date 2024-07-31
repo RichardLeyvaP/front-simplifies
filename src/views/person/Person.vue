@@ -694,10 +694,10 @@
                           </template>
                         </v-autocomplete>
                       </v-col>
-                      <v-col cols="12" md="3">
+                      <!--<v-col cols="12" md="3">
                         <v-select v-model="type" :items="types" class="ma-2" label="Modo de vista" variant="outlined"
                           density="compact" hide-details></v-select>
-                      </v-col>
+                      </v-col>-->
                       <v-col cols="12" md="1">
                         <v-btn :disabled="!this.professional_id" icon @click="showReservationsProfessional()"
                           color="#F18254">
@@ -715,8 +715,8 @@
       ></v-select>
       </v-cols>-->
                     </v-row>
-                    <v-calendar ref="calendar" v-model="value" :events="events" :view-mode="type"
-                      :event-color="getEventColor" class="fixed-size-calendar" hide-day-header="false">
+                    <v-calendar ref="calendar" v-model="value" :events="events" locale="es"
+                      :event-color="getEventColor" class="fixed-size-calendar" text="Hoy" type="month">
                     </v-calendar>
                     <!--<v-sheet>
         :weekdays="weekday"
