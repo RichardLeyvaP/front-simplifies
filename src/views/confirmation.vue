@@ -35,10 +35,10 @@ export default {
   name: "ConfirmationPage",
   mounted() {
     // Configurar Axios para incluir el referer en todas las solicitudes
-    axios.defaults.headers.common['referer'] = 'http://localhost:3000/reserv';
+    axios.defaults.headers.common['referer'] = 'https://api2.simplifies.cl/reserv';
 
     // Realizar una solicitud de ejemplo
-    axios.get('http://http://localhost:3000/api/reserv/confirmation')
+    axios.get('https://api2.simplifies.cl/api/reserv/confirmation')
       .then(response => {
         console.log(response.data);
       })
