@@ -448,7 +448,7 @@
                   </v-text-field>
                 </v-col>
                 <v-col cols="6">
-                  <v-switch v-model="editedItem.tipByCash" :label="`Por ${editedItem.tipByCash ? 'Efectivo' : 'Débito'}`"></v-switch>
+                  <v-switch v-model="editedItem.tipByCash" color="orange-darken-3" :label="`Por ${editedItem.tipByCash ? 'Efectivo' : 'Débito'}`"></v-switch>
                 </v-col>
               </v-row>
             </v-col>
@@ -1178,11 +1178,6 @@ export default {
       'blue',
       'green',
       'orange',
-      'grey darken-1',
-      'indigo',
-      'deep-purple',
-      'cyan',
-
     ],
     valid: true,
     loadingcar:true,
@@ -1577,7 +1572,7 @@ axios
         title: reservacion.clientName,
         start: new Date(reservacion.startDate),
         end: new Date(reservacion.endDate),
-        color: 'red',
+        color: reservacion.color,
         allDay: false
       });
     });

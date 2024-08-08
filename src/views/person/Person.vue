@@ -1327,7 +1327,7 @@ export default {
               title: reservacion.clientName,
               start: new Date(reservacion.startDate),
               end: new Date(reservacion.endDate),
-              color: 'red',
+              color: reservacion.color,
               allDay: false
             });
           });
