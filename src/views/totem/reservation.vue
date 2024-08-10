@@ -303,7 +303,7 @@
               <v-spacer></v-spacer>
               <v-dialog transition="dialog-bottom-transition" max-width="600">
                 <template v-slot:activator="{ on, attrs }">
-                  <v-btn color="orange lighten-2" v-bind="attrs" v-on="on" @click="send()" :loading="loading"
+                  <v-btn color="orange lighten-2" v-bind="attrs" v-on="on" @click="send()" :loading="loading" :disabled="!valid"
                     size="x-large">Reservar</v-btn>
                 </template>
 
@@ -409,6 +409,7 @@ export default {
     sb_timeout: 2000,
     sb_title: '',
     sb_icon: '',
+    valid: true,
     loading: false,
     loadingClient: false,
     horarioDisponibleActual: '',
@@ -884,6 +885,7 @@ export default {
 
     },
     send() {
+      this.valid = false;
       this.loading = true;
 
       console.log('***************console.log(this.professionalHorario[0]);*******************');
@@ -950,8 +952,8 @@ export default {
           // Maneja la respuesta de la solicitud aquí
           this.message = response.data.msg
           this.loading = false;
-        }).finally(() => {
           this.showAlert("success", "Reserva realizada correctamente", 2000);
+        }).finally(() => {
           setTimeout(() => {
             if (this.radios === 'ClientNo') {
               this.showDialogEncuesta();
@@ -960,7 +962,7 @@ export default {
             }
             // Redirige a la URL externa deseada
             //window.location.href = 'https://landingbh.simplifies.cl/';
-          }, 3000);
+          }, 1000);
         });/*.finally(() => {
                 setTimeout(() => {
                 this.showAlert("success","Reserva realizada correctamente", 3000); 
@@ -1246,7 +1248,7 @@ return day ? day.day.toString().trim() : "";
     },
 
     chargeProfessionals(valueServices) {
-
+      this.valid = true;
       const newArrayService = valueServices.map(item => parseInt(item)); // Convertir a enteros si es necesario
       console.log(newArrayService);
       const data = {
