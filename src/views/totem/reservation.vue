@@ -221,8 +221,8 @@
 
 
         <template v-slot:item.4>
+            <v-form ref="form" lazy-validation v-model="valid">
           <v-sheet border>
-            <v-form ref="form" lazy-validation>
               <v-row>
                 <v-col cols="12" md="5" class="mt-1">
                   <v-text-field :disabled="verificate" v-model="name_client" :counter="50" :rules="nameRules"
@@ -251,7 +251,7 @@
               </v-row>
 
 
-            </v-form>
+            
             <!--<v-row>
               <v-col cols="12" md="12">
                 <p style="color: #555; text-align: justify;">
@@ -312,7 +312,7 @@
 
             </v-row>
           </v-container>
-
+        </v-form>
         </template>
 
       </v-stepper>
@@ -711,10 +711,11 @@ export default {
       
       // Actualiza los campos con los datos del cliente seleccionado
       this.name_client = client.name;
-            this.phone_client = client.phone;
+            this.phone_client = '+'+client.phone;
             this.client_id = client.id;
             //this.second_surname = client.second_surname;
-            this.email_client = client.email;
+            this.email_client = client.email;                    
+            this.valid = true;
             console.log(this.email_client);
             this.showDialog = false;
             this.verificate = true;
@@ -860,7 +861,7 @@ export default {
             this.email_client = client.email;
             this.showDialog = false;
             this.verificate = true;
-            this.changeStep(4);
+            this.changeStep(4); 
 
           }
           else {

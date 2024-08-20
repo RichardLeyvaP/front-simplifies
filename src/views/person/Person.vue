@@ -374,6 +374,10 @@
                         <v-chip class="text-uppercase font-weight-bold" size="small" label>
                           {{ formatNumber(item.total) }}</v-chip>
                       </template>
+                      <template v-slot:item.renta="{ item }">
+                        <v-chip class="text-uppercase font-weight-bold" size="small" label>
+                          {{ formatNumber(item.renta) }}</v-chip>
+                      </template>
                       <template v-slot:item.name="{ item }">
                         <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
                           <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img><!--+ '?$' + Date.now()
@@ -916,6 +920,7 @@ export default {
       { title: "Propina 80%", key: "tip80", sortable: true },
       { title: "Bonos", key: "bonus", sortable: true },
       { title: "Clientes atendidos", key: "total_cars", sortable: true },
+      { title: "Renta", key: "renta", sortable: true },
       { title: "Total", key: "total", sortable: true },
     ],
     /*groupBy: [

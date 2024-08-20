@@ -115,7 +115,7 @@
                                             <v-col cols="12" md="12">
                                                 <v-file-input clearable v-model="file" ref="fileInput"
                                                     label="Comprobante" variant="underlined" density="compact"
-                                                    name="file" accept=".docx, .doc, .pdf" @change="onFileSelected">
+                                                    name="file" accept=".docx, .doc, .pdf, .png, .jpg, .jpeg" @change="onFileSelected">
                                                 </v-file-input>
                                             </v-col>
                                         </v-row>

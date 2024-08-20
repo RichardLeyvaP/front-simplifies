@@ -39,7 +39,7 @@
                   class="ml-1">
                   Clientes atendidos
                 </v-btn>
-                <v-btn :disabled="(closed_box || ejecutado)" v-bind="props" color="#E7E9E9" variant="flat" elevation="2"
+                <v-btn :disabled="closed_box" v-bind="props" color="#E7E9E9" variant="flat" elevation="2"
                   prepend-icon="mdi-plus-circle" class="ml-1">
                   Cierre de Caja
                 </v-btn>
@@ -182,7 +182,7 @@
                 <v-btn color="#E7E9E9" variant="flat" @click="close">
                   Cancelar
                 </v-btn>
-                <v-btn color="#F18254" :disabled="ejecutado" variant="flat" @click="saveCloseBox">
+                <v-btn color="#F18254" :disabled="box_close" variant="flat" @click="saveCloseBox">
                   Cerrar Caja
                 </v-btn>
               </v-card-actions>
