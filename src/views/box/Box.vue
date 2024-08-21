@@ -30,8 +30,7 @@
               prepend-icon="mdi-clipboard-text" @click="chargeData()">
               Reservaciones
             </v-btn>
-                <v-btn @click="showDialogProduct" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-cart"
-                  :disabled="ejecutado" class="ml-1">
+                <v-btn @click="showDialogProduct" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-cart" class="ml-1">
                   Venta Productos
                 </v-btn>
                 <v-btn @click="dialogDetallesCarPagado = true" color="#E7E9E9" variant="flat" elevation="2"
