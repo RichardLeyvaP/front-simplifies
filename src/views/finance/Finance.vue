@@ -222,7 +222,7 @@
                     <v-col cols="2" class="pa-1">
                         <v-card class="pa-2" elevation="2"
                             v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'"
-                            @click="filterResults('IP')">
+                            @click="filterResults('IngresoProducto')">
                             <v-list-item :subtitle="formatNumber(ingresoProducts)" title="Ingreso Productos">
                                 <template v-slot:prepend>
                                     <v-avatar color="green">
@@ -235,7 +235,7 @@
                     <v-col cols="2" class="pa-1">
                         <v-card class="pa-2" elevation="2"
                             v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'"
-                            @click="filterResults('GP')">
+                            @click="filterResults('GastoProducto')">
                             <v-list-item :subtitle="formatNumber(gastoProducts)" title="Gasto Productos">
                                 <template v-slot:prepend>
                                     <v-avatar color="red">
@@ -248,7 +248,7 @@
                     <v-col cols="2" class="pa-1">
                         <v-card class="pa-2" elevation="2"
                             v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'"
-                            @click="filterResults('IS')">
+                            @click="filterResults('IngresoServicio')">
                             <v-list-item :subtitle="formatNumber(ingresoServices)" title="Ingreso Servicio">
                                 <template v-slot:prepend>
                                     <v-avatar color="green">
@@ -261,7 +261,7 @@
                     <v-col cols="2" class="pa-1">
                         <v-card class="pa-2" elevation="2"
                             v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'"
-                            @click="filterResults('GS')">
+                            @click="filterResults('GastoServicio')">
                             <v-list-item :subtitle="formatNumber(gastoServices)" title="Gasto Servicio">
                                 <template v-slot:prepend>
                                     <v-avatar color="red">
@@ -447,7 +447,7 @@ export default {
         dialogDelete: false,
         headers: [
             //{ title: 'Almacén', align: 'start', value: 'direccionStore' },
-            { title: 'No. Control', key: 'id' },
+            { title: 'No. Control', key: 'control' },
             { title: 'Fecha Registro', key: 'data' },
             { title: 'Tipo de Operación', key: 'operation' },
             { title: 'Detalle de Operación', key: 'nameDetalle' },
@@ -503,6 +503,7 @@ export default {
     }),
 
     computed: {
+        
         formTitle() {
             if (this.editedIndex === -1) {
                 return 'Registrar Operación de ' + this.editedItem.type;
@@ -804,9 +805,9 @@ export default {
                 }).finally(() => {
                     LocalStorageService.setIsLocked(false);
                     this.loading = false;
-                    this.totalIngresos = this.results.filter(item => item.operation === "Ingreso")
+                    this.totalIngresos = this.results.filter(item => item.operation == "Ingreso")
     .reduce((total, item) => total + item.amount, 0);
-                    this.totalGastos = this.results.filter(item => item.operation === "Gasto")
+                    this.totalGastos = this.results.filter(item => item.operation == "Gasto")
     .reduce((total, item) => total + item.amount, 0);
 
                     //Ingreso Productos

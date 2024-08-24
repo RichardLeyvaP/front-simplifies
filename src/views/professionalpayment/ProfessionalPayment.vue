@@ -481,10 +481,10 @@
                                     </template>
                                     
                                     <template v-slot:item.amount="{ item }">
-                {{ formatNumber(parseInt(item.amount))}}                                  
+                {{ formatNumber(item.amount)}}                                  
                                           </template>
                                           <template v-slot:item.coffe_percent="{ item }">
-                {{ formatNumber(parseInt(item.coffe_percent))}}                                  
+                {{ formatNumber(item.coffe_percent)}}                                  
                                           </template>
                                     <template v-slot:item.actions="{ item }">
                                         <v-btn density="comfortable" icon="mdi-delete" @click="deleteItemCashier(item)"

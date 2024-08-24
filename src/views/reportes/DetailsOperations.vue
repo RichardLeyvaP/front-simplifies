@@ -68,7 +68,8 @@
                                         <!-- Mostrar los totales para el grupo actual -->
                                         <td v-for="(header, index) in columns.slice(1)" :key="index"
                                             class="text-uppercase font-weight-bold">
-                                            {{ formatNumber(calculateGroupTotal(item.value, header.value)) }}
+                                            <!--{{ formatNumber(calculateGroupTotal(item.value, header.value)) }}-->
+                                            {{ header.value === 'operacion' ? '' : formatNumber(calculateGroupTotal(item.value, header.value)) }}
                                         </td>
                                     </tr>
                                 </template>
@@ -321,11 +322,23 @@ export default {
             // Retornar la primera fila encontrada que cumpla con los criterios
             return groupResults.length > 0 ? groupResults[0] : null;
         },
-        calculateGroupTotal(groupKey, columnKey) {
+        /*calculateGroupTotal(groupKey, columnKey) {
             // Obtener los totales para el grupo actual
             const totalRow = this.getTotalRowForGroup(groupKey);
 
             // Retornar el valor correspondiente a la columna
+            return totalRow ? totalRow[columnKey] : 0;
+        },*/
+        calculateGroupTotal(groupKey, columnKey) {
+            // Si el columnKey es "operacion", retornar un valor vacío
+            if (columnKey === 'operacion') {
+                return '';
+            }
+
+            // Obtener los totales para el grupo actual
+            const totalRow = this.getTotalRowForGroup(groupKey);
+
+            // Retornar el valor correspondiente a la columna, o 0 si no existe
             return totalRow ? totalRow[columnKey] : 0;
         },
 
