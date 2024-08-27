@@ -1386,8 +1386,8 @@ export default {
         })
         .then((response) => {
           this.winners = response.data;
+        }).finally(() => {          
           this.loading = false;
-        }).finally(() => {
           this.dialogWinners = true;
           LocalStorageService.setIsLocked(false);
         });
