@@ -1235,7 +1235,7 @@ return day ? day.day.toString().trim() : "";
 
     chargeServices() {
       axios
-        .get(`https://api2.simplifies.cl/api/branchservice-show?branch_id=${this.branch_id}`)
+        .get(`https://api2.simplifies.cl/api/branchservice-show?branch_id=${parseInt(this.branch_id)}`)
         .then((response) => {
           console.log(response.data)
           this.services = response.data.services;
