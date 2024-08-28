@@ -496,7 +496,7 @@
               <v-spacer></v-spacer>
               <v-col cols="12" md="5" class="text-center">
                 <v-btn color="#E7E9E9" variant="flat" @click="showService(this.car_ref)"
-                  prepend-icon="mdi-list-box-outline" class="mr-1" :disabled="this.car_ref.pay == 1 ? true : false">
+                  prepend-icon="mdi-list-box-outline" class="mr-1" :disabled="this.car_ref.pay == 1 || this.car_ref.state == 2 ? true : false">
                   Agregar Servicio
                 </v-btn>
                 <v-btn color="#E7E9E9" variant="flat" @click="showProduct(this.car_ref)" prepend-icon="mdi-tag-outline"
@@ -2385,7 +2385,7 @@ axios
       console.log('Datos servicios agregar');
       console.log(this.data);
       axios
-        .post('https://api2.simplifies.cl/api/order-web', this.data)
+        .post('https://api2.simplifies.cl/api/f', this.data)
         .then(() => {
         }).finally(() => {
           this.showAlert("success", "Servicio agregado correctamente", 3000);
