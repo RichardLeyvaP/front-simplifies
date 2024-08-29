@@ -465,8 +465,9 @@ export default {
     ],
 
     emailRules: [
-      v => !!v || 'El Correo es requerido',
-      v => /.+@.+\..+/.test(v) || 'Correo electrónico no válido',
+      //v => !!v || 'El Correo es requerido',
+      (value) => !value || (/.+@.+\..+/.test(value)) || "Debe ser un número con punto decimal (10.00)",
+      //v => /.+@.+\..+/.test(v) || 'Correo electrónico no válido',
     ],
 
     mobileRules: [
