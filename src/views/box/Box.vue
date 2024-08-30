@@ -256,6 +256,10 @@
               <v-icon left>mdi-refresh</v-icon>
               Refrescar
             </v-btn>
+            <v-btn @click="showBonusProf" class="mt-1 mb-1 ml-1" color="#F18254">
+              <v-icon left>mdi-cash-multiple</v-icon>
+              Bonos por profesionales
+            </v-btn>
             <v-btn v-if="this.ejecutado" @click="showBonus" class="mt-1 mb-1 ml-1" color="#F18254">
               <v-icon left>mdi-cash-multiple</v-icon>
               Bonos a pagar
@@ -1028,6 +1032,86 @@
         </v-card>
       </v-dialog>
 
+      <!--Bonus Professionals-->
+      <v-dialog v-model="showDialogBonusProf" max-width="800px" transition="dialog-bottom-transition">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <v-row>
+              <v-col cols="12" md="8">
+                <span class="text-subtitle-2 ml-3">Bonos por profesionales</span>
+              </v-col>
+              <v-col cols="12" md="4" class="text-center">
+                <v-btn @click="exportToExcelProf" color="#E7E9E9" variant="flat" elevation="2"
+                  prepend-icon="mdi-file-excel">
+                  Exportar a Excel
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-toolbar>
+
+          <v-card-text class="mt-2 mb-2">
+            <v-text-field class="mt-1 mb-1" v-model="search8" append-icon="mdi-magnify" label="Buscar" single-line
+              hide-details></v-text-field>
+
+
+            <v-data-table :headers="headers9" :items-per-page-text="'Elementos por páginas'" :items="bonusProf"
+              :search="search9" class="elevation-1" no-results-text="No hay datos disponibles"
+              no-data-text="No hay datos disponibles" :loading="loadingBonusProf" loading-text="Cargando datos...">
+
+              <template v-slot:item.name="{ item }">
+
+                <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+                </v-avatar>
+                {{ item.name }}
+              </template>
+              <template v-slot:item.amount="{ item }">
+                {{ formatNumber(item.amount) }}
+              </template>
+              <template v-slot:item.actions="{ item }">
+              <v-btn density="comfortable" icon="mdi-currency-usd"  @click="payBonusProf(item)" color="green" variant="tonal"
+                    elevation="1" class="mr-1 mt-1 mb-1" title="Pagar bono a profesional"></v-btn>
+            </template>
+              <template v-slot:top>
+
+                <v-divider class="mx-4" inset vertical></v-divider>
+                <v-spacer></v-spacer>
+              </template>
+
+            </v-data-table>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="showDialogBonusProf = false">
+              Cerrar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <!--Confirmar pago de bonus-->
+      <v-dialog v-model="dialogConfBonus" max-width="600px">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-2 ml-4"> Pagar bono</span>
+          </v-toolbar>
+
+          <v-card-text class="mt-2 mb-2"> ¿Desea pagar el bono seleccionado?</v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="closeConfProf">
+              Cancelar
+            </v-btn>
+            <v-btn color="#F18254" variant="flat" @click="payBonus">
+              Aceptar
+            </v-btn>
+
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
       <!--ver reservaciones de profesionales-->
       <v-dialog v-model="showReserPrpfessional" fullscreen transition="dialog-bottom-transition">
 
@@ -1059,7 +1143,7 @@
                   @update:model-value="showReservations()"></v-autocomplete><!--@update:model-value="initialize()"-->
               </v-col>
               <v-col cols="12" md="3">
-                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id"
+                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_idR"
                   :items="professionals" label="Profesional" prepend-inner-icon="mdi-account-tie-outline"
                   item-title="name" item-value="id" variant="outlined" density="compact" class="ma-2"
                   :rules="selectRules"><!--@update:model-value="showReservationsProfessional()"-->
@@ -1075,7 +1159,7 @@
                   density="compact" hide-details></v-select>
               </v-col>-->
               <v-col cols="12" md="1">
-                <v-btn :disabled="!this.professional_id" icon @click="showReservationsProfessional()"
+                <v-btn :disabled="!this.professional_idR" icon @click="showReservationsProfessional()"
                   color="#F18254">
                   <v-icon>mdi-magnify</v-icon></v-btn>
               </v-col>
@@ -1183,6 +1267,7 @@ export default {
     loadingOrders: true,
     loadingCashier: true,
     loadingBonus: true,
+    loadingBonusProf: true,
     loadingProd: false,
     loadingServ: false,
     mostrarFila: false,
@@ -1201,15 +1286,18 @@ export default {
     dialogDetallesCar: false,
     dialogRequest: false,
     dialogDelete: false,
+    dialogConfBonus: false,
     dialogPay: false,
     dialogBox: false,
     loading: false,
+    bonus_ref: [],
     branch_id: '',
     charge_id: '',
     business_id: '',
     nameBranch: '',
     nameProfessional: '',
     professional_id: '',
+    professional_idR: '',
     results: [],
     resultsPagado: [],
     orders: [],
@@ -1237,6 +1325,7 @@ export default {
     search4: '',
     selected: [],
     bonus: [],
+    bonusProf: [],
     amountSales: '',
     dialogPaySales: false,
     payments: [],
@@ -1286,8 +1375,16 @@ export default {
       { title: 'Tipo', value: 'bonus' },
       { title: 'Importe', value: 'amount' }
     ],
+    headers9: [
+      { title: 'Profesional', value: 'name' },
+      { title: 'Tipo', value: 'bonus' },
+      { title: 'Importe', value: 'amount' },
+      { title: 'Acción', value: 'actions' },
+    ],
     showDialogBonus: false,
+    showDialogBonusProf: false,
     search8: '',
+    search9: '',
     editedIndex: -1,
 
     editedItem: {
@@ -1506,80 +1603,80 @@ export default {
       this.showReserPrpfessional = false;
     },
     chargeData() {//aqui cargo el componente del calendar
-this.showReserPrpfessional = true;
-this.showReservations();
-},
-showReservations() {//aqui cargo el componente del calendar
-this.professional_id = '';
-this.type = 'month';
-this.events = [];
-console.log('this.today');
-console.log(this.today);
-const today = new Date(this.today);
-const range = this.getMonthDateRange(today);
-const startDate = range.start.toISOString().split('T')[0];
-const endDate = range.end.toISOString().split('T')[0];
-/*const startDate = this.input
-  ? format(this.input, "yyyy-MM-dd")
-  : format(new Date(), "yyyy-MM-dd");
-const endDate = this.input2
-  ? format(this.input2, "yyyy-MM-dd")
-  : format(new Date(), "yyyy-MM-dd");*/
-  LocalStorageService.setIsLocked(true);
-axios
-  .get("https://api2.simplifies.cl/api/branch-reservations-periodo", {
-    params: {
-      branch_id: this.branch_id,
-      startDate: startDate,
-      endDate: endDate
+    this.showReserPrpfessional = true;
+    this.showReservations();
     },
-  })
-  .then((response) => {
-    //this.reservations = response.data.reservaciones;
-    this.professionals = response.data.professionals;
-  }).finally(() => {
-      LocalStorageService.setIsLocked(false);
-  });
-},
-showReservationsProfessional() {//aqui cargo el componente del calendar  
-LocalStorageService.setIsLocked(true);      
-this.events = [];
-console.log('this.today');
-console.log(this.today);
-const today = new Date(this.today);
-const range = this.getMonthDateRange(today);
-const startDate = range.start.toISOString().split('T')[0];
-const endDate = range.end.toISOString().split('T')[0];
-axios
-  .get("https://api2.simplifies.cl/api/professional-reservations-periodo", {
-    params: {
-      branch_id: this.branch_id,
-      professional_id: this.professional_id,
-      startDate: startDate,
-      endDate: endDate
-    },
-  })
-  .then((response) => {
-    this.reservations = response.data.reservaciones;
-    console.log('Reservaciones');
-    console.log(this.reservations);
-    let tempEvents = [];
-
-
-    this.reservations.forEach(reservacion => {
-      tempEvents.push({
-        title: reservacion.clientName,
-        start: new Date(reservacion.startDate),
-        end: new Date(reservacion.endDate),
-        color: reservacion.color,
-        allDay: false
+    showReservations() {//aqui cargo el componente del calendar
+    this.professional_idR = '';
+    this.type = 'month';
+    this.events = [];
+    console.log('this.today');
+    console.log(this.today);
+    const today = new Date(this.today);
+    const range = this.getMonthDateRange(today);
+    const startDate = range.start.toISOString().split('T')[0];
+    const endDate = range.end.toISOString().split('T')[0];
+    /*const startDate = this.input
+      ? format(this.input, "yyyy-MM-dd")
+      : format(new Date(), "yyyy-MM-dd");
+    const endDate = this.input2
+      ? format(this.input2, "yyyy-MM-dd")
+      : format(new Date(), "yyyy-MM-dd");*/
+      LocalStorageService.setIsLocked(true);
+    axios
+      .get("https://api2.simplifies.cl/api/branch-reservations-periodo", {
+        params: {
+          branch_id: this.branch_id,
+          startDate: startDate,
+          endDate: endDate
+        },
+      })
+      .then((response) => {
+        //this.reservations = response.data.reservaciones;
+        this.professionals = response.data.professionals;
+      }).finally(() => {
+          LocalStorageService.setIsLocked(false);
       });
-    });
-    this.events = tempEvents;
-  }).finally(() => {
-      LocalStorageService.setIsLocked(false);
-  });
-},
+    },
+    showReservationsProfessional() {//aqui cargo el componente del calendar  
+    LocalStorageService.setIsLocked(true);      
+    this.events = [];
+    console.log('this.today');
+    console.log(this.today);
+    const today = new Date(this.today);
+    const range = this.getMonthDateRange(today);
+    const startDate = range.start.toISOString().split('T')[0];
+    const endDate = range.end.toISOString().split('T')[0];
+    axios
+      .get("https://api2.simplifies.cl/api/professional-reservations-periodo", {
+        params: {
+          branch_id: this.branch_id,
+          professional_id: this.professional_idR,
+          startDate: startDate,
+          endDate: endDate
+        },
+      })
+      .then((response) => {
+        this.reservations = response.data.reservaciones;
+        console.log('Reservaciones');
+        console.log(this.reservations);
+        let tempEvents = [];
+
+
+        this.reservations.forEach(reservacion => {
+          tempEvents.push({
+            title: reservacion.clientName,
+            start: new Date(reservacion.startDate),
+            end: new Date(reservacion.endDate),
+            color: reservacion.color,
+            allDay: false
+          });
+        });
+        this.events = tempEvents;
+      }).finally(() => {
+          LocalStorageService.setIsLocked(false);
+      });
+    },
     openWhatsApp(phone) {
       window.open('http://wa.me/'+'+' + phone);
     },
@@ -1587,51 +1684,51 @@ axios
       console.log('Detener intervalo');
     clearInterval(this.intervalId);
     LocalStorageService.setIsLocked(false);
-  },
-  startInterval() {
-    //const token = LocalStorageService.getItem('token');
-    console.log('Reiniciar intervalo');
-    this.intervalId = setInterval(() => {
-      if (!LocalStorageService.getIsLocked()) {
-        this.loadingcar = true;
-      LocalStorageService.setIsLocked(true); // Bloquear antes de hacer la petición
-      axios
-        .get('https://api2.simplifies.cl/api/branch-cars', {
-          /*headers: {
-                'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
-            },*/
-          params: {
-            branch_id: this.branch_id
-          }
-        })
-        .then((response) => {
-          this.results = response.data.cars;
-          this.box = response.data.box;
-          this.payments = response.data.payments;
-          this.cashierSales = response.data.cashierSales;
-          console.log('this.box');
-          console.log(this.box);
-        }).finally(() => {
-          if (this.box === null) {
-            this.ejecutado = false;
-          } else {
-            if (this.box.box_close === null) {
-              this.ejecutado = false;
-              console.log('this.box.box_close false');
-            } else {
-              this.ejecutado = true;
-              console.log('this.box.box_close true');
+    },
+    startInterval() {
+      //const token = LocalStorageService.getItem('token');
+      console.log('Reiniciar intervalo');
+      this.intervalId = setInterval(() => {
+        if (!LocalStorageService.getIsLocked()) {
+          this.loadingcar = true;
+        LocalStorageService.setIsLocked(true); // Bloquear antes de hacer la petición
+        axios
+          .get('https://api2.simplifies.cl/api/branch-cars', {
+            /*headers: {
+                  'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
+              },*/
+            params: {
+              branch_id: this.branch_id
             }
-          }
-          console.log('this.ejecutado');
-          console.log(this.ejecutado);
-          LocalStorageService.setIsLocked(false); // Desbloquear después de la petición
-          console.log('isLocked después de la solicitud Box:', LocalStorageService.getIsLocked());
-          this.loadingcar = false;
-        });
-      }
-    }, 30000);
-  },
+          })
+          .then((response) => {
+            this.results = response.data.cars;
+            this.box = response.data.box;
+            this.payments = response.data.payments;
+            this.cashierSales = response.data.cashierSales;
+            console.log('this.box');
+            console.log(this.box);
+          }).finally(() => {
+            if (this.box === null) {
+              this.ejecutado = false;
+            } else {
+              if (this.box.box_close === null) {
+                this.ejecutado = false;
+                console.log('this.box.box_close false');
+              } else {
+                this.ejecutado = true;
+                console.log('this.box.box_close true');
+              }
+            }
+            console.log('this.ejecutado');
+            console.log(this.ejecutado);
+            LocalStorageService.setIsLocked(false); // Desbloquear después de la petición
+            console.log('isLocked después de la solicitud Box:', LocalStorageService.getIsLocked());
+            this.loadingcar = false;
+          });
+        }
+      }, 30000);
+    },
     showBonus() {
       this.loadingBonus = true;
       LocalStorageService.setIsLocked(true);
@@ -1648,6 +1745,52 @@ axios
           this.loadingBonus = false;
           LocalStorageService.setIsLocked(false);
         });
+    },
+    showBonusProf() {
+      this.loadingBonusProf = true;
+      LocalStorageService.setIsLocked(true);
+      axios
+        .get('https://api2.simplifies.cl/api/bonus-show', {
+          params: {
+            branch_id: this.branch_id
+          }
+        })
+        .then((response) => {
+          this.bonusProf = response.data.bonus;
+        }).finally(() => {
+          this.showDialogBonusProf = true;
+          this.loadingBonusProf = false;
+          LocalStorageService.setIsLocked(false);
+        });
+    },
+    payBonusProf(item) {
+      this.bonus_ref = item;
+      this.dialogConfBonus = true;
+    },
+    closeConfProf() {
+      this.bonus_ref = [];
+      this.dialogConfBonus = false;
+    },
+    payBonus() {
+        this.data.branch_id = parseInt(this.bonus_ref.branch_id);
+        this.data.name = this.bonus_ref.name;
+        this.data.professional_id = this.bonus_ref.professional_id;
+        this.data.type = this.bonus_ref.bonus;
+        this.data.amount = this.bonus_ref.amount;
+        this.data.order_id = this.bonus_ref.order_id;
+        this.data.cant = this.bonus_ref.cant;
+        this.data.retention = this.bonus_ref.retention;
+        LocalStorageService.setIsLocked(true);
+          axios
+            .post('https://api2.simplifies.cl/api/bonu-payment', this.data)
+            .then(() => {
+            }).finally(() => {
+              LocalStorageService.setIsLocked(false);
+              this.showAlert("success", "Pago del bono efectuado correctamente", 3000);
+              this.bonus_ref = [];
+              this.dialogConfBonus = false;
+              this.startInterval();
+            });
     },
     formatNumber(value) {
       // Si el valor es menor que 1000, devuelve el valor original con dos decimales
@@ -2194,7 +2337,6 @@ axios
       this.dialogDelete = false;
     },
     savePay() {
-      {
         this.data.car_id = this.editedItem.car_id;
         this.data.cash = parseFloat(this.editedItem.cash) || 0;
         this.data.creditCard = parseFloat(this.editedItem.creditCard) || 0;
@@ -2238,8 +2380,6 @@ axios
         if (this.editedItem.cash || this.editedItem.creditCard || this.editedItem.debit || this.editedItem.transfer || this.editedItem.other || this.editedItem.cardGif || this.editedItem.tip) {
           this.valid = true;
         }
-
-      }
     },
     saveCloseBox() {
       LocalStorageService.setIsLocked(true);
@@ -2385,7 +2525,7 @@ axios
       console.log('Datos servicios agregar');
       console.log(this.data);
       axios
-        .post('https://api2.simplifies.cl/api/f', this.data)
+        .post('https://api2.simplifies.cl/api/order-web', this.data)
         .then(() => {
         }).finally(() => {
           this.showAlert("success", "Servicio agregado correctamente", 3000);
@@ -2644,6 +2784,46 @@ axios
       let nameReport = {
         // eslint-disable-next-line vue/no-use-computed-property-like-method
         name: 'Pago a profesional bonos', // Asume que 'name' es una de tus claves; ajusta según sea necesario
+        type: '',
+        amount: ''
+      };
+      rows.push(nameReport);
+
+      // Convierte la matriz de filas en una hoja de trabajo Excel
+      const ws = XLSX.utils.json_to_sheet(rows, { skipHeader: true }); // 'skipHeader: true' porque ya agregamos manualmente los encabezados
+
+      // Crea un nuevo libro de trabajo y añade la hoja de trabajo con los datos
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Report" + format(new Date(), "yyyy-MM-dd"));
+
+      // Escribe el libro de trabajo a un archivo y desencadena la descarga
+      //XLSX.writeFile(wb, "report.xlsx");
+      XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
+    },
+    exportToExcelProf() {
+      console.log('Entra aqui a exportar');
+      // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
+      let rows = [];
+
+      // Construye un objeto para los encabezados basado en la estructura de 'headers'
+      let headerRow = {};
+      this.headers9.forEach(header => {
+        headerRow[header.value] = header.title; // Usa 'key' para el mapeo y 'title' para el texto del encabezado
+      });
+      rows.push(headerRow);
+
+      // Ahora, mapea los datos de los items para que coincidan con los encabezados
+      this.bonus.forEach(item => {
+        let rowData = {};
+        this.headers9.forEach(header => {
+          rowData[header.value] = item[header.value] || ''; // Asegura que cada celda se mapee correctamente; usa '' para datos faltantes
+        });
+        rows.push(rowData);
+      });
+
+      let nameReport = {
+        // eslint-disable-next-line vue/no-use-computed-property-like-method
+        name: 'Bonos por profesionales', // Asume que 'name' es una de tus claves; ajusta según sea necesario
         type: '',
         amount: ''
       };

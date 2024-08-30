@@ -1799,6 +1799,7 @@ export default {
       this.valid = false,
         this.data.card_gift_id = this.cardSelect.id;
       this.data.user_id = this.editedCardGiftUser.user_id;
+      this.data.branch_id = this.branch_id;
       this.data.expiration_date = this.editedCardGiftUser.expiration_date ? this.editedCardGiftUser.expiration_date : format(new Date(), "yyyy-MM-dd");/*this.input ? format(new Date(this.input), "") : new Date();*/
       console.log('this.editedCardGiftUser.expiration_date');
       console.log(this.data.expiration_date);
@@ -1893,6 +1894,7 @@ export default {
       this.valid = false,
         this.data.card_gift_id = this.editedCardGiftUser.card_gift_id;
       this.data.user_id = this.userSelect.user_id;
+      this.data.branch_id = this.branch_id;
       this.data.expiration_date = this.editedCardGiftUser.expiration_date ? this.editedCardGiftUser.expiration_date : format(new Date(), "yyyy-MM-dd");/*this.input ? format(new Date(this.input), "") : new Date();*/
       console.log('this.editedCardGiftUser.expiration_date');
       console.log(this.data.expiration_date);
