@@ -1069,8 +1069,9 @@
                 {{ formatNumber(item.amount) }}
               </template>
               <template v-slot:item.actions="{ item }">
-              <v-btn density="comfortable" icon="mdi-currency-usd"  @click="payBonusProf(item)" color="green" variant="tonal"
-                    elevation="1" class="mr-1 mt-1 mb-1" title="Pagar bono a profesional"></v-btn>
+                    <v-btn color="#F18254" variant="flat" @click="payBonusProf(item)" title="Pagar bono a profesional">
+              Pagar
+            </v-btn>
             </template>
               <template v-slot:top>
 
