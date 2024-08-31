@@ -1000,7 +1000,7 @@ export default {
     addEncuesta() {
       console.log(this.selectedSurveys);
       let request = {
-        email: this.email_client,
+        email: this.email_client ? this.email_client : this.phone_client,
         survey_id: this.selectedSurveys,
         branch_id: this.branch_id,
 

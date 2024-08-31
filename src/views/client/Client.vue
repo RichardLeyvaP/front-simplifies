@@ -206,8 +206,12 @@
         </v-col>
       </v-row>
     </v-toolbar>
-
     <v-card-text>
+      <v-col cols="12" sm="12" md="4">
+          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+            v-if="this.mostrarFila" clearable label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name"
+            item-value="id" variant="underlined" @update:model-value="initialize()"></v-autocomplete>
+        </v-col>
       <v-text-field
         class="mt-1 mb-1"
         v-model="search"
@@ -1189,6 +1193,11 @@ export default {
       (v) => !!v || "El Correo Electrónico es requerido",
       (v) => /.+@.+\..+/.test(v) || "El Correo Electrónico no es válido",
     ],
+    /* emailRules: [
+      //v => !!v || 'El Correo es requerido',
+      (value) => !value || (/.+@.+\..+/.test(value)) || "Debe ser un número con punto decimal (10.00)",
+      //v => /.+@.+\..+/.test(v) || 'Correo electrónico no válido',
+    ], */
     mobileRules: [
       v => !!v || 'El número de móvil es requerido',
       v => /^\+569\d{8}$/.test(v) || 'Formato de número móvil inválido. Ejemplo: +56912345678'
@@ -1357,7 +1366,11 @@ export default {
     initialize() {
       this.loadingClient = true;
       LocalStorageService.setIsLocked(true);
-      axios.get("https://api2.simplifies.cl/api/client").then((response) => {
+      axios.get("https://api2.simplifies.cl/api/client-branch", {
+                    params: {
+                        branch_id: this.branch_id,
+                    }
+                }).then((response) => {
         this.results = response.data.clients;
       }).finally(() => {
             LocalStorageService.setIsLocked(false);
@@ -1777,7 +1790,11 @@ export default {
     showAddCardGiftClient(){
       LocalStorageService.setIsLocked(true);
       axios
-        .get('https://api2.simplifies.cl/api/client-autocomplete')
+        .get('https://api2.simplifies.cl/api/client-autocomplete1', {
+                    params: {
+                        branch_id: this.branch_id,
+                    }
+                })
         .then((response) => {
           this.users = response.data.clients;
         }).finally(() => {

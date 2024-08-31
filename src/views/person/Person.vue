@@ -209,6 +209,11 @@
         </v-row>
       </v-toolbar>
       <v-card-text>
+        <v-col cols="12" sm="12" md="4">
+          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+            v-if="this.mostrarFila" clearable label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name"
+            item-value="id" variant="underlined" @update:model-value="initialize()"></v-autocomplete>
+        </v-col>
         <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
           hide-details>
         </v-text-field>
@@ -1207,7 +1212,11 @@ export default {
     initialize() {
       this.loading = true;
       LocalStorageService.setIsLocked(true);
-      axios.get("https://api2.simplifies.cl/api/professional").then((response) => {
+      axios.get("https://api2.simplifies.cl/api/professionalsBranch", {
+                    params: {
+                        branch_id: this.branch_id,
+                    }
+                }).then((response) => {
         this.results = response.data.professionals;
       }).finally(() => {
         LocalStorageService.setIsLocked(false);

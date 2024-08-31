@@ -1687,6 +1687,9 @@ export default {
     LocalStorageService.setIsLocked(false);
     },
     startInterval() {
+      if (!this.branch_id) {
+        return; // Sale de la función si branch_id no tiene valor
+      }
       //const token = LocalStorageService.getItem('token');
       console.log('Reiniciar intervalo');
       this.intervalId = setInterval(() => {
@@ -2187,6 +2190,9 @@ export default {
     },
 
     initialize() {
+      if (!this.branch_id) {
+    return; // Sale de la función si branch_id no tiene valor
+  }
       //const token = LocalStorageService.getItem('token');
       //if (!LocalStorageService.getIsLocked()) {
         this.loadingcar = true;
