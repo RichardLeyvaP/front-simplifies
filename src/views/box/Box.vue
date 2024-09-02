@@ -1069,8 +1069,8 @@
                 {{ formatNumber(item.amount) }}
               </template>
               <template v-slot:item.actions="{ item }">
-                    <v-btn color="#F18254" variant="flat" @click="payBonusProf(item)" title="Pagar bono a profesional">
-              Pagar
+                    <v-btn variant="flat" @click="(item.pay) ? '' :payBonusProf(item)" :color="(item.pay) ? 'grey' : '#F18254'" title="Pagar bono a profesional" style="min-width: 100px;">
+                      {{ item.pay ? 'Pagado' : 'Pagar' }} <!-- Cambia el texto según el estado de pay -->
             </v-btn>
             </template>
               <template v-slot:top>
@@ -1794,6 +1794,8 @@ export default {
               this.bonus_ref = [];
               this.dialogConfBonus = false;
               this.startInterval();
+              this.initialize();
+              this.showBonusProf();
             });
     },
     formatNumber(value) {
