@@ -1,6 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
+  <v-container fluid>
     <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type"
        elevation="24"  :multi-line="true"  vertical v-model="snackbar">
        <v-row>
@@ -104,6 +105,7 @@
    </v-data-table>
  </v-card-text>
    </v-card>
+  </v-container>
 </template>
 <script>
 

@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/no-use-computed-property-like-method -->
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
-    <v-card elevation="6" class="mx-5">
+    <v-card elevation="6" class="mx-4">
         <v-toolbar color="#F18254">
             <v-row align="center">
                 <v-col cols="12" md="8" class="grow ml-4">

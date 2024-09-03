@@ -1184,6 +1184,7 @@ export default {
       { title: 'Fecha Expiración', value: 'expiration_date' },
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
+    details: '',
     nameRules: [
       (v) => !!v || "El campo es requerido",
       (v) => (v && v.length <= 50) || "El campo debe tener menos de 51 caracteres",
@@ -1731,6 +1732,7 @@ export default {
           });
     },
     showCardGiftUser(item) {
+      this.cardgiftUser = [];
       this.cardSelect = item;
       //console.log(this.cardSelect);
       this.loadingCardGftUser = true;
@@ -1741,7 +1743,8 @@ export default {
       axios
         .get('https://api2.simplifies.cl/api/card-gift-user-show', {
           params: {
-            card_gift_id: item.id
+            card_gift_id: item.id,
+            branch_id : this.branch_id
           }
         })
         .then((response) => {
@@ -1788,6 +1791,7 @@ export default {
           });
     },
     showAddCardGiftClient(){
+      this.details = '';
       LocalStorageService.setIsLocked(true);
       axios
         .get('https://api2.simplifies.cl/api/client-autocomplete1', {
@@ -1810,6 +1814,17 @@ export default {
         this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser)
       })
       //this.showCardGifts(this.cardSelect)
+    },
+    handleClientSelection(selectedItem) {
+    // Buscar los detalles del cliente seleccionado en la lista de usuarios
+    if(selectedItem)
+    {
+      const selectedUser = this.users.find(user => user.user_id === selectedItem);
+      this.details = selectedUser.details;
+      this.nameClient = selectedUser.name;
+    console.log('this.details');
+    console.log(this.details);
+  }
     },
     saveCardGiftUser() {
       LocalStorageService.setIsLocked(true);

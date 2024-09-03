@@ -4,7 +4,7 @@
 <template>
   <v-card elevation="4" class="mx-5">
     <v-toolbar color="#F18254">
-      <v-container>
+      <v-container fluid>
         <v-row align="center">
           <v-col cols="12" md="8" class="grow ml-4">
             <span class="text-subtitle-1"> <strong>Resumen de las Encuestas</strong></span>
@@ -19,7 +19,7 @@
         </v-row>
       </v-container>
     </v-toolbar>
-    <v-container>
+    <v-container fluid>
       <!-- <v-container>
         <v-row>
           Primera columna 
@@ -71,7 +71,7 @@
         </v-row>
         </v-container>-->
       <v-row>
-        <v-container>
+        <v-container fluid>
           <v-col cols="12" sm="12" md="4">
             <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
               v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name"
@@ -81,7 +81,7 @@
         </v-container>
 
         <v-col cols="12" md="12">
-          <v-container>
+          <v-container fluid>
             <v-alert border type="info" variant="outlined" density="compact">
               <p> Resumen de las Encuestas</p>
             </v-alert>
