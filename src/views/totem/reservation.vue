@@ -1235,8 +1235,13 @@ return day ? day.day.toString().trim() : "";
     },
 
     chargeServices() {
+      const branchId = parseInt(this.branch_id);
+      if (isNaN(branchId)) {
+        console.log("El branch_id no es un número válido.");
+        return;
+      }
       axios
-        .get(`https://api2.simplifies.cl/api/branchservice-show?branch_id=${parseInt(this.branch_id)}`)
+        .get(`https://api2.simplifies.cl/api/branchservice-show?branch_id=${parseInt(branchId)}`)
         .then((response) => {
           console.log(response.data)
           this.services = response.data.services;
