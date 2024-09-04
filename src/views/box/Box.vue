@@ -550,7 +550,7 @@
               Volver
             </v-btn>
 
-            <v-btn color="#F18254" variant="flat" :disabled="this.car_ref.pay == 1 || this.car_ref.state == 2 ? true : false" @click="payItem(this.car_ref)">
+            <v-btn color="#F18254" variant="flat" :disabled="this.car_ref.state != 1 ? true : false" @click="payItem(this.car_ref)">
               Marcar como Pagado
             </v-btn>
           </v-card-actions>
