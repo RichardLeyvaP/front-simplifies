@@ -460,7 +460,7 @@
                 <v-row>
                   <v-col cols="12" md="4">
                     <v-text-field clearable v-model="editedCard.cardGiftUser_id" label="Tarjeta de regalo (código)"
-                      prepend-icon="mdi-gift" variant="underlined"></v-text-field><!--@input="onCardGiftSelected"-->
+                      prepend-icon="mdi-gift" variant="underlined" :rules=[customCardGiftValidation]></v-text-field><!--@input="onCardGiftSelected"-->
                   </v-col>
                   <v-col cols="12" md="4">
                     <v-text-field v-if="mostrarOtroCampo" v-model="editedCard.value" clearable label="Valor"
@@ -1471,7 +1471,6 @@ export default {
 
     selectedOption: 'Efectivo',
     options: ['Efectivo', 'Débito', 'Transferencia', 'Tarjeta de regalo', 'Tarjeta de Crédito', 'Otro Método'],
-
     pago: [
       //(value) => !!value || 'Campo requerido',
       (value) => !value || (/^\d+(\.\d+)?$/.test(value)) || "Debe ser un número con punto decimal (10.00)",
@@ -1590,6 +1589,12 @@ export default {
   },
 
   methods: {
+    customCardGiftValidation() {
+    if (this.selectedOption === 'Tarjeta de regalo') {
+      return [(v) => !!v || 'Campo obligatorio']; // Solo obligatorio si la opción es "Tarjeta de regalo"
+    }
+    return true; // No es obligatorio si se selecciona otra opción
+  },
     getMonthDateRange(date) {
       const start = new Date(date.getFullYear(), date.getMonth(), 1);
       const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
@@ -1817,10 +1822,27 @@ export default {
       return formattedValue;
     },
     customValidation() {
-      if (this.editedCard.value !== '' && parseInt(this.editedItem.cardGif) > parseInt(this.editedCard.value)) {
+      if(this.selectedOption === 'Tarjeta de regalo'){
+        // Convertir ambos valores a enteros y sumarlos
+        const cardGifValue = parseInt(this.editedItem.cardGif, 10) || 0;
+        const tipValue = parseInt(this.editedItem.tip, 10) || 0;
+        const sum = cardGifValue + tipValue;
+        console.log('con sin propina');
+        console.log(sum);
+        if (this.editedCard.value !== '' && sum > parseInt(this.editedCard.value)) {
         return 'El valor de la tarjeta de regalo no puede ser mayor que ' + this.formatNumber(this.editedCard.value);
+        }else{
+          return true;
+        }
+      }else{
+        console.log('sin propina');
+        console.log(this.editedItem.cardGif);
+        if (this.editedCard.value !== '' && parseInt(this.editedItem.cardGif) > parseInt(this.editedCard.value)) {
+        return 'El valor de la tarjeta de regalo no puede ser mayor que ' + this.formatNumber(this.editedCard.value);
+      }else{
+        return true;
       }
-      return true;
+    }
     },
     getColor(state) {
       switch (state) {
@@ -2269,6 +2291,7 @@ export default {
     },
 
     payItem(item) {
+      this.selectedOption = 'Efectivo';
       this.stopInterval();
       this.car_ref = [];
       this.initialize();

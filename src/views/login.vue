@@ -240,7 +240,7 @@ export default {
         .post('https://api2.simplifies.cl/api/login', this.data)
         .then((response) => {
           if (response.data) {
-            if (this.editedItem.branch_id === response.data.branch_id || (this.selectedOption === "empresa" && response.data.business_id )) {
+            if (this.editedItem.branch_id === response.data.branch_id || (this.selectedOption === "empresa" && response.data.business_id && !response.data.branch_id)) {
               this.user = response.data;
               console.log('this.user-------');
               console.log(this.user);
