@@ -124,13 +124,13 @@ export default {
     editedIndex: -1,
     results: [],
     headers: [
-      { title: 'Cajera(o)', key: 'cashier', sortable: false },
-      { title: 'Cliente', key: 'client', sortable: false },
-      { title: 'Profesional', key: 'description', sortable: false },
-      { title: 'Fecha', key: 'data', sortable: false },
-      { title: 'Operación', key: 'operation', sortable: false },
-      { title: 'Detalles', key: 'details', sortable: false },
-      { title: 'Monto', key: 'amount', sortable: false }
+      { title: 'Cajera(o)', key: 'cashier', sortable: true },
+      { title: 'Cliente', key: 'client', sortable: true },
+      { title: 'Profesional', key: 'description', sortable: true },
+      { title: 'Fecha', key: 'data', sortable: true },
+      { title: 'Operación', key: 'operation', sortable: true },
+      { title: 'Detalles', key: 'details', sortable: true },
+      { title: 'Monto', key: 'amount', sortable: true }
     ],
     data: {},
   }),

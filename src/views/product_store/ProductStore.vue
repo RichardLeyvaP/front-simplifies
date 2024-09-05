@@ -20,7 +20,7 @@
         <v-col cols="12" md="5" class="grow ml-4">
           <span class="text-subtitle-1"> <strong>Listado de Productos por Almacenes</strong></span>
         </v-col>
-        <v-col cols="12" md="6" class="text-right">
+        <v-col cols="12" md="6" class="text-right" v-show="this.mostrarFila">
         <v-btn class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2"
                         prepend-icon="mdi-shuffle" @click="showReposition">
                         Reposición
@@ -141,18 +141,28 @@
 
     <v-row>
       <v-container class="fill-height" fluid>
+        <v-col cols="12" sm="12" md="4">
+          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+            v-if="this.mostrarFila" clearable label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name"
+            item-value="id" variant="underlined" @update:model-value="initialize()"></v-autocomplete>
+        </v-col>
         <v-col cols="12" md="12">
           <v-card-text>
       <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details>
       </v-text-field>
       <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :group-by="groupBy"
         :search="search" class="elevation-1" no-data-text="No hay datos disponibles"
-        no-results-text="No hay datos disponibles" show-expand :loading="loadingProducts" loading-text="Cargando datos...">
+        no-results-text="No hay datos disponibles" :loading="loadingProducts" loading-text="Cargando datos..." show-expand = "false">
         <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
           <tr>
             <td :colspan="columns.length">
-              <VBtn size="small" variant="text" :icon="isGroupOpen(item) ? '$expand' : '$next'"
-                @click="toggleGroup(item)"></VBtn>
+            <!-- Botón de expandir solo para el encabezado del grupo -->
+            <v-btn
+              size="small"
+              variant="text"
+              :icon="isGroupOpen(item) ? '$expand' : '$next'"
+              @click="toggleGroup(item)"
+            ></v-btn>
               {{ item.value }}
             </td>
           </tr>
@@ -170,12 +180,14 @@
           {{ item.name }}
         </template>
         <template v-slot:item.actions="{ item }">
+          <div v-if="mostrarFila">
           <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar existencia"></v-btn>
             <v-btn density="comfortable" icon="mdi-folder-move"  @click="moverItem(item)" color="green" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Mover producto"></v-btn>
           <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
             elevation="1" title="Eliminar existencia"></v-btn>
+            </div>
         </template>
       </v-data-table>
     </v-card-text>
@@ -345,6 +357,7 @@ export default {
     dialog: false,
     branch_id: '',
     charge_id: '',
+    charge: '',
     business_id: '',
     search: '',
     message_delete: true,
@@ -493,11 +506,20 @@ export default {
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     LocalStorageService.setIsLocked(true);
           axios
-        .get('https://api2.simplifies.cl/api/show-stores-products')
+        .get('https://api2.simplifies.cl/api/show-stores-products', {
+        params: {
+          business_id: this.business_id
+        }
+      })
         .then((response) => {
           this.products = response.data.products;
           this.stores = response.data.stores;
+          this.branches = response.data.branches;
         }).finally(() => {
+          if (this.charge === 'Administrador') {
+          this.branch_id = this.branches[0].id;
+          this.mostrarFila = true;
+        }
           LocalStorageService.setIsLocked(false);
                 this.initialize();
           });
@@ -531,7 +553,11 @@ export default {
       this.loadingProducts = true;
       LocalStorageService.setIsLocked(true);
       axios
-        .get('https://api2.simplifies.cl/api/productstore-show')
+        .get('https://api2.simplifies.cl/api/productstore-show', {
+          params: {
+            branch_id: this.branch_id
+          }
+        })
         .then((response) => {
           this.results = response.data.products;
         }).finally(() => {

@@ -451,7 +451,8 @@
                   </v-text-field>
                 </v-col>
                 <v-col cols="6">
-                  <v-switch v-model="editedItem.tipByCash" color="orange-darken-3" :label="`Por ${editedItem.tipByCash ? 'Efectivo' : 'Débito'}`"></v-switch>
+                  <v-select v-model="selectedOption" :items="options" label="Método de pago"
+                                variant="underlined" hide-details></v-select>
                 </v-col>
               </v-row>
             </v-col>
@@ -1402,7 +1403,7 @@ export default {
       other: '',
       amount: '',
       cardGif: '',
-      tipByCash: false
+      tipByCash: 'Efectivo'
     },
     editedCloseBox: {
       id: '',
@@ -1465,8 +1466,11 @@ export default {
       other: '',
       amount: '',
       cardGif: '',
-      tipByCash: false
+      tipByCash: 'Efectivo'
     },
+
+    selectedOption: 'Efectivo',
+    options: ['Efectivo', 'Débito', 'Transferencia', 'Tarjeta de regalo', 'Tarjeta de Crédito', 'Otro Método'],
 
     pago: [
       //(value) => !!value || 'Campo requerido',
@@ -2356,7 +2360,7 @@ export default {
         this.data.tip = parseFloat(this.editedItem.tip) || 0;
         this.data.code = this.editedCard.cardGiftUser_id || 0;  // Fix typo here
         this.data.nameProfessional = this.nameProfessional;
-        this.data.tipByCash = this.editedItem.tipByCash;
+        this.data.tipByCash = this.selectedOption;
         this.data.branch_id = this.branch_id;
         const suma = this.data.cash + this.data.creditCard + this.data.debit + this.data.transfer + this.data.other + this.data.cardGift + this.data.tip;
 
