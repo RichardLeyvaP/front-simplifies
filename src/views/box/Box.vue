@@ -1540,9 +1540,9 @@ export default {
 
   watch: {
     'editedCard.value': function (newVal) {
-      if (newVal !== '') {
+      //if (newVal !== '') {
         this.customValidation(); // Llamar a la validación solo cuando editedCard.value tenga un valor
-      }
+      //}
     },
     dialog(val) {
       if (val) {
@@ -2401,6 +2401,11 @@ export default {
       this.dialogDelete = false;
     },
     savePay() {
+      // Validación condicional para "Tarjeta de regalo"
+      if (this.selectedOption === 'Tarjeta de regalo' && !this.editedCard.cardGiftUser_id) {
+          // Llama la validación del campo
+          this.showAlert("warning", "Selecciono pagar con tarjeta de regalo la propina, debe poner una tarjeta de regalo válida.", 3000);        
+      }else{
         this.data.car_id = this.editedItem.car_id;
         this.data.cash = parseFloat(this.editedItem.cash) || 0;
         this.data.creditCard = parseFloat(this.editedItem.creditCard) || 0;
@@ -2444,6 +2449,8 @@ export default {
         if (this.editedItem.cash || this.editedItem.creditCard || this.editedItem.debit || this.editedItem.transfer || this.editedItem.other || this.editedItem.cardGif || this.editedItem.tip) {
           this.valid = true;
         }
+      }
+        
     },
     saveCloseBox() {
       LocalStorageService.setIsLocked(true);
