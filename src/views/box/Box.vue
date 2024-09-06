@@ -460,7 +460,7 @@
                 <v-row>
                   <v-col cols="12" md="4">
                     <v-text-field clearable v-model="editedCard.cardGiftUser_id" label="Tarjeta de regalo (código)"
-                      prepend-icon="mdi-gift" variant="underlined" :rules=[customCardGiftValidation]></v-text-field><!--@input="onCardGiftSelected"-->
+                      prepend-icon="mdi-gift" variant="underlined" :rules="customCardGiftValidation"></v-text-field><!--@input="onCardGiftSelected"-->
                   </v-col>
                   <v-col cols="12" md="4">
                     <v-text-field v-if="mostrarOtroCampo" v-model="editedCard.value" clearable label="Valor"
@@ -658,7 +658,7 @@
         </v-card>
       </v-dialog>
       <!--EndAddServices-->
-      <v-dialog v-model="dialogBox" max-width="600px">
+      <v-dialog v-model="dialogBox" max-width="800px">
         <v-card>
           <v-toolbar color="#F18254">
             <span class="text-subtitle-2 ml-4">Actualizar Caja</span>
@@ -680,7 +680,19 @@
                   </v-col>
                   <v-col cols="12" md="4">
                     <v-text-field v-model="editedBox.extraction" clearable label="Extracción"
-                      prepend-icon="mdi-arrow-down-bold" variant="underlined" :rules="pago">
+                      prepend-icon="mdi-arrow-down-bold" variant="underlined" :rules="pago" @update:modelValue="checkExtraction">
+                    </v-text-field>
+                  </v-col>
+                  <!-- Campos adicionales -->
+                </v-row>
+                <v-row>
+                  <!-- Campos adicionales -->
+                  <v-col v-if="this.showAdditionalFields" cols="12" md="6">
+                    <v-file-input v-model="file" ref="fileInput" name="file" label="Archivo" prepend-icon="mdi-paperclip" variant="underlined" :rules="selectRules" accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .odt, .ods, .odp, .rtf, .html, .xml, .csv, .png, .jpg, .jpeg"  @change="onFileSelected">
+                    </v-file-input>
+                  </v-col>
+                  <v-col v-if="this.showAdditionalFields" cols="12" md="6">
+                    <v-text-field v-model="editedBox.comment" label="Comentario" variant="underlined" :rules="selectRules">
                     </v-text-field>
                   </v-col>
                 </v-row>
@@ -1440,15 +1452,24 @@ export default {
       totalCardGif: ''
     },
     editedBox: {
+      branch_id: '',
       id: '',
       cashFound: '',
       existence: '',
-      extraction: ''
+      extraction: '',
+      comment: '',
+      file: '',
+      nameProfessional: ''
+      
     },
     defaultBox: {
+      branch_id: '',
       cashFound: '',
       existence: '',
-      extraction: ''
+      extraction: '',
+      comment: '',
+      file: '',
+      nameProfessional: ''
     },
     data: {},
 
@@ -1471,6 +1492,8 @@ export default {
 
     selectedOption: 'Efectivo',
     options: ['Efectivo', 'Débito', 'Transferencia', 'Tarjeta de regalo', 'Tarjeta de Crédito', 'Otro Método'],
+    showAdditionalFields: false,
+    file: '',
     pago: [
       //(value) => !!value || 'Campo requerido',
       (value) => !value || (/^\d+(\.\d+)?$/.test(value)) || "Debe ser un número con punto decimal (10.00)",
@@ -1492,14 +1515,14 @@ export default {
     formTitle() {
       return 'Cierre de Caja'
     },
-    validateCantidadCard(value) {
-      if (this.editedCard.value) {
-        return value <= this.editedItem.value || "La cantidad debe ser menor o igual que la existencia (" + this.editedItem.value + ")";
-      }
-      else {
-        return true;
-      }
-    },
+
+    customCardGiftValidation() {
+  return [
+    v => (this.selectedOption === 'Tarjeta de regalo' && !v)
+      ? 'El código de la tarjeta de regalo es obligatorio' 
+      : true,
+  ];
+},
     rulesCampo1() {
 
       if (this.editedCard.value) {
@@ -1589,12 +1612,15 @@ export default {
   },
 
   methods: {
-    customCardGiftValidation() {
-    if (this.selectedOption === 'Tarjeta de regalo') {
-      return [(v) => !!v || 'Campo obligatorio']; // Solo obligatorio si la opción es "Tarjeta de regalo"
-    }
-    return true; // No es obligatorio si se selecciona otra opción
-  },
+    onFileSelected(event) {
+            let file = event.target.files[0];
+            this.editedBox.file = file;
+            console.log(this.editedItem.file);
+            //this.cargarImage(file);
+        },
+    checkExtraction() {
+      this.showAdditionalFields = this.editedBox.extraction !== '';
+    },
     getMonthDateRange(date) {
       const start = new Date(date.getFullYear(), date.getMonth(), 1);
       const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
@@ -2019,11 +2045,13 @@ export default {
         .then((response) => {
           this.box = response.data.box;
         });*/
+        this.showAdditionalFields = false;
       this.dialogBox = true;
-      this.editedBox.id = this.box.id;
+      this.editedBox.id = this.box ? this.box.id : 0;
       this.editedBox.cashFound = '';
-      this.editedBox.existence = this.box.existence;
+      this.editedBox.existence = this.box ? this.box.existence : 0;
       this.editedBox.extraction = '';
+      this.file = '';
     },
     closeDialogBox() {
       this.dialogBox = false;
@@ -2458,13 +2486,17 @@ export default {
     saveBox() {
       {
         LocalStorageService.setIsLocked(true);
-        this.data.branch_id = this.branch_id;
-        this.data.cashFound = this.editedBox.cashFound;
-        this.data.existence = this.editedBox.existence;
-        this.data.extraction = this.editedBox.extraction;
-        this.data.nameProfessional = this.nameProfessional;
+        this.editedBox.branch_id = this.branch_id;
+        this.editedBox.nameProfessional = this.nameProfessional;
+        const formData = new FormData();
+                for (let key in this.editedBox) {
+                    formData.append(key, this.editedBox[key]);
+                }
+
+                console.log('formData');
+                console.log(formData);
         axios
-          .put('https://api2.simplifies.cl/api/box', this.data)
+          .post('https://api2.simplifies.cl/api/box', formData)
           .then(() => {
           }).finally(() => {
             LocalStorageService.setIsLocked(false);

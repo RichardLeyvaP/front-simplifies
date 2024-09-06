@@ -349,7 +349,7 @@ export default {
 
       { title: 'Negocio', value: 'name' },
       { title: 'Dirección', value: 'address' },
-      { title: 'Propietario', value: 'professional_name' },
+      { title: 'Propietario', value: 'professional.name' },
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
     headers1: [
@@ -518,8 +518,20 @@ export default {
       this.dialog = true;
     },
     editItem(item) {
+      LocalStorageService.setIsLocked(true);
+      axios
+        .get('https://api2.simplifies.cl/api/professional-show-autocomplete')
+        .then((response) => {
+          //this.professionals = response.data.professionals;
+          this.professionals = response.data.professionals.filter(professional => professional.charge === 'Administrador');
+          console.log('profesionales');
+          console.log(this.professionals);
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
       this.editedIndex = 1;
       this.editedItem = Object.assign({}, item)
+      this.editedItem.professional_id = parseInt(item.professional_id);
       this.dialog = true
     },
     deleteItem(item) {
