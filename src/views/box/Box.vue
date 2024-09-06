@@ -1177,31 +1177,10 @@
                   color="#F18254">
                   <v-icon>mdi-magnify</v-icon></v-btn>
               </v-col>
-              <!--<v-cols cols="6">
-<v-select
-v-model="weekday"
-:items="weekdays"
-class="ma-2"
-label="weekdays"
-variant="outlined"
-dense
-hide-details
-></v-select>
-</v-cols>-->
             </v-row>
             <v-calendar ref="calendar" v-model="value" :events="events" locale="es"
-                      :event-color="getEventColor" class="fixed-size-calendar" text="Hoy" type="month">
+                      :event-color="getEventColor" class="fixed-size-calendar" text="Hoy" type="month" >
                     </v-calendar>
-            <!--<v-sheet>
-:weekdays="weekday"
-<v-calendar
-ref="calendar"
-v-model="value"
-:events="events"
-:view-mode="type"
-:weekdays="weekday"
-></v-calendar>
-</v-sheet>-->
           </v-sheet>
         </div>
 
@@ -2927,6 +2906,7 @@ export default {
   /* Ajustar según sea necesario */
   width: 100%;
   /* O establecer un ancho fijo */
-  /* O establecer un ancho fijo */
+  /* O establecer
+   un ancho fijo */
 }
 </style>
