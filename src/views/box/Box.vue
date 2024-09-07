@@ -680,7 +680,7 @@
                   </v-col>
                   <v-col cols="12" md="4">
                     <v-text-field v-model="editedBox.extraction" clearable label="Extracción"
-                      prepend-icon="mdi-arrow-down-bold" variant="underlined" :rules="pago" @update:modelValue="checkExtraction">
+                      prepend-icon="mdi-arrow-down-bold" variant="underlined" :rules="[checkExtraction]">
                     </v-text-field>
                   </v-col>
                   <!-- Campos adicionales -->
@@ -1193,7 +1193,7 @@
     </v-card-actions>
   </v-container>
 </v-card>
-</v-dialog>
+      </v-dialog>
     </v-card-text>
 
 
@@ -1476,7 +1476,7 @@ export default {
     pago: [
       //(value) => !!value || 'Campo requerido',
       (value) => !value || (/^\d+(\.\d+)?$/.test(value)) || "Debe ser un número con punto decimal (10.00)",
-      (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
+      (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número',],
     pago1: [
       (value) => !!value || 'Campo requerido',
       (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número',
@@ -1597,8 +1597,50 @@ export default {
             console.log(this.editedItem.file);
             //this.cargarImage(file);
         },
-    checkExtraction() {
-      this.showAdditionalFields = this.editedBox.extraction !== '';
+    checkExtraction(value) {
+      
+      // Obtenemos el valor de extracción y existencia para validación
+    const extraction = parseFloat(value);
+    const existence = parseFloat(this.editedBox.existence);
+
+
+    // Si el valor de extracciónestá vacío
+      if (value === null || value === '') {
+        this.showAdditionalFields = false; // No mostrar campos adicionales
+        this.file = '';
+        this.editedBox.comment = '';
+        this.editedBox.file = '';
+        return true; // Sin error, pero campos ocultos
+      }
+       // Validación: Si el valor no coincide con el formato de número decimal
+      if (!/^\d+(\.\d+)?$/.test(value)) {
+        this.showAdditionalFields = false; // Ocultar campos si no es válido
+        this.file = '';
+        this.editedBox.comment = '';
+        this.editedBox.file = '';
+        return "Debe ser un número con punto decimal (10.00)"; // Retornamos el mensaje de error
+      }
+
+      // Validación: Si el valor no puede ser convertido a número
+      if (isNaN(parseFloat(value))) {
+        this.showAdditionalFields = false; // Ocultar campos si no es válido
+        this.file = '';
+        this.editedBox.comment = '';
+        this.editedBox.file = '';
+        return 'Debe ser un número'; // Retornamos el mensaje de error
+      }
+      // Validamos si la extracción es mayor que la existencia
+      if (extraction > existence) {
+        this.showAdditionalFields = false; // Ocultar campos si no es válido
+        this.file = '';
+        this.editedBox.comment = '';
+        this.editedBox.file = '';
+        return "La Extracción no debe ser mayor a la existencia en caja";
+      } else {
+        // Solo si la extracción es válida mostramos los campos adicionales
+        this.showAdditionalFields = true;
+        return true; // Validación exitosa
+      }
     },
     getMonthDateRange(date) {
       const start = new Date(date.getFullYear(), date.getMonth(), 1);

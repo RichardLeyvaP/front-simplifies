@@ -14,7 +14,6 @@
             </v-col>
         </v-row>
     </v-snackbar>
-    <v-container fluid>
         <v-card elevation="6" class="mx-5" width='auto'>
             <v-toolbar color="#F18254">
                 <v-row align="center">
@@ -323,7 +322,6 @@
             </v-col>-->
             <v-row>
                 <v-col cols="12" md="12">
-                    <v-container fluid>
                         <v-card>
                         <v-card-text>
                             <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar"
@@ -371,13 +369,11 @@
                             </v-data-table>
                         </v-card-text>
                         </v-card>
-                    </v-container>
                 </v-col>
             </v-row>
 
 
         </v-card>
-    </v-container>
 </template>
 <script>
 
@@ -453,7 +449,7 @@ export default {
             { title: 'Detalle de Operación', key: 'nameDetalle' },
             { title: 'Ingreso', key: 'revenue' },
             { title: 'Gasto', key: 'expense' },
-            { title: 'Comentario', key: 'comment' },
+            { title: 'Comentario', key: 'comment', width: '300px'},
             { title: 'Archivo', key: 'file' },
             { title: 'Acciones', key: 'actions', sortable: false },
         ],
