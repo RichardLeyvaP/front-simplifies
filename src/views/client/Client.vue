@@ -24,10 +24,14 @@
   <v-card elevation="6" class="mx-5">
     <v-toolbar color="#F18254">
       <v-row align="center">
-        <v-col cols="12" md="4" class="grow ml-4">
+        <v-col cols="12" md="3" class="grow ml-4">
           <span class="text-subtitle-1"> <strong>Listado de Clientes</strong></span>
         </v-col>
-        <v-col cols="12" md="7" class="text-right">
+        <v-col cols="12" md="8" class="text-right">
+            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" elevation="2"
+              prepend-icon="mdi-file-excel" @click="exportToExcelClients">
+              Exportar a Excel
+            </v-btn>
         <v-btn
                 v-bind="props"
                 class="text-subtitle-1 ml-1"
@@ -304,6 +308,7 @@
                 height="300"
                 :src="'https://api2.simplifies.cl/api/images/' + history.imageLook"
                 cover
+                v-on:click="openImageDialog('https://api2.simplifies.cl/api/images/' + history.imageLook)"
               >
                 <v-card-title>
                   <v-chip class="ma-2" color="" label>
@@ -444,6 +449,43 @@
           <v-spacer></v-spacer>
           <v-btn color="#E7E9E9" variant="flat" @click="closeHistory"> Volver </v-btn>
         </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- Diálogo para mostrar la imagen ampliada -->
+    <v-dialog v-model="dialogImage" max-width="80%">
+      <v-card>
+        <v-card-title>
+          <v-btn icon @click="dialogImage = false" class="ml-auto">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-card-text>
+          <div
+            class="image-container"
+            @wheel="zoomImage"
+            @mousedown="startDragging"
+            @mousemove="dragImage"
+            @mouseup="stopDragging"
+            @mouseleave="stopDragging"
+            @touchstart="startDragging"
+            @touchmove="dragImage"
+            @touchend="stopDragging"
+            @touchcancel="stopDragging"
+            style="overflow: hidden; cursor: grab;"
+          >
+            <v-img
+              :src="currentImage"
+              :style="{
+                transform: `scale(${zoomLevel}) translate(${translateX}px, ${translateY}px)`,
+                cursor: isDragging ? 'grabbing' : 'grab'
+              }"
+              max-width="100%"
+              max-height="100%"
+              contain
+            ></v-img>
+          </div>
+        </v-card-text>
       </v-card>
     </v-dialog>
 
@@ -1031,6 +1073,14 @@ export default {
     loadingCardGftUser: true,
     dialogAddCardGift: false,
     dialogDeleteCardGift: false,
+    dialogImage: false,
+    currentImage: '',
+    zoomLevel: 1,
+    isDragging: false, // Controla si el ratón está siendo arrastrado
+      translateX: 0, // Movimiento en el eje X
+      translateY: 0, // Movimiento en el eje Y
+      startX: 0, // Posición inicial del ratón
+      startY: 0, // Posición inicial del ratón
     valid: true,
     snackbar: false,
     sb_type: "",
@@ -1289,6 +1339,39 @@ export default {
   },
 
   methods: {
+    zoomImage(event) {
+      // Controla el zoom con la rueda del ratón (o trackpad)
+      const zoomStep = 0.1; // Cuánto se incrementa o reduce el zoom
+      if (event.deltaY < 0) {
+        this.zoomLevel = Math.min(this.zoomLevel + zoomStep, 3); // Zoom máximo
+      } else {
+        this.zoomLevel = Math.max(this.zoomLevel - zoomStep, 1); // Zoom mínimo
+      }
+    },
+    startDragging(event) {
+      this.isDragging = true;
+      this.startX = event.clientX || event.touches[0].clientX;
+      this.startY = event.clientY || event.touches[0].clientY;
+    },
+    dragImage(event) {
+      if (this.isDragging) {
+        const currentX = event.clientX || event.touches[0].clientX;
+        const currentY = event.clientY || event.touches[0].clientY;
+        const deltaX = currentX - this.startX;
+        const deltaY = currentY - this.startY;
+        this.translateX += deltaX;
+        this.translateY += deltaY;
+        this.startX = currentX;
+        this.startY = currentY;
+      }
+    },
+    stopDragging() {
+      this.isDragging = false;
+    },
+    openImageDialog(imageUrl) {
+      this.currentImage = imageUrl;
+      this.dialogImage = true;
+    },
     handleEmailChange() {
       LocalStorageService.setIsLocked(true);
       axios
@@ -1605,6 +1688,45 @@ export default {
         frecuence: '', // Usa 'total' para mostrar la fecha; ajusta las claves según corresponda a tu estructura
         cant_visist: '',
         data: ''
+      };
+      rows.push(nameReport);
+
+      // Convierte la matriz de filas en una hoja de trabajo Excel
+      const ws = XLSX.utils.json_to_sheet(rows, { skipHeader: true }); // 'skipHeader: true' porque ya agregamos manualmente los encabezados
+
+      // Crea un nuevo libro de trabajo y añade la hoja de trabajo con los datos
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Report" + this.fecha);
+
+      // Escribe el libro de trabajo a un archivo y desencadena la descarga
+      //XLSX.writeFile(wb, "report.xlsx");
+      XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
+    },
+    exportToExcelClients() {
+      // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
+      let rows = [];
+
+      // Construye un objeto para los encabezados basado en la estructura de 'headers'
+      let headerRow = {};
+      this.headers.forEach(header => {
+        headerRow[header.key] = header.title; // Usa 'key' para el mapeo y 'title' para el texto del encabezado
+      });
+      rows.push(headerRow);
+
+      // Ahora, mapea los datos de los items para que coincidan con los encabezados
+      this.results.forEach(item => {
+        let rowData = {};
+        this.headers.forEach(header => {
+          rowData[header.key] = item[header.key] || ''; // Asegura que cada celda se mapee correctamente; usa '' para datos faltantes
+        });
+        rows.push(rowData);
+      });
+
+      let nameReport = {
+        // eslint-disable-next-line vue/no-use-computed-property-like-method
+        name: this.formTitleFrec, // Asume que 'name' es una de tus claves; ajusta según sea necesario
+        email: '',
+        phone: '+569'
       };
       rows.push(nameReport);
 

@@ -1180,6 +1180,11 @@
             </v-row>
             <v-calendar ref="calendar" v-model="value" :events="events" locale="es"
                       :event-color="getEventColor" class="fixed-size-calendar" text="Hoy" type="month" >
+                      <template v-slot:event="{ event }">
+            <div class="event-title">
+              {{ event.title }}
+            </div>
+          </template>
                     </v-calendar>
           </v-sheet>
         </div>
@@ -1743,9 +1748,6 @@ export default {
     LocalStorageService.setIsLocked(false);
     },
     startInterval() {
-      if (!this.branch_id) {
-        return; // Sale de la función si branch_id no tiene valor
-      }
       //const token = LocalStorageService.getItem('token');
       console.log('Reiniciar intervalo');
       this.intervalId = setInterval(() => {
@@ -2950,5 +2952,10 @@ export default {
   /* O establecer un ancho fijo */
   /* O establecer
    un ancho fijo */
+}
+.v-calendar .v-event-title {
+  white-space: normal !important; /* Permite el ajuste de texto */
+  overflow-wrap: break-word; /* Rompe las palabras largas */
+  word-break: break-word; /* Rompe el texto en palabras */
 }
 </style>

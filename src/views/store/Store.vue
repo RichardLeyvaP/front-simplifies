@@ -26,7 +26,7 @@
 
           <v-dialog v-model="dialog" max-width="900px">
             <template v-slot:activator="{ props }">
-              <v-btn v-bind="props" class="text-subtitle-1  ml-12 " color="#E7E9E9" variant="flat" elevation="2"
+              <v-btn v-if="this.mostrarFila" v-bind="props" class="text-subtitle-1  ml-12 " color="#E7E9E9" variant="flat" elevation="2"
                 prepend-icon="mdi-plus-circle">
                 Nuevo Almacén
               </v-btn>
@@ -98,6 +98,13 @@
       </v-row>
     </v-toolbar>
     <v-card-text>
+      <!--<v-row>
+        <v-col cols="12" sm="12" md="4">
+          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+            v-if="this.mostrarFila" clearable label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name"
+            item-value="id" variant="underlined" @update:model-value="initialize()"></v-autocomplete>
+        </v-col>
+      </v-row>-->
       <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details>
       </v-text-field>
       <v-data-table :headers="headers" :search="search" :items-per-page-text="'Elementos por páginas'" :items="results"
@@ -111,7 +118,7 @@
           </v-icon>-->
           <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar Almacén"></v-btn>
-          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
+          <v-btn v-if="this.mostrarFila" density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
             elevation="1" title="Eliminar Alamcén"></v-btn>
         </template>
       </v-data-table>
@@ -140,12 +147,17 @@ export default {
     loadingStore: true,
     snackbar: false,
     sb_type: '',
+    mostrarFila: false,
     sb_message: '',
     sb_timeout: 2000,
     sb_title: '',
     sb_icon: '',
     search: '',
     dialog: false,
+    branch_id: '',
+    charge_id: '',
+    charge: '',
+    business_id: '',
     dialogDelete: false,
 
     headers: [
@@ -204,7 +216,25 @@ export default {
   },
 
   mounted() {
-    this.initialize()
+    this.business_id = LocalStorageService.getItem('business_id');
+    this.charge_id = LocalStorageService.getItem('charge_id');
+    this.branch_id = LocalStorageService.getItem('branch_id');
+    this.charge = JSON.parse(LocalStorageService.getItem("charge"));
+    axios
+      .get('https://api2.simplifies.cl/api/show-business', {
+        params: {
+          business_id: this.business_id
+        }
+      })
+      .then((response) => {
+        this.branches = response.data.branches;
+      }).finally(() => {
+        if (this.charge === 'Administrador') {
+          this.branch_id = this.branches[0].id;
+          this.mostrarFila = true;
+        }
+        this.initialize();
+      });
   },
 
   methods: {
@@ -236,7 +266,11 @@ export default {
       this.loadingStore = true;
       LocalStorageService.setIsLocked(true);
       axios
-        .get('https://api2.simplifies.cl/api/store')
+        .get('https://api2.simplifies.cl/api/store-show-branch', {
+        params: {
+          branch_id: this.branch_id
+        }
+      })
         .then((response) => {
           console.log("entra a Buscar almacenes")
           this.results = response.data.stores;

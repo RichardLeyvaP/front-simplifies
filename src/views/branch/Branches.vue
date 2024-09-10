@@ -40,7 +40,7 @@
               v-if="this.charge === 'Administrador' || this.charge === 'Administrador de Sucursal'">
               Estadísticas Sucursal
             </v-btn>
-            <v-btn class="text-subtitle-1  ml-1 mr-1 " color="#E7E9E9" variant="flat" elevation="2"
+            <v-btn v-if="mostrarFila" class="text-subtitle-1  ml-1 mr-1 " color="#E7E9E9" variant="flat" elevation="2"
               prepend-icon="mdi-plus-circle" @click="showAddBranch()">
               Agregar Sucursal
             </v-btn>
@@ -146,24 +146,30 @@
             </template>
 
             <template v-slot:item.useTechnical="{ item }">
-              <div class="text-end">
-                <v-chip :color="item.useTechnical ? 'green' : 'red'" :text="item.useTechnical ? 'Si ' : 'No'"
-                  class="text-uppercase" size="small" label style="text-align: center;"></v-chip>
+              <div class="justify-center">
+                <v-chip 
+                :color="item.useTechnical ? 'green' : 'red'" 
+                :text="item.useTechnical ? 'Si ' : 'No'"
+                class="text-uppercase" 
+                size="small" 
+                label
+                style="text-align: center;"
+              ></v-chip>
               </div>
             </template>
             <template v-slot:item.actions="{ item }">
-              <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-pencil" @click="editItem(item)"
+              <v-btn v-if="mostrarFila" density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-pencil" @click="editItem(item)"
                 color="primary" variant="darken-1" elevation="1" title="Editar Sucursal"></v-btn>
               <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-account-tie"
                 @click="showProfessionals(item)" color="indigo" variant="darken-2" elevation="1"
                 title="Agregar Trabajdor"></v-btn>
-              <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-store-outline" @click="showStores(item)"
+              <v-btn v-if="mostrarFila" density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-store-outline" @click="showStores(item)"
                 color="green" variant="tonal" elevation="1" title="Agregar Almacén"></v-btn>
-              <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-handshake" @click="showAssociates(item)"
+              <v-btn v-if="mostrarFila" density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-handshake" @click="showAssociates(item)"
                 color="orange" variant="tonal" elevation="1" title="Agregar Asociado"></v-btn>
               <!--<v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-finance" @click="showWinner(item)" color="teal" variant="tonal"
             elevation="1" title="Finanzas de la  sucursal"></v-btn>-->
-              <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-delete" @click="deleteItem(item)"
+              <v-btn v-if="mostrarFila" density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-delete" @click="deleteItem(item)"
                 color="red-darken-4" variant="tonal" elevation="1" title="Eliminar Sucursal"></v-btn>
             </template>
           </v-data-table>
@@ -221,7 +227,7 @@
                   <v-btn density="comfortable" icon="mdi-pencil" @click="editItemProfessional(item)" color="primary"
                     variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
                     title="Editar asignación de profesional"></v-btn>
-                  <v-btn density="comfortable" icon="mdi-delete" @click="deleteP(item)" color="red-darken-4"
+                  <v-btn v-if="mostrarFila" density="comfortable" icon="mdi-delete" @click="deleteP(item)" color="red-darken-4"
                     variant="tonal" elevation="1" title="Eliminar afiliación del trabajador"></v-btn>
                   <!--<v-icon size="small" color="red" @click="deleteP(item)">
                   mdi-delete
@@ -844,7 +850,6 @@ export default {
           this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
         }
         if (this.charge === "Administrador") {
-          this.branch_id = this.business[0].id;
           this.mostrarFila = true;
         }
         this.initialize();
@@ -899,16 +904,20 @@ export default {
       axios
         .get('https://api2.simplifies.cl/api/branch')
         .then((response) => {
+          // Filtra las sucursales si no es administrador
+      if (this.charge !== "Administrador") {
+        this.results =  response.data.branches.filter(branch => branch.id === this.branch_id);
+      }else{        
           this.results = response.data.branches;
+      }
           console.log('imprime sucursales');
           console.log(this.results);
         }).finally(() => {          
           LocalStorageService.setIsLocked(false);
           if (this.charge === "Administrador") {
-            this.branch_id = this.results[0].id;
             this.mostrarFila = true;
-            this.loadingBranch = false;
           }
+            this.loadingBranch = false;
         });
     },
     showAddBranch() {

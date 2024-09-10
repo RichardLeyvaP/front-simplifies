@@ -14,6 +14,7 @@
             </v-col>
         </v-row>
     </v-snackbar>
+    <v-container fluid>
         <v-card elevation="6" class="mx-5" width='auto'>
             <v-toolbar color="#F18254">
                 <v-row align="center">
@@ -164,17 +165,7 @@
             <v-row>
                 <v-container fluid>
                     <v-row>
-                        <v-col cols="12" md="3">
-                            <!--<v-radio-group v-model="selectedOption" inline v-if="mostrarFila">
-                        <v-radio v-model="selectedOption" :label="options[0]" :value="options[0]"
-                            color="orange-darken-3" class="mr-10" />
-                        <v-radio v-model="selectedOption" :label="options[1]" :value="options[1]"
-                            color="orange-darken-3" class="mr-10" />
-                        <v-radio v-model="selectedOption" :label="options[2]" :value="options[2]"
-                            color="orange-darken-3" class="mr-10" />
-                        <v-radio v-model="selectedOption" :label="options[3]" :value="options[3]"
-                            color="orange-darken-3" class="mr-10" />
-                    </v-radio-group>-->
+                        <v-col cols="12" md="3" v-if="this.mostrarFila" >
                             <v-select v-model="selectedOption" :items="options" class="ma-2" label="Tipo"
                                 variant="outlined" density="compact" hide-details></v-select>
                         </v-col>
@@ -188,12 +179,6 @@
                                 variant="outlined" prepend-inner-icon="mdi-calendar" density="compact" class="ma-2"
                                 @update:model-value="initialize()"></v-select><!--@update:model-value="operationDetails()"-->
                         </v-col>
-                        <!--<v-col cols="12" md="5">
-                                            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" elevation="2"
-                                            prepend-inner-icon="mdi-file-excel" @click="exportToExcel">
-                                                Exportar a Excel
-                                            </v-btn>
-                                    </v-col>-->
                     </v-row>
 
 
@@ -362,7 +347,7 @@
                                     <v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)"
                                         color="primary" variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
                                         title="Editar operación"></v-btn>
-                                    <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)"
+                                    <v-btn v-if="this.mostrarFila" density="comfortable" icon="mdi-delete" @click="deleteItem(item)"
                                         color="red-darken-4" variant="tonal" elevation="1"
                                         title="Eliminar operación"></v-btn>
                                 </template>
@@ -374,6 +359,7 @@
 
 
         </v-card>
+    </v-container>
 </template>
 <script>
 
@@ -734,6 +720,8 @@ export default {
             this.editedItem.branch_id = item.branch_id ? parseInt(item.branch_id) : '';
             this.editedItem.enrollment_id = item.enrollment_id ? parseInt(item.enrollment_id) : '';
             this.editedItem.file = this.editedItem.file ? this.editedItem.file : item.file;
+            // Procesar el valor del comentario al cargar el componente
+            this.editedItem.comment = this.getString(item.comment);
             console.log('this.editedItem seleccionado');
             console.log(this.editedItem);
             this.dialog = true

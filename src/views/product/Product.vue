@@ -27,7 +27,7 @@
             </v-btn>
             <v-dialog v-model="dialog" max-width="1000px">
               <template v-slot:activator="{ props }">
-                <v-btn v-bind="props" class="text-subtitle-1 ml-1" color="#E7E9E9" variant="flat" elevation="2"
+                <v-btn v-if="this.mostrarFila" v-bind="props" class="text-subtitle-1 ml-1" color="#E7E9E9" variant="flat" elevation="2"
                   prepend-icon="mdi-plus-circle">
                   Agregar Producto
                 </v-btn>
@@ -173,9 +173,9 @@
        <v-icon size="25" color="red" @click="deleteItem(item)">
          mdi-delete
        </v-icon>-->
-            <v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary" variant="tonal"
+            <v-btn v-if="this.mostrarFila" density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary" variant="tonal"
               elevation="1" class="mr-1 mt-1 mb-1" title="Editar Producto"></v-btn>
-            <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4"
+            <v-btn v-if="this.mostrarFila" density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4"
               variant="tonal" elevation="1" title="Eliminar Producto"></v-btn>
           </template>
         </v-data-table>
@@ -434,6 +434,13 @@ export default {
 
   mounted() {
     LocalStorageService.setIsLocked(true);
+    this.business_id = LocalStorageService.getItem('business_id');
+    this.charge_id = LocalStorageService.getItem('charge_id');
+    this.branch_id = LocalStorageService.getItem('branch_id');
+    this.charge = JSON.parse(LocalStorageService.getItem("charge"));
+    if (this.charge === 'Administrador') {
+          this.mostrarFila = true;
+    }
     axios
       .get("https://api2.simplifies.cl/api/product-category")
       .then((response) => {
@@ -639,7 +646,11 @@ export default {
       console.log('Entra aqui a mejores aisitencias');
       this.editedIndex1 = 1;
       axios
-        .get('https://api2.simplifies.cl/api/product-mostSold')
+        .get('https://api2.simplifies.cl/api/product-mostSold', {
+          params: {
+            branch_id: this.branch_id
+          }
+        })
         .then((response) => {
           this.results1 = response.data;
         }).finally(() => {
@@ -663,7 +674,7 @@ export default {
       axios
         .get('https://api2.simplifies.cl/api/product-mostSold-periodo', {
           params: {
-            //branch_id: this.branch_id,
+            branch_id: this.branch_id,
             startDate: startDate,
             endDate: endDate
           }

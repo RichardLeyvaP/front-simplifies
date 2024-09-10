@@ -14,13 +14,14 @@
       </v-col>
     </v-row>
   </v-snackbar>
+  <v-container fluid>
   <v-card elevation="3" class="mx-5" width='auto'>
     <v-toolbar color="#F18254">
       <v-row align="center">
         <v-col cols="12" md="5" class="grow ml-4">
           <span class="text-subtitle-1"> <strong>Listado de Productos por Almacenes</strong></span>
         </v-col>
-        <v-col cols="12" md="6" class="text-right" v-show="this.mostrarFila">
+        <v-col cols="12" md="6" class="text-right">
         <v-btn class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2"
                         prepend-icon="mdi-shuffle" @click="showReposition">
                         Reposición
@@ -140,14 +141,13 @@
     </v-toolbar>
 
     <v-row>
-      <v-container class="fill-height" fluid>
-        <v-col cols="12" sm="12" md="4">
+        <v-col cols="12" md="12">
+          <v-card-text>
+            <!--<v-col cols="12" sm="12" md="4">
           <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
             v-if="this.mostrarFila" clearable label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name"
             item-value="id" variant="underlined" @update:model-value="initialize()"></v-autocomplete>
-        </v-col>
-        <v-col cols="12" md="12">
-          <v-card-text>
+        </v-col>-->
       <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details>
       </v-text-field>
       <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :group-by="groupBy"
@@ -180,20 +180,16 @@
           {{ item.name }}
         </template>
         <template v-slot:item.actions="{ item }">
-          <div v-if="mostrarFila">
           <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar existencia"></v-btn>
             <v-btn density="comfortable" icon="mdi-folder-move"  @click="moverItem(item)" color="green" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Mover producto"></v-btn>
-          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
+          <v-btn v-if="this.mostrarFila"  density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
             elevation="1" title="Eliminar existencia"></v-btn>
-            </div>
         </template>
       </v-data-table>
     </v-card-text>
         </v-col>
-
-      </v-container>
     </v-row>
     <!--Reposicion de productos-->
     <v-dialog v-model="dialogReposition" fullscreen transition="dialog-bottom-transition">
@@ -296,7 +292,13 @@
                             <v-data-table :headers="headers3" :items-per-page-text="'Elementos por páginas'"
                                 :items="results3" :search="search3" no-results-text="No hay datos disponibles"
                                 no-data-text="No hay datos disponibles" :loading="loadingMove" loading-text="Cargando datos...">
+                                <template v-slot:item.nameProfessional="{ item }">
 
+                                <v-avatar class="mr-1" elevation="3" color="grey-lighten-4" size="large">
+                                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+                                </v-avatar><!--+'?$'+Date.now()-->
+                                {{ item.nameProfessional }}
+                                </template>
                             </v-data-table>
                         </v-card-text>
                     </v-card>
@@ -313,6 +315,7 @@
     </v-card>
             </v-dialog>
   </v-card>
+  </v-container>
 
 
 
@@ -360,6 +363,7 @@ export default {
     charge: '',
     business_id: '',
     search: '',
+    professional_id: '',
     message_delete: true,
     dialogDelete: false,
     groupBy: [
@@ -401,9 +405,10 @@ export default {
     dialogReposition: false,
     results2: [],  
     headers2: [
-            { title: 'Producto', key: 'name', sortable: false },
-            { title: 'Referencia', key: 'reference', sortable: false },
-            { title: 'Existencia', key: 'stock', sortable: false },
+            { title: 'Producto', key: 'name', sortable: true },
+            { title: 'Referencia', key: 'reference', sortable: true },
+            { title: 'Existencia', key: 'product_exit', sortable: true },
+            { title: 'Límite de Existencia', key: 'stock_depletion', sortable: true },
             //{ title: 'Sucursal', key: 'nameBranch', sortable: true },
             { title: 'Almacén', key: 'store', sortable: true },
         ],
@@ -432,11 +437,12 @@ export default {
         dialogMove: false,
         results3: []
 ,        headers3: [
-            { title: 'Fecha Movimiento', key: 'data', sortable: false },
-            { title: 'Producto', key: 'nameProduct', sortable: false },
-            { title: 'Cantidad Trasladada', key: 'cant', sortable: false },
-            { title: 'Almacén Saliente', key: 'storeOut', sortable: false },
-            { title: 'Almacén Entrante', key: 'storeInt', sortable: false },
+            { title: 'Fecha Movimiento', key: 'data', sortable: true },
+            { title: 'Producto', key: 'nameProduct', sortable: true },
+            { title: 'Cantidad Trasladada', key: 'cant', sortable: true },
+            { title: 'Almacén Saliente', key: 'storeOut', sortable: true },
+            { title: 'Almacén Entrante', key: 'storeInt', sortable: true },
+            { title: 'Profesional', key: 'nameProfessional', sortable: false },
         ],
         editedIndexMov: -1,
         search3: '',
@@ -503,12 +509,14 @@ export default {
     this.business_id = LocalStorageService.getItem('business_id');
     this.charge_id = LocalStorageService.getItem('charge_id');
     this.branch_id = LocalStorageService.getItem('branch_id');
+    this.professional_id = LocalStorageService.getItem('professional_id');
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     LocalStorageService.setIsLocked(true);
           axios
         .get('https://api2.simplifies.cl/api/show-stores-products', {
         params: {
-          business_id: this.business_id
+          business_id: this.business_id,
+          branch_id: this.branch_id
         }
       })
         .then((response) => {
@@ -517,7 +525,7 @@ export default {
           this.branches = response.data.branches;
         }).finally(() => {
           if (this.charge === 'Administrador') {
-          this.branch_id = this.branches[0].id;
+          this.branch_id = 0;
           this.mostrarFila = true;
         }
           LocalStorageService.setIsLocked(false);
@@ -667,6 +675,7 @@ export default {
         this.data.product_id = this.editedItem.product_id;
         this.data.store_id = this.editedItem.store_id;
         this.data.store_idM = this.editedItem.store_idM;
+        this.data.professional_id = this.professional_id;
         //this.data.branch_idM = this.editedItem.branch_idM;
         this.data.product_quantity = this.editedItem.product_quantityM;
         //this.data.branch_id = this.branch_id;
@@ -707,12 +716,11 @@ export default {
       LocalStorageService.setIsLocked(true);
             console.log('Entra aqui a reposicion');
             axios
-                .get('https://api2.simplifies.cl/api/product-stock'/*, {
+                .get('https://api2.simplifies.cl/api/product-stock', {
                     params: {
-                        branch_id: this.branch_id,
-                        business_id: this.business_id
+                        branch_id: this.branch_id
                     }
-                }*/)
+                })
                 .then((response) => {
                     this.results2 = response.data;
                 }).finally(() => {
@@ -781,7 +789,7 @@ export default {
             axios
                 .get('https://api2.simplifies.cl/api/move-products', {
                     params: {
-                        //branch_id: this.branch_id,
+                        branch_id: this.branch_id,
                         year: this.selectedYear,
                         mounth: this.selectedMounth
                     }
