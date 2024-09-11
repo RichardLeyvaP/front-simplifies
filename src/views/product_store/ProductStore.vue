@@ -656,7 +656,7 @@ export default {
         this.data.store_id = this.editedItem.store_id;
         this.data.product_quantity = this.editedItem.product_quantity;
         this.data.stock_depletion = this.editedItem.stock_depletion;
-        //this.data.branch_id = this.branch_id;
+        this.data.branch_id = this.branch_id;
         console.log(this.data);
         console.log('editar');
         axios
