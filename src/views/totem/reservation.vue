@@ -70,7 +70,7 @@
           <v-container>
             <v-row class="d-flex align-center justify-space-between">
               <h3 class="text-h6">Barberos Disponibles</h3>
-              <v-list-item elevation="4" @click="toggleService2(-99)" :class="{ 'selected-item': this.barberAleatorie }"
+              <v-list-item :disabled="advanceReserva2" elevation="4" @click="toggleService2(-99)" :class="{ 'selected-item': this.barberAleatorie }"
                 class="pt-4 pb-4">
                 <v-list-item-content>
                   <v-list-item-title class="text-h6">Aleatorio </v-list-item-title>
