@@ -675,7 +675,7 @@ export default {
             this.email_client = '';
           }
           else {
-        this.showAlert("warning", "No existe ninguún cliente con ese correo o teléfono", 2000);
+        this.showAlert("warning", "No existe ningún cliente con ese correo o teléfono", 2000);
         this.email_client = '';
         this.showTextField = true;
         this.clientRegister = [];
