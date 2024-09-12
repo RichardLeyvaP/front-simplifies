@@ -70,7 +70,7 @@
           <v-container>
             <v-row class="d-flex align-center justify-space-between">
               <h3 class="text-h6">Barberos Disponibles</h3>
-              <v-list-item :disabled="advanceReserva2" elevation="4" @click="toggleService2(-99)" :class="{ 'selected-item': this.barberAleatorie }"
+              <v-list-item :disabled="(!this.professionals.length)" elevation="4" @click="toggleService2(-99)" :class="{ 'selected-item': this.barberAleatorie }"
                 class="pt-4 pb-4">
                 <v-list-item-content>
                   <v-list-item-title class="text-h6">Aleatorio </v-list-item-title>
@@ -85,7 +85,7 @@
           <br>
 
           <v-sheet border>
-            <v-list>
+            <v-list v-if ="(this.professionals.length > 0)">
 
               <v-list-item-group v-model="professional" active-class="deep-purple--text text--accent-4">
 
@@ -640,6 +640,9 @@ export default {
         this.branches = response.data.branches;
       });
     this.chargeServices();
+    /*window.addEventListener('offline', this.handleOffline);
+  window.addEventListener('online', this.handleOnline);*/
+
     //this.chargeCalendarsBranches();
     // this. chargeProfessionals();
 
@@ -652,10 +655,35 @@ export default {
         return "2023-11-24"
     })*/
   },
+  /*beforeUnmount() {
+  window.removeEventListener('offline', this.handleOffline);
+  window.removeEventListener('online', this.handleOnline);
+},*/
 
 
   methods:
   {
+    /*handleOffline() {
+      this.showAlert("warning", "No tienes conexión a internet", 2000);
+      if (this.step == 1) {
+        this.selected = [];
+      }else if (this.step == 2) {
+        this.professionals = [];
+        this.professional = [];
+        this.barberAleatorie = '';
+        this.changeStep(1);
+      } 
+  },
+  handleOnline() {
+    this.showAlert("success", "Conexión a internet restablecida", 2000); // Limpiar el mensaje de error cuando se reconecta
+    if (this.step == 2) {
+        this.professionals = [];
+        this.professional = [];
+        this.barberAleatorie = '';
+        this.changeStep(2);
+    }
+  },*/
+
     fetchClients() {
       this.loadingClient = true;
       this.clientRegister = [];
@@ -810,6 +838,18 @@ export default {
 
 
     changeStep(index) {
+      if (index == 1) {
+        console.log('limpiar los servicios');
+        this.selected = [];
+        this.professional = [];
+        this.professionals = [];
+        this.barberAleatorie = '';
+      }if (index == 2) {
+        this.professional = [];
+        this.professionals = [];
+        this.barberAleatorie = '';
+        this.chargeProfessionals(this.selected);
+      } 
       // Cambiar el valor de step al índice especificado
       this.step = index;
     },
@@ -1093,7 +1133,6 @@ return day ? day.day.toString().trim() : "";
 },*/
 
     nextStep() {
-
       if (this.step < this.items.length) {
         this.step++;
       }
@@ -1105,6 +1144,14 @@ return day ? day.day.toString().trim() : "";
 
     prevStep() {
       this.clearTextClient();
+      if (this.step == 3) {
+        this.professional = [];
+      this.professionals = [];
+      this.barberAleatorie = '';
+      this.chargeProfessionals(this.selected);
+      }if (this.step == 2) {
+        this.selected = [];
+      }
       if (this.step > 1) {
         this.step--;
       }
@@ -1120,8 +1167,11 @@ return day ? day.day.toString().trim() : "";
 
 
       if (newValue === 2) {
-        //cancelo los demas timer
-
+        //cancelo los demas timer  
+        console.log("Limpiando las variables de professional");  
+      this.professional = [];
+      this.professionals = [];
+      this.barberAleatorie = '';
         console.log("--------------Se ha pasado del paso 1 al paso 2");
         console.log('---------' + this.selected);
         this.chargeProfessionals(this.selected);
@@ -1235,6 +1285,9 @@ return day ? day.day.toString().trim() : "";
     },
 
     chargeServices() {
+      console.log('limpiar los servicios');
+      this.services = [];
+      this.selected = [];
       const branchId = parseInt(this.branch_id);
       /*if (isNaN(branchId)) {
         console.log("El branch_id no es un número válido.");
@@ -1255,6 +1308,7 @@ return day ? day.day.toString().trim() : "";
     },
 
     chargeProfessionals(valueServices) {
+      this.professional = [];
       this.valid = true;
       const newArrayService = valueServices.map(item => parseInt(item)); // Convertir a enteros si es necesario
       console.log(newArrayService);
@@ -1268,7 +1322,12 @@ return day ? day.day.toString().trim() : "";
       this.array_services = newArrayService;
       axios
         .get(`https://api2.simplifies.cl/api/branch-professionals-service`, {
-          params: data
+          params: data,
+          headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache' // Para compatibilidad con navegadores más antiguos
+        },
+        timeout: 10000
         })
         .then((response) => {
           this.professionals = response.data.professionals;
