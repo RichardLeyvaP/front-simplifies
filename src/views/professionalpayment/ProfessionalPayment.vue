@@ -758,32 +758,32 @@ export default {
         dialogCashierCars: false,
         //mostrarType: true,
         headers: [
-            { title: 'Nombre del profesional', value: 'name' },
-            { title: 'Correo', value: 'email' },
-            { title: 'Cargo', value: 'charge' },
+            { title: 'Nombre del profesional', value: 'name', sortable: true},
+            { title: 'Correo', value: 'email', sortable: true},
+            { title: 'Cargo', value: 'charge', sortable: true },
             { title: 'Acciones', value: 'actions' },
         ],
         headers3: [
-            { title: 'Fecha', key: 'date' },
-            { title: 'Tipo de pago', key: 'type' },
-            { title: 'Monto Líquido', key: 'amount' },
+            { title: 'Fecha', key: 'date', sortable: true },
+            { title: 'Tipo de pago', key: 'type', sortable: true },
+            { title: 'Monto Líquido', key: 'amount', sortable: true },
             { title: 'Acciones', value: 'actions' },
         ],
         headers5: [
-            { title: 'Fecha del pago', key: 'date' },
-            { title: 'Tipo de Pago', key: 'type' },
-            { title: 'Monto Líquido', key: 'amount' },
-            { title: 'Monto café', key: 'coffe_percent' },
+            { title: 'Fecha del pago', key: 'date', sortable: true },
+            { title: 'Tipo de Pago', key: 'type', sortable: true },
+            { title: 'Monto Líquido', key: 'amount', sortable: true },
+            { title: 'Monto café', key: 'coffe_percent', sortable: true },
             { title: 'Acciones', value: 'actions' },
         ],
         headers6: [
             { title: 'ID', align: 'start', key: 'id' },
-            { title: 'Nombre Cliente', key: 'clientName' },
-            { title: 'Nombre Profesional', key: 'professionalName' },
-            { title: 'Fecha',  key: 'data' },
-            { title: 'Propina', key: 'tip' },
-            { title: 'Propina 10% Cajero (a)', key: 'tipCashier' },
-            { title: 'Propina 10% Café', key: 'tipCoffe' },
+            { title: 'Nombre Cliente', key: 'clientName', sortable: true },
+            { title: 'Nombre Profesional', key: 'professionalName', sortable: true },
+            { title: 'Fecha',  key: 'data', sortable: true },
+            { title: 'Propina', key: 'tip', sortable: true },
+            { title: 'Propina 10% Cajero (a)', key: 'tipCashier', sortable: true },
+            { title: 'Propina 10% Café', key: 'tipCoffe', sortable: true },
         ],
         results: [],
         results1: [],
@@ -1528,6 +1528,8 @@ export default {
         showAddOperationTip() {
             this.loadingSale = true;
             this.loadingTip = true;
+            this.cars1 = [];
+            this.cashierSales = [];
             LocalStorageService.setIsLocked(true);
             axios
                 .get('https://api2.simplifies.cl/api/cashier-car-notpay', {

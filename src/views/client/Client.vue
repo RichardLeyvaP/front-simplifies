@@ -477,12 +477,15 @@
             <v-img
               :src="currentImage"
               :style="{
-                transform: `scale(${zoomLevel}) translate(${translateX}px, ${translateY}px)`,
-                cursor: isDragging ? 'grabbing' : 'grab'
-              }"
+              maxWidth: '100%',
+              maxHeight: '80vh', /* Ajusta la altura máxima para que se ajuste al diálogo */
+              objectFit: 'contain', /* Ajusta el ajuste de la imagen */
+              transform: `scale(${zoomLevel}) translate(${translateX}px, ${translateY}px)`,
+              cursor: isDragging ? 'grabbing' : 'grab'
+            }"
               max-width="100%"
               max-height="100%"
-              contain
+              cover
             ></v-img>
           </div>
         </v-card-text>
@@ -1369,6 +1372,8 @@ export default {
       this.isDragging = false;
     },
     openImageDialog(imageUrl) {
+      const encodedImageUrl = encodeURIComponent(imageUrl);
+      this.currentImage = encodedImageUrl;
       this.currentImage = imageUrl;
       this.dialogImage = true;
     },

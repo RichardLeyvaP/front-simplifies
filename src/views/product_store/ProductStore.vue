@@ -179,7 +179,10 @@
           </v-avatar>
           {{ item.name }}
         </template>
-        <template v-slot:item.actions="{ item }">
+        <template v-if="(this.charge === 'Administrador')" v-slot:item.purchase_price="{ item }">
+        {{ item.purchase_price }}
+        </template>
+        <template v-if="(this.charge === 'Administrador' || this.charge === 'Administrador de Sucursal')" v-slot:item.actions="{ item }">
           <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar existencia"></v-btn>
             <v-btn density="comfortable" icon="mdi-folder-move"  @click="moverItem(item)" color="green" variant="tonal"
@@ -371,18 +374,18 @@ export default {
         key: 'direccionStore',
       },
     ],
-    headers: [
+    /*headers: [
       //{ title: 'Almacén', align: 'start', value: 'direccionStore' },
       { title: 'Nombre', key: 'name' },
       { title: 'Referencia', key: 'reference' },
       { title: 'Código', key: 'code' },
       { title: 'Estado', key: 'status_product' },
-      { title: 'Precio compra', align: 'start', value: 'purchase_price' },
+      //{ title: 'Precio compra', align: 'start', value: 'purchase_price' },
       { title: 'Precio venta', align: 'start', value: 'sale_price' },
       { title: 'Existencia', align: 'start', value: 'product_exit' },
       { title: 'Límite Existencia Alerta', align: 'start', value: 'stock_depletion' },
       { title: 'Acciones', key: 'actions', sortable: false },
-    ],
+    ],*/
     results: [],
     stores: [],
     stores1: [],
@@ -469,6 +472,26 @@ export default {
   }),
 
   computed: {
+    headers() {
+      const baseHeaders = [
+        { title: 'Nombre', key: 'name' },
+        { title: 'Referencia', key: 'reference' },
+        { title: 'Código', key: 'code' },
+        { title: 'Estado', key: 'status_product' },
+        { title: 'Precio venta', align: 'start', value: 'sale_price' },
+        { title: 'Existencia', align: 'start', value: 'product_exit' },
+        { title: 'Límite Existencia Alerta', align: 'start', value: 'stock_depletion' },
+      ];
+
+      // Condicionalmente agregamos la columna de 'Precio compra'
+      if (this.charge === 'Administrador' || this.charge === 'Administrador de Sucursal') {
+        baseHeaders.splice(4, 0, { title: 'Precio compra', align: 'start', value: 'purchase_price' });
+        baseHeaders.splice(8, 0, { title: 'Acciones', key: 'actions', sortable: false });
+      }
+
+      return baseHeaders;
+    },
+
     formTitle() {
       if (this.editedIndex === -1) {
         return 'Agregar Producto a Almacén';
@@ -815,7 +838,7 @@ export default {
                 axios
                     .get('https://api2.simplifies.cl/api/move-products', {
                         params: {
-                            //branch_id: this.branch_id,
+                            branch_id: this.branch_id,
                             year: this.selectedYear,
                             mounth: this.selectedMounth
                         }

@@ -857,9 +857,9 @@ export default {
                 .then(() => {
                     this.file = '';
                 }).finally(() => {
-                    this.showAlert("success", "Operación eliminada correctamente", 3000);
-                    //this.initialize();
                     LocalStorageService.setIsLocked(false);
+                    this.showAlert("success", "Operación eliminada correctamente", 3000);
+                    this.initialize();
                 });
             this.closeDelete()
         },
@@ -881,9 +881,9 @@ export default {
         closeDelete() {
             this.dialogDelete = false;
 
-            this.$nextTick(() => {
+            /*this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem);
-            });
+            });*/
             this.file = '';
             //this.initialize();
         },
