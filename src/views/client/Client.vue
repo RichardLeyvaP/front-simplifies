@@ -475,6 +475,7 @@
             style="overflow: hidden; cursor: grab;"
           >
             <v-img
+              :key="currentImage"
               :src="currentImage"
               :style="{
               maxWidth: '100%',
@@ -1372,6 +1373,8 @@ export default {
       this.isDragging = false;
     },
     openImageDialog(imageUrl) {
+      this.dialogImage = false; // Cierra el diálogo por si aún está abierto
+      this.currentImage = ''; // Limpia la imagen actual
       const encodedImageUrl = encodeURIComponent(imageUrl);
       this.currentImage = encodedImageUrl;
       this.currentImage = imageUrl;
