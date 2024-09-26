@@ -344,11 +344,11 @@
                     <v-icon size="25" color="red" @click="deleteItem(item)">
                         mdi-delete
                     </v-icon>-->
-                                    <v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)"
-                                        color="primary" variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
+                                    <v-btn density="comfortable" icon="mdi-pencil" @click="(item.nameDetalle != 'Ingresos por pago de servicios' && item.nameDetalle != 'Ingreso venta de productos en la caja' && item.nameDetalle != 'Pago de bono a profesionales' && item.nameDetalle != 'Pago a profesionales') && editItem(item)"
+                                        :color="(item.nameDetalle != 'Ingresos por pago de servicios' && item.nameDetalle != 'Ingreso venta de productos en la caja' && item.nameDetalle != 'Pago de bono a profesionales' && item.nameDetalle != 'Pago a profesionales') ? 'primary':'grey'" variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
                                         title="Editar operación"></v-btn>
-                                    <v-btn v-if="this.mostrarFila" density="comfortable" icon="mdi-delete" @click="deleteItem(item)"
-                                        color="red-darken-4" variant="tonal" elevation="1"
+                                    <v-btn v-if="this.mostrarFila" density="comfortable" icon="mdi-delete" @click="(item.nameDetalle != 'Ingresos por pago de servicios' && item.nameDetalle != 'Ingreso venta de productos en la caja' && item.nameDetalle != 'Pago de bono a profesionales' && item.nameDetalle != 'Pago a profesionales') && deleteItem(item)"
+                                        :color="(item.nameDetalle != 'Ingresos por pago de servicios' && item.nameDetalle != 'Ingreso venta de productos en la caja' && item.nameDetalle != 'Pago de bono a profesionales' && item.nameDetalle != 'Pago a profesionales') ? 'red-darken-4' : 'grey'" variant="tonal" elevation="1"
                                         title="Eliminar operación"></v-btn>
                                 </template>
                             </v-data-table>
@@ -429,12 +429,12 @@ export default {
         dialogDelete: false,
         headers: [
             //{ title: 'Almacén', align: 'start', value: 'direccionStore' },
-            { title: 'No. Control', key: 'control' },
-            { title: 'Fecha Registro', key: 'data' },
-            { title: 'Tipo de Operación', key: 'operation' },
-            { title: 'Detalle de Operación', key: 'nameDetalle' },
-            { title: 'Ingreso', key: 'revenue' },
-            { title: 'Gasto', key: 'expense' },
+            { title: 'No. Control', key: 'control', sortable: true },
+            { title: 'Fecha Registro', key: 'data', sortable: true },
+            { title: 'Tipo de Operación', key: 'operation', sortable: true },
+            { title: 'Detalle de Operación', key: 'nameDetalle', sortable: true },
+            { title: 'Ingreso', key: 'revenue', sortable: true },
+            { title: 'Gasto', key: 'expense', sortable: true },
             { title: 'Comentario', key: 'comment', width: '300px'},
             { title: 'Archivo', key: 'file' },
             { title: 'Acciones', key: 'actions', sortable: false },

@@ -11,10 +11,10 @@
         <v-row>
           <v-col cols="12" md="9" style="text-align: right;">
           </v-col>
-          <v-col cols="12" md="3" style="text-align: right;">
-            <p class="text-h7 " style="text-align: center;" @click="goToProfessional">
+          <v-col cols="12" md="3" style="text-align: center;">
+            <v-btn class="orange-border blink" size="x-large" rounded="0" @click="goToProfessional">
                   Ingreso de Profesionales
-                </p>
+            </v-btn>
           </v-col>
         </v-row>
         <v-row class="mt-6">

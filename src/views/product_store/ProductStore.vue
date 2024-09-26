@@ -182,8 +182,8 @@
         <template v-if="(this.charge === 'Administrador')" v-slot:item.purchase_price="{ item }">
         {{ item.purchase_price }}
         </template>
-        <template v-if="(this.charge === 'Administrador' || this.charge === 'Administrador de Sucursal')" v-slot:item.actions="{ item }">
-          <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
+        <template v-slot:item.actions="{ item }">
+          <v-btn v-if="this.mostrarFila" density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar existencia"></v-btn>
             <v-btn density="comfortable" icon="mdi-folder-move"  @click="moverItem(item)" color="green" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Mover producto"></v-btn>
@@ -484,8 +484,11 @@ export default {
       ];
 
       // Condicionalmente agregamos la columna de 'Precio compra'
-      if (this.charge === 'Administrador' || this.charge === 'Administrador de Sucursal') {
+      if (this.charge === 'Administrador') {
         baseHeaders.splice(4, 0, { title: 'Precio compra', align: 'start', value: 'purchase_price' });
+        baseHeaders.splice(8, 0, { title: 'Acciones', key: 'actions', sortable: false });
+      }
+      if (this.charge === 'Administrador de Sucursal') {
         baseHeaders.splice(8, 0, { title: 'Acciones', key: 'actions', sortable: false });
       }
 

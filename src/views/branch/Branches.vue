@@ -35,7 +35,7 @@
           </v-col>
 
           <v-col cols="12" md="7" class="text-right">
-            <v-btn class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-plus-circle"
+            <v-btn class="text-subtitle-1 mr-1" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-plus-circle"
               @click="showWinner()"
               v-if="this.charge === 'Administrador' || this.charge === 'Administrador de Sucursal'">
               Estadísticas Sucursal
@@ -158,14 +158,13 @@
               </div>
             </template>
             <template v-slot:item.actions="{ item }">
-              <v-btn v-if="mostrarFila" density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-pencil" @click="editItem(item)"
+              <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-pencil" @click="editItem(item)"
                 color="primary" variant="darken-1" elevation="1" title="Editar Sucursal"></v-btn>
-              <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-account-tie"
-                @click="showProfessionals(item)" color="indigo" variant="darken-2" elevation="1"
-                title="Agregar Trabajdor"></v-btn>
+              <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-account-tie" @click="showProfessionals(item)" 
+              color="indigo" variant="darken-2" elevation="1" title="Agregar Trabajdor"></v-btn>
               <v-btn v-if="mostrarFila" density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-store-outline" @click="showStores(item)"
                 color="green" variant="tonal" elevation="1" title="Agregar Almacén"></v-btn>
-              <v-btn v-if="mostrarFila" density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-handshake" @click="showAssociates(item)"
+              <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-handshake" @click="showAssociates(item)"
                 color="orange" variant="tonal" elevation="1" title="Agregar Asociado"></v-btn>
               <!--<v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-finance" @click="showWinner(item)" color="teal" variant="tonal"
             elevation="1" title="Finanzas de la  sucursal"></v-btn>-->
@@ -200,7 +199,7 @@
             <v-toolbar color="#F18254">
               <span class="text-subtitle-2 ml-4"> Trabajadores de la Sucursal</span>
               <v-spacer></v-spacer>
-              <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAddProfessionals()">
+              <v-btn v-if="mostrarFila" class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAddProfessionals()">
                 Agregar Trabajador
               </v-btn>
             </v-toolbar>
