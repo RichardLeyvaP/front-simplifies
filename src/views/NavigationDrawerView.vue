@@ -62,15 +62,10 @@
 
           </v-list-group>
           <!--Clientes-->
-          <v-list-group value="Clientes" v-if="filteredMenuClientes.length !== 0">
-            <template v-slot:activator="{ props }">
-              <v-list-item v-bind="props" prepend-icon="mdi-account-star-outline" title="Clientes"></v-list-item>
-            </template>
-
-
-            <v-list-item v-for="item in filteredMenuClientes" style="padding-left: 20px !important" :key="item.title" :prepend-icon="item.icon" :title="item.title"
-            :to="item.to" :value="item.value"></v-list-item> <!-- Filtrado directo usando v-if -->
-          </v-list-group>
+          <v-list-item v-if="filteredMenuClientes.length !== 0" v-for="item in filteredMenuClientes"  :key="item.title" :prepend-icon="item.icon" :title="item.title"
+            :to="item.to" :value="item.value"> <!-- Filtrado directo usando v-if -->
+  
+            </v-list-item>
           <!--Caja-->
           <v-list-group value="Caja" v-if="filteredMenuCajas.length !== 0">
             <template v-slot:activator="{ props }">
@@ -125,8 +120,8 @@
 
 
             <v-list-item v-for="item in filteredMenuReportes" style="padding-left: 20px !important" :key="item.title" :prepend-icon="item.icon" :title="item.title"
-            :to="item.to" :value="item.value"></v-list-item> 
-          </v-list-group> -->
+            :to="item.to" :value="item.value"></v-list-item>  Filtrado directo usando v-if 
+          </v-list-group>-->
           <v-list-group value="Mantenedores" v-if="filteredMenuMainteiners.length !== 0">
             <template v-slot:activator="{ props }">
               <v-list-item v-bind="props" prepend-icon="mdi-progress-wrench" title="Mantenedores"></v-list-item>
@@ -245,7 +240,6 @@ export default {
     ],
     clientes:[
       { icon: "mdi-account-star-outline", title: "Clientes", to: "client", value: "clients", permission: "view_clients" },
-      { icon: "mdi-format-list-bulleted-type", title: "Resumen Encuestas", to: "survey-counts", value: "survey-counts", permission: "view_resumen_surveys" },
       ],
     services:[
     { icon: "mdi-list-box-outline", title: "Servicios", to: "service", value: "services", permission: "view_services" },
