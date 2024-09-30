@@ -239,9 +239,21 @@ export default {
         })
         .then((response) => {
           this.results = response.data.notifications;
-        })
-        .catch((error) => {
-          console.error('Error al obtener notificaciones:', error);
+        }).catch((error) => {
+          if (error.response) {
+            // El servidor respondió con un código de estado diferente de 2xx
+            if (error.response.status === 500) {
+              this.showAlert("error", "Error interno del servidor. Por favor, intenta de nuevo más tarde.", 3000);
+            } else {
+              this.showAlert("warning", 'Ocurrió un error en la solicitud', 3000);
+            }
+          } else if (error.request) {
+            // La solicitud fue hecha, pero no hubo respuesta
+            this.showAlert("warning", 'No se pudo establecer conexión con el servidor. Por favor, revisa tu conexión a Internet', 3000);
+          } else {
+            // Algo más causó el error
+            this.showAlert("warning", 'Ocurrió un error desconocido. Por favor, intenta de nuevo.', 3000);
+          }
         })
         .finally(() => {
           LocalStorageService.setIsLocked(false); // Desbloquear después de la petición
@@ -402,6 +414,21 @@ export default {
                 })
         .then((response) => {
           this.results = response.data.notifications;
+        }).catch((error) => {
+          if (error.response) {
+            // El servidor respondió con un código de estado diferente de 2xx
+            if (error.response.status === 500) {
+              this.showAlert("error", "Error interno del servidor. Por favor, intenta de nuevo más tarde.", 3000);
+            } else {
+              this.showAlert("warning", 'Ocurrió un error en la solicitud', 3000);
+            }
+          } else if (error.request) {
+            // La solicitud fue hecha, pero no hubo respuesta
+            this.showAlert("warning", 'No se pudo establecer conexión con el servidor. Por favor, revisa tu conexión a Internet', 3000);
+          } else {
+            // Algo más causó el error
+            this.showAlert("warning", 'Ocurrió un error desconocido. Por favor, intenta de nuevo.', 3000);
+          }
         });
     }
   }

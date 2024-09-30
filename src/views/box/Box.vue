@@ -1770,7 +1770,22 @@ export default {
             this.cashierSales = response.data.cashierSales;
             console.log('this.box');
             console.log(this.box);
-          }).finally(() => {
+          }).catch((error) => {
+          if (error.response) {
+            // El servidor respondió con un código de estado diferente de 2xx
+            if (error.response.status === 500) {
+              this.showAlert("error", "Error interno del servidor. Por favor, intenta de nuevo más tarde.", 3000);
+            } else {
+              this.showAlert("warning", 'Ocurrió un error en la solicitud', 3000);
+            }
+          } else if (error.request) {
+            // La solicitud fue hecha, pero no hubo respuesta
+            this.showAlert("warning", 'No se pudo establecer conexión con el servidor. Por favor, revisa tu conexión a Internet', 3000);
+          } else {
+            // Algo más causó el error
+            this.showAlert("warning", 'Ocurrió un error desconocido. Por favor, intenta de nuevo.', 3000);
+          }
+        }).finally(() => {
             if (this.box === null) {
               this.ejecutado = false;
             } else {
@@ -2292,6 +2307,21 @@ export default {
           this.cashierSales = response.data.cashierSales;
           console.log('this.box');
           console.log(this.box);
+        }).catch((error) => {
+          if (error.response) {
+            // El servidor respondió con un código de estado diferente de 2xx
+            if (error.response.status === 500) {
+              this.showAlert("error", "Error interno del servidor. Por favor, intenta de nuevo más tarde.", 3000);
+            } else {
+              this.showAlert("warning", 'Ocurrió un error en la solicitud', 3000);
+            }
+          } else if (error.request) {
+            // La solicitud fue hecha, pero no hubo respuesta
+            this.showAlert("warning", 'No se pudo establecer conexión con el servidor. Por favor, revisa tu conexión a Internet', 3000);
+          } else {
+            // Algo más causó el error
+            this.showAlert("warning", 'Ocurrió un error desconocido. Por favor, intenta de nuevo.', 3000);
+          }
         }).finally(() => {
           if (this.box === null) {
             this.ejecutado = false;
@@ -2387,6 +2417,7 @@ export default {
       this.loadingOrders = true,
       console.log('carro a ver details');
       console.log(item);
+      this.orders = [];
       this.car_ref = item
       this.editedItem.id = item.id;
       axios
@@ -2399,6 +2430,21 @@ export default {
           this.orders = response.data.orders;
           console.log('imprime oreders');
           console.log(this.orders);
+        }).catch((error) => {
+          if (error.response) {
+            // El servidor respondió con un código de estado diferente de 2xx
+            if (error.response.status === 500) {
+              this.showAlert("error", "Error interno del servidor. Por favor, intenta de nuevo más tarde.", 3000);
+            } else {
+              this.showAlert("warning", 'Ocurrió un error en la solicitud', 3000);
+            }
+          } else if (error.request) {
+            // La solicitud fue hecha, pero no hubo respuesta
+            this.showAlert("warning", 'No se pudo establecer conexión con el servidor. Por favor, revisa tu conexión a Internet', 3000);
+          } else {
+            // Algo más causó el error
+            this.showAlert("warning", 'Ocurrió un error desconocido. Por favor, intenta de nuevo.', 3000);
+          }
         }).finally(() => {
           console.log('this.loadingOrders = false;');
           this.loadingOrders = false;

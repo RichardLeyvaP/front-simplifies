@@ -1100,7 +1100,12 @@ export default {
       })
       .then((response) => {
         this.branches = response.data.branches;
+        if (this.charge !== 'Administrador') {
+          this.charges = response.data.charges.filter(item => (item.name !== 'Administrador' && item.name !== 'Administrador de Sucursal'));
+        }
+        else{          
         this.charges = response.data.charges;
+        }
         //this.branch_id = this.branches[0].id;
       })
       .finally(() => {
