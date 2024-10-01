@@ -199,7 +199,7 @@
             <v-toolbar color="#F18254">
               <span class="text-subtitle-2 ml-4"> Trabajadores de la Sucursal</span>
               <v-spacer></v-spacer>
-              <v-btn v-if="mostrarFila" class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAddProfessionals()">
+              <v-btn v-if="(this.charge === 'Administrador' || this.charge === 'Administrador de Sucursal')" class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAddProfessionals()">
                 Agregar Trabajador
               </v-btn>
             </v-toolbar>
@@ -901,7 +901,7 @@ export default {
       this.loadingBranch = true;
       LocalStorageService.setIsLocked(true);
       axios
-        .get('https://api2.simplifies.cl/api/branch')
+        .get('https://api2.simplifies.cl/api/branch-prueba')
         .then((response) => {
           // Filtra las sucursales si no es administrador
       if (this.charge !== "Administrador") {

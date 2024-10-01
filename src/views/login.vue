@@ -293,7 +293,7 @@ export default {
 
     initialize() {
       axios
-        .get('https://api2.simplifies.cl/api/branch')
+        .get('https://api2.simplifies.cl/api/branch-prueba')
         .then((response) => {
           this.branches = response.data.branches;
         });
