@@ -103,17 +103,6 @@
                     </v-card>
                   </v-col>
                   <v-spacer></v-spacer>
-                  <v-col cols="4">
-                    <v-card class="mx-auto" max-width="344" title="Efectivo" :subtitle="totalMountCashs()"
-                      append-icon="mdi-check">
-
-                      <template v-slot:prepend>
-                        <v-avatar color="amber ">
-                          <v-icon icon="mdi-cash"></v-icon>
-                        </v-avatar>
-                      </template>
-                    </v-card>
-                  </v-col>
 
                   <v-col cols="4">
                     <v-card class="mx-auto" max-width="344" title="Débito" :subtitle="totalMountDebits()"
@@ -168,6 +157,41 @@
                       <template v-slot:prepend>
                         <v-avatar color="green-darken-2">
                           <v-icon icon="mdi-gift"></v-icon>
+                        </v-avatar>
+                      </template>
+                    </v-card>
+                  </v-col>
+                  
+                  <v-col cols="4">
+                    <v-card class="mx-auto" max-width="344" title="Efectivo en caja" :subtitle="this.totalBoxCashs()"
+                      append-icon="mdi-check">
+
+                      <template v-slot:prepend>
+                        <v-avatar color="amber ">
+                          <v-icon icon="mdi-cash"></v-icon>
+                        </v-avatar>
+                      </template>
+                    </v-card>
+                  </v-col>
+                  <v-col cols="4">
+                    <v-card class="mx-auto" max-width="344" title="Extracción" :subtitle="this.totalBoxExtraction()"
+                      append-icon="mdi-check">
+
+                      <template v-slot:prepend>
+                        <v-avatar color="green-darken-2">
+                          <v-icon icon="mdi-cash-refund"></v-icon>
+                        </v-avatar>
+                      </template>
+                    </v-card>
+                  </v-col>
+                  
+                  <v-col cols="4">
+                    <v-card class="mx-auto" max-width="344" title="Pago de bonos" :subtitle="this.totalBonusPay()"
+                      append-icon="mdi-check">
+
+                      <template v-slot:prepend>
+                        <v-avatar color="red">
+                          <v-icon icon="mdi-cash-refund"></v-icon>
                         </v-avatar>
                       </template>
                     </v-card>
@@ -1326,6 +1350,7 @@ export default {
     bonusProf: [],
     amountSales: '',
     dialogPaySales: false,
+    bonusPay: 0,
     payments: [],
     headers: [
       { title: 'No', value: 'id' },
@@ -1768,6 +1793,9 @@ export default {
             this.box = response.data.box;
             this.payments = response.data.payments;
             this.cashierSales = response.data.cashierSales;
+            this.bonusPay = response.data.bonusPay;
+            console.log('bonos pagados');
+            console.log(this.bonusPay);
             console.log('this.box');
             console.log(this.box);
           }).catch((error) => {
@@ -2178,6 +2206,29 @@ export default {
       return this.formatNumber(temp) + " CLP";
     },
 
+    totalBoxCashs() {
+      if (!this.box) {
+        return '0.00'  + " CLP";
+      }
+      else{
+      return this.box.existence ? this.formatNumber(this.box.existence) + " CLP" : '0.00'  + " CLP";
+      }
+    },
+
+    totalBoxExtraction() {
+      if (!this.box) {
+        return '0.00'  + " CLP";
+      }else{
+        return this.box.extraction ? this.formatNumber(this.box.extraction) + " CLP" : '0.00'  + " CLP";
+      }
+    },
+
+    totalBonusPay() {
+      console.log('bonos pagados');
+      console.log(this.bonusPay);
+      return this.bonusPay ? this.formatNumber(this.bonusPay) + " CLP" : '0.00'  + " CLP";
+    },
+
     totalMountDebits() {
       // Filtrar elementos con estado "Pendiente" y calcular la sumatoria
       const montosPendientes = this.payments
@@ -2305,6 +2356,9 @@ export default {
           this.box = response.data.box;
           this.payments = response.data.payments;
           this.cashierSales = response.data.cashierSales;
+          this.bonusPay = response.data.bonusPay;
+          console.log('bonos pagados');
+          console.log(this.bonusPay);
           console.log('this.box');
           console.log(this.box);
         }).catch((error) => {

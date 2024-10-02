@@ -953,6 +953,14 @@ export default {
       img.onerror = () => {
         this.imgMiniatura = '';
       };
+      LocalStorageService.setIsLocked(true);
+      axios
+        .get('https://api2.simplifies.cl/api/business-type')
+        .then((response) => {
+          this.businessTypes = response.data.businessTypes;
+        }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+        });
       this.editedIndex = 1;
       this.editedItem = Object.assign({}, item);
       this.editedItem.business_type_id = parseInt(item.business_type_id);

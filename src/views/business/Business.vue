@@ -27,7 +27,7 @@
             Ganancias Por Sucursales
           </v-btn>
           <v-btn class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat" elevation="2"
-            prepend-icon="mdi-plus-circle" :disabled="mostrar" @click="showAddProfessional()">
+            prepend-icon="mdi-plus-circle" :disabled="mostrar" @click="showAddNegocio()">
             Nuevo Negocio
           </v-btn>
           <v-dialog v-model="dialog" max-width="800px">
@@ -39,26 +39,81 @@
                 <v-form ref="form" v-model="valid" enctype="multipart/form-data">
                   <v-container>
                     <v-row>
-                      <v-col cols="12" md="12">
+                      <v-col cols="12" md="6">
                         <v-text-field v-model="editedItem.name" clearable label="Nombre del Negocio"
                           prepend-icon="mdi-ruler" variant="underlined" :rules="nameRules">
                         </v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col cols="12" md="12">
+                      </v-col>                      
+                      <v-col cols="12" md="6">
                         <v-text-field v-model="editedItem.address" clearable label="Dirección"
                           prepend-icon="mdi-form-textarea" variant="underlined" :rules="dirRules">
                         </v-text-field>
                       </v-col>
                     </v-row>
                     <v-row>
-                      <v-col cols="12" md="12">
+                      <v-col cols="12" md="6">
                         <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.professional_id"
                           :items="professionals" clearable label="Propietario" prepend-icon="mdi-account-tie-outline"
                           item-title="name" item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
                       </v-col>
+                      <v-col cols="12" md="6">
+                        <v-text-field v-model="editedItem.api_url" clearable label="Url del API"
+                          prepend-icon="mdi-ruler" variant="underlined">
+                        </v-text-field>
+                      </v-col>
                     </v-row>
+                    <v-row>
+                    <!-- Primera columna -->
+                    <v-col cols="12" md="6">
+                        <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40"
+                          transition="scale-transition" offset-y min-width="290px">
+                          <template v-slot:activator="{ props }">
+                            <v-text-field v-bind="props" v-model="formattedStartDate" variant="underlined"
+                              prepend-icon="mdi-calendar" label="Fecha inicial"></v-text-field>
+                          </template>
+                          <v-locale-provider locale="es">
+                            <v-date-picker color="orange lighten-2" @input="menu3" v-model="editedItem.start_date"
+                              header="Calendario" title="Seleccione la fecha" :min="new Date(
+                                Date.now() -
+                                new Date().getTimezoneOffset() * 60000
+                              )
+                                .toISOString()
+                                .substr(0, 10)
+                                " :max="formattedEndDate" @update:modelValue="updateDate5"></v-date-picker>
+                          </v-locale-provider>
+                        </v-menu>
+                      </v-col>
+                      <v-col cols="12" md="6">
+                        <v-menu v-model="menu4" :close-on-content-click="false" :nudge-right="40"
+                          transition="scale-transition" offset-y min-width="290px">
+                          <template v-slot:activator="{ props }">
+                            <v-text-field v-bind="props" v-model="formattedEndDate" variant="underlined"
+                              prepend-icon="mdi-calendar" label="Fecha final"></v-text-field>
+                          </template>
+                          <v-locale-provider locale="es">
+                            <v-date-picker color="orange lighten-2" @input="menu4" v-model="editedItem.end_date"
+                              header="Calendario" title="Seleccione la fecha" :min="formattedStartDate
+                                " @update:modelValue="updateDate4"></v-date-picker>
+                          </v-locale-provider>
+                        </v-menu>
+                      </v-col>
+                    </v-row>
+                    
+                  <v-row>
+                    <v-col cols="12" md="6">
+                      <v-file-input clearable v-model="file" ref="fileInput" label="Imagen del Negocio"
+                        variant="underlined" density="compact" name="file" accept=".png, .jpg, .jpeg"
+                        @change="onFileSelected">
+                      </v-file-input>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <v-card elevation="6" class="mx-auto" max-width="210" max-height="120">
+                        <img v-if="imagenDisponible()" :src="imgedit" height="120" width="210">
+                      </v-card>
+
+
+                    </v-col>
+                  </v-row><br>
                   </v-container>
                   <v-divider></v-divider>
                   <v-card-actions>
@@ -109,6 +164,13 @@
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar Negocio"></v-btn>
           <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
             elevation="1" title="Eliminar Negocio"></v-btn>
+        </template>
+        <template v-slot:item.name="{ item }">
+
+        <v-avatar class="mr-1" elevation="3" color="grey-lighten-4" size="large">
+          <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+        </v-avatar><!--+'?$'+Date.now()-->
+        {{ item.name }}
         </template>
       </v-data-table>
     </v-card-text>
@@ -216,7 +278,7 @@
             Exportar a Excel
           </v-btn>
         </v-toolbar>
-        <v-container>
+        <v-container fluid>
           <v-row>
             <!-- Primera columna -->
             <v-col cols="12" md="3">
@@ -256,7 +318,7 @@
         </v-container>
         <v-row>
           <v-col cols="12" md="12">
-            <v-container>
+            <v-container fluid>
               <v-alert border type="info" variant="outlined" density="compact">
                 <p v-html="formTitleWinB"></p>
               </v-alert>
@@ -316,6 +378,7 @@
 
 import axios from "axios";
 import { format } from "date-fns";
+import { useDate } from 'vuetify';
 import * as XLSX from 'xlsx';
 import LocalStorageService from "@/LocalStorageService";
 
@@ -342,6 +405,8 @@ export default {
     sb_title: '',
     sb_icon: '',
     mostrar: false,
+    file: null,
+    imgMiniatura: '',
 
     dialog: false,
     dialogDelete: false,
@@ -350,6 +415,10 @@ export default {
       { title: 'Negocio', value: 'name' },
       { title: 'Dirección', value: 'address' },
       { title: 'Propietario', value: 'professional.name' },
+      { title: 'Fecha de Inicio', value: 'start_date' },
+      { title: 'Fecha Final', value: 'end_date' },
+      { title: 'Código', value: 'code' },
+      { title: 'API', value: 'api_url' },
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
     headers1: [
@@ -387,6 +456,9 @@ export default {
       name: '',
       address: '',
       professional_id: '',
+      start_date: null,
+      end_date: null,
+      api_url: ''
     },
     data: {},
 
@@ -394,6 +466,9 @@ export default {
       name: '',
       address: '',
       professional_id: '',
+      start_date: null,
+      end_date: null,
+      api_url: ''
     },
     //reporte variables
     dialogShowWinner: false,
@@ -402,6 +477,10 @@ export default {
     menu2: false,
     input: null,
     input2: null,
+    menu3: false,
+    menu4: false,
+    input3: null,
+    input4: null,
     winners: [],
     winnersbranches: [],
     fecha: '',
@@ -425,8 +504,51 @@ export default {
     ],
     selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
   }),
+  setup() {
+    const adapter = useDate()
+
+    const parseDate = (dateString) => {
+      return adapter.parseISO(dateString)
+    }
+
+    return {
+      parseDate
+    }
+  },
 
   computed: {
+    formattedStartDate() {
+      if (this.editedItem.start_date) {
+        console.log('this.editedItem.startDate datos');
+        console.log(this.editedItem.start_date);
+        const date = new Date(this.editedItem.start_date);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        console.log(`${year}-${month}-${day}`);
+
+        return `${year}-${month}-${day}`;
+      }
+      return "";
+
+    },
+    formattedEndDate() {
+      if (this.editedItem.end_date) {
+        console.log('this.editedItem.endDate');
+        console.log(this.editedItem.end_date);
+        const date = new Date(this.editedItem.end_date);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        console.log(`${year}-${month}-${day}`);
+        return `${year}-${month}-${day}`;
+
+      }
+      return "";
+    },
+    imgedit() {
+      return this.imgMiniatura;
+    },
     formTitle() {
       return this.editedIndex === -1 ? 'Nuevo Negocio' : 'Editar Negocio'
     },
@@ -466,6 +588,20 @@ export default {
       const year = date.getFullYear();
       return `${year}-${month}-${day}`;
     },
+    /*dateFormatted3() {
+      const date = this.input3 ? new Date(this.input3) : new Date();
+      const day = date.getDate3().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const year = date.getFullYear();
+      return `${year}-${month}-${day}`;
+    },
+    dateFormatted4() {
+      const date = this.input4 ? new Date(this.input4) : new Date();
+      const day = date.getDate4().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const year = date.getFullYear();
+      return `${year}-${month}-${day}`;
+    },*/
     getDate() {
       return this.input ? new Date(this.input) : new Date();
     },
@@ -492,7 +628,49 @@ export default {
   },
 
   methods: {
+    showAlert(sb_type, sb_message, sb_timeout) {
+      this.sb_type = sb_type;
 
+      if (sb_type == "success") {
+        this.sb_title = "Éxito";
+        this.sb_icon = "mdi-check-circle";
+      }
+
+      if (sb_type == "error") {
+        this.sb_title = "Error";
+        this.sb_icon = "mdi-check-circle";
+      }
+
+      if (sb_type == "warning") {
+        this.sb_title = "Advertencia";
+        this.sb_icon = "mdi-alert-circle";
+      }
+      this.sb_message = sb_message;
+      this.sb_timeout = sb_timeout;
+      this.snackbar = true;
+    },
+    imagenDisponible() {
+      if (this.imgedit !== undefined && this.imgedit !== '') {
+        // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
+        let img = new Image();
+        img.src = this.imgedit;
+        return true; // Devuelve true si la imagen está disponible
+      }
+      return false; // Si la URL de la imagen no está definida o está vacía, devuelve false
+    },
+    onFileSelected(event) {
+      let file = event.target.files[0];
+      this.editedItem.image_url = file;
+      //console.log(this.editedItem.image_cardgift);
+      this.cargarImage(file);
+    },
+    cargarImage(file) {
+      let reader = new FileReader();
+      reader.onload = (e) => {
+        this.imgMiniatura = e.target.result;
+      }
+      reader.readAsDataURL(file);
+    },
     initialize() {
       this.loadingBusiness = true;
       LocalStorageService.setIsLocked(true);
@@ -507,21 +685,40 @@ export default {
         });
 
     },
-    showAddProfessional() {
-      LocalStorageService.setIsLocked(true);
-      axios
+    showAddNegocio() {
+      this.file = null;
+      this.input3 = null
+     this.input4 = null;
+     this.menu3 = false
+     this.menu4 = false
+     this.imgMiniatura = '';
+     this.editedItem = Object.assign({}, this.defaultItem)
+      //LocalStorageService.setIsLocked(true);
+      /*axios
         .get('https://api2.simplifies.cl/api/professional-show-autocomplete')
         .then((response) => {
           this.professionals = response.data.professionals;
         }).finally(() => {
             LocalStorageService.setIsLocked(false);
-        });
+        });*/
       this.dialog = true;
     },
     editItem(item) {
-      LocalStorageService.setIsLocked(true);
+      //LocalStorageService.setIsLocked(true);
+      this.editedItem = Object.assign({}, this.defaultItem)
+      this.file = null;
+      var img = new Image();
+      img.src = 'https://api2.simplifies.cl/api/images/' + item.image_url;
+      img.onload = () => {
+        this.imgMiniatura = 'https://api2.simplifies.cl/api/images/' + item.image_url;
+      };
+      img.onerror = () => {
+        this.imgMiniatura = '';
+      };
       this.editedIndex = 1;
-      this.editedItem = Object.assign({}, item)
+      this.editedItem = Object.assign({}, item);
+      this.editedItem.start_date = this.parseDate(item.start_date);
+      this.editedItem.end_date = this.parseDate(item.end_date);
       this.editedItem.professional_id = parseInt(item.professional_id);
       this.dialog = true
     },
@@ -541,6 +738,7 @@ export default {
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
+          this.showAlert("success", "Negocio eliminado correctamente", 3000);
           this.initialize();
         });
       this.closeDelete()
@@ -567,11 +765,18 @@ export default {
         this.data.name = this.editedItem.name;
         this.data.address = this.editedItem.address;
         this.data.professional_id = this.editedItem.professional_id;
+        this.editedItem.start_date = this.formattedStartDate;
+        this.editedItem.end_date = this.formattedEndDate;
+        const formData = new FormData();
+        for (let key in this.editedItem) {
+          formData.append(key, this.editedItem[key]);
+        }
         axios
-          .put('https://api2.simplifies.cl/api/business', this.data)
+          .post('https://api2.simplifies.cl/api/business-update', formData)
           .then(() => {
           }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.showAlert("success", "Negocio editado correctamente", 3000);
             this.initialize();
           });
       } else {
@@ -579,12 +784,18 @@ export default {
         this.data.name = this.editedItem.name;
         this.data.address = this.editedItem.address;
         this.data.professional_id = this.editedItem.professional_id;
-
+        this.editedItem.start_date = this.formattedStartDate;
+        this.editedItem.end_date = this.formattedEndDate;
+        const formData = new FormData();
+        for (let key in this.editedItem) {
+          formData.append(key, this.editedItem[key]);
+        }
         axios
-          .post('https://api2.simplifies.cl/api/business', this.data)
+          .post('https://api2.simplifies.cl/api/business', formData)
           .then(() => {
           }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.showAlert("success", "Negocio creado correctamente", 3000);
             this.initialize();
           });
       }
@@ -633,6 +844,12 @@ export default {
     updateDate1(val) {
       this.input2 = val;
       this.menu2 = false;
+    },
+    updateDate5() {      
+      this.menu3 = false;
+    },
+    updateDate4() {
+      this.menu4 = false;
     },
     updateDate2() {
       this.loadingWinners = true;
