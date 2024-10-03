@@ -371,8 +371,8 @@
                 @click="(item.active != 3 && item.state == 1) && payItem(item)"
                 :color="(item.active != 3 && item.state == 1) ? 'green-darken-1' : 'grey'" variant="tonal" elevation="1"
                 class="mr-1 mt-1 mb-1" title="Pagar el carro"></v-btn>
-              <v-btn density="comfortable" icon="mdi-delete" @click="(item.active != 3) && deleteItemSolicitud(item)"
-                :color="(item.active != 3) ? 'red-darken-4' : 'grey'" variant="tonal" elevation="1"
+              <v-btn density="comfortable" icon="mdi-delete" @click="(item.active != 3 && item.state != 2) && deleteItemSolicitud(item)"
+                :color="(item.active != 3  && item.state != 2) ? 'red-darken-4' : 'grey'" variant="tonal" elevation="1"
                 title="Solicitud de eliminar carro"></v-btn>
             </template>
           </v-data-table>

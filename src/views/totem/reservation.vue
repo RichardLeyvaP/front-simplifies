@@ -196,10 +196,10 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn size="x-large" text="Aceptar" :disabled="!this.email_client" :loading="loadingClient"
+        <v-btn variant="flat" color="#E7E9E9" text="Cancelar"
+          @click="() => { this.selectedItem = 'option2'; this.radios = 'ClientNo'; showDialog = false; this.email_client = ''; this.showTextField = true}">Cancelar</v-btn>          
+        <v-btn color="#F18254" variant="flat" text="Aceptar" :disabled="!this.email_client" :loading="loadingClient"
           @click="fetchClients">Aceptar</v-btn>
-        <v-btn size="x-large" text="Cancelar"
-          @click="() => { this.selectedItem = 'option2'; this.radios = 'ClientNo'; showDialog = false; this.email_client = ''; this.showTextField = true}">Cancelar</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

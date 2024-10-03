@@ -73,7 +73,7 @@
                         prepend-inner-icon="mdi-package-variant-closed" variant="underlined" :rules="pago" :disabled="moverEdit">
                       </v-text-field>
                         <v-text-field v-model="editedItem.product_quantity" clearable :label="this.texttitle"
-                        prepend-inner-icon="mdi-tag-plus" variant="underlined" :disabled="moverEdit">
+                        prepend-inner-icon="mdi-tag-plus" variant="underlined" :disabled="moverEdit" :rules="pago">
                       </v-text-field>
                     </v-col>
                     <v-col v-if="mostrarCampos">

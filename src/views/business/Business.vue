@@ -508,7 +508,12 @@ export default {
     const adapter = useDate()
 
     const parseDate = (dateString) => {
-      return adapter.parseISO(dateString)
+      if (!dateString) {
+      // Si dateString es null o undefined, retorna null o un valor predeterminado
+      return null; 
+    }else{
+    return adapter.parseISO(dateString)
+  }
     }
 
     return {
@@ -677,7 +682,13 @@ export default {
       axios
         .get('https://api2.simplifies.cl/api/business')
         .then((response) => {
-          this.results = response.data.business;
+          //this.results = response.data.business;
+          this.results = response.data.business.map(business => {
+          return {
+            ...business,
+            api_url: business.api_url === "null" || business.api_url === null ? '' : business.api_url
+          };
+        });
           this.professionals = response.data.professionals;
         }).finally(() => {
             LocalStorageService.setIsLocked(false);

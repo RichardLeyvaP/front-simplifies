@@ -248,6 +248,8 @@
               elevation="1" class="mr-1 mt-1 mb-1" title="Modificar contraseña"></v-btn>
             <v-btn density="comfortable" icon="mdi-timer-off" @click="showLater(item)" color="orange" variant="tonal"
               elevation="1" class="mr-1 mt-1 mb-1" title="Legadas tardes por sucursal"></v-btn>
+              <v-btn density="comfortable" icon="mdi-gavel" @click="showRules(item)" color="blue" variant="tonal"
+              elevation="1" class="mr-1 mt-1 mb-1" title="Reglas de Convivencias"></v-btn>
             <!--<v-btn
               density="comfortable"
               icon="mdi-clipboard-text"
@@ -750,6 +752,90 @@
           </v-container>
         </v-card>
       </v-dialog>
+
+      <!--BranchRules-->
+      <v-dialog v-model="dialogRules" fullscreen transition="dialog-bottom-transition">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <v-row align="center">
+              <v-col cols="12" md="8" class="grow ml-4">
+                <span class="text-h8">
+                  <strong>Reglas de convivencias por sucursal</strong></span>
+              </v-col>
+              <v-spacer></v-spacer>
+              <v-col cols="12" md="3">
+                <v-btn class="text-subtitle-1 ml-12" color="#E7E9E9" variant="flat" elevation="2"
+                  prepend-icon="mdi-file-excel" @click="exportToExcel7">
+                  Exportar a Excel
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-toolbar>
+          <v-container fluid>
+            <v-row>
+              <!-- Primera columna -->
+              <v-col cols="12" sm="6" md="3">
+                <v-menu v-model="menu6" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
+                  offset-y min-width="290px">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field v-bind="props" :modelValue="dateFormatted6" variant="outlined"
+                      append-inner-icon="mdi-calendar" label="Fecha inicial"></v-text-field>
+                  </template>
+                  <v-locale-provider locale="es">
+                    <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                      :modelValue="input6" @update:modelValue="updateDate6" format="yyyy-MM-dd"
+                      :max="dateFormatted7"></v-date-picker>
+                  </v-locale-provider>
+                </v-menu>
+              </v-col>
+              <!-- Segunda columna -->
+              <v-col cols="12" sm="6" md="3">
+                <v-menu v-model="menu7" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
+                  offset-y min-width="290px">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field v-bind="props" :modelValue="dateFormatted7" variant="outlined"
+                      append-inner-icon="mdi-calendar" label="Fecha final"></v-text-field>
+                  </template>
+                  <v-locale-provider locale="es">
+                    <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
+                      :modelValue="getDate7" @update:modelValue="updateDate7" format="yyyy-MM-dd"
+                      :min="dateFormatted6"></v-date-picker>
+                  </v-locale-provider>
+                </v-menu>
+              </v-col>
+              <v-col cols="12" sm="12" md="3">
+                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+                  v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
+                  item-title="name" item-value="id"
+                  variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
+              </v-col>
+              <v-col cols="12" md="1">
+                <v-btn icon @click="updateDate8" color="#F18254">
+                  <v-icon>mdi-magnify</v-icon></v-btn>
+              </v-col>
+              <v-col cols="12">
+                <v-alert border type="info" variant="outlined" density="compact">
+                  <p v-html="formTitleRules"></p>
+                </v-alert>
+              </v-col>
+            </v-row>
+            <v-card-text>
+              <v-text-field class="mt-1 mb-1" v-model="search7" append-icon="mdi-magnify" label="Buscar" single-line
+                hide-details>
+              </v-text-field>
+              <v-data-table :headers="headers6" :items-per-page-text="'Elementos por páginas'" :items="rules"
+                :search="search7" class="elevation-2" no-results-text="No hay datos disponibles"
+                no-data-text="No hay datos disponibles" :loading="loadingRules" loading-text="Cargando datos...">
+              </v-data-table>
+            </v-card-text>
+          </v-container>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="closeRules"> Volver </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-card>
   </v-container>
 </template>
@@ -816,6 +902,7 @@ export default {
     loadingAsistLate: true,
     loadingLaters: true,
     loadingAsist: true,
+    loadingRules: true,
     valid: true,
     snackbar: false,
     sb_type: "",
@@ -949,6 +1036,21 @@ export default {
     asistLate: [],
     asistTime: [],
 
+    dialogRules: false,
+    rules: [],
+    headers6: [
+      { title: "Regla de Convivencia", key: "rule_name", sortable: true },
+      { title: "Cumplida", key: "estado_1", sortable: true },
+      { title: "Incumplida", key: "estado_0", sortable: true },
+      { title: "No se le Actualizó", key: "estado_3", sortable: true },
+    ],
+
+    menu6: false,
+    menu7: false,
+    input6: null,
+    input7: null,
+    search7: "",
+
     typeUser: '',
     userId: '',
     clientName: '',
@@ -1056,6 +1158,15 @@ export default {
         return `Profesionales con mejor asistencia en el día  <strong>${this.fecha}</strong>`;
       }
     },
+    formTitleRules() {
+        const startDate = this.input6
+          ? format(this.input6, "yyyy-MM-dd")
+          : format(new Date(), "yyyy-MM-dd");
+        const endDate = this.input7
+          ? format(this.input7, "yyyy-MM-dd")
+          : format(new Date(), "yyyy-MM-dd");
+        return `Estado de las reglas de convivencias en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;
+    },
     dateFormatted() {
       const date = this.input ? new Date(this.input) : new Date();
       const day = date.getDate().toString().padStart(2, "0");
@@ -1075,6 +1186,26 @@ export default {
     },
     getDate2() {
       return this.input2 ? new Date(this.input2) : new Date();
+    },
+    dateFormatted6() {
+      const date = this.input6 ? new Date(this.input6) : new Date();
+      const day = date.getDate().toString().padStart(2, "0");
+      const month = (date.getMonth() + 1).toString().padStart(2, "0");
+      const year = date.getFullYear();
+      return `${year}-${month}-${day}`;
+    },
+    dateFormatted7() {
+      const date = this.input7 ? new Date(this.input7) : new Date();
+      const day = date.getDate().toString().padStart(2, "0");
+      const month = (date.getMonth() + 1).toString().padStart(2, "0");
+      const year = date.getFullYear();
+      return `${year}-${month}-${day}`;
+    },
+    getDate6() {
+      return this.input6 ? new Date(this.input6) : new Date();
+    },
+    getDate7() {
+      return this.input7 ? new Date(this.input7) : new Date();
     },
   },
 
@@ -1808,6 +1939,120 @@ export default {
           LocalStorageService.setIsLocked(false);
           this.showFreeday(this.selectedProfessional);
         });
+    },
+    updateDate6(val) {
+      this.input6 = val;
+      this.menu6 = false;
+    },
+    updateDate7(val) {
+      this.input7 = val;
+      this.menu7 = false;
+    },
+    //reglas de convivencias
+    showRules(item) {
+      this.professional_id = item.id;
+      this.editedIndexLater = -1;
+      this.loadingRules = true;
+      LocalStorageService.setIsLocked(true);
+      const startDate = this.input6
+        ? format(this.input6, "yyyy-MM-dd")
+        : format(new Date(), "yyyy-MM-dd");
+      const endDate = this.input7
+        ? format(this.input7, "yyyy-MM-dd")
+        : format(new Date(), "yyyy-MM-dd");
+      axios
+        .get("https://api2.simplifies.cl/api/branch-rule-professional-periodo", {
+          params: {
+            branch_id: this.branch_id,
+            professional_id: this.professional_id,
+            startDate: startDate,
+            endDate: endDate,
+          },
+        })
+        .then((response) => {
+          LocalStorageService.setIsLocked(false);
+          this.rules = response.data;
+        }).finally(()=>{
+      this.dialogRules = true;
+          this.loadingRules = false;
+        });
+    },
+    updateDate8() {
+      //this.professional_id = this.professional_d;
+      console.log('Professional_id:'+this.professional_id);
+      this.editedIndexLater = -1;
+      this.loadingRules = true;
+      LocalStorageService.setIsLocked(true);
+      const startDate = this.input6
+        ? format(this.input6, "yyyy-MM-dd")
+        : format(new Date(), "yyyy-MM-dd");
+      const endDate = this.input7
+        ? format(this.input7, "yyyy-MM-dd")
+        : format(new Date(), "yyyy-MM-dd");
+      axios
+        .get("https://api2.simplifies.cl/api/branch-rule-professional-periodo", {
+          params: {
+            branch_id: this.branch_id,
+            professional_id: this.professional_id,
+            startDate: startDate,
+            endDate: endDate,
+          },
+        })
+        .then((response) => {
+          LocalStorageService.setIsLocked(false);
+          this.rules = response.data;
+        }).finally(()=>{
+      this.dialogRules = true;
+          this.loadingRules = false;
+        });
+    },
+    closeRules() {
+      this.dialogRules = false;
+    },
+    
+    exportToExcel7() {
+      // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
+      let rows = [];
+
+      // Construye un objeto para los encabezados basado en la estructura de 'headers'
+      let headerRow = {};
+      this.headers6.forEach((header) => {
+        headerRow[header.key] = header.title; // Usa 'key' para el mapeo y 'title' para el texto del encabezado
+      });
+      rows.push(headerRow);
+
+      // Ahora, mapea los datos de los items para que coincidan con los encabezados
+      this.rules.forEach((item) => {
+        let rowData = {};
+        this.headers6.forEach((header) => {
+          rowData[header.key] = item[header.key] || ""; // Asegura que cada celda se mapee correctamente; usa '' para datos faltantes
+        });
+        rows.push(rowData);
+      });
+
+      let nameReport = {
+        // eslint-disable-next-line vue/no-use-computed-property-like-method
+        rule_name: this.formTitleRules, // Asume que 'name' es una de tus claves; ajusta según sea necesario
+        estado_1: "",
+        estado_0: "", //, // Deja vacíos los demás campos para esta fila especial
+        estado_3: "", //, // Deja vacíos los demás campos para esta fila especial
+        //total: '' // Usa 'total' para mostrar la fecha; ajusta las claves según corresponda a tu estructura
+      };
+      rows.push(nameReport);
+
+      // Convierte la matriz de filas en una hoja de trabajo Excel
+      const ws = XLSX.utils.json_to_sheet(rows, { skipHeader: true }); // 'skipHeader: true' porque ya agregamos manualmente los encabezados
+
+      // Crea un nuevo libro de trabajo y añade la hoja de trabajo con los datos
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Report" + this.fecha);
+
+      // Escribe el libro de trabajo a un archivo y desencadena la descarga
+      //XLSX.writeFile(wb, "report.xlsx");
+      XLSX.writeFile(
+        wb,
+        `report_${new Date().toLocaleDateString().replace(/\//g, "-")}.xlsx`
+      );
     },
   },
 };
