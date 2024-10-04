@@ -260,7 +260,7 @@ export default {
           console.log('isLocked después de la solicitud Bar:', LocalStorageService.getIsLocked());
         });
     }
-  }, 30000);
+  }, 32000);
 },
     redirectBasedOnCharge() {
       switch (this.charge) {
