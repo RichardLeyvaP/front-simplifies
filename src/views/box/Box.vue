@@ -1832,7 +1832,7 @@ export default {
             this.loadingcar = false;
           });
         }
-      }, 30000);
+      }, 60000);
     },
     showBonus() {
       this.loadingBonus = true;
