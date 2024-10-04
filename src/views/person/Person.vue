@@ -17,12 +17,16 @@
     <v-card elevation="6" class="mx-5">
       <v-toolbar color="#F18254">
         <v-row align="center">
-          <v-col cols="12" md="3" class="grow ml-3">
+          <v-col cols="12" md="2" class="grow ml-1">
             <span class="text-subtitle-1">
               <strong>Listado de Profesionales</strong></span>
           </v-col>
-          <v-col cols="12" md="8" class="text-right">
-            <v-btn class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-finance"
+          <v-col cols="12" md="9" class="text-right">
+            <v-btn class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-gavel"
+              @click="showRules()">
+              Convivencias
+            </v-btn>
+            <v-btn class="text-subtitle-1 ml-1" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-finance"
               @click="showWinner()">
               Ganancias
             </v-btn>
@@ -41,7 +45,7 @@
             <v-dialog v-model="dialog" max-width="1000px">
               <v-card>
                 <v-toolbar color="#F18254">
-                  <span class="text-subtitle-2 ml-4"> Profesional</span>
+                  <span class="text-subtitle-2 ml-2"> Profesional</span>
                 </v-toolbar>
                 <v-card-text>
                   <v-form v-model="valid" enctype="multipart/form-data">
@@ -248,8 +252,8 @@
               elevation="1" class="mr-1 mt-1 mb-1" title="Modificar contraseña"></v-btn>
             <v-btn density="comfortable" icon="mdi-timer-off" @click="showLater(item)" color="orange" variant="tonal"
               elevation="1" class="mr-1 mt-1 mb-1" title="Legadas tardes por sucursal"></v-btn>
-              <v-btn density="comfortable" icon="mdi-gavel" @click="showRules(item)" color="blue" variant="tonal"
-              elevation="1" class="mr-1 mt-1 mb-1" title="Reglas de Convivencias"></v-btn>
+              <!--<v-btn density="comfortable" icon="mdi-gavel" @click="showRules(item)" color="blue" variant="tonal"
+              elevation="1" class="mr-1 mt-1 mb-1" title="Reglas de Convivencias"></v-btn>-->
             <!--<v-btn
               density="comfortable"
               icon="mdi-clipboard-text"
@@ -322,7 +326,7 @@
                   </v-locale-provider>
                 </v-menu>
               </v-col>
-              <v-col cols="12" sm="12" md="3">
+              <v-col cols="12" sm="12" md="3" v-if="this.mostrarFila">
                 <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
                   v-if="this.mostrarFila" clearable label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
                   item-title="name" item-value="id"
@@ -456,7 +460,7 @@
                   </v-locale-provider>
                 </v-menu>
               </v-col>
-              <v-col cols="12" sm="12" md="3">
+              <v-col cols="12" sm="12" md="3" v-if="this.mostrarFila">
                 <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
                   v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
                   item-title="name" item-value="id"
@@ -529,8 +533,8 @@
                   </v-locale-provider>
                 </v-menu>
               </v-col>
-              <v-col cols="12" sm="12" md="3">
-                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+              <v-col cols="12" sm="12" md="3" v-if="this.mostrarFila">
+                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila"
                   label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
                   variant="outlined"></v-autocomplete><!--@update:model-value="onBranchChange"-->
               </v-col>
@@ -687,7 +691,7 @@
                   <v-sheet>
 
                     <v-row>
-                      <v-col cols="12" sm="12" md="3">
+                      <v-col cols="12" sm="12" md="3" v-if="this.mostrarFila">
                         <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
                           v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
                           item-title="name" item-value="id" density="compact" class="ma-2" variant="outlined"
@@ -774,7 +778,7 @@
           <v-container fluid>
             <v-row>
               <!-- Primera columna -->
-              <v-col cols="12" sm="6" md="3">
+              <v-col cols="12" sm="6" md="2">
                 <v-menu v-model="menu6" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
                   offset-y min-width="290px">
                   <template v-slot:activator="{ props }">
@@ -789,7 +793,7 @@
                 </v-menu>
               </v-col>
               <!-- Segunda columna -->
-              <v-col cols="12" sm="6" md="3">
+              <v-col cols="12" sm="6" md="2">
                 <v-menu v-model="menu7" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
                   offset-y min-width="290px">
                   <template v-slot:activator="{ props }">
@@ -803,18 +807,31 @@
                   </v-locale-provider>
                 </v-menu>
               </v-col>
-              <v-col cols="12" sm="12" md="3">
+              <v-col cols="12" sm="12" md="3" v-if="this.mostrarFila">
                 <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
                   v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
                   item-title="name" item-value="id"
-                  variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
+                  variant="outlined" @update:model-value="initialize()"></v-autocomplete><!--@update:model-value="initialize()"-->
+              </v-col>
+              <v-col cols="12" sm="12" md="3">
+                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id" :items="professRules" label="Seleccione un Profesional"
+                prepend-inner-icon="mdi-store-outline" item-title="name" item-value="id" variant="outlined"
+                      :rules="selectRules">
+                      <template v-slot:item="{ props, item }">
+                                                    <v-list-item
+                                                        v-bind="props"
+                                                        :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_url"
+                                                        :title="item.raw.name"
+                                                    ></v-list-item>
+                                                    </template>
+                      </v-autocomplete><!--@update:model-value="initialize()"-->
               </v-col>
               <v-col cols="12" md="1">
-                <v-btn icon @click="updateDate8" color="#F18254">
+                <v-btn icon @click="updateDate8" color="#F18254" :disabled="!this.professional_id">
                   <v-icon>mdi-magnify</v-icon></v-btn>
               </v-col>
               <v-col cols="12">
-                <v-alert border type="info" variant="outlined" density="compact">
+                <v-alert border type="info" variant="outlined" density="compact" v-if="editedIndexRules">
                   <p v-html="formTitleRules"></p>
                 </v-alert>
               </v-col>
@@ -902,7 +919,7 @@ export default {
     loadingAsistLate: true,
     loadingLaters: true,
     loadingAsist: true,
-    loadingRules: true,
+    loadingRules: false,
     valid: true,
     snackbar: false,
     sb_type: "",
@@ -1038,6 +1055,8 @@ export default {
 
     dialogRules: false,
     rules: [],
+    professRules: [],
+    editedIndexRules: 0,
     headers6: [
       { title: "Regla de Convivencia", key: "rule_name", sortable: true },
       { title: "Cumplida", key: "estado_1", sortable: true },
@@ -1159,6 +1178,7 @@ export default {
       }
     },
     formTitleRules() {
+      if (this.editedIndexRules === 1) {
         const startDate = this.input6
           ? format(this.input6, "yyyy-MM-dd")
           : format(new Date(), "yyyy-MM-dd");
@@ -1166,6 +1186,9 @@ export default {
           ? format(this.input7, "yyyy-MM-dd")
           : format(new Date(), "yyyy-MM-dd");
         return `Estado de las reglas de convivencias en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;
+      }else{
+        return "";
+      }
     },
     dateFormatted() {
       const date = this.input ? new Date(this.input) : new Date();
@@ -1346,6 +1369,10 @@ export default {
       this.snackbar = true;
     },
     initialize() {
+      this.editedIndexRules = 0;
+      this.professRules = [];
+      this.rules = [];
+      this.professional_id = '';
       this.loading = true;
       LocalStorageService.setIsLocked(true);
       axios.get("https://api2.simplifies.cl/api/professionalsBranch", {
@@ -1354,6 +1381,14 @@ export default {
                     }
                 }).then((response) => {
         this.results = response.data.professionals;
+        // Definimos los cargos que queremos filtrar
+          const cargosDeseados = ['Barbero', 'Tecnico', 'Barbero y Encargado'];
+
+        // Filtramos los profesionales con los cargos deseados y los asignamos a `professRules`
+        this.professRules = this.results.filter(professional => {
+          // Verificamos si el cargo del profesional está dentro de los cargos deseados
+          return cargosDeseados.includes(professional.charge);
+        });
       }).finally(() => {
         LocalStorageService.setIsLocked(false);
           this.loading = false;
@@ -1949,8 +1984,12 @@ export default {
       this.menu7 = false;
     },
     //reglas de convivencias
-    showRules(item) {
-      this.professional_id = item.id;
+    showRules() {   
+      this.editedIndexRules = 0;
+      this.professional_id = ''; 
+      this.rules = []; 
+      this.dialogRules = true;
+      /*this.professional_id = item.id;
       this.editedIndexLater = -1;
       this.loadingRules = true;
       LocalStorageService.setIsLocked(true);
@@ -1975,12 +2014,12 @@ export default {
         }).finally(()=>{
       this.dialogRules = true;
           this.loadingRules = false;
-        });
+        });*/
     },
     updateDate8() {
       //this.professional_id = this.professional_d;
       console.log('Professional_id:'+this.professional_id);
-      this.editedIndexLater = -1;
+      this.editedIndexRules = 1;
       this.loadingRules = true;
       LocalStorageService.setIsLocked(true);
       const startDate = this.input6
@@ -2007,6 +2046,9 @@ export default {
         });
     },
     closeRules() {
+      this.editedIndexRules = 0;
+      this.professional_id = ''; 
+      this.rules = []; 
       this.dialogRules = false;
     },
     
