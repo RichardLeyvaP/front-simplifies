@@ -143,18 +143,7 @@
 
       </v-card>
       <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
     </v-col>
-
-
-  <br>
-  <br>
-  <br>
-  <br>
   </v-row>
 </div>
 </template>

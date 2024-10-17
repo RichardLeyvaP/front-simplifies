@@ -21,201 +21,6 @@
                 <v-col cols="12" md="5" class="grow ml-4 t">
                     <span class="text-subtitle-1"> <strong>Pago a Profesionales</strong></span>
                 </v-col>
-                <v-col cols="12" md="4"></v-col>
-                <v-col cols="12" md="2">
-                
-                    <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition">
-                            <v-toolbar color="#F18254">
-                                <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
-                            </v-toolbar>
-                        <v-card>
-                            <v-tabs v-model="tabBar" color="rgb(241, 130, 84)"
-                            elevation="6"><!-- @click="handleTabChange"-->
-                            <v-tab value="one">Pago de carros</v-tab>
-                            <v-tab value="two">Pago de docencia</v-tab>
-                        </v-tabs>
-                        <v-card-text>
-                            <v-window v-model="tabBar">
-                        <v-window-item value="one">
-                                    <v-card>
-                            <v-card-text>
-                                <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-                                    <v-container fluid>
-                                        <v-row>
-                                            <v-col cols="12" md="3">
-                                                <v-select label="Tipo de pago" v-model="editedItem.type"
-                                                    :items="['Adelanto', 'Quincena', 'Mes']"
-                                                    :item-value="['Adelanto', 'Quincena', 'Mes']" variant="underlined"
-                                                    :rules="selectRules"
-                                                    prepend-icon="mdi-check-circle"></v-select><!--:disabled="!this.mostrarType"-->
-                                            </v-col>
-                                            
-                                            <v-col cols="12" md="4"></v-col>
-                                            <!--<v-col cols="12" md="4">
-                                                    <v-text-field v-model="editedItem.amount" clearable label="Monto"
-                                                        prepend-icon="mdi-cash" variant="underlined" :rules="pago1">
-                                                    </v-text-field>
-                                                </v-col>-->
-                                            <v-col cols="12" md="5">
-                                                <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
-                                                    :subtitle="this.formatNumber(totalMount())" append-icon="mdi-check"
-                                                    v-if="this.mostrarCars">
-
-                                                    <template v-slot:prepend>
-                                                        <v-avatar color="blue-darken-2">
-                                                            <v-icon icon="mdi-currency-usd"></v-icon>
-                                                        </v-avatar>
-                                                    </template>
-                                                </v-card>
-                                                </v-col>
-                                        </v-row>
-                                        <v-row>
-
-                                            <v-col cols="12" md="12" >
-                                                <v-text-field class="mt-1 mb-1" v-model="search2"
-                                                    append-icon="mdi-magnify" label="Buscar" single-line
-                                                    hide-details></v-text-field>
-                                                <v-data-table v-model="selected2" :headers="headers2"
-                                                    :items-per-page-text="'Elementos por páginas'" :search="search2"
-                                                    :items="cars" class="elevation-1"
-                                                    no-results-text="No hay datos disponibles"
-                                                    no-data-text="No hay datos disponibles" 
-                                                    item-selectable="selectable" show-select
-                                                    :loading="loadingProfessPay" loading-text="Cargando datos..."
-                                                    >
-                                                    <template v-slot:item.clientName="{ item }">
-                                                        <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                                                            <v-img
-                                                                :src="'https://api2.simplifies.cl/api/images/' + item.client_image"
-                                                                alt="image"></v-img>
-                                                        </v-avatar>
-                                                        {{ item.clientName }}
-                                                    </template>
-                                                    <template v-slot:item.meta="{ item }">
-                                                        <div class="text-center" v-html="formatMeta(item.meta)"></div>
-                                                    </template>
-                                                    <template v-slot:item.pay="{ item }">                                                    
-                                                        <strong>{{ formatNumber(Number(item.totalServices) + Number(item.tip)) }}</strong>
-                                                    </template>
-                                                    <template v-slot:item.totalServices ="{ item }">
-                         {{ formatNumber(item.totalServices)}}
-                                    </template>
-                                    <template v-slot:item.amountGenerate ="{ item }">
-                         {{ formatNumber(item.amountGenerate)}}
-                                    </template>
-                                    <template v-slot:item.tip ="{ item }">
-                         {{ formatNumber(item.tip)}}
-                                    </template>
-                                                </v-data-table>
-                                            </v-col>
-                                        </v-row>
-                                    </v-container>
-                                    <v-divider></v-divider>
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn color="#E7E9E9" variant="flat" @click="close">
-                                            Cancelar
-                                        </v-btn>
-                                        <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid || !selected2.length>0">
-                                            Pagar
-                                        </v-btn>
-                                    </v-card-actions>
-                                </v-form>
-                            </v-card-text>
-                        </v-card>
-                                </v-window-item>
-
-                        <v-window-item value="two">
-                                    <v-card>
-                            <v-card-text>
-                                <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-                                    <v-container fluid>
-                                        <v-row>
-                                            <v-col cols="12" md="3">
-                                                <v-select label="Tipo de pago" v-model="editedItem.academia"
-                                                    :items="['Pago Academia']"
-                                                    :item-value="['Pago Academia']" variant="underlined"
-                                                    :rules="selectRules"
-                                                    prepend-icon="mdi-check-circle"></v-select><!--:disabled="!this.mostrarType"-->
-                                            </v-col>
-                                            <v-col cols="12" md="4">
-                                                    <v-text-field v-model="editedItem.amountAcadem" clearable label="Monto"
-                                                        prepend-icon="mdi-cash" variant="underlined" :rules="[...pago, validateAmount]">
-                                                    </v-text-field>
-                                                </v-col>
-                                            <!--<v-col cols="12" md="5">
-                                                <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
-                                                    :subtitle="this.formatNumber(totalMount())" append-icon="mdi-check"
-                                                    v-if="this.mostrarCars">
-
-                                                    <template v-slot:prepend>
-                                                        <v-avatar color="blue-darken-2">
-                                                            <v-icon icon="mdi-currency-usd"></v-icon>
-                                                        </v-avatar>
-                                                    </template>
-                                                </v-card>
-                                                </v-col>-->
-                                        </v-row>
-                                        <v-row>
-                                                <v-col cols="12" md="12">
-                                                    <v-text-field class="mt-1 mb-1" v-model="search2"
-                                                    append-icon="mdi-magnify" label="Buscar" single-line
-                                                    hide-details></v-text-field>
-                                                <v-data-table v-model="selectedCourse" :headers="headers4"
-                                                    :items-per-page-text="'Elementos por páginas'" :search="search4"
-                                                    :items="courses" class="elevation-1"
-                                                    no-results-text="No hay datos disponibles"
-                                                    no-data-text="No hay datos disponibles" select-strategy="single" show-select
-                                                    :loading="loadingCoursePay" loading-text="Cargando datos..."
-                                                    >
-                                                    <template v-slot:item.price="{ item }">
-                {{ formatNumber(parseInt(item.price))}}                                  
-                                          </template>
-                                                </v-data-table>
-                                                </v-col>
-                                                </v-row>
-                                        </v-container>
-                                        <v-divider></v-divider>
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn color="#E7E9E9" variant="flat" @click="close">
-                                            Cancelar
-                                        </v-btn>
-                                        <v-btn color="#F18254" variant="flat" @click="saveCourse" :disabled="(!valid || !selectedCourse.length)">
-                                            Pagar
-                                        </v-btn>
-                                    </v-card-actions>
-                                        </v-form>
-                                        </v-card-text>
-                                        </v-card>
-                                    </v-window-item>
-
-                            </v-window>
-                            </v-card-text>
-                        </v-card>
-                    </v-dialog>
-                    <v-dialog v-model="dialogDelete" max-width="500px">
-                        <v-card>
-
-                            <v-toolbar color="red">
-                                <span class="text-subtitle-2 ml-4"> Eliminar Pago a Profesional</span>
-                            </v-toolbar>
-
-                            <v-card-text class="mt-2 mb-2"> ¿Desea eliminar el pago al profesional?</v-card-text>
-                            <v-divider></v-divider>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
-                                    Cancelar
-                                </v-btn>
-                                <v-btn color="#F18254" variant="flat" @click="deleteItemConfirm">
-                                    Aceptar
-                                </v-btn>
-
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
-                </v-col>
             </v-row>
         </v-toolbar>
         <v-card-text>
@@ -229,6 +34,7 @@
             </v-row>
             <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
                 hide-details></v-text-field>
+                <div :style="divStyle">
             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search"
                 :items="results" class="elevation-1" no-results-text="No hay datos disponibles"
                 no-data-text="No hay datos disponibles" :loading="loadingPay" loading-text="Cargando datos...">
@@ -252,13 +58,14 @@
             </v-icon>-->
                 </template>
             </v-data-table>
+                </div>
         </v-card-text>
 
         <!--Barbero y encargado-->
         <v-dialog v-model="dialogBarberoEncargado" fullscreen transition="dialog-bottom-transition">
             <v-card>
                 <v-toolbar color="#F18254">
-                    <span class="text-subtitle-1 ml-4">Pagos realizados</span>
+                    <span class="text-subtitle-1 ml-4">Pagos realizados a [<strong>{{ this.professional_name }}</strong>]</span>
                     <v-spacer></v-spacer>
                     <v-btn class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat" elevation="2"
                         prepend-icon="mdi-file-excel" @click="exportToExcelProfessional">
@@ -344,6 +151,7 @@
                 <v-card-text>
                     <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar"
                         single-line hide-details></v-text-field>
+                        <div style="max-height: 60vh; overflow-y: auto;">
                     <v-data-table :headers="headers3" :items="professionalPayment" :search="search3" class="elevation-1"
                         :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
                         no-data-text="No hay datos disponibles" :loading="loadingPayment" loading-text="Cargando datos...">
@@ -362,6 +170,7 @@
                         </template>
 
                     </v-data-table>
+                    </div>
                 </v-card-text>
                 <v-divider></v-divider>
                 <v-card-actions>
@@ -372,10 +181,211 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <!--Barbero y encargado nuevo pago-->
+        <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition" >                           
+                        <v-card>
+                            <v-toolbar color="#F18254">
+                                <span class="text-subtitle-2 ml-4">{{ formTitle }}  [<strong>{{ this.professional_name }}</strong>]</span>
+                            </v-toolbar>
+                            <v-card-text>
+                            <v-card>
+                            <v-tabs v-model="tabBar" color="rgb(241, 130, 84)"
+                            elevation="6"><!-- @click="handleTabChange"-->
+                            <v-tab value="one">Pago de carros</v-tab>
+                            <v-tab value="two">Pago de docencia</v-tab>
+                        </v-tabs>
+                            <v-window v-model="tabBar">
+                        <v-window-item value="one">
+                                    <v-card>
+                            <v-card-text>
+                                <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+                                    <v-container fluid>
+                                        <v-row>
+                                            <v-col cols="12" md="3">
+                                                <v-select label="Tipo de pago" v-model="editedItem.type"
+                                                    :items="['Adelanto', 'Quincena', 'Mes']"
+                                                    :item-value="['Adelanto', 'Quincena', 'Mes']" variant="underlined"
+                                                    :rules="selectRules"
+                                                    prepend-icon="mdi-check-circle"></v-select><!--:disabled="!this.mostrarType"-->
+                                            </v-col>
+                                            
+                                            <v-col cols="12" md="4"></v-col>
+                                            <!--<v-col cols="12" md="4">
+                                                    <v-text-field v-model="editedItem.amount" clearable label="Monto"
+                                                        prepend-icon="mdi-cash" variant="underlined" :rules="pago1">
+                                                    </v-text-field>
+                                                </v-col>-->
+                                            <v-col cols="12" md="5">
+                                                <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
+                                                    :subtitle="this.formatNumber(totalMount())" append-icon="mdi-check"
+                                                    v-if="this.mostrarCars">
+
+                                                    <template v-slot:prepend>
+                                                        <v-avatar color="blue-darken-2">
+                                                            <v-icon icon="mdi-currency-usd"></v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                </v-card>
+                                                </v-col>
+                                        </v-row>
+                                        <v-row>
+
+                                            <v-col cols="12" md="12" >
+                                                <v-text-field class="mt-1 mb-1" v-model="search2"
+                                                    append-icon="mdi-magnify" label="Buscar" single-line
+                                                    hide-details></v-text-field>
+                                                    <div style="max-height: 50vh; overflow-y: auto;">
+                                                    <v-data-table v-model="selected2" :headers="headers2"
+                                                        :items-per-page-text="'Elementos por páginas'" :search="search2"
+                                                        :items="cars" class="elevation-1"
+                                                        no-results-text="No hay datos disponibles"
+                                                        no-data-text="No hay datos disponibles" 
+                                                        item-selectable="selectable" show-select
+                                                        :loading="loadingProfessPay" loading-text="Cargando datos..."
+                                                        sticky-header
+                                                        >
+                                                        <template v-slot:item.clientName="{ item }">
+                                                            <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
+                                                                <v-img
+                                                                    :src="'https://api2.simplifies.cl/api/images/' + item.client_image"
+                                                                    alt="image"></v-img>
+                                                            </v-avatar>
+                                                            {{ item.clientName }}
+                                                        </template>
+                                                        <template v-slot:item.meta="{ item }">
+                                                            <div class="text-center" v-html="formatMeta(item.meta)"></div>
+                                                        </template>
+                                                        <template v-slot:item.pay="{ item }">                                                    
+                                                            <strong>{{ formatNumber(Number(item.totalServices) + Number(item.tip)) }}</strong>
+                                                        </template>
+                                                        <template v-slot:item.totalServices ="{ item }">
+                                                        {{ formatNumber(item.totalServices)}}
+                                                                    </template>
+                                                                    <template v-slot:item.amountGenerate ="{ item }">
+                                                        {{ formatNumber(item.amountGenerate)}}
+                                                                    </template>
+                                                                    <template v-slot:item.tip ="{ item }">
+                                                        {{ formatNumber(item.tip)}}
+                                                                    </template>
+                                                    </v-data-table>
+                                                    </div>
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
+                                    <v-divider></v-divider>
+                                    <v-spacer></v-spacer>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="#E7E9E9" variant="flat" @click="close">
+                                            Cancelar
+                                        </v-btn>
+                                        <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid || !selected2.length>0">
+                                            Pagar
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-form>
+                            </v-card-text>
+                        </v-card>
+                                </v-window-item>
+
+                        <v-window-item value="two">
+                                    <v-card>
+                            <v-card-text>
+                                <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+                                    <v-container fluid>
+                                        <v-row>
+                                            <v-col cols="12" md="3">
+                                                <v-select label="Tipo de pago" v-model="editedItem.academia"
+                                                    :items="['Pago Academia']"
+                                                    :item-value="['Pago Academia']" variant="underlined"
+                                                    :rules="selectRules"
+                                                    prepend-icon="mdi-check-circle"></v-select><!--:disabled="!this.mostrarType"-->
+                                            </v-col>
+                                            <v-col cols="12" md="4">
+                                                    <v-text-field v-model="editedItem.amountAcadem" clearable label="Monto"
+                                                        prepend-icon="mdi-cash" variant="underlined" :rules="[...pago, validateAmount]">
+                                                    </v-text-field>
+                                                </v-col>
+                                            <!--<v-col cols="12" md="5">
+                                                <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
+                                                    :subtitle="this.formatNumber(totalMount())" append-icon="mdi-check"
+                                                    v-if="this.mostrarCars">
+
+                                                    <template v-slot:prepend>
+                                                        <v-avatar color="blue-darken-2">
+                                                            <v-icon icon="mdi-currency-usd"></v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                </v-card>
+                                                </v-col>-->
+                                        </v-row>
+                                        <v-row>
+                                                <v-col cols="12" md="12">
+                                                    <v-text-field class="mt-1 mb-1" v-model="search2"
+                                                    append-icon="mdi-magnify" label="Buscar" single-line
+                                                    hide-details></v-text-field>
+                                                    <div style="max-height: 50vh; overflow-y: auto;">
+                                                        <v-data-table v-model="selectedCourse" :headers="headers4"
+                                                            :items-per-page-text="'Elementos por páginas'" :search="search4"
+                                                            :items="courses" class="elevation-1"
+                                                            no-results-text="No hay datos disponibles"
+                                                            no-data-text="No hay datos disponibles" select-strategy="single" show-select
+                                                            :loading="loadingCoursePay" loading-text="Cargando datos..."
+                                                            >
+                                                            <template v-slot:item.price="{ item }">
+                                                            {{ formatNumber(parseInt(item.price))}}                                  
+                                                            </template>
+                                                        </v-data-table>
+                                                    </div>
+                                                </v-col>
+                                                </v-row>
+                                        </v-container>
+                                        <v-divider></v-divider>
+                                        <v-spacer></v-spacer>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="#E7E9E9" variant="flat" @click="close">
+                                            Cancelar
+                                        </v-btn>
+                                        <v-btn color="#F18254" variant="flat" @click="saveCourse" :disabled="(!valid || !selectedCourse.length)">
+                                            Pagar
+                                        </v-btn>
+                                    </v-card-actions>
+                                        </v-form>
+                                        </v-card-text>
+                                        </v-card>
+                                    </v-window-item>
+
+                            </v-window>
+                            </v-card>
+                            </v-card-text>
+                        </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialogDelete" max-width="500px">
+                        <v-card>
+
+                            <v-toolbar color="red">
+                                <span class="text-subtitle-2 ml-4"> Eliminar Pago a Profesional [<strong>{{ this.professional_name }}</strong>]</span>
+                            </v-toolbar>
+
+                            <v-card-text class="mt-2 mb-2"> ¿Desea eliminar el pago al profesional?</v-card-text>
+                            <v-divider></v-divider>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
+                                    Cancelar
+                                </v-btn>
+                                <v-btn color="#F18254" variant="flat" @click="deleteItemConfirm">
+                                    Aceptar
+                                </v-btn>
+
+                            </v-card-actions>
+                        </v-card>
+        </v-dialog>           
         <v-dialog v-model="dialogOtros" max-width="600px">
             <v-card>
                 <v-toolbar color="#F18254">
-                    <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
+                    <span class="text-subtitle-2 ml-4">{{ formTitle }} [<strong>{{ this.professional_name }}</strong>]</span>
                 </v-toolbar>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" enctype="multipart/form-data">
@@ -413,7 +423,7 @@
         <v-dialog v-model="dialogCashier" fullscreen transition="dialog-bottom-transition">
             <v-card>
                 <v-toolbar color="#F18254">
-                    <span class="text-subtitle-1 ml-4">Pagos realizados cajero (a)</span>
+                    <span class="text-subtitle-1 ml-4">Pagos realizados cajero (a)  [<strong>{{ this.professional_name }}</strong>]</span>
                     <v-spacer></v-spacer>
                     <v-btn class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat" elevation="2"
                         prepend-icon="mdi-file-excel" @click="exportToExcelCashier">
@@ -471,6 +481,7 @@
                                 <v-text-field class="mt-1 mb-1" v-model="search5" append-icon="mdi-magnify"
                                     label="Buscar" single-line hide-details>
                                 </v-text-field>
+                                <div style="max-height: 50vh; overflow-y: auto;">
                                 <v-data-table :headers="headers5" :items-per-page-text="'Elementos por páginas'"
                                     :items="results1" :search="search5" class="elevation-2"
                                     no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles" :loading="loadingCashier" loading-text="Cargando datos...">
@@ -492,6 +503,7 @@
                                             title="Eliminar Pago a profesional"></v-btn>
                                     </template>
                                 </v-data-table>
+                                </div>
                             </v-card-text>
                         </v-col>
                     </v-row>
@@ -509,7 +521,7 @@
             <v-card>
 
                 <v-toolbar color="red">
-                    <span class="text-subtitle-2 ml-4"> Eliminar Pago a Professional</span>
+                    <span class="text-subtitle-2 ml-4"> Eliminar Pago a Professional  [<strong>{{ this.professional_name }}</strong>]</span>
                 </v-toolbar>
 
                 <v-card-text class="mt-2 mb-2"> ¿Desea eliminar el pago al professional?</v-card-text>
@@ -530,7 +542,7 @@
         <v-dialog v-model="dialogCashierCars" fullscreen transition="dialog-bottom-transition">
             <v-card>
                 <v-toolbar color="#F18254">
-                    <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
+                    <span class="text-subtitle-2 ml-4">{{ formTitle }}  [<strong>{{ this.professional_name }}</strong>]</span>
                 </v-toolbar>
                 <v-card-text>
                     <v-card>
@@ -576,6 +588,7 @@
                                 <v-col cols="12" md="12">
                                     <v-text-field class="mt-1 mb-1" v-model="search6" append-icon="mdi-magnify"
                                         label="Buscar" single-line hide-details></v-text-field>
+                                        <div style="max-height: 50vh; overflow-y: auto;">
                                     <v-data-table v-model="selected2" :headers="headers6"
                                         :items-per-page-text="'Elementos por páginas'" :search="search6" :items="cars1"
                                         class="elevation-1" no-results-text="No hay datos disponibles"
@@ -606,6 +619,7 @@
                 {{ formatNumber(parseInt(item.tipCoffe))}}                                  
                                           </template>
                                     </v-data-table>
+                                    </div>
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -647,6 +661,7 @@
                                 <v-col cols="12" md="12">
                                     <v-text-field class="mt-1 mb-1" v-model="search6" append-icon="mdi-magnify"
                                         label="Buscar" single-line hide-details></v-text-field>
+                                        <div style="max-height: 50vh; overflow-y: auto;">
                                     <v-data-table v-model="selectedCashier" :headers="headers7"
                                         :items-per-page-text="'Elementos por páginas'" :search="search7" :items="cashierSales"
                                         class="elevation-1" no-results-text="No hay datos disponibles"
@@ -667,6 +682,7 @@
                                             <v-spacer></v-spacer>
                                             </template>
                                     </v-data-table>
+                                    </div>
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -792,6 +808,7 @@ export default {
         //options: ['Adelanto', 'Quincena', 'Mes'],
         professionals: [],
         professional_id: '',
+        professional_name: '',
         selected: [],
         editedIndex: -1,
 
@@ -868,6 +885,12 @@ export default {
     }),
 
     computed: {
+        divStyle() {
+      return {
+        'max-height': this.mostrarFila ? '63vh' : '70vh', // Cambia el valor de max-height según mostrarFila
+        'overflow-y': 'auto',
+      };
+    },
         isFormValid() {
             return this.valid && this.selectedCashier.length > 0 && this.editedItem.amountSaleProduct;
         },
@@ -1090,6 +1113,7 @@ export default {
             LocalStorageService.setIsLocked(true);
             this.professionals = [];
             this.professional_id = '';
+            this.professional_name = '';
 
             axios
                 .get('https://api2.simplifies.cl/api/branch_professionals_web', {
@@ -1147,6 +1171,7 @@ export default {
         },
         pagoProfessional(item) {
             this.professional_id = item.id;
+            this.professional_name = item.name;
             this.charge = item.charge;
             if (item.charge == 'Cajero (a)') {
                 this.showCashier();
@@ -1276,6 +1301,7 @@ export default {
         barberoDelete() {
             this.dialogBarberoEncargado = false;
             this.professional_id = '';
+            this.professional_name = '';
             this.charge = '';
         },
         closeDelete() {
@@ -1501,6 +1527,7 @@ export default {
         cashierDelete() {
             this.dialogCashier = false;
             this.professional_id = '';
+            this.professional_name = '';
         },
         deleteItemCashier(item) {
             this.editedIndex = -1;

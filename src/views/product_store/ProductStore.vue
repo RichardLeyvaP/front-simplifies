@@ -15,7 +15,7 @@
     </v-row>
   </v-snackbar>
   <v-container fluid>
-  <v-card elevation="3" class="mx-5" width='auto'>
+  <v-card elevation="3" class="mx-5">
     <v-toolbar color="#F18254">
       <v-row align="center">
         <v-col cols="12" md="5" class="grow ml-4">

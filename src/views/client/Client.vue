@@ -233,6 +233,7 @@
         hide-details
       >
       </v-text-field>
+      <div :style="divStyle">
       <v-data-table
         :headers="headers"
         :search="search"
@@ -298,6 +299,7 @@
           ></v-btn>
         </template>
       </v-data-table>
+      </div>
     </v-card-text>
 
     <!--ClientHistory-->
@@ -1341,6 +1343,12 @@ export default {
   }),
 
   computed: {
+    divStyle() {
+      return {
+        'max-height': this.mostrarFila ? '50vh' : '68vh', // Cambia el valor de max-height según mostrarFila
+        'overflow-y': 'auto',
+      };
+    },
     imgedit() {
       return this.imgMiniatura;
     },
@@ -1451,7 +1459,7 @@ export default {
     },
     openImageDialog(imageUrl) {
       this.dialogImage = false; // Cierra el diálogo por si aún está abierto
-      this.currentImage = ''; // Limpia la imagen actual
+      this.currentImage = ''; // Limpia la imagen actual      
       const encodedImageUrl = encodeURIComponent(imageUrl);
       this.currentImage = encodedImageUrl;
       this.currentImage = imageUrl;

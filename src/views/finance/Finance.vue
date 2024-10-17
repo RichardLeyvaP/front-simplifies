@@ -15,12 +15,12 @@
         </v-row>
     </v-snackbar>
     <v-container fluid>
-        <v-card elevation="6" class="mx-5" width='auto'>
+        <v-card elevation="6" class="mx-3" width='auto'>
             <v-toolbar color="#F18254">
                 <v-row align="center">
                     <v-col cols="12" md="6" class="grow ml-2">
                         <span class="text-subtitle-1"> <strong>Detalles de operaciones de
-                                {{ this.editedItem.type }}</strong></span>
+                            {{ editedItem.type === 'Negocio' ? 'Gerencia' : editedItem.type }}</strong></span>
                     </v-col>
                     <v-col cols="12" md="5" class="text-right">
 
@@ -41,7 +41,7 @@
                                     <span class="text-subtitle-2 ml-2"> {{ formTitle }}</span>
                                 </v-toolbar>
                                 <v-card-text>
-                                    <v-radio-group v-model="selectedOption" inline v-if="mostrarFila">
+                                    <v-radio-group v-model="selectedOption" inline v-if="mostrarFila && !this.edited">
                                         <v-radio v-model="selectedOption" :label="options[0]" :value="options[0]"
                                             color="orange-darken-3" class="mr-10" />
                                         <v-radio v-model="selectedOption" :label="options[1]" :value="options[1]"
@@ -56,7 +56,7 @@
                                                 v-model="editedItem.branch_id" :items="branches" clearable
                                                 label="Sucursales" prepend-icon="mdi-office-building" item-title="name"
                                                 item-value="id" variant="underlined" :rules="selectRules"
-                                                @update:model-value="selectBranches"></v-autocomplete><!--@update:model-value="selectBranches"-->
+                                                @update:model-value="selectBranches" :disabled="this.edited"></v-autocomplete><!--@update:model-value="selectBranches"-->
                                         </v-col>
                                     </v-row>
 
@@ -66,26 +66,26 @@
                                                 v-model="editedItem.enrollment_id" :items="enrollments" clearable
                                                 label="Academias" prepend-icon="mdi-school" item-title="name"
                                                 item-value="id" variant="underlined" :rules="selectRules"
-                                                @update:model-value="selectEnrollments"></v-autocomplete><!--@update:model-value="selectEnrollments"-->
+                                                @update:model-value="selectEnrollments" :disabled="this.edited"></v-autocomplete><!--@update:model-value="selectEnrollments"-->
                                         </v-col>
                                     </v-row>
                                     <v-form v-model="valid" enctype="multipart/form-data">
 
                                         <v-row>
-                                            <v-col cols="12" md="6">
+                                            <v-col cols="12" md="4">
                                                 <v-select label="Tipo de operación" v-model="editedItem.operation"
                                                     :items="['Ingreso', 'Gasto']" item-value="['Ingreso', 'Gasto']"
                                                     variant="underlined" density="compact" :rules="selectRules"
                                                     prepend-icon="mdi-cash-multiple"></v-select>
                                             </v-col>
-                                            <v-col cols="12" md="6" v-if="editedItem.operation === 'Ingreso'">
+                                            <v-col cols="12" md="8" v-if="editedItem.operation === 'Ingreso'">
                                                 <v-autocomplete :no-data-text="'No hay datos disponibles'"
                                                     v-model="editedItem.revenue_id" :items="revenues" clearable
                                                     label="Ingresos" prepend-icon="mdi-cash-plus" item-title="name"
                                                     item-value="id" variant="underlined" density="compact"
                                                     :rules="selectRules"></v-autocomplete>
                                             </v-col>
-                                            <v-col cols="12" md="6" v-if="editedItem.operation === 'Gasto'">
+                                            <v-col cols="12" md="8" v-if="editedItem.operation === 'Gasto'">
                                                 <v-autocomplete :no-data-text="'No hay datos disponibles'"
                                                     v-model="editedItem.expense_id" :items="expenses" clearable
                                                     label="Gastos" prepend-icon="mdi-cash-plus" item-title="name"
@@ -94,12 +94,31 @@
                                             </v-col>
                                         </v-row>
                                         <v-row>
-                                            <v-col cols="12" md="6">
+                                            <v-col cols="12" md="4">
                                                 <v-text-field v-model="editedItem.amount" clearable label="Monto"
                                                     prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago">
                                                 </v-text-field>
                                             </v-col>
-                                            <v-col cols="12" md="6">
+                                            <v-col cols="12" md="4" v-show="selectedOption === 'Gerencia' || this.edited">
+                                                <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40"
+                                                    transition="scale-transition" offset-y min-width="290px" :disabled="selectedOption !== 'Gerencia'">
+                                                    <template v-slot:activator="{ props }">
+                                                        <v-text-field v-bind="props" v-model="dateFormatted" variant="underlined"
+                                                        prepend-icon="mdi-calendar" label="Seleccione la Fecha" :disabled="selectedOption !== 'Gerencia'"></v-text-field>
+                                                    </template>
+                                                    <v-locale-provider locale="es">
+                                                        <v-date-picker color="orange lighten-2" @input="menu" v-model="editedItem.data"
+                                                        header="Calendario" title="Seleccione la fecha" 
+                                                             @update:modelValue="updateDate"></v-date-picker><!--</v-date-picker>:min="new Date(
+                                                            Date.now() -
+                                                            new Date().getTimezoneOffset() * 60000
+                                                        )
+                                                            .toISOString()
+                                                            .substr(0, 10)"-->
+                                                    </v-locale-provider>
+                                                    </v-menu>
+                                            </v-col>                                            
+                                            <v-col cols="12" md="4" v-if="this.edited">
                                                 <v-text-field v-model="editedItem.control" clearable label="No.Control"
                                                     prepend-icon="mdi-security" variant="underlined" :disabled="true">
                                                 </v-text-field>
@@ -165,7 +184,7 @@
             <v-row>
                 <v-container fluid>
                     <v-row>
-                        <v-col cols="12" md="3" v-if="this.mostrarFila" >
+                        <v-col cols="12" md="3" v-if="this.mostrarFila">
                             <v-select v-model="selectedOption" :items="options" class="ma-2" label="Tipo"
                                 variant="outlined" density="compact" hide-details></v-select>
                         </v-col>
@@ -202,10 +221,9 @@
                 </v-container>
             </v-row>
             <v-col cols="12">
-                <v-row class="d-flex flex-wrap">
-                    <v-col cols="2" class="pa-1">
+                <v-row class="d-flex flex-wrap justify-content-end">
+                    <v-col cols="2" class="pa-1 ml-auto" v-if="selectedOption === 'Sucursal'">
                         <v-card class="pa-2" elevation="2"
-                            v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'"
                             @click="filterResults('IngresoProducto')">
                             <v-list-item :subtitle="formatNumber(ingresoProducts)" title="Ingreso Productos">
                                 <template v-slot:prepend>
@@ -216,9 +234,8 @@
                             </v-list-item>
                         </v-card>
                     </v-col>
-                    <v-col cols="2" class="pa-1">
+                    <v-col cols="2" class="pa-1" v-if="selectedOption === 'Sucursal'">
                         <v-card class="pa-2" elevation="2"
-                            v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'"
                             @click="filterResults('GastoProducto')">
                             <v-list-item :subtitle="formatNumber(gastoProducts)" title="Gasto Productos">
                                 <template v-slot:prepend>
@@ -229,9 +246,8 @@
                             </v-list-item>
                         </v-card>
                     </v-col>
-                    <v-col cols="2" class="pa-1">
+                    <v-col cols="2" class="pa-1" v-if="selectedOption === 'Sucursal'">
                         <v-card class="pa-2" elevation="2"
-                            v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'"
                             @click="filterResults('IngresoServicio')">
                             <v-list-item :subtitle="formatNumber(ingresoServices)" title="Ingreso Servicio">
                                 <template v-slot:prepend>
@@ -242,9 +258,8 @@
                             </v-list-item>
                         </v-card>
                     </v-col>
-                    <v-col cols="2" class="pa-1">
+                    <v-col cols="2" class="pa-1" v-if="selectedOption === 'Sucursal'">
                         <v-card class="pa-2" elevation="2"
-                            v-if="selectedOption === 'Sucursal' || selectedOption === 'Negocio'"
                             @click="filterResults('GastoServicio')">
                             <v-list-item :subtitle="formatNumber(gastoServices)" title="Gasto Servicio">
                                 <template v-slot:prepend>
@@ -255,7 +270,19 @@
                             </v-list-item>
                         </v-card>
                     </v-col>
-                    <v-col cols="2" class="pa-1">
+                    <v-col cols="2" class="pa-1 ml-auto" v-if="selectedOption !== 'Sucursal'">
+                        <v-card class="pa-2" elevation="2">
+                            <v-list-item :subtitle="formatNumber(totalIngresos)" title="Ingresos">
+                                <template v-slot:prepend>
+                                    <v-avatar color="green">
+                                        <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
+                                    </v-avatar>
+                                </template>
+
+                            </v-list-item>
+                        </v-card>
+                    </v-col>
+                    <v-col cols="2" class="pa-1" v-if="selectedOption !== 'Gerencia'">
                         <v-card class="pa-2" elevation="2">
                             <v-list-item :subtitle="formatNumber(utilidades)" title="Utilidades">
                                 <template v-slot:prepend>
@@ -312,6 +339,7 @@
                             <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar"
                                 single-line hide-details>
                             </v-text-field>
+                            <div style="max-height: 55vh; overflow-y: auto;">
                             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'"
                                 :items="results" :search="search" class="elevation-1"
                                 no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles" :loading="loading" loading-text="Cargando datos...">
@@ -352,6 +380,7 @@
                                         title="Eliminar operación"></v-btn>
                                 </template>
                             </v-data-table>
+                            </div>
                         </v-card-text>
                         </v-card>
                 </v-col>
@@ -365,6 +394,7 @@
 
 import axios from "axios";
 import * as XLSX from 'xlsx';
+import { useDate } from 'vuetify';
 import LocalStorageService from "@/LocalStorageService";
 
 
@@ -384,7 +414,7 @@ export default {
         //visibility: true,
         loading: true,
         selectedOption: 'Todas',
-        options: ['Negocio', 'Sucursal', 'Academia', 'Todas'],
+        options: ['Gerencia', 'Sucursal', 'Academia', 'Todas'],
         file: '',
         selectedYear: null,
         selectedMounth: '',
@@ -448,6 +478,7 @@ export default {
         editedIndex: -1,
         editedItem: {
             type: '',
+            data: null,
             branch_id: '',
             business_id: '',
             enrollment_id: '',
@@ -464,6 +495,7 @@ export default {
 
         defaultItem: {
             type: '',
+            data: null,
             branch_id: '',
             business_id: '',
             enrollment_id: '',
@@ -476,6 +508,9 @@ export default {
             revenue_id: '',
             id: '',
         },
+        input: null,
+        menu: false,
+        edited: false,
         pago: [
             (value) => /^\d+(\.\d+)?$/.test(value) || "Debe ser un número con punto decimal (10.00)",
             (value) => !isNaN(parseFloat(value)) || 'Debe ser un número'],
@@ -483,20 +518,58 @@ export default {
         nameRules: [
             (v) => !!v || "El campo es requerido"],
     }),
+    setup() {
+    const adapter = useDate()
+
+    const parseDate = (dateString) => {
+      if (!dateString) {
+      // Si dateString es null o undefined, retorna null o un valor predeterminado
+      return null; 
+    }else{
+    return adapter.parseISO(dateString)
+  }
+    }
+
+    return {
+      parseDate
+    }
+  },
 
     computed: {
         
         formTitle() {
-            if (this.editedIndex === -1) {
-                return 'Registrar Operación de ' + this.editedItem.type;
-            }
-            if (this.editedIndex === 1) {
-                return 'Editar Operación de ' + this.editedItem.type;
-            }
-            else {
-                return ''
-            }
+            // Si el type es "Negocio", mostrar "Gerencia"
+        const type = this.editedItem.type === 'Negocio' ? 'Gerencia' : this.editedItem.type;
+
+        if (this.editedIndex === -1) {
+            return 'Registrar Operación de ' + type;
         }
+        if (this.editedIndex === 1) {
+            return 'Editar Operación de ' + type;
+        } else {
+            return '';
+        }
+        },
+        dateFormatted() {
+        if (this.editedItem.data) {
+        const date = new Date(this.editedItem.data);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        console.log(`${year}-${month}-${day}`);
+
+        return `${year}-${month}-${day}`;
+      }else{
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = String(currentDate.getMonth() + 1).padStart(2, "0");
+        const day = String(currentDate.getDate()).padStart(2, "0");
+        
+        // Asignar la fecha actual si es vacía
+        return `${year}-${month}-${day}`;
+      }
+
+    },
     },
 
     watch: {
@@ -514,8 +587,15 @@ export default {
                     this.editedItem.business_id = this.business_id;
                     this.editedItem.branch_id = '';
                     this.editedItem.enrollment_id = '';
-                    this.selectedOption = 'Negocio';
+                    this.selectedOption = 'Gerencia';
                     this.results = [];
+                    this.totalIngresos = 0;
+                    this.totalGastos = 0;
+                    this.utilidades = 0;
+                    this.ingresoProducts = 0;
+                    this.gastoProducts = 0;
+                    this.ingresoServices = 0;
+                    this.gastoServices = 0;
                     this.initialize();
                     break;
                 case this.options[1]:
@@ -528,6 +608,13 @@ export default {
                     console.log(this.editedItem.branch_id);
                     console.log(this.editedItem.enrollment_id);
                     console.log(this.editedItem.business_id);
+                    this.totalIngresos = 0;
+                    this.totalGastos = 0;
+                    this.utilidades = 0;
+                    this.ingresoProducts = 0;
+                    this.gastoProducts = 0;
+                    this.ingresoServices = 0;
+                    this.gastoServices = 0;
                     this.results = [];
                     //this.initialize();
                     break;
@@ -541,9 +628,23 @@ export default {
                     console.log(this.editedItem.enrollment_id);
                     console.log(this.editedItem.business_id);
                     this.results = [];
+                    this.totalIngresos = 0;
+                    this.totalGastos = 0;
+                    this.utilidades = 0;
+                    this.ingresoProducts = 0;
+                    this.gastoProducts = 0;
+                    this.ingresoServices = 0;
+                    this.gastoServices = 0;
                     //this.initialize();
                     break;
                 case this.options[3]:
+                this.totalIngresos = 0;
+                this.totalGastos = 0;
+                this.utilidades = 0;
+                this.ingresoProducts = 0;
+                this.gastoProducts = 0;
+                this.ingresoServices = 0;
+                this.gastoServices = 0;
                     this.editedItem.type = 'Todas'
                     this.initialize();
                     break;
@@ -589,8 +690,15 @@ export default {
             this.editedItem.business_id = parseInt(this.business_id);
             this.editedItem.branch_id = '';
             this.editedItem.enrollment_id = '';
-            this.selectedOption = 'Negocio';
+            this.selectedOption = 'Gerencia';
             this.mostrarFila = true;
+            this.totalIngresos = 0;
+            this.totalGastos = 0;
+            this.utilidades = 0;
+            this.ingresoProducts = 0;
+            this.gastoProducts = 0;
+            this.ingresoServices = 0;
+            this.gastoServices = 0;
         }
         else {
             this.editedItem.type = 'Sucursal';
@@ -599,12 +707,22 @@ export default {
             this.editedItem.enrollment_id = '';
             this.selectedOption = 'Sucursal';
             this.mostrarFila = false;
+            this.totalIngresos = 0;
+            this.totalGastos = 0;
+            this.utilidades = 0;
+            this.ingresoProducts = 0;
+            this.gastoProducts = 0;
+            this.ingresoServices = 0;
+            this.gastoServices = 0;
             this.initialize();
         }
         console.log(this.charge_id);
     },
 
     methods: {
+        updateDate() {
+      this.menu = false;
+    },
         getString(str) {
             // Encuentra la posición del primer espacio en la cadena
             const firstSpaceIndex = str.indexOf(' ');
@@ -722,9 +840,11 @@ export default {
             this.editedItem.file = this.editedItem.file ? this.editedItem.file : item.file;
             // Procesar el valor del comentario al cargar el componente
             this.editedItem.comment = this.getString(item.comment);
+            this.editedItem.data = this.parseDate(item.data);
             console.log('this.editedItem seleccionado');
             console.log(this.editedItem);
-            this.dialog = true
+            this.dialog = true;
+            this.edited = true;
         },
         showAlert(sb_type, sb_message, sb_timeout) {
             this.sb_type = sb_type
@@ -753,6 +873,11 @@ export default {
             //const token = LocalStorageService.getItem('token');
             this.totalIngresos = 0;
             this.totalGastos = 0;
+            this.utilidades = 0;
+            this.ingresoProducts = 0;
+            this.gastoProducts = 0;
+            this.ingresoServices = 0;
+            this.gastoServices = 0;
             this.loading = true;
             console.log('this.editedItem--------');
             console.log(this.editedItem);
@@ -839,7 +964,8 @@ export default {
                             return total;
                         }
                     }, 0);
-                    this.utilidades = this.totalIngresos - this.totalGastos;
+                    //this.utilidades = this.totalIngresos - this.totalGastos;
+                    this.utilidades = Math.max(0, this.totalIngresos - this.totalGastos);
                 });
         },
 
@@ -875,12 +1001,15 @@ export default {
             this.editedItem.expense_id = '';
             this.editedItem.revenue_id = '';
             this.editedItem.id = '';
+            this.editedItem.data = null;
+            this.input = null;
+            this.edited = false;
+            this.editedIndex = -1;
             //this.selectedOption = 'Negocio',
             //this.initialize();
         },
         closeDelete() {
-            this.dialogDelete = false;
-
+            this.dialogDelete = false;            
             /*this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem);
             });*/
@@ -892,6 +1021,7 @@ export default {
             if (this.editedIndex > -1) {
                 this.valid = false;
                 //this.editedItem.branch_id = this.branch_id;  
+                this.editedItem.data = this.dateFormatted;
                 const formData = new FormData();
                 for (let key in this.editedItem) {
                     formData.append(key, this.editedItem[key]);
@@ -918,6 +1048,7 @@ export default {
             } else {
                 this.valid = false;
                 //this.editedItem.branch_id = this.branch_id;
+                this.editedItem.data = this.dateFormatted;                
                 console.log('this.editedItem');
                 console.log(this.editedItem);
                 const formData = new FormData();
@@ -941,6 +1072,7 @@ export default {
                         LocalStorageService.setIsLocked(false);
                         this.showAlert("success", "Registro de operación creado correctamente", 3000);
                         this.initialize();
+                        this.edited = false;
                     });
                 //})
             }

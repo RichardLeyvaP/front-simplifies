@@ -213,7 +213,7 @@
         </v-row>
       </v-toolbar>
       <v-card-text>
-        <v-col cols="12" sm="12" md="4">
+        <v-col cols="12" md="4">
           <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
             v-if="this.mostrarFila" clearable label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name"
             item-value="id" variant="underlined" @update:model-value="initialize()"></v-autocomplete>
@@ -221,6 +221,7 @@
         <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
           hide-details>
         </v-text-field>
+        <div :style="divStyle">
         <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search"
           :items="results" class="elevation-1" no-results-text="No hay datos disponibles"
           no-data-text="No hay datos disponibles" :loading="loading" loading-text="Cargando datos...">
@@ -268,6 +269,7 @@
               variant="tonal" elevation="1" title="Eliminar Profesional"></v-btn>
           </template>
         </v-data-table>
+        </div>
       </v-card-text>
 
       <!--Winner-->
@@ -1111,6 +1113,12 @@ export default {
   }),
 
   computed: {
+    divStyle() {
+      return {
+        'max-height': this.mostrarFila ? '56vh' : '64vh', // Cambia el valor de max-height según mostrarFila
+        'overflow-y': 'auto',
+      };
+    },
     imgedit() {
       return this.imgMiniatura;
     },

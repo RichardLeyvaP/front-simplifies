@@ -311,7 +311,7 @@
             <v-tab value="one">Día mes Actual</v-tab>
             <v-tab value="two">Día mes Anterior</v-tab>
           </v-tabs>
-          <v-card-text>
+          <v-card-text style="max-height: 400px; overflow-y: auto;">
             <v-window v-model="tabBarService">
               <v-window-item value="one">
                 <!--<v-text-field class="mt-1 mb-1" v-model="search5" append-icon="mdi-magnify" label="Buscar" single-line:search="search5"
@@ -371,7 +371,7 @@
             <v-tab value="one">Día mes Actual</v-tab>
             <v-tab value="two">Día mes Anterior</v-tab>
           </v-tabs>
-          <v-card-text>
+          <v-card-text style="max-height: 400px; overflow-y: auto;">
             <v-window v-model="tabBarProduct">
               <v-window-item value="one">
                 <!--<v-text-field class="mt-1 mb-1" v-model="search5" append-icon="mdi-magnify" label="Buscar" single-line:search="search5"
@@ -433,7 +433,7 @@
           <v-spacer></v-spacer>
         </v-toolbar>
         <v-card elevation="2">
-          <v-card-text>
+          <v-card-text style="max-height: 400px; overflow-y: auto;">
             <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details>
             </v-text-field>
@@ -603,7 +603,7 @@ export default {
     this.formattedDateMonth = (today.getMonth() + 1) + '-' + today.getFullYear();
     this.formattedDateMonthAnt = (today.getMonth()) + '-' + today.getFullYear();
     if (this.charge !== 'Totem' && this.charge !== 'Pizarra' && this.charge !== 'Cajero (a)') {        
-    this.initialize();    
+      this.initialize();    
     }
     // this.renderChart(this.chartData, { responsive: true, maintainAspectRatio: false })
   },
@@ -659,9 +659,9 @@ export default {
         }
       ]
     },
-    initialize() {
+    async initialize() {
 
-      //this.reservationWeek = [40, 20, 12, 10, 35, 22, 0];
+     /* //this.reservationWeek = [40, 20, 12, 10, 35, 22, 0];
       this.editedIndex = 1;
       /*axios
         .get('https://api2.simplifies.cl/api/cars-winner-day', {
@@ -674,7 +674,7 @@ export default {
           this.amountDay = response.data;
           console.log(this.amountDay);
         });*/
-      axios
+      /*axios
         .get('https://api2.simplifies.cl/api/car-products-services', {
           params: {
             branch_id: this.branch_id,
@@ -713,28 +713,6 @@ export default {
           this.winnersAnt = response.data.carsDetailAnt;
           console.log(this.amountMounth);
         });
-      /*axios
-        .get('https://api2.simplifies.cl/api/reservations-count', {
-          params: {
-            branch_id: this.branch_id,
-            business_id: this.business_id
-          }
-        })
-        .then((response) => {
-          this.reservDay = response.data;
-          console.log(this.reservDay);
-        });*/
-      /*axios
-        .get('https://api2.simplifies.cl/api/client-frecuente', {
-          params: {
-            branch_id: this.branch_id,
-            business_id: this.business_id
-          }
-        })
-        .then((response) => {
-          this.clientFrecuente = response.data;
-          console.log(this.clientFrecuente);
-        });*/
       axios
         .get('https://api2.simplifies.cl/api/cars-winner-week', {
           params: {
@@ -757,7 +735,57 @@ export default {
           this.reservationWeek = response.data.cantReservations;
           this.reservationWeekData = response.data.reservations;
           //console.log(this.reservationWeek);
-        });
+        });*/
+        try {
+    this.editedIndex = 1;
+
+    const responseProducts = await axios.get('https://api2.simplifies.cl/api/car-products-services', {
+      params: {
+        branch_id: this.branch_id,
+        business_id: this.business_id
+      }
+    });
+    this.products = responseProducts.data.product;
+    this.productsData = this.products[0].products;
+    this.productsDataAnt = Object.values(this.products[0].productsAnt);
+    this.productCant = this.products[0].cant;
+    this.productCantAnt = this.products[0].cantAnt;
+    this.services = responseProducts.data.service;
+    this.servicesData = this.services[0].services;
+    this.servicesDataAnt = this.services[0].servicesAnt;
+    this.serviceCant = this.services[0].cant;
+    this.serviceCantAnt = this.services[0].cantAnt;
+    const responseWeekWinner = await axios.get('https://api2.simplifies.cl/api/cars-winner-week', {
+      params: {
+        branch_id: this.branch_id,
+        business_id: this.business_id
+      }
+    });
+    this.winnerWeek = responseWeekWinner.data;
+
+    const responseReservations = await axios.get('https://api2.simplifies.cl/api/reservations-count-week', {
+      params: {
+        branch_id: this.branch_id,
+        business_id: this.business_id
+      }
+    });
+    this.reservationWeek = responseReservations.data.cantReservations;
+    this.reservationWeekData = responseReservations.data.reservations;    
+
+    const responseMounth = await axios.get('https://api2.simplifies.cl/api/cars-winner-mounth', {
+      params: {
+        branch_id: this.branch_id,
+        business_id: this.business_id
+      }
+    });
+    this.amountMounth = responseMounth.data.cars;
+    this.amountMounthAnt = responseMounth.data.carsAnt;
+    this.winners = responseMounth.data.carsDetail;
+    this.winnersAnt = responseMounth.data.carsDetailAnt;
+    
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
     },
     showReservas() {
       this.dialogReservas = true;

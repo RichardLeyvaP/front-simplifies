@@ -219,10 +219,6 @@ export default {
     }
   },
   methods: {
-
-    
-
-
     startInterval() {
   this.intervalId = setInterval(() => {
     if (!LocalStorageService.getIsLocked()) {
@@ -261,7 +257,7 @@ export default {
         });
     }
   }, 32000);
-},
+    },
     redirectBasedOnCharge() {
       switch (this.charge) {
         case 'Cajero (a)':
@@ -288,7 +284,7 @@ export default {
           //this.initialize();
           this.$router.push({ path: 'car-order-delete' });
           });
-  },
+    },
     clearNotifications() {
       const results = this.results
     .filter(notification => notification.state2 === 0)
@@ -396,7 +392,7 @@ export default {
         this.password_new = '';
       });
     },
-    initialize(){
+     initialize(){
       const token = LocalStorageService.getItem('token');
       console.log('Este es el token');
       console.log(token);

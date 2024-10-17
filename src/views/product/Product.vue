@@ -143,6 +143,7 @@
         <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
           hide-details>
         </v-text-field>
+        <div style="max-height: 67vh; overflow-y: auto;">
         <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search"
           :items="results" class="elevation-1" no-results-text="No hay datos disponibles"
           no-data-text="No hay datos disponibles" :loading="loading" loading-text="Cargando datos...">
@@ -179,6 +180,7 @@
               variant="tonal" elevation="1" title="Eliminar Producto"></v-btn>
           </template>
         </v-data-table>
+        </div>
       </v-card-text>
 
       <!--Productos mas vendidos-->

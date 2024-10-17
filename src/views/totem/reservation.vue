@@ -33,7 +33,7 @@
 
           <v-sheet border>
 
-
+            <div style="max-height: 60vh; overflow-y: auto;">
             <v-list>
               <v-list-item-group v-model="selected" multiple active-class="deep-purple--text text--accent-4">
                 <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + service.image_service"
@@ -50,7 +50,7 @@
                 </v-list-item>
               </v-list-item-group>
             </v-list>
-
+            </div>
 
 
           </v-sheet>
@@ -85,6 +85,7 @@
           <br>
 
           <v-sheet border>
+            <div style="max-height: 55vh; overflow-y: auto;">
             <v-list v-if ="(this.professionals.length > 0)">
 
               <v-list-item-group v-model="professional" active-class="deep-purple--text text--accent-4">
@@ -107,6 +108,7 @@
 
               </v-list-item-group>
             </v-list>
+            </div>
           </v-sheet>
           <v-container>
             <v-row class="mt-1">

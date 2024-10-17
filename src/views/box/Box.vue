@@ -2578,6 +2578,7 @@ export default {
     saveCloseBox() {
       LocalStorageService.setIsLocked(true);
       //this.data.box_id = this.editedBox.id;
+      this.totalMountCashs();
       this.data.totalCash = this.editedCloseBox.totalCash;
       this.data.totalCreditCard = this.editedCloseBox.totalCreditCard;
       this.data.totalDebit = this.editedCloseBox.totalDebit;
@@ -2590,6 +2591,7 @@ export default {
       this.data.totalCardGif = this.editedCloseBox.totalCardGif;
       this.data.branch_id = this.branch_id;
       this.data.nameProfessional = this.nameProfessional;
+      console.log('this.data para cerrar caja');
       console.log(this.data);
       axios
         .post('https://api2.simplifies.cl/api/closebox', this.data)

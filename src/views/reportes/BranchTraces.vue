@@ -19,7 +19,7 @@
     <v-container fluid>
       <v-row>
         <!-- Primera columna -->
-        <v-col cols="12" sm="6" md="3">
+        <v-col cols="12"  md="3">
           <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
             offset-y min-width="290px" multiple>
             <template v-slot:activator="{ props }">
@@ -33,7 +33,7 @@
           </v-menu>
         </v-col>
         <!-- Segunda columna -->
-        <v-col cols="12" sm="6" md="3">
+        <v-col cols="12" md="3">
           <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
             offset-y min-width="290px">
             <template v-slot:activator="{ props }">
@@ -47,7 +47,7 @@
             </v-locale-provider>
           </v-menu>
         </v-col>
-        <v-col cols="12" sm="12" md="4">
+        <v-col cols="12" md="4">
           <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
             v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name"
             item-value="id" variant="outlined" @update:modelValue="nameBranchSelect"></v-autocomplete>
@@ -60,17 +60,15 @@
       </v-row>
       <v-row>
         <v-col cols="12" md="12">
-          <v-container fluid>
             <v-alert border type="info" variant="outlined" density="compact">
               <p v-html="formTitle"></p>
             </v-alert>
-          </v-container>
         </v-col>
       </v-row>
       <v-card-text>
         <v-text-field v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
           hide-details></v-text-field>
-
+          <div style="max-height: 50vh; overflow-y: auto;">
         <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
           :search="search2" class="elevation-2" no-results-text="No hay datos disponibles"
           no-data-text="No hay datos disponibles" :loading="loadingOperationTip" loading-text="Cargando datos...">
@@ -78,6 +76,7 @@
             {{ formatNumber(parseInt(item.amount)) }}
           </template>
         </v-data-table>
+          </div>
       </v-card-text>
     </v-container>
   </v-card>
