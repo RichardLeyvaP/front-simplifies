@@ -5,7 +5,7 @@
       <v-navigation-drawer permanent class="pt-4" color="#2B3141" theme="dark">
         <template v-slot:prepend>
           <v-list-item color="black" class="text-subtitle-1" lines="two" variant="flat"
-            prepend-avatar="@/assets/hernandez_big.png" :title="this.titulo" :subtitle="this.subtitle">
+          :prepend-avatar="'https://api2.simplifies.cl/api/images/' + this.imageBusiness" :title="this.titulo" :subtitle="this.subtitle">
           </v-list-item>
         </template>
 
@@ -149,6 +149,7 @@ export default {
     nameBranch: '',
     charge: '',
     nameBusiness: '',
+    imageBusiness: '',
     charge_id: '',
     permissionsUser: '',
     titulo: '',
@@ -302,11 +303,12 @@ export default {
       return this.clientes.filter(item => this.permissionsUser.includes(item.permission));
     }
 },
-  created() {
+  mounted() {
     //this.loadedData = LocalStorageService.getItem("myDataKey");
     // Recuperar datos del localStorage al cargar la aplicación
     this.nameBranch = JSON.parse(LocalStorageService.getItem("nameBranch"));
     this.nameBusiness = JSON.parse(LocalStorageService.getItem("nameBusiness"));
+    this.imageBusiness = JSON.parse(LocalStorageService.getItem("imageBusiness"));
     this.name = JSON.parse(LocalStorageService.getItem("name"));
     this.charge_id = LocalStorageService.getItem("charge_id");
     this.permissionsUser = LocalStorageService.getItem("permissionsUser");
@@ -321,6 +323,8 @@ export default {
       this.titulo = this.nameBranch;
       this.subtitle = 'Sucursal';
     }
+    console.log('this.imageBusiness');
+    console.log(this.imageBusiness);
     /*this.nameBranch = userTokenStore.nameBranch;
     this.nameBusiness = userTokenStore.nameBusiness;
     this.name = userTokenStore.userName;*/

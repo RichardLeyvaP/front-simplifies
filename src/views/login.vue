@@ -264,6 +264,7 @@ export default {
               LocalStorageService.setItem("charge_id", this.user.charge_id);
               LocalStorageService.setItem("nameBranch", this.user.nameBranch);
               LocalStorageService.setItem("nameBusiness", this.user.nameBusiness);
+              LocalStorageService.setItem("imageBusiness", this.user.imageBusiness);
               LocalStorageService.setItem("image", this.user.image);
               LocalStorageService.setItem("business_id", this.user.business_id);
               LocalStorageService.setItem("permissionsUser", this.user.permissions);

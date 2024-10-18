@@ -18,6 +18,7 @@ const LocalStorageService = {
     LocalStorageService.removeItem("charge_id");
     LocalStorageService.removeItem("nameBranch");
     LocalStorageService.removeItem("nameBusiness");
+    LocalStorageService.removeItem("imageBusiness");
     LocalStorageService.removeItem("image");
     LocalStorageService.removeItem("business_id");
     LocalStorageService.removeItem("permissionsUser");

@@ -9,6 +9,7 @@ export const UserTokenStore = defineStore("UserTokenStore", {
       charge: "",
       nameBranch: "",
       nameBusiness: "",
+      imageBusiness: "",
       image: "",
       business_id: "",
       user_id: "",
@@ -41,6 +42,9 @@ export const UserTokenStore = defineStore("UserTokenStore", {
     setNameBusiness(nameBusiness: string) {
       this.nameBusiness = nameBusiness;
     },
+    setImageBusiness(imageBusiness: string) {
+      this.imageBusiness = imageBusiness;
+    },
     setImage(image: string) {
       this.image = image;
     },
@@ -61,6 +65,7 @@ export const UserTokenStore = defineStore("UserTokenStore", {
       this.charge = "";
       this.nameBranch = "";
       this.nameBusiness = "";
+      this.imageBusiness = "";
       this.image = "";
       this.business_id = "";
       this.permissionsUser= [];

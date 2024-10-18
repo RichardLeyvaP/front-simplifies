@@ -160,7 +160,7 @@
                                     <span class="text-subtitle-2 ml-4"> Eliminar operación</span>
                                 </v-toolbar>
 
-                                <v-card-text class="mt-2 mb-2"> ¿Desea deshacer la operación?</v-card-text>
+                                <v-card-text class="mt-2 mb-2"> ¿Desea eliminar la operación?</v-card-text>
                                 <v-divider></v-divider>
                                 <v-card-actions>
                                     <v-spacer></v-spacer>
