@@ -860,7 +860,7 @@ export default {
             { title: 'Cantidad Productos', align: 'start', value: 'products', sortable: true },
             { title: 'Monto Generado', align: 'start', value: 'amountGenerate', sortable: true },
             { title: 'Propina (80%)', align: 'start', value: 'tip', sortable: true },
-            { title: 'Convivencia', align: 'start', value: 'meta', sortable: true },
+            { title: 'Convivencia', align: 'start', value: 'metaService', sortable: true },
             { title: 'Monto a Pagar', align: 'start', value: 'pay', sortable: true },
         ],
         search2: '',
