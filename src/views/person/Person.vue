@@ -371,6 +371,10 @@
                         <v-chip class="text-uppercase font-weight-bold" size="small" label>
                           {{ formatNumber(item.amount) }}</v-chip>
                       </template>
+                      <template v-slot:item.amountService="{ item }">
+                        <v-chip class="text-uppercase font-weight-bold" size="small" label>
+                          {{ formatNumber(item.amountService) }}</v-chip>
+                      </template>
                       <template v-slot:item.amountGenerate="{ item }">
                         <v-chip class="text-uppercase font-weight-bold" size="small" label>
                           {{ formatNumber(item.amountGenerate) }}</v-chip>
@@ -378,6 +382,10 @@
                       <template v-slot:item.retention="{ item }">
                         <v-chip class="text-uppercase font-weight-bold" size="small" label>
                           {{ formatNumber(item.retention) }}</v-chip>
+                      </template>
+                      <template v-slot:item.total_cars="{ item }">
+                        <v-chip class="text-uppercase font-weight-bold" size="small" label>
+                          {{ item.total_cars }}</v-chip>
                       </template>
                       <template v-slot:item.tip80="{ item }">
                         <v-chip class="text-uppercase font-weight-bold" size="small" label>
@@ -1025,7 +1033,8 @@ export default {
       { title: "Profesional", key: "name", sortable: false },
       //{ title: "Sucursal", key: "branchName", sortable: false },
       { title: "Total Servicios", key: "amountGenerate", sortable: true },
-      { title: "Ganancia del barbero", key: "amount", sortable: true },
+      { title: "Gan.Serv C/Convivencias", key: "amount", sortable: true },
+      { title: "Gan.Serv S/Convivencias", key: "amountService", sortable: true },
       { title: "Propina", key: "tip", sortable: true },
       { title: "Propina 80%", key: "tip80", sortable: true },
       { title: "Bonos", key: "bonus", sortable: true },
