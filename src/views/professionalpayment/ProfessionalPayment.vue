@@ -161,7 +161,7 @@
                             </span>
                         </template>
                         <template v-slot:item.amount="{ item }">
-                {{ formatNumber(parseInt(item.amount))}}                                  
+                {{ formatNumber(item.amount)}}                                  
                                           </template>
                         <template v-slot:item.actions="{ item }">
                             <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)"
@@ -610,13 +610,13 @@
                                         {{ item.professionalName }}
                                         </template>
                                         <template v-slot:item.tip="{ item }">
-                {{ formatNumber(parseInt(item.tip))}}                                  
+                {{ formatNumber(item.tip)}}                                  
                                           </template>
                                           <template v-slot:item.tipCashier="{ item }">
-                {{ formatNumber(parseInt(item.tipCashier))}}                                  
+                {{ formatNumber(item.tipCashier)}}                                  
                                           </template>
                                           <template v-slot:item.tipCoffe="{ item }">
-                {{ formatNumber(parseInt(item.tipCoffe))}}                                  
+                {{ formatNumber(item.tipCoffe)}}                                  
                                           </template>
                                     </v-data-table>
                                     </div>
@@ -1073,19 +1073,19 @@ export default {
             console.log(this.chargeProfessional);
         },*/
         formatNumber(value) {
-            // Si el valor es menor que 1000, devuelve el valor original con dos decimales
-            if (value < 1000) {
-                return (Math.round((value + Number.EPSILON) * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            }
+        // Si el valor es menor que 1000, devuelve el valor original con dos decimales
+        if (value < 1000) {
+            return (Math.round((value + Number.EPSILON) * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
 
-            // Primero, redondea el valor a dos decimales
-            value = Math.round((value + Number.EPSILON) * 100) / 100;
+        // Primero, redondea el valor a dos decimales
+        value = Math.round((value + Number.EPSILON) * 100) / 100;
 
-            // Convierte el valor a cadena con formato de número local (en-US)
-            let formattedValue = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        // Convierte el valor a cadena con formato de número local (en-US)
+        let formattedValue = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-            return formattedValue;
-            },
+        return formattedValue;
+        },
         showAlert(sb_type, sb_message, sb_timeout) {
             this.sb_type = sb_type
 
@@ -1205,6 +1205,9 @@ export default {
                 }).finally(() =>{
                     LocalStorageService.setIsLocked(false);
                     this.loadingPayment = false;
+                    this.bonoconvivencia = [];
+                    this.bonoconvivencia = [];
+                    this.bonoproductos = [];
                     this.bonoconvivencia = this.professionalPayment.reduce((total, item) => {
                         // Verifica si el campo "revenue" tiene un valor numérico
                         if (item.type === 'Bono convivencias') {
@@ -1258,8 +1261,41 @@ export default {
                 })
                 .then((response) => {
                     this.professionalPayment = response.data;
+                    
                 }).finally(() => {
             LocalStorageService.setIsLocked(false);
+            this.bonoconvivencia = this.professionalPayment.reduce((total, item) => {
+                        // Verifica si el campo "revenue" tiene un valor numérico
+                        if (item.type === 'Bono convivencias') {
+                            // Suma el valor de "revenue" al total
+                            return total + parseInt(item.amount);
+                        } else {
+                            // Si el campo "revenue" no es un número, no suma nada
+                            return total;
+                        }
+                    }, 0);
+
+                    this.bonoservicios = this.professionalPayment.reduce((total, item) => {
+                        // Verifica si el campo "revenue" tiene un valor numérico
+                        if (item.type === 'Bono servicios') {
+                            // Suma el valor de "revenue" al total
+                            return total + parseInt(item.amount);
+                        } else {
+                            // Si el campo "revenue" no es un número, no suma nada
+                            return total;
+                        }
+                    }, 0);
+
+                    this.bonoproductos = this.professionalPayment.reduce((total, item) => {
+                        // Verifica si el campo "revenue" tiene un valor numérico
+                        if (item.type === 'Bono productos') {
+                            // Suma el valor de "revenue" al total
+                            return total + parseInt(item.amount);
+                        } else {
+                            // Si el campo "revenue" no es un número, no suma nada
+                            return total;
+                        }
+                    }, 0);
             this.loadingPayment = false;
         });
         },
