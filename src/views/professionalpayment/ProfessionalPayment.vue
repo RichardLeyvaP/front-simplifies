@@ -161,7 +161,7 @@
                             </span>
                         </template>
                         <template v-slot:item.amount="{ item }">
-                {{ formatNumber(item.amount)}}                                  
+                {{ formatNumber(parseFloat(item.amount))}}                                  
                                           </template>
                         <template v-slot:item.actions="{ item }">
                             <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)"
@@ -610,13 +610,13 @@
                                         {{ item.professionalName }}
                                         </template>
                                         <template v-slot:item.tip="{ item }">
-                {{ formatNumber(item.tip)}}                                  
+                {{ formatNumber(parseFloat(item.tip))}}                                  
                                           </template>
                                           <template v-slot:item.tipCashier="{ item }">
-                {{ formatNumber(item.tipCashier)}}                                  
+                {{ formatNumber(parseFloat(item.tipCashier))}}                                  
                                           </template>
                                           <template v-slot:item.tipCoffe="{ item }">
-                {{ formatNumber(item.tipCoffe)}}                                  
+                {{ formatNumber(parseFloat(item.tipCoffe))}}                                  
                                           </template>
                                     </v-data-table>
                                     </div>
