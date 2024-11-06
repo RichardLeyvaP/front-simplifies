@@ -164,9 +164,14 @@
                 {{ formatNumber(parseFloat(item.amount))}}                                  
                                           </template>
                         <template v-slot:item.actions="{ item }">
-                            <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)"
-                                color="red-darken-4" variant="tonal" elevation="1"
-                                title="Eliminar Pago a profesional"></v-btn>
+                            <v-btn 
+                            v-if="item.date !== 'Total'"
+                            density="comfortable" icon="mdi-delete" 
+                            :color="(item.type !== 'Bono convivencias' && item.type !== 'Bono servicios' && item.type !== 'Bono productos') ? 'red-darken-4' : 'grey'" variant="tonal" elevation="1"
+                                title="Eliminar Pago a profesional"
+                                @click="(item.type !== 'Bono convivencias' && item.type !== 'Bono servicios' && item.type !== 'Bono productos') ? deleteItem(item) : ''"
+        :disabled="item.type === 'Bono servicios' || item.type === 'Bono convivencias' || item.type === 'Bono productos'"
+                                ></v-btn>
                         </template>
 
                     </v-data-table>
@@ -333,7 +338,7 @@
                                                             :loading="loadingCoursePay" loading-text="Cargando datos..."
                                                             >
                                                             <template v-slot:item.price="{ item }">
-                                                            {{ formatNumber(parseInt(item.price))}}                                  
+                                                            {{ formatNumber(parseFloat(item.price))}}                                  
                                                             </template>
                                                         </v-data-table>
                                                     </div>
@@ -1268,7 +1273,7 @@ export default {
                         // Verifica si el campo "revenue" tiene un valor numérico
                         if (item.type === 'Bono convivencias') {
                             // Suma el valor de "revenue" al total
-                            return total + parseInt(item.amount);
+                            return total + parseFloat(item.amount);
                         } else {
                             // Si el campo "revenue" no es un número, no suma nada
                             return total;
@@ -1279,7 +1284,7 @@ export default {
                         // Verifica si el campo "revenue" tiene un valor numérico
                         if (item.type === 'Bono servicios') {
                             // Suma el valor de "revenue" al total
-                            return total + parseInt(item.amount);
+                            return total + parseFloat(item.amount);
                         } else {
                             // Si el campo "revenue" no es un número, no suma nada
                             return total;
@@ -1290,7 +1295,7 @@ export default {
                         // Verifica si el campo "revenue" tiene un valor numérico
                         if (item.type === 'Bono productos') {
                             // Suma el valor de "revenue" al total
-                            return total + parseInt(item.amount);
+                            return total + parseFloat(item.amount);
                         } else {
                             // Si el campo "revenue" no es un número, no suma nada
                             return total;
