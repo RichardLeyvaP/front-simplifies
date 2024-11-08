@@ -832,7 +832,7 @@
             <v-btn color="#E7E9E9" variant="flat" @click="closedeleteCardGiftUser">
               Cancelar
             </v-btn>
-            <v-btn color="#F18254" variant="flat" @click="requestDeleteCardGiftUser">
+            <v-btn color="#F18254" variant="flat" :loading="loading" @click="requestDeleteCardGiftUser">
               Aceptar
             </v-btn>
 
@@ -993,7 +993,7 @@
             <v-btn color="#E7E9E9" variant="flat" @click="closedeleteUserCardGift">
               Cancelar
             </v-btn>
-            <v-btn color="#F18254" variant="flat" @click="requestUserDeleteCardGift">
+            <v-btn color="#F18254" variant="flat" :loading="loading" @click="requestUserDeleteCardGift">
               Aceptar
             </v-btn>
 
@@ -1013,7 +1013,7 @@
                   <v-col cols="12" md="6">
                     <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedCardGiftUser.card_gift_id" :items="cardGiftsData" label="Tarjeta de Regalo"
                       prepend-icon="mdi-gift" item-title="name" item-value="id" variant="underlined"
-                      :rules="selectRules" @update:model-value="handleClientSelection">
+                      :rules="selectRules">
                       <template v-slot:item="{ props, item }">
                       <v-list-item v-bind="props"
                         :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_cardgift"
@@ -1140,6 +1140,7 @@ export default {
     loadingClient: true,
     loadingCardGift: true,
     loadingCardGftUser: true,
+    loading: false,
     dialogAddCardGift: false,
     dialogDeleteCardGift: false,
     dialogImage: false,
@@ -1988,6 +1989,7 @@ export default {
       this.dialogDeleteCardGiftUser = false;
     },
     requestDeleteCardGiftUser() {
+      this.loading = true;
       LocalStorageService.setIsLocked(true);
       let request = {
         id: this.editedCardGiftUser.id
@@ -1995,11 +1997,12 @@ export default {
       axios
         .post('https://api2.simplifies.cl/api/card-gift-user-destroy', request)
         .then(() => {
+          this.loading = false;
           this.dialogDeleteCardGiftUser = false;
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
           this.showCardGiftUser(this.cardSelect);
-          this.showAlert("success", "Asignacion eliminada correctamente", 3000);
+          this.showAlert("success", "Asignación eliminada correctamente", 3000);
           this.$nextTick(() => {
             this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser)
           });
@@ -2047,7 +2050,7 @@ export default {
         this.data.card_gift_id = this.cardSelect.id;
       this.data.user_id = this.editedCardGiftUser.user_id;
       this.data.branch_id = this.branch_id;
-      this.data.expiration_date = this.editedCardGiftUser.expiration_date ? this.editedCardGiftUser.expiration_date : format(new Date(), "yyyy-MM-dd");/*this.input ? format(new Date(this.input), "") : new Date();*/
+      this.data.expiration_date = this.dateFormatted;
       console.log('this.editedCardGiftUser.expiration_date');
       console.log(this.data.expiration_date);
       axios
@@ -2068,6 +2071,7 @@ export default {
 
     //User Card Gift
     showUserCardGift(item) {
+      this.cardGiftsData = [];
       this.userSelect = item;
       console.log(item.user_id);
       this.loadingUserCardGft = true;
@@ -2110,17 +2114,19 @@ export default {
     },
     requestUserDeleteCardGift() {
       LocalStorageService.setIsLocked(true);
+      this.loading = true;
       let request = {
         id: this.editedCardGiftUser.id
       };
       axios
         .post('https://api2.simplifies.cl/api/card-gift-user-destroy', request)
         .then(() => {
+          this.loading = false;
           this.dialogUserDeleteCardGift = false;
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
           this.showUserCardGift(this.userSelect);
-          this.showAlert("success", "Asignacion eliminada correctamente", 3000);
+          this.showAlert("success", "Asignación eliminada correctamente", 3000);
           this.$nextTick(() => {
             this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser)
           });
@@ -2142,7 +2148,7 @@ export default {
         this.data.card_gift_id = this.editedCardGiftUser.card_gift_id;
       this.data.user_id = this.userSelect.user_id;
       this.data.branch_id = this.branch_id;
-      this.data.expiration_date = this.editedCardGiftUser.expiration_date ? this.editedCardGiftUser.expiration_date : format(new Date(), "yyyy-MM-dd");/*this.input ? format(new Date(this.input), "") : new Date();*/
+      this.data.expiration_date = this.dateFormatted;
       console.log('this.editedCardGiftUser.expiration_date');
       console.log(this.data.expiration_date);
       axios
