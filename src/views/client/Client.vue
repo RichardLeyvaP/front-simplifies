@@ -288,7 +288,9 @@
             class="mr-1 mt-1 mb-1"
             title="Historial del cliente"
           ></v-btn>
+          
           <v-btn
+            v-if="this.charge == 'Administrador'"
             density="comfortable"
             icon="mdi-delete"
             @click="deleteItem(item)"
