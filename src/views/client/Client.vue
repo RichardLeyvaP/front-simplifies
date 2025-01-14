@@ -1278,6 +1278,7 @@ export default {
     survey: [],
     dialogSurvey: false,
     branch_idSurvey: '',
+    branch_id: '',
     searchSurvey: '',
     headersSurvey: [
       { title: 'Nombre Encuesta', key: 'name', sortable: true },
@@ -1736,6 +1737,7 @@ export default {
       this.menu2 = false;
     },
     updateDate2() {
+    this.frecuence = [];
       this.loadingVisit = true;
       LocalStorageService.setIsLocked(true);
       this.editedIndexF = 2;
