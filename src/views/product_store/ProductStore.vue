@@ -488,7 +488,7 @@ export default {
         baseHeaders.splice(4, 0, { title: 'Precio compra', align: 'start', value: 'purchase_price' });
         baseHeaders.splice(8, 0, { title: 'Acciones', key: 'actions', sortable: false });
       }
-      if (this.charge === 'Administrador de Sucursal') {
+      if (this.charge === 'Administrador de Sucursal' || this.charge === 'Cajero (a)') {
         baseHeaders.splice(8, 0, { title: 'Acciones', key: 'actions', sortable: false });
       }
 
