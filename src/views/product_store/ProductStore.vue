@@ -185,7 +185,7 @@
         <template v-slot:item.actions="{ item }">
           <v-btn v-if="this.mostrarFila" density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar existencia"></v-btn>
-            <v-btn density="comfortable" icon="mdi-folder-move"  @click="moverItem(item)" color="green" variant="tonal"
+            <v-btn v-if="hasPermission('view_move_products')"  density="comfortable" icon="mdi-folder-move"  @click="moverItem(item)" color="green" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Mover producto"></v-btn>
           <v-btn v-if="this.mostrarFila"  density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
             elevation="1" title="Eliminar existencia"></v-btn>
@@ -369,6 +369,7 @@ export default {
     professional_id: '',
     message_delete: true,
     dialogDelete: false,
+    permissionUser: '',
     groupBy: [
       {
         key: 'direccionStore',
@@ -486,9 +487,9 @@ export default {
       // Condicionalmente agregamos la columna de 'Precio compra'
       if (this.charge === 'Administrador') {
         baseHeaders.splice(4, 0, { title: 'Precio compra', align: 'start', value: 'purchase_price' });
-        baseHeaders.splice(8, 0, { title: 'Acciones', key: 'actions', sortable: false });
+        baseHeaders.splice(8, 0, { title: 'Acciones', key: 'actions', sortable: false, width: '15%' });
       }
-      if (this.charge === 'Administrador de Sucursal' || this.charge === 'Cajero (a)') {
+      else {
         baseHeaders.splice(8, 0, { title: 'Acciones', key: 'actions', sortable: false });
       }
 
@@ -537,6 +538,7 @@ export default {
     this.branch_id = LocalStorageService.getItem('branch_id');
     this.professional_id = LocalStorageService.getItem('professional_id');
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
+    this.permissionsUser = LocalStorageService.getItem("permissionsUser") || [],
     LocalStorageService.setIsLocked(true);
           axios
         .get('https://api2.simplifies.cl/api/show-stores-products', {
@@ -561,7 +563,11 @@ export default {
   },
 
   methods: {
-
+    hasPermission(permission) {
+      console.log('permission');
+      console.log(permission);
+      return this.permissionsUser.includes(permission);
+    },
     showAlert(sb_type, sb_message, sb_timeout) {
       this.sb_type = sb_type
 
