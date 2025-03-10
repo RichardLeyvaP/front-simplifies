@@ -238,6 +238,7 @@ export default {
       { icon: "mdi-cash-register", title: "Caja", to: "box", value: "cash", permission: "view_shopping_carts" },
       { icon: "mdi mdi-delete-outline", title: "Solicitudes de eliminación", to: "car-order-delete", value: "car-order-delete", permission: "view_carorder_delete" },
       { icon: "mdi-currency-usd", title: "Operaciones en la caja", to: "branch-traces", value: "branch-traces", permission: "view_branch_traces" },
+      { icon: "mdi-gavel", title: "Convivencias", to: "coexistence", value: "coexistence", permission: "view_coexistences" },
     ],
     clientes:[
       { icon: "mdi-account-star-outline", title: "Clientes", to: "client", value: "clients", permission: "view_clients" },

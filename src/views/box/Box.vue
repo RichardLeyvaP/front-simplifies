@@ -19,18 +19,23 @@
   <v-card elevation="3" class="mx-5" width='auto'>
     <v-toolbar color="#F18254">
       <v-row>
-        <v-col cols="12" md="3" class="mt-4">
-          <span class="ml-4"> <strong>Caja <!--- {{ this.nameBranch }}--></strong></span>
+        <v-col cols="12" md="2" class="mt-2">
+          <span class="ml-3"> <strong>Caja <!--- {{ this.nameBranch }}--></strong></span>
         </v-col>
-        <v-col cols="12" md="9" class="text-right">
+        <v-col cols="12" md="10" class="text-right">
           <v-dialog v-model="dialog" max-width="1000px">
             <template v-slot:activator="{ props }">
               <div class="text-center">
+                <v-btn color="#E7E9E9" variant="flat" elevation="2"
+                  prepend-icon="mdi-gavel" @click="this.dialogCoexistence = true" class="mr-1">
+                  Convivencias
+                </v-btn>
                 <v-btn class="text-subtitle-1" color="#E7E9E9" variant="flat" elevation="2"
-              prepend-icon="mdi-clipboard-text" @click="chargeData()">
-              Reservaciones
-            </v-btn>
-                <v-btn @click="showDialogProduct" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-cart" class="ml-1">
+                  prepend-icon="mdi-clipboard-text" @click="chargeData()">
+                  Reservaciones
+                </v-btn>
+                <v-btn @click="showDialogProduct" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-cart"
+                  class="ml-1">
                   Venta Productos
                 </v-btn>
                 <v-btn @click="dialogDetallesCarPagado = true" color="#E7E9E9" variant="flat" elevation="2"
@@ -161,7 +166,7 @@
                       </template>
                     </v-card>
                   </v-col>
-                  
+
                   <v-col cols="4">
                     <v-card class="mx-auto" max-width="344" title="Efectivo en caja" :subtitle="this.totalBoxCashs()"
                       append-icon="mdi-check">
@@ -184,7 +189,7 @@
                       </template>
                     </v-card>
                   </v-col>
-                  
+
                   <v-col cols="4">
                     <v-card class="mx-auto" max-width="344" title="Pago de bonos" :subtitle="this.totalBonusPay()"
                       append-icon="mdi-check">
@@ -371,8 +376,9 @@
                 @click="(item.active != 3 && item.state == 1) && payItem(item)"
                 :color="(item.active != 3 && item.state == 1) ? 'green-darken-1' : 'grey'" variant="tonal" elevation="1"
                 class="mr-1 mt-1 mb-1" title="Pagar el carro"></v-btn>
-              <v-btn density="comfortable" icon="mdi-delete" @click="(item.active != 3 && item.state != 2) && deleteItemSolicitud(item)"
-                :color="(item.active != 3  && item.state != 2) ? 'red-darken-4' : 'grey'" variant="tonal" elevation="1"
+              <v-btn density="comfortable" icon="mdi-delete"
+                @click="(item.active != 3 && item.state != 2) && deleteItemSolicitud(item)"
+                :color="(item.active != 3 && item.state != 2) ? 'red-darken-4' : 'grey'" variant="tonal" elevation="1"
                 title="Solicitud de eliminar carro"></v-btn>
             </template>
           </v-data-table>
@@ -468,23 +474,24 @@
                     </v-text-field>
                   </v-col>
                   <v-col cols="12" md="6">
-              <v-row>
-                <v-col cols="6">
-                  <v-text-field v-model="editedItem.tip" clearable label="Propina" prepend-icon="mdi-currency-usd"
-                    variant="underlined" :rules="pago">
-                  </v-text-field>
-                </v-col>
-                <v-col cols="6">
-                  <v-select v-model="selectedOption" :items="options" label="Método de pago"
-                                variant="underlined" hide-details></v-select>
-                </v-col>
-              </v-row>
-            </v-col>
+                    <v-row>
+                      <v-col cols="6">
+                        <v-text-field v-model="editedItem.tip" clearable label="Propina" prepend-icon="mdi-currency-usd"
+                          variant="underlined" :rules="pago">
+                        </v-text-field>
+                      </v-col>
+                      <v-col cols="6">
+                        <v-select v-model="selectedOption" :items="options" label="Método de pago" variant="underlined"
+                          hide-details></v-select>
+                      </v-col>
+                    </v-row>
+                  </v-col>
                 </v-row>
                 <v-row>
                   <v-col cols="12" md="4">
                     <v-text-field clearable v-model="editedCard.cardGiftUser_id" label="Tarjeta de regalo (código)"
-                      prepend-icon="mdi-gift" variant="underlined" :rules="customCardGiftValidation"></v-text-field><!--@input="onCardGiftSelected"-->
+                      prepend-icon="mdi-gift" variant="underlined"
+                      :rules="customCardGiftValidation"></v-text-field><!--@input="onCardGiftSelected"-->
                   </v-col>
                   <v-col cols="12" md="4">
                     <v-text-field v-if="mostrarOtroCampo" v-model="editedCard.value" clearable label="Valor"
@@ -525,7 +532,8 @@
               <v-spacer></v-spacer>
               <v-col cols="12" md="5" class="text-center">
                 <v-btn color="#E7E9E9" variant="flat" @click="showService(this.car_ref)"
-                  prepend-icon="mdi-list-box-outline" class="mr-1" :disabled="this.car_ref.pay == 1 || this.car_ref.state == 2 ? true : false">
+                  prepend-icon="mdi-list-box-outline" class="mr-1"
+                  :disabled="this.car_ref.pay == 1 || this.car_ref.state == 2 ? true : false">
                   Agregar Servicio
                 </v-btn>
                 <v-btn color="#E7E9E9" variant="flat" @click="showProduct(this.car_ref)" prepend-icon="mdi-tag-outline"
@@ -575,7 +583,8 @@
               Volver
             </v-btn>
 
-            <v-btn color="#F18254" variant="flat" :disabled="this.car_ref.state != 1 ? true : false" @click="payItem(this.car_ref)">
+            <v-btn color="#F18254" variant="flat" :disabled="this.car_ref.state != 1 ? true : false"
+              @click="payItem(this.car_ref)">
               Marcar como Pagado
             </v-btn>
           </v-card-actions>
@@ -655,7 +664,7 @@
                     :items="services" clearable label="Servicios" prepend-icon="mdi-list-box-outline" item-title="name"
                     item-value="id" variant="underlined" :rules="selectRules">
                     <template v-slot:item="{ props, item }">
-                        <v-list-item v-bind="props"
+                      <v-list-item v-bind="props"
                         :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_service"
                         :title="item.raw.name">
                         <v-list-item-subtitle class="d-flex justify-space-between">
@@ -712,11 +721,15 @@
                 <v-row>
                   <!-- Campos adicionales -->
                   <v-col v-if="this.showAdditionalFields" cols="12" md="6">
-                    <v-file-input v-model="file" ref="fileInput" name="file" label="Archivo" prepend-icon="mdi-paperclip" variant="underlined" :rules="selectRules" accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .odt, .ods, .odp, .rtf, .html, .xml, .csv, .png, .jpg, .jpeg"  @change="onFileSelected">
+                    <v-file-input v-model="file" ref="fileInput" name="file" label="Archivo"
+                      prepend-icon="mdi-paperclip" variant="underlined" :rules="selectRules"
+                      accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .odt, .ods, .odp, .rtf, .html, .xml, .csv, .png, .jpg, .jpeg"
+                      @change="onFileSelected">
                     </v-file-input>
                   </v-col>
                   <v-col v-if="this.showAdditionalFields" cols="12" md="6">
-                    <v-text-field v-model="editedBox.comment" label="Comentario" variant="underlined" :rules="selectRules">
+                    <v-text-field v-model="editedBox.comment" label="Comentario" variant="underlined"
+                      :rules="selectRules">
                     </v-text-field>
                   </v-col>
                 </v-row>
@@ -778,11 +791,11 @@
                   {{ item.pay === '0' ? 'Pendiente' : 'Pagado' }}
                 </v-chip>
               </template>
-            <template v-slot:item.phone="{ item }">
-            <td>
-              <a href="#" @click.prevent="openWhatsApp(item.phone)">{{ item.phone }}</a>
-            </td>
-          </template>
+              <template v-slot:item.phone="{ item }">
+                <td>
+                  <a href="#" @click.prevent="openWhatsApp(item.phone)">{{ item.phone }}</a>
+                </td>
+              </template>
               <template v-slot:item.technical_assistance="{ item }">
                 {{ formatNumber(item.technical_assistance) }}
               </template>
@@ -839,7 +852,8 @@
 
             <v-data-table v-model="selected" :headers="headers4" :items-per-page-text="'Elementos por páginas'"
               :items="cashierSalesProf" :search="search4" class="elevation-1" no-results-text="No hay datos disponibles"
-              no-data-text="No hay datos disponibles" :item-selectable="isSelectable" show-select :loading="loadingCashier" loading-text="Cargando datos...">
+              no-data-text="No hay datos disponibles" :item-selectable="isSelectable" show-select
+              :loading="loadingCashier" loading-text="Cargando datos...">
 
               <template v-slot:item.name="{ item }">
 
@@ -925,7 +939,8 @@
                 <v-btn color="#E7E9E9" variant="flat" @click="closeSaleProduct">
                   Cancelar
                 </v-btn>
-                <v-btn color="#F18254" variant="flat" @click="saveProductSale" :disabled="!valid" :loading="loadingProd">
+                <v-btn color="#F18254" variant="flat" @click="saveProductSale" :disabled="!valid"
+                  :loading="loadingProd">
                   Aceptar
                 </v-btn>
               </v-card-actions>
@@ -1106,10 +1121,11 @@
                 {{ formatNumber(item.amount) }}
               </template>
               <template v-slot:item.actions="{ item }">
-                    <v-btn variant="flat" @click="(item.pay) ? '' :payBonusProf(item)" :color="(item.pay) ? 'grey' : '#F18254'" title="Pagar bono a profesional" style="min-width: 100px;">
-                      {{ item.pay ? 'Pagado' : 'Pagar' }} <!-- Cambia el texto según el estado de pay -->
-            </v-btn>
-            </template>
+                <v-btn variant="flat" @click="(item.pay) ? '' : payBonusProf(item)"
+                  :color="(item.pay) ? 'grey' : '#F18254'" title="Pagar bono a profesional" style="min-width: 100px;">
+                  {{ item.pay ? 'Pagado' : 'Pagar' }} <!-- Cambia el texto según el estado de pay -->
+                </v-btn>
+              </template>
               <template v-slot:top>
 
                 <v-divider class="mx-4" inset vertical></v-divider>
@@ -1153,80 +1169,93 @@
       <!--ver reservaciones de profesionales-->
       <v-dialog v-model="showReserPrpfessional" fullscreen transition="dialog-bottom-transition">
 
-  <v-card>
+        <v-card>
 
-  <v-toolbar color="#F18254">
-    <v-row align="center">
-      <v-col cols="12" md="8" class="grow ml-4">
-        <span class="text-h8">
-          <strong>Reservas del profesional</strong></span>
-      </v-col>
-    </v-row>
-  </v-toolbar>
-  <v-container fluid>
-    <v-card-text>
-      <v-row>
-
-        <v-row>
-
-        </v-row>
-        <div class="fixed-size-calendar">
-          <v-sheet>
-
-            <v-row>
-              <v-col cols="12" sm="12" md="3">
-                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
-                  v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
-                  item-title="name" item-value="id" density="compact" class="ma-2" variant="outlined"
-                  @update:model-value="showReservations()"></v-autocomplete><!--@update:model-value="initialize()"-->
+          <v-toolbar color="#F18254">
+            <v-row align="center">
+              <v-col cols="12" md="8" class="grow ml-4">
+                <span class="text-h8">
+                  <strong>Reservas del profesional</strong></span>
               </v-col>
-              <v-col cols="12" md="3">
-                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_idR"
-                  :items="professionals" label="Profesional" prepend-inner-icon="mdi-account-tie-outline"
-                  item-title="name" item-value="id" variant="outlined" density="compact" class="ma-2"
-                  :rules="selectRules"><!--@update:model-value="showReservationsProfessional()"-->
-                  <template v-slot:item="{ props, item }">
-                    <v-list-item v-bind="props"
-                      :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_url"
-                      :subtitle="'Cargo: ' + item.raw.charge" :title="item.raw.name"></v-list-item>
-                  </template>
-                </v-autocomplete>
-              </v-col>
-              <!--<v-col cols="12" md="3">
+            </v-row>
+          </v-toolbar>
+          <v-container fluid>
+            <v-card-text>
+              <v-row>
+
+                <v-row>
+
+                </v-row>
+                <div class="fixed-size-calendar">
+                  <v-sheet>
+
+                    <v-row>
+                      <v-col cols="12" sm="12" md="3">
+                        <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+                          v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
+                          item-title="name" item-value="id" density="compact" class="ma-2" variant="outlined"
+                          @update:model-value="showReservations()"></v-autocomplete><!--@update:model-value="initialize()"-->
+                      </v-col>
+                      <v-col cols="12" md="3">
+                        <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_idR"
+                          :items="professionals" label="Profesional" prepend-inner-icon="mdi-account-tie-outline"
+                          item-title="name" item-value="id" variant="outlined" density="compact" class="ma-2"
+                          :rules="selectRules"><!--@update:model-value="showReservationsProfessional()"-->
+                          <template v-slot:item="{ props, item }">
+                            <v-list-item v-bind="props"
+                              :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_url"
+                              :subtitle="'Cargo: ' + item.raw.charge" :title="item.raw.name"></v-list-item>
+                          </template>
+                        </v-autocomplete>
+                      </v-col>
+                      <!--<v-col cols="12" md="3">
                 <v-select v-model="type" :items="types" class="ma-2" label="Modo de vista" variant="outlined"
                   density="compact" hide-details></v-select>
               </v-col>-->
-              <v-col cols="12" md="1">
-                <v-btn :disabled="!this.professional_idR" icon @click="showReservationsProfessional()"
-                  color="#F18254">
-                  <v-icon>mdi-magnify</v-icon></v-btn>
-              </v-col>
-            </v-row>
-            <v-calendar ref="calendar" v-model="value" :events="events" locale="es"
-                      :event-color="getEventColor" class="fixed-size-calendar" text="Hoy" type="month" >
+                      <v-col cols="12" md="1">
+                        <v-btn :disabled="!this.professional_idR" icon @click="showReservationsProfessional()"
+                          color="#F18254">
+                          <v-icon>mdi-magnify</v-icon></v-btn>
+                      </v-col>
+                    </v-row>
+                    <v-calendar ref="calendar" v-model="value" :events="events" locale="es" :event-color="getEventColor"
+                      class="fixed-size-calendar" text="Hoy" type="month">
                       <template v-slot:event="{ event }">
-            <div class="event-title">
-              {{ event.title }}
-            </div>
-          </template>
+                        <div class="event-title">
+                          {{ event.title }}
+                        </div>
+                      </template>
                     </v-calendar>
-          </v-sheet>
-        </div>
+                  </v-sheet>
+                </div>
 
-      </v-row>
-    </v-card-text>
-    <v-divider></v-divider>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn color="#E7E9E9" variant="flat" @click="closeCalendar"> Volver </v-btn>
-    </v-card-actions>
-  </v-container>
-</v-card>
+              </v-row>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="#E7E9E9" variant="flat" @click="closeCalendar"> Volver </v-btn>
+            </v-card-actions>
+          </v-container>
+        </v-card>
       </v-dialog>
     </v-card-text>
-
-
   </v-card>
+
+  <!-- Diálogo donde se mostrarán los detalles de las rutas -->
+  <v-dialog v-model="dialogCoexistence" fullscreen transition="dialog-bottom-transition">
+    <v-card>
+      <v-card-text>
+        <!-- Aquí pasamos el 'selectedWorker' al componente dentro del diálogo -->
+        <Coexistence />
+      </v-card-text>
+      <v-divider></v-divider>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn variant="flat" color="#E7E9E9" @click="closeCoexistence">Cerrar</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
@@ -1235,7 +1264,8 @@ import axios from "axios";
 import LocalStorageService from "@/LocalStorageService";
 import * as XLSX from 'xlsx';
 import { format } from "date-fns";
-import { VCalendar } from 'vuetify/labs/VCalendar'
+import { VCalendar } from 'vuetify/labs/VCalendar';
+import Coexistence from "../coexistence/Coexistence.vue";
 
 // Interceptor para agregar el token a cada solicitud
 axios.interceptors.request.use(config => {
@@ -1251,6 +1281,7 @@ axios.interceptors.request.use(config => {
 export default {
   components: {
     VCalendar,
+    Coexistence
   },
 
   data: () => ({
@@ -1285,7 +1316,7 @@ export default {
       'orange',
     ],
     valid: true,
-    loadingcar:true,
+    loadingcar: true,
     loadingOrders: true,
     loadingCashier: true,
     loadingBonus: true,
@@ -1293,6 +1324,7 @@ export default {
     loadingProd: false,
     loadingServ: false,
     mostrarFila: false,
+    dialogCoexistence: false,
     car_ref: "",
     snackbar: false,
     sb_type: '',
@@ -1469,7 +1501,7 @@ export default {
       comment: '',
       file: '',
       nameProfessional: ''
-      
+
     },
     defaultBox: {
       branch_id: '',
@@ -1526,12 +1558,12 @@ export default {
     },
 
     customCardGiftValidation() {
-  return [
-    v => (this.selectedOption === 'Tarjeta de regalo' && !v)
-      ? 'El código de la tarjeta de regalo es obligatorio' 
-      : true,
-  ];
-},
+      return [
+        v => (this.selectedOption === 'Tarjeta de regalo' && !v)
+          ? 'El código de la tarjeta de regalo es obligatorio'
+          : true,
+      ];
+    },
     rulesCampo1() {
 
       if (this.editedCard.value) {
@@ -1550,16 +1582,16 @@ export default {
   watch: {
     'editedCard.value': function (newVal) {
       //if (newVal !== '') {
-        this.customValidation(); // Llamar a la validación solo cuando editedCard.value tenga un valor
+      this.customValidation(); // Llamar a la validación solo cuando editedCard.value tenga un valor
       //}
     },
     dialog(val) {
       if (val) {
-      this.stopInterval();
-    } else {
-      this.close();
-      this.startInterval();
-    }
+        this.stopInterval();
+      } else {
+        this.close();
+        this.startInterval();
+      }
     },
     dialogDelete(val) {
       val || this.closeDelete()
@@ -1612,7 +1644,7 @@ export default {
         }
         this.initialize();
       });
-      this.startInterval();
+    this.startInterval();
   },
   beforeUnmount() {
     // Detener el intervalo cuando el componente se esté destruyendo para evitar fugas de memoria
@@ -1622,19 +1654,19 @@ export default {
 
   methods: {
     onFileSelected(event) {
-            let file = event.target.files[0];
-            this.editedBox.file = file;
-            console.log(this.editedItem.file);
-            //this.cargarImage(file);
-        },
+      let file = event.target.files[0];
+      this.editedBox.file = file;
+      console.log(this.editedItem.file);
+      //this.cargarImage(file);
+    },
     checkExtraction(value) {
-      
+
       // Obtenemos el valor de extracción y existencia para validación
-    const extraction = parseFloat(value);
-    const existence = parseFloat(this.editedBox.existence);
+      const extraction = parseFloat(value);
+      const existence = parseFloat(this.editedBox.existence);
 
 
-    // Si el valor de extracciónestá vacío
+      // Si el valor de extracciónestá vacío
       if (value === null || value === '') {
         this.showAdditionalFields = false; // No mostrar campos adicionales
         this.file = '';
@@ -1642,7 +1674,7 @@ export default {
         this.editedBox.file = '';
         return true; // Sin error, pero campos ocultos
       }
-       // Validación: Si el valor no coincide con el formato de número decimal
+      // Validación: Si el valor no coincide con el formato de número decimal
       if (!/^\d+(\.\d+)?$/.test(value)) {
         this.showAdditionalFields = false; // Ocultar campos si no es válido
         this.file = '';
@@ -1689,88 +1721,92 @@ export default {
       this.events = [];
       this.showReserPrpfessional = false;
     },
+
+    closeCoexistence() {
+      this.dialogCoexistence = false;
+    },
     chargeData() {//aqui cargo el componente del calendar
-    this.showReserPrpfessional = true;
-    this.showReservations();
+      this.showReserPrpfessional = true;
+      this.showReservations();
     },
     showReservations() {//aqui cargo el componente del calendar
-    this.professional_idR = '';
-    this.type = 'month';
-    this.events = [];
-    console.log('this.today');
-    console.log(this.today);
-    const today = new Date(this.today);
-    const range = this.getMonthDateRange(today);
-    const startDate = range.start.toISOString().split('T')[0];
-    const endDate = range.end.toISOString().split('T')[0];
-    /*const startDate = this.input
-      ? format(this.input, "yyyy-MM-dd")
-      : format(new Date(), "yyyy-MM-dd");
-    const endDate = this.input2
-      ? format(this.input2, "yyyy-MM-dd")
-      : format(new Date(), "yyyy-MM-dd");*/
+      this.professional_idR = '';
+      this.type = 'month';
+      this.events = [];
+      console.log('this.today');
+      console.log(this.today);
+      const today = new Date(this.today);
+      const range = this.getMonthDateRange(today);
+      const startDate = range.start.toISOString().split('T')[0];
+      const endDate = range.end.toISOString().split('T')[0];
+      /*const startDate = this.input
+        ? format(this.input, "yyyy-MM-dd")
+        : format(new Date(), "yyyy-MM-dd");
+      const endDate = this.input2
+        ? format(this.input2, "yyyy-MM-dd")
+        : format(new Date(), "yyyy-MM-dd");*/
       LocalStorageService.setIsLocked(true);
-    axios
-      .get("https://api2.simplifies.cl/api/branch-reservations-periodo", {
-        params: {
-          branch_id: this.branch_id,
-          startDate: startDate,
-          endDate: endDate
-        },
-      })
-      .then((response) => {
-        //this.reservations = response.data.reservaciones;
-        this.professionals = response.data.professionals;
-      }).finally(() => {
+      axios
+        .get("https://api2.simplifies.cl/api/branch-reservations-periodo", {
+          params: {
+            branch_id: this.branch_id,
+            startDate: startDate,
+            endDate: endDate
+          },
+        })
+        .then((response) => {
+          //this.reservations = response.data.reservaciones;
+          this.professionals = response.data.professionals;
+        }).finally(() => {
           LocalStorageService.setIsLocked(false);
-      });
+        });
     },
     showReservationsProfessional() {//aqui cargo el componente del calendar  
-    LocalStorageService.setIsLocked(true);      
-    this.events = [];
-    console.log('this.today');
-    console.log(this.today);
-    const today = new Date(this.today);
-    const range = this.getMonthDateRange(today);
-    const startDate = range.start.toISOString().split('T')[0];
-    const endDate = range.end.toISOString().split('T')[0];
-    axios
-      .get("https://api2.simplifies.cl/api/professional-reservations-periodo", {
-        params: {
-          branch_id: this.branch_id,
-          professional_id: this.professional_idR,
-          startDate: startDate,
-          endDate: endDate
-        },
-      })
-      .then((response) => {
-        this.reservations = response.data.reservaciones;
-        console.log('Reservaciones');
-        console.log(this.reservations);
-        let tempEvents = [];
+      LocalStorageService.setIsLocked(true);
+      this.events = [];
+      console.log('this.today');
+      console.log(this.today);
+      const today = new Date(this.today);
+      const range = this.getMonthDateRange(today);
+      const startDate = range.start.toISOString().split('T')[0];
+      const endDate = range.end.toISOString().split('T')[0];
+      axios
+        .get("https://api2.simplifies.cl/api/professional-reservations-periodo", {
+          params: {
+            branch_id: this.branch_id,
+            professional_id: this.professional_idR,
+            startDate: startDate,
+            endDate: endDate
+          },
+        })
+        .then((response) => {
+          this.reservations = response.data.reservaciones;
+          console.log('Reservaciones');
+          console.log(this.reservations);
+          let tempEvents = [];
 
 
-        this.reservations.forEach(reservacion => {
-          tempEvents.push({
-            title: reservacion.clientName,
-            start: new Date(reservacion.startDate),
-            end: new Date(reservacion.endDate),
-            color: reservacion.color,
-            allDay: false
+          this.reservations.forEach(reservacion => {
+            tempEvents.push({
+              title: reservacion.clientName,
+              start: new Date(reservacion.startDate),
+              end: new Date(reservacion.endDate),
+              color: reservacion.color,
+              allDay: false
+            });
           });
-        });
-        this.events = tempEvents;
-      }).finally(() => {
+          this.events = tempEvents;
+        }).finally(() => {
           LocalStorageService.setIsLocked(false);
-      });
+        });
     },
     openWhatsApp(phone) {
-      window.open('http://wa.me/'+'+' + phone);
+      window.open('http://wa.me/' + '+' + phone);
     },
     stopInterval() {
       console.log('Detener intervalo');
-    clearInterval(this.intervalId);
-    LocalStorageService.setIsLocked(false);
+      clearInterval(this.intervalId);
+      LocalStorageService.setIsLocked(false);
     },
     startInterval() {
       //const token = LocalStorageService.getItem('token');
@@ -1778,59 +1814,59 @@ export default {
       this.intervalId = setInterval(() => {
         if (!LocalStorageService.getIsLocked()) {
           this.loadingcar = true;
-        LocalStorageService.setIsLocked(true); // Bloquear antes de hacer la petición
-        axios
-          .get('https://api2.simplifies.cl/api/branch-cars', {
-            /*headers: {
-                  'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
-              },*/
-            params: {
-              branch_id: this.branch_id
-            }
-          })
-          .then((response) => {
-            this.results = response.data.cars;
-            this.box = response.data.box;
-            this.payments = response.data.payments;
-            this.cashierSales = response.data.cashierSales;
-            this.bonusPay = response.data.bonusPay;
-            console.log('bonos pagados');
-            console.log(this.bonusPay);
-            console.log('this.box');
-            console.log(this.box);
-          }).catch((error) => {
-          if (error.response) {
-            // El servidor respondió con un código de estado diferente de 2xx
-            if (error.response.status === 500) {
-              this.showAlert("error", "Error interno del servidor. Por favor, intenta de nuevo más tarde.", 3000);
-            } else {
-              this.showAlert("warning", 'Ocurrió un error en la solicitud', 3000);
-            }
-          } else if (error.request) {
-            // La solicitud fue hecha, pero no hubo respuesta
-            this.showAlert("warning", 'No se pudo establecer conexión con el servidor. Por favor, revisa tu conexión a Internet', 3000);
-          } else {
-            // Algo más causó el error
-            this.showAlert("warning", 'Ocurrió un error desconocido. Por favor, intenta de nuevo.', 3000);
-          }
-        }).finally(() => {
-            if (this.box === null) {
-              this.ejecutado = false;
-            } else {
-              if (this.box.box_close === null) {
-                this.ejecutado = false;
-                console.log('this.box.box_close false');
-              } else {
-                this.ejecutado = true;
-                console.log('this.box.box_close true');
+          LocalStorageService.setIsLocked(true); // Bloquear antes de hacer la petición
+          axios
+            .get('https://api2.simplifies.cl/api/branch-cars', {
+              /*headers: {
+                    'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
+                },*/
+              params: {
+                branch_id: this.branch_id
               }
-            }
-            console.log('this.ejecutado');
-            console.log(this.ejecutado);
-            LocalStorageService.setIsLocked(false); // Desbloquear después de la petición
-            console.log('isLocked después de la solicitud Box:', LocalStorageService.getIsLocked());
-            this.loadingcar = false;
-          });
+            })
+            .then((response) => {
+              this.results = response.data.cars;
+              this.box = response.data.box;
+              this.payments = response.data.payments;
+              this.cashierSales = response.data.cashierSales;
+              this.bonusPay = response.data.bonusPay;
+              console.log('bonos pagados');
+              console.log(this.bonusPay);
+              console.log('this.box');
+              console.log(this.box);
+            }).catch((error) => {
+              if (error.response) {
+                // El servidor respondió con un código de estado diferente de 2xx
+                if (error.response.status === 500) {
+                  this.showAlert("error", "Error interno del servidor. Por favor, intenta de nuevo más tarde.", 3000);
+                } else {
+                  this.showAlert("warning", 'Ocurrió un error en la solicitud', 3000);
+                }
+              } else if (error.request) {
+                // La solicitud fue hecha, pero no hubo respuesta
+                this.showAlert("warning", 'No se pudo establecer conexión con el servidor. Por favor, revisa tu conexión a Internet', 3000);
+              } else {
+                // Algo más causó el error
+                this.showAlert("warning", 'Ocurrió un error desconocido. Por favor, intenta de nuevo.', 3000);
+              }
+            }).finally(() => {
+              if (this.box === null) {
+                this.ejecutado = false;
+              } else {
+                if (this.box.box_close === null) {
+                  this.ejecutado = false;
+                  console.log('this.box.box_close false');
+                } else {
+                  this.ejecutado = true;
+                  console.log('this.box.box_close true');
+                }
+              }
+              console.log('this.ejecutado');
+              console.log(this.ejecutado);
+              LocalStorageService.setIsLocked(false); // Desbloquear después de la petición
+              console.log('isLocked después de la solicitud Box:', LocalStorageService.getIsLocked());
+              this.loadingcar = false;
+            });
         }
       }, 59000);
     },
@@ -1877,27 +1913,27 @@ export default {
       this.dialogConfBonus = false;
     },
     payBonus() {
-        this.data.branch_id = parseInt(this.bonus_ref.branch_id);
-        this.data.name = this.bonus_ref.name;
-        this.data.professional_id = this.bonus_ref.professional_id;
-        this.data.type = this.bonus_ref.bonus;
-        this.data.amount = this.bonus_ref.amount;
-        this.data.order_id = this.bonus_ref.order_id;
-        this.data.cant = this.bonus_ref.cant;
-        this.data.retention = this.bonus_ref.retention;
-        LocalStorageService.setIsLocked(true);
-          axios
-            .post('https://api2.simplifies.cl/api/bonu-payment', this.data)
-            .then(() => {
-            }).finally(() => {
-              LocalStorageService.setIsLocked(false);
-              this.showAlert("success", "Pago del bono efectuado correctamente", 3000);
-              this.bonus_ref = [];
-              this.dialogConfBonus = false;
-              this.startInterval();
-              this.initialize();
-              this.showBonusProf();
-            });
+      this.data.branch_id = parseInt(this.bonus_ref.branch_id);
+      this.data.name = this.bonus_ref.name;
+      this.data.professional_id = this.bonus_ref.professional_id;
+      this.data.type = this.bonus_ref.bonus;
+      this.data.amount = this.bonus_ref.amount;
+      this.data.order_id = this.bonus_ref.order_id;
+      this.data.cant = this.bonus_ref.cant;
+      this.data.retention = this.bonus_ref.retention;
+      LocalStorageService.setIsLocked(true);
+      axios
+        .post('https://api2.simplifies.cl/api/bonu-payment', this.data)
+        .then(() => {
+        }).finally(() => {
+          LocalStorageService.setIsLocked(false);
+          this.showAlert("success", "Pago del bono efectuado correctamente", 3000);
+          this.bonus_ref = [];
+          this.dialogConfBonus = false;
+          this.startInterval();
+          this.initialize();
+          this.showBonusProf();
+        });
     },
     formatNumber(value) {
       // Si el valor es menor que 1000, devuelve el valor original con dos decimales
@@ -1914,7 +1950,7 @@ export default {
       return formattedValue;
     },
     customValidation() {
-      if(this.selectedOption === 'Tarjeta de regalo'){
+      if (this.selectedOption === 'Tarjeta de regalo') {
         // Convertir ambos valores a enteros y sumarlos
         const cardGifValue = parseInt(this.editedItem.cardGif, 10) || 0;
         const tipValue = parseInt(this.editedItem.tip, 10) || 0;
@@ -1922,19 +1958,19 @@ export default {
         console.log('con sin propina');
         console.log(sum);
         if (this.editedCard.value !== '' && sum > parseInt(this.editedCard.value)) {
-        return 'El valor de la tarjeta de regalo no puede ser mayor que ' + this.formatNumber(this.editedCard.value);
-        }else{
+          return 'El valor de la tarjeta de regalo no puede ser mayor que ' + this.formatNumber(this.editedCard.value);
+        } else {
           return true;
         }
-      }else{
+      } else {
         console.log('sin propina');
         console.log(this.editedItem.cardGif);
         if (this.editedCard.value !== '' && parseInt(this.editedItem.cardGif) > parseInt(this.editedCard.value)) {
-        return 'El valor de la tarjeta de regalo no puede ser mayor que ' + this.formatNumber(this.editedCard.value);
-      }else{
-        return true;
+          return 'El valor de la tarjeta de regalo no puede ser mayor que ' + this.formatNumber(this.editedCard.value);
+        } else {
+          return true;
+        }
       }
-    }
     },
     getColor(state) {
       switch (state) {
@@ -1977,7 +2013,7 @@ export default {
           this.editedCard.value = response.data
           console.log('Elemento seleccionado:', this.editedCard.value);
         }).finally(() => {
-            LocalStorageService.setIsLocked(false);
+          LocalStorageService.setIsLocked(false);
           if (this.editedCard.value) {
             this.mostrarOtroCampo = true;
           }
@@ -2111,7 +2147,7 @@ export default {
         .then((response) => {
           this.box = response.data.box;
         });*/
-        this.showAdditionalFields = false;
+      this.showAdditionalFields = false;
       this.dialogBox = true;
       this.editedBox.id = this.box ? this.box.id : 0;
       this.editedBox.cashFound = '';
@@ -2208,25 +2244,25 @@ export default {
 
     totalBoxCashs() {
       if (!this.box) {
-        return '0.00'  + " CLP";
+        return '0.00' + " CLP";
       }
-      else{
-      return this.box.existence ? this.formatNumber(this.box.existence) + " CLP" : '0.00'  + " CLP";
+      else {
+        return this.box.existence ? this.formatNumber(this.box.existence) + " CLP" : '0.00' + " CLP";
       }
     },
 
     totalBoxExtraction() {
       if (!this.box) {
-        return '0.00'  + " CLP";
-      }else{
-        return this.box.extraction ? this.formatNumber(this.box.extraction) + " CLP" : '0.00'  + " CLP";
+        return '0.00' + " CLP";
+      } else {
+        return this.box.extraction ? this.formatNumber(this.box.extraction) + " CLP" : '0.00' + " CLP";
       }
     },
 
     totalBonusPay() {
       console.log('bonos pagados');
       console.log(this.bonusPay);
-      return this.bonusPay ? this.formatNumber(this.bonusPay) + " CLP" : '0.00'  + " CLP";
+      return this.bonusPay ? this.formatNumber(this.bonusPay) + " CLP" : '0.00' + " CLP";
     },
 
     totalMountDebits() {
@@ -2336,11 +2372,11 @@ export default {
 
     initialize() {
       if (!this.branch_id) {
-    return; // Sale de la función si branch_id no tiene valor
-  }
+        return; // Sale de la función si branch_id no tiene valor
+      }
       //const token = LocalStorageService.getItem('token');
       //if (!LocalStorageService.getIsLocked()) {
-        this.loadingcar = true;
+      this.loadingcar = true;
       LocalStorageService.setIsLocked(true); // Bloquear antes de hacer la petición
       axios
         .get('https://api2.simplifies.cl/api/branch-cars', {
@@ -2469,7 +2505,7 @@ export default {
     showDetails(item) {
       LocalStorageService.setIsLocked(true);
       this.loadingOrders = true,
-      console.log('carro a ver details');
+        console.log('carro a ver details');
       console.log(item);
       this.orders = [];
       this.car_ref = item
@@ -2526,9 +2562,9 @@ export default {
     savePay() {
       // Validación condicional para "Tarjeta de regalo"
       if (this.selectedOption === 'Tarjeta de regalo' && !this.editedCard.cardGiftUser_id) {
-          // Llama la validación del campo
-          this.showAlert("warning", "Selecciono pagar con tarjeta de regalo la propina, debe poner una tarjeta de regalo válida.", 3000);        
-      }else{
+        // Llama la validación del campo
+        this.showAlert("warning", "Selecciono pagar con tarjeta de regalo la propina, debe poner una tarjeta de regalo válida.", 3000);
+      } else {
         this.data.car_id = this.editedItem.car_id;
         this.data.cash = parseFloat(this.editedItem.cash) || 0;
         this.data.creditCard = parseFloat(this.editedItem.creditCard) || 0;
@@ -2546,7 +2582,7 @@ export default {
         console.log(suma);
         console.log(this.editedItem.amount + this.data.tip);
         if (suma === this.editedItem.amount + this.data.tip) {
-        LocalStorageService.setIsLocked(true);
+          LocalStorageService.setIsLocked(true);
           this.valid = true;
           axios
             .put('https://api2.simplifies.cl/api/payment', this.data)
@@ -2573,7 +2609,7 @@ export default {
           this.valid = true;
         }
       }
-        
+
     },
     saveCloseBox() {
       LocalStorageService.setIsLocked(true);
@@ -2621,12 +2657,12 @@ export default {
         this.editedBox.branch_id = this.branch_id;
         this.editedBox.nameProfessional = this.nameProfessional;
         const formData = new FormData();
-                for (let key in this.editedBox) {
-                    formData.append(key, this.editedBox[key]);
-                }
+        for (let key in this.editedBox) {
+          formData.append(key, this.editedBox[key]);
+        }
 
-                console.log('formData');
-                console.log(formData);
+        console.log('formData');
+        console.log(formData);
         axios
           .post('https://api2.simplifies.cl/api/box', formData)
           .then(() => {
@@ -2701,7 +2737,7 @@ export default {
         .then((response) => {
           this.services = response.data.branchServicesPro;
         }).finally(() => {
-            LocalStorageService.setIsLocked(false);
+          LocalStorageService.setIsLocked(false);
         });
       this.showAddServices = true;
 
@@ -2776,7 +2812,7 @@ export default {
           console.log('imprime Productos');
           console.log(this.products);
         }).finally(() => {
-            LocalStorageService.setIsLocked(false);
+          LocalStorageService.setIsLocked(false);
         });
       this.showAddProducts = true;
 
@@ -2853,7 +2889,7 @@ export default {
           console.log(this.cashierSalesProf);
         }).finally(() => {
           this.loadingCashier = false;
-            LocalStorageService.setIsLocked(false);
+          LocalStorageService.setIsLocked(false);
         });
       this.showDialogSaleProducts = true;
     },
@@ -2875,7 +2911,7 @@ export default {
           console.log('imprime Productos');
           console.log(this.products);
         }).finally(() => {
-            LocalStorageService.setIsLocked(false);
+          LocalStorageService.setIsLocked(false);
         });
       this.showSaleProducts = true;
     },
@@ -3055,9 +3091,13 @@ export default {
   /* O establecer
    un ancho fijo */
 }
+
 .v-calendar .v-event-title {
-  white-space: normal !important; /* Permite el ajuste de texto */
-  overflow-wrap: break-word; /* Rompe las palabras largas */
-  word-break: break-word; /* Rompe el texto en palabras */
+  white-space: normal !important;
+  /* Permite el ajuste de texto */
+  overflow-wrap: break-word;
+  /* Rompe las palabras largas */
+  word-break: break-word;
+  /* Rompe el texto en palabras */
 }
 </style>

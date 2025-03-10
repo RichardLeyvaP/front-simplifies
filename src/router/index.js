@@ -480,6 +480,14 @@ const routes = [
           import( "@/views/reservation/reservations.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_reservation_professional"] },
       },
+      //nuevos cambios 1.2
+      {
+        path: "/coexistence",
+        name: "Coexistence",
+        component: () =>
+          import( "@/views/coexistence/Coexistence.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_move_products"] },
+      }
     ],
   },
 ];

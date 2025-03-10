@@ -13,6 +13,7 @@ import "vue3-snotify/style";
 import { createPinia } from "pinia";
 import piniaPluginPersistedState from "pinia-plugin-persistedstate";
 import router from './router/index';
+import axios from './axios' // Importa la instancia configurada
 
 
 
@@ -21,6 +22,8 @@ import { registerPlugins } from "@/plugins";
 
 
 const app = createApp(App);
+
+app.config.globalProperties.$axios = axios
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedState);
