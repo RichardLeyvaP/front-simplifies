@@ -487,6 +487,13 @@ const routes = [
         component: () =>
           import( "@/views/coexistence/Coexistence.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_move_products"] },
+      },
+      {
+        path: "/productstorestate",
+        name: "Productos No en venta",
+        component: () =>
+          import( "@/views/productstorestatus/ProductStoreStatus.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_move_products"] },
       }
     ],
   },

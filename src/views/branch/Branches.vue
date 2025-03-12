@@ -57,7 +57,7 @@
                     <v-row>
                       <v-col cols="12" md="6">
                         <v-text-field v-model="editedItem.name" clearable label="Nombre"
-                          prepend-icon="mdi-storefront-outline" variant="underlined" :rules="nameRules">
+                          prepend-icon="mdi-storefront-outline" variant="underlined" density="compact">
                         </v-text-field>
                       </v-col>
                       <v-col cols="12" md="6">

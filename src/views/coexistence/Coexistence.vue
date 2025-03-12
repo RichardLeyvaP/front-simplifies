@@ -293,11 +293,12 @@ export default {
           this.results = result.data.convivencias || []; // Si no hay roles, asigna un arreglo vacío
         } else {
           LocalStorageService.setIsLocked(false);
+          this.loadingWorkPlace = false;
           // Si no hay datos, asignamos un array vacío
           this.results = [];
         }
       } catch (error) {
-        this.loading = false;
+        this.loadingWorkPlace = false;
         // Captura de errores no controlados
         this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
       } finally {
