@@ -34,22 +34,22 @@
           <v-sheet border>
 
             <div style="max-height: 60vh; overflow-y: auto;">
-            <v-list>
-              <v-list-item-group v-model="selected" multiple active-class="deep-purple--text text--accent-4">
-                <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + service.image_service"
-                  v-for="service in services" :key="service.id" @click="toggleService(service.id)"
-                  :class="{ 'selected-item': isSelected(service.id) }" class="pt-4 pb-4">
+              <v-list>
+                <v-list-item-group v-model="selected" multiple active-class="deep-purple--text text--accent-4">
+                  <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + service.image_service"
+                    v-for="service in services" :key="service.id" @click="toggleService(service.id)"
+                    :class="{ 'selected-item': isSelected(service.id) }" class="pt-4 pb-4">
 
-                  <v-list-item-content class="d-flex align-center justify-space-between">
-                    <div class="text-h6">{{ service.name }}</div>
-                    <v-btn :color="!isSelected(service.id) ? 'amber-darken-1' : ''" :dark="isSelected(service.id)">
-                      ${{ formatNumber(service.price_service) }}
-                    </v-btn>
-                  </v-list-item-content>
+                    <v-list-item-content class="d-flex align-center justify-space-between">
+                      <div class="text-h6">{{ service.name }}</div>
+                      <v-btn :color="!isSelected(service.id) ? 'amber-darken-1' : ''" :dark="isSelected(service.id)">
+                        ${{ formatNumber(service.price_service) }}
+                      </v-btn>
+                    </v-list-item-content>
 
-                </v-list-item>
-              </v-list-item-group>
-            </v-list>
+                  </v-list-item>
+                </v-list-item-group>
+              </v-list>
             </div>
 
 
@@ -70,8 +70,8 @@
           <v-container>
             <v-row class="d-flex align-center justify-space-between">
               <h3 class="text-h6">Barberos Disponibles</h3>
-              <v-list-item :disabled="(!this.professionals.length)" elevation="4" @click="toggleService2(-99)" :class="{ 'selected-item': this.barberAleatorie }"
-                class="pt-4 pb-4">
+              <v-list-item :disabled="(!this.professionals.length)" elevation="4" @click="toggleService2(-99)"
+                :class="{ 'selected-item': this.barberAleatorie }" class="pt-4 pb-4">
                 <v-list-item-content>
                   <v-list-item-title class="text-h6">Aleatorio </v-list-item-title>
                 </v-list-item-content>
@@ -86,28 +86,28 @@
 
           <v-sheet border>
             <div style="max-height: 55vh; overflow-y: auto;">
-            <v-list v-if ="(this.professionals.length > 0)">
+              <v-list v-if="(this.professionals.length > 0)">
 
-              <v-list-item-group v-model="professional" active-class="deep-purple--text text--accent-4">
+                <v-list-item-group v-model="professional" active-class="deep-purple--text text--accent-4">
 
-                <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + professional.image_url"
-                  v-for="professional in professionals" :key="professional.id" @click="toggleService2(professional)"
-                  :class="{ 'selected-item': isProfessional(professional.id) }" class="pt-4 pb-4">
-
-
-                  <v-list-item-content class="d-flex align-center justify-space-between">
-                    <div class="text-h6">{{ professional.name }}</div>
-                    <v-btn :color="!isProfessional(professional.id) ? 'amber-darken-1' : ''"
-                      :dark="isProfessional(professional.id)">
-                      {{ 'Disponible aprox: ' + professional.start_time }}
-                    </v-btn>
-                  </v-list-item-content>
-                </v-list-item>
+                  <v-list-item :prepend-avatar="'http://127.0.0.1:8000/api/images/' + professional.image_url"
+                    v-for="professional in professionals" :key="professional.id" @click="toggleService2(professional)"
+                    :class="{ 'selected-item': isProfessional(professional.id) }" class="pt-4 pb-4">
 
 
+                    <v-list-item-content class="d-flex align-center justify-space-between">
+                      <div class="text-h6">{{ professional.name }}</div>
+                      <v-btn :color="!isProfessional(professional.id) ? 'amber-darken-1' : ''"
+                        :dark="isProfessional(professional.id)">
+                        {{ 'Disponible aprox: ' + professional.start_time }}
+                      </v-btn>
+                    </v-list-item-content>
+                  </v-list-item>
 
-              </v-list-item-group>
-            </v-list>
+
+
+                </v-list-item-group>
+              </v-list>
             </div>
           </v-sheet>
           <v-container>
@@ -163,48 +163,41 @@
               </v-card>
             </v-dialog>-->
             <v-dialog v-model="showDialog" max-width="400px">
-    <v-card title="Datos de Cliente">
-      <v-card-text>
-        <v-form @submit.prevent>
-          <template v-if="showTextField">
-          <v-text-field v-model="email_client" label="Teléfono ó Correo Electrónico" outlined
-          required></v-text-field>
-          </template>
-          <template v-else>
-            <v-autocomplete
-            v-model="email_client2"
-            :items="clientRegister"
-            item-title="name"
-            item-value="id"
-            label="Seleccione su nombre"
-            :no-data-text="'No hay datos disponibles'"
-            outlined
-            :rules="selectRules"
-          >
-          <!--<template v-slot:item="{ props, item }">
+              <v-card title="Datos de Cliente">
+                <v-card-text>
+                  <v-form @submit.prevent>
+                    <template v-if="showTextField">
+                      <v-text-field v-model="email_client" label="Teléfono ó Correo Electrónico" outlined
+                        required></v-text-field>
+                    </template>
+                    <template v-else>
+                      <v-autocomplete v-model="email_client2" :items="clientRegister" item-title="name" item-value="id"
+                        label="Seleccione su nombre" :no-data-text="'No hay datos disponibles'" outlined
+                        :rules="selectRules">
+                        <!--<template v-slot:item="{ props, item }">
                       <v-list-item v-bind="props"
-                        :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.client_image"
+                        :prepend-avatar="'http://127.0.0.1:8000/api/images/' + item.raw.client_image"
                         :title="item.raw.name">
                         <v-list-item-subtitle class="d-flex justify-space-between">
                           Correo: {{ item.raw.email }}
                         </v-list-item-subtitle>
                       </v-list-item>
                     </template>--></v-autocomplete>
-          </template>
-          <!--<v-btn size="x-large" color="orange lighten-2" class="mt-2" type="submit"
+                    </template>
+                    <!--<v-btn size="x-large" color="orange lighten-2" class="mt-2" type="submit"
             @click="() => { sendData(); isActive.value = false; }" block>Aceptar</v-btn>-->
-        </v-form>
-      </v-card-text>
+                  </v-form>
+                </v-card-text>
 
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn variant="flat" color="#E7E9E9" text="Cancelar"
-          @click="() => { this.selectedItem = 'option2'; this.radios = 'ClientNo'; showDialog = false; this.email_client = ''; this.showTextField = true}">Cancelar</v-btn>          
-        <v-btn color="#F18254" variant="flat" text="Aceptar" :disabled="!this.email_client" :loading="loadingClient"
-          @click="fetchClients">Aceptar</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn variant="flat" color="#E7E9E9" text="Cancelar"
+                    @click="() => { this.selectedItem = 'option2'; this.radios = 'ClientNo'; showDialog = false; this.email_client = ''; this.showTextField = true }">Cancelar</v-btn>
+                  <v-btn color="#F18254" variant="flat" text="Aceptar" :disabled="!this.email_client"
+                    :loading="loadingClient" @click="fetchClients">Aceptar</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-sheet>
 
 
@@ -223,8 +216,8 @@
 
 
         <template v-slot:item.4>
-            <v-form ref="form" lazy-validation v-model="valid">
-          <v-sheet border>
+          <v-form ref="form" lazy-validation v-model="valid">
+            <v-sheet border>
               <v-row>
                 <v-col cols="12" md="5" class="mt-1">
                   <v-text-field :disabled="verificate" v-model="name_client" :counter="50" :rules="nameRules"
@@ -253,8 +246,8 @@
               </v-row>
 
 
-            
-            <!--<v-row>
+
+              <!--<v-row>
               <v-col cols="12" md="12">
                 <p style="color: #555; text-align: justify;">
                   <span
@@ -265,56 +258,56 @@
                 </p>
               </v-col>
             </v-row>-->
-            <v-divider class="pt-4 mt-4"></v-divider>
+              <v-divider class="pt-4 mt-4"></v-divider>
+              <v-container>
+
+                <v-card class="mx-auto">
+                  <v-card-text>
+                    <div class="text"><strong>Detalles de la Reserva</strong></div>
+
+                    <p>Ubicación :
+                      <span v-for="(item) in filteredBranches" :key="item.title" :value="item.id"> <strong>{{ item.name
+                      }}</strong>, {{ item.address }} </span>
+                    </p>
+
+                    <p>Profesional :
+                      <span v-for="(item) in filteredProfessionals" :key="item.title" :value="item.id">
+                        <strong> {{ item.name }} <!--{{ item.surname }} {{ item.second_surname }}--></strong> </span>
+                    </p>
+
+                    <p>Servicios : <br>
+                      <span v-for="(item) in filteredServices1.filteredServices" :key="item.title" :value="item.id">
+                        <strong> {{ item.name }}</strong> <br> </span>
+                    </p>
+
+                    <p> Duración : <strong> {{ convertirMinutosAHorasYMinutos(filteredServices1.totalDuration)
+                    }}</strong></p>
+
+                    <p> Precio Total : <strong> {{ this.formatNumber(filteredServices1.totalPrice) }}</strong></p>
+                  </v-card-text>
+
+                </v-card>
+
+              </v-container>
+
+            </v-sheet>
             <v-container>
+              <v-row class="mt-1">
 
-              <v-card class="mx-auto">
-                <v-card-text>
-                  <div class="text"><strong>Detalles de la Reserva</strong></div>
+                <v-btn size="x-large" @click="prevStep">Volver</v-btn>
+                <v-spacer></v-spacer>
+                <v-dialog transition="dialog-bottom-transition" max-width="600">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn color="orange lighten-2" v-bind="attrs" v-on="on" @click="send()" :loading="loading"
+                      :disabled="!valid" size="x-large">Reservar</v-btn>
+                  </template>
 
-                  <p>Ubicación :
-                    <span v-for="(item) in filteredBranches" :key="item.title" :value="item.id"> <strong>{{ item.name
-                        }}</strong>, {{ item.address }} </span>
-                  </p>
+                </v-dialog>
 
-                  <p>Profesional :
-                    <span v-for="(item) in filteredProfessionals" :key="item.title" :value="item.id">
-                      <strong> {{ item.name }} <!--{{ item.surname }} {{ item.second_surname }}--></strong> </span>
-                  </p>
 
-                  <p>Servicios : <br>
-                    <span v-for="(item) in filteredServices1.filteredServices" :key="item.title" :value="item.id">
-                      <strong> {{ item.name }}</strong> <br> </span>
-                  </p>
-
-                  <p> Duración : <strong> {{ convertirMinutosAHorasYMinutos(filteredServices1.totalDuration)
-                      }}</strong></p>
-
-                  <p> Precio Total : <strong> {{ this.formatNumber(filteredServices1.totalPrice) }}</strong></p>
-                </v-card-text>
-
-              </v-card>
-
+              </v-row>
             </v-container>
-
-          </v-sheet>
-          <v-container>
-            <v-row class="mt-1">
-
-              <v-btn size="x-large" @click="prevStep">Volver</v-btn>
-              <v-spacer></v-spacer>
-              <v-dialog transition="dialog-bottom-transition" max-width="600">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn color="orange lighten-2" v-bind="attrs" v-on="on" @click="send()" :loading="loading" :disabled="!valid"
-                    size="x-large">Reservar</v-btn>
-                </template>
-
-              </v-dialog>
-
-
-            </v-row>
-          </v-container>
-        </v-form>
+          </v-form>
         </template>
 
       </v-stepper>
@@ -326,13 +319,12 @@
         <v-spacer></v-spacer>
       </v-row>
     </v-container>
-    <v-dialog v-model="dialogEncuesta" max-width="600"
-      @click:outside="closeEncuesta">
+    <v-dialog v-model="dialogEncuesta" max-width="600" @click:outside="closeEncuesta">
       <v-card>
         <v-toolbar color="orange lighten-2" dark>
-                    <span class="text-subtitle-1 ml-8">Como supo de nosotros</span>
-                    </v-toolbar>
-                    <v-col cols="12" md="12" class="mt-2">
+          <span class="text-subtitle-1 ml-8">Como supo de nosotros</span>
+        </v-toolbar>
+        <v-col cols="12" md="12" class="mt-2">
           <v-list-item v-for="survey in surveys" :key="survey.id" :class="['py-0', 'my-0', 'custom-list-item']">
             <v-list-item-content class="d-flex align-center">
               <v-checkbox v-model="selectedSurveys" :label="survey.name" :value="survey.id" dense
@@ -340,7 +332,7 @@
             </v-list-item-content>
           </v-list-item>
         </v-col>
-          <!--<v-col cols="12" md="12" class="mt-2">
+        <!--<v-col cols="12" md="12" class="mt-2">
                 <v-checkbox
       v-for="survey in surveys"
       :key="survey.id"
@@ -354,7 +346,7 @@
         <v-card-actions class="justify-end">
           <v-btn @click="closeEncuesta()" color="#E7E9E9" variant="flat">Cancelar</v-btn>
           <v-btn @click="addEncuesta()" :disabled="!selectedSurveys.length > 0" color="#F18254"
-            variant="flat">Aceptar</v-btn>
+            variant="flat" :loading="!valid">Aceptar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -532,23 +524,23 @@ export default {
         console.log('El modal se ha cerrado');
         this.selectedItem = 'option2';
         //this.clientRegister = [];
-      //this.client_id = '';
-      //this.email_client = '';
-      //this.email_clientText = '';
+        //this.client_id = '';
+        //this.email_client = '';
+        //this.email_clientText = '';
         // Realizar cualquier otra acción necesaria
       }
     },
     email_client2(newVal) {
-      if (this.clientRegister.length >0) {
+      if (this.clientRegister.length > 0) {
         const client = this.clientRegister.filter(item => item.id == newVal)
         console.log('client seleccionado');
         console.log(client[0]);
         this.updateClientData(client[0]);
       }
-      },
-      email_clientText(newVal) {
+    },
+    email_clientText(newVal) {
       if (newVal) {
-       
+
         console.log('correo seleccionado');
         console.log(newVal);
         this.fetchClients(newVal);
@@ -633,7 +625,7 @@ export default {
     this.branch_id = parseInt(LocalStorageService.getItem('branch_id'));
     this.nameBranch = JSON.parse(LocalStorageService.getItem("nameBranch"));
     axios
-      .get('https://api2.simplifies.cl/api/show-business', {
+      .get('http://127.0.0.1:8000/api/show-business', {
         params: {
           business_id: this.business_id
         }
@@ -693,7 +685,7 @@ export default {
       console.log('query en la funcion');
       console.log(this.email_client);
       //if (query) {
-        axios.get(`https://api2.simplifies.cl/api/client-email-phone?email=${this.email_client}`)
+      axios.get(`http://127.0.0.1:8000/api/client-email-phone?email=${this.email_client}`)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.clientRegister = response.data.client;
@@ -705,12 +697,12 @@ export default {
             this.email_client = '';
           }
           else {
-        this.showAlert("warning", "No existe ningún cliente con ese correo o teléfono", 2000);
-        this.email_client = '';
-        this.showTextField = true;
-        this.clientRegister = [];
-      }
-      this.loadingClient = false;
+            this.showAlert("warning", "No existe ningún cliente con ese correo o teléfono", 2000);
+            this.email_client = '';
+            this.showTextField = true;
+            this.clientRegister = [];
+          }
+          this.loadingClient = false;
         });
       //}
     },
@@ -738,20 +730,20 @@ export default {
     },*/
     setClientData(client) {
       console.log('client seleccionado setclientData');
-      console.log('client seleccionado setclientData:'+client.id);
-      
+      console.log('client seleccionado setclientData:' + client.id);
+
       // Actualiza los campos con los datos del cliente seleccionado
       this.name_client = client.name;
-            this.phone_client = '+'+client.phone;
-            this.client_id = client.id;
-            //this.second_surname = client.second_surname;
-            this.email_client = client.email;                    
-            this.valid = true;
-            console.log(this.email_client);
-            this.showDialog = false;
-            this.verificate = true;
-            this.showTextField = true;
-            this.changeStep(4);
+      this.phone_client = '+' + client.phone;
+      this.client_id = client.id;
+      //this.second_surname = client.second_surname;
+      this.email_client = client.email;
+      this.valid = true;
+      console.log(this.email_client);
+      this.showDialog = false;
+      this.verificate = true;
+      this.showTextField = true;
+      this.changeStep(4);
       // Agrega más campos según sea necesario
     },
     formatNumber(value) {
@@ -846,12 +838,12 @@ export default {
         this.professional = [];
         this.professionals = [];
         this.barberAleatorie = '';
-      }if (index == 2) {
+      } if (index == 2) {
         this.professional = [];
         this.professionals = [];
         this.barberAleatorie = '';
         this.chargeProfessionals(this.selected);
-      } 
+      }
       // Cambiar el valor de step al índice especificado
       this.step = index;
     },
@@ -885,7 +877,7 @@ export default {
 
 
       // Realiza la solicitud POST Y BUSCO LOS DATOS DEL CLIENTE 
-      axios.get(`https://api2.simplifies.cl/api/client-email-phone?email=${this.email_client2}`)
+      axios.get(`http://127.0.0.1:8000/api/client-email-phone?email=${this.email_client2}`)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.clientRegister = response.data.client;
@@ -904,7 +896,7 @@ export default {
             this.email_client = client.email;
             this.showDialog = false;
             this.verificate = true;
-            this.changeStep(4); 
+            this.changeStep(4);
 
           }
           else {
@@ -962,7 +954,7 @@ export default {
           email_client: this.email_client,
           phone_client: this.phone_client,
           name_client: this.name_client,
-          client_id:this.client_id,
+          client_id: this.client_id,
           //second_surname:this.second_surname,
           select_professional: 0,
           services: newArrayService,
@@ -980,7 +972,7 @@ export default {
           email_client: this.email_client,
           phone_client: this.phone_client,
           name_client: this.name_client,
-          client_id:this.client_id,
+          client_id: this.client_id,
           //second_surname:this.second_surname,
           services: newArrayService,
           from_home: 0
@@ -991,7 +983,7 @@ export default {
       console.log('**********************************---------------------');
 
       // Realiza la solicitud GET con Axios y pasa los parámetros
-      axios.post('https://api2.simplifies.cl/api/reservation_store', request)
+      axios.post('http://127.0.0.1:8000/api/reservation_store', request)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.message = response.data.msg
@@ -1032,7 +1024,7 @@ export default {
     },
     showDialogEncuesta() {
       axios
-        .get('https://api2.simplifies.cl/api/survey')
+        .get('http://127.0.0.1:8000/api/survey')
         .then((response) => {
           this.surveys = response.data.surveys;
         });
@@ -1041,13 +1033,14 @@ export default {
 
     addEncuesta() {
       console.log(this.selectedSurveys);
+      this.valid = false;
       let request = {
         email: this.email_client ? this.email_client : this.phone_client,
         survey_id: this.selectedSurveys,
         branch_id: this.branch_id,
 
       }
-      axios.post('https://api2.simplifies.cl/api/client-survey', request)
+      axios.post('http://127.0.0.1:8000/api/client-survey', request)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           // this.message=response.data.msg
@@ -1056,8 +1049,9 @@ export default {
         }).finally(() => {
           this.dialogEncuesta = false;
           this.$router.push('/totem');
+          this.valid = true;
         });
-
+        this.valid = true;
     },
     closeEncuesta() {
       this.$router.push('/totem');
@@ -1088,7 +1082,7 @@ export default {
   
   
   axios
-  .get('https://api2.simplifies.cl/api/professional-reservations-time' , {
+  .get('http://127.0.0.1:8000/api/professional-reservations-time' , {
             params: request
         })
         .then((response) => {
@@ -1119,7 +1113,7 @@ return day ? day.day.toString().trim() : "";
 },*/
     /*chargeCalendarsBranches() {
         axios
-            .get(`https://api2.simplifies.cl/api/schedule-show?branch_id=${this.branch_id}`)
+            .get(`http://127.0.0.1:8000/api/schedule-show?branch_id=${this.branch_id}`)
             .then((response) => {
                 this.calendars_branches = response.data.Schedules;
                 this.dayOfWeek = response.data.Schedules;
@@ -1148,10 +1142,10 @@ return day ? day.day.toString().trim() : "";
       this.clearTextClient();
       if (this.step == 3) {
         this.professional = [];
-      this.professionals = [];
-      this.barberAleatorie = '';
-      this.chargeProfessionals(this.selected);
-      }if (this.step == 2) {
+        this.professionals = [];
+        this.barberAleatorie = '';
+        this.chargeProfessionals(this.selected);
+      } if (this.step == 2) {
         this.selected = [];
       }
       if (this.step > 1) {
@@ -1170,10 +1164,10 @@ return day ? day.day.toString().trim() : "";
 
       if (newValue === 2) {
         //cancelo los demas timer  
-        console.log("Limpiando las variables de professional");  
-      this.professional = [];
-      this.professionals = [];
-      this.barberAleatorie = '';
+        console.log("Limpiando las variables de professional");
+        this.professional = [];
+        this.professionals = [];
+        this.barberAleatorie = '';
         console.log("--------------Se ha pasado del paso 1 al paso 2");
         console.log('---------' + this.selected);
         this.chargeProfessionals(this.selected);
@@ -1290,13 +1284,13 @@ return day ? day.day.toString().trim() : "";
       console.log('limpiar los servicios');
       this.services = [];
       this.selected = [];
-      const branchId = parseInt(this.branch_id);
+      const branchId = Number(this.branch_id);
       /*if (isNaN(branchId)) {
         console.log("El branch_id no es un número válido.");
         return;
       }*/
       axios
-        .get(`https://api2.simplifies.cl/api/branchservice-show?branch_id=${parseInt(branchId)}`)
+        .get(`http://127.0.0.1:8000/api/branchservice-show?branch_id=${parseInt(branchId)}`)
         .then((response) => {
           console.log(response.data)
           this.services = response.data.services;
@@ -1323,13 +1317,13 @@ return day ? day.day.toString().trim() : "";
 
       this.array_services = newArrayService;
       axios
-        .get(`https://api2.simplifies.cl/api/branch-professionals-service`, {
+        .get(`http://127.0.0.1:8000/api/branch-professionals-service`, {
           params: data,
           headers: {
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache' // Para compatibilidad con navegadores más antiguos
-        },
-        timeout: 10000
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache' // Para compatibilidad con navegadores más antiguos
+          },
+          timeout: 10000
         })
         .then((response) => {
           this.professionals = response.data.professionals;

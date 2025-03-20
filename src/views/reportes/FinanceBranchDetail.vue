@@ -95,7 +95,7 @@
                                         <v-icon v-if="item.file" @click="openDoc(item)"
                                             color="green">mdi-file-document-outline</v-icon>
                                         <!--<v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                        <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
+                        <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_product" alt="image"></v-img>
                     </v-avatar>-->
                                     </template>
                                 </v-data-table>
@@ -227,7 +227,7 @@ export default {
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
 
         axios
-            .get('https://api2.simplifies.cl/api/show-business', {
+            .get('http://127.0.0.1:8000/api/show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -254,7 +254,7 @@ export default {
 
     methods: {
         openDoc(item) {
-            const url = 'https://api2.simplifies.cl/api/images/' + item.file;
+            const url = 'http://127.0.0.1:8000/api/images/' + item.file;
             window.open(url, '_blanK');
         },
         formatNumber(value) {
@@ -308,7 +308,7 @@ export default {
             console.log('this.branch_id')
             console.log(this.branch_id)
             axios
-                .get('https://api2.simplifies.cl/api/finances-detail-operation', {
+                .get('http://127.0.0.1:8000/api/finances-detail-operation', {
                     params: {
                         branch_id: this.branch_id,
                         year: this.selectedYear,
@@ -325,7 +325,7 @@ export default {
         operationDetails() {
             this.editedIndex = 2;
             axios
-                .get('https://api2.simplifies.cl/api/finances-detail-operation-month', {
+                .get('http://127.0.0.1:8000/api/finances-detail-operation-month', {
                     params: {
                         branch_id: this.branch_id,
                         year: this.selectedYear,

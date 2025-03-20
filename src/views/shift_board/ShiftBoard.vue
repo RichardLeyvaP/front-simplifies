@@ -291,7 +291,7 @@ export default {
       //const token = LocalStorageService.getItem('token');
       console.log('AQUI SI ESTOY ENTRANDO -callForTime()');
       axios
-        .get('https://api2.simplifies.cl/api/tail_branch_attended_shiftboard', {
+        .get('http://127.0.0.1:8000/api/tail_branch_attended_shiftboard', {
           /*headers: {
                 'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
             },*/

@@ -244,7 +244,7 @@ export default {
       this.loadingPermission = true;
       LocalStorageService.setIsLocked(true);
       axios
-        .get('https://api2.simplifies.cl/api/permission')
+        .get('http://127.0.0.1:8000/api/permission')
         .then((response) => {
           console.log("entra a Buscar permisos")
           this.results = response.data;
@@ -271,7 +271,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('https://api2.simplifies.cl/api/permission-destroy', request)
+        .post('http://127.0.0.1:8000/api/permission-destroy', request)
         .then(() => {
           LocalStorageService.setIsLocked(false);
           this.initialize();
@@ -305,7 +305,7 @@ export default {
         this.data.description = this.editedItem.description;
         this.data.module = this.editedItem.module;
         axios
-          .put('https://api2.simplifies.cl/api/permission', this.data)
+          .put('http://127.0.0.1:8000/api/permission', this.data)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.initialize();
@@ -317,7 +317,7 @@ export default {
         this.data.description = this.editedItem.description;
         this.data.module = this.editedItem.module;
         axios
-          .post('https://api2.simplifies.cl/api/permission', this.data)
+          .post('http://127.0.0.1:8000/api/permission', this.data)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.initialize();

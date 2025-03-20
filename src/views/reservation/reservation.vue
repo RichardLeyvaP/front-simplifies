@@ -49,7 +49,7 @@
           <template v-slot:item.professionalName="{ item }">
   
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+              <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url" alt="image"></v-img>
             </v-avatar>
             {{ item.professionalName }}
           </template>
@@ -57,7 +57,7 @@
           <template v-slot:item.clientName="{ item }">
   
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.client_image" alt="image"></v-img>
+              <v-img :src="'http://127.0.0.1:8000/api/images/' + item.client_image" alt="image"></v-img>
             </v-avatar>
             {{ item.clientName }}
           </template>
@@ -211,7 +211,7 @@
                     <template v-slot:item.name="{ item }">
   
                       <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                        <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_service" alt="image"></v-img>
+                        <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_service" alt="image"></v-img>
                       </v-avatar>
   
                     </template>
@@ -515,7 +515,7 @@
         // Realiza cualquier lógica adicional aquí
         console.log('Elemento seleccionado:', value.data);
         axios
-          .get('https://api2.simplifies.cl/api/show-value', {
+          .get('http://127.0.0.1:8000/api/show-value', {
             params: {
               code: value.data
             }
@@ -539,7 +539,7 @@
           id: this.editedItem.order_id
         };
         axios
-          .post('https://api2.simplifies.cl/api/order-destroy', request)
+          .post('http://127.0.0.1:8000/api/order-destroy', request)
           .then(() => {
             this.initialize();
             this.showDetails(this.reservation_resf)
@@ -559,7 +559,7 @@
           request_delete: 0
         };
         axios
-          .put('https://api2.simplifies.cl/api/order', request)
+          .put('http://127.0.0.1:8000/api/order', request)
           .then(() => {
             this.initialize();
             this.showDetails(this.reservation_resf)
@@ -610,7 +610,7 @@
       initialize() {
   
         axios
-          .get('https://api2.simplifies.cl/api/branch-reservations', {
+          .get('http://127.0.0.1:8000/api/branch-reservations', {
             params: {
               branch_id: this.branch_id
             }
@@ -624,7 +624,7 @@
           });
   
         axios
-          .get('https://api2.simplifies.cl/api/box-show', {
+          .get('http://127.0.0.1:8000/api/box-show', {
             params: {
               branch_id: this.branch_id
             }
@@ -633,7 +633,7 @@
             this.box = response.data.box;
           });
           axios
-        .get('https://api2.simplifies.cl/api/show-business', {
+        .get('http://127.0.0.1:8000/api/show-business', {
             params: {
               business_id: this.business_id
             }
@@ -667,7 +667,7 @@
         this.editedItem.cardGif = item.cardGif;
         this.dialogPay = true;
         axios
-          .get('https://api2.simplifies.cl/api/card-gift-show', {
+          .get('http://127.0.0.1:8000/api/card-gift-show', {
             params: {
               branch_id: this.branch_id
             }
@@ -682,7 +682,7 @@
         console.log('cars');
         console.log(this.reservation_resf);
         axios
-          .get('https://api2.simplifies.cl/api/car_services', {
+          .get('http://127.0.0.1:8000/api/car_services', {
             params: {
               car_id: this.reservation_resf.card_id
             }
@@ -703,7 +703,7 @@
         this.data.cause =  this.cause;
         console.log(request);
         axios
-          .post('https://api2.simplifies.cl/api/reservation-destroy', this.data)
+          .post('http://127.0.0.1:8000/api/reservation-destroy', this.data)
           .then(() => {
             this.initialize();
             this.showAlert("success", "Reservación eliminada correctamente", 3000)
@@ -724,7 +724,7 @@
           this.data.id = this.editedItem.cardGif ? this.editedCard.cardGift_id : 0;
   
           axios
-            .put('https://api2.simplifies.cl/api/payment', this.data)
+            .put('http://127.0.0.1:8000/api/payment', this.data)
             .then(() => {
               this.showAlert("success", "Pago efectuado correctamente", 3000);
               this.initialize();
@@ -754,7 +754,7 @@
         this.data.totalCardGif = this.editedCloseBox.totalCardGif;
         console.log(this.data);
         axios
-          .post('https://api2.simplifies.cl/api/closebox', this.data)
+          .post('http://127.0.0.1:8000/api/closebox', this.data)
           .then(() => {
             this.showAlert("success", "Cierre de caja efectuado correctamente", 3000);
             this.initialize();
@@ -771,7 +771,7 @@
           this.data.existence = this.editedBox.existence;
           this.data.extraction = this.editedBox.extraction;
           axios
-            .put('https://api2.simplifies.cl/api/box', this.data)
+            .put('http://127.0.0.1:8000/api/box', this.data)
             .then(() => {
               this.showAlert("success", "Caja Actualizada correctamente", 3000);
             });

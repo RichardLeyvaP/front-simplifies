@@ -48,7 +48,7 @@
                                                     <template v-slot:item="{ props, item }">
                                                     <v-list-item
                                                         v-bind="props"
-                                                        :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_url"
+                                                        :prepend-avatar="'http://127.0.0.1:8000/api/images/'+item.raw.image_url"
                                                         :subtitle="'Cargo: '+item.raw.charge"
                                                         :title="item.raw.name"
                                                     ></v-list-item>
@@ -158,7 +158,7 @@
                 <template v-slot:item.name="{ item }">
 
                     <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                        <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+                        <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url" alt="image"></v-img>
                     </v-avatar>
                     {{ item.name }}
                 </template>
@@ -372,7 +372,7 @@ export default {
             LocalStorageService.setIsLocked(true);
             if (this.charge == 'Administrador') {
                 axios
-                    .get('https://api2.simplifies.cl/api/vacation')
+                    .get('http://127.0.0.1:8000/api/vacation')
                     .then((response) => {
                         this.results = response.data.vacations;
                         this.professionals = response.data.professionals;
@@ -383,7 +383,7 @@ export default {
             } else {
                 console.log('No es administrador');
                 axios
-                    .get('https://api2.simplifies.cl/api/vacation-show', {
+                    .get('http://127.0.0.1:8000/api/vacation-show', {
                         params: {
                             branch_id: this.branch_id
                         }
@@ -421,7 +421,7 @@ export default {
                 id: this.id
             };
             axios
-                .post('https://api2.simplifies.cl/api/vacation-destroy', request)
+                .post('http://127.0.0.1:8000/api/vacation-destroy', request)
                 .then(() => {
                     LocalStorageService.setIsLocked(false);
                     this.showAlert("success", "Días de permisos eliminados correctamente", 3000)
@@ -456,7 +456,7 @@ export default {
                 this.data.endDate = this.formattedEndDate;
                 console.log(this.data);
                 axios
-                    .put('https://api2.simplifies.cl/api/vacation', this.data)
+                    .put('http://127.0.0.1:8000/api/vacation', this.data)
                     .then(() => {
                         LocalStorageService.setIsLocked(false);
                         this.initialize();
@@ -475,7 +475,7 @@ export default {
                 this.data.endDate = this.formattedEndDate;
                 console.log(this.data);
                 axios
-                    .post('https://api2.simplifies.cl/api/vacation', this.data)
+                    .post('http://127.0.0.1:8000/api/vacation', this.data)
                     .then(() => {
                         LocalStorageService.setIsLocked(false);
                         this.professional_id = '',

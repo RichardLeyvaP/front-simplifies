@@ -176,7 +176,7 @@ export default {
     },
     changePass (){
       axios
-        .get('https://api2.simplifies.cl/api/reactive-password', {
+        .get('http://127.0.0.1:8000/api/reactive-password', {
                     params: {
                         email: this.emailpas,
                     }
@@ -219,7 +219,7 @@ export default {
       const token = LocalStorageService.getItem('token');
       if(token){
         axios
-        .get('https://api2.simplifies.cl/api/logout', {
+        .get('http://127.0.0.1:8000/api/logout', {
           headers: {
                 'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
             }
@@ -237,7 +237,7 @@ export default {
 
       console.log(this.data);
       axios
-        .post('https://api2.simplifies.cl/api/login', this.data)
+        .post('http://127.0.0.1:8000/api/login', this.data)
         .then((response) => {
           if (response.data) {
             if (this.editedItem.branch_id === response.data.branch_id || (this.selectedOption === "empresa" && response.data.business_id && !response.data.branch_id)) {
@@ -294,7 +294,7 @@ export default {
 
     initialize() {
       axios
-        .get('https://api2.simplifies.cl/api/branch-prueba')
+        .get('http://127.0.0.1:8000/api/branch-prueba')
         .then((response) => {
           this.branches = response.data.branches;
         });

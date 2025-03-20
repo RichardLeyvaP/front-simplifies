@@ -25,16 +25,15 @@
             </v-row>
         </v-toolbar>
         <v-card-text>
-            <v-row>
-                <v-col cols="12" sm="12" md="4">
-                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
-                        v-if="this.mostrarFila" clearable label="Seleccione una Sucursal" prepend-icon="mdi-store"
-                        item-title="name" item-value="id" variant="underlined"
-                        @update:model-value="initialize()"></v-autocomplete>
-                </v-col>
-            </v-row>
             <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
                 hide-details></v-text-field>
+            <!-- Botones globales de Aceptar y Cancelar -->
+            <div v-if="changes.length > 0" class="d-flex justify-end my-4">
+                <v-btn density="comfortable" class="ml-2" icon="mdi-check" @click="save" color="primary" variant="tonal"
+                    elevation="1" title="Aceptar Actualizar existencia" :disabled="changes.length === 0" />
+                <v-btn density="comfortable" class="ml-2" icon="mdi-close" @click="cancel" color="red-darken-4"
+                    variant="tonal" elevation="1" title="Cancelar actualización" :disabled="changes.length === 0" />
+            </div>
             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search"
                 :items="results" class="elevation-1" no-results-text="No hay datos disponibles"
                 no-data-text="No hay datos disponibles" :loading="loadingWorkPlace" loading-text="Cargando datos..."
@@ -49,31 +48,12 @@
                                     @click="toggleGroup(item)" />
                                 {{ item.value }}
                                 <v-spacer></v-spacer>
-                                <!-- Botones de Aceptar y Cancelar (alineados a la derecha) -->
-                                <div class="d-flex align-center" v-if="this.changes.length > 0">
-                                    <v-btn density="comfortable" class="ml-2" icon="mdi-check" @click="save"
-                                        color="primary" variant="tonal" elevation="1"
-                                        title="Aceptar Actualizar existencia" :disabled="changes.length === 0" />
-                                    <v-btn density="comfortable" class="ml-2" icon="mdi-close" @click="cancel"
-                                        color="red-darken-4" variant="tonal" elevation="1"
-                                        title="Cancelar actualización" :disabled="changes.length === 0" />
-                                </div>
                             </div>
                         </td>
                     </tr>
                 </template>
-                <!--<template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
-                    <tr>
-                        <td :colspan="columns.length">
-                            <v-btn size="small" variant="text" :icon="isGroupOpen(item) ? '$expand' : '$next'"
-                                @click="toggleGroup(item)"></v-btn>
-                            {{ item.value }}
-                        </td>
-                    </tr>
-                </template>-->
-                <!-- Columna personalizada para product_exit -->
                 <template v-slot:item.product_exit="{ item }">
-                    <div class="d-flex align-center justify-end">
+                    <div class="d-flex align-center">
                         <span class="mx-2">{{ item.product_exit }}</span>
                         <v-icon :color="item.product_exit === 0 ? 'grey' : 'red'" :disabled="item.product_exit === 0"
                             @click="decrementProductExit(item)">
@@ -82,49 +62,8 @@
                         <v-btn density="comfortable" icon="mdi-close" @click="cancelItem(item)" color="red-darken-4"
                             variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Cancelar actualización"
                             :disabled="!changes.some(change => change.id === item.id)"></v-btn>
-                        <!--<v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-check" @click="save(item)"
-                            color="primary" variant="tonal" elevation="1" title="Aceptar Actualizar existencia"
-                            :disabled="!item.quantity"></v-btn>
-                        <v-btn density="comfortable" icon="mdi-close" @click="cancel(item)" color="red-darken-4"
-                            variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Cancelar actualización"
-                            :disabled="!item.quantity"></v-btn>-->
                     </div>
                 </template>
-                <!-- Columna personalizada para product_exit -->
-                <!--<template v-slot:item.product_exit="{ item }">
-      <div class="d-flex align-center justify-end">
-        <span class="mx-2">{{ item.product_exit }}</span>
-        <v-icon
-          :color="item.product_exit === 0 ? 'grey' : 'red'"
-          :disabled="item.product_exit === 0"
-          @click="decrementProductExit(item)"
-        >
-          mdi-minus-circle
-        </v-icon>
-        <v-btn
-          density="comfortable"
-          class="mr-1 mt-1 mb-1"
-          icon="mdi-check"
-          @click="save"
-          color="primary"
-          variant="tonal"
-          elevation="1"
-          title="Aceptar Actualizar existencia"
-          :disabled="changes.length === 0"
-        />
-        <v-btn
-          density="comfortable"
-          icon="mdi-close"
-          @click="cancel"
-          color="red-darken-4"
-          variant="tonal"
-          elevation="1"
-          class="mr-1 mt-1 mb-1"
-          title="Cancelar actualización"
-          :disabled="changes.length === 0"
-        />
-      </div>
-    </template>-->
             </v-data-table>
         </v-card-text>
     </v-card>
@@ -136,6 +75,12 @@ import { handleRequest } from "@/utils/api"; // Ruta al archivo
 import LocalStorageService from "@/LocalStorageService";
 
 export default {
+    props: {
+        branch_id: {
+            type: Number,
+            required: true
+        },
+    },
     data: () => ({
         loadingWorkPlace: true,
         valid: true,
@@ -145,7 +90,6 @@ export default {
         sb_timeout: 2000,
         sb_title: '',
         sb_icon: '',
-        branch_id: '',
         charge: '',
         business_id: '',
         branches: '',
@@ -205,12 +149,12 @@ export default {
 
     async mounted() {
         this.business_id = LocalStorageService.getItem('business_id');
-        this.branch_id = LocalStorageService.getItem('branch_id');
-        this.charge_id = LocalStorageService.getItem('charge_id');
+        //this.branch_id = LocalStorageService.getItem('branch_id');
+        //this.charge_id = LocalStorageService.getItem('charge_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         LocalStorageService.setIsLocked(true);
         // Crear un objeto para los parámetros
-        const requestParams = {
+        /*const requestParams = {
             business_id: this.business_id,
         };
 
@@ -239,8 +183,8 @@ export default {
                 this.branch_id = this.branches[0].id;
                 this.mostrarFila = true;
             }
-            await this.initialize();
-        }
+        }*/
+        await this.initialize();
     },
 
     methods: {
@@ -331,7 +275,8 @@ export default {
                 quantity: item.quantity,
             };*/
             const requestParams = {
-                changes: this.changes
+                changes: this.changes,
+                branch_id: this.branch_id,
             }
             try {
                 const result = await handleRequest({

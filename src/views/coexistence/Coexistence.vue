@@ -83,13 +83,13 @@
       </v-row>
     </v-toolbar>
     <v-card-text>
-      <v-row>
+      <!--<v-row>
         <v-col cols="12" sm="12" md="4">
           <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
             v-if="this.mostrarFila" clearable label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name"
             item-value="id" variant="underlined" @update:model-value="initialize()"></v-autocomplete>
         </v-col>
-      </v-row>
+      </v-row>-->
       <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
         hide-details></v-text-field>
       <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search" :items="results"
@@ -132,6 +132,12 @@ import { handleRequest } from "@/utils/api"; // Ruta al archivo
 import LocalStorageService from "@/LocalStorageService";
 
 export default {
+  props: {
+        branch_id: {
+            type: Number,
+            required: true
+        },
+    },
   data: () => ({
     loadingWorkPlace: true,
     valid: true,
@@ -141,7 +147,6 @@ export default {
     sb_timeout: 2000,
     sb_title: '',
     sb_icon: '',
-    branch_id: '',
     charge: '',
     business_id: '',
     branches: '',
@@ -205,16 +210,17 @@ export default {
 
   async mounted() {
     this.business_id = LocalStorageService.getItem('business_id');
-    this.branch_id = LocalStorageService.getItem('branch_id');
+    //this.branch_id = LocalStorageService.getItem('branch_id');
+    //this.branch_id = this.branch.id;
     this.charge_id = LocalStorageService.getItem('charge_id');
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     LocalStorageService.setIsLocked(true);
     // Crear un objeto para los parámetros
-    const requestParams = {
+    /*const requestParams = {
       business_id: this.business_id,
     };
 
-    try {
+    /*try {
       this.loading = true;
       const result = await handleRequest({
         endpoint: 'show-business',
@@ -239,8 +245,8 @@ export default {
         this.branch_id = this.branches[0].id;
         this.mostrarFila = true;
       }
+    }*/
       await this.initialize();
-    }
   },
 
   methods: {
@@ -278,7 +284,7 @@ export default {
 
       const requestParams = {
         branch_id: this.branch_id,
-        date: formattedDate,
+        date: "2025-03-11",
       };
 
       try {
@@ -323,7 +329,7 @@ export default {
         id: this.editedItem.id
       };
       /*axios
-        .post('https://api2.simplifies.cl/api/workplace-destroy', request)
+        .post('http://127.0.0.1:8000/api/workplace-destroy', request)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -353,7 +359,7 @@ export default {
         this.data.id = this.editedItem.id;
         this.data.name = this.editedItem.name;
         /*axios
-          .put('https://api2.simplifies.cl/api/workplace', this.data)
+          .put('http://127.0.0.1:8000/api/workplace', this.data)
           .then(() => {
           }).finally(() => {
             LocalStorageService.setIsLocked(false);
@@ -393,7 +399,7 @@ export default {
       }
 
       /*axios
-        .post('https://api2.simplifies.cl/api/workplace', this.data)
+        .post('http://127.0.0.1:8000/api/workplace', this.data)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);

@@ -5,7 +5,7 @@
       <v-navigation-drawer permanent class="pt-4" color="#2B3141" theme="dark">
         <template v-slot:prepend>
           <v-list-item color="black" class="text-subtitle-1" lines="two" variant="flat"
-          :prepend-avatar="'https://api2.simplifies.cl/api/images/' + this.imageBusiness" :title="this.titulo" :subtitle="this.subtitle">
+          :prepend-avatar="'http://127.0.0.1:8000/api/images/' + this.imageBusiness" :title="this.titulo" :subtitle="this.subtitle">
           </v-list-item>
         </template>
 
@@ -239,7 +239,7 @@ export default {
       { icon: "mdi mdi-delete-outline", title: "Solicitudes de eliminación", to: "car-order-delete", value: "car-order-delete", permission: "view_carorder_delete" },
       { icon: "mdi-currency-usd", title: "Operaciones en la caja", to: "branch-traces", value: "branch-traces", permission: "view_branch_traces" },
       { icon: "mdi-gavel", title: "Convivencias", to: "coexistence", value: "coexistence", permission: "view_coexistences" },
-      { icon: "mdi-cart-outline", title: "Inventario Diario", to: "productstorestate", value: "productstorestate", permission: "view_move_products" },
+      //{ icon: "mdi-cart-outline", title: "Inventario Diario", to: "productstorestate", value: "productstorestate", permission: "view_move_products" },
     ],
     clientes:[
       { icon: "mdi-account-star-outline", title: "Clientes", to: "client", value: "clients", permission: "view_clients" },
