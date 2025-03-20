@@ -14,8 +14,7 @@
             </v-col>
         </v-row>
     </v-snackbar>
-    <v-container fluid>
-        <v-card elevation="6" class="mx-3" width='auto'>
+    <v-container style="min-width: 100%; max-height: 100%;">
             <v-toolbar color="#F18254">
                 <v-row align="center">
                     <v-col cols="12" md="6" class="grow ml-2">
@@ -182,7 +181,7 @@
             </v-toolbar>
 
             <v-row>
-                <v-container fluid>
+                <v-container style="min-width: 100%; max-height: 100%;">
                     <v-row>
                         <v-col cols="12" md="3" v-if="this.mostrarFila">
                             <v-select v-model="selectedOption" :items="options" class="ma-2" label="Tipo"
@@ -220,7 +219,10 @@
                     </v-row>
                 </v-container>
             </v-row>
-            <v-col cols="12">
+            <v-row>
+                <v-container style="min-width: 100%; max-height: 100%;">
+                
+            <v-col cols="12" md="12">
                 <v-row class="d-flex flex-wrap justify-content-end">
                     <v-col cols="2" class="pa-1 ml-auto" v-if="selectedOption === 'Sucursal'">
                         <v-card class="pa-2" elevation="2"
@@ -308,6 +310,8 @@
                     </v-col>
                 </v-row>
             </v-col>
+                </v-container>
+            </v-row>
             <!--<v-col cols="12" md="2">
                 <v-card class="pa-2 pl-0 mb-2" elevation="2">
                     <v-list-item :subtitle="formatNumber(utilidades)" title="Utilidades">
@@ -333,21 +337,21 @@
                 </v-card>
             </v-col>-->
             <v-row>
+                <v-card style="min-width: 99%; max-width: 99%;">
                 <v-col cols="12" md="12">
-                        <v-card>
                         <v-card-text>
                             <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar"
                                 single-line hide-details>
                             </v-text-field>
-                            <div style="max-height: 55vh; overflow-y: auto;">
+                            
                             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'"
-                                :items="results" :search="search" class="elevation-1"
+                                :items="results" :search="search" class="elevation-1" style="max-height: 55vh; overflow-y: auto;"
                                 no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles" :loading="loading" loading-text="Cargando datos...">
                                 <template v-slot:item.file="{ item }">
                                     <v-icon v-if="item.file" @click="openDoc(item)"
                                         color="green">mdi-file-document-outline</v-icon>
                                     <!--<v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                        <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_product" alt="image"></v-img>
+                        <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
                     </v-avatar>-->
                                 </template>
                                 <template v-slot:item.comment="{ item }">
@@ -380,14 +384,10 @@
                                         title="Eliminar operación"></v-btn>
                                 </template>
                             </v-data-table>
-                            </div>
                         </v-card-text>
-                        </v-card>
                 </v-col>
+                        </v-card>
             </v-row>
-
-
-        </v-card>
     </v-container>
 </template>
 <script>
