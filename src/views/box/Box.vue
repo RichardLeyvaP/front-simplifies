@@ -204,7 +204,7 @@
     </v-card-text>
   </v-card>
   <!--Cierre de caja parcial-->
-  <v-dialog v-model="dialogParcial" fullscreen transition="dialog-bottom-transition">
+  <v-dialog v-model="dialogParcial" fullscreen transition="dialog-bottom-transition" persistent :no-click-animation="true" >
     <v-card>
       <!--<v-toolbar color="#F18254">
         <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
@@ -604,7 +604,7 @@
                 <v-row class="mt-1">
                   <v-btn color="#E7E9E9" variant="flat" @click="prevStepCashier">Volver</v-btn>
                   <v-spacer></v-spacer>
-                  <v-btn color="#E7E9E9" variant="flat" @click="close">
+                  <v-btn color="#E7E9E9" variant="flat" @click="closeParcial">
                     Salir
                   </v-btn>
                 </v-row>
@@ -2727,7 +2727,7 @@ export default {
       }
       console.log('Aqui se muestran los Step');
       console.log(this.step);
-      this.verificateStep(this.step);
+      //this.verificateStep(this.step);
 
     },
 
@@ -2744,7 +2744,7 @@ export default {
       if (this.stepCashier < this.items.length) {
         this.stepCashier++;
       }
-      this.verificateStepCashier(this.stepCashier);
+      //this.verificateStepCashier(this.stepCashier);
 
     },
 
@@ -3645,7 +3645,7 @@ export default {
       } catch (error) {
         this.loading = false;
         // Captura de errores no controlados
-        this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
+        //this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitudsfsdfsf.', 3000);
       } finally {
         console.log('this.boxClose');
         console.log(this.boxClose);
@@ -3998,7 +3998,34 @@ export default {
         this.editedCloseBox = Object.assign({}, this.defaultCloseBox);
         this.editedBox = Object.assign({}, this.defaultBox);
         this.editedIndex = -1
-      })
+      });
+    },
+    closeParcial() {
+      this.dialog = false;
+      this.dialogParcial = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.cashierData = Object.assign({}, this.defaultcashierData);
+        this.editedCloseBox = Object.assign({}, this.defaultCloseBox);
+        this.editedBox = Object.assign({}, this.defaultBox);
+        this.editedIndex = -1
+      });
+      const token = LocalStorageService.getItem('token');
+        console.log('Cerrar Sesión')
+        axios
+          .get('http://127.0.0.1:8000/api/logout', {
+            headers: {
+              'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
+            }
+          })
+          .then(() => {
+        }).finally(() => {
+          
+        LocalStorageService.logout();
+        this.$router.push({ path: '/' });
+        });
+        //LocalStorageService.logout();
+        //this.$router.push({ path: '/' });
     },
     closeDelete() {
       this.initialize();

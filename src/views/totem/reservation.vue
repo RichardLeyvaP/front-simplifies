@@ -135,7 +135,7 @@
                   </v-list-item-content>
                 </v-list-item>
 
-                <v-list-item :class="{ 'selected-item': selectedItem === 'option2' }" @click="selectedItem = 'option2'">
+                <v-list-item :class="{ 'selected-item': selectedItem === 'option2' }" @click="() => { SelectionRadio('ClientNo'); selectedItem = 'option2' }">
                   <v-list-item-content>
                     <v-list-item-title class="text-h6">Es mi primera vez</v-list-item-title>
                   </v-list-item-content>
@@ -346,7 +346,7 @@
         <v-card-actions class="justify-end">
           <v-btn @click="closeEncuesta()" color="#E7E9E9" variant="flat">Cancelar</v-btn>
           <v-btn @click="addEncuesta()" :disabled="!selectedSurveys.length > 0" color="#F18254"
-            variant="flat" :loading="!valid">Aceptar</v-btn>
+            variant="flat" :loading="loadingEncuesta">Aceptar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -406,6 +406,7 @@ export default {
     valid: true,
     loading: false,
     loadingClient: false,
+    loadingEncuesta: false,
     horarioDisponibleActual: '',
     idProfesionalListo: '',
     showDialog: false,
@@ -657,27 +658,6 @@ export default {
 
   methods:
   {
-    /*handleOffline() {
-      this.showAlert("warning", "No tienes conexión a internet", 2000);
-      if (this.step == 1) {
-        this.selected = [];
-      }else if (this.step == 2) {
-        this.professionals = [];
-        this.professional = [];
-        this.barberAleatorie = '';
-        this.changeStep(1);
-      } 
-  },
-  handleOnline() {
-    this.showAlert("success", "Conexión a internet restablecida", 2000); // Limpiar el mensaje de error cuando se reconecta
-    if (this.step == 2) {
-        this.professionals = [];
-        this.professional = [];
-        this.barberAleatorie = '';
-        this.changeStep(2);
-    }
-  },*/
-
     fetchClients() {
       this.loadingClient = true;
       this.clientRegister = [];
@@ -713,21 +693,6 @@ export default {
         this.setClientData(client);
       }
     },
-    /*updateClientData(query) {
-      console.log('client seleccionado datos');
-        console.log(query);
-        let client;
-      if (this.clientRegister.length >0) {
-        client = this.clientRegister.filter(item => item.id == query)
-        console.log('client seleccionado datos');
-        console.log(client[0].id);
-      }
-      console.log(client);
-      if (client) {
-        // Llamar a una función para actualizar datos con el cliente seleccionado
-        this.setClientData(client);
-      }
-    },*/
     setClientData(client) {
       console.log('client seleccionado setclientData');
       console.log('client seleccionado setclientData:' + client.id);
@@ -849,7 +814,6 @@ export default {
     },
     SelectionRadio(value) {
       this.radios = value;
-      console.log(this.radios);
       if (value === 'ClientSi') {
         this.email_client = '';
         this.client_id = '';
@@ -857,6 +821,9 @@ export default {
         this.showTextField = true;
         this.showDialog = true;
       }
+      
+      console.log('this.radios');
+      console.log(this.radios);
 
     },
     clearTextClient() {
@@ -1034,6 +1001,7 @@ export default {
     addEncuesta() {
       console.log(this.selectedSurveys);
       this.valid = false;
+      this.loadingEncuesta = true;
       let request = {
         email: this.email_client ? this.email_client : this.phone_client,
         survey_id: this.selectedSurveys,
@@ -1048,12 +1016,15 @@ export default {
           console.log(t);
         }).finally(() => {
           this.dialogEncuesta = false;
+          this.loadingEncuesta = false;
           this.$router.push('/totem');
           this.valid = true;
         });
         this.valid = true;
+        this.loadingEncuesta = false;
     },
     closeEncuesta() {
+      this.loadingEncuesta = false;
       this.$router.push('/totem');
     },
 
@@ -1062,71 +1033,6 @@ export default {
       // Por ejemplo, si deseas desactivar los horarios '10:00' y '11:00':
       return this.disabledIntervals.includes(time);
     },
-
-
-
-    /*timeReservated() {
-        
-  console.log('****************************this.professional[0]*************');
-  console.log(this.professional[0]);
-  
-  let currentDate = new Date();
-  let formattedDate = currentDate.toISOString().split('T')[0];
-  
-  let request = {
-  professional_id: this.professional[0],
-  branch_id: this.branch_id,
-  data: formattedDate
-  
-  }
-  
-  
-  axios
-  .get('http://127.0.0.1:8000/api/professional-reservations-time' , {
-            params: request
-        })
-        .then((response) => {
-    this.reservedTime = response.data.reservations;
-    this.disabledIntervals = response.data.reservations;
-    console.log('---------------response.data.reservations-------------------');
-    console.log(response.data.reservations);
-    console.log('---------------response.data.reservations-------------------');
-  
-  })
-  .catch((err) => {
-    console.log(err, "error");
-    /*  this.displayNotification(
-        "error",
-        "Error",
-        "Error al obtener el calendario de la Sucursal"
-      );*/
-    /*});
-    },*/
-    /*getDayOfWeekOK() {
-var Xmas95 = new Date();
-console.log('Este es new Date '+Xmas95);
-var weekday = Xmas95.getDay();
-var day = this.dayOfWeek.find((item) => item.id == weekday);
-console.log("esto devuelve el metodo");
-console.log(day ? day.day.toString().trim() : "");
-return day ? day.day.toString().trim() : "";
-},*/
-    /*chargeCalendarsBranches() {
-        axios
-            .get(`http://127.0.0.1:8000/api/schedule-show?branch_id=${this.branch_id}`)
-            .then((response) => {
-                this.calendars_branches = response.data.Schedules;
-                this.dayOfWeek = response.data.Schedules;
-            })
-            .catch((err) => {
-                console.log(err, "error");
-                /*  this.displayNotification(
-                    "error",
-                    "Error",
-                    "Error al obtener el calendario de la Sucursal"
-                  );*/
-    /*});
-},*/
 
     nextStep() {
       if (this.step < this.items.length) {
