@@ -135,7 +135,7 @@
                   </v-list-item-content>
                 </v-list-item>
 
-                <v-list-item :class="{ 'selected-item': selectedItem === 'option2' }" @click="selectedItem = 'option2'">
+                <v-list-item :class="{ 'selected-item': selectedItem === 'option2' }" @click="() => { SelectionRadio('ClientNo'); selectedItem = 'option2' }">
                   <v-list-item-content>
                     <v-list-item-title class="text-h6">Es mi primera vez</v-list-item-title>
                   </v-list-item-content>
