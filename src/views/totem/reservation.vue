@@ -1048,6 +1048,7 @@ export default {
         branch_id: this.branch_id,
 
       }
+      this.loadingEncuesta = true;
       axios.post('https://api2.simplifies.cl/api/client-survey', request)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
@@ -1056,11 +1057,13 @@ export default {
           console.log(t);
         }).finally(() => {
           this.dialogEncuesta = false;
+          this.loadingEncuesta = false;
           this.$router.push('/totem');
         });
-
+        this.loadingEncuesta = false;
     },
     closeEncuesta() {
+      this.loadingEncuesta = false;
       this.$router.push('/totem');
     },
 
