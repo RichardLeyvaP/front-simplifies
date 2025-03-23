@@ -354,7 +354,7 @@
         <v-card-actions class="justify-end">
           <v-btn @click="closeEncuesta()" color="#E7E9E9" variant="flat">Cancelar</v-btn>
           <v-btn @click="addEncuesta()" :disabled="!selectedSurveys.length > 0" color="#F18254"
-            variant="flat">Aceptar</v-btn>
+            variant="flat" :loading="loadingEncuesta">Aceptar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -413,6 +413,7 @@ export default {
     sb_icon: '',
     valid: true,
     loading: false,
+    loadingEncuesta: false,
     loadingClient: false,
     horarioDisponibleActual: '',
     idProfesionalListo: '',
