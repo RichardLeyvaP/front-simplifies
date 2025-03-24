@@ -467,7 +467,7 @@ export default {
             { title: 'Gasto', key: 'expense', sortable: true },
             { title: 'Comentario', key: 'comment', width: '300px'},
             { title: 'Archivo', key: 'file' },
-            { title: 'Acciones', key: 'actions', sortable: false },
+            { title: 'Acciones', key: 'actions', sortable: false, width: '10%' },
         ],
         results: [],
         expenses: [],

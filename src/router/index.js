@@ -119,6 +119,13 @@ const routes = [
         meta: { requiresAuth: true, requiresPermissions: ["view_shopping_carts"] },
       },
       {
+        path: "/boxclose",
+        name: "Box Close",
+        component: () =>
+          import( "@/views/boxclose/BoxClose.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_cash_closing"] },
+      },
+      {
         path: "/busines",
         name: "Empresa",
         component: () =>

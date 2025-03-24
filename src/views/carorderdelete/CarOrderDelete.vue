@@ -88,6 +88,12 @@
                                           <template v-slot:item.service="{ item }">
                 {{ formatNumber(item.service)}}                                  
                                           </template>
+                                          
+          <template v-slot:item.active="{ item }">
+            <v-chip :color="item.active === 2 ? 'warning' : 'error'" small>
+              {{ item.active === 2 ? 'Editar' : 'Eliminar' }}
+            </v-chip>
+          </template>
                                         <template v-slot:top>
 
                                             <v-divider class="mx-4" inset vertical></v-divider>
@@ -100,7 +106,7 @@
                                                 title="Denegar Solicitud"></v-btn>
                                             <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-check" @click="deleteItem(item)"
                                                 color="primary" variant="tonal" elevation="1"
-                                                title="Aceptar solicitud y eliminar el carro"></v-btn>
+                                                :title="item.active === 2 ? 'Aceptar solicitud y editar el carro' : 'Aceptar solicitud y eliminar el carro'"></v-btn>
                                         </template>
                                     </v-data-table>
                                 </v-window-item>
@@ -255,7 +261,8 @@ export default {
             { title: 'Servicios', value: 'service' },
             { title: 'Propina', value: 'tip' },
             { title: 'Monto Total', value: 'amount' },
-            { title: 'Acciones', key: 'actions', sortable: false },
+            { title: 'Solicitud', value: 'active' },
+            { title: 'Acciones', key: 'actions', sortable: false, width: '15%' },
         ],
         headers1: [
             { title: 'Sucursal', value: 'nameBranch' },

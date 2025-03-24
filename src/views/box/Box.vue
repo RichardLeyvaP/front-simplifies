@@ -40,7 +40,7 @@
               class="ml-1">
               Clientes atendidos
             </v-btn>
-            <v-btn :disabled="closed_box" @click="openCloseBox" color="#E7E9E9" variant="flat" elevation="2"
+            <v-btn :disabled="(closed_box  || results.some(item => item.active === 2 || item.active === 3))" @click="openCloseBox" color="#E7E9E9" variant="flat" elevation="2"
               prepend-icon="mdi-cash-lock" class="ml-1">
               Cierre de Caja
             </v-btn>
@@ -125,7 +125,7 @@
               <v-icon left>mdi-cash-multiple</v-icon>
               Bonos a pagar
             </v-btn>
-            <v-btn @click="openCloseBoxDialog" color="#F18254" variant="flat" elevation="2" prepend-icon="mdi-cash-lock"
+            <v-btn @click="openCloseBoxDialog" :disabled="this.results.some(item => item.active === 2 || item.active === 3)" color="#F18254" variant="flat" elevation="2" prepend-icon="mdi-cash-lock"
               class="ml-1">
               Cierre Parcial
             </v-btn>
@@ -204,7 +204,8 @@
     </v-card-text>
   </v-card>
   <!--Cierre de caja parcial-->
-  <v-dialog v-model="dialogParcial" fullscreen transition="dialog-bottom-transition" persistent :no-click-animation="true" >
+  <v-dialog v-model="dialogParcial" fullscreen transition="dialog-bottom-transition" persistent
+    :no-click-animation="true">
     <v-card>
       <!--<v-toolbar color="#F18254">
         <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
@@ -222,7 +223,8 @@
                       <v-row class="mb-4 mt-2" dense no-gutters>
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1" style="background-color: rgba(129, 199, 132, 0.9); color: white;">
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(129, 199, 132, 0.9); color: white;">
                               Datos del Sistema
                             </v-card-title>
                             <v-divider class="mb-4"></v-divider>
@@ -236,7 +238,8 @@
                         </v-col>
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1" style="background-color: rgba(100, 181, 246, 0.9); color: white;">
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(100, 181, 246, 0.9); color: white;">
                               Datos de la Cajera
                             </v-card-title>
                             <v-divider class="mb-4"></v-divider>
@@ -250,7 +253,8 @@
                         <!-- Columna 3: Diferencias -->
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1" style="background-color: rgba(229, 115, 115, 0.9); color: white;">Diferencias</v-card-title>
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(229, 115, 115, 0.9); color: white;">Diferencias</v-card-title>
                             <v-text-field :value="calculateDifferenceExistence" readonly prepend-icon="mdi-cash"
                               variant="underlined" density="compact" class="mb-2"></v-text-field>
                             <v-text-field :value="calculateDifferenceExtraccion" readonly prepend-icon="mdi-cash-refund"
@@ -279,7 +283,7 @@
               <v-container>
                 <!-- BOTONES -->
                 <v-row class="mt-1">
-                  <v-btn color="#E7E9E9"  variant="flat" @click="close">
+                  <v-btn color="#E7E9E9" variant="flat" @click="close">
                     Salir
                   </v-btn>
                   <v-spacer></v-spacer>
@@ -295,7 +299,8 @@
                       <v-row class="mb-4 mt-2" dense no-gutters>
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1" style="background-color: rgba(129, 199, 132, 0.9); color: white;">
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(129, 199, 132, 0.9); color: white;">
                               Datos del Sistema
                             </v-card-title>
                             <v-divider class="mb-4"></v-divider>
@@ -312,7 +317,8 @@
                         </v-col>
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1" style="background-color: rgba(100, 181, 246, 0.9); color: white;">
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(100, 181, 246, 0.9); color: white;">
                               Datos de la Cajera
                             </v-card-title>
                             <v-divider class="mb-4"></v-divider>
@@ -330,7 +336,8 @@
 
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1" style="background-color: rgba(229, 115, 115, 0.9); color: white;">Diferencias</v-card-title>
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(229, 115, 115, 0.9); color: white;">Diferencias</v-card-title>
                             <v-divider class="mb-4"></v-divider>
                             <v-text-field :value="calculateDifferenceService" readonly
                               prepend-icon="mdi-list-box-outline" variant="underlined" density="compact"
@@ -380,7 +387,8 @@
                         <!-- Columna 1: Datos del Sistema -->
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1" style="background-color: rgba(129, 199, 132, 0.9); color: white;">
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(129, 199, 132, 0.9); color: white;">
                               Datos del Sistema
                             </v-card-title>
                             <v-divider class="mb-4"></v-divider>
@@ -408,7 +416,8 @@
                         <!-- Columna 2: Datos de la Cajera -->
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1" style="background-color: rgba(100, 181, 246, 0.9); color: white;">
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(100, 181, 246, 0.9); color: white;">
                               Datos de la Cajera
                             </v-card-title>
                             <v-divider class="mb-4"></v-divider>
@@ -491,7 +500,8 @@
                         <!-- Columna 1: Datos del Sistema -->
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1" style="background-color: rgba(129, 199, 132, 0.9); color: white;">
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(129, 199, 132, 0.9); color: white;">
                               Datos del Sistema
                             </v-card-title>
                             <v-divider class="mb-4"></v-divider>
@@ -510,7 +520,8 @@
                         <!-- Columna 2: Datos de la Cajera -->
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1" style="background-color: rgba(100, 181, 246, 0.9); color: white;">
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(100, 181, 246, 0.9); color: white;">
                               Datos de la Cajera
                             </v-card-title>
                             <v-divider class="mb-4"></v-divider>
@@ -569,8 +580,8 @@
                       <!--<v-btn color="#E7E9E9" variant="flat" @click="close">
                       Cancelar
                     </v-btn>-->
-                      <v-btn color="#F18254" :disabled="ejecutadoCashier || !valid" variant="flat" @click="saveCloseBoxParcial"
-                        :loading="!loadingBonus">
+                      <v-btn color="#F18254" :disabled="ejecutadoCashier || !valid" variant="flat"
+                        @click="saveCloseBoxParcial" :loading="!loadingBonus">
                         Cerrar Caja
                       </v-btn>
                     </v-card-actions>
@@ -582,7 +593,8 @@
                 <v-row class="mt-1">
                   <v-btn color="#E7E9E9" variant="flat" @click="prevStepCashier">Volver</v-btn>
                   <v-spacer></v-spacer>
-                  <v-btn color="#E7E9E9" :disabled="ejecutadoCashier" variant="flat" @click="nextStepCashier">Siguiente</v-btn>
+                  <v-btn color="#E7E9E9" :disabled="ejecutadoCashier" variant="flat"
+                    @click="nextStepCashier">Siguiente</v-btn>
                 </v-row>
               </v-container>
             </template>
@@ -656,7 +668,8 @@
                       <v-row class="mb-4 mt-2" dense no-gutters>
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1" style="background-color: rgba(129, 199, 132, 0.9); color: white;">
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(129, 199, 132, 0.9); color: white;">
                               Datos del Sistema
                             </v-card-title>
                             <v-divider class="mb-4"></v-divider>
@@ -670,7 +683,8 @@
                         </v-col>
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1" style="background-color: rgba(100, 181, 246, 0.9); color: white;">
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(100, 181, 246, 0.9); color: white;">
                               Datos de la Cajera
                             </v-card-title>
                             <v-divider class="mb-4"></v-divider>
@@ -729,7 +743,8 @@
                       <v-row class="mb-4 mt-2" dense no-gutters>
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1" style="background-color: rgba(129, 199, 132, 0.9); color: white;">
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(129, 199, 132, 0.9); color: white;">
                               Datos del Sistema
                             </v-card-title>
                             <v-divider class="mb-4"></v-divider>
@@ -746,7 +761,8 @@
                         </v-col>
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1" style="background-color: rgba(100, 181, 246, 0.9); color: white;">
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(100, 181, 246, 0.9); color: white;">
                               Datos de la Cajera
                             </v-card-title>
                             <v-divider class="mb-4"></v-divider>
@@ -815,7 +831,8 @@
                         <!-- Columna 1: Datos del Sistema -->
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1" style="background-color: rgba(129, 199, 132, 0.9); color: white;">
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(129, 199, 132, 0.9); color: white;">
                               Datos del Sistema
                             </v-card-title>
                             <v-divider class="mb-4"></v-divider>
@@ -843,7 +860,8 @@
                         <!-- Columna 2: Datos de la Cajera -->
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1" style="background-color: rgba(100, 181, 246, 0.9); color: white;">
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(100, 181, 246, 0.9); color: white;">
                               Datos de la Cajera
                             </v-card-title>
                             <v-divider class="mb-4"></v-divider>
@@ -926,7 +944,8 @@
                         <!-- Columna 1: Datos del Sistema -->
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1" style="background-color: rgba(129, 199, 132, 0.9); color: white;">
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(129, 199, 132, 0.9); color: white;">
                               Datos del Sistema
                             </v-card-title>
                             <v-divider class="mb-4"></v-divider>
@@ -945,7 +964,8 @@
                         <!-- Columna 2: Datos de la Cajera -->
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1" style="background-color: rgba(100, 181, 246, 0.9); color: white;">
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(100, 181, 246, 0.9); color: white;">
                               Datos de la Cajera
                             </v-card-title>
                             <v-divider class="mb-4"></v-divider>
@@ -1004,7 +1024,7 @@
                       <!--<v-btn color="#E7E9E9" variant="flat" @click="close">
                       Cancelar
                     </v-btn>-->
-                      <v-btn color="#F18254" :disabled="!ejecutado || !valid" variant="flat" @click="saveCloseBox"
+                      <v-btn color="#F18254" :disabled="ejecutado || !valid" variant="flat" @click="saveCloseBox"
                         :loading="!loadingBonus">
                         Cerrar Caja
                       </v-btn>
@@ -1254,7 +1274,7 @@
             <v-btn color="#E7E9E9" variant="flat" @click="closeDialogPay">
               Cancelar
             </v-btn>
-            <v-btn color="#F18254" variant="flat" @click="savePay" :disabled="!valid" :loading="!loadingBonus">
+            <v-btn color="#F18254" variant="flat" @click="savePay" :disabled="!valid" :loading="!loadingPayCar">
               Aceptar
             </v-btn>
           </v-card-actions>
@@ -1548,6 +1568,15 @@
           </template>
           <template v-slot:item.amount="{ item }">
             {{ formatNumber(item.amount) }}
+          </template>
+          <template v-slot:item.actions="{ item }">
+            <v-btn density="comfortable" icon="mdi-pencil" @click="(item.pay == 1 && (item.active === 0 || item.active === 1) && !this.ejecutado) && updateitemSolicitud(item)"
+              :color="(item.pay == 1 && (item.active === 0 || item.active === 1) && !this.ejecutado) ? 'primary-darken-1' : 'grey'" variant="tonal" elevation="1"
+              class="mr-1 mt-1 mb-1" title="Editar el carro"></v-btn>
+              <v-btn density="comfortable" icon="mdi-delete"
+                @click="(item.pay == 1 && (item.active === 0 || item.active === 1)  && !this.ejecutado) && deleteItemSolicitud(item)"
+                :color="(item.pay == 1 && (item.active === 0 || item.active === 1)  && !this.ejecutado) ? 'red-darken-4' : 'grey'" variant="tonal" elevation="1"
+                title="Solicitud de eliminar carro"></v-btn>
           </template>
           <template v-slot:top>
 
@@ -2077,6 +2106,7 @@ export default {
     loadingOrders: true,
     loadingCashier: true,
     loadingBonus: true,
+    loadingPayCar: true,
     loadingBonusPay: false,
     loadingBonusProf: true,
     loadingProd: false,
@@ -2170,6 +2200,7 @@ export default {
       { title: 'Propina', value: 'tip' },
       { title: 'Monto Total', value: 'amount' },
       { title: 'Estado', value: 'pay' },
+      { title: 'Acciones', value: 'actions' },
     ],
 
     headers2: [
@@ -2682,7 +2713,7 @@ export default {
     } catch (error) {
       this.branches = [];
       // Captura de errores no controlados
-      this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
+      //this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
     } finally {
       if (this.charge === 'Administrador') {
         this.branch_id = this.branches[0].id;
@@ -2791,11 +2822,11 @@ export default {
       });
       const cashierDataFiltered = this.cashierBoxClose.filter(item => item.type === 'Parcial');
 
-    // Verificar si hay datos filtrados
-    if (cashierDataFiltered.length > 0) {
-      // Asignar el primer elemento filtrado a cashierData
-      this.cashierData = { ...this.cashierData, ...cashierDataFiltered[0] };
-    }
+      // Verificar si hay datos filtrados
+      if (cashierDataFiltered.length > 0) {
+        // Asignar el primer elemento filtrado a cashierData
+        this.cashierData = { ...this.cashierData, ...cashierDataFiltered[0] };
+      }
       const filteredpayments = this.payments.filter(item => {
         return Number(item.user_id) === Number(this.user_id);
       });
@@ -3044,7 +3075,7 @@ export default {
           } catch (error) {
             this.loadingcar = false;
             // Captura de errores no controlados
-            this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
+            //this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
           } finally {
             console.log('this.boxClose');
             console.log(this.boxClose);
@@ -3149,21 +3180,21 @@ export default {
           this.dialogConfBonus = false;
           this.loadingBonusPay = false;
           axios
-        .get('http://127.0.0.1:8000/api/bonus-show', {
-          params: {
-            branch_id: this.branch_id
-          }
-        })
-        .then((response) => {
-          this.bonusProf = response.data.bonus;
-        }).finally(() => {
-          this.showDialogBonusProf = true;
-          this.loadingBonusProf = false;
-          LocalStorageService.setIsLocked(false);
+            .get('http://127.0.0.1:8000/api/bonus-show', {
+              params: {
+                branch_id: this.branch_id
+              }
+            })
+            .then((response) => {
+              this.bonusProf = response.data.bonus;
+            }).finally(() => {
+              this.showDialogBonusProf = true;
+              this.loadingBonusProf = false;
+              LocalStorageService.setIsLocked(false);
+            });
         });
-        });
-        this.loadingBonusPay = false;
-        LocalStorageService.setIsLocked(false);
+      this.loadingBonusPay = false;
+      LocalStorageService.setIsLocked(false);
     },
     formatNumber(value) {
       // Si el valor es menor que 1000, devuelve el valor original con dos decimales
@@ -3715,6 +3746,25 @@ export default {
         });
     },
 
+    updateitemSolicitud(item) {
+      LocalStorageService.setIsLocked(true);
+      this.editedItem.id = item.id;
+      let request = {
+        id: this.editedItem.id,
+        nameProfessional: this.nameProfessional,
+        branch_id: this.branch_id,
+        professional_id: this.professional_id
+      };
+      axios
+        .post('http://127.0.0.1:8000/api/car-update-solicitud', request)
+        .then(() => {
+        }).finally(() => {
+          LocalStorageService.setIsLocked(false);
+          this.initialize();
+          this.showAlert("success", "Solicitud de editar hecha correctamente", 3000);
+        });
+    },
+
     payItem(item) {
       this.selectedOption = 'Efectivo';
       this.stopInterval();
@@ -3819,7 +3869,7 @@ export default {
         // Llama la validación del campo
         this.showAlert("warning", "Selecciono pagar con tarjeta de regalo la propina, debe poner una tarjeta de regalo válida.", 3000);
       } else {
-        this.loadingBonus = false;
+        this.loadingPayCar = false;
         this.data.car_id = this.editedItem.car_id;
         this.data.cash = parseFloat(this.editedItem.cash) || 0;
         this.data.creditCard = parseFloat(this.editedItem.creditCard) || 0;
@@ -3853,19 +3903,19 @@ export default {
                 this.mostrarOtroCampo = false;
               });
             });
-          this.loadingBonus = true;
+          this.loadingPayCar = true;
           this.dialogPay = false;
           this.dialogDetallesCar = false;
           this.valid = true;
         }
         else {
-          this.loadingBonus = true;
+          this.loadingPayCar = true;
           this.showAlert("warning", "Monto debe coincidir con el monto total " + this.formatNumber(Number(this.editedItem.amount) + Number(this.editedItem.tip)), 3000);
         }
         if (this.editedItem.cash || this.editedItem.creditCard || this.editedItem.debit || this.editedItem.transfer || this.editedItem.other || this.editedItem.cardGif || this.editedItem.tip) {
           this.valid = true;
         }
-        this.loadingBonus = true;
+        this.loadingPayCar = true;
       }
 
     },
@@ -4011,21 +4061,21 @@ export default {
         this.editedIndex = -1
       });
       const token = LocalStorageService.getItem('token');
-        console.log('Cerrar Sesión')
-        axios
-          .get('http://127.0.0.1:8000/api/logout', {
-            headers: {
-              'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
-            }
-          })
-          .then(() => {
+      console.log('Cerrar Sesión')
+      axios
+        .get('http://127.0.0.1:8000/api/logout', {
+          headers: {
+            'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
+          }
+        })
+        .then(() => {
         }).finally(() => {
-          
-        LocalStorageService.logout();
-        this.$router.push({ path: '/' });
+
+          LocalStorageService.logout();
+          this.$router.push({ path: '/' });
         });
-        //LocalStorageService.logout();
-        //this.$router.push({ path: '/' });
+      //LocalStorageService.logout();
+      //this.$router.push({ path: '/' });
     },
     closeDelete() {
       this.initialize();
