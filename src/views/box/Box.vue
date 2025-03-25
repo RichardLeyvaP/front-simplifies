@@ -511,7 +511,7 @@
               <v-container>
                 <!-- BOTONES -->
                 <v-row class="mt-1">
-                  <v-btn color="#E7E9E9" variant="flat" @click="close">salir</v-btn>
+                  <v-btn color="#E7E9E9" variant="flat" @click="prevStepCashier">Volver</v-btn>
                   <v-spacer></v-spacer>
                   <v-btn color="#F18254" :disabled="!valid" variant="flat" @click="saveCloseBoxParcial">
                     Cerrar Caja Parcial
@@ -2636,9 +2636,27 @@ export default {
     changeStepCashier(index) {
       this.stepCashier = index;
     },
-    nextStepCashier() {
+    async nextStepCashier() {
       if (this.stepCashier < this.items.length) {
         this.stepCashier++;
+        if (this.stepCashier === 2){
+        try {
+                this.loading = true;
+                const result = await handleRequest({
+                    endpoint: 'payment-method',
+                    method: 'GET',
+                });
+
+                if (result.success) {
+                    this.paymentOptions = result.data.paymentOptions || [];
+                } else {
+                    this.paymentOptions = [];
+                }
+            } catch (error) {
+                this.loading = false;
+                this.showAlert('error', 'Ocurrió un error inesperado al cargar los métodos de pago.', 3000);
+            }
+      }
       }
       //this.verificateStepCashier(this.stepCashier);
 

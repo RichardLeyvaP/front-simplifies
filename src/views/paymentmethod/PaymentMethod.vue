@@ -240,18 +240,17 @@ export default {
                     this.loading = false;
                 }
             } else {
-                
+                console.log('entrando a editar');
                 try {
-                    const params = {
-                        id: this.edieditedItem.id,
-                        name: this.editedItem.name,
-                        type: this.editedItem.type,
-                        description: this.editedItem.description
-                    };
+                    this.data = {};
+                this.data.id = this.editedItem.id;
+                this.data.name = this.editedItem.name;
+                this.data.type = this.editedItem.type;
+                this.data.description = this.editedItem.description;
                     const result = await handleRequest({
                         endpoint: 'payment-method',
                         method: 'PUT',
-                        params: params
+                        data: this.data
                     });
 
                     if (result.success) {
@@ -288,27 +287,29 @@ export default {
         async deleteItemConfirm() {
             this.loading = true;
             try {
-                const params = {
-                        id: this.edieditedItem.id,
-                    };
-                const result = await handleRequest({
-                    endpoint: `payment-method-destroy`,
+                this.data = {};
+                this.data.id = this.editedItem.id
+                    const result = await handleRequest({
+                    endpoint: 'payment-method-destroy',
                     method: 'POST',
-                    params: params
+                    data: this.data
                 });
 
                 if (result.success) {
+                    this.loading = false;
                     this.showAlert("success", result.message, 3000);
-                    this.initialize();
                 } else {
+                    this.loading = false;
                     this.showAlert("warning", result.message, 3000);
                 }
             } catch (error) {
                 this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
             } finally {
+                this.initialize();
                 this.loading = false;
                 this.closeDelete();
             }
+            this.loading = false;
         },
         showAlert(sb_type, sb_message, sb_timeout) {
             this.sb_type = sb_type;
