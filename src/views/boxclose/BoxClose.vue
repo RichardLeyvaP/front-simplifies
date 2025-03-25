@@ -62,26 +62,29 @@
                             :search="search" class="elevation-1" style="max-height: 55vh; overflow-y: auto;"
                             no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles"
                             :loading="loadingrules" loading-text="Cargando datos..." show-expand>
-                            <template v-slot:item.cashFound="{ item }">
-                                {{ formatNumber(item.cashFound) }}
+                            <template v-slot:item.totalCash="{ item }">
+                                {{ formatNumber(item.totalCash) }}
                             </template>
-                            <template v-slot:item.existence="{ item }">
-                                {{ formatNumber(item.existence) }}
+                            <template v-slot:item.totalDebit="{ item }">
+                                {{ formatNumber(item.totalDebit) }}
                             </template>
                             <template v-slot:item.extraction="{ item }">
                                 {{ formatNumber(item.extraction) }}
                             </template>
-                            <template v-slot:item.totalMount="{ item }">
-                                <span class="font-weight-bold">{{ formatNumber(item.totalMount) }}</span>
+                            <template v-slot:item.totalCreditCard="{ item }">
+                                {{ formatNumber(item.totalCreditCard) }}
                             </template>
-                            <template v-slot:item.totalService="{ item }">
-                                {{ formatNumber(item.totalService) }}
+                            <template v-slot:item.totalTransfer="{ item }">
+                                {{ formatNumber(item.totalTransfer) }}
                             </template>
-                            <template v-slot:item.totalProduct="{ item }">
-                                {{ formatNumber(item.totalProduct) }}
+                            <template v-slot:item.totalCardGif="{ item }">
+                                {{ formatNumber(item.totalCardGif) }}
                             </template>
-                            <template v-slot:item.totalTip="{ item }">
-                                {{ formatNumber(item.totalTip) }}
+                            <template v-slot:item.totalBonus="{ item }">
+                                {{ formatNumber(item.totalBonus) }}
+                            </template>
+                            <template v-slot:item.totalOther="{ item }">
+                                {{ formatNumber(item.totalOther) }}
                             </template>
                             <template v-slot:item.actions="{ item, internalItem, isExpanded, toggleExpand }">
                                 <!-- Botón de expansión (ícono verde) -->
@@ -99,75 +102,63 @@
                                             <v-table density="compact">
                                                 <tbody class="bg-surface-light">
                                                     <tr class="bg-grey-lighten-3">
+                                                        <th colspan="10" class="text-center">Datos Cajera</th>
+                                                    </tr>
+                                                    <tr class="bg-grey-lighten-3">
+                                                        <th></th>
+                                                        <th>Extraccón</th>
                                                         <th>Efectivo</th>
                                                         <th>Débito</th>
-                                                        <th>Crédito</th>
+                                                        <th>Tarjeta Crédito</th>
                                                         <th>Transferencia</th>
+                                                        <th>Gifcard</th>
                                                         <th>Otros</th>
-                                                        <th>Tarjeta Regalo</th>
-                                                        <th>Propinas</th>
+                                                        <th>Bonos</th>
+                                                        <th></th>
                                                     </tr>
                                                 </tbody>
                                                 <tbody>
                                                     <tr>
-                                                        <td>{{ formatNumber(item.totalCash) }}</td>
-                                                        <td>{{ formatNumber(item.totalDebit) }}</td>
-                                                        <td>{{ formatNumber(item.totalCreditCard) }}</td>
-                                                        <td>{{ formatNumber(item.totalTransfer) }}</td>
-                                                        <td>{{ formatNumber(item.totalOther) }}</td>
-                                                        <td>{{ formatNumber(item.totalCardGif) }}</td>
-                                                        <td>{{ formatNumber(item.totalTip) }}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </v-table>
-                                        </v-sheet>
-
-                                        <!-- Segunda tabla: Detalles de bonos -->
-                                        <v-sheet rounded="lg" border
-                                            v-if="item.bonus_details && item.bonus_details.length > 0">
-                                            <v-table density="compact">
-                                                <thead class="bg-surface-light">
-                                                    <tr class="bg-grey-lighten-3">
-                                                        <th>Profesional</th>
-                                                        <th>Tipo</th>
-                                                        <th>Monto</th>
-                                                        <th>Fecha</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr v-for="(bonus, index) in item.bonus_details" :key="index">
-                                                        <td>
-                                                            <div class="d-flex align-center">
-                                                                <v-avatar class="mr-2" elevation="3"
-                                                                    color="grey-lighten-4" size="small">
-                                                                    <v-img :src="'http://127.0.0.1:8000/api/images/' + bonus.professional_image" :alt="bonus.professional_name"></v-img>
-                                                                </v-avatar>
-                                                                <span>{{ bonus.professional_name || 'N/A' }}</span>
-                                                            </div>
-                                                        </td>
-                                                        <td>{{ bonus.type }}</td>
-                                                        <td>{{ formatNumber(bonus.amount) }}</td>
-                                                        <td>{{ bonus.date }}</td>
-                                                    </tr>
-                                                </tbody>
-                                                <tfoot v-if="item.bonus_details.length > 1">
-                                                    <tr class="bg-grey-lighten-3">
-                                                        <td colspan="2" class="text-right font-weight-bold">Total Bonos:
-                                                        </td>
-                                                        <td class="font-weight-bold">
-                                                            {{formatNumber(item.bonus_details.reduce((sum, b) => sum +
-                                                            parseFloat(b.amount), 0)) }}
-                                                        </td>
+                                                        <td></td>
+                                                        <td>{{ formatNumber(item.cashier_extraction) }}</td>
+                                                        <td>{{ formatNumber(item.cashier_totaCash) }}</td>
+                                                        <td>{{ formatNumber(item.cashier_totalDebit) }}</td>
+                                                        <td>{{ formatNumber(item.cashier_totalCreditCard) }}</td>
+                                                        <td>{{ formatNumber(item.cashier_totalTransfer) }}</td>
+                                                        <td>{{ formatNumber(item.cashier_totalCardGif) }}</td>
+                                                        <td>{{ formatNumber(item.cashier_totalOther) }}</td>
+                                                        <td>{{ formatNumber(item.cashier_totalBonus) }}</td>
                                                         <td></td>
                                                     </tr>
-                                                </tfoot>
+                                                </tbody>
                                             </v-table>
                                         </v-sheet>
 
-                                        <!-- Mensaje cuando no hay bonos -->
-                                        <v-alert v-else type="info" variant="tonal" density="compact" class="mt-2">
-                                            No hay registros de bonos para este día
-                                        </v-alert>
+                                        <v-sheet rounded="lg" border class="mb-4" v-if="(item.cashier_differencePay || item.cashier_difference)">
+                                            <v-table density="compact">
+                                                <tbody class="bg-surface-light">
+                                                    <tr class="bg-grey-lighten-3">
+                                                        <th colspan="2" class="text-center">Diferencias</th>
+                                                    </tr>
+                                                </tbody>
+                                                <tbody>
+                                                    <tr v-if="item.cashier_differencePay">
+                                                        <td>Diferencias Métodos de Ingresos</td>
+                                                        <td>{{ formatNumber(item.cashier_differencePay) }}</td>
+                                                    </tr>
+                                                    <tr v-if="item.cashier_difference">
+                                                        <td>Diferencias Totales</td>
+                                                        <td>{{ formatNumber(item.cashier_difference) }}</td>
+                                                    </tr>
+                                                    <tr v-if="item.description">
+                                                        <td colspan="2">Descripción diferencias</td>
+                                                    </tr>
+                                                    <tr v-if="item.description">
+                                                        <td colspan="2">{{ item.description }}</td> 
+                                                    </tr>
+                                                </tbody>
+                                            </v-table>
+                                        </v-sheet>
                                     </td>
                                 </tr>
                             </template>
@@ -220,13 +211,14 @@ export default {
         dialogDelete: false,
         headers: [
             { title: 'Fecha', key: 'data', sortable: true },
-            { title: 'Fondo Inicio', key: 'cashFound', sortable: true },
-            { title: 'Existencia', key: 'existence', sortable: true },
             { title: 'Extracción', key: 'extraction', sortable: true },
-            { title: 'Servicio', key: 'totalService', sortable: true },
-            { title: 'Producto', key: 'totalProduct', sortable: true },
-            { title: 'Propina', key: 'totalTip', sortable: true },
-            { title: 'Total', key: 'totalMount', sortable: true },
+            { title: 'Efectivo', key: 'totalCash', sortable: true },
+            { title: 'Débito', key: 'totalDebit', sortable: true },
+            { title: 'Tarjeta Crédito', key: 'totalCreditCard', sortable: true },
+            { title: 'Transferencia', key: 'totalTransfer', sortable: true },
+            { title: 'GifCard', key: 'totalCardGif', sortable: true },
+            { title: 'Otros', key: 'totalOther', sortable: true },
+            { title: 'Bonos', key: 'totalBonus', sortable: true },
             { title: 'Acciones', key: 'actions', sortable: false },
         ],
         results: [],
@@ -237,7 +229,6 @@ export default {
             id: ''
         },
         data: {},
-
         defaultItem: {
             id: '',
         },
@@ -429,7 +420,7 @@ export default {
         /*showAddRules() {
             LocalStorageService.setIsLocked(true);
             axios
-                .get('http://127.0.0.1:8000/api/branch-rules-noIn', {
+                .get('https://testapi.simplifies.cl/api/branch-rules-noIn', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -452,7 +443,7 @@ export default {
             this.data.branch_id = this.branch_id;
             this.data.rule_id = this.editedItem.rule_id;
             axios
-                .post('http://127.0.0.1:8000/api/branchrule-destroy', this.data)
+                .post('https://testapi.simplifies.cl/api/branchrule-destroy', this.data)
                 .then(() => {
                     this.message_delete = true;
                 }).finally(() => {
@@ -486,7 +477,7 @@ export default {
                 this.data.branch_id = this.branch_id;
                 this.data.rule_id = this.editedItem.rule_id;
                 axios
-                    .post('http://127.0.0.1:8000/api/branchrule', this.data)
+                    .post('https://testapi.simplifies.cl/api/branchrule', this.data)
                     .then(() => {
                     }).finally(() => {
                         LocalStorageService.setIsLocked(false);

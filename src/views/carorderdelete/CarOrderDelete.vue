@@ -58,7 +58,7 @@
                                         <template v-slot:item.professionalName="{ item }">
 
                                             <v-avatar class="mr-2" elevation="3" color="grey-lighten-4">
-                                                <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url"
+                                                <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url"
                                                     alt="image"></v-img>
                                             </v-avatar>
                                             {{ item.professionalName }}
@@ -67,7 +67,7 @@
                                         <template v-slot:item.clientName="{ item }">
 
                                             <v-avatar class="mr-2" elevation="3" color="grey-lighten-4">
-                                                <v-img :src="'http://127.0.0.1:8000/api/images/' + item.client_image"
+                                                <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.client_image"
                                                     alt="image"></v-img>
                                             </v-avatar>
                                             {{ item.clientName }}
@@ -124,7 +124,7 @@
                                         <template v-slot:item.professionalName="{ item }">
 
                                             <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                                                <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url"
+                                                <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url"
                                                     alt="image"></v-img>
                                             </v-avatar>
                                             {{ item.professionalName }}
@@ -133,7 +133,7 @@
                                         <template v-slot:item.clientName="{ item }">
 
                                             <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                                                <v-img :src="'http://127.0.0.1:8000/api/images/' + item.client_image"
+                                                <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.client_image"
                                                     alt="image"></v-img>
                                             </v-avatar>
                                             {{ item.clientName }}
@@ -141,7 +141,7 @@
                                         <template v-slot:item.name="{ item }">
 
                                             <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                                                <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image"
+                                                <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image"
                                                     alt="image"></v-img>
                                             </v-avatar>
                                             {{ item.name }}
@@ -175,7 +175,7 @@
                                         <template v-slot:item.professionalName="{ item }">
 
                                             <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                                                <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url"
+                                                <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url"
                                                     alt="image"></v-img>
                                             </v-avatar>
                                             {{ item.professionalName }}
@@ -183,7 +183,7 @@
                                         <template v-slot:item.productName="{ item }">
 
                                             <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                                                <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_product"
+                                                <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_product"
                                                     alt="image"></v-img>
                                             </v-avatar>
                                             {{ item.productName }}
@@ -354,7 +354,7 @@ export default {
             this.loadingProduct = true;
             LocalStorageService.setIsLocked(true);
             axios
-                .get('http://127.0.0.1:8000/api/branch-cars-delete', {
+                .get('https://testapi.simplifies.cl/api/branch-cars-delete', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -380,7 +380,7 @@ export default {
                 professional_id: this.professional_id
             };
             axios
-                .post('http://127.0.0.1:8000/api/car-destroy', request)
+                .post('https://testapi.simplifies.cl/api/car-destroy', request)
                 .then(() => {
                 }).finally(() => {
                     LocalStorageService.setIsLocked(false);
@@ -396,7 +396,7 @@ export default {
                 professional_id: this.professional_id
             };
             axios
-                .post('http://127.0.0.1:8000/api/car-denegada', request)
+                .post('https://testapi.simplifies.cl/api/car-denegada', request)
                 .then(() => {
                 }).finally(() => {
                     LocalStorageService.setIsLocked(false);
@@ -415,7 +415,7 @@ export default {
                 professional_id: this.professional_id
             };
             axios
-                .post('http://127.0.0.1:8000/api/order-destroy-web', request)
+                .post('https://testapi.simplifies.cl/api/order-destroy-web', request)
                 .then(() => {
                     //this.initialize();
                 }).finally(() => {
@@ -432,7 +432,7 @@ export default {
                 professional_id: this.professional_id
             };
             axios
-                .post('http://127.0.0.1:8000/api/order-denegar', request)
+                .post('https://testapi.simplifies.cl/api/order-denegar', request)
                 .then(() => {
                 }).finally(() => {
                     LocalStorageService.setIsLocked(false);
@@ -449,7 +449,7 @@ export default {
                 professional_id: this.professional_id
             };
             axios
-                .post('http://127.0.0.1:8000/api/cashiersale-destroy', request)
+                .post('https://testapi.simplifies.cl/api/cashiersale-destroy', request)
                 .then(() => {
                     //this.initialize();
                 }).finally(() => {
@@ -466,7 +466,7 @@ export default {
                 professional_id: this.professional_id
             };
             axios
-                .post('http://127.0.0.1:8000/api/cashiersale-denegar', request)
+                .post('https://testapi.simplifies.cl/api/cashiersale-denegar', request)
                 .then(() => {
                 }).finally(() => {
                     LocalStorageService.setIsLocked(false);

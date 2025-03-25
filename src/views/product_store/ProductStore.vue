@@ -64,7 +64,7 @@
                         <template v-slot:item="{ props, item }">
                         <v-list-item
                           v-bind="props"
-                          :prepend-avatar="'http://127.0.0.1:8000/api/images/'+item.raw.image_product"
+                          :prepend-avatar="'https://testapi.simplifies.cl/api/images/'+item.raw.image_product"
                           :title="item.raw.name"
                         ></v-list-item>
                       </template>
@@ -175,7 +175,7 @@
         <template v-slot:item.name="{ item }">
 
           <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-            <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_product" alt="image"></v-img>
+            <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
           </v-avatar>
           {{ item.name }}
         </template>
@@ -227,7 +227,7 @@
                             <template v-slot:item.name="{ item }">
 
                                 <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                                    <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_product"
+                                    <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_product"
                                         alt="image"></v-img>
                                 </v-avatar>
                                 {{ item.name }}
@@ -298,7 +298,7 @@
                                 <template v-slot:item.nameProfessional="{ item }">
 
                                 <v-avatar class="mr-1" elevation="3" color="grey-lighten-4" size="large">
-                                  <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url" alt="image"></v-img>
+                                  <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
                                 </v-avatar><!--+'?$'+Date.now()-->
                                 {{ item.nameProfessional }}
                                 </template>
@@ -541,7 +541,7 @@ export default {
     this.permissionsUser = LocalStorageService.getItem("permissionsUser") || [],
     LocalStorageService.setIsLocked(true);
           axios
-        .get('http://127.0.0.1:8000/api/show-stores-products', {
+        .get('https://testapi.simplifies.cl/api/show-stores-products', {
         params: {
           business_id: this.business_id,
           branch_id: this.branch_id
@@ -593,7 +593,7 @@ export default {
       this.loadingProducts = true;
       LocalStorageService.setIsLocked(true);
       axios
-        .get('http://127.0.0.1:8000/api/productstore-show', {
+        .get('https://testapi.simplifies.cl/api/productstore-show', {
           params: {
             branch_id: this.branch_id
           }
@@ -626,7 +626,7 @@ export default {
       this.mostrarCampos = true;
       this.texttitle = 'Existencia';
       axios
-        .get('http://127.0.0.1:8000/api/store-show-notin', {
+        .get('https://testapi.simplifies.cl/api/store-show-notin', {
           params: {
             store_id: this.editedItem.store_id
           }
@@ -653,7 +653,7 @@ export default {
       this.data.store_id = this.editedItem.store_id;
       //this.data.branch_id = this.branch_id;
       axios
-        .post('http://127.0.0.1:8000/api/productstore-destroy', this.data)
+        .post('https://testapi.simplifies.cl/api/productstore-destroy', this.data)
         .then(() => {
           LocalStorageService.setIsLocked(false);
           this.message_delete = true;
@@ -692,7 +692,7 @@ export default {
         console.log(this.data);
         console.log('editar');
         axios
-          .put('http://127.0.0.1:8000/api/productstore', this.data)
+          .put('https://testapi.simplifies.cl/api/productstore', this.data)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.initialize();
@@ -712,7 +712,7 @@ export default {
         this.data.product_quantity = this.editedItem.product_quantityM;
         //this.data.branch_id = this.branch_id;
         axios
-          .post('http://127.0.0.1:8000/api/move-product-store', this.data)
+          .post('https://testapi.simplifies.cl/api/move-product-store', this.data)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.showAlert("success", "Producto asignado correctamente", 3000)
@@ -731,7 +731,7 @@ export default {
         this.data.stock_depletion = this.editedItem.stock_depletion;
         //this.data.branch_id = this.branch_id;
         axios
-          .post('http://127.0.0.1:8000/api/productstore', this.data)
+          .post('https://testapi.simplifies.cl/api/productstore', this.data)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.showAlert("success", "Producto asignado correctamente", 3000);
@@ -748,7 +748,7 @@ export default {
       LocalStorageService.setIsLocked(true);
             console.log('Entra aqui a reposicion');
             axios
-                .get('http://127.0.0.1:8000/api/product-stock', {
+                .get('https://testapi.simplifies.cl/api/product-stock', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -819,7 +819,7 @@ export default {
         this.selectedYear = currentYear;
         this.editedIndexMov = 1;
             axios
-                .get('http://127.0.0.1:8000/api/move-products', {
+                .get('https://testapi.simplifies.cl/api/move-products', {
                     params: {
                         branch_id: this.branch_id,
                         year: this.selectedYear,
@@ -845,7 +845,7 @@ export default {
               console.log('Mes seleccionado');
                 this.editedIndexMov = 2;
                 axios
-                    .get('http://127.0.0.1:8000/api/move-products', {
+                    .get('https://testapi.simplifies.cl/api/move-products', {
                         params: {
                             branch_id: this.branch_id,
                             year: this.selectedYear,

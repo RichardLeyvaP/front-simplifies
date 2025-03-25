@@ -147,7 +147,7 @@
             <template v-slot:item.professionalName="{ item }">
 
               <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url" alt="image"></v-img>
+                <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
               </v-avatar>
               {{ item.professionalName }}
             </template>
@@ -155,7 +155,7 @@
             <template v-slot:item.clientName="{ item }">
 
               <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                <v-img :src="'http://127.0.0.1:8000/api/images/' + item.client_image" alt="image"></v-img>
+                <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.client_image" alt="image"></v-img>
               </v-avatar>
               {{ item.clientName }}
             </template>
@@ -244,79 +244,10 @@
                 <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                   <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                     <v-card-text>
-                      <!--<v-row class="mb-4 mt-2" dense no-gutters>
-                        <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
-                              style="background-color: rgba(129, 199, 132, 0.9); color: white;">
-                              Datos del Sistema
-                            </v-card-title>
-                            <v-divider class="mb-4"></v-divider>
-                            <v-text-field v-model="editedCloseBox.totalService" label="Servicios" readonly
-                              prepend-icon="mdi-list-box-outline" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="editedCloseBox.totalProduct" label="Productos" readonly
-                              prepend-icon="mdi-tag-outline" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="editedCloseBox.totalTip" label="Propinas" readonly
-                              prepend-icon="mdi-cash-100" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                          </v-card>
-                        </v-col>
-                        <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
-                              style="background-color: rgba(100, 181, 246, 0.9); color: white;">
-                              Datos de la Cajera
-                            </v-card-title>
-                            <v-divider class="mb-4"></v-divider>
-                            <v-text-field v-model="cashierData.totalService" label="Total Servicios"
-                              prepend-icon="mdi-list-box-outline" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="cashierData.totalProduct" label="Total Productos"
-                              prepend-icon="mdi-tag-outline" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="cashierData.totalTip" label="Total Propinas"
-                              prepend-icon="mdi-cash-100" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                          </v-card>
-                        </v-col>
-
-                        <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
-                              style="background-color: rgba(229, 115, 115, 0.9); color: white;">Diferencias</v-card-title>
-                            <v-divider class="mb-4"></v-divider>
-                            <v-text-field :value="calculateDifferenceService" readonly
-                              prepend-icon="mdi-list-box-outline" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field :value="calculateDifferenceProduct" readonly prepend-icon="mdi-tag-outline"
-                              variant="underlined" density="compact" class="mb-2"></v-text-field>
-                            <v-text-field :value="calculateDifferenceTip" readonly prepend-icon="mdi-cash-100"
-                              variant="underlined" density="compact" class="mb-2"></v-text-field>
-                          </v-card>
-                        </v-col>
-                      </v-row>
-
-                      <v-row class="mb-4 mt-2" dense no-gutters>
-                        <v-col cols="8" class="text-right">
-                          <span class="text-h6"
-                            :class="{ 'text-red': cashierData.differenceAccounts < 0 }">Diferencias:</span>
-                        </v-col>
-                        <v-col cols="4" class="text-center">
-                          <v-text-field v-model="cashierData.differenceAccounts"
-                            :value="calculateTotalDifferencesIngresos" readonly prepend-icon="mdi-cash"
-                            variant="underlined" density="compact" class="mb-2" :class="{
-                              'text-red': cashierData.differenceAccounts < 0,
-                              'font-weight-bold': cashierData.differenceAccounts >= 0
-                            }"></v-text-field>
-                        </v-col>
-                      </v-row>-->
                       <v-row class="mb-4 mt-2" dense no-gutters>
                         <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2"
-                            style="max-height: 58vh; min-height: 58vh; overflow-y: auto;">
-                            <v-card-title class="text-subtitle-1 pa-1"
+                          <v-card class="pa-4 mx-2" elevation="2">
+                            <v-card-title class="text-subtitle-1"
                               style="background-color: rgba(129, 199, 132, 0.9); color: white;">
                               Datos del Sistema
                             </v-card-title>
@@ -343,46 +274,43 @@
                         </v-col>
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2"
-                            style="max-height: 58vh; min-height: 58vh; overflow-y: auto;">
-                            <v-card-title class="text-subtitle-1 pa-1"
+                            style="min-height: 58vh; overflow-y: auto;">
+                            <v-card-title class="text-subtitle-1"
                               style="background-color: rgba(100, 181, 246, 0.9); color: white;">
-                              Datos de la Cajera
+                              <v-row>
+                              <v-col cols="12" md="8">
+                                Datos de la Cajera</v-col>
+                              <v-col cols="12" md="4">                     
+                                <v-btn prepend-icon="mdi-plus"  variant="outlined" @click="dialogDetails = true">
+                                  Agregar
+                                </v-btn>
+                              </v-col>
+                              </v-row>
                             </v-card-title>
-                            <!-- Encabezado fijo de la tabla -->
-                            <v-row class="font-weight-bold" no-gutters v-if="cashierData.details.length > 0">
-                              <v-col cols="6" class="d-flex align-center">Método de ingreso</v-col>
-                              <v-col cols="4" class="d-flex align-center">Monto</v-col>
-                              <v-col cols="2" class="text-center">Acción</v-col>
-                            </v-row>
                             <v-divider class="mb-4"></v-divider>
-                            <v-list v-if="cashierData.details.length > 0" density="compact" class="pa-0">
-                              <v-list-item v-for="detail in cashierData.details" :key="detail.id" class="pa-0">
+                            <v-div v-if="cashierData.details.length > 0">
+                              <v-div v-for="detail in cashierData.details" :key="detail.id" class="mb-2">
                                 <template v-slot:default>
                                   <v-row no-gutters>
-                                    <v-col cols="6" class="d-flex align-center">
-                                      {{ getOptionName(detail.type) }}
-                                    </v-col>
-                                    <v-col cols="4" class="d-flex align-center">
-                                      {{ formatNumber(detail.value) }}
-                                    </v-col>
-                                    <v-col cols="2" class="text-center">
-                                      <v-icon icon="mdi-delete" color="error" @click.stop="removeDetail(detail)"
-                                        size="small"></v-icon>
+                                  <v-col cols="12" md="8">                                    
+                                      <v-text-field hide-details="auto" :model-value="formatNumber(detail.value)" :label="getOptionName(detail.type)" readonly prepend-icon="mdi-credit-card"
+                                      variant="underlined" density="compact" class="mb-5"></v-text-field>
+                                      </v-col>
+                                    <v-col cols="12" md="4">
+                                      <v-btn prepend-icon="mdi-delete" color="red" variant="outlined"  @click.stop="removeDetail(detail)">
+                                          Eliminar
+                                        </v-btn>
                                     </v-col>
                                   </v-row>
                                 </template>
-                              </v-list-item>
-                            </v-list>
+                              </v-div>
+                            </v-div>
                           </v-card>
-                          <div class="d-flex justify-end mt-2 mr-2">
-                            <v-btn icon="mdi-plus" color="primary" size="small" @click="dialogDetails = true"></v-btn>
-                          </div>
                         </v-col>
                         <!-- Columna 3: Diferencias -->
                         <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2"
-                            style="max-height: 58vh; min-height: 58vh; overflow-y: auto;">
-                            <v-card-title class="text-subtitle-1 pa-1"
+                          <v-card class="pa-4 mx-2" elevation="2">
+                            <v-card-title class="text-subtitle-1"
                               style="background-color: rgba(229, 115, 115, 0.9); color: white;">Diferencias</v-card-title>
                             <v-divider class="mb-4"></v-divider>
                             <v-text-field :value="calculateDifferenceCreditCard" readonly prepend-icon="mdi-credit-card"
@@ -402,15 +330,18 @@
                         </v-col>
                       </v-row>
                       <v-row class="mb-4 mt-2" dense no-gutters>
-                        <v-col cols="8" class="text-right">
-                          <span class="text-h6"
-                            :class="{ 'text-red': cashierData.differencePay < 0 }">Diferencias:</span>
+                      <v-col cols="12" md="6"></v-col>
+                        <v-col cols="12" md="4" class="text-right">
+                          <span class="text-h6 mb-2"
+                          :class="{
+                              'text-red': calculateTotalDifferencesPagos1 < 0,
+                              'text-green': calculateTotalDifferencesPagos1 >= 0
+                            }">Diferencias:</span>
                         </v-col>
-                        <v-col cols="4" class="text-center">
-                          <v-text-field v-model="cashierData.differencePay" :value="calculateTotalDifferencesPagos"
-                            readonly prepend-icon="mdi-cash" variant="underlined" density="compact" class="mb-2" :class="{
-                              'text-red': cashierData.differencePay < 0,
-                              'font-weight-bold': cashierData.differencePay >= 0
+                        <v-col cols="12" md="2">
+                          <v-text-field v-model="cashierData.differencePay" :value="calculateTotalDifferencesPagos" variant="underlined" density="compact"  class="mb-2" :class="{
+                              'text-red': calculateTotalDifferencesPagos1 < 0,
+                              'text-green': calculateTotalDifferencesPagos1 >= 0
                             }"></v-text-field>
                         </v-col>
                       </v-row>
@@ -437,7 +368,7 @@
                       <v-row class="mb-4 mt-2" dense no-gutters>
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
+                            <v-card-title class="text-subtitle-1"
                               style="background-color: rgba(129, 199, 132, 0.9); color: white;">
                               Datos del Sistema
                             </v-card-title>
@@ -456,7 +387,7 @@
                         <!-- Columna 2: Datos de la Cajera -->
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
+                            <v-card-title class="text-subtitle-1"
                               style="background-color: rgba(100, 181, 246, 0.9); color: white;">
                               Datos de la Cajera
                             </v-card-title>
@@ -472,7 +403,7 @@
                         </v-col>
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
+                            <v-card-title class="text-subtitle-1"
                               style="background-color: rgba(229, 115, 115, 0.9); color: white;">Diferencias</v-card-title>
                             <v-divider class="mb-4"></v-divider>
                             <v-text-field :value="calculateDifferenceExtraccion" readonly prepend-icon="mdi-cash-refund"
@@ -485,15 +416,19 @@
                         </v-col>
                       </v-row>
                       <v-row class="mb-4 mt-2" dense no-gutters>
-                        <v-col cols="8" class="text-right">
-                          <span class="text-h6" :class="{ 'text-red': cashierData.difference < 0 }">Total de
+                      <v-col cols="12" md="6"></v-col>
+                        <v-col cols="12" md="4" class="text-right">
+                          <span class="text-h6" :class="{
+                              'text-red': calculateTotalDifferencesGlobal1 < 0,
+                              'text-green': calculateTotalDifferencesGlobal1 >= 0
+                            }">Total de
                             Diferencias:</span>
                         </v-col>
-                        <v-col cols="4" class="text-center">
+                        <v-col cols="12" md="2" class="text-center">
                           <v-text-field v-model="cashierData.difference" :value="calculateTotalDifferencesGlobal"
-                            readonly prepend-icon="mdi-cash" variant="underlined" density="compact" class="mb-2" :class="{
-                              'text-red': cashierData.difference < 0,
-                              'font-weight-bold': cashierData.difference >= 0
+                            readonly variant="underlined" density="compact" class="mb-2" :class="{
+                              'text-red': calculateTotalDifferencesGlobal1 < 0,
+                              'text-green': calculateTotalDifferencesGlobal1 >= 0
                             }"></v-text-field>
                         </v-col>
                       </v-row>
@@ -571,9 +506,7 @@
               <v-container>
                 <!-- BOTONES -->
                 <v-row class="mt-1">
-                  <v-btn color="#E7E9E9" variant="flat" @click="close">
-                    Salir
-                  </v-btn>
+                  <v-btn color="#E7E9E9" variant="flat" @click="prevStep">Volver</v-btn>
                   <v-spacer></v-spacer>
                   <v-btn color="#E7E9E9" variant="flat" @click="nextStep">Siguiente</v-btn>
                 </v-row>
@@ -611,7 +544,7 @@
                         <template v-slot:item.name="{ item }">
 
                           <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                            <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url" alt="image"></v-img>
+                            <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
                           </v-avatar>
                           {{ item.name }}
                         </template>
@@ -653,9 +586,8 @@
                       <v-row class="mb-4 mt-2" dense no-gutters>
                         <!-- Columna 1: Datos del Sistema -->
                         <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2"
-                            style="max-height: 58vh; min-height: 58vh; overflow-y: auto;">
-                            <v-card-title class="text-subtitle-1 pa-1"
+                          <v-card class="pa-4 mx-2" elevation="2">
+                            <v-card-title class="text-subtitle-1"
                               style="background-color: rgba(129, 199, 132, 0.9); color: white;">
                               Datos del Sistema
                             </v-card-title>
@@ -683,66 +615,44 @@
 
                         <!-- Columna 2: Datos de la Cajera -->
                         <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2"
-                            style="max-height: 58vh; min-height: 58vh; overflow-y: auto;">
-                            <v-card-title class="text-subtitle-1 pa-1"
+                          <v-card class="pa-4 mx-2" elevation="2" style="min-height: 58vh; overflow-y: auto;">
+                            <v-card-title class="text-subtitle-1"
                               style="background-color: rgba(100, 181, 246, 0.9); color: white;">
-                              Datos de la Cajera
+                              <v-row>
+                              <v-col cols="12" md="8">
+                                Datos de la Cajera</v-col>
+                              <v-col cols="12" md="4">                     
+                                <v-btn prepend-icon="mdi-plus"  variant="outlined" @click="dialogDetails = true">
+                                  Agregar
+                                </v-btn>
+                              </v-col>
+                              </v-row>
                             </v-card-title>
-                            <!-- Encabezado fijo de la tabla -->
-                            <v-row class="font-weight-bold" no-gutters v-if="cashierData.details.length > 0">
-                              <v-col cols="6" class="d-flex align-center">Método de ingreso</v-col>
-                              <v-col cols="4" class="d-flex align-center">Monto</v-col>
-                              <v-col cols="2" class="text-center">Acción</v-col>
-                            </v-row>
                             <v-divider class="mb-4"></v-divider>
-                            <!--<v-text-field v-model="cashierData.totalCreditCard" label="Total Tarjeta Crédito"
-                              prepend-icon="mdi-credit-card" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="cashierData.totalDebit" label="Total Débito"
-                              prepend-icon="mdi-credit-card-outline" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="cashierData.totalTransfer" label="Total Transferencia"
-                              prepend-icon="mdi-bank-transfer" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="cashierData.totalCash" label="Total Efectivo" prepend-icon="mdi-cash"
-                              variant="underlined" density="compact" class="mb-2"></v-text-field>
-                            <v-text-field v-model="cashierData.totalOther" label="Otros Totales"
-                              prepend-icon="mdi-currency-usd" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="cashierData.totalCardGif" label="Total Tarjetas Regalo"
-                              prepend-icon="mdi-gift" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>-->
-                            <!-- Lista de detalles agregados -->
-                            <v-list v-if="cashierData.details.length > 0" density="compact" class="pa-0">
-                              <v-list-item v-for="detail in cashierData.details" :key="detail.id" class="pa-0">
+                            <v-div v-if="cashierData.details.length > 0">
+                              <v-div v-for="detail in cashierData.details" :key="detail.id" class="mb-2">
                                 <template v-slot:default>
                                   <v-row no-gutters>
-                                    <v-col cols="6" class="d-flex align-center">
-                                      {{ getOptionName(detail.type) }}
-                                    </v-col>
-                                    <v-col cols="4" class="d-flex align-center">
-                                      {{ formatNumber(detail.value) }}
-                                    </v-col>
-                                    <v-col cols="2" class="text-center">
-                                      <v-icon icon="mdi-delete" color="error" @click.stop="removeDetail(detail)"
-                                        size="small"></v-icon>
+                                  <v-col cols="12" md="8">                                    
+                                      <v-text-field hide-details="auto" :model-value="formatNumber(detail.value)" :label="getOptionName(detail.type)" readonly prepend-icon="mdi-credit-card"
+                                      variant="underlined" density="compact" class="mb-5"></v-text-field>
+                                      </v-col>
+                                    <v-col cols="12" md="4">
+                                      <v-btn prepend-icon="mdi-delete" color="red" variant="outlined"  @click.stop="removeDetail(detail)">
+                                          Eliminar
+                                        </v-btn>
                                     </v-col>
                                   </v-row>
                                 </template>
-                              </v-list-item>
-                            </v-list>
+                              </v-div>
+                            </v-div>
                           </v-card>
-                          <div class="d-flex justify-end mt-2 mr-2">
-                            <v-btn icon="mdi-plus" color="primary" size="small" @click="dialogDetails = true"></v-btn>
-                          </div>
                         </v-col>
 
                         <!-- Columna 3: Diferencias -->
                         <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2"
-                            style="max-height: 58vh; min-height: 58vh; overflow-y: auto;">
-                            <v-card-title class="text-subtitle-1 pa-1"
+                          <v-card class="pa-4 mx-2" elevation="2" >
+                            <v-card-title class="text-subtitle-1"
                               style="background-color: rgba(229, 115, 115, 0.9); color: white;">Diferencias</v-card-title>
                             <v-divider class="mb-4"></v-divider>
                             <v-text-field :value="calculateDifferenceCreditCard" readonly prepend-icon="mdi-credit-card"
@@ -764,15 +674,18 @@
 
                       <!-- Fila de Total de Diferencias -->
                       <v-row class="mb-4 mt-2" dense no-gutters>
-                        <v-col cols="8" class="text-right">
-                          <span class="text-h6"
-                            :class="{ 'text-red': cashierData.differencePay < 0 }">Diferencias:</span>
+                        <v-col cols="12" md="6"></v-col>
+                        <v-col cols="12" md="4" class="text-right">
+                          <span class="text-h6 mb-2"
+                          :class="{
+                              'text-red': calculateTotalDifferencesPagos1 < 0,
+                              'text-green': calculateTotalDifferencesPagos1 >= 0
+                            }">Diferencias:</span>
                         </v-col>
-                        <v-col cols="4" class="text-center">
-                          <v-text-field v-model="cashierData.differencePay" :value="calculateTotalDifferencesPagos"
-                            readonly prepend-icon="mdi-cash" variant="underlined" density="compact" class="mb-2" :class="{
-                              'text-red': cashierData.differencePay < 0,
-                              'font-weight-bold': cashierData.differencePay >= 0
+                        <v-col cols="12" md="2">
+                          <v-text-field v-model="cashierData.differencePay" :value="calculateTotalDifferencesPagos" variant="underlined" density="compact"  class="mb-2" :class="{
+                              'text-red': calculateTotalDifferencesPagos1 < 0,
+                              'text-green': calculateTotalDifferencesPagos1 >= 0
                             }"></v-text-field>
                         </v-col>
                       </v-row>
@@ -799,7 +712,7 @@
                         <!-- Columna 1: Datos del Sistema -->
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
+                            <v-card-title class="text-subtitle-1"
                               style="background-color: rgba(129, 199, 132, 0.9); color: white;">
                               Datos del Sistema
                             </v-card-title>
@@ -819,7 +732,7 @@
                         <!-- Columna 2: Datos de la Cajera -->
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
+                            <v-card-title class="text-subtitle-1"
                               style="background-color: rgba(100, 181, 246, 0.9); color: white;">
                               Datos de la Cajera
                             </v-card-title>
@@ -837,7 +750,7 @@
                         <!-- Columna 3: Diferencias -->
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
+                            <v-card-title class="text-subtitle-1"
                               style="background-color: rgba(229, 115, 115, 0.9); color: white;">Diferencias</v-card-title>
                             <v-divider class="mb-4"></v-divider>
                             <v-text-field :value="calculateDifferenceExtraccion" readonly prepend-icon="mdi-cash-refund"
@@ -850,17 +763,21 @@
                         </v-col>
                       </v-row>
 
-                      <!-- Fila de Total de Diferencias -->
+                      <!-- Fila de Total de Diferencias)-->
                       <v-row class="mb-4 mt-2" dense no-gutters>
-                        <v-col cols="8" class="text-right">
-                          <span class="text-h6" :class="{ 'text-red': cashierData.difference < 0 }">Total de
+                        <v-col cols="12" md="6"></v-col>
+                        <v-col cols="12" md="4" class="text-right">
+                          <span class="text-h6" :class="{
+                              'text-red': calculateTotalDifferencesGlobal1 < 0,
+                              'text-green': calculateTotalDifferencesGlobal1 >= 0
+                            }">Total de
                             Diferencias:</span>
                         </v-col>
-                        <v-col cols="4" class="text-center">
+                        <v-col cols="12" md="2" class="text-center">
                           <v-text-field v-model="cashierData.difference" :value="calculateTotalDifferencesGlobal"
                             readonly prepend-icon="mdi-cash" variant="underlined" density="compact" class="mb-2" :class="{
-                              'text-red': cashierData.difference < 0,
-                              'font-weight-bold': cashierData.difference >= 0
+                              'text-red': calculateTotalDifferencesGlobal1 < 0,
+                              'text-green': calculateTotalDifferencesGlobal1 >= 0
                             }"></v-text-field>
                         </v-col>
                       </v-row>
@@ -1106,7 +1023,7 @@
           <template v-slot:item.image="{ item }">
 
             <v-avatar elevation="3" color="grey-lighten-4" size="large">
-              <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image" alt="image"></v-img>
+              <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image" alt="image"></v-img>
             </v-avatar>
 
           </template>
@@ -1159,13 +1076,13 @@
               closable-chips<template v-slot:chip="{ props, item }">
                 <v-chip
                   v-bind="props"
-                  :prepend-avatar="'http://127.0.0.1:8000/api/images/'+item.raw.image_product"
+                  :prepend-avatar="'https://testapi.simplifies.cl/api/images/'+item.raw.image_product"
                   :text="item.raw.name"
                 ></v-chip>
               </template>-->
                 <template v-slot:item="{ props, item }">
                   <v-list-item v-bind="props"
-                    :prepend-avatar="'http://127.0.0.1:8000/api/images/' + item.raw.image_product"
+                    :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + item.raw.image_product"
                     :title="item.raw.name">
                     <v-list-item-subtitle class="d-flex justify-space-between">
                       Existencia: {{ item.raw.product_exit }}
@@ -1215,7 +1132,7 @@
                 item-value="id" variant="underlined" :rules="selectRules">
                 <template v-slot:item="{ props, item }">
                   <v-list-item v-bind="props"
-                    :prepend-avatar="'http://127.0.0.1:8000/api/images/' + item.raw.image_service"
+                    :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + item.raw.image_service"
                     :title="item.raw.name">
                     <v-list-item-subtitle class="d-flex justify-space-between">
                       Precio: {{ this.formatNumber(item.raw.price_service) }}
@@ -1322,7 +1239,7 @@
           <template v-slot:item.professionalName="{ item }">
 
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url" alt="image"></v-img>
+              <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
             </v-avatar>
             {{ item.professionalName }}
           </template>
@@ -1330,7 +1247,7 @@
           <template v-slot:item.clientName="{ item }">
 
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'http://127.0.0.1:8000/api/images/' + item.client_image" alt="image"></v-img>
+              <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.client_image" alt="image"></v-img>
             </v-avatar>
             {{ item.clientName }}
           </template>
@@ -1419,7 +1336,7 @@
           <template v-slot:item.name="{ item }">
 
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_product" alt="image"></v-img>
+              <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
             </v-avatar>
             {{ item.name }}
           </template>
@@ -1474,7 +1391,7 @@
                 variant="underlined" :rules="selectRules" @update:model-value="cantExist">
                 <template v-slot:item="{ props, item }">
                   <v-list-item v-bind="props"
-                    :prepend-avatar="'http://127.0.0.1:8000/api/images/' + item.raw.image_product"
+                    :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + item.raw.image_product"
                     :title="item.raw.name"><v-list-item-subtitle class="d-flex justify-space-between">
                       Existencia: {{ item.raw.product_exit }}
                       Precio: {{ this.formatNumber(item.raw.price) }}
@@ -1616,7 +1533,7 @@
           <template v-slot:item.name="{ item }">
 
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url" alt="image"></v-img>
+              <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
             </v-avatar>
             {{ item.name }}
           </template>
@@ -1670,7 +1587,7 @@
           <template v-slot:item.name="{ item }">
 
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url" alt="image"></v-img>
+              <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
             </v-avatar>
             {{ item.name }}
           </template>
@@ -1758,7 +1675,7 @@
                       :rules="selectRules"><!--@update:model-value="showReservationsProfessional()"-->
                       <template v-slot:item="{ props, item }">
                         <v-list-item v-bind="props"
-                          :prepend-avatar="'http://127.0.0.1:8000/api/images/' + item.raw.image_url"
+                          :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + item.raw.image_url"
                           :subtitle="'Cargo: ' + item.raw.charge" :title="item.raw.name"></v-list-item>
                       </template>
                     </v-autocomplete>
@@ -2240,14 +2157,14 @@ export default {
 
     },*/
     calculateDifferenceExtraccion() {
-      if (this.cashierData.extraction) {
+      //if (this.cashierData.extraction) {
         const extraccionSistema = parseFloat(this.editedBox.extraction) || 0;
         const extraccionCajera = parseFloat(this.cashierData.extraction) || 0;
-        const diferencia = extraccionSistema - extraccionCajera;
-        return Math.abs(diferencia.toFixed(2)); // Redondea a 2 decimales
-      } else {
-        return 0.00
-      }
+        const diferencia = extraccionCajera - extraccionSistema;
+        return diferencia.toFixed(2); // Redondea a 2 decimales
+      //} else {
+        //return 0.00
+      //}
 
     },
     /*calculateTotalDifferences() {
@@ -2296,64 +2213,64 @@ export default {
       return total.toFixed(2); // Redondea a 2 decimales
     },*/
     calculateDifferenceCreditCard() {
-      if (this.cashierData.totalCreditCard) {
+      //if (this.cashierData.totalCreditCard) {
         const creditCardSistema = parseFloat(this.editedCloseBox.totalCreditCard) || 0;
         const creditCardCajera = parseFloat(this.cashierData.totalCreditCard) || 0;
-        const diferencia = creditCardSistema - creditCardCajera;
-        return Math.abs(diferencia.toFixed(2)); // Redondea a 2 decimales
-      } else {
-        return 0.00;
-      }
+        const diferencia = creditCardCajera - creditCardSistema;
+        return diferencia.toFixed(2); // Redondea a 2 decimales
+      //} else {
+        //return 0.00;
+      //}
     },
     calculateDifferenceDebit() {
-      if (this.cashierData.totalDebit) {
+      //if (this.cashierData.totalDebit) {
         const debitSistema = parseFloat(this.editedCloseBox.totalDebit) || 0;
         const debitCajera = parseFloat(this.cashierData.totalDebit) || 0;
-        const diferencia = debitSistema - debitCajera;
-        return Math.abs(diferencia.toFixed(2)); // Redondea a 2 decimales
-      } else {
-        return 0.00;
-      }
+        const diferencia = debitCajera - debitSistema;
+        return diferencia.toFixed(2); // Redondea a 2 decimales
+      //} else {
+        //return 0.00;
+      //}
     },
     calculateDifferenceTransfer() {
-      if (this.cashierData.totalTransfer) {
+      //if (this.cashierData.totalTransfer) {
         const transferSistema = parseFloat(this.editedCloseBox.totalTransfer) || 0;
         const transferCajera = parseFloat(this.cashierData.totalTransfer) || 0;
-        const diferencia = transferSistema - transferCajera;
-        return Math.abs(diferencia.toFixed(2)); // Redondea a 2 decimales
-      } else {
-        return 0.00;
-      }
+        const diferencia = transferCajera - transferSistema;
+        return diferencia.toFixed(2); // Redondea a 2 decimales
+      //} else {
+        //return 0.00;
+      //}
     },
     calculateDifferenceCash() {
-      if (this.cashierData.totalCash) {
+      //if (this.cashierData.totalCash) {
         const transferSistema = parseFloat(this.editedCloseBox.totalCash) || 0;
         const transferCajera = parseFloat(this.cashierData.totalCash) || 0;
-        const diferencia = transferSistema - transferCajera;
-        return Math.abs(diferencia.toFixed(2)); // Redondea a 2 decimales
-      } else {
-        return 0.00;
-      }
+        const diferencia = transferCajera - transferSistema;
+        return diferencia.toFixed(2); // Redondea a 2 decimales
+      //} else {
+       // return 0.00;
+      //}
     },
     calculateDifferenceOther() {
-      if (this.cashierData.totalOther) {
+      //if (this.cashierData.totalOther) {
         const otherSistema = parseFloat(this.editedCloseBox.totalOther) || 0;
         const otherCajera = parseFloat(this.cashierData.totalOther) || 0;
-        const diferencia = otherSistema - otherCajera;
-        return Math.abs(diferencia.toFixed(2)); // Redondea a 2 decimales
-      } else {
-        return 0.00;
-      }
+        const diferencia = otherCajera - otherSistema;
+        return diferencia.toFixed(2); // Redondea a 2 decimales
+      //} else {
+       // return 0.00;
+      //}
     },
     calculateDifferenceCardGif() {
-      if (this.cashierData.totalCardGif) {
+      //if (this.cashierData.totalCardGif) {
         const cardGifSistema = parseFloat(this.editedCloseBox.totalCardGif) || 0;
         const cardGifCajera = parseFloat(this.cashierData.totalCardGif) || 0;
-        const diferencia = cardGifSistema - cardGifCajera;
-        return Math.abs(diferencia.toFixed(2)); // Redondea a 2 decimales
-      } else {
-        return 0.00;
-      }
+        const diferencia = cardGifCajera - cardGifSistema;
+        return diferencia.toFixed(2); // Redondea a 2 decimales
+      //} else {
+        //return 0.00;
+      //}
     },
     calculateTotalDifferencesPagos() {
       const diferenciaCreditCard = Math.abs(parseFloat(this.calculateDifferenceCreditCard)) || 0;
@@ -2364,6 +2281,16 @@ export default {
       const diferenciaCash = Math.abs(parseFloat(this.calculateDifferenceCash)) || 0;
       const total = diferenciaCreditCard + diferenciaDebit + diferenciaTransfer + diferenciaOther + diferenciaCardGif + diferenciaCash;
       this.cashierData.differencePay = total.toFixed(2);
+      return total.toFixed(2); // Redondea a 2 decimales
+    },
+    calculateTotalDifferencesPagos1() {
+      const diferenciaCreditCard = parseFloat(this.calculateDifferenceCreditCard) || 0;
+      const diferenciaDebit = parseFloat(this.calculateDifferenceDebit) || 0;
+      const diferenciaTransfer = parseFloat(this.calculateDifferenceTransfer) || 0;
+      const diferenciaOther = parseFloat(this.calculateDifferenceOther) || 0;
+      const diferenciaCardGif = parseFloat(this.calculateDifferenceCardGif) || 0;
+      const diferenciaCash = parseFloat(this.calculateDifferenceCash) || 0;
+      const total = diferenciaCreditCard + diferenciaDebit + diferenciaTransfer + diferenciaOther + diferenciaCardGif + diferenciaCash;
       return total.toFixed(2); // Redondea a 2 decimales
     },
     calculateDifferenceTotalMount() {
@@ -2378,29 +2305,37 @@ export default {
       //}
     },
     calculateDifferenceAdelanto() {
-      if (this.cashierData.advancement) {
+      //if (this.cashierData.advancement) {
         const adelantoSistema = parseFloat(this.editedCloseBox.advancement) || 0;
         const adelantoCajera = parseFloat(this.cashierData.advancement) || 0;
-        const diferencia = adelantoSistema - adelantoCajera;
-        return Math.abs(diferencia.toFixed(2)); // Redondea a 2 decimales
-      } else {
-        return 0.00;
-      }
+        const diferencia = adelantoCajera - adelantoSistema;
+        return diferencia.toFixed(2); // Redondea a 2 decimales
+      //} else {
+        //return 0.00;
+      //}
     },
     calculateDifferenceBonusPay() {
-      if (this.cashierData.totalBonus) {
+      //if (this.cashierData.totalBonus) {
         const bonusPaySistema = parseFloat(this.editedCloseBox.totalBonus) || 0;
         const bonusPayCajera = parseFloat(this.cashierData.totalBonus) || 0;
-        const diferencia = bonusPaySistema - bonusPayCajera;
-        return Math.abs(diferencia.toFixed(2)); // Redondea a 2 decimales
-      } else {
-        return 0.00;
-      }
+        const diferencia = bonusPayCajera - bonusPaySistema;
+        return diferencia.toFixed(2); // Redondea a 2 decimales
+      //} else {
+        //return 0.00;
+      //}
     },
     calculateTotalDifferencesTotales() {
       const diferenciaExtraxtion = Math.abs(parseFloat(this.calculateDifferenceExtraccion)) || 0;
       const diferenciaAdelanto = Math.abs(parseFloat(this.calculateDifferenceAdelanto)) || 0;
       const diferenciaBonusPay = Math.abs(parseFloat(this.calculateDifferenceBonusPay)) || 0;
+      const total = diferenciaAdelanto + diferenciaBonusPay + diferenciaExtraxtion;
+      return total.toFixed(2); // Redondea a 2 decimales
+    },
+
+    calculateTotalDifferencesTotales1() {
+      const diferenciaExtraxtion = parseFloat(this.calculateDifferenceExtraccion) || 0;
+      const diferenciaAdelanto = parseFloat(this.calculateDifferenceAdelanto) || 0;
+      const diferenciaBonusPay = parseFloat(this.calculateDifferenceBonusPay) || 0;
       const total = diferenciaAdelanto + diferenciaBonusPay + diferenciaExtraxtion;
       return total.toFixed(2); // Redondea a 2 decimales
     },
@@ -2415,6 +2350,18 @@ export default {
       this.cashierData.difference = totalGlobal;
       return totalGlobal.toFixed(2); // Redondea a 2 decimales
     },
+
+    calculateTotalDifferencesGlobal1() {
+      //const diferenciaCaja = parseFloat(this.calculateTotalDifferences) || 0; // Diferencias de "caja"
+      //const diferenciaIngresos = parseFloat(this.calculateTotalDifferencesIngresos) || 0; // Diferencias de "typeingreso"
+      //const diferenciaPagos = parseFloat(this.calculateTotalDifferencesPagos) || 0; // Diferencias de "typepago"
+      const diferenciaTotales = parseFloat(this.calculateTotalDifferencesTotales1) || 0; // Diferencias de "total"
+      const differenceIngreso = parseFloat(this.calculateTotalDifferencesPagos1) || 0;
+      // Suma todas las diferencias
+      const totalGlobal = diferenciaTotales + differenceIngreso;
+      return totalGlobal.toFixed(2); // Redondea a 2 decimales
+    },
+
     totalCashierPayments() {
       const totalCreditCard = parseFloat(this.cashierData.totalCreditCard) || 0;
       const totalDebit = parseFloat(this.cashierData.totalDebit) || 0;
@@ -2482,7 +2429,7 @@ export default {
     this.nameProfessional = JSON.parse(LocalStorageService.getItem("name"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     /*axios
-      .get('http://127.0.0.1:8000/api/show-business', {
+      .get('https://testapi.simplifies.cl/api/show-business', {
         params: {
           business_id: this.business_id
         }
@@ -2589,7 +2536,7 @@ export default {
         this.loadingBonusProf = true;
         LocalStorageService.setIsLocked(true);
         axios
-          .get('http://127.0.0.1:8000/api/bonus-show', {
+          .get('https://testapi.simplifies.cl/api/bonus-show', {
             params: {
               branch_id: this.branch_id
             }
@@ -2685,6 +2632,12 @@ export default {
       this.tab = 'caja';
       this.step = 1;
       this.dialog = true;
+
+      this.editedItem = Object.assign({}, this.defaultItem);
+        this.cashierData = Object.assign({}, this.defaultcashierData);
+        this.editedCloseBox = Object.assign({}, this.defaultCloseBox);
+        this.editedBox = Object.assign({}, this.defaultBox);
+
       const cashierDataFiltered = this.cashierBoxClose.filter(item => item.type === 'Diario');
 
       // Verificar si hay datos filtrados
@@ -2699,6 +2652,10 @@ export default {
     },
     openCloseBoxDialog() {
       this.stopInterval();
+      this.editedItem = Object.assign({}, this.defaultItem);
+        this.cashierData = Object.assign({}, this.defaultcashierData);
+        this.editedCloseBox = Object.assign({}, this.defaultCloseBox);
+        this.editedBox = Object.assign({}, this.defaultBox);
       // Filtrar results según las condiciones
       const filteredResults = this.results.filter(item => {
         this.stepCashier = 1;
@@ -2867,7 +2824,7 @@ export default {
         : format(new Date(), "yyyy-MM-dd");*/
       LocalStorageService.setIsLocked(true);
       axios
-        .get("http://127.0.0.1:8000/api/branch-reservations-periodo", {
+        .get("https://testapi.simplifies.cl/api/branch-reservations-periodo", {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,
@@ -2891,7 +2848,7 @@ export default {
       const startDate = range.start.toISOString().split('T')[0];
       const endDate = range.end.toISOString().split('T')[0];
       axios
-        .get("http://127.0.0.1:8000/api/professional-reservations-periodo", {
+        .get("https://testapi.simplifies.cl/api/professional-reservations-periodo", {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_idR,
@@ -3010,7 +2967,7 @@ export default {
       this.loadingBonus = true;
       LocalStorageService.setIsLocked(true);
       axios
-        .get('http://127.0.0.1:8000/api/branch-payment-show-bonus', {
+        .get('https://testapi.simplifies.cl/api/branch-payment-show-bonus', {
           params: {
             branch_id: this.branch_id
           }
@@ -3027,7 +2984,7 @@ export default {
       this.loadingBonusProf = true;
       LocalStorageService.setIsLocked(true);
       axios
-        .get('http://127.0.0.1:8000/api/bonus-show', {
+        .get('https://testapi.simplifies.cl/api/bonus-show', {
           params: {
             branch_id: this.branch_id
           }
@@ -3060,7 +3017,7 @@ export default {
       this.data.retention = this.bonus_ref.retention;
       LocalStorageService.setIsLocked(true);
       axios
-        .post('http://127.0.0.1:8000/api/bonu-payment', this.data)
+        .post('https://testapi.simplifies.cl/api/bonu-payment', this.data)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -3077,7 +3034,7 @@ export default {
           this.dialogConfBonus = false;
           this.loadingBonusPay = false;
           /*axios
-            .get('http://127.0.0.1:8000/api/bonus-show', {
+            .get('https://testapi.simplifies.cl/api/bonus-show', {
               params: {
                 branch_id: this.branch_id
               }
@@ -3162,7 +3119,7 @@ export default {
       // Realiza cualquier lógica adicional aquí
       console.log('Elemento seleccionado:', code);
       axios
-        .get('http://127.0.0.1:8000/api/card-gift-user-show-value', {
+        .get('https://testapi.simplifies.cl/api/card-gift-user-show-value', {
           params: {
             code: code
           }
@@ -3195,7 +3152,7 @@ export default {
         id: item.id
       };
       axios
-        .put('http://127.0.0.1:8000/api/car', request)
+        .put('https://testapi.simplifies.cl/api/car', request)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -3214,7 +3171,7 @@ export default {
         professional_id: this.professional_id
       };
       axios
-        .post('http://127.0.0.1:8000/api/order-destroy-solicitud', request)
+        .post('https://testapi.simplifies.cl/api/order-destroy-solicitud', request)
         .then(() => {
           //this.initialize();
         }).finally(() => {
@@ -3235,7 +3192,7 @@ export default {
         professional_id: this.professional_id
       };
       axios
-        .post('http://127.0.0.1:8000/api/cashiersale-destroy-solicitud', request)
+        .post('https://testapi.simplifies.cl/api/cashiersale-destroy-solicitud', request)
         .then(() => {
           this.showSaleProducts = false;
         }).finally(() => {
@@ -3256,7 +3213,7 @@ export default {
         professional_id: this.professional_id
       };
       axios
-        .post('http://127.0.0.1:8000/api/order-destroy-web', request)
+        .post('https://testapi.simplifies.cl/api/order-destroy-web', request)
         .then(() => {
           //this.initialize();
         }).finally(() => {
@@ -3281,7 +3238,7 @@ export default {
         branch_id: this.branch_id,
       };
       axios
-        .put('http://127.0.0.1:8000/api/order-web', request)
+        .put('https://testapi.simplifies.cl/api/order-web', request)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -3660,7 +3617,7 @@ export default {
         professional_id: this.professional_id
       };
       axios
-        .post('http://127.0.0.1:8000/api/car-destroy-solicitud', request)
+        .post('https://testapi.simplifies.cl/api/car-destroy-solicitud', request)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -3679,7 +3636,7 @@ export default {
         professional_id: this.professional_id
       };
       axios
-        .post('http://127.0.0.1:8000/api/car-update-solicitud', request)
+        .post('https://testapi.simplifies.cl/api/car-update-solicitud', request)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -3719,7 +3676,7 @@ export default {
       }
 
       /*axios
-        .get('http://127.0.0.1:8000/api/card-gift-show', {
+        .get('https://testapi.simplifies.cl/api/card-gift-show', {
           params: {
             business_id: this.business_id
           }
@@ -3738,7 +3695,7 @@ export default {
       this.car_ref = item
       this.editedItem.id = item.id;
       axios
-        .get('http://127.0.0.1:8000/api/order-show', {
+        .get('https://testapi.simplifies.cl/api/order-show', {
           params: {
             car_id: item.id
           }
@@ -3778,7 +3735,7 @@ export default {
         branch_id: this.branch_id
       };
       axios
-        .post('http://127.0.0.1:8000/api/car-destroy', request)
+        .post('https://testapi.simplifies.cl/api/car-destroy', request)
         .then(() => {
         }).finally(() => {
           this.showAlert("success", "Carro eliminado correctamente", 3000);
@@ -3813,7 +3770,7 @@ export default {
           LocalStorageService.setIsLocked(true);
           this.valid = true;
           axios
-            .put('http://127.0.0.1:8000/api/payment', this.data)
+            .put('https://testapi.simplifies.cl/api/payment', this.data)
             .then(() => {
             }).finally(() => {
               LocalStorageService.setIsLocked(false);
@@ -3914,15 +3871,15 @@ export default {
         });
 
         // Manejo de la respuesta según el resultado
-        if (result.success) {
-          this.closeParcial();
+        /*if (result.success) {
           this.showAlert("success", result.message, 3000);
+          this.closeParcial();
         } else {
           await this.startInterval();
           this.dialogParcial = false;
           this.loadingBonus = true;
           this.showAlert("warning", result.message, 3000);
-        }
+        }*/
       } catch (error) {
         await this.startInterval();
         //this.dialogParcial = false;
@@ -3935,6 +3892,7 @@ export default {
         //this.dialogParcial = false;
         this.loadingBonus = true;
         this.showAlert("success", "Cierre de caja efectuado correctamente", 3000);
+        this.closeParcial();
       }
       //this.dialogParcial = false;
       this.loadingBonus = true;
@@ -3953,7 +3911,7 @@ export default {
         console.log('formData');
         console.log(formData);
         axios
-          .post('http://127.0.0.1:8000/api/box', formData)
+          .post('https://testapi.simplifies.cl/api/box', formData)
           .then(() => {
           }).finally(() => {
             LocalStorageService.setIsLocked(false);
@@ -3991,7 +3949,7 @@ export default {
       const token = LocalStorageService.getItem('token');
       console.log('Cerrar Sesión')
       axios
-        .get('http://127.0.0.1:8000/api/logout', {
+        .get('https://testapi.simplifies.cl/api/logout', {
           headers: {
             'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
           }
@@ -4048,7 +4006,7 @@ export default {
       console.log(car);
 
       axios
-        .get('http://127.0.0.1:8000/api/services-professional-branch-web', {
+        .get('https://testapi.simplifies.cl/api/services-professional-branch-web', {
           params: {
             branch_id: this.branch_id,
             professional_id: car.professional_id
@@ -4081,7 +4039,7 @@ export default {
       console.log('Datos servicios agregar');
       console.log(this.data);
       axios
-        .post('http://127.0.0.1:8000/api/order-web', this.data)
+        .post('https://testapi.simplifies.cl/api/order-web', this.data)
         .then(() => {
         }).finally(() => {
           this.showAlert("success", "Servicio agregado correctamente", 3000);
@@ -4121,7 +4079,7 @@ export default {
       console.log(car);
       LocalStorageService.setIsLocked(true);
       axios
-        .get('http://127.0.0.1:8000/api/productstore-show-web', {
+        .get('https://testapi.simplifies.cl/api/productstore-show-web', {
           params: {
             branch_id: this.branch_id
           }
@@ -4155,7 +4113,7 @@ export default {
       console.log('Datos producto agregar');
       console.log(this.data);
       axios
-        .post('http://127.0.0.1:8000/api/order-web', this.data)
+        .post('https://testapi.simplifies.cl/api/order-web', this.data)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -4198,7 +4156,7 @@ export default {
     showDialogProduct() {
       LocalStorageService.setIsLocked(true);
       axios
-        .get('http://127.0.0.1:8000/api/cashiersale-show', {
+        .get('https://testapi.simplifies.cl/api/cashiersale-show', {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id
@@ -4220,7 +4178,7 @@ export default {
     showSalegProduct() {
       LocalStorageService.setIsLocked(false);
       axios
-        .get('http://127.0.0.1:8000/api/productstore-show-web', {
+        .get('https://testapi.simplifies.cl/api/productstore-show-web', {
           params: {
             branch_id: this.branch_id
           }
@@ -4265,7 +4223,7 @@ export default {
           LocalStorageService.setIsLocked(true);
           this.valid = true;
           axios
-            .post('http://127.0.0.1:8000/api/payment-product-sales', this.data)
+            .post('https://testapi.simplifies.cl/api/payment-product-sales', this.data)
             .then(() => {
             }).finally(() => {
               LocalStorageService.setIsLocked(false);
@@ -4299,7 +4257,7 @@ export default {
       this.data.professional_id = this.professional_id;
       this.data.cant = this.cant;
       axios
-        .post('http://127.0.0.1:8000/api/cashiersale', this.data)
+        .post('https://testapi.simplifies.cl/api/cashiersale', this.data)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);

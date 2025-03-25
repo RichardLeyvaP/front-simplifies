@@ -230,7 +230,7 @@
             </template>
             <template v-slot:item.name="{ item }">
               <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url" alt="image"></v-img><!--+ '?$' + Date.now()
+                <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img><!--+ '?$' + Date.now()
                 -->
               </v-avatar>
               {{ item.name }}
@@ -402,7 +402,7 @@
                       </template>
                       <template v-slot:item.name="{ item }">
                         <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                          <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url" alt="image"></v-img><!--+ '?$' + Date.now()
+                          <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img><!--+ '?$' + Date.now()
                           -->
                         </v-avatar>
                         {{ item.name }}
@@ -664,7 +664,7 @@
 
           <v-card-text class="d-flex align-center mt-2">
             <v-avatar class="mr-2">
-              <v-img :src="'http://127.0.0.1:8000/api/images/' + clientImage" alt="Avatar del cliente"></v-img>
+              <v-img :src="'https://testapi.simplifies.cl/api/images/' + clientImage" alt="Avatar del cliente"></v-img>
             </v-avatar>
             <span>{{ clientName }}</span>
           </v-card-text>
@@ -718,7 +718,7 @@
                           :rules="selectRules"><!--@update:model-value="showReservationsProfessional()"-->
                           <template v-slot:item="{ props, item }">
                             <v-list-item v-bind="props"
-                              :prepend-avatar="'http://127.0.0.1:8000/api/images/' + item.raw.image_url"
+                              :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + item.raw.image_url"
                               :subtitle="'Cargo: ' + item.raw.charge" :title="item.raw.name"></v-list-item>
                           </template>
                         </v-autocomplete>
@@ -832,7 +832,7 @@
                   :items="professRules" label="Seleccione un Profesional" prepend-inner-icon="mdi-store-outline"
                   item-title="name" item-value="id" variant="outlined" :rules="selectRules">
                   <template v-slot:item="{ props, item }">
-                    <v-list-item v-bind="props" :prepend-avatar="'http://127.0.0.1:8000/api/images/'+item.raw.image_url"
+                    <v-list-item v-bind="props" :prepend-avatar="'https://testapi.simplifies.cl/api/images/'+item.raw.image_url"
                       :title="item.raw.name"></v-list-item>
                   </template>
                 </v-autocomplete><!--@update:model-value="initialize()"-->
@@ -1265,7 +1265,7 @@ export default {
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     LocalStorageService.setIsLocked(true);
     axios
-      .get("http://127.0.0.1:8000/api/charge-web", {
+      .get("https://testapi.simplifies.cl/api/charge-web", {
         params: {
           business_id: this.business_id,
         },
@@ -1313,7 +1313,7 @@ export default {
     handleEmailChange() {
       LocalStorageService.setIsLocked(true);
       axios
-        .get("http://127.0.0.1:8000/api/professional-email", {
+        .get("https://testapi.simplifies.cl/api/professional-email", {
           params: {
             email: this.editedItem.email
           },
@@ -1350,7 +1350,7 @@ export default {
       console.log(this.editedItem.user_id);
       this.loadingRules = true;
       axios
-        .get("http://127.0.0.1:8000/api/change_password", {
+        .get("https://testapi.simplifies.cl/api/change_password", {
           params: {
             id: this.editedItem.user_id,
             password: this.confirmPassword,
@@ -1396,7 +1396,7 @@ export default {
       this.professional_id = '';
       this.loading = true;
       LocalStorageService.setIsLocked(true);
-      axios.get("http://127.0.0.1:8000/api/professionalsBranch", {
+      axios.get("https://testapi.simplifies.cl/api/professionalsBranch", {
                     params: {
                         branch_id: this.branch_id,
                     }
@@ -1445,9 +1445,9 @@ export default {
     editItem(item) {
       this.file = null;
       var img = new Image();
-      img.src = "http://127.0.0.1:8000/api/images/" + item.image_url;
+      img.src = "https://testapi.simplifies.cl/api/images/" + item.image_url;
       img.onload = () => {
-        this.imgMiniatura = "http://127.0.0.1:8000/api/images/" + item.image_url;
+        this.imgMiniatura = "https://testapi.simplifies.cl/api/images/" + item.image_url;
       };
       img.onerror = () => {
         this.imgMiniatura = "";
@@ -1489,7 +1489,7 @@ export default {
         : format(new Date(), "yyyy-MM-dd");*/
         LocalStorageService.setIsLocked(true);
       axios
-        .get("http://127.0.0.1:8000/api/branch-reservations-periodo", {
+        .get("https://testapi.simplifies.cl/api/branch-reservations-periodo", {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,
@@ -1513,7 +1513,7 @@ export default {
       const startDate = range.start.toISOString().split('T')[0];
       const endDate = range.end.toISOString().split('T')[0];
       axios
-        .get("http://127.0.0.1:8000/api/professional-reservations-periodo", {
+        .get("https://testapi.simplifies.cl/api/professional-reservations-periodo", {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id,
@@ -1554,7 +1554,7 @@ export default {
       let request = {
         id: this.editedItem.id,
       };
-      axios.post("http://127.0.0.1:8000/api/professional-destroy", request).then(() => {
+      axios.post("https://testapi.simplifies.cl/api/professional-destroy", request).then(() => {
         LocalStorageService.setIsLocked(false);
         this.initialize();
         this.message_delete = true;
@@ -1604,7 +1604,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios
-          .post("http://127.0.0.1:8000/api/professional-update", formData)
+          .post("https://testapi.simplifies.cl/api/professional-update", formData)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.initialize();
@@ -1635,7 +1635,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios
-          .post("http://127.0.0.1:8000/api/register_professional", formData)
+          .post("https://testapi.simplifies.cl/api/register_professional", formData)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.initialize();
@@ -1661,7 +1661,7 @@ export default {
       LocalStorageService.setIsLocked(true);
       this.editedIndexWin = -1;
       axios
-        .get("http://127.0.0.1:8000/api/branch_professionals_winner", {
+        .get("https://testapi.simplifies.cl/api/branch_professionals_winner", {
           params: {
             branch_id: this.branch_id
           },
@@ -1758,7 +1758,7 @@ export default {
         ? format(this.input2, "yyyy-MM-dd")
         : format(new Date(), "yyyy-MM-dd");
       axios
-        .get("http://127.0.0.1:8000/api/branch_professionals_winner", {
+        .get("https://testapi.simplifies.cl/api/branch_professionals_winner", {
           params: {
             startDate: startDate,
             endDate: endDate,
@@ -1779,7 +1779,7 @@ export default {
       this.loadingLaters = true;
       LocalStorageService.setIsLocked(true);
       axios
-        .get("http://127.0.0.1:8000/api/arriving-late-professional-date", {
+        .get("https://testapi.simplifies.cl/api/arriving-late-professional-date", {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id
@@ -1808,7 +1808,7 @@ export default {
         ? format(this.input2, "yyyy-MM-dd")
         : format(new Date(), "yyyy-MM-dd");
       axios
-        .get("http://127.0.0.1:8000/api/arriving-late-professional-periodo", {
+        .get("https://testapi.simplifies.cl/api/arriving-late-professional-periodo", {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id,
@@ -1875,7 +1875,7 @@ export default {
       this.editedIndexAsist1 = -1;
       this.editedIndexAsist2 = -1;
       axios
-        .get("http://127.0.0.1:8000/api/arriving-branch-date", {
+        .get("https://testapi.simplifies.cl/api/arriving-branch-date", {
           params: {
             branch_id: this.branch_id,
           },
@@ -1911,7 +1911,7 @@ export default {
       console.log(startDate);
       console.log(endDate);
       axios
-        .get("http://127.0.0.1:8000/api/arriving-branch-periodo", {
+        .get("https://testapi.simplifies.cl/api/arriving-branch-periodo", {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,
@@ -1935,7 +1935,7 @@ export default {
       this.selectedProfessional = item;
       this.professional_id = item.id;
       axios
-        .get("http://127.0.0.1:8000/api/restday-show", {
+        .get("https://testapi.simplifies.cl/api/restday-show", {
           params: {
             professional_id: this.professional_id,
           },
@@ -1983,7 +1983,7 @@ export default {
       console.log("request");
       console.log(request);
       axios
-        .put("http://127.0.0.1:8000/api/restday", request)
+        .put("https://testapi.simplifies.cl/api/restday", request)
         .then(() => {
           this.showAlert("success", "Días de descanso actualizado correctamente", 3000);
         })
@@ -2021,7 +2021,7 @@ export default {
         ? format(this.input7, "yyyy-MM-dd")
         : format(new Date(), "yyyy-MM-dd");
       axios
-        .get("http://127.0.0.1:8000/api/branch-rule-professional-periodo", {
+        .get("https://testapi.simplifies.cl/api/branch-rule-professional-periodo", {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id,
@@ -2050,7 +2050,7 @@ export default {
         ? format(this.input7, "yyyy-MM-dd")
         : format(new Date(), "yyyy-MM-dd");
       axios
-        .get("http://127.0.0.1:8000/api/branch-rule-professional-periodo", {
+        .get("https://testapi.simplifies.cl/api/branch-rule-professional-periodo", {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id,

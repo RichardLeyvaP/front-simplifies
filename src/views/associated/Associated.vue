@@ -227,7 +227,7 @@ export default {
     this.loading = true;
     LocalStorageService.setIsLocked(true);
      axios
-       .get('http://127.0.0.1:8000/api/associated')
+       .get('https://testapi.simplifies.cl/api/associated')
        .then((response) => {
          this.results = response.data.associates;
        }).finally(() => {
@@ -252,7 +252,7 @@ export default {
        id: this.editedItem.id
      };
      axios
-       .post('http://127.0.0.1:8000/api/associated-destroy', request)
+       .post('https://testapi.simplifies.cl/api/associated-destroy', request)
        .then(() => {
         LocalStorageService.setIsLocked(false);
          this.initialize();
@@ -284,7 +284,7 @@ export default {
          this.data.name = this.editedItem.name;
          this.data.email = this.editedItem.email;
          axios
-           .put('http://127.0.0.1:8000/api/associated', this.data)
+           .put('https://testapi.simplifies.cl/api/associated', this.data)
            .then(() => {
             LocalStorageService.setIsLocked(false);
              this.initialize();
@@ -299,7 +299,7 @@ export default {
          this.data.name = this.editedItem.name;
          this.data.email = this.editedItem.email;
          axios
-           .post('http://127.0.0.1:8000/api/associated', this.data)
+           .post('https://testapi.simplifies.cl/api/associated', this.data)
            .then(() => {
             LocalStorageService.setIsLocked(false);
              this.initialize();

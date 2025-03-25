@@ -19,7 +19,7 @@
         <v-toolbar color="#F18254">
             <v-row align="center">
                 <v-col cols="12" md="5" class="grow ml-4 t">
-                    <span class="text-subtitle-1"> <strong>Actualizar productos no en venta</strong></span>
+                    <span class="text-subtitle-1"> <strong>Actualizar productos</strong></span>
                 </v-col>
                 <v-col cols="12" md="4"></v-col>
             </v-row>

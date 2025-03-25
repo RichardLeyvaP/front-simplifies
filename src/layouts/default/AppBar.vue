@@ -31,7 +31,7 @@
     <v-menu activator="#menu-activator">
       <v-list>
         <v-list-item v-for="item in results" :key="item.id"
-          :prepend-avatar="'http://127.0.0.1:8000/api/images/' + item.image_url" @click="handleItemClickNotif(item)">
+          :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + item.image_url" @click="handleItemClickNotif(item)">
           <div class="d-flex align-center justify-space-between w-100"> <!-- Contenedor flex -->
             <v-list-item-title class="mr-2" :class="{ 'highlight': item.state2 === 2, 'accent': item.state !== 2 }">{{
               item.tittle }}</v-list-item-title>
@@ -183,7 +183,7 @@ export default {
     this.branch_id = LocalStorageService.getItem('branch_id');
     const image = LocalStorageService.getItem('image');
     const cleanedImage = image.replace(/"/g, '');
-    this.imageUrl = `http://127.0.0.1:8000/api/images/${cleanedImage}`;
+    this.imageUrl = `https://testapi.simplifies.cl/api/images/${cleanedImage}`;
     console.log(this.imageUrl);
     // Otros datos que hayas almacenado
     // Iniciar el intervalo con la lógica de bloqueo
@@ -258,7 +258,7 @@ export default {
         charge: this.charge
       };
       axios
-        .put('http://127.0.0.1:8000/api/notification3', request)
+        .put('https://testapi.simplifies.cl/api/notification3', request)
         .then(() => {
           //this.initialize();
         }).finally(() => {
@@ -276,7 +276,7 @@ export default {
           charge: this.charge
         };
         axios
-          .put('http://127.0.0.1:8000/api/notification-charge', request)
+          .put('https://testapi.simplifies.cl/api/notification-charge', request)
           .then(() => {
             //this.initialize();
           }).finally(() => {
@@ -308,7 +308,7 @@ export default {
     shangePassword() {
       this.loading = true;
       axios
-        .get('http://127.0.0.1:8000/api/change_password', {
+        .get('https://testapi.simplifies.cl/api/change_password', {
           params: {
             id: this.user_id,
             password: this.confirmPassword,
@@ -334,7 +334,7 @@ export default {
         const token = LocalStorageService.getItem('token');
         console.log('Cerrar Sesión')
         axios
-          .get('http://127.0.0.1:8000/api/logout', {
+          .get('https://testapi.simplifies.cl/api/logout', {
             headers: {
               'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
             }
@@ -346,7 +346,7 @@ export default {
       if (item.title === 'Mi Perfil') {
         console.log('Mi Perfil')
         axios
-          .get('http://127.0.0.1:8000/api/professional-show', {
+          .get('https://testapi.simplifies.cl/api/professional-show', {
             params: {
               id: this.professional_id,
             }
@@ -378,7 +378,7 @@ export default {
       console.log('Este es el token Bearer');
       console.log(`Bearer ${token}`);
       axios
-        .get('http://127.0.0.1:8000/api/notification-professional-web', {
+        .get('https://testapi.simplifies.cl/api/notification-professional-web', {
           /*headers: {
                 'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
             },*/

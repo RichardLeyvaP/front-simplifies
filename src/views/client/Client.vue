@@ -252,7 +252,7 @@
           <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
             <v-img
               :src="
-                'http://127.0.0.1:8000/api/images/' +
+                'https://testapi.simplifies.cl/api/images/' +
                 item.client_image"
               alt="image"
             ></v-img><!--+ '?$' + Date.now()
@@ -318,9 +318,9 @@
               <v-img
                 class="align-end text-white"
                 height="300"
-                :src="'http://127.0.0.1:8000/api/images/' + history.imageLook"
+                :src="'https://testapi.simplifies.cl/api/images/' + history.imageLook"
                 cover
-                v-on:click="openImageDialog('http://127.0.0.1:8000/api/images/' + history.imageLook)"
+                v-on:click="openImageDialog('https://testapi.simplifies.cl/api/images/' + history.imageLook)"
               >
                 <v-card-title>
                   <v-chip class="ma-2" color="" label>
@@ -367,7 +367,7 @@
                         max-height="60"
                       >
                         <v-img
-                          :src="'http://127.0.0.1:8000/api/images/' + history.image_url"
+                          :src="'https://testapi.simplifies.cl/api/images/' + history.image_url"
                           alt="Imagen"
                         ></v-img>
                       </v-avatar>
@@ -413,7 +413,7 @@
                   <template v-slot:prepend>
                     <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
                       <v-img
-                        :src="'http://127.0.0.1:8000/api/images/' + service.image_service"
+                        :src="'https://testapi.simplifies.cl/api/images/' + service.image_service"
                         alt="image"
                       ></v-img>
                     </v-avatar>
@@ -443,7 +443,7 @@
                   <template v-slot:prepend>
                     <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
                       <v-img
-                        :src="'http://127.0.0.1:8000/api/images/' + product.image_product"
+                        :src="'https://testapi.simplifies.cl/api/images/' + product.image_product"
                         alt="image"
                       ></v-img>
                     </v-avatar>
@@ -579,7 +579,7 @@
               <template v-slot:item.name="{ item }">
 
                 <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                  <v-img :src="'http://127.0.0.1:8000/api/images/' + item.client_image" alt="image"></v-img>
+                  <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.client_image" alt="image"></v-img>
                 </v-avatar>
                 {{ item.name }}
               </template>
@@ -616,7 +616,7 @@
 
                 <v-card-text class="d-flex align-center mt-2">
                   <v-avatar class="mr-2">
-                    <v-img :src="'http://127.0.0.1:8000/api/images/' + profesImage" alt="Avatar del profesional"></v-img>
+                    <v-img :src="'https://testapi.simplifies.cl/api/images/' + profesImage" alt="Avatar del profesional"></v-img>
                   </v-avatar>
                   <span>{{ profesName }}</span>
                 </v-card-text>
@@ -663,7 +663,7 @@
         <template v-slot:item.image_cardgift="{ item }">
 
           <v-card class="my-2" rounded elevation="10" width="100">
-            <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_cardgift" alt="image" cover></v-img>
+            <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_cardgift" alt="image" cover></v-img>
           </v-card>
         </template>
         <template v-slot:item.actions="{ item }">
@@ -787,7 +787,7 @@
               <template v-slot:item.name="{ item }">
 
                 <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                  <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_cardgift" alt="image"></v-img>
+                  <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_cardgift" alt="image"></v-img>
                 </v-avatar>
                 {{ item.name }}
               </template>
@@ -795,7 +795,7 @@
               <template v-slot:item.userName="{ item }">
 
                 <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                  <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_url" alt="image"></v-img>
+                  <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
                 </v-avatar>
                 {{ item.userName }}
               </template>
@@ -859,7 +859,7 @@
                       <template v-slot:item="{ props, item }">
                                                     <v-list-item
                                                         v-bind="props"
-                                                        :prepend-avatar="'http://127.0.0.1:8000/api/images/'+item.raw.client_image"
+                                                        :prepend-avatar="'https://testapi.simplifies.cl/api/images/'+item.raw.client_image"
                                                         :title="item.raw.name"
                                                     ></v-list-item>
                                                     </template>
@@ -895,7 +895,7 @@
     <v-row>
       <v-col cols="12" sm="3" class="text-left">
         <v-card elevation="3" max-width="130" max-height="130">
-          <v-img class="d-flex align-end text-white" height="130" :src="'http://127.0.0.1:8000/api/images/' + details.imageLook" cover>
+          <v-img class="d-flex align-end text-white" height="130" :src="'https://testapi.simplifies.cl/api/images/' + details.imageLook" cover>
     <v-card-title class="pa-0">
         <v-chip color="">
             <v-icon icon="mdi-camera" class="mr-1"></v-icon>
@@ -903,7 +903,7 @@
         </v-chip>
     </v-card-title>
 </v-img>
-                  <!--<v-img :src="'http://127.0.0.1:8000/api/images/' + details.imageLook" alt="image"></v-img>-->
+                  <!--<v-img :src="'https://testapi.simplifies.cl/api/images/' + details.imageLook" alt="image"></v-img>-->
                 </v-card>
       </v-col>
       <v-col cols="12" sm="6" class="text-left">
@@ -956,7 +956,7 @@
               <template v-slot:item.name="{ item }">
 
                 <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                  <v-img :src="'http://127.0.0.1:8000/api/images/' + item.image_cardgift" alt="image"></v-img>
+                  <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_cardgift" alt="image"></v-img>
                 </v-avatar>
                 {{ item.name }}
               </template>
@@ -1018,7 +1018,7 @@
                       :rules="selectRules">
                       <template v-slot:item="{ props, item }">
                       <v-list-item v-bind="props"
-                        :prepend-avatar="'http://127.0.0.1:8000/api/images/' + item.raw.image_cardgift"
+                        :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + item.raw.image_cardgift"
                         :title="item.raw.name">
                         <v-list-item-subtitle class="d-flex justify-space-between">
                           Valor: {{ item.raw.value }}
@@ -1411,7 +1411,7 @@ export default {
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     LocalStorageService.setIsLocked(true);
     axios
-      .get('http://127.0.0.1:8000/api/show-business', {
+      .get('https://testapi.simplifies.cl/api/show-business', {
         params: {
           business_id: this.business_id
         }
@@ -1472,7 +1472,7 @@ export default {
     handleEmailChange() {
       LocalStorageService.setIsLocked(true);
       axios
-        .get("http://127.0.0.1:8000/api/client-email", {
+        .get("https://testapi.simplifies.cl/api/client-email", {
           params: {
             email: this.editedItem.email
           },
@@ -1547,7 +1547,7 @@ export default {
     initialize() {
       this.loadingClient = true;
       LocalStorageService.setIsLocked(true);
-      axios.get("http://127.0.0.1:8000/api/client-branch", {
+      axios.get("https://testapi.simplifies.cl/api/client-branch", {
                     params: {
                         branch_id: this.branch_id,
                     }
@@ -1558,7 +1558,7 @@ export default {
             this.loadingClient = false;
         });
       /*axios
-        .get('http://127.0.0.1:8000/api/usuario')
+        .get('https://testapi.simplifies.cl/api/usuario')
         .then((response) => {
           this.users = response.data.users;
         });*/
@@ -1580,9 +1580,9 @@ export default {
     editItem(item) {
       this.file = null;
       var img = new Image();
-      img.src = "http://127.0.0.1:8000/api/images/" + item.client_image;
+      img.src = "https://testapi.simplifies.cl/api/images/" + item.client_image;
       img.onload = () => {
-        this.imgMiniatura = "http://127.0.0.1:8000/api/images/" + item.client_image;
+        this.imgMiniatura = "https://testapi.simplifies.cl/api/images/" + item.client_image;
       };
       img.onerror = () => {
         this.imgMiniatura = "";
@@ -1605,7 +1605,7 @@ export default {
         id: this.editedItem.id,
       };
       axios
-        .post("http://127.0.0.1:8000/api/client-destroy", request)
+        .post("https://testapi.simplifies.cl/api/client-destroy", request)
         .then(() => {})
         .finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -1645,7 +1645,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios
-          .post("http://127.0.0.1:8000/api/client-update", formData)
+          .post("https://testapi.simplifies.cl/api/client-update", formData)
           .then(() => {})
           .finally(() => {
             LocalStorageService.setIsLocked(false);
@@ -1665,7 +1665,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios
-          .post("http://127.0.0.1:8000/api/client", formData)
+          .post("https://testapi.simplifies.cl/api/client", formData)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.initialize();
@@ -1685,7 +1685,7 @@ export default {
       LocalStorageService.setIsLocked(true);
       console.log("Client History");
       axios
-        .get("http://127.0.0.1:8000/api/client-history", {
+        .get("https://testapi.simplifies.cl/api/client-history", {
           params: {
             //branch_id: this.branch_id,
             client_id: item.id,
@@ -1709,7 +1709,7 @@ export default {
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       axios
-        .get('http://127.0.0.1:8000/api/clients-frecuence-periodo', {
+        .get('https://testapi.simplifies.cl/api/clients-frecuence-periodo', {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,
@@ -1744,7 +1744,7 @@ export default {
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       axios
-        .get('http://127.0.0.1:8000/api/clients-frecuence-periodo', {
+        .get('https://testapi.simplifies.cl/api/clients-frecuence-periodo', {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,
@@ -1844,7 +1844,7 @@ export default {
       this.loadingCardGift = true;
       LocalStorageService.setIsLocked(true);
       axios
-        .get('http://127.0.0.1:8000/api/card-gift')
+        .get('https://testapi.simplifies.cl/api/card-gift')
         .then((response) => {
           this.cardGiftsData = response.data.cardGifts;
           this.business = response.data.business;
@@ -1882,7 +1882,7 @@ export default {
         }
         if( this.editedIndexG == -1){
           axios
-          .post('http://127.0.0.1:8000/api/card-gift', formData)
+          .post('https://testapi.simplifies.cl/api/card-gift', formData)
           .then(() => {
             this.imgMiniatura = '';
             this.file = null;
@@ -1894,7 +1894,7 @@ export default {
           });
         }else{
           axios
-          .post('http://127.0.0.1:8000/api/card-gift-update', formData)
+          .post('https://testapi.simplifies.cl/api/card-gift-update', formData)
           .then(() => {
             this.imgMiniatura = '';
             this.file = null;
@@ -1913,9 +1913,9 @@ export default {
       this.dialogAddCardGift = true;
       this.file = null;
       var img = new Image();
-      img.src = 'http://127.0.0.1:8000/api/images/' + item.image_cardgift;
+      img.src = 'https://testapi.simplifies.cl/api/images/' + item.image_cardgift;
       img.onload = () => {
-        this.imgMiniatura = 'http://127.0.0.1:8000/api/images/' + item.image_cardgift;
+        this.imgMiniatura = 'https://testapi.simplifies.cl/api/images/' + item.image_cardgift;
       };
       img.onerror = () => {
         this.imgMiniatura = '';
@@ -1942,7 +1942,7 @@ export default {
         id: this.editedItemCardGift.id
       };
       axios
-        .post('http://127.0.0.1:8000/api/card-gift-destroy', request)
+        .post('https://testapi.simplifies.cl/api/card-gift-destroy', request)
         .then(() => {
           this.dialogDeleteCardGift = false;
         }).finally(() => {
@@ -1961,7 +1961,7 @@ export default {
       this.data.card_gift_id = item.id
       LocalStorageService.setIsLocked(true);
       axios
-        .get('http://127.0.0.1:8000/api/card-gift-user-show', {
+        .get('https://testapi.simplifies.cl/api/card-gift-user-show', {
           params: {
             card_gift_id: item.id,
             branch_id : this.branch_id
@@ -1999,7 +1999,7 @@ export default {
         id: this.editedCardGiftUser.id
       };
       axios
-        .post('http://127.0.0.1:8000/api/card-gift-user-destroy', request)
+        .post('https://testapi.simplifies.cl/api/card-gift-user-destroy', request)
         .then(() => {
           this.loading = false;
           this.dialogDeleteCardGiftUser = false;
@@ -2016,7 +2016,7 @@ export default {
       this.details = '';
       LocalStorageService.setIsLocked(true);
       axios
-        .get('http://127.0.0.1:8000/api/client-autocomplete1', {
+        .get('https://testapi.simplifies.cl/api/client-autocomplete1', {
                     params: {
                         branch_id: this.branch_id,
                     }
@@ -2058,7 +2058,7 @@ export default {
       console.log('this.editedCardGiftUser.expiration_date');
       console.log(this.data.expiration_date);
       axios
-        .post('http://127.0.0.1:8000/api/card-gift-user', this.data)
+        .post('https://testapi.simplifies.cl/api/card-gift-user', this.data)
         .then(() => {
           this.$nextTick(() => {
             this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser);
@@ -2084,7 +2084,7 @@ export default {
       this.data.user_id = item.user_id
       LocalStorageService.setIsLocked(true);
       axios
-        .get('http://127.0.0.1:8000/api/card-gift-user-cardgift', {
+        .get('https://testapi.simplifies.cl/api/card-gift-user-cardgift', {
           params: {
             user_id: item.user_id,
             business_id: this.business_id
@@ -2123,7 +2123,7 @@ export default {
         id: this.editedCardGiftUser.id
       };
       axios
-        .post('http://127.0.0.1:8000/api/card-gift-user-destroy', request)
+        .post('https://testapi.simplifies.cl/api/card-gift-user-destroy', request)
         .then(() => {
           this.loading = false;
           this.dialogUserDeleteCardGift = false;
@@ -2156,7 +2156,7 @@ export default {
       console.log('this.editedCardGiftUser.expiration_date');
       console.log(this.data.expiration_date);
       axios
-        .post('http://127.0.0.1:8000/api/card-gift-user', this.data)
+        .post('https://testapi.simplifies.cl/api/card-gift-user', this.data)
         .then(() => {
           this.$nextTick(() => {
             this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser);
@@ -2176,7 +2176,7 @@ export default {
       LocalStorageService.setIsLocked(true);
       this.loadingSurveyMost = true;
       axios
-        .get('http://127.0.0.1:8000/api/surveyCounts', {
+        .get('https://testapi.simplifies.cl/api/surveyCounts', {
           params: {
             branch_id: this.branch_idSurvey
           }

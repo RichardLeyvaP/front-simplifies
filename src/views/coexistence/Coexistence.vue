@@ -104,14 +104,13 @@
             </td>
           </tr>
         </template>
-        <!-- Columna del estado con v-switch -->
         <template v-slot:item.estado="{ item }">
           <div class="d-flex align-center" style="height: 100%;">
-            <!-- Switch -->
+
             <v-switch v-model="item.estado" :true-value="1" :false-value="0" :color="getEstadoInfo(item.estado).color"
               @change="save(item)" class="mr-2" style="margin-top: 20px;"></v-switch>
 
-            <!-- Icono y nombre del estado -->
+
             <div class="d-flex align-center">
               <v-icon :color="getEstadoInfo(item.estado).color" class="mr-2">
                 {{ getEstadoInfo(item.estado).icon }}
@@ -328,7 +327,7 @@ export default {
         id: this.editedItem.id
       };
       /*axios
-        .post('http://127.0.0.1:8000/api/workplace-destroy', request)
+        .post('https://testapi.simplifies.cl/api/workplace-destroy', request)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -358,7 +357,7 @@ export default {
         this.data.id = this.editedItem.id;
         this.data.name = this.editedItem.name;
         /*axios
-          .put('http://127.0.0.1:8000/api/workplace', this.data)
+          .put('https://testapi.simplifies.cl/api/workplace', this.data)
           .then(() => {
           }).finally(() => {
             LocalStorageService.setIsLocked(false);
@@ -370,15 +369,15 @@ export default {
       this.editedIndex = 1;
       this.editedItem = Object.assign({}, item);
       this.loadingWorkPlace = true;
-      const requestParams = {
-        id: this.editedItem.id,
-        estado: this.editedItem.estado,
-      };
+      
+      this.data = {};
+      this.data.id = this.editedItem.id;
+      this.data.estado = this.editedItem.estado;
       try {
         const result = await handleRequest({
           endpoint: 'branchruleprofessional-state',
-          method: 'PUT',
-          params: requestParams // Aquí pasas los parámetros
+          method: 'POST',
+          data: this.data // Aquí pasas los parámetros
         });
 
         if (result.success) {
@@ -398,7 +397,7 @@ export default {
       }
 
       /*axios
-        .post('http://127.0.0.1:8000/api/workplace', this.data)
+        .post('https://testapi.simplifies.cl/api/workplace', this.data)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
