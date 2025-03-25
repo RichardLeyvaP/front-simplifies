@@ -124,6 +124,12 @@ const routes = [
         component: () =>
           import( "@/views/boxclose/BoxClose.vue"),
         meta: { requiresAuth: true, requiresPermissions: ["view_cash_closing"] },
+      },{
+        path: "/paymentmethod",
+        name: "Paymenent Method",
+        component: () =>
+          import( "@/views/paymentmethod/PaymentMethod.vue"),
+        meta: { requiresAuth: true, requiresPermissions: ["view_payment_method"] },
       },
       {
         path: "/busines",

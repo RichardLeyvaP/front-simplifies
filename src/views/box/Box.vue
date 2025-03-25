@@ -40,8 +40,9 @@
               class="ml-1">
               Clientes atendidos
             </v-btn>
-            <v-btn :disabled="(closed_box  || results.some(item => item.active === 2 || item.active === 3))" @click="openCloseBox" color="#E7E9E9" variant="flat" elevation="2"
-              prepend-icon="mdi-cash-lock" class="ml-1">
+            <v-btn :disabled="(closed_box || results.some(item => item.active === 2 || item.active === 3))"
+              @click="openCloseBox" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-cash-lock"
+              class="ml-1">
               Cierre de Caja
             </v-btn>
             <v-btn @click="openDialogBox" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-cash-register"
@@ -125,8 +126,9 @@
               <v-icon left>mdi-cash-multiple</v-icon>
               Bonos a pagar
             </v-btn>
-            <v-btn @click="openCloseBoxDialog" :disabled="this.results.some(item => item.active === 2 || item.active === 3)" color="#F18254" variant="flat" elevation="2" prepend-icon="mdi-cash-lock"
-              class="ml-1">
+            <v-btn @click="openCloseBoxDialog"
+              :disabled="this.results.some(item => item.active === 2 || item.active === 3)" color="#F18254"
+              variant="flat" elevation="2" prepend-icon="mdi-cash-lock" class="ml-1">
               Cierre Parcial
             </v-btn>
             <v-spacer></v-spacer>
@@ -220,62 +222,8 @@
                 <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                   <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                     <v-card-text>
-                      <v-row class="mb-4 mt-2" dense no-gutters>
-                        <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
-                              style="background-color: rgba(129, 199, 132, 0.9); color: white;">
-                              Datos del Sistema
-                            </v-card-title>
-                            <v-divider class="mb-4"></v-divider>
-                            <v-text-field v-model="editedBox.existence" :value="totalBoxCashs()"
-                              label="Efectivo en caja" readonly prepend-icon="mdi-cash" variant="underlined"
-                              density="compact" class="mb-2"></v-text-field>
-                            <v-text-field v-model="editedBox.extraction" :value="totalBoxExtraction()"
-                              label="Extracción en caja" readonly prepend-icon="mdi-cash-refund" variant="underlined"
-                              density="compact" class="mb-2"></v-text-field>
-                          </v-card>
-                        </v-col>
-                        <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
-                              style="background-color: rgba(100, 181, 246, 0.9); color: white;">
-                              Datos de la Cajera
-                            </v-card-title>
-                            <v-divider class="mb-4"></v-divider>
-                            <v-text-field v-model="cashierData.existence" label="Existencia" prepend-icon="mdi-cash"
-                              variant="underlined" density="compact" class="mb-2"></v-text-field>
-                            <v-text-field v-model="cashierData.extraction" label="Extracción"
-                              prepend-icon="mdi-cash-refund" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                          </v-card>
-                        </v-col>
-                        <!-- Columna 3: Diferencias -->
-                        <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
-                              style="background-color: rgba(229, 115, 115, 0.9); color: white;">Diferencias</v-card-title>
-                            <v-text-field :value="calculateDifferenceExistence" readonly prepend-icon="mdi-cash"
-                              variant="underlined" density="compact" class="mb-2"></v-text-field>
-                            <v-text-field :value="calculateDifferenceExtraccion" readonly prepend-icon="mdi-cash-refund"
-                              variant="underlined" density="compact" class="mb-2"></v-text-field>
-                          </v-card>
-                        </v-col>
-                      </v-row>
-                      <!-- Fila de Total de Diferencias -->
-                      <v-row class="mb-4 mt-2" dense no-gutters>
-                        <v-col cols="8" class="text-right">
-                          <span class="text-h6"
-                            :class="{ 'text-red': cashierData.differenceBox < 0 }">Diferencia:</span>
-                        </v-col>
-                        <v-col cols="4" class="text-center">
-                          <v-text-field v-model="cashierData.differenceBox" :value="calculateTotalDifferences" readonly
-                            prepend-icon="mdi-cash" variant="underlined" density="compact" class="mb-2" :class="{
-                              'text-red': cashierData.differenceBox < 0,
-                              'font-weight-bold': cashierData.differenceBox >= 0
-                            }"></v-text-field>
-                        </v-col>
-                      </v-row>
+                      <!-- Aquí pasamos el 'selectedWorker' al componente dentro del diálogo -->
+                      <ProductStoreStatus :branch_id="this.branch_id" />
                     </v-card-text>
                   </v-card>
                 </div>
@@ -296,7 +244,7 @@
                 <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                   <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                     <v-card-text>
-                      <v-row class="mb-4 mt-2" dense no-gutters>
+                      <!--<v-row class="mb-4 mt-2" dense no-gutters>
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
                             <v-card-title class="text-subtitle-1 pa-1"
@@ -350,7 +298,6 @@
                         </v-col>
                       </v-row>
 
-                      <!-- Fila de Total de Diferencias -->
                       <v-row class="mb-4 mt-2" dense no-gutters>
                         <v-col cols="8" class="text-right">
                           <span class="text-h6"
@@ -364,29 +311,11 @@
                               'font-weight-bold': cashierData.differenceAccounts >= 0
                             }"></v-text-field>
                         </v-col>
-                      </v-row>
-                    </v-card-text>
-                  </v-card>
-                </div>
-              </v-sheet>
-              <v-container>
-                <!-- BOTONES -->
-                <v-row class="mt-1">
-                  <v-btn color="#E7E9E9" variant="flat" @click="prevStepCashier">Volver</v-btn>
-                  <v-spacer></v-spacer>
-                  <v-btn color="#E7E9E9" variant="flat" @click="nextStepCashier">Siguiente</v-btn>
-                </v-row>
-              </v-container>
-            </template>
-            <template v-slot:item.3>
-              <v-sheet border>
-                <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
-                  <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
-                    <v-card-text>
+                      </v-row>-->
                       <v-row class="mb-4 mt-2" dense no-gutters>
-                        <!-- Columna 1: Datos del Sistema -->
                         <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2">
+                          <v-card class="pa-4 mx-2" elevation="2"
+                            style="max-height: 58vh; min-height: 58vh; overflow-y: auto;">
                             <v-card-title class="text-subtitle-1 pa-1"
                               style="background-color: rgba(129, 199, 132, 0.9); color: white;">
                               Datos del Sistema
@@ -412,38 +341,47 @@
                               class="mb-2"></v-text-field>
                           </v-card>
                         </v-col>
-
-                        <!-- Columna 2: Datos de la Cajera -->
                         <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2">
+                          <v-card class="pa-4 mx-2" elevation="2"
+                            style="max-height: 58vh; min-height: 58vh; overflow-y: auto;">
                             <v-card-title class="text-subtitle-1 pa-1"
                               style="background-color: rgba(100, 181, 246, 0.9); color: white;">
                               Datos de la Cajera
                             </v-card-title>
+                            <!-- Encabezado fijo de la tabla -->
+                            <v-row class="font-weight-bold" no-gutters v-if="cashierData.details.length > 0">
+                              <v-col cols="6" class="d-flex align-center">Método de ingreso</v-col>
+                              <v-col cols="4" class="d-flex align-center">Monto</v-col>
+                              <v-col cols="2" class="text-center">Acción</v-col>
+                            </v-row>
                             <v-divider class="mb-4"></v-divider>
-                            <v-text-field v-model="cashierData.totalCreditCard" label="Total Tarjeta Crédito"
-                              prepend-icon="mdi-credit-card" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="cashierData.totalDebit" label="Total Débito"
-                              prepend-icon="mdi-credit-card-outline" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="cashierData.totalTransfer" label="Total Transferencia"
-                              prepend-icon="mdi-bank-transfer" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="cashierData.totalCash" label="Total Efectivo" prepend-icon="mdi-cash"
-                              variant="underlined" density="compact" class="mb-2"></v-text-field>
-                            <v-text-field v-model="cashierData.totalOther" label="Otros Totales"
-                              prepend-icon="mdi-currency-usd" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="cashierData.totalCardGif" label="Total Tarjetas Regalo"
-                              prepend-icon="mdi-gift" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
+                            <v-list v-if="cashierData.details.length > 0" density="compact" class="pa-0">
+                              <v-list-item v-for="detail in cashierData.details" :key="detail.id" class="pa-0">
+                                <template v-slot:default>
+                                  <v-row no-gutters>
+                                    <v-col cols="6" class="d-flex align-center">
+                                      {{ getOptionName(detail.type) }}
+                                    </v-col>
+                                    <v-col cols="4" class="d-flex align-center">
+                                      {{ formatNumber(detail.value) }}
+                                    </v-col>
+                                    <v-col cols="2" class="text-center">
+                                      <v-icon icon="mdi-delete" color="error" @click.stop="removeDetail(detail)"
+                                        size="small"></v-icon>
+                                    </v-col>
+                                  </v-row>
+                                </template>
+                              </v-list-item>
+                            </v-list>
                           </v-card>
+                          <div class="d-flex justify-end mt-2 mr-2">
+                            <v-btn icon="mdi-plus" color="primary" size="small" @click="dialogDetails = true"></v-btn>
+                          </div>
                         </v-col>
-
                         <!-- Columna 3: Diferencias -->
                         <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2">
+                          <v-card class="pa-4 mx-2" elevation="2"
+                            style="max-height: 58vh; min-height: 58vh; overflow-y: auto;">
                             <v-card-title class="text-subtitle-1 pa-1"
                               style="background-color: rgba(229, 115, 115, 0.9); color: white;">Diferencias</v-card-title>
                             <v-divider class="mb-4"></v-divider>
@@ -463,8 +401,6 @@
                           </v-card>
                         </v-col>
                       </v-row>
-
-                      <!-- Fila de Total de Diferencias -->
                       <v-row class="mb-4 mt-2" dense no-gutters>
                         <v-col cols="8" class="text-right">
                           <span class="text-h6"
@@ -481,23 +417,24 @@
                     </v-card-text>
                   </v-card>
                 </div>
+
               </v-sheet>
               <v-container>
                 <!-- BOTONES -->
                 <v-row class="mt-1">
                   <v-btn color="#E7E9E9" variant="flat" @click="prevStepCashier">Volver</v-btn>
                   <v-spacer></v-spacer>
-                  <v-btn color="#E7E9E9" variant="flat" @click="nextStepCashier">Siguiente</v-btn>
+                  <v-btn color="#E7E9E9" :disabled="cashierData.details.length === 0" variant="flat"
+                    @click="nextStepCashier">Siguiente</v-btn>
                 </v-row>
               </v-container>
             </template>
-            <template v-slot:item.4>
+            <template v-slot:item.3>
               <v-sheet border>
                 <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                   <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                     <v-card-text>
                       <v-row class="mb-4 mt-2" dense no-gutters>
-                        <!-- Columna 1: Datos del Sistema -->
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
                             <v-card-title class="text-subtitle-1 pa-1"
@@ -505,18 +442,17 @@
                               Datos del Sistema
                             </v-card-title>
                             <v-divider class="mb-4"></v-divider>
-                            <v-text-field v-model="editedCloseBox.totalMount" label="Total" readonly
-                              prepend-icon="mdi-currency-usd" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="this.bonusPay" :value="totalBonusPay()" label="Pago de bonos"
-                              readonly prepend-icon="mdi-cash-refund" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
+                            <v-text-field v-model="editedBox.extraction" :value="totalBoxExtraction()"
+                              label="Extracción en caja" readonly prepend-icon="mdi-cash-refund" variant="underlined"
+                              density="compact" class="mb-2"></v-text-field>
+                            <v-text-field v-model="this.editedCloseBox.totalBonus" :value="totalBonusPayCashier()"
+                              label="Pago de bonos" readonly prepend-icon="mdi-cash-refund" variant="underlined"
+                              density="compact" class="mb-2"></v-text-field>
                             <v-text-field :value="editedCloseBox.advancement" label="Adelanto" readonly
                               prepend-icon="mdi-cash" variant="underlined" density="compact"
                               class="mb-2"></v-text-field>
                           </v-card>
                         </v-col>
-
                         <!-- Columna 2: Datos de la Cajera -->
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
@@ -525,8 +461,8 @@
                               Datos de la Cajera
                             </v-card-title>
                             <v-divider class="mb-4"></v-divider>
-                            <v-text-field v-model="cashierData.totalMount" :value="totalCashierPayments"
-                              label="Monto Total" prepend-icon="mdi-currency-usd" variant="underlined" density="compact"
+                            <v-text-field v-model="cashierData.extraction" label="Extracción"
+                              prepend-icon="mdi-cash-refund" variant="underlined" density="compact"
                               class="mb-2"></v-text-field>
                             <v-text-field v-model="cashierData.totalBonus" label="Bonos" prepend-icon="mdi-cash"
                               variant="underlined" density="compact" class="mb-2"></v-text-field>
@@ -534,25 +470,20 @@
                               variant="underlined" density="compact" class="mb-2"></v-text-field>
                           </v-card>
                         </v-col>
-
-                        <!-- Columna 3: Diferencias -->
                         <v-col cols="4" class="text-center">
                           <v-card class="pa-4 mx-2" elevation="2">
                             <v-card-title class="text-subtitle-1 pa-1"
                               style="background-color: rgba(229, 115, 115, 0.9); color: white;">Diferencias</v-card-title>
                             <v-divider class="mb-4"></v-divider>
-                            <v-text-field :value="calculateDifferenceTotalMount" readonly
-                              prepend-icon="mdi-currency-usd" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field :value="calculateDifferenceAdelanto" readonly prepend-icon="mdi-cash"
+                            <v-text-field :value="calculateDifferenceExtraccion" readonly prepend-icon="mdi-cash-refund"
                               variant="underlined" density="compact" class="mb-2"></v-text-field>
                             <v-text-field :value="calculateDifferenceBonusPay" readonly prepend-icon="mdi-cash-refund"
+                              variant="underlined" density="compact" class="mb-2"></v-text-field>
+                            <v-text-field :value="calculateDifferenceAdelanto" readonly prepend-icon="mdi-cash"
                               variant="underlined" density="compact" class="mb-2"></v-text-field>
                           </v-card>
                         </v-col>
                       </v-row>
-
-                      <!-- Fila de Total de Diferencias -->
                       <v-row class="mb-4 mt-2" dense no-gutters>
                         <v-col cols="8" class="text-right">
                           <span class="text-h6" :class="{ 'text-red': cashierData.difference < 0 }">Total de
@@ -574,53 +505,19 @@
                         </v-col>
                       </v-row>
                     </v-card-text>
-                    <v-divider></v-divider>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <!--<v-btn color="#E7E9E9" variant="flat" @click="close">
-                      Cancelar
-                    </v-btn>-->
-                      <v-btn color="#F18254" :disabled="ejecutadoCashier || !valid" variant="flat"
-                        @click="saveCloseBoxParcial" :loading="!loadingBonus">
-                        Cerrar Caja
-                      </v-btn>
-                    </v-card-actions>
                   </v-card>
                 </div>
               </v-sheet>
               <v-container>
                 <!-- BOTONES -->
                 <v-row class="mt-1">
-                  <v-btn color="#E7E9E9" variant="flat" @click="prevStepCashier">Volver</v-btn>
+                  <v-btn color="#E7E9E9" variant="flat" @click="close">salir</v-btn>
                   <v-spacer></v-spacer>
-                  <v-btn color="#E7E9E9" :disabled="ejecutadoCashier" variant="flat"
-                    @click="nextStepCashier">Siguiente</v-btn>
-                </v-row>
-              </v-container>
-            </template>
-            <template v-slot:item.5>
-              <v-sheet border style="max-height: 70vh; min-height: 70vh;">
-                <div style="max-height: 70vh; min-height: 70vh; overflow-y: auto;">
-                  <v-card>
-                    <v-card-text>
-                      <!-- Aquí pasamos el 'selectedWorker' al componente dentro del diálogo -->
-                      <ProductStoreStatus :branch_id="this.branch_id" />
-                    </v-card-text>
-                    <v-divider></v-divider>
-                  </v-card>
-                </div>
-              </v-sheet>
-
-              <v-container>
-                <!-- BOTONES -->
-                <v-row class="mt-1">
-                  <v-btn color="#E7E9E9" variant="flat" @click="prevStepCashier">Volver</v-btn>
-                  <v-spacer></v-spacer>
-                  <v-btn color="#E7E9E9" variant="flat" @click="closeParcial">
-                    Salir
+                  <v-btn color="#F18254" :disabled="!valid" variant="flat" @click="saveCloseBoxParcial">
+                    Cerrar Caja Parcial
                   </v-btn>
+                  <!--<v-btn color="#E7E9E9" variant="flat" @click="nextStepCashier">Siguiente</v-btn>-->
                 </v-row>
-
               </v-container>
             </template>
           </v-stepper>
@@ -638,6 +535,29 @@
             @update:model-value="handleStepChange" style="max-height: 100vh; min-height: 95vh; overflow-y: auto;">
             <template v-slot:item.1>
               <v-sheet border>
+                <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
+                  <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
+                    <v-card-text>
+                      <!-- Aquí pasamos el 'selectedWorker' al componente dentro del diálogo -->
+                      <ProductStoreStatus :branch_id="this.branch_id" />
+                    </v-card-text>
+                  </v-card>
+                </div>
+              </v-sheet>
+              <v-container>
+                <!-- BOTONES -->
+                <v-row class="mt-1">
+                  <v-btn color="#E7E9E9" variant="flat" @click="close">Salir</v-btn>
+                  <v-spacer></v-spacer>
+                  <v-btn color="#E7E9E9" variant="flat" @click="nextStep">
+                    Siguiente
+                  </v-btn>
+                </v-row>
+
+              </v-container>
+            </template>
+            <template v-slot:item.2>
+              <v-sheet border>
                 <div style="max-height: 70vh; overflow-y: auto;">
                   <v-card>
                     <v-card-text>
@@ -651,7 +571,7 @@
               <v-container>
                 <!-- BOTONES -->
                 <v-row class="mt-1">
-                  <v-btn color="#E7E9E9" :disabled="this.step !== 1" variant="flat" @click="close">
+                  <v-btn color="#E7E9E9" variant="flat" @click="close">
                     Salir
                   </v-btn>
                   <v-spacer></v-spacer>
@@ -660,388 +580,7 @@
 
               </v-container>
             </template>
-            <template v-slot:item.2>
-              <v-sheet border>
-                <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
-                  <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
-                    <v-card-text>
-                      <v-row class="mb-4 mt-2" dense no-gutters>
-                        <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
-                              style="background-color: rgba(129, 199, 132, 0.9); color: white;">
-                              Datos del Sistema
-                            </v-card-title>
-                            <v-divider class="mb-4"></v-divider>
-                            <v-text-field v-model="editedBox.existence" :value="totalBoxCashs()"
-                              label="Efectivo en caja" readonly prepend-icon="mdi-cash" variant="underlined"
-                              density="compact" class="mb-2"></v-text-field>
-                            <v-text-field v-model="editedBox.extraction" :value="totalBoxExtraction()"
-                              label="Extracción en caja" readonly prepend-icon="mdi-cash-refund" variant="underlined"
-                              density="compact" class="mb-2"></v-text-field>
-                          </v-card>
-                        </v-col>
-                        <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
-                              style="background-color: rgba(100, 181, 246, 0.9); color: white;">
-                              Datos de la Cajera
-                            </v-card-title>
-                            <v-divider class="mb-4"></v-divider>
-                            <v-text-field v-model="cashierData.existence" label="Existencia" prepend-icon="mdi-cash"
-                              variant="underlined" density="compact" class="mb-2"></v-text-field>
-                            <v-text-field v-model="cashierData.extraction" label="Extracción"
-                              prepend-icon="mdi-cash-refund" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                          </v-card>
-                        </v-col>
-                        <!-- Columna 3: Diferencias -->
-                        <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
-                              style="background-color: rgba(229, 115, 115, 0.9); color: white;">Diferencias</v-card-title>
-                            <v-divider class="mb-4"></v-divider>
-                            <v-text-field :value="calculateDifferenceExistence" readonly prepend-icon="mdi-cash"
-                              variant="underlined" density="compact" class="mb-2"></v-text-field>
-                            <v-text-field :value="calculateDifferenceExtraccion" readonly prepend-icon="mdi-cash-refund"
-                              variant="underlined" density="compact" class="mb-2"></v-text-field>
-                          </v-card>
-                        </v-col>
-                      </v-row>
-                      <!-- Fila de Total de Diferencias -->
-                      <v-row class="mb-4 mt-2" dense no-gutters>
-                        <v-col cols="8" class="text-right">
-                          <span class="text-h6"
-                            :class="{ 'text-red': cashierData.differenceBox < 0 }">Diferencia:</span>
-                        </v-col>
-                        <v-col cols="4" class="text-center">
-                          <v-text-field v-model="cashierData.differenceBox" :value="calculateTotalDifferences" readonly
-                            prepend-icon="mdi-cash" variant="underlined" density="compact" class="mb-2" :class="{
-                              'text-red': cashierData.differenceBox < 0,
-                              'font-weight-bold': cashierData.differenceBox >= 0
-                            }"></v-text-field>
-                        </v-col>
-                      </v-row>
-                    </v-card-text>
-                  </v-card>
-                </div>
-              </v-sheet>
-              <v-container>
-                <!-- BOTONES -->
-                <v-row class="mt-1">
-                  <v-btn color="#E7E9E9" variant="flat" @click="prevStep">Volver</v-btn>
-                  <v-spacer></v-spacer>
-                  <v-btn color="#E7E9E9" variant="flat" @click="nextStep">Siguiente</v-btn>
-                </v-row>
-              </v-container>
-            </template>
             <template v-slot:item.3>
-              <v-sheet border>
-                <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
-                  <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
-                    <v-card-text>
-                      <v-row class="mb-4 mt-2" dense no-gutters>
-                        <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
-                              style="background-color: rgba(129, 199, 132, 0.9); color: white;">
-                              Datos del Sistema
-                            </v-card-title>
-                            <v-divider class="mb-4"></v-divider>
-                            <v-text-field v-model="editedCloseBox.totalService" :value="totalMountServices()"
-                              label="Servicios" readonly prepend-icon="mdi-list-box-outline" variant="underlined"
-                              density="compact" class="mb-2"></v-text-field>
-                            <v-text-field v-model="editedCloseBox.totalProduct" :value="totalMountProducts()"
-                              label="Productos" readonly prepend-icon="mdi-tag-outline" variant="underlined"
-                              density="compact" class="mb-2"></v-text-field>
-                            <v-text-field v-model="editedCloseBox.totalTip" :value="totalMountTips()" label="Propinas"
-                              readonly prepend-icon="mdi-cash-100" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                          </v-card>
-                        </v-col>
-                        <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
-                              style="background-color: rgba(100, 181, 246, 0.9); color: white;">
-                              Datos de la Cajera
-                            </v-card-title>
-                            <v-divider class="mb-4"></v-divider>
-                            <v-text-field v-model="cashierData.totalService" label="Total Servicios"
-                              prepend-icon="mdi-list-box-outline" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="cashierData.totalProduct" label="Total Productos"
-                              prepend-icon="mdi-tag-outline" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="cashierData.totalTip" label="Total Propinas"
-                              prepend-icon="mdi-cash-100" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                          </v-card>
-                        </v-col>
-
-                        <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
-                              style="background-color: rgba(229, 115, 115, 0.9); color: white;">Diferencias</v-card-title>
-                            <v-divider class="mb-4"></v-divider>
-                            <v-text-field :value="calculateDifferenceService" readonly
-                              prepend-icon="mdi-list-box-outline" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field :value="calculateDifferenceProduct" readonly prepend-icon="mdi-tag-outline"
-                              variant="underlined" density="compact" class="mb-2"></v-text-field>
-                            <v-text-field :value="calculateDifferenceTip" readonly prepend-icon="mdi-cash-100"
-                              variant="underlined" density="compact" class="mb-2"></v-text-field>
-                          </v-card>
-                        </v-col>
-                      </v-row>
-
-                      <!-- Fila de Total de Diferencias -->
-                      <v-row class="mb-4 mt-2" dense no-gutters>
-                        <v-col cols="8" class="text-right">
-                          <span class="text-h6"
-                            :class="{ 'text-red': cashierData.differenceAccounts < 0 }">Diferencias:</span>
-                        </v-col>
-                        <v-col cols="4" class="text-center">
-                          <v-text-field v-model="cashierData.differenceAccounts"
-                            :value="calculateTotalDifferencesIngresos" readonly prepend-icon="mdi-cash"
-                            variant="underlined" density="compact" class="mb-2" :class="{
-                              'text-red': cashierData.differenceAccounts < 0,
-                              'font-weight-bold': cashierData.differenceAccounts >= 0
-                            }"></v-text-field>
-                        </v-col>
-                      </v-row>
-                    </v-card-text>
-                  </v-card>
-                </div>
-              </v-sheet>
-              <v-container>
-                <!-- BOTONES -->
-                <v-row class="mt-1">
-                  <v-btn color="#E7E9E9" variant="flat" @click="prevStep">Volver</v-btn>
-                  <v-spacer></v-spacer>
-                  <v-btn color="#E7E9E9" variant="flat" @click="nextStep">Siguiente</v-btn>
-                </v-row>
-              </v-container>
-            </template>
-            <template v-slot:item.4>
-              <v-sheet border>
-                <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
-                  <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
-                    <v-card-text>
-                      <v-row class="mb-4 mt-2" dense no-gutters>
-                        <!-- Columna 1: Datos del Sistema -->
-                        <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
-                              style="background-color: rgba(129, 199, 132, 0.9); color: white;">
-                              Datos del Sistema
-                            </v-card-title>
-                            <v-divider class="mb-4"></v-divider>
-                            <v-text-field v-model="editedCloseBox.totalCreditCard" :value="totalMountCreditCards()"
-                              label="Tarjeta Crédito" readonly prepend-icon="mdi-credit-card" variant="underlined"
-                              density="compact" class="mb-2"></v-text-field>
-                            <v-text-field v-model="editedCloseBox.totalDebit" :value="totalMountDebits()" label="Débito"
-                              readonly prepend-icon="mdi-credit-card-outline" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="editedCloseBox.totalTransfer" :value="totalMountTransfers()"
-                              label="Transferencia" readonly prepend-icon="mdi-bank-transfer" variant="underlined"
-                              density="compact" class="mb-2"></v-text-field>
-                            <v-text-field v-model="editedCloseBox.totalCash" :value="totalMountCashs()" label="Efectivo"
-                              readonly prepend-icon="mdi-cash" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="editedCloseBox.totalOther" :value="totalMountOthers()" label="Otros"
-                              readonly prepend-icon="mdi-currency-usd" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="editedCloseBox.totalCardGif" :value="totalMountCardGif()"
-                              label="Tarjeta Regalo" readonly prepend-icon="mdi-gift" variant="underlined"
-                              density="compact" class="mb-2"></v-text-field>
-                          </v-card>
-                        </v-col>
-
-                        <!-- Columna 2: Datos de la Cajera -->
-                        <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
-                              style="background-color: rgba(100, 181, 246, 0.9); color: white;">
-                              Datos de la Cajera
-                            </v-card-title>
-                            <v-divider class="mb-4"></v-divider>
-                            <v-text-field v-model="cashierData.totalCreditCard" label="Total Tarjeta Crédito"
-                              prepend-icon="mdi-credit-card" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="cashierData.totalDebit" label="Total Débito"
-                              prepend-icon="mdi-credit-card-outline" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="cashierData.totalTransfer" label="Total Transferencia"
-                              prepend-icon="mdi-bank-transfer" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="cashierData.totalCash" label="Total Efectivo" prepend-icon="mdi-cash"
-                              variant="underlined" density="compact" class="mb-2"></v-text-field>
-                            <v-text-field v-model="cashierData.totalOther" label="Otros Totales"
-                              prepend-icon="mdi-currency-usd" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="cashierData.totalCardGif" label="Total Tarjetas Regalo"
-                              prepend-icon="mdi-gift" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                          </v-card>
-                        </v-col>
-
-                        <!-- Columna 3: Diferencias -->
-                        <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
-                              style="background-color: rgba(229, 115, 115, 0.9); color: white;">Diferencias</v-card-title>
-                            <v-divider class="mb-4"></v-divider>
-                            <v-text-field :value="calculateDifferenceCreditCard" readonly prepend-icon="mdi-credit-card"
-                              variant="underlined" density="compact" class="mb-2"></v-text-field>
-                            <v-text-field :value="calculateDifferenceDebit" readonly
-                              prepend-icon="mdi-credit-card-outline" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field :value="calculateDifferenceTransfer" readonly prepend-icon="mdi-bank-transfer"
-                              variant="underlined" density="compact" class="mb-2"></v-text-field>
-                            <v-text-field :value="calculateDifferenceCash" readonly prepend-icon="mdi-bank-transfer"
-                              variant="underlined" density="compact" class="mb-2"></v-text-field>
-                            <v-text-field :value="calculateDifferenceOther" readonly prepend-icon="mdi-cash"
-                              variant="underlined" density="compact" class="mb-2"></v-text-field>
-                            <v-text-field :value="calculateDifferenceCardGif" readonly prepend-icon="mdi-gift"
-                              variant="underlined" density="compact" class="mb-2"></v-text-field>
-                          </v-card>
-                        </v-col>
-                      </v-row>
-
-                      <!-- Fila de Total de Diferencias -->
-                      <v-row class="mb-4 mt-2" dense no-gutters>
-                        <v-col cols="8" class="text-right">
-                          <span class="text-h6"
-                            :class="{ 'text-red': cashierData.differencePay < 0 }">Diferencias:</span>
-                        </v-col>
-                        <v-col cols="4" class="text-center">
-                          <v-text-field v-model="cashierData.differencePay" :value="calculateTotalDifferencesPagos"
-                            readonly prepend-icon="mdi-cash" variant="underlined" density="compact" class="mb-2" :class="{
-                              'text-red': cashierData.differencePay < 0,
-                              'font-weight-bold': cashierData.differencePay >= 0
-                            }"></v-text-field>
-                        </v-col>
-                      </v-row>
-                    </v-card-text>
-                  </v-card>
-                </div>
-              </v-sheet>
-              <v-container>
-                <!-- BOTONES -->
-                <v-row class="mt-1">
-                  <v-btn color="#E7E9E9" variant="flat" @click="prevStep">Volver</v-btn>
-                  <v-spacer></v-spacer>
-                  <v-btn color="#E7E9E9" variant="flat" @click="nextStep">Siguiente</v-btn>
-                </v-row>
-              </v-container>
-            </template>
-            <template v-slot:item.5>
-              <v-sheet border>
-                <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
-                  <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
-                    <v-card-text>
-                      <v-row class="mb-4 mt-2" dense no-gutters>
-                        <!-- Columna 1: Datos del Sistema -->
-                        <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
-                              style="background-color: rgba(129, 199, 132, 0.9); color: white;">
-                              Datos del Sistema
-                            </v-card-title>
-                            <v-divider class="mb-4"></v-divider>
-                            <v-text-field v-model="editedCloseBox.totalMount" :value="totalMount()" label="Total"
-                              readonly prepend-icon="mdi-currency-usd" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="this.bonusPay" :value="totalBonusPay()" label="Pago de bonos"
-                              readonly prepend-icon="mdi-cash-refund" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field :value="editedCloseBox.advancement" label="Adelanto" readonly
-                              prepend-icon="mdi-cash" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                          </v-card>
-                        </v-col>
-
-                        <!-- Columna 2: Datos de la Cajera -->
-                        <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
-                              style="background-color: rgba(100, 181, 246, 0.9); color: white;">
-                              Datos de la Cajera
-                            </v-card-title>
-                            <v-divider class="mb-4"></v-divider>
-                            <v-text-field v-model="cashierData.totalMount" :value="totalCashierPayments"
-                              label="Monto Total" prepend-icon="mdi-currency-usd" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field v-model="cashierData.totalBonus" label="Bonos" prepend-icon="mdi-cash"
-                              variant="underlined" density="compact" class="mb-2"></v-text-field>
-                            <v-text-field v-model="cashierData.advancement" label="Adelanto" prepend-icon="mdi-cash"
-                              variant="underlined" density="compact" class="mb-2"></v-text-field>
-                          </v-card>
-                        </v-col>
-
-                        <!-- Columna 3: Diferencias -->
-                        <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1 pa-1"
-                              style="background-color: rgba(229, 115, 115, 0.9); color: white;">Diferencias</v-card-title>
-                            <v-divider class="mb-4"></v-divider>
-                            <v-text-field :value="calculateDifferenceTotalMount" readonly
-                              prepend-icon="mdi-currency-usd" variant="underlined" density="compact"
-                              class="mb-2"></v-text-field>
-                            <v-text-field :value="calculateDifferenceAdelanto" readonly prepend-icon="mdi-cash"
-                              variant="underlined" density="compact" class="mb-2"></v-text-field>
-                            <v-text-field :value="calculateDifferenceBonusPay" readonly prepend-icon="mdi-cash-refund"
-                              variant="underlined" density="compact" class="mb-2"></v-text-field>
-                          </v-card>
-                        </v-col>
-                      </v-row>
-
-                      <!-- Fila de Total de Diferencias -->
-                      <v-row class="mb-4 mt-2" dense no-gutters>
-                        <v-col cols="8" class="text-right">
-                          <span class="text-h6" :class="{ 'text-red': cashierData.difference < 0 }">Total de
-                            Diferencias:</span>
-                        </v-col>
-                        <v-col cols="4" class="text-center">
-                          <v-text-field v-model="cashierData.difference" :value="calculateTotalDifferencesGlobal"
-                            readonly prepend-icon="mdi-cash" variant="underlined" density="compact" class="mb-2" :class="{
-                              'text-red': cashierData.difference < 0,
-                              'font-weight-bold': cashierData.difference >= 0
-                            }"></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row class="mb-4 mt-1" dense no-gutters>
-                        <v-col cols="12" class="text-center">
-                          <v-textarea v-if="cashierData.difference !== 0" v-model="cashierData.description"
-                            label="Descripción de las diferencias" prepend-icon="mdi-text-box" variant="underlined"
-                            density="compact" class="mb-2" :rules="descriptionRules"></v-textarea>
-                        </v-col>
-                      </v-row>
-                    </v-card-text>
-                    <v-divider></v-divider>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <!--<v-btn color="#E7E9E9" variant="flat" @click="close">
-                      Cancelar
-                    </v-btn>-->
-                      <v-btn color="#F18254" :disabled="ejecutado || !valid" variant="flat" @click="saveCloseBox"
-                        :loading="!loadingBonus">
-                        Cerrar Caja
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </div>
-              </v-sheet>
-              <v-container>
-                <!-- BOTONES -->
-                <v-row class="mt-1">
-                  <v-btn color="#E7E9E9" variant="flat" @click="prevStep">Volver</v-btn>
-                  <v-spacer></v-spacer>
-                  <v-btn color="#E7E9E9" variant="flat" :disabled="!ejecutado" @click="nextStep">Siguiente</v-btn>
-                </v-row>
-              </v-container>
-            </template>
-            <template v-slot:item.6>
               <v-sheet border>
                 <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                   <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
@@ -1083,7 +622,7 @@
                           <v-btn variant="flat" @click="(item.pay) ? '' : payBonusProf(item)"
                             :color="(item.pay) ? 'grey' : '#F18254'" title="Pagar bono a profesional"
                             style="min-width: 100px;">
-                            {{ item.pay ? 'Pagado' : 'Pagar' }} <!-- Cambia el texto según el estado de pay -->
+                            {{ item.pay ? 'Pagado' : 'Pagar' }}
                           </v-btn>
                         </template>
                         <template v-slot:top>
@@ -1098,22 +637,145 @@
                 </div>
               </v-sheet>
               <v-container>
-                <!-- BOTONES -->
                 <v-row class="mt-1">
                   <v-btn color="#E7E9E9" variant="flat" @click="prevStep">Volver</v-btn>
                   <v-spacer></v-spacer>
-                  <v-btn color="#E7E9E9" variant="flat" @click="nextStep">Siguiente</v-btn>
+                  <v-btn color="#E7E9E9" :disabled="hasUnpaidBonus" variant="flat" @click="nextStep">Siguiente</v-btn>
                 </v-row>
 
               </v-container>
             </template>
-            <template v-slot:item.7>
+            <template v-slot:item.4>
               <v-sheet border>
                 <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                   <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                     <v-card-text>
-                      <!-- Aquí pasamos el 'selectedWorker' al componente dentro del diálogo -->
-                      <ProductStoreStatus :branch_id="this.branch_id" />
+                      <v-row class="mb-4 mt-2" dense no-gutters>
+                        <!-- Columna 1: Datos del Sistema -->
+                        <v-col cols="4" class="text-center">
+                          <v-card class="pa-4 mx-2" elevation="2"
+                            style="max-height: 58vh; min-height: 58vh; overflow-y: auto;">
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(129, 199, 132, 0.9); color: white;">
+                              Datos del Sistema
+                            </v-card-title>
+                            <v-divider class="mb-4"></v-divider>
+                            <v-text-field v-model="editedCloseBox.totalCreditCard" :value="totalMountCreditCards()"
+                              label="Tarjeta Crédito" readonly prepend-icon="mdi-credit-card" variant="underlined"
+                              density="compact" class="mb-2"></v-text-field>
+                            <v-text-field v-model="editedCloseBox.totalDebit" :value="totalMountDebits()" label="Débito"
+                              readonly prepend-icon="mdi-credit-card-outline" variant="underlined" density="compact"
+                              class="mb-2"></v-text-field>
+                            <v-text-field v-model="editedCloseBox.totalTransfer" :value="totalMountTransfers()"
+                              label="Transferencia" readonly prepend-icon="mdi-bank-transfer" variant="underlined"
+                              density="compact" class="mb-2"></v-text-field>
+                            <v-text-field v-model="editedCloseBox.totalCash" :value="totalMountCashs()" label="Efectivo"
+                              readonly prepend-icon="mdi-cash" variant="underlined" density="compact"
+                              class="mb-2"></v-text-field>
+                            <v-text-field v-model="editedCloseBox.totalOther" :value="totalMountOthers()" label="Otros"
+                              readonly prepend-icon="mdi-currency-usd" variant="underlined" density="compact"
+                              class="mb-2"></v-text-field>
+                            <v-text-field v-model="editedCloseBox.totalCardGif" :value="totalMountCardGif()"
+                              label="Tarjeta Regalo" readonly prepend-icon="mdi-gift" variant="underlined"
+                              density="compact" class="mb-2"></v-text-field>
+                          </v-card>
+                        </v-col>
+
+                        <!-- Columna 2: Datos de la Cajera -->
+                        <v-col cols="4" class="text-center">
+                          <v-card class="pa-4 mx-2" elevation="2"
+                            style="max-height: 58vh; min-height: 58vh; overflow-y: auto;">
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(100, 181, 246, 0.9); color: white;">
+                              Datos de la Cajera
+                            </v-card-title>
+                            <!-- Encabezado fijo de la tabla -->
+                            <v-row class="font-weight-bold" no-gutters v-if="cashierData.details.length > 0">
+                              <v-col cols="6" class="d-flex align-center">Método de ingreso</v-col>
+                              <v-col cols="4" class="d-flex align-center">Monto</v-col>
+                              <v-col cols="2" class="text-center">Acción</v-col>
+                            </v-row>
+                            <v-divider class="mb-4"></v-divider>
+                            <!--<v-text-field v-model="cashierData.totalCreditCard" label="Total Tarjeta Crédito"
+                              prepend-icon="mdi-credit-card" variant="underlined" density="compact"
+                              class="mb-2"></v-text-field>
+                            <v-text-field v-model="cashierData.totalDebit" label="Total Débito"
+                              prepend-icon="mdi-credit-card-outline" variant="underlined" density="compact"
+                              class="mb-2"></v-text-field>
+                            <v-text-field v-model="cashierData.totalTransfer" label="Total Transferencia"
+                              prepend-icon="mdi-bank-transfer" variant="underlined" density="compact"
+                              class="mb-2"></v-text-field>
+                            <v-text-field v-model="cashierData.totalCash" label="Total Efectivo" prepend-icon="mdi-cash"
+                              variant="underlined" density="compact" class="mb-2"></v-text-field>
+                            <v-text-field v-model="cashierData.totalOther" label="Otros Totales"
+                              prepend-icon="mdi-currency-usd" variant="underlined" density="compact"
+                              class="mb-2"></v-text-field>
+                            <v-text-field v-model="cashierData.totalCardGif" label="Total Tarjetas Regalo"
+                              prepend-icon="mdi-gift" variant="underlined" density="compact"
+                              class="mb-2"></v-text-field>-->
+                            <!-- Lista de detalles agregados -->
+                            <v-list v-if="cashierData.details.length > 0" density="compact" class="pa-0">
+                              <v-list-item v-for="detail in cashierData.details" :key="detail.id" class="pa-0">
+                                <template v-slot:default>
+                                  <v-row no-gutters>
+                                    <v-col cols="6" class="d-flex align-center">
+                                      {{ getOptionName(detail.type) }}
+                                    </v-col>
+                                    <v-col cols="4" class="d-flex align-center">
+                                      {{ formatNumber(detail.value) }}
+                                    </v-col>
+                                    <v-col cols="2" class="text-center">
+                                      <v-icon icon="mdi-delete" color="error" @click.stop="removeDetail(detail)"
+                                        size="small"></v-icon>
+                                    </v-col>
+                                  </v-row>
+                                </template>
+                              </v-list-item>
+                            </v-list>
+                          </v-card>
+                          <div class="d-flex justify-end mt-2 mr-2">
+                            <v-btn icon="mdi-plus" color="primary" size="small" @click="dialogDetails = true"></v-btn>
+                          </div>
+                        </v-col>
+
+                        <!-- Columna 3: Diferencias -->
+                        <v-col cols="4" class="text-center">
+                          <v-card class="pa-4 mx-2" elevation="2"
+                            style="max-height: 58vh; min-height: 58vh; overflow-y: auto;">
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(229, 115, 115, 0.9); color: white;">Diferencias</v-card-title>
+                            <v-divider class="mb-4"></v-divider>
+                            <v-text-field :value="calculateDifferenceCreditCard" readonly prepend-icon="mdi-credit-card"
+                              variant="underlined" density="compact" class="mb-2"></v-text-field>
+                            <v-text-field :value="calculateDifferenceDebit" readonly
+                              prepend-icon="mdi-credit-card-outline" variant="underlined" density="compact"
+                              class="mb-2"></v-text-field>
+                            <v-text-field :value="calculateDifferenceTransfer" readonly prepend-icon="mdi-bank-transfer"
+                              variant="underlined" density="compact" class="mb-2"></v-text-field>
+                            <v-text-field :value="calculateDifferenceCash" readonly prepend-icon="mdi-bank-transfer"
+                              variant="underlined" density="compact" class="mb-2"></v-text-field>
+                            <v-text-field :value="calculateDifferenceOther" readonly prepend-icon="mdi-cash"
+                              variant="underlined" density="compact" class="mb-2"></v-text-field>
+                            <v-text-field :value="calculateDifferenceCardGif" readonly prepend-icon="mdi-gift"
+                              variant="underlined" density="compact" class="mb-2"></v-text-field>
+                          </v-card>
+                        </v-col>
+                      </v-row>
+
+                      <!-- Fila de Total de Diferencias -->
+                      <v-row class="mb-4 mt-2" dense no-gutters>
+                        <v-col cols="8" class="text-right">
+                          <span class="text-h6"
+                            :class="{ 'text-red': cashierData.differencePay < 0 }">Diferencias:</span>
+                        </v-col>
+                        <v-col cols="4" class="text-center">
+                          <v-text-field v-model="cashierData.differencePay" :value="calculateTotalDifferencesPagos"
+                            readonly prepend-icon="mdi-cash" variant="underlined" density="compact" class="mb-2" :class="{
+                              'text-red': cashierData.differencePay < 0,
+                              'font-weight-bold': cashierData.differencePay >= 0
+                            }"></v-text-field>
+                        </v-col>
+                      </v-row>
                     </v-card-text>
                   </v-card>
                 </div>
@@ -1123,11 +785,118 @@
                 <v-row class="mt-1">
                   <v-btn color="#E7E9E9" variant="flat" @click="prevStep">Volver</v-btn>
                   <v-spacer></v-spacer>
-                  <v-btn color="#E7E9E9" :disabled="this.step !== 7" variant="flat" @click="close">
-                    Salir
+                  <v-btn color="#E7E9E9" :disabled="cashierData.details.length === 0" variant="flat"
+                    @click="nextStep">Siguiente</v-btn>
+                </v-row>
+              </v-container>
+            </template>
+            <template v-slot:item.5>
+              <v-sheet border>
+                <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
+                  <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
+                    <v-card-text>
+                      <v-row class="mb-4 mt-2" dense no-gutters>
+                        <!-- Columna 1: Datos del Sistema -->
+                        <v-col cols="4" class="text-center">
+                          <v-card class="pa-4 mx-2" elevation="2">
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(129, 199, 132, 0.9); color: white;">
+                              Datos del Sistema
+                            </v-card-title>
+                            <v-divider class="mb-4"></v-divider>
+                            <v-text-field v-model="editedBox.extraction" :value="totalBoxExtraction()"
+                              label="Extracción en caja" readonly prepend-icon="mdi-cash-refund" variant="underlined"
+                              density="compact" class="mb-2"></v-text-field>
+                            <v-text-field v-model="this.editedCloseBox.totalBonus" :value="totalBonusPay()"
+                              label="Pago de bonos" readonly prepend-icon="mdi-cash-refund" variant="underlined"
+                              density="compact" class="mb-2"></v-text-field>
+                            <v-text-field :value="editedCloseBox.advancement" label="Adelanto" readonly
+                              prepend-icon="mdi-cash" variant="underlined" density="compact"
+                              class="mb-2"></v-text-field>
+                          </v-card>
+                        </v-col>
+
+                        <!-- Columna 2: Datos de la Cajera -->
+                        <v-col cols="4" class="text-center">
+                          <v-card class="pa-4 mx-2" elevation="2">
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(100, 181, 246, 0.9); color: white;">
+                              Datos de la Cajera
+                            </v-card-title>
+                            <v-divider class="mb-4"></v-divider>
+                            <v-text-field v-model="cashierData.extraction" label="Extracción"
+                              prepend-icon="mdi-cash-refund" variant="underlined" density="compact"
+                              class="mb-2"></v-text-field>
+                            <v-text-field v-model="cashierData.totalBonus" label="Bonos" prepend-icon="mdi-cash"
+                              variant="underlined" density="compact" class="mb-2"></v-text-field>
+                            <v-text-field v-model="cashierData.advancement" label="Adelanto" prepend-icon="mdi-cash"
+                              variant="underlined" density="compact" class="mb-2"></v-text-field>
+                          </v-card>
+                        </v-col>
+
+                        <!-- Columna 3: Diferencias -->
+                        <v-col cols="4" class="text-center">
+                          <v-card class="pa-4 mx-2" elevation="2">
+                            <v-card-title class="text-subtitle-1 pa-1"
+                              style="background-color: rgba(229, 115, 115, 0.9); color: white;">Diferencias</v-card-title>
+                            <v-divider class="mb-4"></v-divider>
+                            <v-text-field :value="calculateDifferenceExtraccion" readonly prepend-icon="mdi-cash-refund"
+                              variant="underlined" density="compact" class="mb-2"></v-text-field>
+                            <v-text-field :value="calculateDifferenceBonusPay" readonly prepend-icon="mdi-cash-refund"
+                              variant="underlined" density="compact" class="mb-2"></v-text-field>
+                            <v-text-field :value="calculateDifferenceAdelanto" readonly prepend-icon="mdi-cash"
+                              variant="underlined" density="compact" class="mb-2"></v-text-field>
+                          </v-card>
+                        </v-col>
+                      </v-row>
+
+                      <!-- Fila de Total de Diferencias -->
+                      <v-row class="mb-4 mt-2" dense no-gutters>
+                        <v-col cols="8" class="text-right">
+                          <span class="text-h6" :class="{ 'text-red': cashierData.difference < 0 }">Total de
+                            Diferencias:</span>
+                        </v-col>
+                        <v-col cols="4" class="text-center">
+                          <v-text-field v-model="cashierData.difference" :value="calculateTotalDifferencesGlobal"
+                            readonly prepend-icon="mdi-cash" variant="underlined" density="compact" class="mb-2" :class="{
+                              'text-red': cashierData.difference < 0,
+                              'font-weight-bold': cashierData.difference >= 0
+                            }"></v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row class="mb-4 mt-1" dense no-gutters>
+                        <v-col cols="12" class="text-center">
+                          <v-textarea v-if="cashierData.difference !== 0" v-model="cashierData.description"
+                            label="Descripción de las diferencias" prepend-icon="mdi-text-box" variant="underlined"
+                            density="compact" class="mb-2" :rules="descriptionRules"></v-textarea>
+                        </v-col>
+                      </v-row>
+                    </v-card-text>
+                    <v-divider></v-divider>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <!--<v-btn color="#E7E9E9" variant="flat" @click="close">
+                      Cancelar
+                    </v-btn>
+                      <v-btn color="#F18254" :disabled="ejecutado || !valid" variant="flat" @click="saveCloseBox"
+                        :loading="!loadingBonus">
+                        Cerrar Caja
+                      </v-btn>-->
+                    </v-card-actions>
+                  </v-card>
+                </div>
+              </v-sheet>
+              <v-container>
+                <!-- BOTONES -->
+                <v-row class="mt-1">
+                  <v-btn color="#E7E9E9" variant="flat" @click="prevStep">Volver</v-btn>
+                  <v-spacer></v-spacer>
+                  <!--<v-btn color="#E7E9E9" variant="flat" :disabled="!ejecutado" @click="nextStep">Siguiente</v-btn>-->
+                  <v-btn color="#F18254" :disabled="ejecutado || !valid" variant="flat" @click="saveCloseBox"
+                    :loading="!loadingBonus">
+                    Cerrar Caja
                   </v-btn>
                 </v-row>
-
               </v-container>
             </template>
           </v-stepper>
@@ -1145,6 +914,29 @@
       </v-card-actions>-->
     </v-card>
 
+  </v-dialog>
+  <v-dialog v-model="dialogDetails" max-width="500">
+    <v-card>
+      <v-toolbar color="#F18254">
+        <span class="text-subtitle-1  ml-2">Agregar Métodos de Ingresos</span>
+      </v-toolbar>
+      <v-card-text>
+        <v-select v-model="newDetail.type" :items="paymentOptions" item-title="name" item-value="type"
+          label="Métodos de Ingresos" class="mb-4" variant="underlined" prepend-icon="mdi-cash-multiple"></v-select>
+
+        <v-text-field v-model="newDetail.value" variant="underlined" label="Valor" type="number"
+          prepend-icon="mdi-currency-usd"></v-text-field>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="#E7E9E9" variant="flat" @click="dialogDetails = false">
+          Cancelar
+        </v-btn>
+        <v-btn color="#F18254" variant="flat" :disabled="!newDetail.type || !newDetail.value" @click="addDetail">
+          Aceptar
+        </v-btn>
+      </v-card-actions>
+    </v-card>
   </v-dialog>
   <!--end Cierre de caja-->
   <v-dialog v-model="dialogRequest" width="500">
@@ -1570,13 +1362,14 @@
             {{ formatNumber(item.amount) }}
           </template>
           <template v-slot:item.actions="{ item }">
-            <v-btn density="comfortable" icon="mdi-pencil" @click="(item.pay == 1 && (item.active === 0 || item.active === 1) && !this.ejecutado) && updateitemSolicitud(item)"
-              :color="(item.pay == 1 && (item.active === 0 || item.active === 1) && !this.ejecutado) ? 'primary-darken-1' : 'grey'" variant="tonal" elevation="1"
-              class="mr-1 mt-1 mb-1" title="Editar el carro"></v-btn>
-              <v-btn density="comfortable" icon="mdi-delete"
-                @click="(item.pay == 1 && (item.active === 0 || item.active === 1)  && !this.ejecutado) && deleteItemSolicitud(item)"
-                :color="(item.pay == 1 && (item.active === 0 || item.active === 1)  && !this.ejecutado) ? 'red-darken-4' : 'grey'" variant="tonal" elevation="1"
-                title="Solicitud de eliminar carro"></v-btn>
+            <v-btn density="comfortable" icon="mdi-pencil"
+              @click="(item.pay == 1 && (item.active === 0 || item.active === 1) && !this.ejecutado) && updateitemSolicitud(item)"
+              :color="(item.pay == 1 && (item.active === 0 || item.active === 1) && !this.ejecutado) ? 'primary-darken-1' : 'grey'"
+              variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Editar el carro"></v-btn>
+            <v-btn density="comfortable" icon="mdi-delete"
+              @click="(item.pay == 1 && (item.active === 0 || item.active === 1) && !this.ejecutado) && deleteItemSolicitud(item)"
+              :color="(item.pay == 1 && (item.active === 0 || item.active === 1) && !this.ejecutado) ? 'red-darken-4' : 'grey'"
+              variant="tonal" elevation="1" title="Solicitud de eliminar carro"></v-btn>
           </template>
           <template v-slot:top>
 
@@ -2056,21 +1849,17 @@ export default {
     currentStep: 1,
     step: 1,
     items: [
-      'Convivencias',
-      'Dinero en caja',
-      'Tipos de Ingreso',
-      'Medios de Pago',
-      'Totales',
-      'Bonos a Pagar',
       'Inventario',
+      'Convivencias',
+      'Bonos',
+      'Ingresos',
+      'Gastos',
     ],
     stepCashier: 1,
     itemsCashier: [
-      'Dinero en caja',
-      'Tipos de Ingreso',
-      'Medios de Pago',
-      'Totales',
       'Inventario',
+      'Ingreso',
+      'Gastos',
     ],
     //end steep
     types: [
@@ -2126,6 +1915,7 @@ export default {
     search2: '',
     search3: '',
     dialog: false,
+    dialogDetails: false,
     dialogParcial: false,
     dialogDetallesCar: false,
     dialogRequest: false,
@@ -2264,7 +2054,8 @@ export default {
       totalTransfer: '',
       totalOther: '',
       totalCardGif: '',
-      advancement: ''
+      advancement: '',
+      totalBonus: '',
     },
     cashierData: {
       id: '',
@@ -2287,7 +2078,8 @@ export default {
       description: '',
       differenceAccounts: '',
       differencePay: '',
-      differenceBox: ''
+      differenceBox: '',
+      details: []
     },
     defaultcashierData: {
       id: '',
@@ -2310,7 +2102,14 @@ export default {
       description: '',
       differenceAccounts: '',
       differencePay: '',
-      differenceBox: ''
+      differenceBox: '',
+      details: []
+    },
+    paymentOptions: [],
+    newDetail: {
+      id: null,
+      type: '',
+      value: 0
     },
     editedCard: {
       cardGiftUser_id: '',
@@ -2332,7 +2131,8 @@ export default {
       totalTransfer: '',
       totalOther: '',
       totalCardGif: '',
-      advancement: ''
+      advancement: '',
+      totalBonus: ''
     },
     editedBox: {
       branch_id: '',
@@ -2423,8 +2223,12 @@ export default {
       }
 
     },
+
+    hasUnpaidBonus() {
+      return this.bonusProf.some(item => item.pay === false);
+    },
     // Diferencias calculadas
-    calculateDifferenceExistence() {
+    /*calculateDifferenceExistence() {
       if (this.cashierData.existence) {
         const efectivoSistema = parseFloat(this.editedBox.existence) || 0;
         const existenciaCajera = parseFloat(this.cashierData.existence) || 0;
@@ -2434,26 +2238,26 @@ export default {
         return 0.00;
       }
 
-    },
+    },*/
     calculateDifferenceExtraccion() {
       if (this.cashierData.extraction) {
         const extraccionSistema = parseFloat(this.editedBox.extraction) || 0;
         const extraccionCajera = parseFloat(this.cashierData.extraction) || 0;
         const diferencia = extraccionSistema - extraccionCajera;
-        return diferencia.toFixed(2); // Redondea a 2 decimales
+        return Math.abs(diferencia.toFixed(2)); // Redondea a 2 decimales
       } else {
         return 0.00
       }
 
     },
-    calculateTotalDifferences() {
+    /*calculateTotalDifferences() {
       const diferenciaExistencia = parseFloat(this.calculateDifferenceExistence) || 0;
       const diferenciaExtraccion = parseFloat(this.calculateDifferenceExtraccion) || 0;
       const total = diferenciaExistencia + diferenciaExtraccion;
       this.cashierData.differenceBox = total.toFixed(2);
       return total.toFixed(2); // Redondea a 2 decimales
-    },
-    calculateDifferenceService() {
+    },*/
+    /*calculateDifferenceService() {
       if (this.cashierData.totalService) {
         const servicioSistema = parseFloat(this.editedCloseBox.totalService) || 0;
         const servicioCajera = parseFloat(this.cashierData.totalService) || 0;
@@ -2462,8 +2266,8 @@ export default {
       } else {
         return 0.00;
       }
-    },
-    calculateDifferenceProduct() {
+    },*/
+    /*calculateDifferenceProduct() {
       if (this.cashierData.totalProduct) {
         const productoSistema = parseFloat(this.editedCloseBox.totalProduct) || 0;
         const productoCajera = parseFloat(this.cashierData.totalProduct) || 0;
@@ -2472,8 +2276,8 @@ export default {
       } else {
         return 0.00;
       }
-    },
-    calculateDifferenceTip() {
+    },*/
+    /*calculateDifferenceTip() {
       if (this.cashierData.totalTip) {
         const propinaSistema = parseFloat(this.editedCloseBox.totalTip) || 0;
         const propinaCajera = parseFloat(this.cashierData.totalTip) || 0;
@@ -2482,82 +2286,82 @@ export default {
       } else {
         return 0.00;
       }
-    },
-    calculateTotalDifferencesIngresos() {
+    },*/
+    /*calculateTotalDifferencesIngresos() {
       const diferenciaServicio = parseFloat(this.calculateDifferenceService) || 0;
       const diferenciaProducto = parseFloat(this.calculateDifferenceProduct) || 0;
       const diferenciaPropina = parseFloat(this.calculateDifferenceTip) || 0;
       const total = diferenciaServicio + diferenciaProducto + diferenciaPropina;
       this.cashierData.differenceAccounts = total.toFixed(2);
       return total.toFixed(2); // Redondea a 2 decimales
-    },
+    },*/
     calculateDifferenceCreditCard() {
-      //if (this.cashierData.totalCreditCard) {
-      const creditCardSistema = parseFloat(this.editedCloseBox.totalCreditCard) || 0;
-      const creditCardCajera = parseFloat(this.cashierData.totalCreditCard) || 0;
-      const diferencia = creditCardSistema - creditCardCajera;
-      return diferencia.toFixed(2); // Redondea a 2 decimales
-      //} else {
-      //  return 0.00;
-      //}
+      if (this.cashierData.totalCreditCard) {
+        const creditCardSistema = parseFloat(this.editedCloseBox.totalCreditCard) || 0;
+        const creditCardCajera = parseFloat(this.cashierData.totalCreditCard) || 0;
+        const diferencia = creditCardSistema - creditCardCajera;
+        return Math.abs(diferencia.toFixed(2)); // Redondea a 2 decimales
+      } else {
+        return 0.00;
+      }
     },
     calculateDifferenceDebit() {
-      //if (this.cashierData.totalDebit) {
-      const debitSistema = parseFloat(this.editedCloseBox.totalDebit) || 0;
-      const debitCajera = parseFloat(this.cashierData.totalDebit) || 0;
-      const diferencia = debitSistema - debitCajera;
-      return diferencia.toFixed(2); // Redondea a 2 decimales
-      //} else {
-      // return 0.00;
-      //}
+      if (this.cashierData.totalDebit) {
+        const debitSistema = parseFloat(this.editedCloseBox.totalDebit) || 0;
+        const debitCajera = parseFloat(this.cashierData.totalDebit) || 0;
+        const diferencia = debitSistema - debitCajera;
+        return Math.abs(diferencia.toFixed(2)); // Redondea a 2 decimales
+      } else {
+        return 0.00;
+      }
     },
     calculateDifferenceTransfer() {
-      //if (this.cashierData.totalTransfer) {
-      const transferSistema = parseFloat(this.editedCloseBox.totalTransfer) || 0;
-      const transferCajera = parseFloat(this.cashierData.totalTransfer) || 0;
-      const diferencia = transferSistema - transferCajera;
-      return diferencia.toFixed(2); // Redondea a 2 decimales
-      // } else {
-      //   return 0.00;
-      // }
+      if (this.cashierData.totalTransfer) {
+        const transferSistema = parseFloat(this.editedCloseBox.totalTransfer) || 0;
+        const transferCajera = parseFloat(this.cashierData.totalTransfer) || 0;
+        const diferencia = transferSistema - transferCajera;
+        return Math.abs(diferencia.toFixed(2)); // Redondea a 2 decimales
+      } else {
+        return 0.00;
+      }
     },
     calculateDifferenceCash() {
-      //if (this.cashierData.totalCash) {
-      const transferSistema = parseFloat(this.editedCloseBox.totalCash) || 0;
-      const transferCajera = parseFloat(this.cashierData.totalCash) || 0;
-      const diferencia = transferSistema - transferCajera;
-      return diferencia.toFixed(2); // Redondea a 2 decimales
-      //} else {
-      //return 0.00;
-      //}
+      if (this.cashierData.totalCash) {
+        const transferSistema = parseFloat(this.editedCloseBox.totalCash) || 0;
+        const transferCajera = parseFloat(this.cashierData.totalCash) || 0;
+        const diferencia = transferSistema - transferCajera;
+        return Math.abs(diferencia.toFixed(2)); // Redondea a 2 decimales
+      } else {
+        return 0.00;
+      }
     },
     calculateDifferenceOther() {
-      //if (this.cashierData.totalOther) {
-      const otherSistema = parseFloat(this.editedCloseBox.totalOther) || 0;
-      const otherCajera = parseFloat(this.cashierData.totalOther) || 0;
-      const diferencia = otherSistema - otherCajera;
-      return diferencia.toFixed(2); // Redondea a 2 decimales
-      //} else {
-      //return 0.00;
-      // }
+      if (this.cashierData.totalOther) {
+        const otherSistema = parseFloat(this.editedCloseBox.totalOther) || 0;
+        const otherCajera = parseFloat(this.cashierData.totalOther) || 0;
+        const diferencia = otherSistema - otherCajera;
+        return Math.abs(diferencia.toFixed(2)); // Redondea a 2 decimales
+      } else {
+        return 0.00;
+      }
     },
     calculateDifferenceCardGif() {
-      //if (this.cashierData.totalCardGif) {
-      const cardGifSistema = parseFloat(this.editedCloseBox.totalCardGif) || 0;
-      const cardGifCajera = parseFloat(this.cashierData.totalCardGif) || 0;
-      const diferencia = cardGifSistema - cardGifCajera;
-      return diferencia.toFixed(2); // Redondea a 2 decimales
-      //} else {
-      //  return 0.00;
-      //}
+      if (this.cashierData.totalCardGif) {
+        const cardGifSistema = parseFloat(this.editedCloseBox.totalCardGif) || 0;
+        const cardGifCajera = parseFloat(this.cashierData.totalCardGif) || 0;
+        const diferencia = cardGifSistema - cardGifCajera;
+        return Math.abs(diferencia.toFixed(2)); // Redondea a 2 decimales
+      } else {
+        return 0.00;
+      }
     },
     calculateTotalDifferencesPagos() {
-      const diferenciaCreditCard = parseFloat(this.calculateDifferenceCreditCard) || 0;
-      const diferenciaDebit = parseFloat(this.calculateDifferenceDebit) || 0;
-      const diferenciaTransfer = parseFloat(this.calculateDifferenceTransfer) || 0;
-      const diferenciaOther = parseFloat(this.calculateDifferenceOther) || 0;
-      const diferenciaCardGif = parseFloat(this.calculateDifferenceCardGif) || 0;
-      const diferenciaCash = parseFloat(this.calculateDifferenceCash) || 0;
+      const diferenciaCreditCard = Math.abs(parseFloat(this.calculateDifferenceCreditCard)) || 0;
+      const diferenciaDebit = Math.abs(parseFloat(this.calculateDifferenceDebit)) || 0;
+      const diferenciaTransfer = Math.abs(parseFloat(this.calculateDifferenceTransfer)) || 0;
+      const diferenciaOther = Math.abs(parseFloat(this.calculateDifferenceOther)) || 0;
+      const diferenciaCardGif = Math.abs(parseFloat(this.calculateDifferenceCardGif)) || 0;
+      const diferenciaCash = Math.abs(parseFloat(this.calculateDifferenceCash)) || 0;
       const total = diferenciaCreditCard + diferenciaDebit + diferenciaTransfer + diferenciaOther + diferenciaCardGif + diferenciaCash;
       this.cashierData.differencePay = total.toFixed(2);
       return total.toFixed(2); // Redondea a 2 decimales
@@ -2574,40 +2378,40 @@ export default {
       //}
     },
     calculateDifferenceAdelanto() {
-      if (this.cashierData.adelanto) {
+      if (this.cashierData.advancement) {
         const adelantoSistema = parseFloat(this.editedCloseBox.advancement) || 0;
         const adelantoCajera = parseFloat(this.cashierData.advancement) || 0;
         const diferencia = adelantoSistema - adelantoCajera;
-        return diferencia.toFixed(2); // Redondea a 2 decimales
+        return Math.abs(diferencia.toFixed(2)); // Redondea a 2 decimales
       } else {
         return 0.00;
       }
     },
     calculateDifferenceBonusPay() {
-      if (this.cashierData.bonusPay) {
-        const bonusPaySistema = parseFloat(this.bonusPay) || 0;
-        const bonusPayCajera = parseFloat(this.cashierData.bonusPay) || 0;
+      if (this.cashierData.totalBonus) {
+        const bonusPaySistema = parseFloat(this.editedCloseBox.totalBonus) || 0;
+        const bonusPayCajera = parseFloat(this.cashierData.totalBonus) || 0;
         const diferencia = bonusPaySistema - bonusPayCajera;
-        return diferencia.toFixed(2); // Redondea a 2 decimales
+        return Math.abs(diferencia.toFixed(2)); // Redondea a 2 decimales
       } else {
         return 0.00;
       }
     },
     calculateTotalDifferencesTotales() {
-      //const diferenciaTotalMount = parseFloat(this.calculateDifferenceTotalMount) || 0;
-      const diferenciaAdelanto = parseFloat(this.calculateDifferenceAdelanto) || 0;
-      const diferenciaBonusPay = parseFloat(this.calculateDifferenceBonusPay) || 0;
-      const total = diferenciaAdelanto + diferenciaBonusPay;
+      const diferenciaExtraxtion = Math.abs(parseFloat(this.calculateDifferenceExtraccion)) || 0;
+      const diferenciaAdelanto = Math.abs(parseFloat(this.calculateDifferenceAdelanto)) || 0;
+      const diferenciaBonusPay = Math.abs(parseFloat(this.calculateDifferenceBonusPay)) || 0;
+      const total = diferenciaAdelanto + diferenciaBonusPay + diferenciaExtraxtion;
       return total.toFixed(2); // Redondea a 2 decimales
     },
     calculateTotalDifferencesGlobal() {
       //const diferenciaCaja = parseFloat(this.calculateTotalDifferences) || 0; // Diferencias de "caja"
       //const diferenciaIngresos = parseFloat(this.calculateTotalDifferencesIngresos) || 0; // Diferencias de "typeingreso"
       //const diferenciaPagos = parseFloat(this.calculateTotalDifferencesPagos) || 0; // Diferencias de "typepago"
-      const diferenciaTotales = parseFloat(this.calculateTotalDifferencesTotales) || 0; // Diferencias de "total"
-      const differenceToatalAmount = parseFloat(this.calculateDifferenceTotalMount) || 0;
+      const diferenciaTotales = Math.abs(parseFloat(this.calculateTotalDifferencesTotales)) || 0; // Diferencias de "total"
+      const differenceIngreso = Math.abs(parseFloat(this.calculateTotalDifferencesPagos)) || 0;
       // Suma todas las diferencias
-      const totalGlobal = diferenciaTotales + differenceToatalAmount;
+      const totalGlobal = diferenciaTotales + differenceIngreso;
       this.cashierData.difference = totalGlobal;
       return totalGlobal.toFixed(2); // Redondea a 2 decimales
     },
@@ -2730,15 +2534,58 @@ export default {
   },
 
   methods: {
+    getOptionName(type) {
+      const option = this.paymentOptions.find(opt => opt.type === type)
+      return option ? option.name : type
+    },
+    addDetail() {
+      // Generar ID único
+      const newId = Date.now()
+      const value = parseFloat(this.newDetail.value) || 0
+
+      // Crear el objeto detalle
+      const detail = {
+        id: newId,
+        type: this.newDetail.type,
+        value: value,
+        name: this.getOptionName(this.newDetail.type)
+      }
+
+      // Agregar a la lista de detalles
+      this.cashierData.details.push(detail)
+
+      // Sumar al total correspondiente
+      if (this.cashierData[detail.type] !== undefined) {
+        // Convertir a número (manejo de valores vacíos)
+        const currentValue = this.cashierData[detail.type] === '' ? 0 : this.cashierData[detail.type]
+        this.cashierData[detail.type] = currentValue + value
+      }
+
+      // Resetear el formulario y cerrar diálogo
+      this.newDetail = { id: null, type: '', value: 0 }
+      this.dialogDetails = false
+    },
+
+    // Función para eliminar un detalle
+    removeDetail(detail) {
+      // Restar del total correspondiente
+      if (this.cashierData[detail.type] !== undefined) {
+        const currentValue = this.cashierData[detail.type] === '' ? 0 : parseFloat(this.cashierData[detail.type])
+        this.cashierData[detail.type] = currentValue - detail.value
+      }
+
+      // Eliminar de la lista de detalles
+      this.cashierData.details = this.cashierData.details.filter(d => d.id !== detail.id)
+    },
     //step
     changeStep(index) {
       this.step = index;
     },
-    nextStep() {
+    async nextStep() {
       if (this.step < this.items.length) {
         this.step++;
       }
-      if (this.step === 5) {
+      if (this.step === 3) {
         this.loadingBonusProf = true;
         LocalStorageService.setIsLocked(true);
         axios
@@ -2755,6 +2602,24 @@ export default {
             LocalStorageService.setIsLocked(false);
           });
         this.loadingBonusProf = false;
+      }
+      if (this.step === 4){
+        try {
+                this.loading = true;
+                const result = await handleRequest({
+                    endpoint: 'payment-method',
+                    method: 'GET',
+                });
+
+                if (result.success) {
+                    this.paymentOptions = result.data.paymentOptions || [];
+                } else {
+                    this.paymentOptions = [];
+                }
+            } catch (error) {
+                this.loading = false;
+                this.showAlert('error', 'Ocurrió un error inesperado al cargar los métodos de pago.', 3000);
+            }
       }
       console.log('Aqui se muestran los Step');
       console.log(this.step);
@@ -2807,7 +2672,10 @@ export default {
       // Verificar si hay datos filtrados
       if (cashierDataFiltered.length > 0) {
         // Asignar el primer elemento filtrado a cashierData
-        this.cashierData = { ...this.cashierData, ...cashierDataFiltered[0] };
+        const details = typeof cashierDataFiltered[0].details === 'string'
+          ? JSON.parse(cashierDataFiltered[0].details)
+          : cashierDataFiltered[0].details || [];
+        this.cashierData = { ...this.cashierData, ...cashierDataFiltered[0], details: details };
       }
       this.loadingBonus = true;
     },
@@ -2825,7 +2693,10 @@ export default {
       // Verificar si hay datos filtrados
       if (cashierDataFiltered.length > 0) {
         // Asignar el primer elemento filtrado a cashierData
-        this.cashierData = { ...this.cashierData, ...cashierDataFiltered[0] };
+        const details = typeof cashierDataFiltered[0].details === 'string'
+          ? JSON.parse(cashierDataFiltered[0].details)
+          : cashierDataFiltered[0].details || [];
+        this.cashierData = { ...this.cashierData, ...cashierDataFiltered[0], details: details };
       }
       const filteredpayments = this.payments.filter(item => {
         return Number(item.user_id) === Number(this.user_id);
@@ -3176,10 +3047,18 @@ export default {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
           this.showAlert("success", "Pago del bono efectuado correctamente", 3000);
+          // Actualizar el estado localmente
+          this.bonusProf = this.bonusProf.map(item => {
+            if (item.professional_id === this.bonus_ref.professional_id && 
+                item.bonus === this.bonus_ref.bonus) {
+              return { ...item, pay: true };
+            }
+            return item;
+          });
           this.bonus_ref = [];
           this.dialogConfBonus = false;
           this.loadingBonusPay = false;
-          axios
+          /*axios
             .get('http://127.0.0.1:8000/api/bonus-show', {
               params: {
                 branch_id: this.branch_id
@@ -3188,10 +3067,10 @@ export default {
             .then((response) => {
               this.bonusProf = response.data.bonus;
             }).finally(() => {
-              this.showDialogBonusProf = true;
+              //this.showDialogBonusProf = true;
               this.loadingBonusProf = false;
               LocalStorageService.setIsLocked(false);
-            });
+            });*/
         });
       this.loadingBonusPay = false;
       LocalStorageService.setIsLocked(false);
@@ -3527,11 +3406,37 @@ export default {
       }
     },
 
-    totalBonusPay() {
-      console.log('bonos pagados');
+    /*totalBonusPay() {
+          const totalUnpaid = this.bonusProf
+        .filter(item => item.pay === 0)
+        .reduce((sum, item) => sum + (parseFloat(item.amount) || 0, 0);
+      
+      console.log('Total bonos no pagados:', totalUnpaid);
+      return totalUnpaid;
+      /*console.log('bonos pagados');
       console.log(this.bonusPay);
       return this.bonusPay ? this.formatNumber(this.bonusPay) + " CLP" : '0.00' + " CLP";
+    },*/
+
+    totalBonusPay() {
+      if (!this.bonusProf || !Array.isArray(this.bonusProf)) {
+        this.editedCloseBox.totalBonus = 0;
+        return 0;
+      }
+            
+      const total = this.bonusProf.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+      
+      console.log('Total calculado:', total);
+      
+      this.editedCloseBox.totalBonus = total;
+      return total;
     },
+
+    totalBonusPayCashier() {
+      this.editedCloseBox.totalBonus = this.bonusPay ?? 0;
+      return this.bonusPay ?? 0;
+    },
+
 
     totalMountDebits() {
       // Filtrar elementos con estado "Pendiente" y calcular la sumatoria
@@ -3948,21 +3853,25 @@ export default {
           this.showAlert("success", result.message, 3000);
         } else {
           this.loadingBonus = true;
+          this.dialog = false;
           this.showAlert("warning", result.message, 3000);
         }
       } catch (error) {
         this.loadingBonus = true;
+        this.dialog = false;
         // Este bloque captura errores inesperados fuera del manejo estándar
         this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
       } finally {
         this.loadingBonus = true;
+        this.dialog = false;
         this.showAlert("success", "Cierre de caja efectuado correctamente", 3000);
-        this.step += 1;
       }
-      this.loadingBonus = true;
+      this.dialog = false;
+      //this.loadingBonus = true;
       LocalStorageService.setIsLocked(false);
     },
     async saveCloseBoxParcial() {
+      this.valid = false;
       LocalStorageService.setIsLocked(true);
       this.loadingBonus = false;
       // Preparar los datos para enviar
@@ -3988,6 +3897,7 @@ export default {
 
         // Manejo de la respuesta según el resultado
         if (result.success) {
+          this.closeParcial();
           this.showAlert("success", result.message, 3000);
         } else {
           await this.startInterval();

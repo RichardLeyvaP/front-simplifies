@@ -162,6 +162,7 @@ export default {
       { title: "Reglas de convivencia", icon: "mdi-ruler", to: "rule", permission: "view_rules" },
       //{ title: "Operaciones de Gastos", icon: "mdi-cash-minus", to: "expense", permission: "view_expenses" },
       //{ title: "Operaciones de Ingreso", icon: "mdi-cash-plus", to: "revenue", permission: "view_revenues" },
+      { title: "Métodos de Ingreso", icon: "mdi-credit-card-multiple", to: "paymentmethod", permission: "view_payment_method" },
       { title: "Encuesta", icon: "mdi-poll", to: "survey", permission: "view_surveys" },
     ],
     listItems: [

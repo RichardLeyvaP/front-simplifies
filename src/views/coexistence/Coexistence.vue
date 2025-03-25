@@ -79,7 +79,7 @@
               </v-card-text>
             </v-card>
           </v-dialog>
-         </v-col>
+        </v-col>
       </v-row>
     </v-toolbar>
     <v-card-text>
@@ -98,7 +98,6 @@
         <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
           <tr>
             <td :colspan="columns.length">
-              <!-- Botón de expandir solo para el encabezado del grupo -->
               <v-btn size="small" variant="text" :icon="isGroupOpen(item) ? '$expand' : '$next'"
                 @click="toggleGroup(item)"></v-btn>
               {{ item.value }}
@@ -133,11 +132,11 @@ import LocalStorageService from "@/LocalStorageService";
 
 export default {
   props: {
-        branch_id: {
-            type: Number,
-            required: true
-        },
+    branch_id: {
+      type: Number,
+      required: true
     },
+  },
   data: () => ({
     loadingWorkPlace: true,
     valid: true,
@@ -161,7 +160,7 @@ export default {
     ],
     groupBy: [
       {
-        key: 'professionalName',
+        key: 'professionalName' 
       },
     ],
     headers: [
@@ -246,7 +245,7 @@ export default {
         this.mostrarFila = true;
       }
     }*/
-      await this.initialize();
+    await this.initialize();
   },
 
   methods: {
@@ -284,7 +283,7 @@ export default {
 
       const requestParams = {
         branch_id: this.branch_id,
-        date: "2025-03-11",
+        date: formattedDate,
       };
 
       try {
@@ -412,3 +411,4 @@ export default {
   },
 }
 </script>
+

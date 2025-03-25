@@ -287,7 +287,7 @@ export default {
 
                 if (result.success) {
                     this.loading = false;
-                    this.showAlert("success", "Estado de la convivencia actualizado correctamente", 3000);
+                    this.showAlert("success", "Productos actualizados correctamente", 3000);
                 }
             } catch (error) {
                 this.loading = false;
