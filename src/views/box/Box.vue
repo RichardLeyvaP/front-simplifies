@@ -1375,7 +1375,7 @@
               </v-col>
               <v-col cols="12" md="4">
                 <v-text-field v-model="editedBox.extraction" clearable label="Extracción"
-                  prepend-icon="mdi-arrow-down-bold" variant="underlined" :rules="[checkExtraction]">
+                  prepend-icon="mdi-arrow-down-bold" variant="underlined" :rules="[checkExtraction]" :disabled="!editedBox.existence">
                 </v-text-field>
               </v-col>
               <!-- Campos adicionales -->
@@ -2056,7 +2056,15 @@ export default {
     results: [],
     resultsPagado: [],
     orders: [],
-    box: [],
+    box: {
+      id: '',
+      branch_id: '',
+      data: '',
+      cashFound: '',
+      existence: '',
+      extraction: '',
+      box_close: []
+    },
     branches: '',
     cardGifts: [],
     mostrarCode: false,
@@ -2753,11 +2761,11 @@ export default {
       }
 
       // Actualización cruzada para existence/totalCash
-      if (detail.type === 'existence') {
+      /*if (detail.type === 'existence') {
         this.cashierData.totalCash = this.cashierData.existence;
       } else if (detail.type === 'totalCash') {
         this.cashierData.existence = this.cashierData.totalCash;
-      }
+      }*/
     },
     getFieldName(type) {
       const names = {
@@ -2833,6 +2841,7 @@ export default {
       }
       if (this.step === 3) {
         this.dialogDeleteDiario = false;
+        this.bonusProf = [];
         this.loadingBonusStep = true;
         LocalStorageService.setIsLocked(true);
         axios
@@ -2852,8 +2861,21 @@ export default {
           });
       }
       if (this.step === 4) {
-        this.existence();
         this.dialogDeleteDiario = false;
+        await this.initialize();
+        this.totalMountCreditCards();
+      this.totalMountDebits();
+      this.totalMountTransfers();
+      this.totalMountOthers();
+      this.totalMountCardGif();
+      this.totalBoxExtraction();
+      this.totalBonusPay();
+      this.totalMountServices();
+      this.totalMountProducts();
+      this.totalMountTips();
+      this.totalMountCashs();
+      this.totalMount();
+      this.existence();
         try {
           this.loading = true;
           const result = await handleRequest({
@@ -2968,11 +2990,12 @@ export default {
       this.totalMountCardGif();
       this.totalBoxExtraction();
       this.totalBonusPay();
-      this.totalService();
-      this.totalProduct();
-      this.totalTip();
-
-
+      this.totalMountServices();
+      this.totalMountProducts();
+      this.totalMountTips();
+      this.totalMountCashs();
+      this.totalMount();
+      this.existence();
       /*const cashierDataFiltered = this.cashierBoxClose.filter(item => item.type === 'Diario');
 
       // Verificar si hay datos filtrados
@@ -3389,7 +3412,8 @@ export default {
           });
           this.bonus_ref = [];
           this.dialogConfBonus = false;
-          this.loadingBonusPay = false;
+          this.loadingBonusPay = false;          
+      this.loadingBonusPay = false;
           /*axios
             .get('https://testapi.simplifies.cl/api/bonus-show', {
               params: {
@@ -3404,7 +3428,6 @@ export default {
               LocalStorageService.setIsLocked(false);
             });*/
         });
-      this.loadingBonusPay = false;
       LocalStorageService.setIsLocked(false);
     },
     formatNumber(value) {
@@ -3825,6 +3848,7 @@ export default {
           return "0.00 CLP";
         } else {
           const temp = this.box.existence;
+          this.editedCloseBox.existence = this.box.existence;
           console.log(temp);
           //return temp;
           return this.formatNumber(temp) + " CLP";
