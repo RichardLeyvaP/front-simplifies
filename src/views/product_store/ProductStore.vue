@@ -475,6 +475,10 @@ export default {
   computed: {
     headers() {
       const baseHeaders = [
+        {
+                title: "",  // Personaliza el texto aquí
+                key: "data-table-group",  // Clave especial para grupos
+            },
         { title: 'Nombre', key: 'name' },
         { title: 'Referencia', key: 'reference' },
         { title: 'Código', key: 'code' },

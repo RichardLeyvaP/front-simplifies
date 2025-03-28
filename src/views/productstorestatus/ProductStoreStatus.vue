@@ -18,26 +18,38 @@
     <v-card elevation="6" class="mx-5">
         <v-toolbar color="#F18254">
             <v-row align="center">
-                <v-col cols="12" md="5" class="grow ml-4 t">
-                    <span class="text-subtitle-1"> <strong>Actualizar productos</strong></span>
+                <v-col cols="12" md="9" class="grow t">
+                    <span class="text-subtitle-1 ml-2"> <strong>Actualizar productos</strong></span>
                 </v-col>
-                <v-col cols="12" md="4"></v-col>
+                <v-col cols="12" md="3">
+                    <div v-if="hasChanges" class="justify-end">
+
+                        <v-btn @click="cancel" color="black" prepend-icon="mdi-close" class=" ml-2" title="Cancelar Cambios"
+                            style="background-color: #E7E9E9;">
+                            <span>Cancelar</span>
+                        </v-btn>
+                        <v-btn @click="save" color="black" prepend-icon="mdi-check" class=" ml-2" title="Actualizar existencia"
+                            style="background-color: #E7E9E9;" :loading="loadingAcept">
+                            <span>Aceptar</span>
+                        </v-btn>
+                    </div>
+                </v-col>
             </v-row>
         </v-toolbar>
         <v-card-text>
             <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
                 hide-details></v-text-field>
-            <!-- Botones globales de Aceptar y Cancelar -->
+            <!-- Botones globales de Aceptar y Cancelar 
             <div v-if="changes.length > 0" class="d-flex justify-end my-4">
                 <v-btn density="comfortable" class="ml-2" icon="mdi-check" @click="save" color="primary" variant="tonal"
                     elevation="1" title="Aceptar Actualizar existencia" :disabled="changes.length === 0" />
                 <v-btn density="comfortable" class="ml-2" icon="mdi-close" @click="cancel" color="red-darken-4"
                     variant="tonal" elevation="1" title="Cancelar actualización" :disabled="changes.length === 0" />
-            </div>
+            </div>-->
             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search"
                 :items="results" class="elevation-1" no-results-text="No hay datos disponibles"
                 no-data-text="No hay datos disponibles" :loading="loadingWorkPlace" loading-text="Cargando datos..."
-                :group-by="groupBy" show-expand="false">
+                :group-by="groupBy" show-expand="false" group-label="">
                 <!-- Encabezado de grupo con botones de Aceptar y Cancelar -->
                 <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
                     <tr>
@@ -64,6 +76,9 @@
                             :disabled="!changes.some(change => change.id === item.id)"></v-btn>
                     </div>
                 </template>
+                <template v-slot:item.data-table-expand="{ item, isExpanded, toggleExpand }">
+                    <!-- Template vacío para ocultar el expand en filas normales -->
+                </template>
             </v-data-table>
         </v-card-text>
     </v-card>
@@ -73,6 +88,7 @@
 
 import { handleRequest } from "@/utils/api"; // Ruta al archivo
 import LocalStorageService from "@/LocalStorageService";
+import _ from 'lodash';
 
 export default {
     props: {
@@ -83,6 +99,7 @@ export default {
     },
     data: () => ({
         loadingWorkPlace: true,
+        loadingAcept: false,
         valid: true,
         snackbar: false,
         sb_type: '',
@@ -103,6 +120,10 @@ export default {
             },
         ],
         headers: [
+            {
+                title: "",  // Personaliza el texto aquí
+                key: "data-table-group",  // Clave especial para grupos
+            },
             { title: 'Nombre', key: 'name' },
             { title: 'Referencia', key: 'reference' },
             { title: 'Código', key: 'code' },
@@ -110,6 +131,7 @@ export default {
         ],
         results: [],
         changes: [], // Array para almacenar los cambios
+        resultsOriginal: [],
         professionals: [],
 
         editedIndex: -1,
@@ -136,6 +158,9 @@ export default {
         formTitle() {
             return this.editedIndex === -1 ? 'Nueva Convivencia' : 'Editar Estado de convivencia'
         },
+        hasChanges() {
+            return !_.isEqual(this.results, this.resultsOriginal);
+        }
     },
 
     watch: {
@@ -145,6 +170,16 @@ export default {
         dialogDelete(val) {
             val || this.closeDelete()
         },
+        results(newVal) {
+            const arraysAreEqual = _.isEqual(newVal, this.resultsOriginal); // Usamos lodash para comparación profunda
+            
+            // Emitimos false si:
+            // 1. No hay estado 3 Y los arrays son iguales
+            // O emitimos true si:
+            // 1. Hay estado 3 O los arrays son diferentes
+            this.$emit('update:has-invalid-state', !arraysAreEqual);
+        }
+        
     },
 
     async mounted() {
@@ -218,7 +253,7 @@ export default {
         decrementProductExit(item) {
             if (item.product_exit > 0) {
                 item.product_exit -= 1; // Decrementa en 1
-
+                this.results = [...this.results];
                 // Buscar si el item ya está en el array de cambios
                 const existingChange = this.changes.find(change => change.id === item.id);
 
@@ -253,10 +288,12 @@ export default {
                 if (result.success) {
                     // Si la solicitud es exitosa, asignamos las sucursales
                     this.results = result.data.products || []; // Si no hay roles, asigna un arreglo vacío
+                    this.resultsOriginal = _.cloneDeep(this.results);
                 } else {
                     LocalStorageService.setIsLocked(false);
                     // Si no hay datos, asignamos un array vacío
                     this.results = [];
+                    this.resultsOriginal = [];
                 }
             } catch (error) {
                 this.loadingWorkPlace = false;
@@ -269,7 +306,7 @@ export default {
         },
         async save(item) {
             LocalStorageService.setIsLocked(true);
-            this.loading = true;
+            this.loadingAcept = true;
             /*const requestParams = {
                 id: item.id,
                 quantity: item.quantity,
@@ -290,12 +327,12 @@ export default {
                     this.showAlert("success", "Productos actualizados correctamente", 3000);
                 }
             } catch (error) {
-                this.loading = false;
+                this.loadingAcept = false;
                 LocalStorageService.setIsLocked(false);
                 // Captura de errores no controlados
                 this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
             } finally {
-                this.loading = false;
+                this.loadingAcept = false;
                 LocalStorageService.setIsLocked(false);
                 await this.initialize();
             }
@@ -312,6 +349,7 @@ export default {
                 if (item) {
                     item.product_exit += change.quantity;
                 }
+                this.results = [...this.results];
             });
 
             // Limpiar el array de cambios
@@ -329,6 +367,7 @@ export default {
                 // Eliminar el cambio del array changes
                 this.changes.splice(changeIndex, 1);
             }
+            this.results = [...this.results];
         },
     },
 }
@@ -359,5 +398,20 @@ export default {
 
 .mb-1 {
     margin-bottom: 4px;
+}
+
+.action-btn {
+    border-radius: 4px;
+    text-transform: none;
+    letter-spacing: normal;
+    font-weight: 500;
+}
+
+.action-btn .btn-text {
+    margin-left: 8px;
+}
+
+.action-buttons {
+    gap: 8px;
 }
 </style>

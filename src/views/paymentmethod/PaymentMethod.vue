@@ -130,7 +130,7 @@ export default {
         ],
 
         typeOptions: [
-            { name: 'Efectivo', id: 'totalCash' },
+            { name: 'Efectivo', id: 'existence' },
             { name: 'Tarjeta de Crédito', id: 'totalCreditCard' },
             { name: 'Tarjeta de Débito', id: 'totalDebit' },
             { name: 'Transferencia', id: 'totalTransfer' },
@@ -198,13 +198,13 @@ export default {
                 this.loading = false;
             }
         },
-        formatType(type) {
-            const option = this.typeOptions.find(item => item.value === type);
-            return option ? option.text : type;
-        },
+        formatType(typeId) {
+    const typeOption = this.typeOptions.find(option => option.id === typeId);
+    return typeOption ? typeOption.name : typeId;
+  },
         getTypeColor(type) {
             const colors = {
-                'totalCash': 'green',
+                'existence': 'green',
                 'totalCreditCard': 'blue',
                 'totalDebit': 'blue-darken-2',
                 'totalTransfer': 'purple',
@@ -248,8 +248,8 @@ export default {
                 this.data.type = this.editedItem.type;
                 this.data.description = this.editedItem.description;
                     const result = await handleRequest({
-                        endpoint: 'payment-method',
-                        method: 'PUT',
+                        endpoint: 'payment-method-update',
+                        method: 'POST',
                         data: this.data
                     });
 

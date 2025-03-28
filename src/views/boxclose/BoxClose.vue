@@ -28,18 +28,19 @@
                 </v-row>
 
             </v-toolbar>
-            <v-row dense>
-                <v-col cols="12" md="4" class="ml-5 mt-5" v-if="this.mostrarFila">
+            <v-row dense class="ml-5 mt-5">
+                <v-col cols="12" md="3" v-if="this.mostrarFila">
                     <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
                         label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
                         variant="underlined"></v-autocomplete>
                 </v-col>
-                <v-col cols="12" md="2" class="ml-5 mt-5">
+                <v-col cols="12" md="2">
                     <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40"
                         transition="scale-transition" offset-y min-width="290px">
                         <template v-slot:activator="{ props }">
                             <v-text-field v-bind="props" :modelValue="dateFormatted" variant="underlined"
-                                prepend-inner-icon="mdi-calendar" label="Fecha"></v-text-field>
+                                prepend-inner-icon="mdi-calendar" label="Fecha de inicio"
+                            ></v-text-field>
                         </template>
                         <v-locale-provider locale="es">
                             <v-date-picker header="Calendario" title="Seleccione la fecha" color="#F18254"
@@ -48,7 +49,22 @@
                         </v-locale-provider>
                     </v-menu>
                 </v-col>
-                <v-col cols="12" md="1" class="ml-5 mt-5">
+                <v-col cols="12" md="2">
+                    <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40"
+                        transition="scale-transition" offset-y min-width="290px">
+                        <template v-slot:activator="{ props }">
+                            <v-text-field v-bind="props" :modelValue="dateFormatted1" variant="underlined"
+                                prepend-inner-icon="mdi-calendar" label="Fecha Terminación"
+                            ></v-text-field>
+                        </template>
+                        <v-locale-provider locale="es">
+                            <v-date-picker header="Calendario" title="Seleccione la fecha" color="#F18254"
+                                :modelValue="input2" format="yyyy-MM-dd" :min="dateFormatted"
+                                @update:model-value="updateDate1"></v-date-picker><!--@update:model-value="updateDate2"-->
+                        </v-locale-provider>
+                    </v-menu>
+                </v-col>
+                <v-col cols="12" md="1">
                     <v-btn icon @click="boxCloseDiary()" color="#F18254">
                         <v-icon>mdi-magnify</v-icon></v-btn>
                 </v-col>
@@ -61,31 +77,7 @@
                         <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
                             :search="search" class="elevation-1" style="max-height: 55vh; overflow-y: auto;"
                             no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles"
-                            :loading="loadingrules" loading-text="Cargando datos..." show-expand>
-                            <template v-slot:item.totalCash="{ item }">
-                                {{ formatNumber(item.totalCash) }}
-                            </template>
-                            <template v-slot:item.totalDebit="{ item }">
-                                {{ formatNumber(item.totalDebit) }}
-                            </template>
-                            <template v-slot:item.extraction="{ item }">
-                                {{ formatNumber(item.extraction) }}
-                            </template>
-                            <template v-slot:item.totalCreditCard="{ item }">
-                                {{ formatNumber(item.totalCreditCard) }}
-                            </template>
-                            <template v-slot:item.totalTransfer="{ item }">
-                                {{ formatNumber(item.totalTransfer) }}
-                            </template>
-                            <template v-slot:item.totalCardGif="{ item }">
-                                {{ formatNumber(item.totalCardGif) }}
-                            </template>
-                            <template v-slot:item.totalBonus="{ item }">
-                                {{ formatNumber(item.totalBonus) }}
-                            </template>
-                            <template v-slot:item.totalOther="{ item }">
-                                {{ formatNumber(item.totalOther) }}
-                            </template>
+                            :loading="loadingrules" loading-text="Cargando datos..." show-expand  hide-default-footer>
                             <template v-slot:item.actions="{ item, internalItem, isExpanded, toggleExpand }">
                                 <!-- Botón de expansión (ícono verde) -->
                                 <v-btn density="comfortable"
@@ -97,71 +89,183 @@
                             <template v-slot:expanded-row="{ columns, item }">
                                 <tr>
                                     <td :colspan="columns.length" class="py-2">
-                                        <!-- Primera tabla: Métodos de pago -->
-                                        <v-sheet rounded="lg" border class="mb-4">
+                                        <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
+                  <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
+                    <v-card-text>
+                      <v-row class="mb-4 mt-2" dense no-gutters>
+                        <v-col cols="12" md="1" class="text-center"></v-col>
+                        <v-col cols="12" md="5">
+                          <v-card class="mx-auto" subtitle="Resumen de datos arrojados por el sistema"
+                            style="background-color: #027b7b; color: white;" elevation="4">
+                            <template v-slot:prepend>
+                              <v-avatar color="white">
+                                <v-icon icon="mdi-cog" color="#027b7b" size="large"></v-icon>
+                              </v-avatar>
+                            </template>
+                            <template v-slot:title>
+                              <span class="font-weight-black">Datos del Sistema</span>
+                            </template>
+                            <v-card-text class="bg-surface-light pt-4">
+                            <v-text-field :model-value="formatNumber(item.totalCreditCard)" label="Tarjeta Crédito" readonly
+                              prepend-icon="mdi-credit-card" variant="underlined" density="compact"></v-text-field>
+                            <v-text-field :model-value="formatNumber(item.totalDebit)" label="Débito" readonly
+                              prepend-icon="mdi-credit-card-outline" variant="underlined"
+                              density="compact"></v-text-field>
+                            <v-text-field :model-value="formatNumber(item.totalTransfer)" label="Transferencia" readonly
+                              prepend-icon="mdi-bank-transfer" variant="underlined" density="compact"></v-text-field>
+                            <v-text-field :model-value="formatNumber(item.existence)" label="Efectivo" readonly prepend-icon="mdi-cash"
+                              variant="underlined" density="compact"></v-text-field>
+                            <v-text-field :model-value="formatNumber(item.totalOther)" label="Otros" readonly
+                              prepend-icon="mdi-currency-usd" variant="underlined" density="compact"></v-text-field>
+                            <v-text-field :model-value="formatNumber(item.totalCardGif)" label="Tarjeta Regalo" readonly
+                              prepend-icon="mdi-gift" variant="underlined" density="compact"></v-text-field>
+                            <v-text-field :model-value="formatNumber(item.extraction)" label="Extracción en caja" readonly
+                              prepend-icon="mdi-cash-refund" variant="underlined" density="compact"></v-text-field>
+                              <v-text-field v-if="item.type === 'Diario'" :model-value="formatNumber(item.totalBonus)" label="Bonos" prepend-icon="mdi-cash-refund"
+                              variant="underlined" density="compact"></v-text-field>
+                            <v-text-field :model-value="formatNumber(item.advancement)" label="Adelanto" readonly
+                              prepend-icon="mdi-cash" variant="underlined" density="compact"></v-text-field>
+                              </v-card-text>
+                          </v-card>
+                        </v-col>
+                          <v-col cols="12" md="5" class="ml-6">
+                          <v-card class="mx-auto" subtitle="Resumen datos del cierre de caja"
+                            style="background-color: #004059; color: white;" elevation="4">
+                            <template v-slot:prepend>
+                              <v-avatar color="white">
+                                <v-icon icon="mdi-cash-register" color="#004059" size="large"></v-icon>
+                              </v-avatar>
+                            </template>
+                            <template v-slot:title>
+                              <span class="font-weight-black">Datos de la Cajera</span>
+                            </template>
+                            <v-card-text class="bg-white pt-4">
+                                <v-text-field :model-value="formatNumber(item.cashier_totalCreditCard)" label="Tarjeta Crédito" readonly
+                              prepend-icon="mdi-credit-card" variant="underlined" density="compact"></v-text-field>
+                            <v-text-field :model-value="formatNumber(item.cashier_totalDebit)" label="Débito" readonly
+                              prepend-icon="mdi-credit-card-outline" variant="underlined"
+                              density="compact"></v-text-field>
+                            <v-text-field :model-value="formatNumber(item.cashier_totalTransfer)" label="Transferencia" readonly
+                              prepend-icon="mdi-bank-transfer" variant="underlined" density="compact"></v-text-field>
+                            <v-text-field :model-value="formatNumber(item.cashier_existence)" label="Efectivo" readonly prepend-icon="mdi-cash"
+                              variant="underlined" density="compact"></v-text-field>
+                            <v-text-field :model-value="formatNumber(item.cashier_totalOther)" label="Otros" readonly
+                              prepend-icon="mdi-currency-usd" variant="underlined" density="compact"></v-text-field>
+                            <v-text-field :model-value="formatNumber(item.cashier_totalCardGif)" label="Tarjeta Regalo" readonly
+                              prepend-icon="mdi-gift" variant="underlined" density="compact"></v-text-field>
+                            <v-text-field :model-value="formatNumber(item.cashier_extraction)" label="Extracción en caja" readonly
+                              prepend-icon="mdi-cash-refund" variant="underlined" density="compact"></v-text-field>
+                              <v-text-field v-if="item.type === 'Diario'" :model-value="formatNumber(item.cashier_totalBonus)" label="Bonos" prepend-icon="mdi-cash-refund"
+                              variant="underlined" density="compact"></v-text-field>
+                            <v-text-field :model-value="formatNumber(item.cashier_advancement)" label="Adelanto" readonly
+                              prepend-icon="mdi-cash" variant="underlined" density="compact"></v-text-field>
+                              </v-card-text>
+                          </v-card>
+                        </v-col>
+                      </v-row>
+                      <v-row v-if="item.cashier_difference !== 0">
+                      <v-col cols="12" md="1"></v-col>
+                      <v-col cols="12" md="10">
+                        <v-row class="mb-4 mt-2 text-right" dense no-gutters>
+                        <v-col cols="12" md="12">
+                          <span class="text-h6" :class="{
+                            'text-red': item.cashier_difference < 0,
+                            'text-green': item.cashier_difference >= 0
+                          }">Existe una diferencia total de: {{item.cashier_difference}}</span>
+                        </v-col>
+                      </v-row>
+                      <v-row class="mb-4 mt-1" dense no-gutters>
+                        <v-col cols="12" md="6" class="text-h6">Comentario:</v-col>
+                        <v-col cols="12" md="12" class="text-center">
+                          <v-textarea v-model="item.description"
+                            variant="underlined" density="compact" class="mb-2" :rules="descriptionRules"></v-textarea>
+                        </v-col>
+                      </v-row>
+                      </v-col>
+                      </v-row>
+                    </v-card-text>  
+                  </v-card>
+                </div>
+                                        <!--<v-sheet rounded="lg" border class="mb-4">
                                             <v-table density="compact">
                                                 <tbody class="bg-surface-light">
                                                     <tr class="bg-grey-lighten-3">
-                                                        <th colspan="10" class="text-center">Datos Cajera</th>
-                                                    </tr>
-                                                    <tr class="bg-grey-lighten-3">
-                                                        <th></th>
-                                                        <th>Extraccón</th>
+                                                        <th>Datos</th>
                                                         <th>Efectivo</th>
+                                                        <th>Extraccón</th>
                                                         <th>Débito</th>
                                                         <th>Tarjeta Crédito</th>
                                                         <th>Transferencia</th>
                                                         <th>Gifcard</th>
                                                         <th>Otros</th>
+                                                        <th>Adelantos</th>
                                                         <th>Bonos</th>
-                                                        <th></th>
                                                     </tr>
                                                 </tbody>
                                                 <tbody>
                                                     <tr>
-                                                        <td></td>
+                                                        <td>Sistema</td>
+                                                        <td>{{ formatNumber(item.existence) }}</td>
+                                                        <td>{{ formatNumber(item.extraction) }}</td>
+                                                        <td>{{ formatNumber(item.totalDebit) }}</td>
+                                                        <td>{{ formatNumber(item.totalCreditCard) }}</td>
+                                                        <td>{{ formatNumber(item.totalTransfer) }}</td>
+                                                        <td>{{ formatNumber(item.totalCardGif) }}</td>
+                                                        <td>{{ formatNumber(item.totalOther) }}</td>
+                                                        <td>{{ formatNumber(item.advancement) }}</td>
+                                                        <td>{{ formatNumber(item.totalBonus) }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Cajera</td>
+                                                        <td>{{ formatNumber(item.cashier_existence) }}</td>
                                                         <td>{{ formatNumber(item.cashier_extraction) }}</td>
-                                                        <td>{{ formatNumber(item.cashier_totaCash) }}</td>
                                                         <td>{{ formatNumber(item.cashier_totalDebit) }}</td>
                                                         <td>{{ formatNumber(item.cashier_totalCreditCard) }}</td>
                                                         <td>{{ formatNumber(item.cashier_totalTransfer) }}</td>
                                                         <td>{{ formatNumber(item.cashier_totalCardGif) }}</td>
                                                         <td>{{ formatNumber(item.cashier_totalOther) }}</td>
+                                                        <td>{{ formatNumber(item.cashier_advancement) }}</td>
                                                         <td>{{ formatNumber(item.cashier_totalBonus) }}</td>
-                                                        <td></td>
                                                     </tr>
                                                 </tbody>
                                             </v-table>
                                         </v-sheet>
 
-                                        <v-sheet rounded="lg" border class="mb-4" v-if="(item.cashier_differencePay || item.cashier_difference)">
+                                        <v-sheet rounded="lg" border class="mb-4"
+                                            v-if="(item.cashier_differencePay || item.cashier_difference)">
                                             <v-table density="compact">
                                                 <tbody class="bg-surface-light">
                                                     <tr class="bg-grey-lighten-3">
-                                                        <th colspan="2" class="text-center">Diferencias</th>
+                                                        <th colspan="2" class="text-left">Diferencias</th>
                                                     </tr>
                                                 </tbody>
                                                 <tbody>
-                                                    <tr v-if="item.cashier_differencePay">
-                                                        <td>Diferencias Métodos de Ingresos</td>
-                                                        <td>{{ formatNumber(item.cashier_differencePay) }}</td>
-                                                    </tr>
-                                                    <tr v-if="item.cashier_difference">
-                                                        <td>Diferencias Totales</td>
-                                                        <td>{{ formatNumber(item.cashier_difference) }}</td>
+                                                    <tr v-if="item.cashier_difference" class="text-left">
+                                                        <td colspan="2">
+                                                            <span :class="{
+                                                                'text-red': item.cashier_difference < 0,
+                                                                'text-green': item.cashier_difference >= 0
+                                                            }">
+                                                                Existe una diferencia total de: {{
+                                                                formatNumber(item.cashier_difference) }}
+                                                            </span>
+                                                        </td>
                                                     </tr>
                                                     <tr v-if="item.description">
-                                                        <td colspan="2">Descripción diferencias</td>
+                                                        <td colspan="2">Comentario</td>
                                                     </tr>
                                                     <tr v-if="item.description">
-                                                        <td colspan="2">{{ item.description }}</td> 
+                                                        <td colspan="2">{{ item.description }}</td>
                                                     </tr>
                                                 </tbody>
                                             </v-table>
-                                        </v-sheet>
+                                        </v-sheet>-->
                                     </td>
                                 </tr>
                             </template>
+                            <template v-slot:item.data-table-expand="{ item, isExpanded, toggleExpand }">
+          <!-- Template vacío para ocultar el expand en filas normales -->
+        </template>
                         </v-data-table>
                     </v-card-text>
                 </v-col>
@@ -177,7 +281,7 @@
 
 import LocalStorageService from "@/LocalStorageService";
 import { handleRequest } from "@/utils/api";
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 /*axios.interceptors.request.use(config => {
   const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
   if (token) {
@@ -204,6 +308,7 @@ export default {
         branch_id: '',
         charge: '',
         date: null,
+        endDate: null,
         business_id: '',
         search: '',
         search2: '',
@@ -211,14 +316,9 @@ export default {
         dialogDelete: false,
         headers: [
             { title: 'Fecha', key: 'data', sortable: true },
-            { title: 'Extracción', key: 'extraction', sortable: true },
-            { title: 'Efectivo', key: 'totalCash', sortable: true },
-            { title: 'Débito', key: 'totalDebit', sortable: true },
-            { title: 'Tarjeta Crédito', key: 'totalCreditCard', sortable: true },
-            { title: 'Transferencia', key: 'totalTransfer', sortable: true },
-            { title: 'GifCard', key: 'totalCardGif', sortable: true },
-            { title: 'Otros', key: 'totalOther', sortable: true },
-            { title: 'Bonos', key: 'totalBonus', sortable: true },
+            { title: 'Hora', key: 'time', sortable: true },
+            { title: 'Responsable', key: 'professional_name', sortable: true },
+            { title: 'Tipo de cierre', key: 'type', sortable: true },
             { title: 'Acciones', key: 'actions', sortable: false },
         ],
         results: [],
@@ -233,7 +333,9 @@ export default {
             id: '',
         },
         menu: false,
+        menu2: false,
         input: null,
+        input2: null,
         selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
     }),
 
@@ -251,13 +353,22 @@ export default {
         },
         dateFormatted() {
             const date = this.input ? new Date(this.input) : new Date();
-            const day = date.getDate().toString().padStart(2, "0");
+            return date.toISOString().split('T')[0]
+            //return `${year}-${month}-${day}`;
+        },
+        dateFormatted1() {
+            const date = this.input2 ? new Date(this.input2) : new Date();
+            return date.toISOString().split('T')[0];
+            /*const day = date.getDate().toString().padStart(2, "0");
             const month = (date.getMonth() + 1).toString().padStart(2, "0");
             const year = date.getFullYear();
-            return `${year}-${month}-${day}`;
+            return `${year}-${month}-${day}`;*/
         },
         getDate() {
-            return this.input ? new Date(this.input) : new Date();
+            return this.input ? new Date(this.input).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
+        },
+        getDate2() {
+            return this.input2 ? new Date(this.input2).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
         },
     },
 
@@ -335,6 +446,11 @@ export default {
             this.date = this.dateFormatted;
             this.menu = false;
         },
+        updateDate1(val) {
+            this.input2 = val;
+            this.endDate = this.dateFormatted1;
+            this.menu2 = false;
+        },
         async initialize() {
             this.loadingrules = true;
             LocalStorageService.setIsLocked(true);
@@ -374,7 +490,8 @@ export default {
             LocalStorageService.setIsLocked(true);
             const requestParams = {
                 branch_id: this.branch_id,
-                data: this.date ? format(new Date(this.date), 'yyyy-MM-dd') : format(new Date(), 'yyyy-MM-dd')
+                data: this.date ? this.date : new Date().toISOString().split('T')[0],
+                endDate: this.endDate ? this.endDate : new Date().toISOString().split('T')[0]
             };
             try {
                 const result = await handleRequest({
@@ -404,6 +521,10 @@ export default {
             }
         },
         formatNumber(value) {
+            // Verificar si el valor es 0, null, undefined o no es un número
+            if (value === 0 || value === null || value === undefined || isNaN(value)) {
+                return '0.0';
+            }
             // Si el valor es menor que 1000, devuelve el valor original con dos decimales
             if (value < 1000) {
                 return (Math.round((value + Number.EPSILON) * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });

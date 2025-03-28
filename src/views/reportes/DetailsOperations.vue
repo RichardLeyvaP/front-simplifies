@@ -194,6 +194,10 @@ export default {
             },
         ],
         headers: [
+            {
+                title: "",  // Personaliza el texto aquí
+                key: "data-table-group",  // Clave especial para grupos
+            },
             { title: 'Detalle de Operación', align: 'start', value: 'operacion' },
             { title: 'Enero', value: 'Enero' },
             { title: 'Febrero', value: 'Febrero' },
