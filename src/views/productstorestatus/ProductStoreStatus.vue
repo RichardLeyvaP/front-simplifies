@@ -18,17 +18,17 @@
     <v-card elevation="6" class="mx-5">
         <v-toolbar color="#F18254">
             <v-row align="center">
-                <v-col cols="12" md="9" class="grow t">
+                <v-col cols="12" md="10" class="grow t">
                     <span class="text-subtitle-1 ml-2"> <strong>Actualizar productos</strong></span>
                 </v-col>
-                <v-col cols="12" md="3">
+                <v-col cols="12" md="2">
                     <div v-if="hasChanges" class="justify-end">
 
-                        <v-btn @click="cancel" color="black" prepend-icon="mdi-close" class=" ml-2" title="Cancelar Cambios"
+                        <!--<v-btn @click="cancel" color="black" prepend-icon="mdi-close" class=" ml-2" title="Cancelar Cambios"
                             style="background-color: #E7E9E9;">
                             <span>Cancelar</span>
-                        </v-btn>
-                        <v-btn @click="save" color="black" prepend-icon="mdi-check" class=" ml-2" title="Actualizar existencia"
+                        </v-btn>-->
+                        <v-btn @click="save" color="black" prepend-icon="mdi-check" title="Actualizar existencia"
                             style="background-color: #E7E9E9;" :loading="loadingAcept">
                             <span>Aceptar</span>
                         </v-btn>

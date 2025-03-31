@@ -246,7 +246,7 @@
                       <v-row class="mb-4 mt-2" dense no-gutters>
                         <v-col cols="12" md="1" class="text-center">
                         </v-col>
-                        <v-col cols="12" md="5">
+                        <!--<v-col cols="12" md="5">
                           <v-card class="mx-auto" subtitle="Datos de ingresos arrojados por el sistema"
                             style="background-color: #027b7b; color: white;" elevation="4">
                             <template v-slot:prepend>
@@ -273,7 +273,7 @@
                                 prepend-icon="mdi-gift" variant="underlined" density="compact"></v-text-field>
                             </v-card-text>
                           </v-card>
-                        </v-col>
+                        </v-col>-->
                         <v-col cols="12" md="5" class="ml-6">
                           <v-card class="mx-auto" subtitle="Introduces tus datos de ingresos "
                             style="background-color: #004059; color: white;" elevation="4">
@@ -367,7 +367,8 @@
                     @click="dialogDeleteParcial = true">Siguiente</v-btn>
                 </v-row>
               </v-container>
-            </template>
+              </template>
+
             <template v-slot:item.3>
               <v-sheet border>
                 <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
@@ -514,7 +515,11 @@
                             </v-col>
                           </v-row>
                           <v-row class="mb-4 mt-1" dense no-gutters>
-                            <v-col cols="12" md="6" class="text-h6">Comentario:</v-col>
+                            <v-col cols="12" md="6" class="text-h6">
+                              <span :class="cashierData.difference < 0 ? 'text-red' : 'text-green'">
+                              {{ cashierData.difference < 0 ? '¿Por qué te hizo falta?' : '¿Por qué te sobró dinero?' }}
+                            </span>
+                            </v-col>
                             <v-col cols="12" md="12" class="text-center">
                               <v-textarea v-model="cashierData.description" variant="underlined" density="compact"
                                 class="mb-2" :rules="descriptionRules"></v-textarea>
@@ -677,7 +682,7 @@
                       <v-row class="mb-4 mt-2" no-gutters>
                         <v-col cols="12" md="1" class="text-center">
                         </v-col>
-                        <v-col cols="12" md="5">
+                        <!--<v-col cols="12" md="5">
                           <v-card class="mx-auto" subtitle="Datos de Ingresos arrojados por el sistema"
                             style="background-color: #027b7b; color: white;" elevation="4">
                             <template v-slot:prepend>
@@ -704,7 +709,7 @@
                                 prepend-icon="mdi-gift" variant="underlined" density="compact"></v-text-field>
                             </v-card-text>
                           </v-card>
-                        </v-col>
+                        </v-col>-->
 
                         <!-- Columna 2: Datos de la Cajera -->
                         <v-col cols="12" md="5" class="ml-6">
@@ -951,7 +956,11 @@
                             </v-col>
                           </v-row>
                           <v-row class="mb-4 mt-1" dense no-gutters>
-                            <v-col cols="12" md="6" class="text-h6">Comentario:</v-col>
+                            <v-col cols="12" md="6" class="text-h6">
+                              <span :class="cashierData.difference < 0 ? 'text-red' : 'text-green'">
+                              {{ cashierData.difference < 0 ? '¿Por qué te hizo falta?' : '¿Por qué te sobró dinero?' }}
+                            </span>
+                            </v-col>
                             <v-col cols="12" md="12" class="text-center">
                               <v-textarea v-if="cashierData.difference !== 0" v-model="cashierData.description"
                                 variant="underlined" density="compact" :rules="descriptionRules"></v-textarea>
@@ -2799,7 +2808,7 @@ export default {
       //this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
     } finally {
       if (this.charge === 'Administrador') {
-        this.branch_id = this.branches[1].id;
+        this.branch_id = this.branches[0].id;
         this.mostrarFila = true;
       }
       await this.startInterval();

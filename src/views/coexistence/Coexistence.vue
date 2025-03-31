@@ -18,16 +18,16 @@
   <v-card elevation="6" class="mx-5">
     <v-toolbar color="#F18254">
       <v-row align="center">
-        <v-col cols="12" md="4" class="grow ml-2">
-          <span class="text-subtitle-1"> <strong>Convivencias por trabajador</strong></span>
+        <v-col cols="12" md="10" class="grow t">
+          <span class="text-subtitle-1 ml-2"> <strong>Convivencias por trabajador</strong></span>
         </v-col>
-        <v-col cols="12" md="7" class="text-right">
-          <div v-if="hasChanges" class="d-flex justify-end">
-            <v-btn @click="cancelChanges" color="black" prepend-icon="mdi-close" class=" ml-2"
+        <v-col cols="12" md="2">
+          <div v-if="hasChanges" class="justify-end">
+            <!--<v-btn @click="cancelChanges" color="black" prepend-icon="mdi-close" class=" ml-2"
               :disabled="changes.length === 0" title="Cancelar Cambios" style="background-color: #E7E9E9;">
               <span class="btn-text">Cancelar</span>
-            </v-btn>
-            <v-btn @click="save" color="black" prepend-icon="mdi-check" class="ml-2" :disabled="changes.length === 0"
+            </v-btn>-->
+            <v-btn @click="save" color="black" prepend-icon="mdi-check" :disabled="changes.length === 0"
               title="Actualizar convivencias" style="background-color: #E7E9E9;">
               <span class="btn-text">Aceptar</span>
             </v-btn>
