@@ -25,7 +25,7 @@
         <v-col cols="12" md="10" c>
           <div class="text-center">
             <v-btn color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-gavel"
-              @click="this.dialogCoexistence = true" class="mr-1">
+              @click="dialogCoexistence = true" class="mr-1">
               Convivencias
             </v-btn>
             <v-btn color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-clipboard-text" @click="chargeData()">
@@ -265,8 +265,8 @@
                                 density="compact"></v-text-field>
                               <v-text-field v-model="editedCloseBox.totalTransfer" label="Transferencia" readonly
                                 prepend-icon="mdi-bank-transfer" variant="underlined" density="compact"></v-text-field>
-                              <v-text-field v-model="box.existence" label="Efectivo" readonly prepend-icon="mdi-cash"
-                                variant="underlined" density="compact"></v-text-field>
+                              <v-text-field v-model="editedBox.existence" label="Efectivo" readonly
+                                prepend-icon="mdi-cash" variant="underlined" density="compact"></v-text-field>
                               <v-text-field v-model="editedCloseBox.totalOther" label="Otros" readonly
                                 prepend-icon="mdi-currency-usd" variant="underlined" density="compact"></v-text-field>
                               <v-text-field v-model="editedCloseBox.totalCardGif" label="Tarjeta Regalo" readonly
@@ -455,8 +455,8 @@
                                 density="compact"></v-text-field>
                               <v-text-field v-model="editedCloseBox.totalTransfer" label="Transferencia" readonly
                                 prepend-icon="mdi-bank-transfer" variant="underlined" density="compact"></v-text-field>
-                              <v-text-field v-model="box.existence" label="Efectivo" readonly prepend-icon="mdi-cash"
-                                variant="underlined" density="compact"></v-text-field>
+                              <v-text-field v-model="editedBox.existence" label="Efectivo" readonly
+                                prepend-icon="mdi-cash" variant="underlined" density="compact"></v-text-field>
                               <v-text-field v-model="editedCloseBox.totalOther" label="Otros" readonly
                                 prepend-icon="mdi-currency-usd" variant="underlined" density="compact"></v-text-field>
                               <v-text-field v-model="editedCloseBox.totalCardGif" label="Tarjeta Regalo" readonly
@@ -634,8 +634,7 @@
                         <template v-slot:item.name="{ item }">
 
                           <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                            <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url"
-                              alt="image"></v-img>
+                            <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
                           </v-avatar>
                           {{ item.name }}
                         </template>
@@ -697,7 +696,7 @@
                                 density="compact"></v-text-field>
                               <v-text-field v-model="editedCloseBox.totalTransfer" label="Transferencia" readonly
                                 prepend-icon="mdi-bank-transfer" variant="underlined" density="compact"></v-text-field>
-                              <v-text-field :model-value="this.box.existence" label="Efectivo" readonly
+                              <v-text-field :model-value="editedBox.existence" label="Efectivo" readonly
                                 prepend-icon="mdi-cash" variant="underlined" density="compact"></v-text-field>
                               <v-text-field v-model="editedCloseBox.totalOther" label="Otros" readonly
                                 prepend-icon="mdi-currency-usd" variant="underlined" density="compact"></v-text-field>
@@ -880,7 +879,7 @@
                                 density="compact"></v-text-field>
                               <v-text-field v-model="editedCloseBox.totalTransfer" label="Transferencia" readonly
                                 prepend-icon="mdi-bank-transfer" variant="underlined" density="compact"></v-text-field>
-                              <v-text-field :model-value="this.box.existence" label="Efectivo" readonly
+                              <v-text-field :model-value="editedBox.existence" label="Efectivo" readonly
                                 prepend-icon="mdi-cash" variant="underlined" density="compact"></v-text-field>
                               <v-text-field v-model="editedCloseBox.totalOther" label="Otros" readonly
                                 prepend-icon="mdi-currency-usd" variant="underlined" density="compact"></v-text-field>
@@ -1375,7 +1374,8 @@
               </v-col>
               <v-col cols="12" md="4">
                 <v-text-field v-model="editedBox.extraction" clearable label="Extracción"
-                  prepend-icon="mdi-arrow-down-bold" variant="underlined" :rules="[checkExtraction]" :disabled="!editedBox.existence">
+                  prepend-icon="mdi-arrow-down-bold" variant="underlined" :rules="[checkExtraction]"
+                  :disabled="!editedBox.existence">
                 </v-text-field>
               </v-col>
               <!-- Campos adicionales -->
@@ -1475,13 +1475,79 @@
           </template>
           <template v-slot:item.actions="{ item }">
             <v-btn density="comfortable" icon="mdi-pencil"
-              @click="(item.pay == 1 && (item.active === 0 || item.active === 1) && !this.ejecutado) && updateitemSolicitud(item)"
-              :color="(item.pay == 1 && (item.active === 0 || item.active === 1) && !this.ejecutado) ? 'primary-darken-1' : 'grey'"
+              @click="(item.pay == 1 && (item.active === 0 || item.active === 1)) && editingRequest(item, 2)"
+              :color="(item.pay == 1 && (item.active === 0 || item.active === 1)) ? 'primary-darken-1' : 'grey'"
               variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Editar el carro"></v-btn>
             <v-btn density="comfortable" icon="mdi-delete"
-              @click="(item.pay == 1 && (item.active === 0 || item.active === 1) && !this.ejecutado) && deleteItemSolicitud(item)"
-              :color="(item.pay == 1 && (item.active === 0 || item.active === 1) && !this.ejecutado) ? 'red-darken-4' : 'grey'"
+              @click="(item.pay == 1 && (item.active === 0 || item.active === 1)) && editingRequest(item, 3)"
+              :color="(item.pay == 1 && (item.active === 0 || item.active === 1)) ? 'red-darken-4' : 'grey'"
               variant="tonal" elevation="1" title="Solicitud de eliminar carro"></v-btn>
+          </template>
+          <template v-slot:item.action_descriptions="{ item }">
+            <v-menu location="top" open-on-hover max-width="500px">
+              <template v-slot:activator="{ props }">
+                <v-chip 
+        v-bind="props"
+        color="indigo-darken-2" 
+        small
+        class="px-2"
+      >
+        <v-icon left color="indigo-darken-2" icon="mdi-clipboard-text-outline"/>
+        {{ item.action_descriptions.length}}
+      </v-chip>
+              </template>
+
+              <v-card class="pa-2" style="max-height: 300px; overflow-y: auto;">
+                <div v-for="(action, index) in item.action_descriptions" :key="index" class="mb-2">
+                  <div class="d-flex align-start">
+                    <v-icon :color="getActionColor(action.action_type)" :icon="getActionIcon(action.action_type)" />
+                    <div class="ml-2">
+                      <div class="d-flex align-center">
+                        <strong>{{ getActionTitle(action.action_type) }}</strong>
+                      </div>
+                      <div class="text-body-2">{{ action.description }}</div>
+                      <div class="text-caption text-grey">
+                        {{ getActionDetails(action) }} • {{ formatDateTime(action.timestamp) }}
+                      </div>
+                    </div>
+                  </div>
+                  <v-divider v-if="index < item.action_descriptions.length - 1" class="my-2" />
+                </div>
+              </v-card>
+            </v-menu>
+          </template>
+          <template v-slot:item.change_log="{ item }">
+            <v-menu location="top" open-on-hover max-width="500px">
+              <template v-slot:activator="{ props }">
+                <v-chip 
+        v-bind="props"
+        color="teal-darken-3"
+        small
+        class="px-2"
+      >
+        <v-icon left color="teal-darken-3" icon="mdi-history"/>
+        {{ item.change_log.length }}
+      </v-chip>
+              </template>
+
+              <v-card class="pa-2" style="max-height: 300px; overflow-y: auto;">
+                <div v-for="(change, index) in item.change_log" :key="index" class="mb-2">
+                  <div class="d-flex align-start">
+                    <v-icon :color="getActionColor(change.action_type)" :icon="getActionIcon(change.action_type)" />
+                    <div class="ml-2">
+                      <div class="d-flex align-center">
+                        <strong>{{ getActionTitle(change.action_type) }}</strong>
+                      </div>
+                      <div class="text-body-2">{{ change.changes }}</div>
+                      <div class="text-caption text-grey">
+                        {{ getActionDetails(change) }} • {{ formatDateTime(change.timestamp) }}
+                      </div>
+                    </div>
+                  </div>
+                  <v-divider v-if="index < item.change_log.length - 1" class="my-2" />
+                </div>
+              </v-card>
+            </v-menu>
           </template>
           <template v-slot:top>
 
@@ -1502,7 +1568,6 @@
   </v-dialog>
   <!--End clientes atendidos-->
   <!--SaleProduct-->
-
   <v-dialog v-model="showDialogSaleProducts" fullscreen transition="dialog-bottom-transition">
     <v-card>
       <v-toolbar color="#F18254">
@@ -1572,6 +1637,7 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
+
   <v-dialog v-model="showSaleProducts" max-width="500px">
     <v-card>
       <v-toolbar color="#F18254">
@@ -1920,6 +1986,39 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
+
+  <v-dialog v-model="dialogEditingRequest" max-width="600px">
+    <v-card>
+      <v-toolbar color="#F18254">
+        <span v-if="this.indexEditingRequest === 2" class="text-subtitle-2 ml-4">Editar Carro</span>
+        <span v-else-if="this.indexEditingRequest === 3" class="text-subtitle-2 ml-4">Eliminar Carro</span>
+      </v-toolbar>
+
+      <v-card-text>
+        <v-form v-model="valid" enctype="multipart/form-data">
+          <v-container fluid>
+            <v-row>
+              <v-col cols="12" md="12">
+                <v-textarea v-model="editedCar.description" clearable label="Motivo de la solicitud"
+                  prepend-icon="mdi-safe" variant="underlined" :rules="descriptionRules">
+                </v-textarea>
+              </v-col>
+            </v-row>
+          </v-container>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="cancelEditingRequest">
+              Cancelar
+            </v-btn>
+            <v-btn color="#F18254" variant="flat" @click="saveEditingRequest" :disabled="!valid">
+              Aceptar
+            </v-btn>
+          </v-card-actions>
+        </v-form>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
@@ -1933,6 +2032,7 @@ import Coexistence from "../coexistence/Coexistence.vue";
 import { handleRequest } from "@/utils/api";
 import ProductStoreStatus from "../productstorestatus/ProductStoreStatus.vue";
 import _ from 'lodash';
+import { cloneDeep } from "lodash";
 
 // Interceptor para agregar el token a cada solicitud
 axios.interceptors.request.use(config => {
@@ -2007,6 +2107,8 @@ export default {
       'green',
       'orange',
     ],
+    dialogEditingRequest: false,
+    indexEditingRequest: null,
     valid: true,
     loadingcar: true,
     loadingOrders: true,
@@ -2045,7 +2147,7 @@ export default {
     dialogBox: false,
     loading: false,
     bonus_ref: [],
-    branch_id: '',
+    branch_id: null,
     charge_id: '',
     business_id: '',
     nameBranch: '',
@@ -2056,15 +2158,7 @@ export default {
     results: [],
     resultsPagado: [],
     orders: [],
-    box: {
-      id: '',
-      branch_id: '',
-      data: '',
-      cashFound: '',
-      existence: '',
-      extraction: '',
-      box_close: []
-    },
+    box: [],
     branches: '',
     cardGifts: [],
     mostrarCode: false,
@@ -2108,16 +2202,18 @@ export default {
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
     headers3: [
-      { title: 'No', value: 'id' },
-      { title: 'Profesional', value: 'professionalName' },
-      { title: 'Cliente', value: 'clientName' },
+      { title: 'No', value: 'id', sortable: true },
+      { title: 'Profesional', value: 'professionalName', sortable: true },
+      { title: 'Cliente', value: 'clientName', sortable: true },
       { title: 'Teléfono', key: 'phone', sortable: false },
       { title: 'Técnico', value: 'technical_assistance' },
       { title: 'Productos', value: 'product' },
       { title: 'Servicios', value: 'service' },
       { title: 'Propina', value: 'tip' },
-      { title: 'Monto Total', value: 'amount' },
+      { title: 'Monto Total', value: 'amount', sortable: true },
       { title: 'Estado', value: 'pay' },
+      { title: 'Solicitudes', value: 'action_descriptions' },
+      { title: 'Cambios', value: 'change_log' },
       { title: 'Acciones', value: 'actions' },
     ],
 
@@ -2153,7 +2249,16 @@ export default {
     search8: '',
     search9: '',
     editedIndex: -1,
-
+    editedCar: {
+      id: '',
+      active: '',
+      description: '',
+    },
+    defaultCar: {
+      id: '',
+      active: '',
+      description: '',
+    },
     editedItem: {
       id: '',
       order_id: '',
@@ -2329,7 +2434,7 @@ export default {
       (value) => /^\d+(\.\d+)?$/.test(value) || "Debe ser un número con punto decimal (10.00)",],
     selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
     descriptionRules: [
-      (v) => !!v || "El comentario es obligatorio", // Campo requerido
+      (v) => !!v || "El campo es obligatorio", // Campo requerido
       (v) => (v && v.length <= 500) || "Máximo 500 caracteres", // Límite de caracteres
     ],
   }),
@@ -2470,7 +2575,7 @@ export default {
     },
     calculateDifferenceCash() {
       //if (this.cashierData.totalCash) {
-      const transferSistema = parseFloat(this.box.existence) || 0;
+      const transferSistema = parseFloat(this.editedBox.existence) || 0;
       const transferCajera = parseFloat(this.cashierData.existence) || 0;
       const diferencia = transferCajera - transferSistema;
       return diferencia.toFixed(2); // Redondea a 2 decimales
@@ -2694,7 +2799,7 @@ export default {
       //this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
     } finally {
       if (this.charge === 'Administrador') {
-        this.branch_id = this.branches[0].id;
+        this.branch_id = this.branches[1].id;
         this.mostrarFila = true;
       }
       await this.startInterval();
@@ -2708,6 +2813,103 @@ export default {
   },
 
   methods: {
+    // Determina si es una acción de resolución (approved/denied)
+    // Método base para determinar si es una resolución
+    isResolution(actionType) {
+      return ['approved', 'denied'].includes(actionType);
+    },
+
+    // Obtener color según tipo de acción
+    getActionColor(actionType) {
+  const colors = {
+    approved: 'green',
+    denied: 'red',
+    delete: 'red',
+    add: 'green',
+    edit: 'blue',
+    payment: 'indigo', // Color azul oscuro para pagos
+    default: 'grey'
+  };
+  return colors[actionType] || colors.default;
+},
+
+// Obtener icono según tipo de acción
+getActionIcon(actionType) {
+  const icons = {
+    approved: 'mdi-check-circle',
+    denied: 'mdi-close-circle',
+    delete: 'mdi-delete',
+    add: 'mdi-plus',
+    edit: 'mdi-pencil',
+    payment: 'mdi-cash-multiple', // Icono adecuado para pagos
+    default: 'mdi-alert'
+  };
+  return icons[actionType] || icons.default;
+},
+
+// Obtener título descriptivo
+getActionTitle(actionType) {
+  const titles = {
+    approved: 'Aprobado',
+    denied: 'Denegado',
+    delete: 'Eliminación',
+    add: 'Adición',
+    edit: 'Edición',
+    payment: 'Actualización de Pago', // Título descriptivo para pagos
+    default: 'Acción'
+  };
+  return titles[actionType] || titles.default;
+},
+
+    // Obtener color para chips/resolución
+    getResolutionColor(actionType) {
+      return this.isResolution(actionType) ?
+        (actionType === 'approved' ? 'green' : 'red') : 'grey';
+    },
+
+    // Obtener texto para chips/resolución
+    getResolutionText(actionType) {
+      return this.isResolution(actionType) ?
+        (actionType === 'approved' ? 'Aprobado' : 'Denegado') : 'Pendiente';
+    },
+
+    // Obtener detalles de quién realizó la acción
+    getActionDetails(item) {
+      const actor = item.nameProfessional || 'Sistema';
+      return this.isResolution(item.action_type) ?
+        `Resuelto por: ${actor}` : `Acción por: ${actor}`;
+    },
+
+    // Obtener icono global según estado general
+    getGlobalIcon(items) {
+      const hasDenied = items.some(i => i.action_type === 'denied' || i.action_type === 'delete');
+      const hasPending = items.some(i => !this.isResolution(i.action_type));
+
+      if (hasDenied) return 'mdi-alert-octagon';
+      if (hasPending) return 'mdi-alert-circle';
+      return 'mdi-check-circle';
+    },
+
+    // Obtener color global según estado general
+    getGlobalColor(items) {
+      const hasDenied = items.some(i => i.action_type === 'denied' || i.action_type === 'delete');
+      const hasPending = items.some(i => !this.isResolution(i.action_type));
+
+      if (hasDenied) return 'red-lighten-4';
+      if (hasPending) return 'orange-lighten-4';
+      return 'blue-grey-lighten-4';
+    },
+    formatDateTime(dateString) {
+      if (!dateString) return 'N/A';
+      const date = new Date(dateString);
+      return date.toLocaleString('es-ES', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    },
     setInvalidState(value) {
       this.hasInvalidState = value;
     },
@@ -2815,10 +3017,7 @@ export default {
 
     // Función para eliminar un detalle
     removeDetail(detail) {
-      if (detail.type === 'totalCash') {
-        // Restar de existence cuando es totalcash
-        this.cashierData.existence = (parseFloat(this.cashierData.existence) || 0) - detail.value
-      } else if (this.cashierData[detail.type] !== undefined) {
+      if (this.cashierData[detail.type] !== undefined) {
         // Restar de otros campos
         const currentValue = this.cashierData[detail.type] === '' ? 0 : parseFloat(this.cashierData[detail.type])
         this.cashierData[detail.type] = currentValue - detail.value
@@ -2862,20 +3061,32 @@ export default {
       }
       if (this.step === 4) {
         this.dialogDeleteDiario = false;
+
+        this.results = [];
+        this.box = [];
+        this.boxClose = [];
+        this.payments = [];
+        this.cashierSales = [];
+        this.bonusPay = [];
+        this.cashierBoxClose = [];
         await this.initialize();
+        this.editedItem = _.cloneDeep(this.defaultItem);
+        this.cashierData = _.cloneDeep(this.defaultcashierData);
+        this.editedCloseBox = _.cloneDeep(this.defaultCloseBox);
+        this.editedBox = _.cloneDeep(this.defaultBox);
         this.totalMountCreditCards();
-      this.totalMountDebits();
-      this.totalMountTransfers();
-      this.totalMountOthers();
-      this.totalMountCardGif();
-      this.totalBoxExtraction();
-      this.totalBonusPay();
-      this.totalMountServices();
-      this.totalMountProducts();
-      this.totalMountTips();
-      this.totalMountCashs();
-      this.totalMount();
-      this.existence();
+        this.totalMountDebits();
+        this.totalMountTransfers();
+        this.totalMountOthers();
+        this.totalMountCardGif();
+        this.totalBoxExtraction();
+        this.totalBonusPay();
+        this.totalMountServices();
+        this.totalMountProducts();
+        this.totalMountTips();
+        this.totalMountCashs();
+        this.totalMount();
+        this.existence();
         try {
           this.loading = true;
           const result = await handleRequest({
@@ -3014,6 +3225,8 @@ export default {
       this.cashierData = _.cloneDeep(this.defaultcashierData);
       this.editedCloseBox = _.cloneDeep(this.defaultCloseBox);
       this.editedBox = _.cloneDeep(this.defaultBox);
+      this.totalBoxExtraction();
+      this.existence();
       this.stepCashier = 1;
       // Filtrar results según las condiciones
       const filteredResults = this.results.filter(item => {
@@ -3269,77 +3482,7 @@ export default {
       console.log('Reiniciar intervalo');
       this.intervalId = setInterval(async () => {
         if (!LocalStorageService.getIsLocked()) {
-          this.loadingcar = true;
-          LocalStorageService.setIsLocked(true); // Bloquear antes de hacer la petición
-          const requestParams = {
-            branch_id: this.branch_id
-          };
-
-          try {
-            this.loading = true;
-            const result = await handleRequest({
-              endpoint: 'branch-cars',
-              method: 'GET',
-              params: requestParams // Aquí pasas los parámetros
-            });
-
-            if (result.success) {
-              this.results = result.data.cars;
-              this.box = result.data.box;
-              this.boxClose = result.data.box.box_close;
-              this.payments = result.data.payments;
-              this.cashierSales = result.data.cashierSales;
-              this.bonusPay = result.data.bonusPay;
-              if (result.data.cashierclosebox && Object.keys(result.data.cashierclosebox).length > 0) {
-                // Asignar los valores de result.data.cashierclosebox a cashierData
-                this.cashierBoxClose = result.data.cashierclosebox;
-              }
-            } else {
-              // Si no hay datos, asignamos un array vacío
-              this.results = [];
-            }
-          } catch (error) {
-            this.loadingcar = false;
-            // Captura de errores no controlados
-            //this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
-          } finally {
-            console.log('this.boxClose');
-            console.log(this.boxClose);
-            if (this.box === null) {
-              this.ejecutado = false;
-              this.ejecutadoCashier = false;
-            } else {
-              if (this.boxClose === null || this.boxClose.length === 0) {
-                this.ejecutado = false;
-                this.ejecutadoCashier = false;
-              } else {
-                // Verificar si hay algún box_close con type 'Diario' y user_id igual a this.user
-                const hasParcial = this.boxClose.some(
-                  (close) => close.type === 'Parcial' && close.user_id === this.user
-                );
-
-                // Verificar si hay algún box_close con type 'Parcial'
-                const hasDiario = this.boxClose.some(
-                  (close) => close.type === 'Diario'
-                );
-
-                // Asignar valores a ejecutado y ejecutadoCashier
-                this.ejecutado = hasDiario;
-                this.ejecutadoCashier = hasParcial;
-
-                // Mensajes de depuración
-                if (hasDiario) {
-                  console.log('this.box.box_close true (Diario)');
-                }
-                if (hasParcial) {
-                  console.log('this.box.box_close true (Parcial)');
-                }
-              }
-            }
-            LocalStorageService.setIsLocked(false); // Desbloquear después de la petición
-            console.log('isLocked después de la solicitud Box:', LocalStorageService.getIsLocked());
-            this.loadingcar = false;
-          }
+          await this.initialize(this.branch_id);
         }
       }, 59000);
     },
@@ -3412,8 +3555,8 @@ export default {
           });
           this.bonus_ref = [];
           this.dialogConfBonus = false;
-          this.loadingBonusPay = false;          
-      this.loadingBonusPay = false;
+          this.loadingBonusPay = false;
+          this.loadingBonusPay = false;
           /*axios
             .get('https://testapi.simplifies.cl/api/bonus-show', {
               params: {
@@ -3430,6 +3573,7 @@ export default {
         });
       LocalStorageService.setIsLocked(false);
     },
+
     formatNumber(value) {
       // Si el valor es menor que 1000, devuelve el valor original con dos decimales
       if (value < 1000) {
@@ -3444,6 +3588,7 @@ export default {
 
       return formattedValue;
     },
+
     customValidation() {
       if (this.selectedOption === 'Tarjeta de regalo') {
         // Convertir ambos valores a enteros y sumarlos
@@ -3544,21 +3689,39 @@ export default {
       LocalStorageService.setIsLocked(true);
       //this.dialogRequest = true
       //this.editedItem.order_id = item.id
-      let request = {
-        id: item.id,
-        nameProfessional: this.nameProfessional,
-        branch_id: this.branch_id,
-        professional_id: this.professional_id
-      };
-      axios
-        .post('https://testapi.simplifies.cl/api/order-destroy-solicitud', request)
-        .then(() => {
-          //this.initialize();
-        }).finally(() => {
-          LocalStorageService.setIsLocked(false);
-          this.showDetails(this.car_ref);
-          this.showAlert("success", "Solicitud de eliminación de orden hecha correctamente", 3000);
-        });
+      if (item.action_status === 0) {
+        let request = {
+          id: item.id,
+          nameProfessional: this.nameProfessional,
+          branch_id: this.branch_id,
+          professional_id: this.professional_id
+        };
+        axios
+          .post('https://testapi.simplifies.cl/api/order-destroy-solicitud', request)
+          .then(() => {
+            //this.initialize();
+          }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+            this.initialize();
+            this.showDetails(this.car_ref);
+            this.showAlert("success", "Solicitud de eliminación de orden hecha correctamente", 3000);
+          });
+      } else {
+        let request = {
+          id: item.id,
+          professional_id: this.professional_id
+        };
+        axios
+          .post('https://testapi.simplifies.cl/api/order-destroy-web', request)
+          .then(() => {
+            //this.initialize();
+          }).finally(() => {
+            LocalStorageService.setIsLocked(false);
+            this.initialize();
+            this.showDetails(this.car_ref);
+            this.showAlert("success", "Orden eliminada correctamente", 3000);
+          });
+      }
     },
 
     editItemProduct(item) {
@@ -3848,6 +4011,7 @@ export default {
           return "0.00 CLP";
         } else {
           const temp = this.box.existence;
+          this.editedBox.existence = this.box.existence;
           this.editedCloseBox.existence = this.box.existence;
           console.log(temp);
           //return temp;
@@ -3899,18 +4063,19 @@ export default {
       this.snackbar = true
     },
 
-    async initialize() {
-      if (!this.branch_id) {
-        return; // Sale de la función si branch_id no tiene valor
+    async initialize(branchId = null) {
+      const currentBranchId = branchId || this.branch_id;
+      if (!currentBranchId) {
+        return;
       }
+      // Usar currentBranchId en lugar de this.branch_id en la petición
+      const requestParams = {
+        branch_id: currentBranchId
+      };
       //const token = LocalStorageService.getItem('token');
       //if (!LocalStorageService.getIsLocked()) {
       this.loadingcar = true;
       LocalStorageService.setIsLocked(true); // Bloquear antes de hacer la petición
-      const requestParams = {
-        branch_id: this.branch_id
-      };
-
       try {
         this.loading = true;
         const result = await handleRequest({
@@ -4006,7 +4171,83 @@ export default {
           this.showAlert("success", "Solicitud de eliminacion hecha correctamente", 3000);
         });
     },
+    editingRequest(item, active) {
+      this.editedCar.id = item.id;
+      this.editedCar.active = active;
+      this.indexEditingRequest = active;
+      this.dialogEditingRequest = true;
+    },
+    cancelEditingRequest() {
+      this.dialogEditingRequest = false;
+      this.indexEditingRequest = '';
+      this.editedCar = _.cloneDeep(this.defaultCar);
+    },
+    async saveEditingRequest() {
+      LocalStorageService.setIsLocked(true);
+      this.valid = false;
+      if (this.indexEditingRequest === 2) {
+        this.data = {};
 
+        this.data.id = this.editedCar.id;
+        this.data.active = this.editedCar.active;
+        this.data.description = this.editedCar.description;
+        this.data.nameProfessional = this.nameProfessional;
+        this.data.branch_id = this.branch_id;
+        this.data.professional_id = this.professional_id
+        try {
+          const result = await handleRequest({
+            endpoint: 'car-update-solicitud',
+            method: 'POST',
+            data: this.data
+          });
+
+          if (result.success) {
+            this.showAlert("success", result.message, 3000);
+            this.initialize();
+          } else {
+            this.showAlert("warning", result.message, 3000);
+          }
+        } catch (error) {
+          this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
+        } finally {
+          LocalStorageService.setIsLocked(false);
+          this.initialize();
+          this.showAlert("success", "Solicitud de editar hecha correctamente", 3000);
+          this.cancelEditingRequest();
+        }
+      }
+      else if (this.indexEditingRequest === 3) {
+        this.data = {};
+
+        this.data.id = this.editedCar.id;
+        this.data.active = this.editedCar.active;
+        this.data.description = this.editedCar.description;
+        this.data.nameProfessional = this.nameProfessional;
+        this.data.branch_id = this.branch_id;
+        this.data.professional_id = this.professional_id
+        try {
+          const result = await handleRequest({
+            endpoint: 'car-destroy-solicitud',
+            method: 'POST',
+            data: this.data
+          });
+
+          if (result.success) {
+            this.showAlert("success", result.message, 3000);
+            this.initialize();
+          } else {
+            this.showAlert("warning", result.message, 3000);
+          }
+        } catch (error) {
+          this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
+        } finally {
+          LocalStorageService.setIsLocked(false);
+          this.initialize();
+          this.showAlert("success", "Solicitud de Eliminacón hecha correctamente", 3000);
+          this.cancelEditingRequest();
+        }
+      }
+    },
     updateitemSolicitud(item) {
       LocalStorageService.setIsLocked(true);
       this.editedItem.id = item.id;
@@ -4034,7 +4275,7 @@ export default {
       console.log('Carro a pagar');
       console.log(item);
       this.car_ref = item;
-      let temp = this.results.filter(item => item.id == this.car_ref.id);
+      let temp = this.results.filter(item => item.id === this.car_ref.id);
       console.log('temp nuevo carrro');
       console.log(temp[0]);
       item = temp[0];
