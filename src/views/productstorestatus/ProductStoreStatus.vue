@@ -22,17 +22,17 @@
                     <span class="text-subtitle-1 ml-2"> <strong>Actualizar productos</strong></span>
                 </v-col>
                 <v-col cols="12" md="2">
-                    <div v-if="hasChanges" class="justify-end">
+                    <!--<div v-if="hasChanges" class="justify-end">
 
-                        <!--<v-btn @click="cancel" color="black" prepend-icon="mdi-close" class=" ml-2" title="Cancelar Cambios"
+                        <v-btn @click="cancel" color="black" prepend-icon="mdi-close" class=" ml-2" title="Cancelar Cambios"
                             style="background-color: #E7E9E9;">
                             <span>Cancelar</span>
-                        </v-btn>-->
+                        </v-btn>
                         <v-btn @click="save" color="black" prepend-icon="mdi-check" title="Actualizar existencia"
                             style="background-color: #E7E9E9;" :loading="loadingAcept">
                             <span>Aceptar</span>
                         </v-btn>
-                    </div>
+                    </div>-->
                 </v-col>
             </v-row>
         </v-toolbar>
@@ -304,7 +304,12 @@ export default {
                 this.loadingWorkPlace = false;
             }
         },
-        async save(item) {
+        async save() {
+            // Si no hay cambios, retornamos true inmediatamente (sin llamar al API)
+            if (!this.changes || this.changes.length === 0) {
+                this.$emit("save-success"); // Opcional: Notificar éxito (si el padre lo necesita)
+                return true;
+            }
             LocalStorageService.setIsLocked(true);
             this.loadingAcept = true;
             /*const requestParams = {
@@ -325,12 +330,15 @@ export default {
                 if (result.success) {
                     this.loading = false;
                     this.showAlert("success", "Productos actualizados correctamente", 3000);
+                    this.$emit("save-success");
+                    return true; // Indicamos éxito
                 }
             } catch (error) {
                 this.loadingAcept = false;
                 LocalStorageService.setIsLocked(false);
                 // Captura de errores no controlados
                 this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
+                return false; // Indicamos fallo
             } finally {
                 this.loadingAcept = false;
                 LocalStorageService.setIsLocked(false);

@@ -40,7 +40,7 @@
               class="ml-1">
               Clientes atendidos
             </v-btn>
-            <v-btn :disabled="(closed_box || results.some(item => item.active === 2 || item.active === 3))"
+            <v-btn :disabled="(closed_box || results.some(item => item.active === 2 || item.active === 3) || ejecutado)"
               @click="openCloseBox" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-cash-lock"
               class="ml-1">
               Cierre de Caja
@@ -219,9 +219,9 @@
                 <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                   <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                     <v-card-text>
-                      <!-- Aquí pasamos el 'selectedWorker' al componente dentro del diálogo -->
-                      <ProductStoreStatus :branch_id="this.branch_id"
-                        @update:has-invalid-state="setInvalidStateProduct" />
+                      <!-- Agregamos una referencia al hijo para poder llamar a sus métodos -->
+                      <ProductStoreStatus ref="productStoreStatusRef" :branch_id="branch_id"
+                        @update:has-invalid-state="setInvalidStateProduct" @save-success="handleSaveSuccess" />
                     </v-card-text>
                   </v-card>
                 </div>
@@ -233,8 +233,8 @@
                     Salir
                   </v-btn>
                   <v-spacer></v-spacer>
-                  <v-btn color="#E7E9E9" :disabled="hasInvalidStateProduct" variant="flat"
-                    @click="dialogDeleteParcial = true">Siguiente</v-btn>
+                  <v-btn color="#E7E9E9" variant="flat" @click="handleNextStepCashier"
+                    :loading="isSaving">Siguiente</v-btn>
                 </v-row>
               </v-container>
             </template>
@@ -276,14 +276,14 @@
                         </v-col>-->
                         <v-col cols="12" md="5" class="ml-6">
                           <v-card class="mx-auto" subtitle="Introduces tus datos de ingresos "
-                            style="background-color: #004059; color: white;" elevation="4">
+                            style="background-color: #F18254; color: white;" elevation="4">
                             <template v-slot:prepend>
                               <v-avatar color="white">
-                                <v-icon icon="mdi-cash-register" color="#004059" size="large"></v-icon>
+                                <v-icon icon="mdi-cash-register" color="#F18254" size="large"></v-icon>
                               </v-avatar>
                             </template>
                             <template v-slot:title>
-                              <span class="font-weight-black">Datos de la Cajera</span>
+                              <span class="font-weight-black">Datos de Ingresos</span>
                             </template>
                             <template v-slot:append>
                               <v-btn prepend-icon="mdi-plus" variant="outlined" @click="dialogDetails = true">
@@ -294,7 +294,7 @@
                               <v-div v-if="cashierData.details.length > 0">
                                 <v-div v-for="detail in cashierData.details" :key="detail.id" class="mb-2">
                                   <template v-slot:default>
-                                    <v-row dense>
+                                    <v-row>
                                       <v-col cols="12" md="11">
                                         <!--<v-text-field hide-details="auto" :model-value="formatNumber(detail.value)"
                                         :label="getOptionName(detail.type)" readonly prepend-icon="mdi-credit-card"
@@ -313,6 +313,32 @@
                                   </template>
                                 </v-div>
                               </v-div>
+                            </v-card-text>
+                          </v-card>
+                        </v-col>
+                        <v-col cols="12" md="5" class="ml-6">
+                          <v-card class="mx-auto" subtitle="Introduces tus extracciones en caja"
+                            style="background-color: #F18254; color: white;" elevation="4">
+                            <template v-slot:prepend>
+                              <v-avatar color="white">
+                                <v-icon icon="mdi-cash-refund" color="#F18254" size="large"></v-icon>
+                              </v-avatar>
+                            </template>
+                            <template v-slot:title>
+                              <span class="font-weight-black">Extracción en Caja</span>
+                            </template>
+
+                            <template v-slot:append>
+                              <v-btn prepend-icon="mdi-plus" variant="outlined" @click="openDialogExtraction">
+                                Agregar Extracción
+                              </v-btn>
+                            </template>
+                            <v-card-text class="bg-white pt-4" style="min-height: 17vh; overflow-y: auto;">
+                              <v-text-field v-model="cashierData.extraction" label="Extracción"
+                                prepend-icon="mdi-cash-refund" variant="underlined" density="compact"></v-text-field>
+                              <v-text-field style="visibility: hidden" v-model="cashierData.advancement"
+                                label="Adelanto" prepend-icon="mdi-cash" variant="underlined"
+                                density="compact"></v-text-field>
                             </v-card-text>
                           </v-card>
                         </v-col>
@@ -367,9 +393,9 @@
                     @click="dialogDeleteParcial = true">Siguiente</v-btn>
                 </v-row>
               </v-container>
-              </template>
+            </template>
 
-            <template v-slot:item.3>
+            <!--<template v-slot:item.3>
               <v-sheet border>
                 <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                   <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
@@ -379,10 +405,10 @@
                         </v-col>
                         <v-col cols="12" md="5">
                           <v-card class="mx-auto" subtitle="Datos de Gastos arrojados por el sistema"
-                            style="background-color: #027b7b; color: white;" elevation="4">
+                            style="background-color: #F18254; color: white;" elevation="4">
                             <template v-slot:prepend>
                               <v-avatar color="white">
-                                <v-icon icon="mdi-cog" color="#027b7b" size="large"></v-icon>
+                                <v-icon icon="mdi-cog" color="#F18254" size="large"></v-icon>
                               </v-avatar>
                             </template>
                             <template v-slot:title>
@@ -396,17 +422,22 @@
                             </v-card-text>
                           </v-card>
                         </v-col>
-                        <!-- Columna 2: Datos de la Cajera -->
                         <v-col cols="12" md="5" class="ml-6">
                           <v-card class="mx-auto" subtitle="Introduces tus datos de gastos "
-                            style="background-color: #004059; color: white;" elevation="4">
+                            style="background-color: #F18254; color: white;" elevation="4">
                             <template v-slot:prepend>
                               <v-avatar color="white">
-                                <v-icon icon="mdi-cash-register" color="#004059" size="large"></v-icon>
+                                <v-icon icon="mdi-cash-register" color="#F18254" size="large"></v-icon>
                               </v-avatar>
                             </template>
                             <template v-slot:title>
                               <span class="font-weight-black">Datos de la Cajera</span>
+                            </template>
+
+                            <template v-slot:append>
+                              <v-btn prepend-icon="mdi-plus" variant="outlined" @click="openDialogExtraction">
+                                Agregar Extracción
+                              </v-btn>
                             </template>
                             <v-card-text class="bg-white pt-4" style="min-height: 17vh; overflow-y: auto;">
                               <v-text-field v-model="cashierData.extraction" label="Extracción"
@@ -423,14 +454,13 @@
                 </div>
               </v-sheet>
               <v-container fluid>
-                <!-- BOTONES -->
                 <v-row class="mt-1">
                   <v-spacer></v-spacer>
                   <v-btn color="#E7E9E9" variant="flat" @click="dialogDeleteParcial = true">Siguiente</v-btn>
                 </v-row>
               </v-container>
-            </template>
-            <template v-slot:item.4>
+            </template>-->
+            <template v-slot:item.3>
               <v-sheet border>
                 <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                   <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
@@ -439,10 +469,10 @@
                         <v-col cols="12" md="1" class="text-center"></v-col>
                         <v-col cols="12" md="5">
                           <v-card class="mx-auto" subtitle="Resumen de datos arrojados por el sistema"
-                            style="background-color: #027b7b; color: white;" elevation="4">
+                            style="background-color: #F18254; color: white;" elevation="4">
                             <template v-slot:prepend>
                               <v-avatar color="white">
-                                <v-icon icon="mdi-cog" color="#027b7b" size="large"></v-icon>
+                                <v-icon icon="mdi-cog" color="#F18254" size="large"></v-icon>
                               </v-avatar>
                             </template>
                             <template v-slot:title>
@@ -471,20 +501,21 @@
                         </v-col>
                         <v-col cols="12" md="5" class="ml-6">
                           <v-card class="mx-auto" subtitle="Resumen datos del cierre de caja"
-                            style="background-color: #004059; color: white;" elevation="4">
+                            style="background-color: #F18254; color: white;" elevation="4">
                             <template v-slot:prepend>
                               <v-avatar color="white">
-                                <v-icon icon="mdi-cash-register" color="#004059" size="large"></v-icon>
+                                <v-icon icon="mdi-cash-register" color="#F18254" size="large"></v-icon>
                               </v-avatar>
                             </template>
                             <template v-slot:title>
                               <span class="font-weight-black">Datos de la Cajera</span>
                             </template>
                             <v-card-text class="bg-white pt-4">
-                              <v-text-field v-model="cashierData.totalCreditCard" label="Tarjeta Crédito" readonly
-                                prepend-icon="mdi-credit-card" variant="underlined" density="compact"></v-text-field>
-                              <v-text-field v-model="cashierData.totalDebit" label="Débito" readonly
-                                prepend-icon="mdi-credit-card-outline" variant="underlined"
+                              <v-text-field v-model="cashierData.totalService" label="Tarjeta Servicio" readonly
+                                prepend-icon="mdi-list-box-outline" variant="underlined"
+                                density="compact"></v-text-field>
+                              <v-text-field v-model="cashierData.totalProduct" label="Tarjeta Producto" readonly
+                                prepend-icon="mdi-package-variant" variant="underlined"
                                 density="compact"></v-text-field>
                               <v-text-field v-model="cashierData.totalTransfer" label="Transferencia" readonly
                                 prepend-icon="mdi-bank-transfer" variant="underlined" density="compact"></v-text-field>
@@ -503,29 +534,36 @@
                           </v-card>
                         </v-col>
                       </v-row>
-                      <v-row v-if="cashierData.difference !== 0">
+                      <v-row>
                         <v-col cols="12" md="1"></v-col>
                         <v-col cols="12" md="10">
-                          <v-row class="mb-4 mt-2 text-right" dense no-gutters>
-                            <v-col cols="12" md="12">
-                              <span class="text-h6" :class="{
+                                <span class="text-h6">Cierre de Caja efectuado correctamente. Profavor confirme los
+                                  datos ingresados</span>
+                              </v-col>
+                      </v-row>
+                      <v-row v-if=" cashierData.difference !==0">
+                          <v-col cols="12" md="1"></v-col>
+                          <v-col cols="12" md="10">
+                            <v-row class="mb-4 mt-2 text-left" dense no-gutters>
+                             
+                              <v-col cols="12" md="12">
+                                <span class="text-h6" :class="{
                                 'text-red': calculateTotalDifferencesGlobal1 < 0,
                                 'text-green': calculateTotalDifferencesGlobal1 >= 0
                               }">Existe una diferencia total de: {{ cashierData.difference }}</span>
-                            </v-col>
-                          </v-row>
-                          <v-row class="mb-4 mt-1" dense no-gutters>
-                            <v-col cols="12" md="6" class="text-h6">
-                              <span :class="cashierData.difference < 0 ? 'text-red' : 'text-green'">
-                              {{ cashierData.difference < 0 ? '¿Por qué te hizo falta?' : '¿Por qué te sobró dinero?' }}
-                            </span>
-                            </v-col>
-                            <v-col cols="12" md="12" class="text-center">
-                              <v-textarea v-model="cashierData.description" variant="underlined" density="compact"
-                                class="mb-2" :rules="descriptionRules"></v-textarea>
-                            </v-col>
-                          </v-row>
-                        </v-col>
+                              </v-col>
+                            </v-row>
+                            <v-row class="mb-4 mt-1" dense no-gutters>
+                              <v-col cols="12" md="6" class="text-h6">
+                                <span :class="cashierData.difference < 0 ? 'text-red' : 'text-green'">
+                                  '¿Por qué?'</span>
+                              </v-col>
+                              <v-col cols="12" md="12" class="text-center">
+                                <v-textarea v-model="cashierData.description" variant="underlined" density="compact"
+                                  class="mb-2" :rules="descriptionRules"></v-textarea>
+                              </v-col>
+                            </v-row>
+                          </v-col>
                       </v-row>
                     </v-card-text>
                   </v-card>
@@ -536,9 +574,9 @@
                 <!-- BOTONES -->
                 <v-row class="mt-1">
                   <v-spacer></v-spacer>
-                  <v-btn color="#F18254" :disabled="!valid" variant="flat" @click="saveCloseBoxParcial"
+                  <v-btn color="#F18254" :disabled="!valid" variant="flat" @click="saveCloseEnd"
                     :loading="!loadingBonus">
-                    Cerrar Caja
+                    Finalizar
                   </v-btn>
                 </v-row>
               </v-container>
@@ -550,7 +588,7 @@
   </v-dialog>
   <!--end Cierre de caja parcial-->
   <!--Cierre de caja-->
-  <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition" persist :no-click-animatioin="true">
+  <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition" persistent :no-click-animation="true">
     <v-card>
       <v-card-text>
         <v-form v-model="valid" enctype="multipart/form-data">
@@ -561,9 +599,8 @@
                 <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                   <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                     <v-card-text>
-                      <!-- Aquí pasamos el 'selectedWorker' al componente dentro del diálogo -->
-                      <ProductStoreStatus :branch_id="this.branch_id"
-                        @update:has-invalid-state="setInvalidStateProduct" />
+                      <ProductStoreStatus ref="productStoreStatusRef" :branch_id="branch_id"
+                        @update:has-invalid-state="setInvalidStateProduct" @save-success="handleSaveSuccess" />
                     </v-card-text>
                   </v-card>
                 </div>
@@ -573,8 +610,7 @@
                 <v-row class="mt-1">
                   <v-btn color="#E7E9E9" variant="flat" @click="close">Salir</v-btn>
                   <v-spacer></v-spacer>
-                  <v-btn color="#E7E9E9" :disabled="hasInvalidStateProduct" variant="flat"
-                    @click="dialogDeleteDiario = true">
+                  <v-btn color="#E7E9E9" variant="flat" @click="handleNextStep" :loading="isSaving">
                     Siguiente
                   </v-btn>
                 </v-row>
@@ -587,8 +623,10 @@
                   <v-card>
                     <v-card-text>
                       <!-- Aquí pasamos el 'selectedWorker' al componente dentro del diálogo 
-                      <Coexistence :branch_id="this.branch_id" />-->
-                      <Coexistence :branch_id="branch_id" @update:has-invalid-state="setInvalidState" />
+                      <Coexistence :branch_id="this.branch_id" />
+                      <Coexistence :branch_id="branch_id" @update:has-invalid-state="setInvalidState" />-->
+                      <Coexistence ref="CoexistenceStatusRef" :branch_id="branch_id"
+                        @update:has-invalid-state="setInvalidState" @save-success="handleSaveSuccess" :is-extraction-enabled="true"/>
                     </v-card-text>
                     <v-divider></v-divider>
                   </v-card>
@@ -599,11 +637,12 @@
                 <v-row class="mt-1">
                   <!--<v-btn color="#E7E9E9" variant="flat" @click="prevStep">Volver</v-btn>-->
                   <v-spacer></v-spacer>
-                  <v-btn color="#E7E9E9" :disabled="hasInvalidState" variant="flat"
-                    @click="dialogDeleteDiario = true">Siguiente
-                    <v-tooltip v-if="hasInvalidState" activator="parent" location="top">
-                      No puedes avanzar mientras haya elementos sin actualizar
-                    </v-tooltip></v-btn>
+                  <!--<v-btn color="#E7E9E9" :disabled="hasInvalidState" variant="flat"
+                    @click="dialogDeleteDiario = true">Siguiente</v-btn>-->
+                  <v-btn color="#E7E9E9" :disabled="hasInvalidState" @click="handleNextStepCoexistence"
+                    :loading="isSaving">
+                    Siguiente
+                  </v-btn>
                 </v-row>
 
               </v-container>
@@ -668,7 +707,7 @@
                 <v-row class="mt-1">
                   <!--<v-btn color="#E7E9E9" variant="flat" @click="prevStep">Volver</v-btn>-->
                   <v-spacer></v-spacer>
-                  <v-btn color="#E7E9E9" :disabled="hasUnpaidBonus" variant="flat" @click="dialogDeleteDiario = true"
+                  <v-btn color="#E7E9E9" :disabled="hasUnpaidBonus" variant="flat" @click="nextStep"
                     :loading="loadingBonusStep">Siguiente</v-btn>
                 </v-row>
 
@@ -714,14 +753,14 @@
                         <!-- Columna 2: Datos de la Cajera -->
                         <v-col cols="12" md="5" class="ml-6">
                           <v-card class="mx-auto" subtitle="Introduces tus datos de ingresos "
-                            style="background-color: #004059; color: white;" elevation="4">
+                            style="background-color: #F18254; color: white;" elevation="4">
                             <template v-slot:prepend>
                               <v-avatar color="white">
-                                <v-icon icon="mdi-cash-register" color="#004059" size="large"></v-icon>
+                                <v-icon icon="mdi-cash-register" color="#F18254" size="large"></v-icon>
                               </v-avatar>
                             </template>
                             <template v-slot:title>
-                              <span class="font-weight-black">Datos de la Cajera</span>
+                              <span class="font-weight-black">Datos de Ingresos</span>
                             </template>
                             <template v-slot:append>
                               <v-btn prepend-icon="mdi-plus" variant="outlined" @click="dialogDetails = true">
@@ -751,6 +790,34 @@
                             </v-card-text>
                           </v-card>
                         </v-col>
+                        
+                        <v-col cols="12" md="5" class="ml-6">
+                          <v-card class="mx-auto" subtitle="Introduces tus extracciones en caja"
+                            style="background-color: #F18254; color: white;" elevation="4">
+                            <template v-slot:prepend>
+                              <v-avatar color="white">
+                                <v-icon icon="mdi-cash-register" color="#F18254" size="large"></v-icon>
+                              </v-avatar>
+                            </template>
+                            <template v-slot:title>
+                              <span class="font-weight-black">Datos de Extracción</span>
+                            </template>
+                            <template v-slot:append>
+                              <v-btn prepend-icon="mdi-plus" variant="outlined" @click="openDialogExtraction">
+                                Agregar Extracción
+                              </v-btn>
+                            </template>
+                            <v-card-text class="bg-white pt-4" style="min-height: 17vh; overflow-y: auto;">
+                              <v-text-field v-model="cashierData.extraction" label="Extracción"
+                                prepend-icon="mdi-cash-refund" variant="underlined" density="compact"></v-text-field>
+                              <v-text-field v-model="cashierData.totalBonus" label="Bonos"
+                                prepend-icon="mdi-cash-refund" variant="underlined" density="compact"></v-text-field>
+                              <v-text-field style="visibility: hidden" v-model="cashierData.advancement"
+                                label="Adelanto" prepend-icon="mdi-cash" variant="underlined"
+                                density="compact"></v-text-field>
+                            </v-card-text>
+                          </v-card>
+                        </v-col>
                       </v-row>
                     </v-card-text>
                   </v-card>
@@ -766,21 +833,20 @@
                 </v-row>
               </v-container>
             </template>
-            <template v-slot:item.5>
+            <!--<template v-slot:item.5>
               <v-sheet border>
                 <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                   <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                     <v-card-text>
                       <v-row class="mb-4 mt-2" no-gutters>
-                        <!-- Columna 1: Datos del Sistema -->
                         <v-col cols="12" md="1" class="text-center">
                         </v-col>
                         <v-col cols="12" md="5">
                           <v-card class="mx-auto" subtitle="Datos de Gastos arrojados por el sistema"
-                            style="background-color: #027b7b; color: white;" elevation="4">
+                            style="background-color: #F18254; color: white;" elevation="4">
                             <template v-slot:prepend>
                               <v-avatar color="white">
-                                <v-icon icon="mdi-cog" color="#027b7b" size="large"></v-icon>
+                                <v-icon icon="mdi-cog" color="#F18254" size="large"></v-icon>
                               </v-avatar>
                             </template>
                             <template v-slot:title>
@@ -797,13 +863,12 @@
                           </v-card>
                         </v-col>
 
-                        <!-- Columna 2: Datos de la Cajera -->
                         <v-col cols="12" md="5" class="ml-6">
                           <v-card class="mx-auto" subtitle="Introduces tus datos de gastos "
-                            style="background-color: #004059; color: white;" elevation="4">
+                            style="background-color: #F18254; color: white;" elevation="4">
                             <template v-slot:prepend>
                               <v-avatar color="white">
-                                <v-icon icon="mdi-cash-register" color="#004059" size="large"></v-icon>
+                                <v-icon icon="mdi-cash-register" color="#F18254" size="large"></v-icon>
                               </v-avatar>
                             </template>
                             <template v-slot:title>
@@ -820,21 +885,6 @@
                             </v-card-text>
                           </v-card>
                         </v-col>
-
-                        <!-- Columna 3: Diferencias 
-                        <v-col cols="4" class="text-center">
-                          <v-card class="pa-4 mx-2" elevation="2">
-                            <v-card-title class="text-subtitle-1"
-                              style="background-color: rgba(229, 115, 115, 0.9); color: white;">Diferencias</v-card-title>
-                            <v-divider class="mb-4"></v-divider>
-                            <v-text-field :value="calculateDifferenceExtraccion" readonly prepend-icon="mdi-cash-refund"
-                              variant="underlined" density="compact"></v-text-field>
-                            <v-text-field :value="calculateDifferenceBonusPay" readonly prepend-icon="mdi-cash-refund"
-                              variant="underlined" density="compact"></v-text-field>
-                            <v-text-field :value="calculateDifferenceAdelanto" readonly prepend-icon="mdi-cash"
-                              variant="underlined" density="compact"></v-text-field>
-                          </v-card>
-                        </v-col>-->
                       </v-row>
                     </v-card-text>
                     <v-divider></v-divider>
@@ -845,19 +895,13 @@
                 </div>
               </v-sheet>
               <v-container fluid>
-                <!-- BOTONES -->
                 <v-row class="mt-1">
-                  <!--<v-btn color="#E7E9E9" variant="flat" @click="prevStep">Volver</v-btn>-->
                   <v-spacer></v-spacer>
                   <v-btn color="#E7E9E9" variant="flat" @click="dialogDeleteDiario = true">Siguiente</v-btn>
-                  <!--<v-btn color="#F18254" :disabled="ejecutado || !valid" variant="flat" @click="saveCloseBox"
-                    :loading="!loadingBonus">
-                    Cerrar Caja
-                  </v-btn>-->
                 </v-row>
               </v-container>
-            </template>
-            <template v-slot:item.6>
+            </template>-->
+            <template v-slot:item.5>
               <v-sheet border>
                 <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                   <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
@@ -867,10 +911,10 @@
                         <v-col cols="12" md="1" class="text-center"></v-col>
                         <v-col cols="12" md="5">
                           <v-card class="mx-auto" subtitle="Resumen de datos arrojados por el sistema"
-                            style="background-color: #027b7b; color: white;" elevation="4">
+                            style="background-color: #F18254; color: white;" elevation="4">
                             <template v-slot:prepend>
                               <v-avatar color="white">
-                                <v-icon icon="mdi-cog" color="#027b7b" size="large"></v-icon>
+                                <v-icon icon="mdi-cog" color="#F18254" size="large"></v-icon>
                               </v-avatar>
                             </template>
                             <template v-slot:title>
@@ -903,20 +947,21 @@
                         <!-- Columna 2: Datos de la Cajera -->
                         <v-col cols="12" md="5" class="ml-6">
                           <v-card class="mx-auto" subtitle="Resumen datos del cierre de caja"
-                            style="background-color: #004059; color: white;" elevation="4">
+                            style="background-color: #F18254; color: white;" elevation="4">
                             <template v-slot:prepend>
                               <v-avatar color="white">
-                                <v-icon icon="mdi-cash-register" color="#004059" size="large"></v-icon>
+                                <v-icon icon="mdi-cash-register" color="#F18254" size="large"></v-icon>
                               </v-avatar>
                             </template>
                             <template v-slot:title>
                               <span class="font-weight-black">Datos de la Cajera</span>
                             </template>
                             <v-card-text class="bg-white pt-4">
-                              <v-text-field v-model="cashierData.totalCreditCard" label="Tarjeta Crédito" readonly
-                                prepend-icon="mdi-credit-card" variant="underlined" density="compact"></v-text-field>
-                              <v-text-field v-model="cashierData.totalDebit" label="Débito" readonly
-                                prepend-icon="mdi-credit-card-outline" variant="underlined"
+                              <v-text-field v-model="cashierData.totalService" label="Tarjeta Servicio" readonly
+                                prepend-icon="mdi-list-box-outline" variant="underlined"
+                                density="compact"></v-text-field>
+                              <v-text-field v-model="cashierData.totalProduct" label="Tarjeta Producto" readonly
+                                prepend-icon="mdi-package-variant" variant="underlined"
                                 density="compact"></v-text-field>
                               <v-text-field v-model="cashierData.totalTransfer" label="Transferencia" readonly
                                 prepend-icon="mdi-bank-transfer" variant="underlined" density="compact"></v-text-field>
@@ -936,6 +981,13 @@
                             </v-card-text>
                           </v-card>
                         </v-col>
+                      </v-row>
+                      <v-row>
+                        <v-col cols="12" md="1"></v-col>
+                        <v-col cols="12" md="10">
+                                <span class="text-h6">Cierre de Caja efectuado correctamente. Profavor confirme los
+                                  datos ingresados</span>
+                              </v-col>
                       </v-row>
                       <v-row v-if="cashierData.difference !== 0">
                         <v-col cols="12" md="1"></v-col>
@@ -958,8 +1010,7 @@
                           <v-row class="mb-4 mt-1" dense no-gutters>
                             <v-col cols="12" md="6" class="text-h6">
                               <span :class="cashierData.difference < 0 ? 'text-red' : 'text-green'">
-                              {{ cashierData.difference < 0 ? '¿Por qué te hizo falta?' : '¿Por qué te sobró dinero?' }}
-                            </span>
+                                '¿Por qué' </span>
                             </v-col>
                             <v-col cols="12" md="12" class="text-center">
                               <v-textarea v-if="cashierData.difference !== 0" v-model="cashierData.description"
@@ -979,9 +1030,9 @@
                   <v-spacer></v-spacer>
                   <!--<v-btn color="#E7E9E9" :disabled="cashierData.details.length === 0" variant="flat"
                     @click="nextStep">Siguiente</v-btn>-->
-                  <v-btn color="#F18254" :disabled="!valid" variant="flat" @click="saveCloseBox"
+                  <v-btn color="#F18254" :disabled="!valid" variant="flat" @click="saveCloseEndDiario"
                     :loading="!loadingBonus">
-                    Cerrar Caja
+                    Finalizar
                   </v-btn>
                 </v-row>
               </v-container>
@@ -1003,10 +1054,10 @@
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="#E7E9E9" variant="flat" @click="dialogDeleteParcial = false">
+        <v-btn color="#E7E9E9" :disabled="stepCashier === 2 && !loadingBonus" variant="flat" @click="dialogDeleteParcial = false">
           Cancelar
         </v-btn>
-        <v-btn color="#F18254" variant="flat" @click="nextStepCashier">
+        <v-btn color="#F18254" variant="flat" @click="nextStepCashier" :loading="stepCashier === 2 && !loadingBonus">
           Aceptar
         </v-btn>
 
@@ -1024,10 +1075,10 @@
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="#E7E9E9" variant="flat" @click="dialogDeleteDiario = false">
+        <v-btn color="#E7E9E9" :disabled="step === 4 && !loadingBonus" variant="flat" @click="dialogDeleteDiario = false">
           Cancelar
         </v-btn>
-        <v-btn color="#F18254" variant="flat" @click="nextStep">
+        <v-btn color="#F18254" variant="flat" @click="nextStep" :loading="step === 4 && !loadingBonus">
           Aceptar
         </v-btn>
 
@@ -1484,26 +1535,21 @@
           </template>
           <template v-slot:item.actions="{ item }">
             <v-btn density="comfortable" icon="mdi-pencil"
-              @click="(item.pay == 1 && (item.active === 0 || item.active === 1)) && editingRequest(item, 2)"
-              :color="(item.pay == 1 && (item.active === 0 || item.active === 1)) ? 'primary-darken-1' : 'grey'"
+              @click="(item.pay == 1 && (item.active === 0 || item.active === 1) && !ejecutado) && editingRequest(item, 2)"
+              :color="(item.pay == 1 && (item.active === 0 || item.active === 1) && !ejecutado) ? 'primary-darken-1' : 'grey'"
               variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Editar el carro"></v-btn>
             <v-btn density="comfortable" icon="mdi-delete"
-              @click="(item.pay == 1 && (item.active === 0 || item.active === 1)) && editingRequest(item, 3)"
-              :color="(item.pay == 1 && (item.active === 0 || item.active === 1)) ? 'red-darken-4' : 'grey'"
+              @click="(item.pay == 1 && (item.active === 0 || item.active === 1) && !ejecutado) && editingRequest(item, 3)"
+              :color="(item.pay == 1 && (item.active === 0 || item.active === 1) && !ejecutado) ? 'red-darken-4' : 'grey'"
               variant="tonal" elevation="1" title="Solicitud de eliminar carro"></v-btn>
           </template>
           <template v-slot:item.action_descriptions="{ item }">
             <v-menu location="top" open-on-hover max-width="500px">
               <template v-slot:activator="{ props }">
-                <v-chip 
-        v-bind="props"
-        color="indigo-darken-2" 
-        small
-        class="px-2"
-      >
-        <v-icon left color="indigo-darken-2" icon="mdi-clipboard-text-outline"/>
-        {{ item.action_descriptions.length}}
-      </v-chip>
+                <v-chip v-bind="props" color="indigo-darken-2" small class="px-2">
+                  <v-icon left color="indigo-darken-2" icon="mdi-clipboard-text-outline" />
+                  {{ item.action_descriptions.length}}
+                </v-chip>
               </template>
 
               <v-card class="pa-2" style="max-height: 300px; overflow-y: auto;">
@@ -1528,15 +1574,10 @@
           <template v-slot:item.change_log="{ item }">
             <v-menu location="top" open-on-hover max-width="500px">
               <template v-slot:activator="{ props }">
-                <v-chip 
-        v-bind="props"
-        color="teal-darken-3"
-        small
-        class="px-2"
-      >
-        <v-icon left color="teal-darken-3" icon="mdi-history"/>
-        {{ item.change_log.length }}
-      </v-chip>
+                <v-chip v-bind="props" color="teal-darken-3" small class="px-2">
+                  <v-icon left color="teal-darken-3" icon="mdi-history" />
+                  {{ item.change_log.length }}
+                </v-chip>
               </template>
 
               <v-card class="pa-2" style="max-height: 300px; overflow-y: auto;">
@@ -2028,6 +2069,65 @@
       </v-card-text>
     </v-card>
   </v-dialog>
+
+  <!--EndAddServices-->
+  <v-dialog v-model="dialogExtraction" max-width="500px">
+    <v-card>
+      <v-toolbar color="#F18254">
+        <span class="text-subtitle-2 ml-4">Realizar Extracción</span>
+      </v-toolbar>
+
+      <v-card-text>
+        <v-form v-model="valid" enctype="multipart/form-data">
+          <v-container fluid>
+            <v-row>
+              <!--<v-col cols="12" md="4">
+                <v-text-field v-model="editedBox.cashFound" clearable label="Fondo en Caja" prepend-icon="mdi-safe"
+                  variant="underlined" :rules="pago">
+                </v-text-field>
+              </v-col>-->
+              <v-col cols="12" md="4">
+                <v-text-field v-model="editedBox.existence" clearable label="Existencia" prepend-icon="mdi-check-circle"
+                  variant="underlined" :rules="pago" :disabled="true">
+                </v-text-field>
+              </v-col>
+              <v-col cols="12" md="4">
+                <v-text-field v-model="editedBox.newExtraction" clearable label="Extracción"
+                  prepend-icon="mdi-arrow-down-bold" variant="underlined" :rules="[checkExtraction]"
+                  :disabled="!editedBox.existence">
+                </v-text-field>
+              </v-col>
+              <!-- Campos adicionales -->
+            </v-row>
+            <v-row>
+              <!-- Campos adicionales -->
+              <v-col v-if="this.showAdditionalFields" cols="12" md="6">
+                <v-file-input v-model="file" ref="fileInput" name="file" label="Archivo" prepend-icon="mdi-paperclip"
+                  variant="underlined" :rules="selectRules"
+                  accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .odt, .ods, .odp, .rtf, .html, .xml, .csv, .png, .jpg, .jpeg"
+                  @change="onFileSelected">
+                </v-file-input>
+              </v-col>
+              <v-col v-if="this.showAdditionalFields" cols="12" md="6">
+                <v-text-field v-model="editedBox.comment" label="Comentario" variant="underlined" :rules="selectRules">
+                </v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="closeDialogBox">
+              Cancelar
+            </v-btn>
+            <v-btn color="#F18254" variant="flat" @click="saveBox" :disabled="!valid">
+              Aceptar
+            </v-btn>
+          </v-card-actions>
+        </v-form>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
@@ -2041,7 +2141,6 @@ import Coexistence from "../coexistence/Coexistence.vue";
 import { handleRequest } from "@/utils/api";
 import ProductStoreStatus from "../productstorestatus/ProductStoreStatus.vue";
 import _ from 'lodash';
-import { cloneDeep } from "lodash";
 
 // Interceptor para agregar el token a cada solicitud
 axios.interceptors.request.use(config => {
@@ -2062,6 +2161,7 @@ export default {
   },
 
   data: () => ({
+    isSaving: false,
     tab: "caja", // Controla la ventana activa
     tabCashier: "caja", // Controla la ventana activa
     showReserPrpfessional: false,
@@ -2076,15 +2176,13 @@ export default {
       'Inventario',
       'Convivencias',
       'Bonos',
-      'Ingresos',
-      'Gastos',
+      'Ingresos y Gastos',
       'Resumen',
     ],
     stepCashier: 1,
     itemsCashier: [
       'Inventario',
-      'Ingreso',
-      'Gastos',
+      'Ingreso y Gastos',
       'Resumen'
     ],
     //end steep
@@ -2154,6 +2252,7 @@ export default {
     dialogConfBonus: false,
     dialogPay: false,
     dialogBox: false,
+    dialogExtraction: false,
     loading: false,
     bonus_ref: [],
     branch_id: null,
@@ -2322,8 +2421,8 @@ export default {
       differencePay: '',
       differenceBox: '',
       details: [
-        { id: 1, type: 'totalCreditCard', value: 0, name: 'Tarjeta Crédito' },
-        { id: 2, type: 'totalDebit', value: 0, name: 'Débito' },
+        { id: 1, type: 'totalService', value: 0, name: 'Tarjeta Servicio' },
+        { id: 2, type: 'totalProduct', value: 0, name: 'Tarjeta Producto' },
         { id: 3, type: 'totalTransfer', value: 0, name: 'Transferencia' },
         { id: 4, type: 'existence', value: 0, name: 'Efectivo' },
         { id: 5, type: 'totalOther', value: 0, name: 'Otros' },
@@ -2353,8 +2452,8 @@ export default {
       differencePay: '',
       differenceBox: '',
       details: [
-        { id: 1, type: 'totalCreditCard', value: 0, name: 'Tarjeta Crédito' },
-        { id: 2, type: 'totalDebit', value: 0, name: 'Débito' },
+        { id: 1, type: 'totalService', value: 0, name: 'Tarjeta Servicio' },
+        { id: 2, type: 'totalProduct', value: 0, name: 'Tarjeta Producto' },
         { id: 3, type: 'totalTransfer', value: 0, name: 'Transferencia' },
         { id: 4, type: 'existence', value: 0, name: 'Efectivo' },
         { id: 5, type: 'totalOther', value: 0, name: 'Otros' },
@@ -2396,6 +2495,7 @@ export default {
       cashFound: '',
       existence: '',
       extraction: '',
+      newExtraction: '',
       comment: '',
       file: '',
       nameProfessional: ''
@@ -2406,12 +2506,12 @@ export default {
       cashFound: '',
       existence: '',
       extraction: '',
+      newExtraction: '',
       comment: '',
       file: '',
       nameProfessional: ''
     },
     data: {},
-
     defaultItem: {
       id: '',
       order_id: '',
@@ -2482,7 +2582,7 @@ export default {
     },
 
     hasUnpaidBonus() {
-      return this.bonusProf.some(item => item.pay === false);
+      return this.bonusProf.some(item => item.pay === 0);
     },
     // Diferencias calculadas
     /*calculateDifferenceExistence() {
@@ -2552,6 +2652,18 @@ export default {
       this.cashierData.differenceAccounts = total.toFixed(2);
       return total.toFixed(2); // Redondea a 2 decimales
     },*/
+    calculateDifferenceCard(){
+      const creditCardSistema = parseFloat(this.editedCloseBox.totalCreditCard) || 0;
+      const creditCardCajera = parseFloat(this.cashierData.totalCreditCard) || 0;
+      const debitSistema = parseFloat(this.editedCloseBox.totalDebit) || 0;
+      const debitCajera = parseFloat(this.cashierData.totalDebit) || 0;
+      const productCajera = parseFloat(this.cashierData.totalProduct) || 0;
+      const serviceCajera = parseFloat(this.cashierData.totalService) || 0;
+      const diferencia = (creditCardCajera + debitCajera + productCajera + serviceCajera) - (creditCardSistema + debitSistema);
+      console.log('diferencia');
+      console.log(diferencia);
+      return diferencia.toFixed(2); // Redondea a 2 decimales
+    },
     calculateDifferenceCreditCard() {
       //if (this.cashierData.totalCreditCard) {
       const creditCardSistema = parseFloat(this.editedCloseBox.totalCreditCard) || 0;
@@ -2613,24 +2725,24 @@ export default {
       //}
     },
     calculateTotalDifferencesPagos() {
-      const diferenciaCreditCard = parseFloat(this.calculateDifferenceCreditCard) || 0;
-      const diferenciaDebit = parseFloat(this.calculateDifferenceDebit) || 0;
+      const diferenciaCard = parseFloat(this.calculateDifferenceCard) || 0;
+      //const diferenciaDebit = parseFloat(this.calculateDifferenceDebit) || 0;
       const diferenciaTransfer = parseFloat(this.calculateDifferenceTransfer) || 0;
       const diferenciaOther = parseFloat(this.calculateDifferenceOther) || 0;
       const diferenciaCardGif = parseFloat(this.calculateDifferenceCardGif) || 0;
       const diferenciaCash = parseFloat(this.calculateDifferenceCash) || 0;
-      const total = diferenciaCreditCard + diferenciaDebit + diferenciaTransfer + diferenciaOther + diferenciaCardGif + diferenciaCash;
+      const total = diferenciaCard /*+ diferenciaDebit*/ + diferenciaTransfer + diferenciaOther + diferenciaCardGif + diferenciaCash;
       this.cashierData.differencePay = total.toFixed(2);
       return total.toFixed(2); // Redondea a 2 decimales
     },
     calculateTotalDifferencesPagos1() {
-      const diferenciaCreditCard = parseFloat(this.calculateDifferenceCreditCard) || 0;
-      const diferenciaDebit = parseFloat(this.calculateDifferenceDebit) || 0;
+      const diferenciaCard = parseFloat(this.calculateDifferenceCard) || 0;
+      //const diferenciaDebit = parseFloat(this.calculateDifferenceDebit) || 0;
       const diferenciaTransfer = parseFloat(this.calculateDifferenceTransfer) || 0;
       const diferenciaOther = parseFloat(this.calculateDifferenceOther) || 0;
       const diferenciaCardGif = parseFloat(this.calculateDifferenceCardGif) || 0;
       const diferenciaCash = parseFloat(this.calculateDifferenceCash) || 0;
-      const total = diferenciaCreditCard + diferenciaDebit + diferenciaTransfer + diferenciaOther + diferenciaCardGif + diferenciaCash;
+      const total = diferenciaCard /*+ diferenciaDebit*/ + diferenciaTransfer + diferenciaOther + diferenciaCardGif + diferenciaCash;
       return total.toFixed(2); // Redondea a 2 decimales
     },
     calculateDifferenceTotalMount() {
@@ -2765,7 +2877,7 @@ export default {
     this.charge_id = LocalStorageService.getItem('charge_id');
     this.branch_id = LocalStorageService.getItem('branch_id');
     this.professional_id = LocalStorageService.getItem('professional_id');
-    this.user_id = LocalStorageService.getItem('user_id');
+    this.user_id = Number(LocalStorageService.getItem('user_id'));
     this.nameBranch = LocalStorageService.getItem('nameBranch');
     this.nameProfessional = JSON.parse(LocalStorageService.getItem("name"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
@@ -2808,7 +2920,7 @@ export default {
       //this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
     } finally {
       if (this.charge === 'Administrador') {
-        this.branch_id = this.branches[0].id;
+        this.branch_id = this.branches[1].id;
         this.mostrarFila = true;
       }
       await this.startInterval();
@@ -2822,6 +2934,57 @@ export default {
   },
 
   methods: {
+    async handleNextStepCashier() {
+      try {
+        this.isSaving = true;
+        
+        // Llamamos al método `save()` del hijo
+        const success = await this.$refs.productStoreStatusRef.save();
+        
+        // Si se guardó correctamente, avanzamos
+        if (success) {
+          this.nextStepCashier(); // O this.dialogDeleteParcial = true;
+        }
+      } catch (error) {
+        console.error("Error al avanzar:", error);
+      } finally {
+        this.isSaving = false;
+      }
+    },
+    async handleNextStep() {
+      try {
+        this.isSaving = true;
+        
+        // Llamamos al método `save()` del hijo
+        const success = await this.$refs.productStoreStatusRef.save();
+        
+        // Si se guardó correctamente, avanzamos
+        if (success) {
+          this.nextStep(); // O this.dialogDeleteParcial = true;
+        }
+      } catch (error) {
+        console.error("Error al avanzar:", error);
+      } finally {
+        this.isSaving = false;
+      }
+    },
+    async handleNextStepCoexistence() {
+      try {
+        this.isSaving = true;
+        
+        // Llamamos al método `save()` del hijo
+        const success = await this.$refs.CoexistenceStatusRef.save();
+        
+        // Si se guardó correctamente, avanzamos
+        if (success) {
+          this.nextStep(); // O this.dialogDeleteParcial = true;
+        }
+      } catch (error) {
+        console.error("Error al avanzar:", error);
+      } finally {
+        this.isSaving = false;
+      }
+    },
     // Determina si es una acción de resolución (approved/denied)
     // Método base para determinar si es una resolución
     isResolution(actionType) {
@@ -2934,6 +3097,8 @@ getActionTitle(actionType) {
         existence: { icon: 'mdi-cash' },
         totalOther: { icon: 'mdi-currency-usd' },
         totalCardGif: { icon: 'mdi-gift' },
+        totalProduct: { icon: 'mdi-package-variant' },
+        totalService: { icon: 'mdi-list-box-outline' },
         // ... otros tipos
       };
 
@@ -3040,6 +3205,12 @@ getActionTitle(actionType) {
       this.step = index;
     },
     async nextStep() {
+      this.totalBoxExtraction();
+      this.existence();
+      const differences = this.calculateTotalDifferencesGlobal1;
+          if (this.step === 4){
+            await this.saveCloseBox();
+          }
       if (this.step < this.items.length) {
         this.step++;
       }
@@ -3079,10 +3250,6 @@ getActionTitle(actionType) {
         this.bonusPay = [];
         this.cashierBoxClose = [];
         await this.initialize();
-        this.editedItem = _.cloneDeep(this.defaultItem);
-        this.cashierData = _.cloneDeep(this.defaultcashierData);
-        this.editedCloseBox = _.cloneDeep(this.defaultCloseBox);
-        this.editedBox = _.cloneDeep(this.defaultBox);
         this.totalMountCreditCards();
         this.totalMountDebits();
         this.totalMountTransfers();
@@ -3096,6 +3263,7 @@ getActionTitle(actionType) {
         this.totalMountCashs();
         this.totalMount();
         this.existence();
+        this.totalBonusPay();
         try {
           this.loading = true;
           const result = await handleRequest({
@@ -3114,13 +3282,12 @@ getActionTitle(actionType) {
         }
       }
       if (this.step === 5) {
-        this.totalBonusPay();
         this.dialogDeleteDiario = false;
       }
-      if (this.step === 6) {
+      if (this.step === 5) {
         this.dialogDeleteDiario = false;
       }
-      if (this.step > 6) {
+      if (this.step > 5) {
         this.dialogDeleteDiario = false;
         this.dialog = false;
       }
@@ -3140,7 +3307,14 @@ getActionTitle(actionType) {
     changeStepCashier(index) {
       this.stepCashier = index;
     },
-    async nextStepCashier() {
+    async nextStepCashier() {      
+      this.totalBoxExtraction();
+          this.existence();
+          // Accede al computed property como propiedad (no como función)
+          const differences = this.calculateTotalDifferencesGlobal1; 
+          if (this.stepCashier === 2){
+            await this.saveCloseBoxParcial();
+          }
       if (this.stepCashier < this.items.length) {
         this.stepCashier++;
         if (this.stepCashier === 2) {
@@ -3163,10 +3337,6 @@ getActionTitle(actionType) {
           }
         }
         if (this.stepCashier === 3) {
-          this.dialogDeleteParcial = false;
-          this.totalBoxExtraction();
-        }
-        if (this.stepCashier === 4) {
           this.dialogDeleteParcial = false;
         }
       }
@@ -3813,11 +3983,17 @@ getActionTitle(actionType) {
       this.editedBox.extraction = '';
       this.file = '';
     },
+    openDialogExtraction() {
+      this.showAdditionalFields = false;
+      this.dialogExtraction = true;
+      this.editedBox.id = this.box ? this.box.id : 0;
+      this.editedBox.cashFound = '';
+      this.editedBox.existence = this.box ? this.box.existence : 0;
+      this.file = '';
+    },
     closeDialogBox() {
       this.dialogBox = false;
-      this.$nextTick(() => {
-        this.editedBox = Object.assign({}, this.defaultBox)
-      })
+      this.dialogExtraction = false;
     },
     totalMount() {
       //console.log("boxxxxxx");
@@ -4113,8 +4289,6 @@ getActionTitle(actionType) {
         // Captura de errores no controlados
         //this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitudsfsdfsf.', 3000);
       } finally {
-        console.log('this.boxClose');
-        console.log(this.boxClose);
         if (this.box === null) {
           this.ejecutado = false;
           this.ejecutadoCashier = false;
@@ -4123,14 +4297,17 @@ getActionTitle(actionType) {
             this.ejecutado = false;
             this.ejecutadoCashier = false;
           } else {
+            
+        console.log('this.boxClose');
+        console.log(this.boxClose);
             // Verificar si hay algún box_close con type 'Diario' y user_id igual a this.user
             const hasParcial = this.boxClose.some(
-              (close) => close.type === 'Parcial' && close.user_id === this.user
+              (close) => close.type === 'Parcial' && close.user_id === this.user_id
             );
 
             // Verificar si hay algún box_close con type 'Parcial'
             const hasDiario = this.boxClose.some(
-              (close) => close.type === 'Diario'
+              (close) => close.type === 'Diario' && close.user_id === this.user_id
             );
 
             // Asignar valores a ejecutado y ejecutadoCashier
@@ -4457,26 +4634,26 @@ getActionTitle(actionType) {
           method: 'POST',
           data: requestData
         });
-
         // Manejo de la respuesta según el resultado
-        if (result.success) {
-          this.showAlert("success", result.message, 3000);
+        if (result.data.boxClosePartial) {
+          //this.showAlert("success", result.message, 3000);
+          //this.closeParcial();
+          this.cashierData.id = result.data.boxClosePartial.id;
+          console.log('this.cashierData', this.cashierData.id);
+          //this.closeParcial();
         } else {
+          await this.startInterval();
           this.loadingBonus = true;
-          this.dialog = false;
           this.showAlert("warning", result.message, 3000);
         }
       } catch (error) {
         this.loadingBonus = true;
-        this.dialog = false;
         // Este bloque captura errores inesperados fuera del manejo estándar
         this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
       } finally {
         this.loadingBonus = true;
-        this.dialog = false;
         this.showAlert("success", "Cierre de caja efectuado correctamente", 3000);
       }
-      this.dialog = false;
       //this.loadingBonus = true;
       LocalStorageService.setIsLocked(false);
     },
@@ -4509,15 +4686,18 @@ getActionTitle(actionType) {
         });
 
         // Manejo de la respuesta según el resultado
-        /*if (result.success) {
-          this.showAlert("success", result.message, 3000);
-          this.closeParcial();
+        if (result.data.boxClosePartial) {
+          //this.showAlert("success", result.message, 3000);
+          //this.closeParcial();
+          this.cashierData.id = result.data.boxClosePartial.id;
+          console.log('this.cashierData', this.cashierData.id);
+          this.showAlert("success", "Cierre de caja efectuado correctamente", 3000);
+          //this.closeParcial();
         } else {
           await this.startInterval();
-          this.dialogParcial = false;
           this.loadingBonus = true;
           this.showAlert("warning", result.message, 3000);
-        }*/
+        }
       } catch (error) {
         await this.startInterval();
         //this.dialogParcial = false;
@@ -4530,21 +4710,105 @@ getActionTitle(actionType) {
         //this.dialogParcial = false;
         this.loadingBonus = true;
         this.showAlert("success", "Cierre de caja efectuado correctamente, En breve se cerrará la sesión", 3000);
+        /*setTimeout(() => {
+          //this.closeParcial();
+        }, 3000);*/
+      }
+      //this.dialogParcial = false;
+      LocalStorageService.setIsLocked(false);
+    },
+
+    async saveCloseEnd(){
+      this.valid = false;
+      LocalStorageService.setIsLocked(true);
+      this.loadingBonus = false;
+      if(this.cashierData.difference && this.cashierData.description){
+        const requestData = {
+        id: this.cashierData.id, // Datos de la cajera
+        description: this.cashierData.description
+      };
+      try {
+        const result = await handleRequest({
+          endpoint: 'closebox-cashier-confirm',
+          method: 'POST',
+          data: requestData
+        });
+      } catch (error) {
+        await this.startInterval();
+        //this.dialogParcial = false;
+        this.loadingBonus = true;
+        // Este bloque captura errores inesperados fuera del manejo estándar
+        this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
+      } finally {
+        await this.startInterval();
+        //LocalStorageService.setIsLocked(false);
+        //this.dialogParcial = false;
+        this.loadingBonus = true;
+        
+      }
+    }
+      this.showAlert("success", "Confirmación realizada correctamente, En breve se cerrará la sesión", 3000);
         setTimeout(() => {
           this.closeParcial();
         }, 3000);
+      //this.dialogParcial = false;
+      LocalStorageService.setIsLocked(false);
+    },
+    async saveCloseEndDiario(){
+      this.valid = false;
+      LocalStorageService.setIsLocked(true);
+      this.loadingBonus = false;
+      if(this.cashierData.difference && this.cashierData.description){
+        const requestData = {
+        id: this.cashierData.id, // Datos de la cajera
+        description: this.cashierData.description
+      };
+      try {
+        const result = await handleRequest({
+          endpoint: 'closebox-cashier-confirm',
+          method: 'POST',
+          data: requestData
+        });
+      } catch (error) {
+        await this.startInterval();
+        //this.dialogParcial = false;
+        this.loadingBonus = true;
+        // Este bloque captura errores inesperados fuera del manejo estándar
+        this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
+      } finally {
+        await this.startInterval();
+        //LocalStorageService.setIsLocked(false);
+        //this.dialogParcial = false;
+        this.loadingBonus = true;
+        
       }
+    }
+      this.dialog = false;
+      this.showAlert("success", "Confirmación realizada correctamente", 3000);
+        
       //this.dialogParcial = false;
       LocalStorageService.setIsLocked(false);
     },
     saveBox() {
       {
-        LocalStorageService.setIsLocked(true);
+        this.valid = false;
+        LocalStorageService.setIsLocked(true);   
+        let newExtraction = 0;
+        if (this.editedBox.newExtraction) {
+          newExtraction = parseFloat(this.editedBox.newExtraction);
+          this.cashierData.extraction = (parseFloat(this.cashierData.extraction) || 0) + newExtraction;
+        }     
         this.editedBox.branch_id = this.branch_id;
         this.editedBox.nameProfessional = this.nameProfessional;
+
         const formData = new FormData();
         for (let key in this.editedBox) {
-          formData.append(key, this.editedBox[key]);
+          if (key === 'extraction' && newExtraction !== 0) {
+              formData.append(key, newExtraction);
+          } else {
+              // Para todas las demás claves o cuando no hay newExtraction
+              formData.append(key, this.editedBox[key]);
+          }
         }
 
         console.log('formData');
@@ -4556,10 +4820,13 @@ getActionTitle(actionType) {
             LocalStorageService.setIsLocked(false);
             this.showAlert("success", "Caja Actualizada correctamente", 3000);
             this.initialize();
+            this.existence();
+            this.totalBoxExtraction();
           });
-        this.$nextTick(() => {
+        /*this.$nextTick(() => {
           this.editedBox = Object.assign({}, this.defaultBox)
-        });
+        });*/
+        this.dialogExtraction = false;
         this.dialogBox = false;
         this.valid = true;
       }

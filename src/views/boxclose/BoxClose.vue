@@ -39,8 +39,7 @@
                         transition="scale-transition" offset-y min-width="290px">
                         <template v-slot:activator="{ props }">
                             <v-text-field v-bind="props" :modelValue="dateFormatted" variant="underlined"
-                                prepend-inner-icon="mdi-calendar" label="Fecha de inicio"
-                            ></v-text-field>
+                                prepend-icon="mdi-calendar" label="Fecha de inicio"></v-text-field>
                         </template>
                         <v-locale-provider locale="es">
                             <v-date-picker header="Calendario" title="Seleccione la fecha" color="#F18254"
@@ -54,8 +53,7 @@
                         transition="scale-transition" offset-y min-width="290px">
                         <template v-slot:activator="{ props }">
                             <v-text-field v-bind="props" :modelValue="dateFormatted1" variant="underlined"
-                                prepend-inner-icon="mdi-calendar" label="Fecha Terminación"
-                            ></v-text-field>
+                                prepend-icon="mdi-calendar" label="Fecha Terminación"></v-text-field>
                         </template>
                         <v-locale-provider locale="es">
                             <v-date-picker header="Calendario" title="Seleccione la fecha" color="#F18254"
@@ -77,7 +75,7 @@
                         <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results"
                             :search="search" class="elevation-1" style="max-height: 55vh; overflow-y: auto;"
                             no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles"
-                            :loading="loadingrules" loading-text="Cargando datos..." show-expand  hide-default-footer>
+                            :loading="loadingrules" loading-text="Cargando datos..." show-expand hide-default-footer>
                             <template v-slot:item.actions="{ item, internalItem, isExpanded, toggleExpand }">
                                 <!-- Botón de expansión (ícono verde) -->
                                 <v-btn density="comfortable"
@@ -90,102 +88,175 @@
                                 <tr>
                                     <td :colspan="columns.length" class="py-2">
                                         <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
-                  <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
-                    <v-card-text>
-                      <v-row class="mb-4 mt-2" dense no-gutters>
-                        <v-col cols="12" md="1" class="text-center"></v-col>
-                        <v-col cols="12" md="5">
-                          <v-card class="mx-auto" subtitle="Resumen de datos arrojados por el sistema"
-                            style="background-color: #027b7b; color: white;" elevation="4">
-                            <template v-slot:prepend>
-                              <v-avatar color="white">
-                                <v-icon icon="mdi-cog" color="#027b7b" size="large"></v-icon>
-                              </v-avatar>
-                            </template>
-                            <template v-slot:title>
-                              <span class="font-weight-black">Datos del Sistema</span>
-                            </template>
-                            <v-card-text class="bg-surface-light pt-4">
-                            <v-text-field :model-value="formatNumber(item.totalCreditCard)" label="Tarjeta Crédito" readonly
-                              prepend-icon="mdi-credit-card" variant="underlined" density="compact"></v-text-field>
-                            <v-text-field :model-value="formatNumber(item.totalDebit)" label="Débito" readonly
-                              prepend-icon="mdi-credit-card-outline" variant="underlined"
-                              density="compact"></v-text-field>
-                            <v-text-field :model-value="formatNumber(item.totalTransfer)" label="Transferencia" readonly
-                              prepend-icon="mdi-bank-transfer" variant="underlined" density="compact"></v-text-field>
-                            <v-text-field :model-value="formatNumber(item.existence)" label="Efectivo" readonly prepend-icon="mdi-cash"
-                              variant="underlined" density="compact"></v-text-field>
-                            <v-text-field :model-value="formatNumber(item.totalOther)" label="Otros" readonly
-                              prepend-icon="mdi-currency-usd" variant="underlined" density="compact"></v-text-field>
-                            <v-text-field :model-value="formatNumber(item.totalCardGif)" label="Tarjeta Regalo" readonly
-                              prepend-icon="mdi-gift" variant="underlined" density="compact"></v-text-field>
-                            <v-text-field :model-value="formatNumber(item.extraction)" label="Extracción en caja" readonly
-                              prepend-icon="mdi-cash-refund" variant="underlined" density="compact"></v-text-field>
-                              <v-text-field v-if="item.type === 'Diario'" :model-value="formatNumber(item.totalBonus)" label="Bonos" prepend-icon="mdi-cash-refund"
-                              variant="underlined" density="compact"></v-text-field>
-                            <v-text-field :model-value="formatNumber(item.advancement)" label="Adelanto" readonly
-                              prepend-icon="mdi-cash" variant="underlined" density="compact"></v-text-field>
-                              </v-card-text>
-                          </v-card>
-                        </v-col>
-                          <v-col cols="12" md="5" class="ml-6">
-                          <v-card class="mx-auto" subtitle="Resumen datos del cierre de caja"
-                            style="background-color: #004059; color: white;" elevation="4">
-                            <template v-slot:prepend>
-                              <v-avatar color="white">
-                                <v-icon icon="mdi-cash-register" color="#004059" size="large"></v-icon>
-                              </v-avatar>
-                            </template>
-                            <template v-slot:title>
-                              <span class="font-weight-black">Datos de la Cajera</span>
-                            </template>
-                            <v-card-text class="bg-white pt-4">
-                                <v-text-field :model-value="formatNumber(item.cashier_totalCreditCard)" label="Tarjeta Crédito" readonly
-                              prepend-icon="mdi-credit-card" variant="underlined" density="compact"></v-text-field>
-                            <v-text-field :model-value="formatNumber(item.cashier_totalDebit)" label="Débito" readonly
-                              prepend-icon="mdi-credit-card-outline" variant="underlined"
-                              density="compact"></v-text-field>
-                            <v-text-field :model-value="formatNumber(item.cashier_totalTransfer)" label="Transferencia" readonly
-                              prepend-icon="mdi-bank-transfer" variant="underlined" density="compact"></v-text-field>
-                            <v-text-field :model-value="formatNumber(item.cashier_existence)" label="Efectivo" readonly prepend-icon="mdi-cash"
-                              variant="underlined" density="compact"></v-text-field>
-                            <v-text-field :model-value="formatNumber(item.cashier_totalOther)" label="Otros" readonly
-                              prepend-icon="mdi-currency-usd" variant="underlined" density="compact"></v-text-field>
-                            <v-text-field :model-value="formatNumber(item.cashier_totalCardGif)" label="Tarjeta Regalo" readonly
-                              prepend-icon="mdi-gift" variant="underlined" density="compact"></v-text-field>
-                            <v-text-field :model-value="formatNumber(item.cashier_extraction)" label="Extracción en caja" readonly
-                              prepend-icon="mdi-cash-refund" variant="underlined" density="compact"></v-text-field>
-                              <v-text-field v-if="item.type === 'Diario'" :model-value="formatNumber(item.cashier_totalBonus)" label="Bonos" prepend-icon="mdi-cash-refund"
-                              variant="underlined" density="compact"></v-text-field>
-                            <v-text-field :model-value="formatNumber(item.cashier_advancement)" label="Adelanto" readonly
-                              prepend-icon="mdi-cash" variant="underlined" density="compact"></v-text-field>
-                              </v-card-text>
-                          </v-card>
-                        </v-col>
-                      </v-row>
-                      <v-row v-if="item.cashier_difference !== 0">
-                      <v-col cols="12" md="1"></v-col>
-                      <v-col cols="12" md="10">
-                        <v-row class="mb-4 mt-2 text-right" dense no-gutters>
-                        <v-col cols="12" md="12">
-                          <span class="text-h6" :class="{
-                            'text-red': item.cashier_difference < 0,
-                            'text-green': item.cashier_difference >= 0
-                          }">Existe una diferencia total de: {{item.cashier_difference}}</span>
-                        </v-col>
-                      </v-row>
-                      <v-row class="mb-4 mt-1" dense no-gutters>
-                        <v-col cols="12" md="6" class="text-h6">Comentario:</v-col>
-                        <v-col cols="12" md="12" class="text-center">
-                          <v-textarea v-model="item.description"
-                            variant="underlined" density="compact" class="mb-2" :rules="descriptionRules"></v-textarea>
-                        </v-col>
-                      </v-row>
-                      </v-col>
-                      </v-row>
-                    </v-card-text>  
-                  </v-card>
-                </div>
+                                            <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
+                                                <v-card-text>
+                                                    <v-row class="mb-4 mt-2" dense no-gutters>
+                                                        <v-col cols="12" md="1" class="text-center"></v-col>
+                                                        <v-col cols="12" md="5">
+                                                            <v-card class="mx-auto"
+                                                                subtitle="Resumen de datos arrojados por el sistema"
+                                                                style="background-color: #F18254; color: white;"
+                                                                elevation="4">
+                                                                <template v-slot:prepend>
+                                                                    <v-avatar color="white">
+                                                                        <v-icon icon="mdi-cog" color="#F18254"
+                                                                            size="large"></v-icon>
+                                                                    </v-avatar>
+                                                                </template>
+                                                                <template v-slot:title>
+                                                                    <span class="font-weight-black">Datos del
+                                                                        Sistema</span>
+                                                                </template>
+                                                                <v-card-text class="bg-surface-light pt-4">
+                                                                    <v-text-field
+                                                                        :model-value="formatNumber(item.totalCreditCard)"
+                                                                        label="Tarjeta Crédito" readonly
+                                                                        prepend-icon="mdi-credit-card"
+                                                                        variant="underlined"
+                                                                        density="compact"></v-text-field>
+                                                                    <v-text-field
+                                                                        :model-value="formatNumber(item.totalDebit)"
+                                                                        label="Débito" readonly
+                                                                        prepend-icon="mdi-credit-card-outline"
+                                                                        variant="underlined"
+                                                                        density="compact"></v-text-field>
+                                                                    <v-text-field
+                                                                        :model-value="formatNumber(item.totalTransfer)"
+                                                                        label="Transferencia" readonly
+                                                                        prepend-icon="mdi-bank-transfer"
+                                                                        variant="underlined"
+                                                                        density="compact"></v-text-field>
+                                                                    <v-text-field
+                                                                        :model-value="formatNumber(item.existence)"
+                                                                        label="Efectivo" readonly
+                                                                        prepend-icon="mdi-cash" variant="underlined"
+                                                                        density="compact"></v-text-field>
+                                                                    <v-text-field
+                                                                        :model-value="formatNumber(item.totalOther)"
+                                                                        label="Otros" readonly
+                                                                        prepend-icon="mdi-currency-usd"
+                                                                        variant="underlined"
+                                                                        density="compact"></v-text-field>
+                                                                    <v-text-field
+                                                                        :model-value="formatNumber(item.totalCardGif)"
+                                                                        label="Tarjeta Regalo" readonly
+                                                                        prepend-icon="mdi-gift" variant="underlined"
+                                                                        density="compact"></v-text-field>
+                                                                    <v-text-field
+                                                                        :model-value="formatNumber(item.extraction)"
+                                                                        label="Extracción en caja" readonly
+                                                                        prepend-icon="mdi-cash-refund"
+                                                                        variant="underlined"
+                                                                        density="compact"></v-text-field>
+                                                                    <v-text-field v-if="item.type === 'Diario'"
+                                                                        :model-value="formatNumber(item.totalBonus)"
+                                                                        label="Bonos" prepend-icon="mdi-cash-refund"
+                                                                        variant="underlined"
+                                                                        density="compact"></v-text-field>
+                                                                    <v-text-field
+                                                                        :model-value="formatNumber(item.advancement)"
+                                                                        label="Adelanto" readonly
+                                                                        prepend-icon="mdi-cash" variant="underlined"
+                                                                        density="compact"></v-text-field>
+                                                                </v-card-text>
+                                                            </v-card>
+                                                        </v-col>
+                                                        <v-col cols="12" md="5" class="ml-6">
+                                                            <v-card class="mx-auto"
+                                                                subtitle="Resumen datos del cierre de caja"
+                                                                style="background-color: #F18254; color: white;"
+                                                                elevation="4">
+                                                                <template v-slot:prepend>
+                                                                    <v-avatar color="white">
+                                                                        <v-icon icon="mdi-cash-register" color="#F18254"
+                                                                            size="large"></v-icon>
+                                                                    </v-avatar>
+                                                                </template>
+                                                                <template v-slot:title>
+                                                                    <span class="font-weight-black">Datos de la
+                                                                        Cajera</span>
+                                                                </template>
+                                                                <v-card-text class="bg-white pt-4">
+                                                                    <v-text-field
+                                                                        :model-value="formatNumber(item.cashier_totalServicio)"
+                                                                        label="Tarjeta Servicio" readonly
+                                                                        prepend-icon="mdi-list-box-outline"
+                                                                        variant="underlined"
+                                                                        density="compact"></v-text-field>
+                                                                    <v-text-field
+                                                                        :model-value="formatNumber(item.cashier_totalProduct)"
+                                                                        label="Tarjeta Producto" readonly
+                                                                        prepend-icon="mdi-package-variant"
+                                                                        variant="underlined"
+                                                                        density="compact"></v-text-field>
+                                                                    <v-text-field
+                                                                        :model-value="formatNumber(item.cashier_totalTransfer)"
+                                                                        label="Transferencia" readonly
+                                                                        prepend-icon="mdi-bank-transfer"
+                                                                        variant="underlined"
+                                                                        density="compact"></v-text-field>
+                                                                    <v-text-field
+                                                                        :model-value="formatNumber(item.cashier_existence)"
+                                                                        label="Efectivo" readonly
+                                                                        prepend-icon="mdi-cash" variant="underlined"
+                                                                        density="compact"></v-text-field>
+                                                                    <v-text-field
+                                                                        :model-value="formatNumber(item.cashier_totalOther)"
+                                                                        label="Otros" readonly
+                                                                        prepend-icon="mdi-currency-usd"
+                                                                        variant="underlined"
+                                                                        density="compact"></v-text-field>
+                                                                    <v-text-field
+                                                                        :model-value="formatNumber(item.cashier_totalCardGif)"
+                                                                        label="Tarjeta Regalo" readonly
+                                                                        prepend-icon="mdi-gift" variant="underlined"
+                                                                        density="compact"></v-text-field>
+                                                                    <v-text-field
+                                                                        :model-value="formatNumber(item.cashier_extraction)"
+                                                                        label="Extracción en caja" readonly
+                                                                        prepend-icon="mdi-cash-refund"
+                                                                        variant="underlined"
+                                                                        density="compact"></v-text-field>
+                                                                    <v-text-field v-if="item.type === 'Diario'"
+                                                                        :model-value="formatNumber(item.cashier_totalBonus)"
+                                                                        label="Bonos" prepend-icon="mdi-cash-refund"
+                                                                        variant="underlined"
+                                                                        density="compact"></v-text-field>
+                                                                    <v-text-field
+                                                                        :model-value="formatNumber(item.cashier_advancement)"
+                                                                        label="Adelanto" readonly
+                                                                        prepend-icon="mdi-cash" variant="underlined"
+                                                                        density="compact"></v-text-field>
+                                                                </v-card-text>
+                                                            </v-card>
+                                                        </v-col>
+                                                    </v-row>
+                                                    <v-row v-if="item.cashier_difference !== 0">
+                                                        <v-col cols="12" md="1"></v-col>
+                                                        <v-col cols="12" md="10">
+                                                            <v-row class="mb-4 mt-2 text-right" dense no-gutters>
+                                                                <v-col cols="12" md="12">
+                                                                    <span class="text-h6" :class="{
+                                                                        'text-red': item.cashier_difference < 0,
+                                                                        'text-green': item.cashier_difference >= 0
+                                                                    }">Existe una diferencia total de: {{ item.cashier_difference }}</span>
+                                                                </v-col>
+                                                            </v-row>
+                                                            <v-row class="mb-4 mt-1" dense no-gutters>
+                                                                <v-col cols="12" md="6"
+                                                                    class="text-h6">Comentario:</v-col>
+                                                                <v-col cols="12" md="12" class="text-center">
+                                                                    <v-textarea v-model="item.description"
+                                                                        variant="underlined" density="compact"
+                                                                        class="mb-2"
+                                                                        :rules="descriptionRules"></v-textarea>
+                                                                </v-col>
+                                                            </v-row>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-card-text>
+                                            </v-card>
+                                        </div>
                                         <!--<v-sheet rounded="lg" border class="mb-4">
                                             <v-table density="compact">
                                                 <tbody class="bg-surface-light">
@@ -264,8 +335,8 @@
                                 </tr>
                             </template>
                             <template v-slot:item.data-table-expand="{ item, isExpanded, toggleExpand }">
-          <!-- Template vacío para ocultar el expand en filas normales -->
-        </template>
+                                <!-- Template vacío para ocultar el expand en filas normales -->
+                            </template>
                         </v-data-table>
                     </v-card-text>
                 </v-col>

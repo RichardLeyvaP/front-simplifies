@@ -22,7 +22,7 @@
           <span class="text-subtitle-1 ml-2"> <strong>Convivencias por trabajador</strong></span>
         </v-col>
         <v-col cols="12" md="2">
-          <div v-if="hasChanges" class="justify-end">
+          <div v-if="!isExtractionEnabled" class="justify-end">
             <!--<v-btn @click="cancelChanges" color="black" prepend-icon="mdi-close" class=" ml-2"
               :disabled="changes.length === 0" title="Cancelar Cambios" style="background-color: #E7E9E9;">
               <span class="btn-text">Cancelar</span>
@@ -186,6 +186,10 @@ export default {
       type: Number,
       required: true
     },
+    isExtractionEnabled: {  // Nueva prop
+      type: Boolean,
+      default: false  // Por defecto deshabilitado
+    }
   },
   data: () => ({
     loadingWorkPlace: true,
@@ -263,20 +267,20 @@ export default {
     dialogDelete(val) {
       val || this.closeDelete()
     },
-    /*results(newVal) {
+    results(newVal) {
       const hasStateThree = newVal.some(item => item.estado === 3);
       this.$emit('update:has-invalid-state', hasStateThree);
-    }*/
-    results(newVal) {
+    }
+    /*results(newVal) {
     const hasStateThree = newVal.some(item => item.estado === 3);
-    const arraysAreEqual = _.isEqual(newVal, this.resultsOriginal); // Usamos lodash para comparación profunda
+    //const arraysAreEqual = _.isEqual(newVal, this.resultsOriginal); // Usamos lodash para comparación profunda
     
     // Emitimos false si:
     // 1. No hay estado 3 Y los arrays son iguales
     // O emitimos true si:
     // 1. Hay estado 3 O los arrays son diferentes
-    this.$emit('update:has-invalid-state', hasStateThree || !arraysAreEqual);
-  }
+    this.$emit('update:has-invalid-state', hasStateThree);
+  }*/
   },
 
   async mounted() {
@@ -378,7 +382,7 @@ export default {
 
       const requestParams = {
         branch_id: this.branch_id,
-        date: formattedDate,
+        date: '2025-03-11',
       };
 
       try {
@@ -521,6 +525,10 @@ export default {
       })
     },
     async save(item) {
+      if (!this.changes || this.changes.length === 0) {
+                this.$emit("save-success"); // Opcional: Notificar éxito (si el padre lo necesita)
+                return true;
+            }
       LocalStorageService.setIsLocked(true);
       /*if (this.editedIndex > -1) {
         this.valid = false;
@@ -553,7 +561,9 @@ export default {
         if (result.success) {
           this.dialog = false;
           this.showAlert("success", "Estado de la convivencia actualizado correctamente", 3000);
+          this.$emit("save-success");
           this.changes = [];
+          return true; // Indicamos éxito
         }
       } catch (error) {
         this.dialog = false;
@@ -561,6 +571,7 @@ export default {
         this.changes = [];
         // Captura de errores no controlados
         this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
+        return false; // Indicamos fallo
       } finally {
         this.dialog = false;
         LocalStorageService.setIsLocked(false);
