@@ -977,26 +977,31 @@ export default {
     },
 
     watch: {
-        // Watcher único para 'available_money' que ejecuta ambos cálculos
-        'editedItem.available_money': {
-            handler(newVal) {
-                this.calcularDiferencias();
-                this.calcularUtilidadFinal();
-            },
-            immediate: true
-        },
-
-        // Watcher para 'totalCalculado' (solo necesita calcular diferencias)
-        'totalCalculado': {
-            handler: 'calcularDiferencias',
-            immediate: true
-        },
-
-        // Watcher para 'retention' (solo necesita calcular utilidad final)
-        'editedItem.retention': {
-            handler: 'calcularUtilidadFinal',
-            immediate: true
-        },
+         // Watcher para cambios en available_money (ejecuta ambos cálculos)
+  'editedItem.available_money': {
+    handler(newVal) {
+      this.calcularDiferencias();
+      this.calcularUtilidadFinal();
+    },
+    immediate: true,
+    deep: false
+  },
+  
+  // Watcher para totalCalculado (solo diferencias)
+  totalCalculado: {
+    handler: 'calcularDiferencias',
+    immediate: true
+  },
+  
+  // Watcher combinado para retention y discounts
+  'editedItem.retention': {
+    handler: 'calcularUtilidadFinal',
+    immediate: true
+  },
+  'editedItem.discounts': {
+    handler: 'calcularUtilidadFinal',
+    immediate: true
+  },
         selectedMounth(newVal) {
             if (newVal === '12' && this.selectedYear < new Date().getFullYear()) {
                 this.selectedYear += 1; // Avanza al siguiente año si seleccionan diciembre
@@ -1081,8 +1086,9 @@ export default {
         },
         calcularUtilidadFinal() {
             const available = parseFloat(this.editedItem.available_money) || 0;
+            const discounts = parseFloat(this.editedItem.discounts || 0);
             const retention = parseFloat(this.editedItem.retention) || 0;
-            this.editedItem.net_utility = available - retention;
+            this.editedItem.net_utility = available - retention - discounts;
         },
         calcularDiferencias() {
             this.editedItem.differences = this.totalCalculado -
