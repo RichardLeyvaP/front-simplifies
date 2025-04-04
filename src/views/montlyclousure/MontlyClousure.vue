@@ -592,8 +592,7 @@
                                                         <v-card-text class="bg-surface-light pt-4">
 
 
-                                                            <v-row dense align="center"
-                                                                v-if="editedItem.available_money">
+                                                            <v-row dense align="center">
                                                                 <v-col cols="12" md="6">
                                                                     <span class="text-body-1 font-weight-bold">Dinero
                                                                         disponible: $</span>
@@ -1181,6 +1180,7 @@ export default {
 
         async showMonthlyClosure() {
             this.loadClosureData();
+            this.step = 1;
             this.dialogMontlyClousure = true;
         },
 
@@ -1491,7 +1491,7 @@ export default {
             } finally {
                 this.close();
                 this.loadingSave = false;
-                this.showAlert("success", "Cierre de caja efectuado correctamente", 3000);
+                this.showAlert("success", "Cierre de mes efectuado correctamente", 3000);
                 await this.initialize();
             }
         },

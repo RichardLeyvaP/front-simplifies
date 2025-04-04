@@ -382,7 +382,7 @@ export default {
 
       const requestParams = {
         branch_id: this.branch_id,
-        date: '2025-03-11',
+        date: formattedDate,
       };
 
       try {
