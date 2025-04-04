@@ -246,34 +246,6 @@
                       <v-row class="mb-4 mt-2" dense no-gutters>
                         <v-col cols="12" md="1" class="text-center">
                         </v-col>
-                        <!--<v-col cols="12" md="5">
-                          <v-card class="mx-auto" subtitle="Datos de ingresos arrojados por el sistema"
-                            style="background-color: #027b7b; color: white;" elevation="4">
-                            <template v-slot:prepend>
-                              <v-avatar color="white">
-                                <v-icon icon="mdi-cog" color="#027b7b" size="large"></v-icon>
-                              </v-avatar>
-                            </template>
-                            <template v-slot:title>
-                              <span class="font-weight-black">Datos del Sistema</span>
-                            </template>
-                            <v-card-text class="bg-surface-light pt-4">
-                              <v-text-field v-model="editedCloseBox.totalCreditCard" label="Tarjeta Crédito" readonly
-                                prepend-icon="mdi-credit-card" variant="underlined" density="compact"></v-text-field>
-                              <v-text-field v-model="editedCloseBox.totalDebit" label="Débito" readonly
-                                prepend-icon="mdi-credit-card-outline" variant="underlined"
-                                density="compact"></v-text-field>
-                              <v-text-field v-model="editedCloseBox.totalTransfer" label="Transferencia" readonly
-                                prepend-icon="mdi-bank-transfer" variant="underlined" density="compact"></v-text-field>
-                              <v-text-field v-model="editedBox.existence" label="Efectivo" readonly
-                                prepend-icon="mdi-cash" variant="underlined" density="compact"></v-text-field>
-                              <v-text-field v-model="editedCloseBox.totalOther" label="Otros" readonly
-                                prepend-icon="mdi-currency-usd" variant="underlined" density="compact"></v-text-field>
-                              <v-text-field v-model="editedCloseBox.totalCardGif" label="Tarjeta Regalo" readonly
-                                prepend-icon="mdi-gift" variant="underlined" density="compact"></v-text-field>
-                            </v-card-text>
-                          </v-card>
-                        </v-col>-->
                         <v-col cols="12" md="5" class="ml-6">
                           <v-card class="mx-auto" subtitle="Introduces tus datos de ingresos "
                             style="background-color: #F18254; color: white;" elevation="4">
@@ -286,7 +258,7 @@
                               <span class="font-weight-black">Datos de Ingresos</span>
                             </template>
                             <template v-slot:append>
-                              <v-btn prepend-icon="mdi-plus" variant="outlined" @click="dialogDetails = true">
+                              <v-btn prepend-icon="mdi-plus-circle" variant="flat" elevation="2" @click="dialogDetails = true">
                                 Agregar
                               </v-btn>
                             </template>
@@ -329,8 +301,8 @@
                             </template>
 
                             <template v-slot:append>
-                              <v-btn prepend-icon="mdi-plus" variant="outlined" @click="openDialogExtraction">
-                                Agregar Extracción
+                              <v-btn prepend-icon="mdi-plus-circle" variant="flat" elevation="2" @click="openDialogExtraction">
+                                Agregar
                               </v-btn>
                             </template>
                             <v-card-text class="bg-white pt-4" style="min-height: 17vh; overflow-y: auto;">
@@ -763,7 +735,7 @@
                               <span class="font-weight-black">Datos de Ingresos</span>
                             </template>
                             <template v-slot:append>
-                              <v-btn prepend-icon="mdi-plus" variant="outlined" @click="dialogDetails = true">
+                              <v-btn prepend-icon="mdi-plus-circle" variant="flat" elevation="2" @click="dialogDetails = true">
                                 Agregar
                               </v-btn>
                             </template>
@@ -803,8 +775,8 @@
                               <span class="font-weight-black">Datos de Extracción</span>
                             </template>
                             <template v-slot:append>
-                              <v-btn prepend-icon="mdi-plus" variant="outlined" @click="openDialogExtraction">
-                                Agregar Extracción
+                              <v-btn prepend-icon="mdi-plus-circle" variant="flat" elevation="2" @click="openDialogExtraction">
+                                Agregar
                               </v-btn>
                             </template>
                             <v-card-text class="bg-white pt-4" style="min-height: 17vh; overflow-y: auto;">
@@ -2182,7 +2154,7 @@ export default {
     stepCashier: 1,
     itemsCashier: [
       'Inventario',
-      'Ingreso y Gastos',
+      'Ingresos y Gastos',
       'Resumen'
     ],
     //end steep
@@ -2920,7 +2892,7 @@ export default {
       //this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
     } finally {
       if (this.charge === 'Administrador') {
-        this.branch_id = this.branches[1].id;
+        this.branch_id = this.branches[0].id;
         this.mostrarFila = true;
       }
       await this.startInterval();
@@ -4652,7 +4624,7 @@ getActionTitle(actionType) {
         this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
       } finally {
         this.loadingBonus = true;
-        this.showAlert("success", "Cierre de caja efectuado correctamente", 3000);
+        this.showAlert("success", "Cierre de caja efectuado correctamente, Por favor confirma la información", 3000);
       }
       //this.loadingBonus = true;
       LocalStorageService.setIsLocked(false);
@@ -4709,7 +4681,7 @@ getActionTitle(actionType) {
         //LocalStorageService.setIsLocked(false);
         //this.dialogParcial = false;
         this.loadingBonus = true;
-        this.showAlert("success", "Cierre de caja efectuado correctamente, En breve se cerrará la sesión", 3000);
+        this.showAlert("success", "Cierre de caja efectuado correctamente, Por favor confirma la información.", 3000);
         /*setTimeout(() => {
           //this.closeParcial();
         }, 3000);*/
@@ -4794,13 +4766,27 @@ getActionTitle(actionType) {
         this.valid = false;
         LocalStorageService.setIsLocked(true);   
         let newExtraction = 0;
+        console.log('this.cashierData.existence');
+        console.log(this.cashierData.existence);
+        console.log('this.editedBox.newExtraction');
+        console.log(this.editedBox.newExtraction);
         if (this.editedBox.newExtraction) {
-          newExtraction = parseFloat(this.editedBox.newExtraction);
-          this.cashierData.extraction = (parseFloat(this.cashierData.extraction) || 0) + newExtraction;
-        }     
+        newExtraction = parseFloat(this.editedBox.newExtraction);
+        
+        // Actualizar ambos lugares
+        this.cashierData.extraction = (parseFloat(this.cashierData.extraction) || 0) + newExtraction;
+        this.cashierData.existence = (parseFloat(this.cashierData.existence) || 0) - newExtraction;
+        
+        // Actualizar también el detalle correspondiente en el array
+        const existenceDetail = this.cashierData.details.find(d => d.type === 'existence');
+        if (existenceDetail) {
+          existenceDetail.value = this.cashierData.existence;
+        }
+      } 
         this.editedBox.branch_id = this.branch_id;
         this.editedBox.nameProfessional = this.nameProfessional;
-
+        console.log('this.cashierData.existence2');
+        console.log(this.cashierData.existence);
         const formData = new FormData();
         for (let key in this.editedBox) {
           if (key === 'extraction' && newExtraction !== 0) {

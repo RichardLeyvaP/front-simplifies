@@ -15,6 +15,7 @@
         </v-row>
     </v-snackbar>
     <v-container style="min-width: 100%; max-height: 100%;">
+        <v-card elevation="6" class="mx-4" width='auto'>
             <v-toolbar color="#F18254">
                 <v-row align="center">
                     <v-col cols="12" md="6" class="grow ml-2">
@@ -98,22 +99,18 @@
                                                     prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago">
                                                 </v-text-field>
                                             </v-col>
-                                            <v-col cols="12" md="4" v-show="selectedOption === 'Gerencia' || this.edited">
+                                            <v-col cols="12" md="4" v-show="this.mostrarFila || this.edited">
                                                 <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40"
-                                                    transition="scale-transition" offset-y min-width="290px" :disabled="selectedOption !== 'Gerencia'">
+                                                    transition="scale-transition" offset-y min-width="290px">
                                                     <template v-slot:activator="{ props }">
                                                         <v-text-field v-bind="props" v-model="dateFormatted" variant="underlined"
-                                                        prepend-icon="mdi-calendar" label="Seleccione la Fecha" :disabled="selectedOption !== 'Gerencia'"></v-text-field>
+                                                        prepend-icon="mdi-calendar" label="Seleccione la Fecha"></v-text-field>
                                                     </template>
                                                     <v-locale-provider locale="es">
                                                         <v-date-picker color="orange lighten-2" @input="menu" v-model="editedItem.data"
                                                         header="Calendario" title="Seleccione la fecha" 
-                                                             @update:modelValue="updateDate"></v-date-picker><!--</v-date-picker>:min="new Date(
-                                                            Date.now() -
-                                                            new Date().getTimezoneOffset() * 60000
-                                                        )
-                                                            .toISOString()
-                                                            .substr(0, 10)"-->
+                                                             @update:modelValue="updateDate" :min="minDate"
+                                                             :max="maxDate" ></v-date-picker>
                                                     </v-locale-provider>
                                                     </v-menu>
                                             </v-col>                                            
@@ -388,6 +385,7 @@
                 </v-col>
                         </v-card>
             </v-row>
+            </v-card>
     </v-container>
 </template>
 <script>
@@ -536,7 +534,25 @@ export default {
   },
 
     computed: {
-        
+        minDate() {
+            const today = new Date();
+            const currentDay = today.getDate();
+            
+            if (currentDay <= 10) {
+                const previousMonth = new Date(today);
+                previousMonth.setMonth(previousMonth.getMonth() - 1);
+                previousMonth.setDate(1);
+                return previousMonth.toISOString().split('T')[0];
+            } else {
+                const currentMonth = new Date(today);
+                currentMonth.setDate(1);
+                return currentMonth.toISOString().split('T')[0];
+            }
+        },
+        maxDate() {
+      // Siempre permitir hasta hoy
+      return new Date().toISOString().split('T')[0];
+    },
         formTitle() {
             // Si el type es "Negocio", mostrar "Gerencia"
         const type = this.editedItem.type === 'Negocio' ? 'Gerencia' : this.editedItem.type;

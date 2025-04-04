@@ -127,7 +127,7 @@ const routes = [
         component: () => import("@/views/montlyclousure/MontlyClousure.vue"),
         meta: {
           requiresAuth: true,
-          requiresPermissions: ["view_cash_closing"],
+          requiresPermissions: ["view_monthly_closing"],
         },
       },
       {

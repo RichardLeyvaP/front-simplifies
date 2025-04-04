@@ -22,10 +22,10 @@
                         <span class="text-subtitle-1 ml-2"> <strong> Cierre de mes</strong></span>
                     </v-col>
                     <v-col cols="12" md="2">
-                        <v-btn @click="showMonthlyClosure" color="black" prepend-icon="mdi-check" title="Cierre mes"
-                            style="background-color: #E7E9E9;" :loading="loadingAcept"
+                        <v-btn @click="showMonthlyClosure" color="black" prepend-icon="mdi-plus-circle"
+                            title="Cierre de mes" style="background-color: #E7E9E9;" :loading="loadingAcept"
                             :disabled="Number(selectedYear) !== new Date().getFullYear()">
-                            <span>Cierre</span>
+                            <span>Cierre de mes</span>
                         </v-btn>
                     </v-col>
                 </v-row>
@@ -100,7 +100,7 @@
                                                                     <span class="font-weight-black">Dinero
                                                                         Disponible</span>
                                                                 </template>
-                                                                <v-card-text class="bg-surface-light pt-4">
+                                                                <v-card-text class="bg-white pt-4">
 
 
                                                                     <v-row dense align="center"
@@ -134,7 +134,7 @@
                                                                 <template v-slot:title>
                                                                     <span class="font-weight-black">Aplicación</span>
                                                                 </template>
-                                                                <v-card-text class="bg-surface-light pt-4">
+                                                                <v-card-text class="bg-white pt-4">
 
 
                                                                     <v-row dense align="center">
@@ -205,7 +205,7 @@
                                                                 <template v-slot:title>
                                                                     <span class="font-weight-black">Arqueo</span>
                                                                 </template>
-                                                                <v-card-text class="bg-surface-light pt-4">
+                                                                <v-card-text class="bg-white pt-4">
 
 
                                                                     <v-row dense align="center">
@@ -269,35 +269,33 @@
                             <v-sheet border>
                                 <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                                     <v-row class="mt-2" dense align="center">
-                                        <v-col cols="12" md="1">
-                                        </v-col>
                                         <!-- Año - Cambiado cols="12" a cols="6" para md y sm -->
-                                        <v-col cols="12" md="3" class="mx-8" v-if="false">
+                                        <v-col cols="12" md="3" v-if="false">
                                             <v-select v-model="selectedYear" :items="years" label="Año"
                                                 variant="underlined" prepend-icon="mdi-calendar" density="comfortable"
                                                 disabled="true"></v-select>
                                         </v-col>
+                                        <v-col cols="12" md="3" v-if="mostrarFila">
+                                            <v-autocomplete :no-data-text="'No hay datos disponibles'"
+                                                v-model="branch_id" :items="branches" label="Seleccione una Sucursal"
+                                                prepend-icon="mdi-store" item-title="name" item-value="id"
+                                                variant="underlined" @update:modelValue="onBranchChangeAdd"
+                                                class="ml-10"></v-autocomplete>
+                                        </v-col>
 
                                         <!-- Mes - Cambiado cols="12" a cols="6" para md y sm -->
-                                        <v-col cols="12" md="3" class="mx-8">
+                                        <v-col cols="12" md="3">
                                             <v-select v-model="selectedMounth" :items="months.map(month => ({
-            value: month.value,
-            title: formatMonth(`${selectedYear}-${month.value}`)  // Concatenamos año + mes
-        }))" label="Mes"
-                                                variant="underlined" prepend-icon="mdi-calendar-month"
-                                                density="comfortable"></v-select>
+                                                value: month.value,
+                                                title: `${month.title} ${selectedYear}`
+                                            }))" label="Mes" variant="underlined" prepend-icon="mdi-calendar-month" class="mx-6"></v-select>
                                         </v-col>
-
-                                        <!-- Espacio adicional si necesitas más controles -->
-                                        <v-col cols="12" md="4">
-                                            <!-- Controles adicionales aquí -->
-                                        </v-col>
+                                        
                                     </v-row>
                                     <v-card style="max-height: 55vh; min-height: 55vh; overflow-y: auto;">
                                         <v-card-text>
                                             <v-row class="mb-4 mt-2" dense no-gutters>
-                                                <v-col cols="12" md="1" class="text-center"></v-col>
-                                                <v-col cols="12" md="5">
+                                                <v-col cols="12" md="6">
                                                     <v-card class="mx-6" subtitle="Introduces tus datos de ingresos "
                                                         style="background-color: #F18254; color: white;" elevation="4">
                                                         <template v-slot:prepend>
@@ -310,8 +308,8 @@
                                                             <span class="font-weight-black">Datos de Ingresos</span>
                                                         </template>
                                                         <template v-slot:append>
-                                                            <v-btn prepend-icon="mdi-plus" variant="outlined"
-                                                                @click="dialogIncomes = true">
+                                                            <v-btn prepend-icon="mdi-plus-circle" variant="flat"
+                                                                elevation="2" @click="dialogIncomes = true">
                                                                 Agregar
                                                             </v-btn>
                                                         </template>
@@ -370,11 +368,11 @@
                                                         <v-col cols="12" md="6" class="text-left">
                                                             <span class="text-body-1 font-weight-bold text-black">${{
                                                                 formatNumber(editedItem.available_money)
-                                                            }}</span>
+                                                                }}</span>
                                                         </v-col>
                                                     </v-row>
                                                 </v-col>
-                                                <v-col cols="12" md="5">
+                                                <v-col cols="12" md="6">
                                                     <v-card class="mx-6" subtitle="Introduces tus datos de gastos "
                                                         style="background-color: #F18254; color: white;" elevation="4">
                                                         <template v-slot:prepend>
@@ -387,8 +385,8 @@
                                                             <span class="font-weight-black">Datos de Gastos</span>
                                                         </template>
                                                         <template v-slot:append>
-                                                            <v-btn prepend-icon="mdi-plus" variant="outlined"
-                                                                @click="dialogExpenses = true">
+                                                            <v-btn prepend-icon="mdi-plus-circle" variant="flat"
+                                                                elevation="2" @click="dialogExpenses = true">
                                                                 Agregar
                                                             </v-btn>
                                                         </template>
@@ -454,7 +452,7 @@
                                                         <v-col cols="12" md="6" class="text-left">
                                                             <span class="text-body-1 font-weight-bold text-warning">${{
                                                                 formatNumber(editedItem.discounts)
-                                                            }}</span>
+                                                                }}</span>
                                                         </v-col>
                                                     </v-row>
                                                 </v-col>
@@ -474,102 +472,7 @@
                                 </v-row>
                             </v-container>
                         </template>
-                        <!--<template v-slot:item.2>
-                            <v-sheet border>
-                                <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
-                                    <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
-                                        <v-card-text>
-                                            <v-row class="mb-4 mt-2" dense no-gutters>
-                                                <v-col cols="12" md="1" class="text-center"></v-col>
-                                                <v-col cols="12" md="5" class="ml-6">
-                                                    <v-card class="mx-auto" subtitle="Introduces tus datos de ingresos "
-                                                        style="background-color: #F18254; color: white;" elevation="4">
-                                                        <template v-slot:prepend>
-                                                            <v-avatar color="white">
-                                                                <v-icon icon="mdi-cash-remove" color="#004059"
-                                                                    size="large"></v-icon>
-                                                            </v-avatar>
-                                                        </template>
-                                                        <template v-slot:title>
-                                                            <span class="font-weight-black">Datos de Gastos</span>
-                                                        </template>
-                                                        <template v-slot:append>
-                                                            <v-btn prepend-icon="mdi-plus" variant="outlined"
-                                                                @click="dialogExpenses = true">
-                                                                Agregar
-                                                            </v-btn>
-                                                        </template>
-                                                        <v-card-text class="bg-white pt-4"
-                                                            style="min-height: 44vh; overflow-y: auto;">
 
-                                                            <v-row dense align="center" class="font-weight-bold">
-                                                                <v-col cols="12" md="6">Destino</v-col>
-                                                                <v-col cols="12" md="4" class="text-left">Monto</v-col>
-                                                                <v-col cols="12" md="2"
-                                                                    class="text-right">Acción</v-col>
-                                                            </v-row>
-                                                            <v-div v-if="editedItem.expenses.length > 0">
-                                                                <v-div v-for="expense in editedItem.expenses"
-                                                                    :key="expense.id" class="mb-2">
-                                                                    <template v-slot:default>
-                                                                        <v-row dense align="center">
-                                                                            <v-col cols="12" md="6">
-                                                                                <span class="text-body-1">{{
-                                                                                    expense.name
-                                                                                    }}</span>
-                                                                            </v-col>
-                                                                            <v-col cols="12" md="4" class="text-left">
-                                                                                <span
-                                                                                    class="text-body-1 font-weight-medium">${{
-                                                                                        formatNumber(expense.amount)
-                                                                                    }}</span>
-                                                                            </v-col>
-                                                                            <v-col cols="12" md="2" class="text-right">
-                                                                                <v-btn density="comfortable"
-                                                                                    icon="mdi-delete"
-                                                                                    @click.stop="removeExpense(expense)"
-                                                                                    style="cursor: pointer;"
-                                                                                    color="red-darken-4" variant="tonal"
-                                                                                    elevation="1"></v-btn>
-                                                                            </v-col>
-                                                                        </v-row>
-                                                                    </template>
-                                                                </v-div>
-                                                            </v-div>
-                                                        </v-card-text>
-                                                    </v-card>
-                                                    <v-spacer></v-spacer>
-                                                    <v-divider></v-divider>
-                                                    <v-divider class="my-2"></v-divider>
-                                                    <v-row dense align="center" v-if="editedItem.discounts">
-                                                        <v-col cols="12" md="3">
-                                                            <span class="text-body-1 font-weight-bold">Descuento:</span>
-                                                        </v-col>
-                                                        <v-col cols="12" md="6" class="text-left">
-                                                            <span class="text-body-1 font-weight-bold text-warning">${{
-                                                                formatNumber(editedItem.discounts)
-                                                                }}</span>
-                                                        </v-col>
-                                                    </v-row>
-                                                </v-col>
-                                            </v-row>
-                                        </v-card-text>
-                                    </v-card>
-                                </div>
-
-                            </v-sheet>
-                            <v-container fluid>
-                                <v-row class="mt-1">
-                                    <v-btn color="#E7E9E9" variant="flat" @click="prevStep">
-                                        Volver
-                                    </v-btn>
-                                    <v-spacer></v-spacer>
-                                    <v-btn color="#E7E9E9" variant="flat" @click="nextStep">
-                                        Siguiente
-                                    </v-btn>
-                                </v-row>
-                            </v-container>
-                        </template>-->
                         <template v-slot:item.2>
                             <v-sheet border>
                                 <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
@@ -589,7 +492,7 @@
                                                         <template v-slot:title>
                                                             <span class="font-weight-black">Dinero Disponible</span>
                                                         </template>
-                                                        <v-card-text class="bg-surface-light pt-4">
+                                                        <v-card-text class="bg-white pt-4">
 
 
                                                             <v-row dense align="center">
@@ -619,7 +522,7 @@
                                                         <template v-slot:title>
                                                             <span class="font-weight-black">Aplicación</span>
                                                         </template>
-                                                        <v-card-text class="bg-surface-light pt-4">
+                                                        <v-card-text class="bg-white pt-4">
 
 
                                                             <v-row dense align="center">
@@ -687,7 +590,7 @@
                                                         <template v-slot:title>
                                                             <span class="font-weight-black">Arqueo</span>
                                                         </template>
-                                                        <v-card-text class="bg-surface-light pt-4">
+                                                        <v-card-text class="bg-white pt-4">
 
 
                                                             <v-row dense align="center">
@@ -727,13 +630,18 @@
                             <v-container fluid>
                                 <!-- BOTONES -->
                                 <v-row class="mt-1">
-                                    <v-btn color="#E7E9E9" variant="flat" @click="prevStep">
+                                    <v-btn color="#E7E9E9" variant="flat" @click="prevStep" :disabled="loadingSave">
                                         Volver
                                     </v-btn>
                                     <v-spacer></v-spacer>
-                                    <v-btn color="#E7E9E9" variant="flat" @click="saveMonthlyClosure" :loading="loadingSave"
->
-                                        Finalizar
+                                    <v-btn color="#E7E9E9" variant="flat" @click="dialogMontlyClousure = false"
+                                        class="mx-2" :disabled="loadingSave">
+                                        Salir
+                                    </v-btn>
+
+                                    <v-btn color="#E7E9E9" variant="flat" @click="saveMonthlyClosure"
+                                        :loading="loadingSave">
+                                        Cerrar mes
                                     </v-btn>
                                 </v-row>
                             </v-container>
@@ -843,6 +751,7 @@ export default {
 
     data: () => {
         const currentDate = new Date();
+        const currentDay = currentDate.getDate(); // Día actual del mes
         const currentYear = currentDate.getFullYear();
         const currentMonth = currentDate.getMonth() + 1;
 
@@ -871,6 +780,29 @@ export default {
             11: 'Noviembre',
             12: 'Diciembre'
         };
+        // Determinar qué meses mostrar según el día actual
+        let availableMonths = [];
+        if (currentDay <= 10) {
+            // Si es antes o igual al día 10, mostrar mes anterior y actual
+            availableMonths = [
+                {
+                    value: ('0' + previousMonth).slice(-2),
+                    title: `${monthNames[previousMonth]}`
+                },
+                {
+                    value: ('0' + currentMonth).slice(-2),
+                    title: `${monthNames[currentMonth]}`
+                }
+            ];
+        } else {
+            // Si es después del día 10, solo mostrar mes actual
+            availableMonths = [
+                {
+                    value: ('0' + currentMonth).slice(-2),
+                    title: `${monthNames[currentMonth]}`
+                }
+            ];
+        }
         return {
             loading: false,
             loadingAddIncomes: false,
@@ -890,7 +822,8 @@ export default {
             retention_ids: [],
             type: 'Business',
             years,
-            months: [
+            months: availableMonths, // Usamos el array calculado
+            /*months: [
                 {
                     value: ('0' + previousMonth).slice(-2),
                     title: `${monthNames[previousMonth]}`
@@ -899,9 +832,9 @@ export default {
                     value: ('0' + currentMonth).slice(-2),
                     title: `${monthNames[currentMonth]}`
                 }
-            ],
+            ],*/
             selectedYear: previousMonth === 12 ? previousYear : currentYear, // Ajuste de año
-            selectedMounth: ('0' + previousMonth).slice(-2), // Años desde 2023 hasta actual
+            selectedMounth: currentDay <= 10 ? ('0' + previousMonth).slice(-2) : ('0' + currentMonth).slice(-2),
             /*months: [
                 { value: '', title: '' },
                 { value: 1, title: 'Enero' },
@@ -1104,7 +1037,7 @@ export default {
                 }
                 : { ...this.defaultEditedItem };
         },
-        formatMonth(monthString) {
+        /*formatMonth(monthString) {
             if (!monthString) return 'N/A';
 
             const [year, month] = monthString.split('-');
@@ -1113,6 +1046,21 @@ export default {
                 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
             ];
             return `${months[parseInt(month) - 1]} del ${year}`;
+        },*/
+        formatMonth(dateString) {
+            if (!dateString) return '';
+
+            const [year, month] = dateString.split('-');
+            const monthNames = [
+                'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+            ];
+
+            const monthIndex = parseInt(month) - 1;
+            if (monthIndex >= 0 && monthIndex < 12) {
+                return `${monthNames[monthIndex]} ${year}`;
+            }
+            return dateString;
         },
         processedClosures() {
             return this.closures.map(item => ({
@@ -1123,6 +1071,12 @@ export default {
         onBranchChange(newVal) {
             if (newVal) {
                 this.type = 'Branch';
+            }
+        },
+        async onBranchChangeAdd(newVal) {
+            if (newVal) {
+                this.type = 'Branch';
+                await this.initialize();
             }
         },
         calcularUtilidadFinal() {
