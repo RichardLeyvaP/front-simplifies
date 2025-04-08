@@ -92,28 +92,66 @@
                                                                 elevation="4">
                                                                 <template v-slot:prepend>
                                                                     <v-avatar color="white">
-                                                                        <v-icon icon="mdi-cash-multiple" color="#F18254"
+                                                                        <v-icon icon="mdi-account-cog" color="#F18254"
                                                                             size="large"></v-icon>
                                                                     </v-avatar>
                                                                 </template>
                                                                 <template v-slot:title>
-                                                                    <span class="font-weight-black">Dinero
-                                                                        Disponible</span>
+                                                                    <span class="font-weight-black">Datos del
+                                                                        Administrador</span>
                                                                 </template>
                                                                 <v-card-text class="bg-white pt-4">
 
 
-                                                                    <v-row dense align="center"
-                                                                        v-if="item.available_money">
+                                                                    <v-row dense align="center">
                                                                         <v-col cols="12" md="6">
                                                                             <span
-                                                                                class="text-body-1 font-weight-bold">Dinero
-                                                                                disponible: $</span>
+                                                                                class="text-body-1 font-weight-bold">Ingresos:
+                                                                                $</span>
                                                                         </v-col>
                                                                         <v-col cols="12" md="6" class="text-right">
                                                                             <span
                                                                                 class="text-body-1 font-weight-bold text-black">{{
-                                                                                    formatNumber(item.available_money)
+                                                                                    formatNumber(Number(item.available_money))
+                                                                                }}</span>
+                                                                        </v-col>
+                                                                    </v-row>
+                                                                    <v-row dense align="center">
+                                                                        <v-col cols="12" md="6">
+                                                                            <span
+                                                                                class="text-body-1 font-weight-bold">Gastos:
+                                                                                $</span>
+                                                                        </v-col>
+                                                                        <v-col cols="12" md="6" class="text-right">
+                                                                            <span
+                                                                                class="text-body-1 font-weight-bold text-black">{{
+                                                                                    formatNumber(Number(item.discounts))
+                                                                                }}</span>
+                                                                        </v-col>
+                                                                    </v-row>
+                                                                    <v-row dense align="center">
+                                                                        <v-col cols="12" md="6">
+                                                                            <span
+                                                                                class="text-body-1 font-weight-bold">Utilidad:
+                                                                                $</span>
+                                                                        </v-col>
+                                                                        <v-col cols="12" md="6" class="text-right">
+                                                                            <span
+                                                                                class="text-body-1 font-weight-bold text-black">{{
+                                                                                    formatNumber(Number(item.client_utility))
+                                                                                }}</span>
+                                                                        </v-col>
+                                                                    </v-row>
+                                                                    <v-row dense align="center">
+                                                                        <v-col cols="12" md="6">
+                                                                            <span
+                                                                                class="text-body-1 font-weight-bold">Retenciones:
+                                                                                $</span>
+                                                                        </v-col>
+                                                                        <v-col cols="12" md="6" class="text-right">
+                                                                            <span
+                                                                                class="text-body-1 font-weight-bold text-black">{{
+                                                                                    formatNumber(Number(item.client_retention))
                                                                                 }}</span>
                                                                         </v-col>
                                                                     </v-row>
@@ -127,7 +165,7 @@
                                                                 elevation="4">
                                                                 <template v-slot:prepend>
                                                                     <v-avatar color="white">
-                                                                        <v-icon icon="mdi-cash-multiple" color="#F18254"
+                                                                        <v-icon icon="mdi-server" color="#F18254"
                                                                             size="large"></v-icon>
                                                                     </v-avatar>
                                                                 </template>
@@ -136,6 +174,34 @@
                                                                 </template>
                                                                 <v-card-text class="bg-white pt-4">
 
+                                                                    <v-row dense align="center">
+                                                                        <v-col cols="12" md="6">
+                                                                            <span
+                                                                                class="text-body-1 font-weight-bold">Ingresos:
+                                                                                $</span>
+                                                                        </v-col>
+                                                                        <v-col cols="12" md="6" class="text-right">
+                                                                            <span
+                                                                                class="text-body-1 font-weight-bold text-black">{{
+                                                                                    formatNumber(Number(item.system_incomes))
+                                                                                }}</span>
+                                                                        </v-col>
+                                                                    </v-row>
+
+
+                                                                    <v-row dense align="center">
+                                                                        <v-col cols="12" md="6">
+                                                                            <span
+                                                                                class="text-body-1 font-weight-bold">Gastos:
+                                                                                $</span>
+                                                                        </v-col>
+                                                                        <v-col cols="12" md="6" class="text-right">
+                                                                            <span
+                                                                                class="text-body-1 font-weight-bold text-black">{{
+                                                                                    formatNumber(Number(item.spent))
+                                                                                }}</span>
+                                                                        </v-col>
+                                                                    </v-row>
 
                                                                     <v-row dense align="center">
                                                                         <v-col cols="12" md="6">
@@ -146,7 +212,7 @@
                                                                         <v-col cols="12" md="6" class="text-right">
                                                                             <span
                                                                                 class="text-body-1 font-weight-bold text-black">{{
-                                                                                    formatNumber(item.utility)
+                                                                                    formatNumber(Number(item.utility))
                                                                                 }}</span>
                                                                         </v-col>
                                                                     </v-row>
@@ -159,34 +225,8 @@
                                                                         <v-col cols="12" md="6" class="text-right">
                                                                             <span
                                                                                 class="text-body-1 font-weight-bold text-black">{{
-                                                                                    formatNumber(item.retention)
+                                                                                    formatNumber(Number(item.retention))
                                                                                 }}</span>
-                                                                        </v-col>
-                                                                    </v-row>
-                                                                    <v-row dense align="center">
-                                                                        <v-col cols="12" md="6">
-                                                                            <span
-                                                                                class="text-body-1 font-weight-bold">-Descuentos:
-                                                                                $</span>
-                                                                        </v-col>
-                                                                        <v-col cols="12" md="6" class="text-right">
-                                                                            <span
-                                                                                class="text-body-1 font-weight-bold text-black">{{
-                                                                                    formatNumber(item.discounts)
-                                                                                }}</span>
-                                                                        </v-col>
-                                                                    </v-row>
-                                                                    <v-row dense align="center">
-                                                                        <v-col cols="12" md="6">
-                                                                            <span
-                                                                                class="text-body-1 font-weight-bold">TOTAL:
-                                                                                $</span>
-                                                                        </v-col>
-                                                                        <v-col cols="12" md="6" class="text-right">
-                                                                            <span :class="`text-body-1 font-weight-bold ${totalCalculado >= 0 ? 'text-black' : 'text-error'
-                                                                                }`">
-                                                                                {{ formatNumber(totalCalculado) }}
-                                                                            </span>
                                                                         </v-col>
                                                                     </v-row>
                                                                 </v-card-text>
@@ -198,12 +238,12 @@
                                                                 elevation="4">
                                                                 <template v-slot:prepend>
                                                                     <v-avatar color="white">
-                                                                        <v-icon icon="mdi-cash-multiple" color="#F18254"
+                                                                        <v-icon icon="mdi-scale-balance" color="#F18254"
                                                                             size="large"></v-icon>
                                                                     </v-avatar>
                                                                 </template>
                                                                 <template v-slot:title>
-                                                                    <span class="font-weight-black">Arqueo</span>
+                                                                    <span class="font-weight-black">Diferencias</span>
                                                                 </template>
                                                                 <v-card-text class="bg-white pt-4">
 
@@ -211,13 +251,14 @@
                                                                     <v-row dense align="center">
                                                                         <v-col cols="12" md="6">
                                                                             <span
-                                                                                class="text-body-1 font-weight-bold">Diferencias:
+                                                                                class="text-body-1 font-weight-bold">Iingresos:
                                                                                 $</span>
                                                                         </v-col>
                                                                         <v-col cols="12" md="6" class="text-right">
-                                                                            <span :class="`text-body-1 font-weight-bold ${item.differences >= 0 ? 'text-black' : 'text-error'
+                                                                            <span :class="`text-body-1 font-weight-bold ${Number(item.difference_incomes) >= 0 ? 'text-black' : 'text-red'
                                                                                 }`">
-                                                                                {{ formatNumber(item.differences)
+                                                                                {{
+                                                                                    formatNumber(Number(item.difference_incomes))
                                                                                 }}
                                                                             </span>
                                                                         </v-col>
@@ -225,21 +266,77 @@
                                                                     <v-row dense align="center">
                                                                         <v-col cols="12" md="6">
                                                                             <span
-                                                                                class="text-body-1 font-weight-bold">Utilidad
-                                                                                Final: $</span>
+                                                                                class="text-body-1 font-weight-bold">Gastos:
+                                                                                $</span>
                                                                         </v-col>
                                                                         <v-col cols="12" md="6" class="text-right">
-                                                                            <span :class="`text-body-1 font-weight-bold ${item.net_utility >= 0 ? 'text-black' : 'text-error'
+                                                                            <span :class="`text-body-1 font-weight-bold ${Number(item.difference_spent) >= 0 ? 'text-black' : 'text-red'
                                                                                 }`">
-                                                                                {{ formatNumber(item.net_utility)
+                                                                                {{
+                                                                                    formatNumber(Number(item.difference_spent))
                                                                                 }}
                                                                             </span>
                                                                         </v-col>
                                                                     </v-row>
+                                                                    <v-row dense align="center">
+                                                                        <v-col cols="12" md="6">
+                                                                            <span
+                                                                                class="text-body-1 font-weight-bold">Utilidad:
+                                                                                $</span>
+                                                                        </v-col>
+                                                                        <v-col cols="12" md="6" class="text-right">
+                                                                            <span :class="`text-body-1 font-weight-bold ${Number(item.difference_utility) >= 0 ? 'text-black' : 'text-red'
+                                                                                }`">
+                                                                                {{
+                                                                                    formatNumber(Number(item.difference_utility))
+                                                                                }}
+                                                                            </span>
+                                                                        </v-col>
+                                                                    </v-row>
+                                                                    <v-row dense align="center">
+                                                                        <v-col cols="12" md="6">
+                                                                            <span
+                                                                                class="text-body-1 font-weight-bold">Retención:
+                                                                                $</span>
+                                                                        </v-col>
+                                                                        <v-col cols="12" md="6" class="text-right">
+                                                                            <span :class="`text-body-1 font-weight-bold ${Number(item.difference_retention) >= 0 ? 'text-black' : 'text-red'
+                                                                                }`">
+                                                                                {{
+                                                                                    formatNumber(Number(item.difference_retention))
+                                                                                }}
+                                                                            </span>
+                                                                        </v-col>
+                                                                    </v-row>
+
                                                                 </v-card-text>
                                                             </v-card>
                                                         </v-col>
                                                     </v-row>
+                                                    <v-row v-if="item.differences !== 0">
+                                                <v-col cols="12" md="12">
+                                                    <v-row class="mb-4 mt-2 text-left" dense no-gutters>
+
+                                                        <v-col cols="12" md="12">
+                                                            <span class="text-h6 ml-6" :class="{
+                                                                'text-red': item.differences < 0,
+                                                                'text-black': item.differences > 0
+                                                            }">Existe una diferencia total en las utilidades de:</span>
+                                                            <span :class="`text-body-1 font-weight-bold ${item.differences > 0 ? 'text-black' : 'text-red'
+                                                                }`">
+                                                                {{ formatNumber(item.differences) }}
+                                                            </span>
+                                                        </v-col>
+                                                    </v-row>
+                                                    <v-row class="mb-4 mt-1" dense no-gutters>
+                                                        <v-col cols="12" md="12" class="text-center ml-2">
+                                                            <v-textarea v-model="item.description" readonly
+                                                                label="¿Por qué?" variant="solo" density="compact"
+                                                                :rules="descriptionRules"></v-textarea>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-col>
+                                            </v-row>
                                                 </v-card-text>
                                             </v-card>
                                         </div>
@@ -288,9 +385,10 @@
                                             <v-select v-model="selectedMounth" :items="months.map(month => ({
                                                 value: month.value,
                                                 title: `${month.title} ${selectedYear}`
-                                            }))" label="Mes" variant="underlined" prepend-icon="mdi-calendar-month" class="mx-6"></v-select>
+                                            }))" label="Mes" variant="underlined" prepend-icon="mdi-calendar-month"
+                                                class="mx-6"></v-select>
                                         </v-col>
-                                        
+
                                     </v-row>
                                     <v-card style="max-height: 55vh; min-height: 55vh; overflow-y: auto;">
                                         <v-card-text>
@@ -313,46 +411,31 @@
                                                                 Agregar
                                                             </v-btn>
                                                         </template>
-                                                        <v-card-text class="bg-white pa-0"
-                                                            style="display: flex; flex-direction: column; max-height: 33vh; min-height: 33vh;">
-                                                            <!-- Encabezados fijos -->
-                                                            <div class="sticky-header"
-                                                                style="padding: 12px 16px; background: white; z-index: 1;">
-                                                                <v-row dense align="center" class="font-weight-bold">
-                                                                    <v-col cols="6">Destino</v-col>
-                                                                    <v-col cols="4" class="text-left">Monto</v-col>
-                                                                    <v-col cols="2" class="text-right">Acción</v-col>
-                                                                </v-row>
-                                                            </div>
-
-                                                            <!-- Área de scroll (esto es lo clave) -->
-                                                            <div style="flex: 1; overflow-y: auto; padding: 0 16px;">
+                                                        <v-card-text class="bg-white pt-4"
+                                                            style="min-height: 33vh; overflow-y: auto;">
+                                                            <div style="flex: 1; overflow-y: auto; padding: 8px 16px;">
                                                                 <div v-if="editedItem.incomes.length > 0">
                                                                     <div v-for="income in editedItem.incomes"
-                                                                        :key="income.id">
-                                                                        <v-row dense align="center">
-                                                                            <v-col cols="6">
-                                                                                <span class="text-body-1">{{
-                                                                                    income.name }}</span>
+                                                                        :key="income.id" class="mb-2">
+                                                                        <v-row>
+                                                                            <v-col cols="12" md="11">
+                                                                                <v-text-field
+                                                                                    :model-value="income.amount"
+                                                                                    @update:modelValue="updateIncome(income, $event)"
+                                                                                    :label="income.name"
+                                                                                    variant="underlined"
+                                                                                    density="compact" type="number"
+                                                                                    hide-details="auto"></v-text-field>
                                                                             </v-col>
-                                                                            <v-col cols="4" class="text-left">
-                                                                                <span
-                                                                                    class="text-body-1 font-weight-medium">${{
-                                                                                        formatNumber(income.amount)
-                                                                                    }}</span>
-                                                                            </v-col>
-                                                                            <v-col cols="2" class="text-right">
+                                                                            <v-col cols="12" md="1">
                                                                                 <v-btn density="comfortable"
                                                                                     icon="mdi-delete"
                                                                                     @click.stop="removeIncome(income)"
-                                                                                    color="red-darken-4"
-                                                                                    variant="tonal"></v-btn>
+                                                                                    color="red-darken-4" variant="tonal"
+                                                                                    elevation="1"></v-btn>
                                                                             </v-col>
                                                                         </v-row>
                                                                     </div>
-                                                                </div>
-                                                                <div v-else class="text-center text-grey py-8">
-                                                                    No hay ingresos registrados
                                                                 </div>
                                                             </div>
                                                         </v-card-text>
@@ -361,12 +444,8 @@
                                                     <v-divider></v-divider>
                                                     <v-divider class="my-2"></v-divider>
                                                     <v-row dense align="center" v-if="editedItem.available_money">
-                                                        <v-col cols="12" md="3" class="mx-6">
-                                                            <span class="text-body-1 font-weight-bold">Dinero
-                                                                disponible:</span>
-                                                        </v-col>
-                                                        <v-col cols="12" md="6" class="text-left">
-                                                            <span class="text-body-1 font-weight-bold text-black">${{
+                                                        <v-col cols="12" md="12" class="text-right">
+                                                            <span class="text-body-1 font-weight-bold mr-6">Ingresos: ${{
                                                                 formatNumber(editedItem.available_money)
                                                                 }}</span>
                                                         </v-col>
@@ -390,46 +469,31 @@
                                                                 Agregar
                                                             </v-btn>
                                                         </template>
-                                                        <v-card-text class="bg-white pa-0"
+                                                        <v-card-text class="bg-white pt-4"
                                                             style="display: flex; flex-direction: column; max-height: 33vh; min-height: 33vh;">
-                                                            <!-- Encabezados fijos -->
-                                                            <div class="sticky-header"
-                                                                style="padding: 12px 16px; background: white; z-index: 1;">
-                                                                <v-row dense align="center" class="font-weight-bold">
-                                                                    <v-col cols="6">Destino</v-col>
-                                                                    <v-col cols="4" class="text-left">Monto</v-col>
-                                                                    <v-col cols="2" class="text-right">Acción</v-col>
-                                                                </v-row>
-                                                            </div>
-
-                                                            <!-- Área de scroll (esto es lo clave) -->
-                                                            <div style="flex: 1; overflow-y: auto; padding: 0 16px;">
+                                                            <div style="flex: 1; overflow-y: auto; padding: 8px 16px;">
                                                                 <div v-if="editedItem.expenses.length > 0">
                                                                     <div v-for="expense in editedItem.expenses"
-                                                                        :key="expense.id">
-                                                                        <v-row dense align="center">
-                                                                            <v-col cols="6">
-                                                                                <span class="text-body-1">{{
-                                                                                    expense.name }}</span>
+                                                                        :key="expense.id" class="mb-2">
+                                                                        <v-row>
+                                                                            <v-col cols="12" md="11">
+                                                                                <v-text-field
+                                                                                    :model-value="expense.amount"
+                                                                                    @update:modelValue="updateExpense(expense, $event)"
+                                                                                    :label="expense.name"
+                                                                                    variant="underlined"
+                                                                                    density="compact" type="number"
+                                                                                    hide-details="auto"></v-text-field>
                                                                             </v-col>
-                                                                            <v-col cols="4" class="text-left">
-                                                                                <span
-                                                                                    class="text-body-1 font-weight-medium">${{
-                                                                                        formatNumber(expense.amount)
-                                                                                    }}</span>
-                                                                            </v-col>
-                                                                            <v-col cols="2" class="text-right">
+                                                                            <v-col cols="12" md="1">
                                                                                 <v-btn density="comfortable"
                                                                                     icon="mdi-delete"
                                                                                     @click.stop="removeExpense(expense)"
-                                                                                    color="red-darken-4"
-                                                                                    variant="tonal"></v-btn>
+                                                                                    color="red-darken-4" variant="tonal"
+                                                                                    elevation="1"></v-btn>
                                                                             </v-col>
                                                                         </v-row>
                                                                     </div>
-                                                                </div>
-                                                                <div v-else class="text-center text-grey py-8">
-                                                                    No hay gastos registrados
                                                                 </div>
                                                             </div>
                                                         </v-card-text>
@@ -445,12 +509,9 @@
                                                     <v-spacer></v-spacer>
                                                     <v-divider></v-divider>
                                                     <v-divider class="my-2"></v-divider>
-                                                    <v-row dense align="center" v-if="editedItem.discounts">
-                                                        <v-col cols="12" md="3" class="mx-6">
-                                                            <span class="text-body-1 font-weight-bold">Descuento:</span>
-                                                        </v-col>
-                                                        <v-col cols="12" md="6" class="text-left">
-                                                            <span class="text-body-1 font-weight-bold text-warning">${{
+                                                    <v-row dense v-if="editedItem.discounts">
+                                                        <v-col cols="12" md="12" class="text-right">
+                                                            <span class="text-body-1 font-weight-bold mx-6">Gastos: ${{
                                                                 formatNumber(editedItem.discounts)
                                                                 }}</span>
                                                         </v-col>
@@ -464,11 +525,11 @@
                             <v-container fluid>
                                 <!-- BOTONES -->
                                 <v-row class="mt-1">
-                                    <v-btn color="#E7E9E9" variant="flat" @click="dialogMontlyClousure = false">
+                                    <v-btn color="#E7E9E9" variant="flat" @click="salir()" :disabled="this.loadingAddIncomes">
                                         Salir
                                     </v-btn>
                                     <v-spacer></v-spacer>
-                                    <v-btn color="#E7E9E9" variant="flat" @click="nextStep">Siguiente</v-btn>
+                                    <v-btn color="#E7E9E9" variant="flat" @click="nextStep" :loading="this.loadingAddIncomes">Siguiente</v-btn>
                                 </v-row>
                             </v-container>
                         </template>
@@ -485,25 +546,63 @@
                                                         style="background-color: #F18254; color: white;" elevation="4">
                                                         <template v-slot:prepend>
                                                             <v-avatar color="white">
-                                                                <v-icon icon="mdi-cash-multiple" color="#F18254"
+                                                                <v-icon icon="mdi-account-cog" color="#F18254"
                                                                     size="large"></v-icon>
                                                             </v-avatar>
                                                         </template>
                                                         <template v-slot:title>
-                                                            <span class="font-weight-black">Dinero Disponible</span>
+                                                            <span class="font-weight-black">Datos del
+                                                                Administrador</span>
                                                         </template>
                                                         <v-card-text class="bg-white pt-4">
 
 
                                                             <v-row dense align="center">
                                                                 <v-col cols="12" md="6">
-                                                                    <span class="text-body-1 font-weight-bold">Dinero
-                                                                        disponible: $</span>
+                                                                    <span class="text-body-1 font-weight-bold">Ingresos:
+                                                                        $</span>
                                                                 </v-col>
                                                                 <v-col cols="12" md="6" class="text-right">
                                                                     <span
                                                                         class="text-body-1 font-weight-bold text-black">{{
                                                                             formatNumber(editedItem.available_money)
+                                                                        }}</span>
+                                                                </v-col>
+                                                            </v-row>
+                                                            <v-row dense align="center">
+                                                                <v-col cols="12" md="6">
+                                                                    <span class="text-body-1 font-weight-bold">Gastos:
+                                                                        $</span>
+                                                                </v-col>
+                                                                <v-col cols="12" md="6" class="text-right">
+                                                                    <span
+                                                                        class="text-body-1 font-weight-bold text-black">{{
+                                                                            formatNumber(editedItem.discounts)
+                                                                        }}</span>
+                                                                </v-col>
+                                                            </v-row>
+                                                            <v-row dense align="center">
+                                                                <v-col cols="12" md="6">
+                                                                    <span class="text-body-1 font-weight-bold">Utilidad:
+                                                                        $</span>
+                                                                </v-col>
+                                                                <v-col cols="12" md="6" class="text-right">
+                                                                    <span
+                                                                        class="text-body-1 font-weight-bold text-black">{{
+                                                                            formatNumber(editedItem.client_utility)
+                                                                        }}</span>
+                                                                </v-col>
+                                                            </v-row>
+                                                            <v-row dense align="center">
+                                                                <v-col cols="12" md="6">
+                                                                    <span
+                                                                        class="text-body-1 font-weight-bold">Retenciones:
+                                                                        $</span>
+                                                                </v-col>
+                                                                <v-col cols="12" md="6" class="text-right">
+                                                                    <span
+                                                                        class="text-body-1 font-weight-bold text-black">{{
+                                                                            formatNumber(editedItem.client_retention)
                                                                         }}</span>
                                                                 </v-col>
                                                             </v-row>
@@ -515,7 +614,7 @@
                                                         style="background-color: #F18254; color: white;" elevation="4">
                                                         <template v-slot:prepend>
                                                             <v-avatar color="white">
-                                                                <v-icon icon="mdi-cash-multiple" color="#F18254"
+                                                                <v-icon icon="mdi-server" color="#F18254"
                                                                     size="large"></v-icon>
                                                             </v-avatar>
                                                         </template>
@@ -524,6 +623,32 @@
                                                         </template>
                                                         <v-card-text class="bg-white pt-4">
 
+                                                            <v-row dense align="center">
+                                                                <v-col cols="12" md="6">
+                                                                    <span class="text-body-1 font-weight-bold">Ingresos:
+                                                                        $</span>
+                                                                </v-col>
+                                                                <v-col cols="12" md="6" class="text-right">
+                                                                    <span
+                                                                        class="text-body-1 font-weight-bold text-black">{{
+                                                                            formatNumber(editedItem.system_incomes)
+                                                                        }}</span>
+                                                                </v-col>
+                                                            </v-row>
+
+
+                                                            <v-row dense align="center">
+                                                                <v-col cols="12" md="6">
+                                                                    <span class="text-body-1 font-weight-bold">Gastos:
+                                                                        $</span>
+                                                                </v-col>
+                                                                <v-col cols="12" md="6" class="text-right">
+                                                                    <span
+                                                                        class="text-body-1 font-weight-bold text-black">{{
+                                                                            formatNumber(editedItem.spent)
+                                                                        }}</span>
+                                                                </v-col>
+                                                            </v-row>
 
                                                             <v-row dense align="center">
                                                                 <v-col cols="12" md="6">
@@ -550,31 +675,6 @@
                                                                         }}</span>
                                                                 </v-col>
                                                             </v-row>
-                                                            <v-row dense align="center">
-                                                                <v-col cols="12" md="6">
-                                                                    <span
-                                                                        class="text-body-1 font-weight-bold">-Descuentos:
-                                                                        $</span>
-                                                                </v-col>
-                                                                <v-col cols="12" md="6" class="text-right">
-                                                                    <span
-                                                                        class="text-body-1 font-weight-bold text-black">{{
-                                                                            formatNumber(editedItem.discounts)
-                                                                        }}</span>
-                                                                </v-col>
-                                                            </v-row>
-                                                            <v-row dense align="center">
-                                                                <v-col cols="12" md="6">
-                                                                    <span class="text-body-1 font-weight-bold">TOTAL:
-                                                                        $</span>
-                                                                </v-col>
-                                                                <v-col cols="12" md="6" class="text-right">
-                                                                    <span :class="`text-body-1 font-weight-bold ${totalCalculado >= 0 ? 'text-black' : 'text-error'
-                                                                        }`">
-                                                                        {{ formatNumber(totalCalculado) }}
-                                                                    </span>
-                                                                </v-col>
-                                                            </v-row>
                                                         </v-card-text>
                                                     </v-card>
                                                 </v-col>
@@ -583,12 +683,12 @@
                                                         style="background-color: #F18254; color: white;" elevation="4">
                                                         <template v-slot:prepend>
                                                             <v-avatar color="white">
-                                                                <v-icon icon="mdi-cash-multiple" color="#F18254"
+                                                                <v-icon icon="mdi-scale-balance" color="#F18254"
                                                                     size="large"></v-icon>
                                                             </v-avatar>
                                                         </template>
                                                         <template v-slot:title>
-                                                            <span class="font-weight-black">Arqueo</span>
+                                                            <span class="font-weight-black">Diferencias</span>
                                                         </template>
                                                         <v-card-text class="bg-white pt-4">
 
@@ -596,30 +696,83 @@
                                                             <v-row dense align="center">
                                                                 <v-col cols="12" md="6">
                                                                     <span
-                                                                        class="text-body-1 font-weight-bold">Diferencias:
+                                                                        class="text-body-1 font-weight-bold">Iingresos:
                                                                         $</span>
                                                                 </v-col>
                                                                 <v-col cols="12" md="6" class="text-right">
-                                                                    <span :class="`text-body-1 font-weight-bold ${editedItem.differences >= 0 ? 'text-black' : 'text-error'
+                                                                    <span :class="`text-body-1 font-weight-bold ${editedItem.difference_incomes >= 0 ? 'text-black' : 'text-red'
                                                                         }`">
-                                                                        {{ formatNumber(editedItem.differences) }}
+                                                                        {{ formatNumber(editedItem.difference_incomes)
+                                                                        }}
                                                                     </span>
                                                                 </v-col>
                                                             </v-row>
                                                             <v-row dense align="center">
                                                                 <v-col cols="12" md="6">
-                                                                    <span class="text-body-1 font-weight-bold">Utilidad
-                                                                        Final: $</span>
+                                                                    <span class="text-body-1 font-weight-bold">Gastos:
+                                                                        $</span>
                                                                 </v-col>
                                                                 <v-col cols="12" md="6" class="text-right">
-                                                                    <span :class="`text-body-1 font-weight-bold ${editedItem.net_utility >= 0 ? 'text-black' : 'text-error'
+                                                                    <span :class="`text-body-1 font-weight-bold ${editedItem.difference_spent >= 0 ? 'text-black' : 'text-red'
                                                                         }`">
-                                                                        {{ formatNumber(editedItem.net_utility) }}
+                                                                        {{ formatNumber(editedItem.difference_spent) }}
                                                                     </span>
                                                                 </v-col>
                                                             </v-row>
+                                                            <v-row dense align="center">
+                                                                <v-col cols="12" md="6">
+                                                                    <span class="text-body-1 font-weight-bold">Utilidad:
+                                                                        $</span>
+                                                                </v-col>
+                                                                <v-col cols="12" md="6" class="text-right">
+                                                                    <span :class="`text-body-1 font-weight-bold ${editedItem.difference_utility >= 0 ? 'text-black' : 'text-red'
+                                                                        }`">
+                                                                        {{ formatNumber(editedItem.difference_utility)
+                                                                        }}
+                                                                    </span>
+                                                                </v-col>
+                                                            </v-row>
+                                                            <v-row dense align="center">
+                                                                <v-col cols="12" md="6">
+                                                                    <span
+                                                                        class="text-body-1 font-weight-bold">Retención:
+                                                                        $</span>
+                                                                </v-col>
+                                                                <v-col cols="12" md="6" class="text-right">
+                                                                    <span :class="`text-body-1 font-weight-bold ${editedItem.difference_retention >= 0 ? 'text-black' : 'text-red'
+                                                                        }`">
+                                                                        {{ formatNumber(editedItem.difference_retention)
+                                                                        }}
+                                                                    </span>
+                                                                </v-col>
+                                                            </v-row>
+
                                                         </v-card-text>
                                                     </v-card>
+                                                </v-col>
+                                            </v-row>
+                                            <v-row v-if="editedItem.differences !== 0">
+                                                <v-col cols="12" md="12">
+                                                    <v-row class="mb-4 mt-2 text-left" dense no-gutters>
+
+                                                        <v-col cols="12" md="12">
+                                                            <span class="text-h6 ml-6" :class="{
+                                                                'text-red': editedItem.differences < 0,
+                                                                'text-black': editedItem.differences > 0
+                                                            }">Existe una diferencia total en las utilidades de:</span>
+                                                            <span :class="`text-body-1 font-weight-bold ${editedItem.differences > 0 ? 'text-black' : 'text-red'
+                                                                }`">
+                                                                {{ formatNumber(editedItem.differences) }}
+                                                            </span>
+                                                        </v-col>
+                                                    </v-row>
+                                                    <v-row class="mb-4 mt-1" dense no-gutters>
+                                                        <v-col cols="12" md="12" class="text-center ml-2">
+                                                            <v-textarea v-model="editedItem.description"
+                                                                label="¿Por qué?" variant="solo" density="compact"
+                                                                :rules="descriptionRules"></v-textarea>
+                                                        </v-col>
+                                                    </v-row>
                                                 </v-col>
                                             </v-row>
                                         </v-card-text>
@@ -634,14 +787,13 @@
                                         Volver
                                     </v-btn>
                                     <v-spacer></v-spacer>
-                                    <v-btn color="#E7E9E9" variant="flat" @click="dialogMontlyClousure = false"
+                                    <v-btn color="#E7E9E9" variant="flat" @click="salir()"
                                         class="mx-2" :disabled="loadingSave">
                                         Salir
                                     </v-btn>
-
                                     <v-btn color="#E7E9E9" variant="flat" @click="saveMonthlyClosure"
                                         :loading="loadingSave">
-                                        Cerrar mes
+                                        Guardar
                                     </v-btn>
                                 </v-row>
                             </v-container>
@@ -659,9 +811,9 @@
                 <span class="text-subtitle-1  ml-2">Agregar Ingresos</span>
             </v-toolbar>
             <v-card-text>
-                <v-text-field v-model="newIncomes.name" variant="underlined" label="Destino"
+                <v-text-field v-model="newIncome.name" variant="underlined" label="Destino"
                     prepend-icon="mdi-cash-check"></v-text-field>
-                <v-text-field v-model="newIncomes.amount" variant="underlined" label="Monto" type="number" min="0"
+                <v-text-field v-model="newIncome.amount" variant="underlined" label="Monto" type="number" min="0"
                     prepend-icon="mdi-currency-usd"></v-text-field>
             </v-card-text>
             <v-card-actions>
@@ -669,8 +821,8 @@
                 <v-btn color="#E7E9E9" variant="flat" @click="dialogIncomes = false">
                     Cancelar
                 </v-btn>
-                <v-btn color="#F18254" variant="flat" :disabled="!newIncomes.name || !newIncomes.amount"
-                    :loading="loadingAddIncomes" @click="addIncomes">
+                <v-btn color="#F18254" variant="flat" :disabled="!newIncome.name || !newIncome.amount"
+                    :loading="loadingAddIncomes" @click="addIncome">
                     Aceptar
                 </v-btn>
             </v-card-actions>
@@ -682,9 +834,9 @@
                 <span class="text-subtitle-1  ml-2">Agregar Descuentos</span>
             </v-toolbar>
             <v-card-text>
-                <v-text-field v-model="newExpenses.name" variant="underlined" label="Destino"
+                <v-text-field v-model="newExpense.name" variant="underlined" label="Destino"
                     prepend-icon="mdi-chart-box-outline"></v-text-field>
-                <v-text-field v-model="newExpenses.amount" variant="underlined" label="Monto" type="number" min="0"
+                <v-text-field v-model="newExpense.amount" variant="underlined" label="Monto" type="number" min="0"
                     prepend-icon="mdi-currency-usd"></v-text-field>
             </v-card-text>
             <v-card-actions>
@@ -692,8 +844,8 @@
                 <v-btn color="#E7E9E9" variant="flat" @click="dialogExpenses = false">
                     Cancelar
                 </v-btn>
-                <v-btn color="#F18254" variant="flat" :disabled="!newExpenses.name || !newExpenses.amount"
-                    :loading="loadingAddExpenses" @click="addExpenses">
+                <v-btn color="#F18254" variant="flat" :disabled="!newExpense.name || !newExpense.amount"
+                    :loading="loadingAddExpenses" @click="addExpense">
                     Aceptar
                 </v-btn>
             </v-card-actions>
@@ -746,6 +898,7 @@
 <script>
 import LocalStorageService from "@/LocalStorageService";
 import { handleRequest } from "@/utils/api";
+import _ from 'lodash';
 
 export default {
 
@@ -804,6 +957,12 @@ export default {
             ];
         }
         return {
+            originalIncomeAmount: 0,
+            currentEditingIncome: null,
+            originalValue: 0,
+            originalExpenseAmount: 0,
+            originalClientRetention: 0,
+            currentEditingExpense: null,
             loading: false,
             loadingAddIncomes: false,
             loadingAddExpenses: false,
@@ -823,39 +982,13 @@ export default {
             type: 'Business',
             years,
             months: availableMonths, // Usamos el array calculado
-            /*months: [
-                {
-                    value: ('0' + previousMonth).slice(-2),
-                    title: `${monthNames[previousMonth]}`
-                },
-                {
-                    value: ('0' + currentMonth).slice(-2),
-                    title: `${monthNames[currentMonth]}`
-                }
-            ],*/
             selectedYear: previousMonth === 12 ? previousYear : currentYear, // Ajuste de año
             selectedMounth: currentDay <= 10 ? ('0' + previousMonth).slice(-2) : ('0' + currentMonth).slice(-2),
-            /*months: [
-                { value: '', title: '' },
-                { value: 1, title: 'Enero' },
-                { value: 2, title: 'Febrero' },
-                { value: 3, title: 'Marzo' },
-                { value: 4, title: 'Abril' },
-                { value: 5, title: 'Mayo' },
-                { value: 6, title: 'Junio' },
-                { value: 7, title: 'Julio' },
-                { value: 8, title: 'Agosto' },
-                { value: 9, title: 'Septiembre' },
-                { value: 10, title: 'Octubre' },
-                { value: 11, title: 'Noviembre' },
-                { value: 12, title: 'Diciembre' }
-            ],*/
             headers: [
                 { title: 'Realizado', key: 'data', sortable: true },
                 { title: 'Mes', key: 'month', sortable: true },
                 { title: 'Nombre', key: 'displayName', sortable: true },
                 { title: 'Tipo', key: 'type', sortable: true, },
-                { title: 'Utilidad Final', key: 'net_utility', sortable: true, },
                 { title: 'Responsable', key: 'professionalName', sortable: true },
                 { title: 'Acciones', key: 'actions', sortable: false },
             ],
@@ -880,11 +1013,58 @@ export default {
                 utility: 0,
                 net_utility: 0,
                 retention: 0,
+                system_incomes: 0,
+                spent: 0,
+                discounts: 0,
+                description: '',
+                differences: 0,
+                incomes: [
+                    { id: 1, type: 'cash', amount: 0, name: 'Efectivo', },
+                    { id: 2, type: 'bank', amount: 0, name: 'Banco', },
+                    { id: 3, type: 'debit', amount: 0, name: 'Débito por caer', }, // ID único
+                ],
+                expenses: [
+                    { id: 1, type: 'debitexpense', amount: 0, name: 'Comisión Débito', },
+                    { id: 2, type: 'retention', amount: 0, name: 'Retenciones', },
+                ],
+                user_id: '',
+                client_utility: 0,
+                client_retention: 0,
+                difference_incomes: 0,
+                difference_utility: 0,
+                difference_retention: 0,
+                difference_spent: 0,
+            },
+            originalItem: {
+                id: '',
+                branch_id: '',
+                business_id: '',
+                data: '',
+                available_money: 0,
+                utility: 0,
+                net_utility: 0,
+                retention: 0,
+                system_incomes: 0,
+                spent: 0,
                 discounts: 0,
                 differences: 0,
-                incomes: [],
-                expenses: [],
+                description: '',
+                incomes: [
+                    { id: 1, type: 'cash', amount: 0, name: 'Efectivo', },
+                    { id: 2, type: 'bank', amount: 0, name: 'Banco', },
+                    { id: 3, type: 'debit', amount: 0, name: 'Débito por caer', }, // ID único
+                ],
+                expenses: [
+                    { id: 1, type: 'debitexpense', amount: 0, name: 'Comisión Débito', },
+                    { id: 2, type: 'retention', amount: 0, name: 'Retenciones', },
+                ],
                 user_id: '',
+                client_utility: 0,
+                client_retention: 0,
+                difference_incomes: 0,
+                difference_utility: 0,
+                difference_retention: 0,
+                difference_spent: 0,
             },
             defaultEditedItem: {
                 id: '',
@@ -895,21 +1075,39 @@ export default {
                 utility: 0,
                 net_utility: 0,
                 retention: 0,
+                system_incomes: 0,
+                spent: 0,
                 discounts: 0,
                 differences: 0,
-                incomes: [], //ingresos
-                expenses: [], //gastos
+                description: '',
+                incomes: [
+                    { id: 1, type: 'cash', amount: 0, name: 'Efectivo', },
+                    { id: 2, type: 'bank', amount: 0, name: 'Banco', },
+                    { id: 3, type: 'debit', amount: 0, name: 'Débito por caer', }, // ID único
+                ],
+                expenses: [
+                    { id: 1, type: 'debitexpense', amount: 0, name: 'Comisión Débito', },
+                    { id: 2, type: 'retention', amount: 0, name: 'Retenciones', },
+                ],
                 user_id: '',
+                client_utility: 0,
+                client_retention: 0,
+                difference_incomes: 0,
+                difference_utility: 0,
+                difference_retention: 0,
+                difference_spent: 0,
             },
-            newIncomes: {
+            newIncome: {
                 id: null,
                 name: '',
-                amount: 0
+                amount: 0,
+                type: 'insert'
             },
-            newExpenses: {
+            newExpense: {
                 id: null,
                 name: '',
-                amount: 0
+                amount: 0,
+                type: 'insert'
             },
             dialogIncomes: false,
             dialogExpenses: false,
@@ -977,31 +1175,56 @@ export default {
     },
 
     watch: {
-         // Watcher para cambios en available_money (ejecuta ambos cálculos)
-  'editedItem.available_money': {
-    handler(newVal) {
-      this.calcularDiferencias();
-      this.calcularUtilidadFinal();
-    },
-    immediate: true,
-    deep: false
-  },
-  
-  // Watcher para totalCalculado (solo diferencias)
-  totalCalculado: {
-    handler: 'calcularDiferencias',
-    immediate: true
-  },
-  
-  // Watcher combinado para retention y discounts
-  'editedItem.retention': {
-    handler: 'calcularUtilidadFinal',
-    immediate: true
-  },
-  'editedItem.discounts': {
-    handler: 'calcularUtilidadFinal',
-    immediate: true
-  },
+        'editedItem.available_money': {
+            handler(newVal) {
+                this.updateClientUtility();
+                this.calculateDifferences();
+            },
+            deep: true
+        },
+        'editedItem.discounts': {
+            handler(newVal) {
+                this.updateClientUtility();
+                this.calculateDifferencesSpent();
+            },
+            deep: true
+        },
+        'editedItem.system_incomes': {
+            handler(newVal) {
+                this.calculateDifferences();
+            },
+            immediate: true
+        },
+        'editedItem.spent': {
+            handler(newVal) {
+                this.calculateDifferencesSpent();
+            },
+            immediate: true
+        },
+        'editedItem.utility': {
+            handler(newVal) {
+                this.calculateDifferencesUtility();
+            },
+            immediate: true
+        },
+        'editedItem.client_utility': {
+            handler(newVal) {
+                this.calculateDifferencesUtility();
+            },
+            immediate: true
+        },
+        'editedItem.client_retention': {
+            handler(newVal) {
+                this.calculateDifferencesRetention();
+            },
+            immediate: true
+        },
+        'editedItem.retention': {
+            handler(newVal) {
+                this.calculateDifferencesRetention();
+            },
+            immediate: true
+        },
         selectedMounth(newVal) {
             if (newVal === '12' && this.selectedYear < new Date().getFullYear()) {
                 this.selectedYear += 1; // Avanza al siguiente año si seleccionan diciembre
@@ -1014,16 +1237,165 @@ export default {
     },
 
     methods: {
-        loadClosureData() {
+        areArraysDifferent(originalArray, editedArray) {
+            // Ordenar ambos arrays por un campo único (por ejemplo, `id`)
+            const sortedOriginal = [...originalArray].sort((a, b) => a.id - b.id);
+            const sortedEdited = [...editedArray].sort((a, b) => a.id - b.id);
+
+            // Comparar las cadenas generadas
+            return JSON.stringify(sortedOriginal) !== JSON.stringify(sortedEdited);
+        },
+        updateClientUtility() {
+            this.editedItem.client_utility = (parseFloat(this.editedItem.available_money) || 0) -
+                (parseFloat(this.editedItem.discounts) || 0);
+        },
+        calculateDifferences() {
+            const available = parseFloat(this.editedItem.available_money) || 0;
+            const systemIncomes = parseFloat(this.editedItem.system_incomes) || 0;
+            this.editedItem.difference_incomes = available - systemIncomes;
+        },
+        calculateDifferencesSpent() {
+            const discounts = parseFloat(this.editedItem.discounts) || 0;
+            const spent = parseFloat(this.editedItem.spent) || 0;
+            this.editedItem.difference_spent = discounts - spent;
+        },
+        calculateDifferencesUtility() {
+            const clientUtility = parseFloat(this.editedItem.client_utility) || 0;
+            const utility = parseFloat(this.editedItem.utility) || 0;
+            this.editedItem.difference_utility = clientUtility - utility;
+            this.editedItem.differences = clientUtility - utility;
+        },
+        calculateDifferencesRetention() {
+            const clientRetention = parseFloat(this.editedItem.client_retention) || 0;
+            const retention = parseFloat(this.editedItem.retention) || 0;
+            this.editedItem.difference_retention = clientRetention - retention;
+        },
+        // Para actualizar ingresos (incomes)
+        updateIncome(income, newAmount) {
+           
+            let oldAmount = parseFloat(income.amount) || 0;
+            
+            let difference = newAmount - oldAmount;
+
+            if (difference === 0) return;
+
+            // Actualizar el monto en el gasto
+            income.amount = newAmount;
+
+            // Actualizar discounts
+            this.editedItem.available_money = (parseFloat(this.editedItem.available_money) || 0) + difference;
+
+        },
+
+        // Para actualizar gastos (expenses)
+        updateExpense(expense, newAmount) {
+            newAmount = parseFloat(newAmount) || 0;
+            let oldAmount = parseFloat(expense.amount) || 0;
+            let difference = newAmount - oldAmount;
+
+            if (difference === 0) return;
+
+            // Actualizar el monto en el gasto
+            expense.amount = newAmount;
+
+            // Actualizar discounts
+            this.editedItem.discounts = (parseFloat(this.editedItem.discounts) || 0) + difference;
+
+            // Si es retención, actualizar client_retention
+            if (expense.type === 'retention') {
+                this.editedItem.client_retention = newAmount;
+            }
+        },
+
+        // Para agregar nuevos ingresos
+        addIncome() {
+            const newId = Date.now();
+            const amount = parseFloat(this.newIncome.amount) || 0;
+
+            const income = {
+                id: newId,
+                type: this.newIncome.type,
+                amount: amount,
+                name: this.newIncome.name
+            };
+
+            // Agregar al array de incomes
+            this.editedItem.incomes.push(income);
+
+            // Actualizar available_money
+            this.editedItem.available_money = (parseFloat(this.editedItem.available_money) || 0) + amount;
+
+            // Resetear formulario
+            this.newIncome = { id: null, name: '', amount: 0, type: '' };
+            this.dialogIncomes = false;
+        },
+
+        // Para agregar nuevos gastos
+        addExpense() {
+            const newId = Date.now();
+            const amount = parseFloat(this.newExpense.amount) || 0;
+
+            const expense = {
+                id: newId,
+                type: this.newExpense.type,
+                amount: amount,
+                name: this.newExpense.name,
+            };
+
+            // Agregar al array de expenses
+            this.editedItem.expenses.push(expense);
+
+            // Actualizar discounts
+            this.editedItem.discounts = (parseFloat(this.editedItem.discounts) || 0) + amount;
+
+            // Si es retención, actualizar client_retention
+            if (expense.type === 'retention') {
+                this.editedItem.client_retention = amount;
+            }
+
+            // Resetear formulario
+            this.newExpense = { id: null, name: '', amount: 0, type: '' };
+            this.dialogExpenses = false;
+        },
+
+        // Para eliminar ingresos
+        removeIncome(income) {
+            const amount = parseFloat(income.amount) || 0;
+
+            // Restar de available_money
+            this.editedItem.available_money = (parseFloat(this.editedItem.available_money) || 0) - amount;
+
+            // Eliminar del array
+            this.editedItem.incomes = this.editedItem.incomes.filter(i => i.id !== income.id);
+
+        },
+
+        // Para eliminar gastos
+        removeExpense(expense) {
+            const amount = parseFloat(expense.amount) || 0;
+
+            // Restar de discounts
+            this.editedItem.discounts = (parseFloat(this.editedItem.discounts) || 0) - amount;
+
+            // Si es retención, resetear client_retention
+            if (expense.type === 'retention') {
+                this.editedItem.client_retention = 0;
+            }
+
+            // Eliminar del array
+            this.editedItem.expenses = this.editedItem.expenses.filter(e => e.id !== expense.id);
+
+        },
+        async loadClosureData() {
             const month = `${this.selectedYear}-${String(this.selectedMounth).padStart(2, '0')}`;
             console.log('month seleccionado');
             console.log(month);
-            const foundClosure = this.closures.find(closure => {
+            let foundClosure = this.closures.find(closure => {
                 const closureMonth = closure.month?.toString().trim();
                 return closureMonth === month;
             });
 
-            const safeParse = (data) => {
+            /*const safeParse = (data) => {
                 if (Array.isArray(data)) return data;
                 if (typeof data !== 'string') return [];
                 try {
@@ -1032,26 +1404,42 @@ export default {
                     console.error('Error al parsear:', e);
                     return [];
                 }
-            };
-
-            this.editedItem = foundClosure
+            };*/
+            console.log('foundClosure');
+            console.log(foundClosure);
+            if(foundClosure){
+                //this.editedItem = Object.assign({}, foundClosure);
+                //this.originalItem = Object.assign({}, foundClosure);
+                this.originalItem = _.cloneDeep(foundClosure);
+                this.editedItem = _.cloneDeep(foundClosure);
+            }else{
+                //this.editedItem = Object.assign({}, this.defaultEditedItem);
+                //this.originalItem = Object.assign({}, this.defaultEditedItem);
+                this.originalItem = _.cloneDeep(this.defaultEditedItem);
+                this.editedItem = _.cloneDeep(this.defaultEditedItem); 
+            }
+            console.log('this.editedItem');
+            console.log(this.editedItem);
+            /*this.editedItem = foundClosure
                 ? {
                     ...foundClosure,
                     incomes: safeParse(foundClosure.incomes),
                     expenses: safeParse(foundClosure.expenses)
                 }
-                : { ...this.defaultEditedItem };
-        },
-        /*formatMonth(monthString) {
-            if (!monthString) return 'N/A';
+                : { ...this.defaultEditedItem,
+                    incomes: this.defaultEditedItem.incomes,
+                    expenses: this.defaultEditedItem.expenses };
 
-            const [year, month] = monthString.split('-');
-            const months = [
-                'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-                'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-            ];
-            return `${months[parseInt(month) - 1]} del ${year}`;
-        },*/
+                this.originalItem = foundClosure
+                ? {
+                    ...foundClosure,
+                    incomes: safeParse(foundClosure.incomes),
+                    expenses: safeParse(foundClosure.expenses)
+                }
+                : { ...this.defaultEditedItem,
+                    incomes: this.defaultEditedItem.incomes,
+                    expenses: this.defaultEditedItem.expenses  };*/
+        },
         formatMonth(dateString) {
             if (!dateString) return '';
 
@@ -1139,64 +1527,11 @@ export default {
         },
 
         async showMonthlyClosure() {
-            this.loadClosureData();
+            await this.initialize();
             this.step = 1;
             this.dialogMontlyClousure = true;
         },
 
-        async addIncomes() {
-            this.loadingAddIncomes = true;
-            // Generar ID único
-            const newId = Date.now()
-            const value = parseFloat(this.newIncomes.amount) || 0
-            this.editedItem.available_money += value;
-            // Crear el objeto detalle
-            const income = {
-                id: newId,
-                amount: value,
-                name: this.newIncomes.name
-            }
-
-            // Agregar a la lista de detalles
-            this.editedItem.incomes.push(income)
-            this.editedItem.branch_id = this.type === 'Branch' ? this.branch_id : null;
-            this.editedItem.business_id = this.type === 'Business' ? this.business_id : null;
-
-            const requestData = {
-                editedItem: this.editedItem, // Datos del sistema
-                month: `${this.selectedYear}-${this.selectedMounth}`,  // Formato YYYY-MM
-            };
-            try {
-                const result = await handleRequest({
-                    endpoint: 'mounthly-clousure-incomes',
-                    method: 'POST',
-                    data: requestData
-                });
-
-                // Manejo de la respuesta según el resultado
-                if (result.success) {
-                    this.showAlert("success", result.message, 3000);
-                } else {
-                    //this.loadingBonus = true;
-                    //this.dialogMontlyClousure = false;
-                    this.showAlert("warning", result.message, 3000);
-                }
-            } catch (error) {
-                this.loadingAddIncomes = false;
-                // Este bloque captura errores inesperados fuera del manejo estándar
-                this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
-            } finally {
-                //this.close();
-                this.dialogIncomes = false;
-                this.loadingAddIncomes = false;
-                this.showAlert("success", "Ingreso Agregado correctamente.", 3000);
-                await this.initialize();
-            }
-
-            // Resetear el formulario y cerrar diálogo
-            this.newIncomes = { id: null, name: '', amount: 0 }
-            this.dialogIncomes = false;
-        },
         deleteIncome() {
             this.dialogDeleteIncome = true;
         },
@@ -1207,144 +1542,7 @@ export default {
             this.dialogDeleteIncome = false;
             this.dialogDeleteExpense = false;
         },
-        async removeIncome(income) {
-            // Buscar el índice del ingreso en el array
-            const index = this.editedItem.incomes.findIndex(item => item.id === income.id);
 
-            if (index !== -1) {
-                // Obtener el monto del ingreso a eliminar
-                const removedAmount = this.editedItem.incomes[index].amount;
-
-                // Restar el monto del available_money
-                this.editedItem.available_money -= removedAmount;
-
-                // Eliminar el ingreso del array
-                this.editedItem.incomes.splice(index, 1);
-            }
-
-            const requestData = {
-                editedItem: this.editedItem, // Datos del sistema
-            };
-            try {
-                const result = await handleRequest({
-                    endpoint: 'mounthly-clousure-destroy',
-                    method: 'POST',
-                    data: requestData
-                });
-
-                // Manejo de la respuesta según el resultado
-                if (result.success) {
-                    this.showAlert("success", result.message, 3000);
-                } else {
-                    //this.loadingBonus = true;
-                    //this.dialogMontlyClousure = false;
-                    this.showAlert("warning", result.message, 3000);
-                }
-            } catch (error) {
-                // Este bloque captura errores inesperados fuera del manejo estándar
-                this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
-            } finally {
-                //this.close();
-                this.showAlert("success", "Ingreso eliminado correctamente.", 3000);
-                await this.initialize();
-                this.closeDelete();
-            }
-        },
-
-        async addExpenses() {
-            // Generar ID único
-            this.loadingAddExpenses = true;
-            const newId = Date.now()
-            const value = parseFloat(this.newExpenses.amount) || 0
-            this.editedItem.discounts += value;
-            // Crear el objeto detalle
-            const expense = {
-                id: newId,
-                amount: value,
-                name: this.newExpenses.name
-            }
-
-            // Agregar a la lista de detalles
-            this.editedItem.expenses.push(expense)
-            const requestData = {
-                editedItem: this.editedItem, // Datos del sistema
-                month: `${this.selectedYear}-${this.selectedMounth}`,  // Formato YYYY-MM
-            };
-            try {
-                const result = await handleRequest({
-                    endpoint: 'mounthly-clousure-expenses',
-                    method: 'POST',
-                    data: requestData
-                });
-
-                // Manejo de la respuesta según el resultado
-                if (result.success) {
-                    this.showAlert("success", result.message, 3000);
-                } else {
-                    //this.loadingBonus = true;
-                    //this.dialogMontlyClousure = false;
-                    this.showAlert("warning", result.message, 3000);
-                }
-            } catch (error) {
-                this.loadingAddExpenses = false;
-                // Este bloque captura errores inesperados fuera del manejo estándar
-                this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
-            } finally {
-                //this.close();
-                this.dialogExpenses = false;
-                this.loadingAddExpenses = false;
-                this.showAlert("success", "Gasto Agregado correctamente.", 3000);
-                await this.initialize();
-            }
-
-            // Resetear el formulario y cerrar diálogo
-            this.newExpenses = { id: null, name: '', amount: 0 }
-            this.dialogExpenses = false
-        },
-        async removeExpense(expense) {
-            // Buscar el índice del ingreso en el array
-            const index = this.editedItem.expenses.findIndex(item => item.id === expense.id);
-
-            if (index !== -1) {
-                // Obtener el monto del ingreso a eliminar
-                const removedAmount = this.editedItem.expenses[index].amount;
-
-                // Restar el monto del available_money
-                this.editedItem.discounts -= removedAmount;
-
-                // Eliminar el ingreso del array
-                this.editedItem.expenses.splice(index, 1);
-            }
-
-            const requestData = {
-                editedItem: this.editedItem, // Datos del sistema
-            };
-            try {
-                const result = await handleRequest({
-                    endpoint: 'mounthly-clousure-destroy',
-                    method: 'POST',
-                    data: requestData
-                });
-
-                // Manejo de la respuesta según el resultado
-                if (result.success) {
-                    this.showAlert("success", result.message, 3000);
-                } else {
-                    //this.loadingBonus = true;
-                    //this.dialogMontlyClousure = false;
-                    this.showAlert("warning", result.message, 3000);
-                }
-            } catch (error) {
-                this.loadingAddExpenses = false;
-                // Este bloque captura errores inesperados fuera del manejo estándar
-                this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
-            } finally {
-                //this.close();
-                this.showAlert("success", "Gasto eliminado correctamente.", 3000);
-                await this.initialize();
-                this.closeDelete();
-            }
-        },
         async utilityMonthlyClosure() {
             const requestParams = {
                 branch_id: this.type === 'Branch' ? Number(this.branch_id) : null,
@@ -1360,8 +1558,10 @@ export default {
 
                 if (result.success) {
                     // Si la solicitud es exitosa, asignamos las sucursales
-                    this.editedItem.utility = result.data.utility;
-                    this.editedItem.retention = result.data.retentions_total;
+                    this.editedItem.utility = Number(result.data.utility);
+                    this.editedItem.retention = Number(result.data.retentions_total);
+                    this.editedItem.spent = Number(result.data.spent);
+                    this.editedItem.system_incomes = Number(result.data.system_incomes);
                     this.finance_ids = result.data.finance_ids;
                     this.retention_ids = result.data.retention_ids;
                     console.log('this.editedItem');
@@ -1370,11 +1570,16 @@ export default {
                     // Si no hay datos, asignamos un array vacío
                     this.editedItem.utility = 0;
                     this.editedItem.retention = 0;
+                    this.editedItem.spent = 0;
+                    this.editedItem.system_income = 0;
                     this.finance_ids = [];
                     this.retention_ids = [];
                 }
             } catch (error) {
                 this.utility = 0;
+                this.editedItem.spent = 0;
+                this.editedItem.system_income = 0;
+                this.editedItem.retention = 0;
                 this.finance_ids = [];
                 this.finance_ids = [];
                 this.retention_ids = [];
@@ -1388,11 +1593,71 @@ export default {
             this.step = index;
         },
         async nextStep() {
+            if (this.step === 1) {
+                
+                const fieldsToUpdate = ['incomes', 'expenses', 'available_money', 'discounts', 'client_retention'];
+                const updatedFields = Object.keys(this.editedItem)
+                    .filter((key) => {
+                        const isDifferent = fieldsToUpdate.includes(key) && (
+                            key !== 'incomes' && key !== 'expenses'
+                                ? JSON.stringify(this.editedItem[key]) !== JSON.stringify(this.originalItem[key])
+                                : this.areArraysDifferent(this.originalItem[key], this.editedItem[key])
+                        );
+                        if (isDifferent) console.log(`Campo diferente: ${key}`);
+                        return isDifferent;
+                    })
+                    .reduce((obj, key) => ({ ...obj, [key]: this.editedItem[key] }), {});
+        if (Object.keys(updatedFields).length > 0)
+        {
+            console.log('Object.keys(updatedFields).length');
+            console.log(Object.keys(updatedFields).length);
+            this.editedItem.branch_id = this.type === 'Branch' ? this.branch_id : null;
+                this.editedItem.business_id = this.type === 'Business' ? this.business_id : null;
+                this.loadingAddIncomes = true;
+            const requestData = {
+                editedItem: this.editedItem, // Datos del sistema
+                month: `${this.selectedYear}-${this.selectedMounth}`,  // Formato YYYY-MM
+            };
+            try {
+                const result = await handleRequest({
+                    endpoint: 'mounthly-clousure-incomes',
+                    method: 'POST',
+                    data: requestData
+                });
+
+                // Manejo de la respuesta según el resultado
+                if (result.success) {
+                    this.showAlert("success", result.message, 3000);
+                    this.loadingAddIncomes = false;
+                } else {
+                    //this.loadingBonus = true;
+                    //this.dialogMontlyClousure = false;
+                    this.showAlert("warning", result.message, 3000);
+                    this.loadingAddIncomes = false;
+                }
+            } catch (error) {
+                this.loadingAddIncomes = false;
+                // Este bloque captura errores inesperados fuera del manejo estándar
+                this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
+            } finally {
+                //this.close();
+                this.dialogIncomes = false;
+                this.loadingAddIncomes = false;
+                this.showAlert("success", "Datos Actualizados correctamente.", 3000);
+                await this.initialize();
+                await this.utilityMonthlyClosure();
+            }
+        }else{
+            console.log('No hubo cambios');
+        }
+                /**/
+            }
             if (this.step < this.items.length) {
                 this.step++;
             }
 
-            if (this.step == 2) {
+            if (this.step === 2) {
+                
                 await this.utilityMonthlyClosure();
             }
 
@@ -1400,6 +1665,9 @@ export default {
             console.log(this.step);
             //this.verificateStep(this.step);
 
+        },
+        salir(){
+            this.dialogMontlyClousure = false;
         },
 
         prevStep() {

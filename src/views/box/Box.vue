@@ -526,12 +526,8 @@
                               </v-col>
                             </v-row>
                             <v-row class="mb-4 mt-1" dense no-gutters>
-                              <v-col cols="12" md="6" class="text-h6">
-                                <span :class="cashierData.difference < 0 ? 'text-red' : 'text-green'">
-                                  '¿Por qué?'</span>
-                              </v-col>
                               <v-col cols="12" md="12" class="text-center">
-                                <v-textarea v-model="cashierData.description" variant="underlined" density="compact"
+                                <v-textarea v-model="cashierData.description" variant="solo" density="compact" label="¿Por qué?"
                                   class="mb-2" :rules="descriptionRules"></v-textarea>
                               </v-col>
                             </v-row>
@@ -980,13 +976,9 @@
                             </v-col>
                           </v-row>
                           <v-row class="mb-4 mt-1" dense no-gutters>
-                            <v-col cols="12" md="6" class="text-h6">
-                              <span :class="cashierData.difference < 0 ? 'text-red' : 'text-green'">
-                                '¿Por qué' </span>
-                            </v-col>
-                            <v-col cols="12" md="12" class="text-center">
-                              <v-textarea v-if="cashierData.difference !== 0" v-model="cashierData.description"
-                                variant="underlined" density="compact" :rules="descriptionRules"></v-textarea>
+                             <v-col cols="12" md="12" class="text-center">
+                              <v-textarea v-if="cashierData.difference !== 0" v-model="cashierData.description" label="¿Por qué"
+                                variant="solo" density="compact" :rules="descriptionRules"></v-textarea>
                             </v-col>
                           </v-row>
                         </v-col>
