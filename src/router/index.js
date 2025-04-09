@@ -122,6 +122,15 @@ const routes = [
         },
       },
       {
+        path: "/boxclosedate",
+        name: "Box Close Date",
+        component: () => import("@/views/boxclose/BoxCloseDate.vue"),
+        meta: {
+          requiresAuth: true,
+          requiresPermissions: ["view_cash_closing_date"],
+        },
+      },
+      {
         path: "/monthlyclosure",
         name: "Cierre Mensual",
         component: () => import("@/views/montlyclousure/MontlyClousure.vue"),

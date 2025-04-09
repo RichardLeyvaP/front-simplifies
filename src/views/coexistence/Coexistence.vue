@@ -26,11 +26,11 @@
             <!--<v-btn @click="cancelChanges" color="black" prepend-icon="mdi-close" class=" ml-2"
               :disabled="changes.length === 0" title="Cancelar Cambios" style="background-color: #E7E9E9;">
               <span class="btn-text">Cancelar</span>
-            </v-btn>-->
+            </v-btn>
             <v-btn @click="save" color="black" prepend-icon="mdi-check" :disabled="changes.length === 0"
               title="Actualizar convivencias" style="background-color: #E7E9E9;">
               <span class="btn-text">Aceptar</span>
-            </v-btn>
+            </v-btn>-->
 
           </div>
         </v-col>
@@ -255,9 +255,7 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? 'Nueva Convivencia' : 'Editar Estado de convivencia'
     },
-    hasChanges() {
-    return !_.isEqual(this.results, this.resultsOriginal);
-  }
+   
   },
 
   watch: {
@@ -270,6 +268,8 @@ export default {
     results(newVal) {
       const hasStateThree = newVal.some(item => item.estado === 3);
       this.$emit('update:has-invalid-state', hasStateThree);
+       // Notificar si hay cambios
+       this.$emit('changes-updated', this.hasChanges());
     }
     /*results(newVal) {
     const hasStateThree = newVal.some(item => item.estado === 3);
@@ -358,6 +358,9 @@ export default {
         });
       }, 100); // Ajusta este tiempo según necesites
     },
+    hasChanges() {
+    return !_.isEqual(this.results, this.resultsOriginal);
+  },
     getProfessionalStats(professionalName) {
       const professional = this.results.find(item =>
         item.professionalName === professionalName

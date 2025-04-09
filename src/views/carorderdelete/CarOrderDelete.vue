@@ -25,16 +25,16 @@
             </v-row>
         </v-toolbar>
         <!--<v-container class="fill-height" fluid>-->
-            <v-row>
-                <v-col cols="12" sm="12" md="4">
-                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
-                        v-if="this.mostrarFila" clearable label="Seleccione una Sucursal" prepend-icon="mdi-store"
-                        item-title="name" item-value="id" variant="underlined"
-                        @update:model-value="initialize()"></v-autocomplete>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-container class="fill-height" fluid>
+        <v-row>
+            <v-col cols="12" sm="12" md="4">
+                <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+                    v-if="this.mostrarFila" clearable label="Seleccione una Sucursal" prepend-icon="mdi-store"
+                    item-title="name" item-value="id" variant="underlined"
+                    @update:model-value="initialize()"></v-autocomplete>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-container style="min-width: 100%; max-height: 100%;">
                 <v-col cols="12" md="12">
                     <v-card elevation="2">
                         <v-tabs v-model="tabBar" color="rgb(241, 130, 84)"
@@ -53,7 +53,8 @@
                                     <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'"
                                         :items="results" :search="search" class="elevation-1"
                                         no-results-text="No hay datos disponibles"
-                                        no-data-text="No hay datos disponibles" :loading="loadingCar" loading-text="Cargando datos...">
+                                        no-data-text="No hay datos disponibles" :loading="loadingCar"
+                                        loading-text="Cargando datos...">
 
                                         <template v-slot:item.professionalName="{ item }">
 
@@ -73,27 +74,27 @@
                                             {{ item.clientName }}
                                         </template>
                                         <template v-slot:item.amount="{ item }">
-                {{ formatNumber(item.amount)}}                                  
-                                          </template>
-                                          
+                                            {{ formatNumber(item.amount) }}
+                                        </template>
+
                                         <template v-slot:item.technical_assistance="{ item }">
-                {{ formatNumber(item.technical_assistance)}}                                  
-                                          </template>
-                                          <template v-slot:item.tip="{ item }">
-                {{ formatNumber(item.tip)}}                                  
-                                          </template>
-                                          <template v-slot:item.product="{ item }">
-                {{ formatNumber(item.product)}}                                  
-                                          </template>
-                                          <template v-slot:item.service="{ item }">
-                {{ formatNumber(item.service)}}                                  
-                                          </template>
-                                          
-          <template v-slot:item.active="{ item }">
-            <v-chip :color="item.active === 2 ? 'warning' : 'error'" small>
-              {{ item.active === 2 ? 'Editar' : 'Eliminar' }}
-            </v-chip>
-          </template>
+                                            {{ formatNumber(item.technical_assistance) }}
+                                        </template>
+                                        <template v-slot:item.tip="{ item }">
+                                            {{ formatNumber(item.tip) }}
+                                        </template>
+                                        <template v-slot:item.product="{ item }">
+                                            {{ formatNumber(item.product) }}
+                                        </template>
+                                        <template v-slot:item.service="{ item }">
+                                            {{ formatNumber(item.service) }}
+                                        </template>
+
+                                        <template v-slot:item.active="{ item }">
+                                            <v-chip :color="item.active === 2 ? 'warning' : 'error'" small>
+                                                {{ item.active === 2 ? 'Editar' : 'Eliminar' }}
+                                            </v-chip>
+                                        </template>
                                         <template v-slot:top>
 
                                             <v-divider class="mx-4" inset vertical></v-divider>
@@ -102,11 +103,166 @@
 
                                         <template v-slot:item.actions="{ item }">
                                             <v-btn density="comfortable" icon="mdi-close" @click="editItem(item)"
-                                                color="red-darken-4" variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
-                                                title="Denegar Solicitud"></v-btn>
-                                            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-check" @click="deleteItem(item)"
-                                                color="primary" variant="tonal" elevation="1"
+                                                color="red-darken-4" variant="tonal" elevation="1"
+                                                class="mr-1 mt-1 mb-1" title="Denegar Solicitud"></v-btn>
+                                            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-check"
+                                                @click="deleteItem(item)" color="primary" variant="tonal" elevation="1"
                                                 :title="item.active === 2 ? 'Aceptar solicitud y editar el carro' : 'Aceptar solicitud y eliminar el carro'"></v-btn>
+                                        </template>
+                                        <template v-slot:item.action_descriptions="{ item }">
+                                            <div>
+                                                <v-chip
+                                                    @click="dialogActions = true; currentActions = item.action_descriptions"
+                                                    color="indigo-darken-2" small class="px-2">
+                                                    <v-icon left color="indigo-darken-2"
+                                                        icon="mdi-clipboard-text-outline" />
+                                                    {{ item.action_descriptions.length }}
+                                                </v-chip>
+
+                                                <v-dialog v-model="dialogActions" max-width="540px">
+                                                    <v-card>
+                                                        <v-toolbar color="#F18254">
+                                                            <v-row align="center">
+                                                                <v-col cols="12" md="5" class="grow ml-4">
+                                                                    <span class="text-subtitle-1"><strong>Detalles de
+                                                                            Solicitudes</strong></span>
+                                                                </v-col>
+                                                                <v-col cols="12" md="5"></v-col>
+                                                                <v-col cols="12" md="1"></v-col>
+                                                            </v-row>
+                                                        </v-toolbar>
+
+                                                        <v-card-text>
+                                                            <v-card v-for="(action, index) in currentActions"
+                                                                :key="index" class="mb-6">
+                                                                <v-card-title>
+                                                                    <v-list-item
+                                                                        :subtitle="formatDateTime(action.timestamp)"
+                                                                        :title="action.nameProfessional || 'Usuario'">
+                                                                        <template v-slot:prepend>
+                                                                            <v-avatar>
+                                                                                <v-img :src="'https://testapi.simplifies.cl/api/images/' + action.image"
+                                                                                alt="image"></v-img>
+                                                                            </v-avatar>
+                                                                        </template>
+                                                                        <template v-slot:append>
+                                                                            <v-avatar color="grey-lighten-1"
+                                                                                size="small">
+                                                                                {{ index + 1 }}
+                                                                            </v-avatar>
+                                                                        </template>
+                                                                    </v-list-item>
+                                                                </v-card-title>
+                                                                <v-divider></v-divider>
+
+                                                                <v-card-text>
+                                                                    <v-list-item :subtitle="action.description"
+                                                                        :title="getActionTitle(action.action_type)">
+                                                                        <template v-slot:prepend>
+                                                                            <v-avatar color="white">
+                                                                                <v-icon
+                                                                                    :color="getActionColor(action.action_type)" size="30">{{
+                                                                                    getActionIcon(action.action_type)
+                                                                                    }}</v-icon>
+                                                                            </v-avatar>
+                                                                        </template>
+                                                                    </v-list-item>
+                                                                </v-card-text>
+                                                            </v-card>
+                                                        </v-card-text>
+
+                                                        <v-divider></v-divider>
+
+                                                        <v-card-actions>
+                                                            <v-spacer></v-spacer>
+                                                            <v-btn color="#E7E9E9" variant="flat"
+                                                                @click="dialogActions = false">
+                                                                Cerrar
+                                                            </v-btn>
+                                                        </v-card-actions>
+                                                    </v-card>
+                                                </v-dialog>
+                                            </div>
+                                        </template>
+                                        <template v-slot:item.change_log="{ item }">
+                                            <div>
+                                                <v-chip
+                                                    @click="dialogChages = true; cambiosProcesados = procesarChangeLog(item.change_log)"
+                                                    color="teal-darken-3" small class="px-2">
+                                                    <v-icon left color="teal-darken-3" icon="mdi-history" />
+                                                    {{ item.change_log.length }}
+                                                </v-chip>
+
+                                                <v-dialog v-model="dialogChages" max-width="700px">
+                                                    <v-card>
+                                                        <v-toolbar color="#F18254">
+                                                            <v-row align="center">
+                                                                <v-col cols="12" md="5" class="grow ml-4">
+                                                                    <span class="text-subtitle-1"><strong>Historial de
+                                                                            Cambios</strong></span>
+                                                                </v-col>
+                                                            </v-row>
+                                                        </v-toolbar>
+
+                                                        <v-card-text>
+                                                            <v-card v-for="(registro, index) in cambiosProcesados"
+                                                                :key="index" class="mb-6">
+                                                                <v-card-title>
+                                                                    <v-list-item
+                                                                        :subtitle="formatFecha(registro.timestamp)"
+                                                                        :title="registro.nameProfessional">
+                                                                        <template v-slot:prepend>
+                                                                            <v-avatar color="primary">
+                                                                                <v-img :src="'https://testapi.simplifies.cl/api/images/' + registro.image" alt="image"></v-img>
+                                                                            </v-avatar>
+                                                                        </template>
+                                                                        <template v-slot:append>
+                                                                            <v-avatar color="grey-lighten-1"
+                                                                                size="small">
+                                                                                {{ index + 1 }}
+                                                                            </v-avatar>
+                                                                        </template>
+                                                                    </v-list-item>
+                                                                </v-card-title>
+
+                                                                <v-divider></v-divider>
+
+                                                                <v-card-text>
+                                                                    <v-list density="compact">
+                                                                        <v-list-item
+                                                                            v-for="(cambio, i) in registro.listaCambios"
+                                                                            :key="i">
+                                                                            <v-list-item-content>
+                                                                                <v-list-item-title
+                                                                                    :class="iconoCambio(cambio).color + '--text'">
+                                                                                    <v-list-item-icon>
+                                                                                        <v-icon
+                                                                                            :color="iconoCambio(cambio).color">
+                                                                                            {{ iconoCambio(cambio).icon
+                                                                                            }}
+                                                                                        </v-icon>
+                                                                                    </v-list-item-icon>
+                                                                                    {{ cambio }}
+                                                                                </v-list-item-title>
+                                                                            </v-list-item-content>
+                                                                        </v-list-item>
+                                                                    </v-list>
+                                                                </v-card-text>
+                                                            </v-card>
+                                                        </v-card-text>
+
+                                                        <v-divider></v-divider>
+
+                                                        <v-card-actions>
+                                                            <v-spacer></v-spacer>
+                                                            <v-btn color="#E7E9E9" variant="flat"
+                                                                @click="dialogChages = false">
+                                                                Cerrar
+                                                            </v-btn>
+                                                        </v-card-actions>
+                                                    </v-card>
+                                                </v-dialog>
+                                            </div>
                                         </template>
                                     </v-data-table>
                                 </v-window-item>
@@ -119,7 +275,8 @@
                                     <v-data-table :headers="headers1" :items-per-page-text="'Elementos por páginas'"
                                         :items="results1" :search="search2" class="elevation-1"
                                         no-results-text="No hay datos disponibles"
-                                        no-data-text="No hay datos disponibles" :loading="loadingOrder" loading-text="Cargando datos...">
+                                        no-data-text="No hay datos disponibles" :loading="loadingOrder"
+                                        loading-text="Cargando datos...">
 
                                         <template v-slot:item.professionalName="{ item }">
 
@@ -147,19 +304,22 @@
                                             {{ item.name }}
                                         </template>
                                         <template v-slot:item.price="{ item }">
-                {{ formatNumber(item.price)}}                                  
-                                          </template>
+                                            {{ formatNumber(item.price) }}
+                                        </template>
                                         <template v-slot:top>
                                             <v-divider class="mx-4" inset vertical></v-divider>
                                             <v-spacer></v-spacer>
                                         </template>
 
                                         <template v-slot:item.actions="{ item }">
-                                            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-close" @click="editItemOrder(item)"
-                                                color="red-darken-4" variant="tonal" elevation="1" title="Denegar Solicitud"></v-btn>
-                                            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-check" @click="deleteItemOrder(item)"
-                                                color="primary" variant="tonal" elevation="1" title="Aceptar la solicitud y eliminar la orden"></v-btn>
+                                            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-close"
+                                                @click="editItemOrder(item)" color="red-darken-4" variant="tonal"
+                                                elevation="1" title="Denegar Solicitud"></v-btn>
+                                            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-check"
+                                                @click="deleteItemOrder(item)" color="primary" variant="tonal"
+                                                elevation="1" title="Aceptar la solicitud y eliminar la orden"></v-btn>
                                         </template>
+
                                     </v-data-table>
                                 </v-window-item>
                                 <v-window-item value="tree">
@@ -170,7 +330,8 @@
                                     <v-data-table :headers="headers2" :items-per-page-text="'Elementos por páginas'"
                                         :items="results2" :search="search3" class="elevation-1"
                                         no-results-text="No hay datos disponibles"
-                                        no-data-text="No hay datos disponibles" :loading="loadingProduct" loading-text="Cargando datos...">
+                                        no-data-text="No hay datos disponibles" :loading="loadingProduct"
+                                        loading-text="Cargando datos...">
 
                                         <template v-slot:item.professionalName="{ item }">
 
@@ -189,18 +350,21 @@
                                             {{ item.productName }}
                                         </template>
                                         <template v-slot:item.price="{ item }">
-                {{ formatNumber(item.price)}}                                  
-                                          </template>
+                                            {{ formatNumber(item.price) }}
+                                        </template>
                                         <template v-slot:top>
                                             <v-divider class="mx-4" inset vertical></v-divider>
                                             <v-spacer></v-spacer>
                                         </template>
 
                                         <template v-slot:item.actions="{ item }">
-                                            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-close" @click="editItemProduct(item)"
-                                                color="red-darken-4" variant="tonal" elevation="1" title="Denegar Solicitud"></v-btn>
-                                            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-check" @click="deleteItemProduct(item)"
-                                                color="primary" variant="tonal" elevation="1" title="Aceptar la solicitud y eliminar la producto"></v-btn>
+                                            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-close"
+                                                @click="editItemProduct(item)" color="red-darken-4" variant="tonal"
+                                                elevation="1" title="Denegar Solicitud"></v-btn>
+                                            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-check"
+                                                @click="deleteItemProduct(item)" color="primary" variant="tonal"
+                                                elevation="1"
+                                                title="Aceptar la solicitud y eliminar la producto"></v-btn>
                                         </template>
                                     </v-data-table>
                                 </v-window-item>
@@ -208,8 +372,8 @@
                         </v-card-text>
                     </v-card>
                 </v-col>
-                </v-container>
-            </v-row>
+            </v-container>
+        </v-row>
         <!---->
     </v-card>
 </template>
@@ -220,17 +384,21 @@ import axios from "axios";
 import LocalStorageService from "@/LocalStorageService";
 
 axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
+    const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
+    if (token) {
+        config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
+    }
+    return config;
 }, error => {
-  return Promise.reject(error);
+    return Promise.reject(error);
 });
 
 export default {
     data: () => ({
+        dialogActions: false,
+        currentActions: [],
+        dialogChages: false,
+        cambiosProcesados: [], // Aquí se almacenarán los cambios procesados
         loadingCar: true,
         loadingOrder: true,
         loadingProduct: true,
@@ -261,6 +429,8 @@ export default {
             { title: 'Servicios', value: 'service' },
             { title: 'Propina', value: 'tip' },
             { title: 'Monto Total', value: 'amount' },
+            { title: 'Solicitudes', value: 'action_descriptions' },
+            { title: 'Cambios', value: 'change_log' },
             { title: 'Solicitud', value: 'active' },
             { title: 'Acciones', key: 'actions', sortable: false, width: '15%' },
         ],
@@ -302,29 +472,151 @@ export default {
         this.charge_id = LocalStorageService.getItem('charge_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         this.professional_id = LocalStorageService.getItem('professional_id');
-       this.initialize();
+        this.initialize();
     },
 
     methods: {
+        isResolution(actionType) {
+            return ['approved', 'denied'].includes(actionType);
+        },
+
+        // Obtener color según tipo de acción
+        getActionColor(actionType) {
+            const colors = {
+                approved: 'green',
+                denied: 'red',
+                delete: 'red',
+                add: 'green',
+                edit: 'blue',
+                payment: 'indigo', // Color azul oscuro para pagos
+                default: 'grey'
+            };
+            return colors[actionType] || colors.default;
+        },
+
+        // Obtener icono según tipo de acción
+        getActionIcon(actionType) {
+            const icons = {
+                approved: 'mdi-check-circle',
+                denied: 'mdi-close-circle',
+                delete: 'mdi-delete',
+                add: 'mdi-plus',
+                edit: 'mdi-pencil',
+                payment: 'mdi-cash-multiple', // Icono adecuado para pagos
+                default: 'mdi-alert'
+            };
+            return icons[actionType] || icons.default;
+        },
+
+        procesarChangeLog(changeLog) {
+            if (!changeLog || !Array.isArray(changeLog)) return [];
+
+            return changeLog.map(registro => ({
+                ...registro,
+                listaCambios: this.extraerCambios(registro.changes),
+                timestamp: registro.timestamp || new Date().toISOString(),
+                nameProfessional: registro.nameProfessional || 'Usuario desconocido'
+            }));
+        },
+
+        extraerCambios(changesString) {
+            if (!changesString) return [];
+            return changesString
+                .split('*')
+                .map(c => c.trim())
+                .filter(c => c !== '');
+        },
+        openActionsDialog(actions) {
+            this.currentActions = actions;
+            this.actionsDialog = true;
+        },
+        formatFecha(fechaStr) {
+            const fecha = new Date(fechaStr);
+            return fecha.toLocaleString();
+        },
+        iconoCambio(texto) {
+            if (texto.includes('aumentó')) {
+                return { icon: 'mdi-arrow-up', color: 'green' };
+            }
+            if (texto.includes('disminuyó')) {
+                return { icon: 'mdi-arrow-down', color: 'red' };
+            }
+            if (texto.includes('cambió')) {
+                return { icon: 'mdi-swap-horizontal', color: 'blue' };
+            }
+            return { icon: 'mdi-dots-horizontal', color: 'grey' };
+        },
+        getActionTitle(actionType) {
+            const titles = {
+                approved: 'Solicitud Aprobada',
+                denied: 'Solicitud Denegada',
+                delete: 'Solicitud de Eliminación',
+                add: 'Adición',
+                edit: 'Solicitud de Edición',
+                payment: 'Actualización de Pago', // Título descriptivo para pagos
+                default: 'Acción'
+            };
+            return titles[actionType] || titles.default;
+        },
+
+        // Obtener color para chips/resolución
+        getResolutionColor(actionType) {
+            return this.isResolution(actionType) ?
+                (actionType === 'approved' ? 'green' : 'red') : 'grey';
+        },
+
+        // Obtener texto para chips/resolución
+        getResolutionText(actionType) {
+            return this.isResolution(actionType) ?
+                (actionType === 'approved' ? 'Aprobado' : 'Denegado') : 'Pendiente';
+        },
+
+        // Obtener detalles de quién realizó la acción
+        getActionDetails(item) {
+            const actor = item.nameProfessional || 'Sistema';
+            return this.isResolution(item.action_type) ?
+                `Resuelto por: ${actor}` : `Acción por: ${actor}`;
+        },
+
+        // Obtener icono global según estado general
+        getGlobalIcon(items) {
+            const hasDenied = items.some(i => i.action_type === 'denied' || i.action_type === 'delete');
+            const hasPending = items.some(i => !this.isResolution(i.action_type));
+
+            if (hasDenied) return 'mdi-alert-octagon';
+            if (hasPending) return 'mdi-alert-circle';
+            return 'mdi-check-circle';
+        },
+        formatDateTime(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleString('es-ES', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        },
         formatNumber(value) {
-      // Si el valor es menor que 1000, devuelve el valor original sin formato
-  if (value < 1000) {
-    return value;
-  }
+            // Si el valor es menor que 1000, devuelve el valor original sin formato
+            if (value < 1000) {
+                return value;
+            }
 
-  // Primero, redondea el valor a dos decimales
-  value = Math.round((value + Number.EPSILON) * 100) / 100;
+            // Primero, redondea el valor a dos decimales
+            value = Math.round((value + Number.EPSILON) * 100) / 100;
 
-  // Separa la parte entera de la parte decimal
-  let parts = value.toString().split(".");
-  let integerPart = parts[0];
-  let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+            // Separa la parte entera de la parte decimal
+            let parts = value.toString().split(".");
+            let integerPart = parts[0];
+            let decimalPart = parts.length > 1 ? "." + parts[1] : "";
 
-  // Agrega los separadores de miles
-  integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            // Agrega los separadores de miles
+            integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
-  // Combina la parte entera y la parte decimal
-  return integerPart + decimalPart;
+            // Combina la parte entera y la parte decimal
+            return integerPart + decimalPart;
         },
         showAlert(sb_type, sb_message, sb_timeout) {
             this.sb_type = sb_type
@@ -366,11 +658,11 @@ export default {
                     console.log('this.results2 productos');
                     console.log(this.results2);
                 }).finally(() => {
-            LocalStorageService.setIsLocked(false);
-            this.loadingCar = false;
-            this.loadingOrder = false;
-            this.loadingProduct = false;
-        });
+                    LocalStorageService.setIsLocked(false);
+                    this.loadingCar = false;
+                    this.loadingOrder = false;
+                    this.loadingProduct = false;
+                });
         },
 
         deleteItem(item) {
@@ -385,7 +677,7 @@ export default {
                 }).finally(() => {
                     LocalStorageService.setIsLocked(false);
                     this.initialize();
-                    this.showAlert("success", "Carro eliminado correctamente", 3000)
+                    this.showAlert("success", "Solicitud Aceptada correctamente", 3000)
                 });
         },
 
@@ -441,8 +733,8 @@ export default {
                 });
         },
 
-         //eliminar orden
-         deleteItemProduct(item) {
+        //eliminar orden
+        deleteItemProduct(item) {
             LocalStorageService.setIsLocked(true);
             let request = {
                 id: item.id,
@@ -481,6 +773,6 @@ export default {
 
 <style>
 .fill-height {
-  height: 100%;
+    height: 100%;
 }
 </style>

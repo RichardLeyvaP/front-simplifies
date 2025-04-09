@@ -67,6 +67,15 @@
                                     {{ item.type }}
                                 </v-chip>
                             </template>
+                            <template v-slot:item.differences="{ item }">
+                                <v-chip small
+                                variant="flat"
+                                :color="getDifferenceColor(item.differences)"
+                                class="font-weight-bold text-black"
+                                >
+                                {{ formatNumber(Number(item.differences)) }}
+                                </v-chip>
+                            </template>
                             <template v-slot:item.month="{ item }">
                                 {{ formatMonth(item.month) }}
                             </template>
@@ -251,7 +260,7 @@
                                                                     <v-row dense align="center">
                                                                         <v-col cols="12" md="6">
                                                                             <span
-                                                                                class="text-body-1 font-weight-bold">Iingresos:
+                                                                                class="text-body-1 font-weight-bold">Ingresos:
                                                                                 $</span>
                                                                         </v-col>
                                                                         <v-col cols="12" md="6" class="text-right">
@@ -988,6 +997,7 @@ export default {
                 { title: 'Realizado', key: 'data', sortable: true },
                 { title: 'Mes', key: 'month', sortable: true },
                 { title: 'Nombre', key: 'displayName', sortable: true },
+                { title: 'Diferencia', key: 'differences', sortable: true },
                 { title: 'Tipo', key: 'type', sortable: true, },
                 { title: 'Responsable', key: 'professionalName', sortable: true },
                 { title: 'Acciones', key: 'actions', sortable: false },
@@ -1237,6 +1247,15 @@ export default {
     },
 
     methods: {
+        getDifferenceColor(difference) {
+            if (difference < 0) {
+            return '#F18254'; // Rojo para valores negativos
+            } else if (difference > 0) {
+            return 'green-lighten-4'; // Verde para valores positivos
+            } else {
+            return 'grey-lighten-2'; // Gris para cero
+            }
+        },
         areArraysDifferent(originalArray, editedArray) {
             // Ordenar ambos arrays por un campo único (por ejemplo, `id`)
             const sortedOriginal = [...originalArray].sort((a, b) => a.id - b.id);

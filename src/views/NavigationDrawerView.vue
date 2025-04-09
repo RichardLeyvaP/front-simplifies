@@ -241,6 +241,7 @@ export default {
       { icon: "mdi-currency-usd", title: "Operaciones en la caja", to: "branch-traces", value: "branch-traces", permission: "view_branch_traces" },
       { icon: "mdi-gavel", title: "Convivencias", to: "coexistence", value: "coexistence", permission: "view_coexistences" },
       { icon: "mdi-cash-register", title: "Cierres de caja", to: "boxclose", value: "boxclose", permission: "view_cash_closing" },
+      { icon: "mdi-account-multiple-check-outline", title: "Clientes Atendidos", to: "boxclosedate", value: "boxclosedate", permission: "view_cash_closing_date" },
       { icon: "mdi-cash-lock", title: "Cierres de mes", to: "monthlyclosure", value: "monthlyclosure", permission: "view_monthly_closing" },
     ],
     clientes:[
