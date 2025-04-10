@@ -93,7 +93,7 @@
               <template v-slot:item.action_descriptions="{ item }">
                 <div>
                   <v-chip @click="dialogActions = true; currentActions = item.action_descriptions"
-                    color="indigo-darken-2" small class="px-2">
+                    color="indigo-darken-2" small class="px-2" :disabled="!item.action_descriptions?.length">
                     <v-icon left color="indigo-darken-2" icon="mdi-clipboard-text-outline" />
                     {{ item.action_descriptions.length }}
                   </v-chip>
@@ -157,7 +157,7 @@
               <template v-slot:item.change_log="{ item }">
                 <div>
                   <v-chip @click="dialogChages = true; cambiosProcesados = procesarChangeLog(item.change_log)"
-                    color="teal-darken-3" small class="px-2">
+                    color="teal-darken-3" small class="px-2" :disabled="!item.change_log?.length">
                     <v-icon left color="teal-darken-3" icon="mdi-history" />
                     {{ item.change_log.length }}
                   </v-chip>

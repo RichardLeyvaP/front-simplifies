@@ -198,6 +198,8 @@
                 @click="(item.active != 3 && item.state != 2) && deleteItemSolicitud(item)"
                 :color="(item.active != 3 && item.state != 2) ? 'red-darken-4' : 'grey'" variant="tonal" elevation="1"
                 title="Solicitud de eliminar carro"></v-btn>
+              <!--<v-btn density="comfortable" icon="mdi-check-circle-outline" v-if="!((item.active != 3 && item.state != 2) && this.charge === 'Administrador' && this.nameProfessional==='Yasmany Sanchez')" :color="((item.active != 3 && item.state != 2) && this.charge === 'Administrador' && this.nameProfessional==='Yasmany Sanchez')? 'gey' : 'green'" variant="tonal" elevation="1"
+              @click="!((item.active != 3 && item.state != 2) && this.charge === 'Administrador' && this.nameProfessional==='Yasmany Sanchez') && endReservation(item)"></v-btn>-->
             </template>
           </v-data-table>
         </v-col>
@@ -244,7 +246,7 @@
                   <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                     <v-card-text>
                       <v-row class="mb-4 mt-2" dense no-gutters>
-                        <v-col cols="12" md="6" >
+                        <v-col cols="12" md="6">
                           <v-card class="mx-2" subtitle="Introduces tus datos de ingresos "
                             style="background-color: #F18254; color: white;" elevation="4">
                             <template v-slot:prepend>
@@ -256,7 +258,8 @@
                               <span class="font-weight-black">Datos de Ingresos</span>
                             </template>
                             <template v-slot:append>
-                              <v-btn prepend-icon="mdi-plus-circle" variant="flat" elevation="2" @click="dialogDetails = true">
+                              <v-btn prepend-icon="mdi-plus-circle" variant="flat" elevation="2"
+                                @click="dialogDetails = true">
                                 Agregar
                               </v-btn>
                             </template>
@@ -299,16 +302,18 @@
                             </template>
 
                             <template v-slot:append>
-                              <v-btn prepend-icon="mdi-plus-circle" variant="flat" elevation="2" @click="openDialogExtraction">
+                              <v-btn prepend-icon="mdi-plus-circle" variant="flat" elevation="2"
+                                @click="openDialogExtraction">
                                 Agregar
                               </v-btn>
                             </template>
                             <v-card-text class="bg-white pt-4" style="min-height: 17vh; overflow-y: auto;">
                               <v-text-field v-model="cashierData.extraction" label="Extracción"
-                                prepend-icon="mdi-cash-refund" variant="underlined" density="compact" disabled="true"></v-text-field>
+                                prepend-icon="mdi-cash-refund" variant="underlined" density="compact"
+                                disabled="true"></v-text-field>
                               <v-text-field style="visibility: hidden" v-model="cashierData.advancement"
                                 label="Adelanto" prepend-icon="mdi-cash" variant="underlined"
-                                density="compact" ></v-text-field>
+                                density="compact"></v-text-field>
                             </v-card-text>
                           </v-card>
                         </v-col>
@@ -505,28 +510,28 @@
                       </v-row>
                       <v-row>
                         <v-col cols="12" md="12">
-                                <span class="text-h6 mx-2">Cierre de Caja efectuado correctamente. Por favor confirme los
-                                  datos ingresados</span>
-                              </v-col>
+                          <span class="text-h6 mx-2">Cierre de Caja efectuado correctamente. Por favor confirme los
+                            datos ingresados</span>
+                        </v-col>
                       </v-row>
                       <v-row v-if=" cashierData.difference !==0">
-                          <v-col cols="12" md="12">
-                            <v-row class="mb-4 mt-2 text-left" dense no-gutters>
-                             
-                              <v-col cols="12" md="12">
-                                <span class="text-h6 mx-2" :class="{
+                        <v-col cols="12" md="12">
+                          <v-row class="mb-4 mt-2 text-left" dense no-gutters>
+
+                            <v-col cols="12" md="12">
+                              <span class="text-h6 mx-2" :class="{
                                 'text-red': calculateTotalDifferencesGlobal1 < 0,
                                 'text-green': calculateTotalDifferencesGlobal1 >= 0
                               }">Existe una diferencia total de: {{ cashierData.difference }}</span>
-                              </v-col>
-                            </v-row>
-                            <v-row class="mb-4 mt-1" dense no-gutters>
-                              <v-col cols="12" md="12" class="text-center">
-                                <v-textarea v-model="cashierData.description" variant="solo" density="compact" label="¿Por qué?"
-                                  class="mx-2" :rules="descriptionRules"></v-textarea>
-                              </v-col>
-                            </v-row>
-                          </v-col>
+                            </v-col>
+                          </v-row>
+                          <v-row class="mb-4 mt-1" dense no-gutters>
+                            <v-col cols="12" md="12" class="text-center">
+                              <v-textarea v-model="cashierData.description" variant="solo" density="compact"
+                                label="¿Por qué?" class="mx-2" :rules="descriptionRules"></v-textarea>
+                            </v-col>
+                          </v-row>
+                        </v-col>
                       </v-row>
                     </v-card-text>
                   </v-card>
@@ -589,7 +594,8 @@
                       <Coexistence :branch_id="this.branch_id" />
                       <Coexistence :branch_id="branch_id" @update:has-invalid-state="setInvalidState" />-->
                       <Coexistence ref="CoexistenceStatusRef" :branch_id="branch_id"
-                        @update:has-invalid-state="setInvalidState" @save-success="handleSaveSuccess" :is-extraction-enabled="true"/>
+                        @update:has-invalid-state="setInvalidState" @save-success="handleSaveSuccess"
+                        :is-extraction-enabled="true" />
                     </v-card-text>
                     <v-divider></v-divider>
                   </v-card>
@@ -696,7 +702,8 @@
                               <span class="font-weight-black">Datos de Ingresos</span>
                             </template>
                             <template v-slot:append>
-                              <v-btn prepend-icon="mdi-plus-circle" variant="flat" elevation="2" @click="dialogDetails = true">
+                              <v-btn prepend-icon="mdi-plus-circle" variant="flat" elevation="2"
+                                @click="dialogDetails = true">
                                 Agregar
                               </v-btn>
                             </template>
@@ -723,7 +730,7 @@
                             </v-card-text>
                           </v-card>
                         </v-col>
-                        
+
                         <v-col cols="12" md="6">
                           <v-card class="mx-2" subtitle="Introduces tus extracciones en caja"
                             style="background-color: #F18254; color: white;" elevation="4">
@@ -736,13 +743,15 @@
                               <span class="font-weight-black">Datos de Extracción</span>
                             </template>
                             <template v-slot:append>
-                              <v-btn prepend-icon="mdi-plus-circle" variant="flat" elevation="2" @click="openDialogExtraction">
+                              <v-btn prepend-icon="mdi-plus-circle" variant="flat" elevation="2"
+                                @click="openDialogExtraction">
                                 Agregar
                               </v-btn>
                             </template>
                             <v-card-text class="bg-white pt-4" style="min-height: 17vh; overflow-y: auto;">
                               <v-text-field v-model="cashierData.extraction" label="Extracción"
-                                prepend-icon="mdi-cash-refund" variant="underlined" density="compact" disabled="true"></v-text-field>
+                                prepend-icon="mdi-cash-refund" variant="underlined" density="compact"
+                                disabled="true"></v-text-field>
                               <!--<v-text-field v-model="cashierData.totalBonus" label="Bonos"
                                 prepend-icon="mdi-cash-refund" variant="underlined" density="compact"></v-text-field>-->
                               <v-text-field style="visibility: hidden" v-model="cashierData.advancement"
@@ -848,9 +857,9 @@
                       </v-row>
                       <v-row>
                         <v-col cols="12" md="11">
-                                <span class="text-h6 mx-2">Cierre de Caja efectuado correctamente. Por favor confirme los
-                                  datos ingresados</span>
-                              </v-col>
+                          <span class="text-h6 mx-2">Cierre de Caja efectuado correctamente. Por favor confirme los
+                            datos ingresados</span>
+                        </v-col>
                       </v-row>
                       <v-row v-if="cashierData.difference !== 0">
                         <v-col cols="12" md="12">
@@ -870,9 +879,10 @@
                             </v-col>
                           </v-row>
                           <v-row class="mb-4 mt-1" dense no-gutters>
-                             <v-col cols="12" md="12" class="text-center mx-2">
-                              <v-textarea v-if="cashierData.difference !== 0" v-model="cashierData.description" label="¿Por qué"
-                                variant="solo" density="compact" :rules="descriptionRules"></v-textarea>
+                            <v-col cols="12" md="12" class="text-center mx-2">
+                              <v-textarea v-if="cashierData.difference !== 0" v-model="cashierData.description"
+                                label="¿Por qué" variant="solo" density="compact"
+                                :rules="descriptionRules"></v-textarea>
                             </v-col>
                           </v-row>
                         </v-col>
@@ -912,7 +922,8 @@
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="#E7E9E9" :disabled="stepCashier === 2 && !loadingBonus" variant="flat" @click="dialogDeleteParcial = false">
+        <v-btn color="#E7E9E9" :disabled="stepCashier === 2 && !loadingBonus" variant="flat"
+          @click="dialogDeleteParcial = false">
           Cancelar
         </v-btn>
         <v-btn color="#F18254" variant="flat" @click="nextStepCashier" :loading="stepCashier === 2 && !loadingBonus">
@@ -933,7 +944,8 @@
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="#E7E9E9" :disabled="step === 4 && !loadingBonus" variant="flat" @click="dialogDeleteDiario = false">
+        <v-btn color="#E7E9E9" :disabled="step === 4 && !loadingBonus" variant="flat"
+          @click="dialogDeleteDiario = false">
           Cancelar
         </v-btn>
         <v-btn color="#F18254" variant="flat" @click="nextStep" :loading="step === 4 && !loadingBonus">
@@ -1144,14 +1156,11 @@
           </template>
           <template v-slot:item.actions="{ item }">
             <template v-if="item.id !== null">
-              <v-btn 
-                density="comfortable" 
-                icon="mdi-cancel"
-                :color="(item.request_delete != 3 && (item.is_product != 0 || countServiceOrders(item) >= 1) && this.car_ref.state !== 2) ? 'red-darken-4' : 'grey'" 
+              <v-btn density="comfortable" icon="mdi-cancel"
+                :color="(item.request_delete != 3 && (item.is_product != 0 || countServiceOrders(item) >= 1) && this.car_ref.state !== 2) ? 'red-darken-4' : 'grey'"
                 title="Solicitar eliminar orden"
-                @click="item.request_delete != 3 && (item.is_product != 0 || countServiceOrders(item) >= 1) && this.car_ref.state !== 2 &&  deleteOrder(item)" 
-                elevation="1" 
-                class="mr-1 mt-1 mb-1">
+                @click="item.request_delete != 3 && (item.is_product != 0 || countServiceOrders(item) >= 1) && this.car_ref.state !== 2 &&  deleteOrder(item)"
+                elevation="1" class="mr-1 mt-1 mb-1">
               </v-btn>
               <!--<v-btn density="comfortable" icon="mdi-cancel"
                 :color="(item.request_delete != 3) ? 'red-darken-4' : 'grey'" title="Solicitar eliminar orden"
@@ -1411,137 +1420,137 @@
               variant="tonal" elevation="1" title="Solicitud de eliminar carro"></v-btn>
           </template>
           <template v-slot:item.action_descriptions="{ item }">
-                <div>
-                  <v-chip @click="dialogActions = true; currentActions = item.action_descriptions"
-                    color="indigo-darken-2" small class="px-2">
-                    <v-icon left color="indigo-darken-2" icon="mdi-clipboard-text-outline" />
-                    {{ item.action_descriptions.length }}
-                  </v-chip>
+            <div>
+              <v-chip @click="dialogActions = true; currentActions = item.action_descriptions" color="indigo-darken-2"
+                small class="px-2" :disabled="!item.action_descriptions?.length">
+                <v-icon left color="indigo-darken-2" icon="mdi-clipboard-text-outline" />
+                {{ item.action_descriptions.length }}
+              </v-chip>
 
-                  <v-dialog v-model="dialogActions" max-width="540px">
-                    <v-card>
-                      <v-toolbar color="#F18254">
-                        <v-row align="center">
-                          <v-col cols="12" md="5" class="grow ml-4">
-                            <span class="text-subtitle-1"><strong>Detalles de Solicitudes</strong></span>
-                          </v-col>
-                          <v-col cols="12" md="5"></v-col>
-                          <v-col cols="12" md="1"></v-col>
-                        </v-row>
-                      </v-toolbar>
+              <v-dialog v-model="dialogActions" max-width="540px">
+                <v-card>
+                  <v-toolbar color="#F18254">
+                    <v-row align="center">
+                      <v-col cols="12" md="5" class="grow ml-4">
+                        <span class="text-subtitle-1"><strong>Detalles de Solicitudes</strong></span>
+                      </v-col>
+                      <v-col cols="12" md="5"></v-col>
+                      <v-col cols="12" md="1"></v-col>
+                    </v-row>
+                  </v-toolbar>
+
+                  <v-card-text>
+                    <v-card v-for="(action, index) in currentActions" :key="index" class="mb-6">
+                      <v-card-title>
+                        <v-list-item :subtitle="formatDateTime(action.timestamp)"
+                          :title="action.nameProfessional || 'Usuario'">
+                          <template v-slot:prepend>
+                            <v-avatar>
+                              <v-img :src="'https://testapi.simplifies.cl/api/images/' + action.image" alt="image"></v-img>
+                            </v-avatar>
+                          </template>
+                          <template v-slot:append>
+                            <v-avatar color="grey-lighten-1" size="small">
+                              {{ index + 1 }}
+                            </v-avatar>
+                          </template>
+                        </v-list-item>
+                      </v-card-title>
+                      <v-divider></v-divider>
 
                       <v-card-text>
-                        <v-card v-for="(action, index) in currentActions" :key="index" class="mb-6">
-                          <v-card-title>
-                            <v-list-item :subtitle="formatDateTime(action.timestamp)"
-                              :title="action.nameProfessional || 'Usuario'">
-                              <template v-slot:prepend>
-                                <v-avatar>
-                                  <v-img :src="'https://testapi.simplifies.cl/api/images/' + action.image" alt="image"></v-img>
-                                </v-avatar>
-                              </template>
-                              <template v-slot:append>
-                                <v-avatar color="grey-lighten-1" size="small">
-                                  {{ index + 1 }}
-                                </v-avatar>
-                              </template>
-                            </v-list-item>
-                          </v-card-title>
-                          <v-divider></v-divider>
-
-                          <v-card-text>
-                            <v-list-item :subtitle="action.description" :title="getActionTitle(action.action_type)">
-                              <template v-slot:prepend>
-                                <v-avatar color="white">
-                                  <v-icon :color="getActionColor(action.action_type)" size="30">{{
-                                    getActionIcon(action.action_type) }}</v-icon>
-                                </v-avatar>
-                              </template>
-                            </v-list-item>
-                          </v-card-text>
-                        </v-card>
+                        <v-list-item :subtitle="action.description" :title="getActionTitle(action.action_type)">
+                          <template v-slot:prepend>
+                            <v-avatar color="white">
+                              <v-icon :color="getActionColor(action.action_type)" size="30">{{
+                                getActionIcon(action.action_type) }}</v-icon>
+                            </v-avatar>
+                          </template>
+                        </v-list-item>
                       </v-card-text>
+                    </v-card>
+                  </v-card-text>
+
+                  <v-divider></v-divider>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="#E7E9E9" variant="flat" @click="dialogActions = false">
+                      Cerrar
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </div>
+          </template>
+          <template v-slot:item.change_log="{ item }">
+            <div>
+              <v-chip @click="dialogChages = true; cambiosProcesados = procesarChangeLog(item.change_log)"
+                color="teal-darken-3" small class="px-2" :disabled="!item.change_log?.length">
+                <v-icon left color="teal-darken-3" icon="mdi-history" />
+                {{ item.change_log.length }}
+              </v-chip>
+
+              <v-dialog v-model="dialogChages" max-width="700px">
+                <v-card>
+                  <v-toolbar color="#F18254">
+                    <v-row align="center">
+                      <v-col cols="12" md="5" class="grow ml-4">
+                        <span class="text-subtitle-1"><strong>Historial de Cambios</strong></span>
+                      </v-col>
+                    </v-row>
+                  </v-toolbar>
+
+                  <v-card-text>
+                    <v-card v-for="(registro, index) in cambiosProcesados" :key="index" class="mb-6">
+                      <v-card-title>
+                        <v-list-item :subtitle="formatFecha(registro.timestamp)" :title="registro.nameProfessional">
+                          <template v-slot:prepend>
+                            <v-avatar>
+                              <v-img :src="'https://testapi.simplifies.cl/api/images/' + registro.image" alt="image"></v-img>
+                            </v-avatar>
+                          </template>
+                          <template v-slot:append>
+                            <v-avatar color="grey-lighten-1" size="small">
+                              {{ index + 1 }}
+                            </v-avatar>
+                          </template>
+                        </v-list-item>
+                      </v-card-title>
 
                       <v-divider></v-divider>
 
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="#E7E9E9" variant="flat" @click="dialogActions = false">
-                          Cerrar
-                        </v-btn>
-                      </v-card-actions>
-                    </v-card>
-                  </v-dialog>
-                </div>
-              </template>
-              <template v-slot:item.change_log="{ item }">
-                <div>
-                  <v-chip @click="dialogChages = true; cambiosProcesados = procesarChangeLog(item.change_log)"
-                    color="teal-darken-3" small class="px-2">
-                    <v-icon left color="teal-darken-3" icon="mdi-history" />
-                    {{ item.change_log.length }}
-                  </v-chip>
-
-                  <v-dialog v-model="dialogChages" max-width="700px">
-                    <v-card>
-                      <v-toolbar color="#F18254">
-                        <v-row align="center">
-                          <v-col cols="12" md="5" class="grow ml-4">
-                            <span class="text-subtitle-1"><strong>Historial de Cambios</strong></span>
-                          </v-col>
-                        </v-row>
-                      </v-toolbar>
-
                       <v-card-text>
-                        <v-card v-for="(registro, index) in cambiosProcesados" :key="index" class="mb-6">
-                          <v-card-title>
-                            <v-list-item :subtitle="formatFecha(registro.timestamp)" :title="registro.nameProfessional">
-                              <template v-slot:prepend>
-                                <v-avatar>
-                                  <v-img :src="'https://testapi.simplifies.cl/api/images/' + registro.image" alt="image"></v-img>
-                                </v-avatar>
-                              </template>
-                              <template v-slot:append>
-                                <v-avatar color="grey-lighten-1" size="small">
-                                  {{ index + 1 }}
-                                </v-avatar>
-                              </template>
-                            </v-list-item>
-                          </v-card-title>
-
-                          <v-divider></v-divider>
-
-                          <v-card-text>
-                            <v-list density="compact">
-                              <v-list-item v-for="(cambio, i) in registro.listaCambios" :key="i">
-                                <v-list-item-content>
-                                  <v-list-item-title :class="iconoCambio(cambio).color + '--text'">
-                                    <v-list-item-icon>
-                                      <v-icon :color="iconoCambio(cambio).color">
-                                        {{ iconoCambio(cambio).icon }}
-                                      </v-icon>
-                                    </v-list-item-icon>
-                                    {{ cambio }}
-                                  </v-list-item-title>
-                                </v-list-item-content>
-                              </v-list-item>
-                            </v-list>
-                          </v-card-text>
-                        </v-card>
+                        <v-list density="compact">
+                          <v-list-item v-for="(cambio, i) in registro.listaCambios" :key="i">
+                            <v-list-item-content>
+                              <v-list-item-title :class="iconoCambio(cambio).color + '--text'">
+                                <v-list-item-icon>
+                                  <v-icon :color="iconoCambio(cambio).color">
+                                    {{ iconoCambio(cambio).icon }}
+                                  </v-icon>
+                                </v-list-item-icon>
+                                {{ cambio }}
+                              </v-list-item-title>
+                            </v-list-item-content>
+                          </v-list-item>
+                        </v-list>
                       </v-card-text>
-
-                      <v-divider></v-divider>
-
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="#E7E9E9" variant="flat" @click="dialogChages = false">
-                          Cerrar
-                        </v-btn>
-                      </v-card-actions>
                     </v-card>
-                  </v-dialog>
-                </div>
-              </template>
+                  </v-card-text>
+
+                  <v-divider></v-divider>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="#E7E9E9" variant="flat" @click="dialogChages = false">
+                      Cerrar
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </div>
+          </template>
           <template v-slot:top>
 
             <v-divider class="mx-4" inset vertical></v-divider>
@@ -1971,22 +1980,16 @@
     <v-card>
       <v-card-text>
         <!-- Aquí pasamos el 'selectedWorker' al componente dentro del diálogo -->
-        <Coexistence 
-        ref="CoexistenceStatusRef" 
-        :branch_id="branch_id"
-        @update:has-invalid-state="setInvalidState" 
-        @save-success="handleSaveSuccess"
-        @changes-updated="handleCoexistenceChanges"
-        :is-extraction-enabled="true"
-      />
+        <Coexistence ref="CoexistenceStatusRef" :branch_id="branch_id" @update:has-invalid-state="setInvalidState"
+          @save-success="handleSaveSuccess" @changes-updated="handleCoexistenceChanges" :is-extraction-enabled="true" />
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="#E7E9E9" variant="flat" @click="NextStepCoexistence"
-                    :loading="isSaving" class="ml-2" :disabled="!coexistenceHasChanges">
-                    Aceptar y cerrar
-                  </v-btn>
+        <v-btn color="#E7E9E9" variant="flat" @click="NextStepCoexistence" :loading="isSaving" class="ml-2"
+          :disabled="!coexistenceHasChanges">
+          Aceptar y cerrar
+        </v-btn>
         <v-btn variant="flat" color="#E7E9E9" @click="closeCoexistence">Cerrar</v-btn>
       </v-card-actions>
     </v-card>
@@ -2084,38 +2087,29 @@
     </v-card>
   </v-dialog>
   <v-dialog v-model="dialogConfirmExtraction" max-width="500px">
-  <v-card>
-    <v-toolbar color="#F18254"> <!-- Cambié a color primary para operación de extracción -->
-      <span class="text-subtitle-2 ml-4">Confirmar extracción de caja</span>
-    </v-toolbar>
-    
-    <v-card-text class="mt-4 mb-2">
-      <v-icon color="warning" class="mr-2">mdi-alert-circle-outline</v-icon>
-      ¿Está seguro que desea realizar esta extracción de caja?
-    </v-card-text>
-    
-    <v-divider></v-divider>
-    
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn 
-        color="#E7E9E9" 
-        variant="flat" 
-        @click="cancelConfirmExtraction"
-      >
-        Cancelar
-      </v-btn>
-      <v-btn 
-        color="#F18254" 
-        variant="flat" 
-        @click="saveBox()"
-        :loading="isProcessingExtraction"
-      >
-        Confirmar extracción
-      </v-btn>
-    </v-card-actions>
-  </v-card>
-</v-dialog>
+    <v-card>
+      <v-toolbar color="#F18254"> <!-- Cambié a color primary para operación de extracción -->
+        <span class="text-subtitle-2 ml-4">Confirmar extracción de caja</span>
+      </v-toolbar>
+
+      <v-card-text class="mt-4 mb-2">
+        <v-icon color="warning" class="mr-2">mdi-alert-circle-outline</v-icon>
+        ¿Está seguro que desea realizar esta extracción de caja?
+      </v-card-text>
+
+      <v-divider></v-divider>
+
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="#E7E9E9" variant="flat" @click="cancelConfirmExtraction">
+          Cancelar
+        </v-btn>
+        <v-btn color="#F18254" variant="flat" @click="saveBox()" :loading="isProcessingExtraction">
+          Confirmar extracción
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
@@ -2928,6 +2922,29 @@ export default {
   },
 
   methods: {
+   async endReservation(item){
+      const requestParams = {
+      car_id: item.id
+    };
+    try {
+      const result = await handleRequest({
+        endpoint: 'storeByCarId',
+        method: 'POST',
+        params: requestParams // Aquí pasas los parámetros
+      });
+
+      if (result.success) {
+        this.showAlert("success", "Cliente finalizado correctamente", 3000);
+      } else {
+      this.showAlert("warning", result.message, 3000);
+      }
+    } catch (error) {
+      // Captura de errores no controlados
+      this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
+    } finally {
+      await this.initialize();
+    }
+    },
     countServiceOrders(currentItem) {
     // Contar órdenes de servicio (is_product = 0) que no están marcadas para eliminar (request_delete = 0)
     const serviceOrders = this.orders.filter(order => 

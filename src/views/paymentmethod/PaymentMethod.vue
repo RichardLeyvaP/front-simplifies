@@ -20,8 +20,8 @@
                     <span class="text-subtitle-1"><strong>Métodos de Pago</strong></span>
                 </v-col>
                 <v-col cols="12" md="3" class="text-right">
-                    <v-btn class="text-subtitle-1 ml-12" color="#E7E9E9" variant="tonal" elevation="2"
-                        prepend-icon="mdi-plus-circle" @click="showAdd">
+                    <v-btn v-bind="props" class="text-subtitle-1  ml-12 " color="#E7E9E9" variant="flat" elevation="2"
+                prepend-icon="mdi-plus-circle" @click="showAdd">
                         Agregar Método
                     </v-btn>
                 </v-col>
