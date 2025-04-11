@@ -1,8 +1,8 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <!-- eslint-disable vue/valid-v-slot -->
-<template >
-    <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24" :multi-line="true"
-        vertical v-model="snackbar">
+<template>
+    <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24"
+        :multi-line="true" vertical v-model="snackbar">
         <v-row>
             <v-col md="2">
                 <v-avatar :icon="sb_icon" color="sb_type" size="40"></v-avatar>
@@ -22,10 +22,10 @@
                 </v-col>
                 <v-col cols="12" md="4"></v-col>
                 <v-col cols="12" md="2">
-                            <v-btn class="text-subtitle-1  ml-12  " color="#E7E9E9" variant="flat"
-                                elevation="2" prepend-icon="mdi-plus-circle" @click="showAddService()">
-                                Asignar Servicios
-                            </v-btn>
+                    <v-btn class="text-subtitle-1  ml-12  " color="#E7E9E9" variant="flat" elevation="2"
+                        prepend-icon="mdi-plus-circle" @click="showAddService()">
+                        Asignar Servicios
+                    </v-btn>
 
                     <v-dialog v-model="dialog" max-width="500px">
 
@@ -37,27 +37,29 @@
                                 <v-form v-model="valid" enctype="multipart/form-data">
                                     <v-row>
                                         <v-col cols="12" md="12">
-                                            <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.service_id" :items="services" clearable
+                                            <v-autocomplete :no-data-text="'No hay datos disponibles'"
+                                                v-model="editedItem.service_id" :items="services" clearable
                                                 label="Servicios" prepend-icon="mdi-list-box-outline" item-title="name"
-                                                item-value="id" variant="underlined" :rules="selectRules" v-if="!editando">
+                                                item-value="id" variant="underlined" :rules="selectRules"
+                                                v-if="!editando">
                                                 <template v-slot:item="{ props, item }">
-                                                    <v-list-item
-                                                    v-bind="props"
-                                                    :prepend-avatar="'https://testapi.simplifies.cl/api/images/'+item.raw.image_service"
-                                                    :subtitle="'Precio: '+item.raw.price_service"
-                                                    :title="item.raw.name"
-                                                    ></v-list-item>
+                                                    <v-list-item v-bind="props"
+                                                        :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + item.raw.image_service"
+                                                        :subtitle="'Precio: ' + item.raw.price_service"
+                                                        :title="item.raw.name"></v-list-item>
                                                 </template>
                                             </v-autocomplete>
-                                                <v-text-field v-model="editedItem.name" label="Servicio"
-                                        prepend-icon="mdi-list-box-outline" variant="underlined" v-if="editando" disabled="true">
-                                    </v-text-field>
-                                        </v-col>                                        
-                                    <v-col cols="12" md="12">
-                                    <v-text-field v-model="editedItem.ponderation" clearable label="Ponderación"
-                                        prepend-icon="mdi-arrow-collapse-vertical" variant="underlined" :rules="pago">
-                                    </v-text-field>
-                                    </v-col>
+                                            <v-text-field v-model="editedItem.name" label="Servicio"
+                                                prepend-icon="mdi-list-box-outline" variant="underlined" v-if="editando"
+                                                disabled="true">
+                                            </v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" md="12">
+                                            <v-text-field v-model="editedItem.ponderation" clearable label="Ponderación"
+                                                prepend-icon="mdi-arrow-collapse-vertical" variant="underlined"
+                                                :rules="pago">
+                                            </v-text-field>
+                                        </v-col>
                                     </v-row>
                                     <v-divider></v-divider>
                                     <v-card-actions>
@@ -106,9 +108,10 @@
         <v-row>
             <v-container fluid>
                 <v-col cols="12" md="6">
-                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" clearable
-                        label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
-                        variant="underlined" @update:model-value="initialize()"></v-autocomplete>
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+                        v-if="this.mostrarFila" clearable label="Seleccione una Sucursal" prepend-icon="mdi-store"
+                        item-title="name" item-value="id" variant="underlined"
+                        @update:model-value="initialize()"></v-autocomplete>
                 </v-col>
 
             </v-container>
@@ -128,13 +131,14 @@
                 <template v-slot:item.name="{ item }">
 
                     <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                        <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_service" alt="image"></v-img>
+                        <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_service"
+                            alt="image"></v-img>
                     </v-avatar>
                     {{ item.name }}
                 </template>
                 <template v-slot:item.ponderation="{ item }">
                     {{ item.ponderation === 0 ? 1 : item.ponderation }}
-                    </template>
+                </template>
                 <template v-slot:item.actions="{ item }">
                     <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
          mdi-pencil
@@ -145,10 +149,11 @@
                     <v-icon size="25" color="red" @click="deleteItem(item)">
                         mdi-delete
                     </v-icon>-->
-                    <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
-            elevation="1" class="mr-1 mt-1 mb-1" title="Editar asignación de servicio"></v-btn>
-                    <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
-            elevation="1" title="Eliminar asignación"></v-btn>
+                    <v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary"
+                        variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
+                        title="Editar asignación de servicio"></v-btn>
+                    <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4"
+                        variant="tonal" elevation="1" title="Eliminar asignación"></v-btn>
                 </template>
             </v-data-table>
         </v-card-text>
@@ -165,15 +170,15 @@ import axios from "axios";
 import LocalStorageService from "@/LocalStorageService";
 
 axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
+    const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
+    if (token) {
+        config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
+    }
+    return config;
 }, error => {
-  return Promise.reject(error);
+    return Promise.reject(error);
 });
-
+import { handleRequest } from "@/utils/api";
 export default {
     data: () => ({
         loadingService: true,
@@ -238,7 +243,7 @@ export default {
         selectRules: [(v) => !!v || "Debe seleccionar al menos un elemento"],
         pago: [
             (value) => /^\d+(\.\d+)?$/.test(value) || "Debe ser un número con punto decimal (10.00)",
-      (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
+            (value) => !value || !isNaN(parseFloat(value)) || 'Debe ser un número'],
     }),
 
     computed: {
@@ -256,15 +261,15 @@ export default {
     },
 
     watch: {
-        'editedItem.ponderation': function(newValue) {
-      // Si el nuevo valor es 0, lo ajustamos a 1
-      if (newValue === 0) {
-        this.editedItem.ponderation = 1;
-      }
-      else{
-        this.editedItem.ponderation;
-      }
-    },
+        'editedItem.ponderation': function (newValue) {
+            // Si el nuevo valor es 0, lo ajustamos a 1
+            if (newValue === 0) {
+                this.editedItem.ponderation = 1;
+            }
+            else {
+                this.editedItem.ponderation;
+            }
+        },
         dialog(val) {
             val || this.close()
         },
@@ -296,7 +301,7 @@ export default {
                     this.mostrarFila = true;
                 }
                 this.initialize();
-          });
+            });
         console.log(this.charge_id);
     },
 
@@ -336,10 +341,10 @@ export default {
                     this.results = response.data.branchServices;
                 }).finally(() => {
                     this.loadingService = false;
-            LocalStorageService.setIsLocked(false);
-        });
+                    LocalStorageService.setIsLocked(false);
+                });
         },
-        showAddService(){
+        showAddService() {
             LocalStorageService.setIsLocked(true);
             axios
                 .get('https://testapi.simplifies.cl/api/branch-service-show', {
@@ -350,9 +355,9 @@ export default {
                 .then((response) => {
                     this.services = response.data.services;
                 }).finally(() => {
-            LocalStorageService.setIsLocked(false);
-        });
-                this.dialog = true;
+                    LocalStorageService.setIsLocked(false);
+                });
+            this.dialog = true;
         },
         editItem(item) {
             this.editedIndex = 2;
@@ -360,16 +365,45 @@ export default {
             this.editedItem.service_id = parseInt(item.service_id);
             this.dialog = true;
             this.editando = true;
-            },
+        },
         deleteItem(item) {
             this.editedItem = Object.assign({}, item);
             this.dialogDelete = true;
         },
-        deleteItemConfirm() {
+        async deleteItemConfirm() {
             LocalStorageService.setIsLocked(true);
-            this.data.branch_id = this.branch_id;
-            this.data.service_id = this.editedItem.service_id;
-            axios
+            //this.data.branch_id = this.branch_id;
+            //this.data.service_id = this.editedItem.service_id;
+            
+            try {
+                let request = {
+                    id: this.editedItem.id,
+                    };
+                    const result = await handleRequest({
+                    endpoint: "branchservice-destroy",
+                    method: "POST",
+                    data: request,
+                    });
+                // Manejo de la respuesta según el resultado
+                if (result.success) {
+                this.message_delete = true;
+                this.showAlert("success", result.message, 3000);
+                } else {
+                this.showAlert("warning", result.message, 3000);
+                }
+            } catch (error) {
+                // Este bloque captura errores inesperados fuera del manejo estándar
+                this.showAlert(
+                "error",
+                "Ocurrió un error inesperado al procesar la solicitud.",
+                3000
+                );
+            } finally {
+                this.closeDelete();                
+                this.initialize();
+            }
+            
+            /*axios
                 .post('https://testapi.simplifies.cl/api/branchservice-destroy', this.data)
                 .then(() => {
                     this.message_delete = true;
@@ -377,8 +411,8 @@ export default {
                     LocalStorageService.setIsLocked(false);
                     this.showAlert("success", "Asignación eliminada correctamente", 3000);
                     this.initialize();
-          });
-            this.closeDelete()
+                });
+            this.closeDelete()*/
         },
         close() {
             this.dialog = false;
@@ -397,11 +431,38 @@ export default {
                 this.editedIndex = -1
             })
         },
-        save() {
+        async save() {
             LocalStorageService.setIsLocked(true);
             if (this.editedIndex === -1) {
-                console.log('insertar');
                 this.valid = false;
+                this.data.branch_id = this.branch_id;
+                this.data.service_id = this.editedItem.service_id;
+                this.data.ponderation = this.editedItem.ponderation;
+                try {
+                const result = await handleRequest({
+                    endpoint: 'branchservice',
+                    method: 'POST',
+                    data: this.data
+                });
+
+                // Manejo de la respuesta según el resultado
+                if (result.success) {
+                    this.showAlert("success", result.message, 3000);
+                    this.initialize();
+                } else {
+                    this.loading = false;
+                    this.showAlert("warning", result.message, 3000);
+                }
+                } catch (error) {
+                this.loading = false;
+                // Este bloque captura errores inesperados fuera del manejo estándar
+                this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
+                } finally {
+                    //this.showAlert("success", "Servicio asignado correctamente", 3000);
+                    this.close();
+                    this.initialize();
+                }
+                /*console.log('insertar');
                 this.data.branch_id = this.branch_id;
                 this.data.service_id = this.editedItem.service_id;
                 this.data.ponderation = this.editedItem.ponderation;
@@ -412,9 +473,9 @@ export default {
                         LocalStorageService.setIsLocked(false);
                         this.showAlert("success", "Servicio asignado correctamente", 3000);
                         this.initialize();
-          });
+                    });*/
             }
-            else{
+            else {
                 this.valid = false;
                 this.data.branch_id = this.branch_id;
                 this.data.service_id = this.editedItem.service_id;
@@ -426,7 +487,7 @@ export default {
                         LocalStorageService.setIsLocked(false);
                         this.showAlert("success", "Asignación editada correctamente", 3000);
                         this.initialize();
-          });
+                    });
             }
             this.close();
 

@@ -251,7 +251,7 @@ axios.interceptors.request.use(config => {
 }, error => {
   return Promise.reject(error);
 });
-
+import { handleRequest } from "@/utils/api";
 export default {
   data: () => ({
     tabBar: null,
@@ -471,7 +471,7 @@ export default {
       this.chargeProfessionals();
     },
 
-    desasignService() {
+    async desasignService() {
       LocalStorageService.setIsLocked(true);
       console.log('*********DATOS POARA ENVIAR PARA LA API***************');
       console.log('this.professional');
@@ -483,7 +483,35 @@ export default {
         branch_service_id: this.selected[0]
       }
       //CAMBIAR ESTA RUTA POR LA RUTA CORRECTA DE DESASIGNAR SERVICIO AL PROFESIONAL
-      axios
+      try {
+                    const result = await handleRequest({
+                    endpoint: "professionalservice-destroy",
+                    method: "POST",
+                    data: request,
+                    });
+                // Manejo de la respuesta según el resultado
+                if (result.success) {
+                  LocalStorageService.setIsLocked(false);
+                  this.showAlert("success", "Desasignado correctamente", 3000);
+                  this.profitPercen = '';
+                  //this.handleTabChange('two');
+                  //this.professional = '';
+                  this.selected = '';
+                //this.showAlert("success", result.msg, 3000);
+                } else {
+                this.showAlert("warning", result.message, 3000);
+                }
+            } catch (error) {
+                // Este bloque captura errores inesperados fuera del manejo estándar
+                this.showAlert(
+                "error",
+                "Ocurrió un error inesperado al procesar la solicitud.",
+                3000
+                );
+            } finally {                
+              this.getServicesProfessional();
+            }
+      /*axios
         .post('https://testapi.simplifies.cl/api/professionalservice-destroy', request)
         .then(() => {
           LocalStorageService.setIsLocked(false);
@@ -498,10 +526,10 @@ export default {
           console.log(error);
           this.showAlert("warning", "Error al hacer la asignación".error, 3000);
 
-        });
+        });*/
 
     },
-    asignService()//todooo
+    async asignService()//todooo
     {
       LocalStorageService.setIsLocked(true);
       console.log('*********DATOS POARA ENVIAR PARA LA API***************');
@@ -531,8 +559,38 @@ export default {
 
       console.log('request');
       console.log(request);
+      try {
+                const result = await handleRequest({
+                    endpoint: 'professionalservice',
+                    method: 'POST',
+                    data: request
+                });
 
-      axios.post('https://testapi.simplifies.cl/api/professionalservice', request)
+                // Manejo de la respuesta según el resultado
+                if (result.success) {
+                  this.profitPercen = '';
+                    //this.professional = '';
+                    //this.handleTabChange('one');
+                    this.selected = '';
+                    this.especial = false;
+                    this.type_service = '';
+                    this.showAlert("success", result.message, 3000);
+                    //this.initialize();
+                } else {
+                  this.profitPercen = '';
+                  this.especial = false;
+                    this.showAlert("warning", result.message, 3000);
+                }
+                } catch (error) {
+                  this.profitPercen = '';
+                  this.especial = false;
+                // Este bloque captura errores inesperados fuera del manejo estándar
+                this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
+                } finally {                    
+                  this.getServicesProfessional();
+                }
+
+      /*axios.post('https://testapi.simplifies.cl/api/professionalservice', request)
         .then(() => {
           LocalStorageService.setIsLocked(false);
           this.showAlert("success", "Servicio asignado correctamente", 3000);
@@ -548,7 +606,7 @@ export default {
           this.showAlert("warning", "Error al hacer la asignación", 3000);
           this.profitPercen = '';
           this.especial = false;
-        });
+        });*/
     },
     metaService() {
       LocalStorageService.setIsLocked(true);

@@ -2908,7 +2908,7 @@ export default {
       //this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
     } finally {
       if (this.charge === 'Administrador') {
-        this.branch_id = this.branches[1].id;
+        this.branch_id = this.branches[0].id;
         this.mostrarFila = true;
       }
       await this.startInterval();
