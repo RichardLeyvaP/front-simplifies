@@ -1,7 +1,8 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <!-- eslint-disable vue/return-in-computed-property -->
 <template>
-  <v-card elevation="6" class="mx-5">
+    <v-container style="min-width: 100%; max-height: 100%;">
+  <v-card elevation="6" class="mx-4"  width='auto'>
     <v-toolbar color="#F18254">
       <v-row align="center">
         <v-col cols="12" md="8" class="grow ml-4">
@@ -16,7 +17,7 @@
         </v-col>
       </v-row>
     </v-toolbar>
-    <v-container fluid>
+        <v-container style="min-width: 100%; max-height: 100%;">
       <v-row>
         <!-- Primera columna -->
         <v-col cols="12"  md="3">
@@ -56,7 +57,6 @@
           <v-btn icon @click="updateDate2" color="#F18254">
             <v-icon>mdi-magnify</v-icon></v-btn>
         </v-col>
-
       </v-row>
       <v-row>
         <v-col cols="12" md="12">
@@ -65,6 +65,7 @@
             </v-alert>
         </v-col>
       </v-row>
+        </v-container>
       <v-card-text>
         <v-text-field v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
           hide-details></v-text-field>
@@ -78,8 +79,8 @@
         </v-data-table>
           </div>
       </v-card-text>
-    </v-container>
   </v-card>
+    </v-container>
 </template>
 <script>
 

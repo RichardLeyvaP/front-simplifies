@@ -140,6 +140,15 @@ const routes = [
         },
       },
       {
+        path: "/advance",
+        name: "Adelantos",
+        component: () => import("@/views/advance/AdvanceAdmin.vue"),
+        meta: {
+          requiresAuth: true,
+          requiresPermissions: ["view_advances"],
+        },
+      },
+      {
         path: "/paymentmethod",
         name: "Paymenent Method",
         component: () => import("@/views/paymentmethod/PaymentMethod.vue"),

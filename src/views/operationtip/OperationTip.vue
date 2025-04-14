@@ -15,7 +15,8 @@
 
         </v-row>
     </v-snackbar>
-    <v-card elevation="6" class="mx-5">
+    <v-container style="min-width: 100%; max-height: 100%;">
+    <v-card elevation="6" class="mx-5" width='auto'>
         <v-toolbar color="#F18254">
             <v-row align="center">
                 <v-col cols="12" md="6" class="grow ml-2">
@@ -285,6 +286,7 @@
             </v-dialog>
         </v-card-text>
     </v-card>
+    </v-container>
 </template>
 
 <script>
