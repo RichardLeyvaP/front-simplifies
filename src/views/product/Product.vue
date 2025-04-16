@@ -13,7 +13,7 @@
       </v-col>
     </v-row>
   </v-snackbar>
-  <v-container fluid>
+  <v-container style="min-width: 100%; max-height: 100%;">
     <v-card elevation="6" class="mx-5" width="auto">
       <v-toolbar color="#F18254">
         <v-row>
@@ -27,8 +27,8 @@
             </v-btn>
             <v-dialog v-model="dialog" max-width="1000px">
               <template v-slot:activator="{ props }">
-                <v-btn v-if="this.mostrarFila" v-bind="props" class="text-subtitle-1 ml-1" color="#E7E9E9" variant="flat" elevation="2"
-                  prepend-icon="mdi-plus-circle">
+                <v-btn v-if="this.mostrarFila" v-bind="props" class="text-subtitle-1 ml-1" color="#E7E9E9"
+                  variant="flat" elevation="2" prepend-icon="mdi-plus-circle">
                   Agregar Producto
                 </v-btn>
               </template>
@@ -40,47 +40,52 @@
                   <v-form v-model="valid" enctype="multipart/form-data">
                     <v-row>
                       <v-col cols="12" md="4">
-                        <v-text-field v-model="editedItem.name" clearable label="Nombre" prepend-icon="mdi-form-textbox"
-                          variant="underlined" :rules="nameRules">
+                        <v-text-field v-model="editedItem.name" label="Nombre" prepend-icon="mdi-form-textbox"
+                          variant="underlined" :rules="nameRules" density="compact">
                         </v-text-field>
                       </v-col>
                       <v-col cols="12" md="4">
-                        <v-text-field v-model="editedItem.reference" clearable label="Referencia"
-                          prepend-icon="mdi-shopping" variant="underlined" :rules="nameRules">
+                        <v-text-field v-model="editedItem.reference" label="Referencia" prepend-icon="mdi-shopping"
+                          variant="underlined" :rules="nameRules" density="compact">
                         </v-text-field>
                       </v-col>
                       <v-col cols="12" md="4">
-                        <v-text-field v-model="editedItem.code" clearable label="Codigo" prepend-icon="mdi-barcode"
-                          variant="underlined" :rules="requiredRules">
+                        <v-text-field v-model="editedItem.code" label="Codigo" prepend-icon="mdi-barcode"
+                          variant="underlined" :rules="requiredRules" density="compact">
                         </v-text-field>
                       </v-col>
                     </v-row>
                     <v-row>
-                      <v-col cols="12" md="4">
+                      <v-col cols="12" md="3">
                         <v-select label="Estado" v-model="editedItem.status_product"
                           :items="['En venta', 'No en venta']" :item-value="['En venta', 'No en venta']"
                           variant="underlined" density="compact" :rules="selectRules" prepend-icon="mdi-check-circle"
                           @update:model-value="showPrice"></v-select>
                       </v-col>
-                      <v-col cols="12" md="4">
-                        <v-text-field v-model="editedItem.purchase_price" clearable label="Precio de Compra"
-                          prepend-icon="mdi-cash" variant="underlined" :rules="requiredRules">
+                      <v-col cols="12" md="3">
+                        <v-text-field v-model="editedItem.purchase_price" label="Precio de Compra"
+                          prepend-icon="mdi-cash" variant="underlined" :rules="requiredRules" density="compact">
                         </v-text-field>
                       </v-col>
-                      <v-col cols="12" md="4">
-                        <v-text-field v-if="mostrarFila" v-model="editedItem.sale_price" clearable
-                          label="Precio de Venta" prepend-icon="mdi-currency-usd" variant="underlined"
-                          :rules="requiredRules">
+                      <v-col cols="12" md="3">
+                        <v-text-field v-if="mostrarFila" v-model="editedItem.sale_price" label="Precio de Venta"
+                          prepend-icon="mdi-currency-usd" variant="underlined" :rules="requiredRules" density="compact">
+                        </v-text-field>
+                      </v-col>
+                      <v-col cols="12" md="3">
+                        <v-text-field v-if="mostrarFila" v-model="editedItem.worker_discount" type="number" min="0"
+                          label="Desc. trabajador" prepend-icon="mdi-currency-usd" variant="underlined" suffix="%"
+                          :rules="discountRules" density="compact">
                         </v-text-field>
                       </v-col>
                       <v-col cols="12" md="4">
                         <v-autocomplete :no-data-text="'No hay datos disponibles'"
-                          v-model="editedItem.product_category_id" :items="productCategories" clearable
+                          v-model="editedItem.product_category_id" :items="productCategories" density="compact"
                           label="Categoría" prepend-icon="mdi-tag" item-title="name" item-value="id"
                           variant="underlined" :rules="selectRules"></v-autocomplete>
                       </v-col>
                       <v-col cols="12" md="8">
-                        <v-text-field v-model="editedItem.description" clearable label="Descripción"
+                        <v-text-field v-model="editedItem.description" density="compact" label="Descripción"
                           prepend-icon="mdi-information" variant="underlined" :rules="dirRules">
                         </v-text-field>
                       </v-col>
@@ -144,42 +149,46 @@
           hide-details>
         </v-text-field>
         <div style="max-height: 67vh; overflow-y: auto;">
-        <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search"
-          :items="results" class="elevation-1" no-results-text="No hay datos disponibles"
-          no-data-text="No hay datos disponibles" :loading="loading" loading-text="Cargando datos...">
-          <template v-slot:item.purchase_price="{ item }">
-            {{ formatNumber(item.purchase_price) }}
-          </template>
-          <template v-slot:item.sale_price="{ item }">
-            {{ formatNumber(item.sale_price) }}
-          </template>
-          <template v-slot:top>
-            <v-divider class="mx-4" inset vertical></v-divider>
-            <v-spacer></v-spacer>
-          </template>
-          <template v-slot:item.name="{ item }">
-            <v-avatar class="mr-2" elevation="3" color="grey-lighten-4">
-              <v-img :src="'https://testapi.simplifies.cl/api/images/' +
+          <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search"
+            :items="results" class="elevation-1" no-results-text="No hay datos disponibles"
+            no-data-text="No hay datos disponibles" :loading="loading" loading-text="Cargando datos...">
+            <template v-slot:item.purchase_price="{ item }">
+              {{ formatNumber(item.purchase_price) }}
+            </template>
+            <template v-slot:item.sale_price="{ item }">
+              {{ formatNumber(item.sale_price) }}
+            </template>
+            <template v-slot:top>
+              <v-divider class="mx-4" inset vertical></v-divider>
+              <v-spacer></v-spacer>
+            </template>
+            <template v-slot:item.name="{ item }">
+              <v-avatar class="mr-2" elevation="3" color="grey-lighten-4">
+                <v-img :src="'https://testapi.simplifies.cl/api/images/' +
                 item.image_product
                 " alt="image"></v-img><!-- +
                   '?$' +
                   Date.now()-->
-            </v-avatar>
-            {{ item.name }}
-          </template>
-          <template v-slot:item.actions="{ item }">
-            <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
+              </v-avatar>
+              {{ item.name }}
+            </template>
+            <template v-slot:item.worker_discount="{ item }">
+
+              {{ item.worker_discount }} %
+            </template>
+            <template v-slot:item.actions="{ item }">
+              <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
          mdi-pencil
        </v-icon>
        <v-icon size="25" color="red" @click="deleteItem(item)">
          mdi-delete
        </v-icon>-->
-            <v-btn v-if="this.mostrarFila" density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary" variant="tonal"
-              elevation="1" class="mr-1 mt-1 mb-1" title="Editar Producto"></v-btn>
-            <v-btn v-if="this.mostrarFila" density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4"
-              variant="tonal" elevation="1" title="Eliminar Producto"></v-btn>
-          </template>
-        </v-data-table>
+              <v-btn v-if="this.mostrarFila" density="comfortable" icon="mdi-pencil" @click="editItem(item)"
+                color="primary" variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Editar Producto"></v-btn>
+              <v-btn v-if="this.mostrarFila" density="comfortable" icon="mdi-delete" @click="deleteItem(item)"
+                color="red-darken-4" variant="tonal" elevation="1" title="Eliminar Producto"></v-btn>
+            </template>
+          </v-data-table>
         </div>
       </v-card-text>
 
@@ -254,7 +263,8 @@
                     </v-text-field>
                     <v-data-table :headers="headers1" :items-per-page-text="'Elementos por páginas'" :items="results1"
                       :search="search2" class="elevation-2" no-results-text="No hay datos disponibles"
-                      no-data-text="No hay datos disponibles" :loading="loadingProducts" loading-text="Cargando datos...">
+                      no-data-text="No hay datos disponibles" :loading="loadingProducts"
+                      loading-text="Cargando datos...">
                       <template v-slot:item.name="{ item }">
                         <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
                           <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_product
@@ -316,10 +326,11 @@ export default {
       { title: "Referencia", key: "reference" },
       { title: "Nombre", key: "name" },
       { title: "Código", key: "code" },
-      { title: "Descripción", key: "description", width: "100px" },
+      { title: "Descripción", key: "description", },
       { title: "Estado", key: "status_product" },
       { title: "Precio compra", align: "start", value: "purchase_price" },
       { title: "Precio venta", align: "start", value: "sale_price" },
+      { title: "% Descuento", align: "start", value: "worker_discount" },
       { title: "Categoría", align: "start", value: "productcategory.name" },
       { title: "Acciones", key: "actions", sortable: false },
     ],
@@ -342,6 +353,7 @@ export default {
       product_category_id: "",
       image_product: "",
       id: "",
+      worker_discount: ""
     },
     data: {},
 
@@ -355,6 +367,8 @@ export default {
       sale_price: "",
       product_category_id: "",
       image_product: "",
+      id: "",
+      worker_discount: ""
     },
     //productos mas y menos vendidos
     menu2: false,
@@ -375,6 +389,11 @@ export default {
       (v) => !!v || "El campo es requerido",
       (v) => (v && v.length <= 50) || "El campo debe tener menos de 51 caracteres",
       (v) => (v && v.length >= 3) || "El campo debe tener al menos de 3 caracteres",
+    ],
+    discountRules: [ // Reglas de validación
+    (v) => !!v || "El campo es requerido",
+      (v) => (v >= 0) || 'El descuento no puede ser negativo',
+      (v) => (v <= 100) || 'El descuento no puede ser mayor a 100%'
     ],
     requiredRules: [(v) => !!v || "El campo es requerido"],
     selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
