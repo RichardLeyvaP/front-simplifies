@@ -2316,6 +2316,7 @@ export default {
     showSaleProducts: false,
     showDialogSaleProducts: false,
     cashierSales: [],
+    workerPurchases: [],
     cashierSalesProf: [],
     boxClose: [],
     search4: '',
@@ -3378,6 +3379,7 @@ export default {
         this.boxClose = [];
         this.payments = [];
         this.cashierSales = [];
+        this.workerPurchases = [];
         this.bonusPay = [];
         this.cashierBoxClose = [];
         await this.initialize();
@@ -3559,6 +3561,11 @@ export default {
           item.user_id === null;
       });
 
+      const filteredWorkerPurchases = this.workerPurchases.filter(item => {
+        return item.status === 1 &&
+          item.user_id === null;
+      });
+
       /*
         .filter(item => (
           return Number(item.professional_id) === Number(this.professional_id) &&
@@ -3601,7 +3608,10 @@ export default {
         .reduce((total, item) => total + item.product, 0);
       const cashierSales = filteredCashiers
         .reduce((total, item) => total + item.price, 0);
-      this.editedCloseBox.totalProduct = totalProduct + cashierSales;
+        const workerpurchase = filteredWorkerPurchases
+        .reduce((total, item) => total + item.total, 0);
+      this.editedCloseBox.totalProduct = totalProduct + cashierSales + workerpurchase;
+
 
       const totalTip = filteredResults
         .reduce((total, item) => total + item.tip, 0);
@@ -4205,8 +4215,11 @@ export default {
       const cashierSales = this.cashierSales
         .filter(item => item.pay === 1)
         .reduce((total, item) => total + item.price, 0);
-      this.editedCloseBox.totalProduct = montosPendientes + cashierSales;
-      const temp = montosPendientes + cashierSales;
+    const workerpurchase = this.workerPurchases
+        .filter(item => item.status === 1)
+        .reduce((total, item) => total + item.total, 0);
+      this.editedCloseBox.totalProduct = montosPendientes + cashierSales + workerpurchase;
+      const temp = montosPendientes + cashierSales + workerpurchase;
       return this.formatNumber(temp) + " CLP";
     },
 
@@ -4414,6 +4427,7 @@ export default {
           this.boxClose = result.data.box.box_close;
           this.payments = result.data.payments;
           this.cashierSales = result.data.cashierSales;
+          this.workerPurchases = result.data.workerPurchases;
           this.bonusPay = result.data.bonusPay;
           if (result.data.cashierclosebox && Object.keys(result.data.cashierclosebox).length > 0) {
             // Asignar los valores de result.data.cashierclosebox a cashierData
