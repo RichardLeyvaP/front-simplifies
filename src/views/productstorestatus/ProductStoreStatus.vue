@@ -286,9 +286,14 @@ export default {
                 });
 
                 if (result.success) {
+                    if (this.charge === 'Administrador' || this.charge === 'Administrador de Sucursal')
+                    {
                     // Si la solicitud es exitosa, asignamos las sucursales
                     this.results = result.data.products || []; // Si no hay roles, asigna un arreglo vacío
-                    this.resultsOriginal = _.cloneDeep(this.results);
+                    this.resultsOriginal = _.cloneDeep(this.results);                        
+                    }else{
+                        this.results = result.data.products.filter(item => item.branch_id !== 0) || [];
+                    }
                 } else {
                     LocalStorageService.setIsLocked(false);
                     // Si no hay datos, asignamos un array vacío

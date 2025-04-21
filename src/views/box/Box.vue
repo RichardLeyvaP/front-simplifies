@@ -2937,7 +2937,7 @@ export default {
       order.id !== currentItem.id // Excluir el item actual del conteo
     );
     return serviceOrders.length;
-  },
+    },
     handleCoexistenceChanges(hasChanges) {
       this.coexistenceHasChanges = hasChanges;
     },
@@ -3275,7 +3275,7 @@ export default {
       this.existence();
       const differences = this.calculateTotalDifferencesGlobal1;
           if (this.step === 5){
-            //await this.saveCloseBox();
+            await this.saveCloseBox();
           }
       if (this.step < this.items.length) {
         this.step++;
@@ -3544,6 +3544,8 @@ export default {
         .reduce((total, item) => total + item.price, 0);
         const workerpurchase = filteredWorkerPurchases
         .reduce((total, item) => total + item.total, 0);
+        console.log('workerpurchase'); // Aquí tienes el array de ids
+        console.log(workerpurchase); // Aquí tienes el array de 
       this.editedCloseBox.totalProduct = totalProduct + cashierSales + workerpurchase;
 
 
@@ -3576,7 +3578,7 @@ export default {
         .reduce((total, item) => total + item.cardGif, 0);
       this.editedCloseBox.totalCardGif = totalCardGif;
 
-      this.editedCloseBox.totalMount = totalCash + totalDebit + totalCreditCard + totalTransfer + totalOther + totalCardGif;
+      this.editedCloseBox.totalMount = totalCash + totalDebit + totalCreditCard + totalTransfer + totalOther + totalCardGif + workerpurchase;
 
       this.dialogParcial = true;
     },
@@ -4084,7 +4086,8 @@ export default {
       //if (!this.results) {   
       const amount = this.results.reduce((total, item) => total + item.amount, 0);
       const productsales = this.cashierSales.reduce((total, item) => total + item.price, 0);
-      const temp = amount + productsales;
+      const workerpurchase = this.workerPurchases.reduce((total, item) => total + item.total, 0);
+      const temp = amount + productsales + workerpurchase;
       this.editedCloseBox.totalMount = temp;
       return this.formatNumber(temp) + " CLP";
       //}
@@ -4099,7 +4102,8 @@ export default {
       //if (!this.results) {   
       const amount = this.results.reduce((total, item) => total + item.amount, 0);
       const productsales = this.cashierSales.reduce((total, item) => total + item.price, 0);
-      const temp = amount + productsales;
+      const workerpurchase = this.workerPurchases.reduce((total, item) => total + item.total, 0);
+      const temp = amount + productsales + workerpurchase;
       return this.formatNumber(temp) + " CLP";
       //}
       //else{
@@ -4152,8 +4156,14 @@ export default {
     const workerpurchase = this.workerPurchases
         .filter(item => item.status === 1)
         .reduce((total, item) => total + item.total, 0);
+        console.log('workerpurchase');
+      console.log(workerpurchase);
       this.editedCloseBox.totalProduct = montosPendientes + cashierSales + workerpurchase;
       const temp = montosPendientes + cashierSales + workerpurchase;
+      console.log('temp');
+      console.log(temp);
+      console.log('this.editedCloseBox.totalProduct');
+      console.log(this.editedCloseBox.totalProduct);
       return this.formatNumber(temp) + " CLP";
     },
 
@@ -4701,15 +4711,18 @@ export default {
       // Preparar los datos para enviar
       const carsWithPayEqualOne = this.results.filter(car => car.pay === 1 && car.user_id === null);
       const cashiersWithPayEqualOne = this.cashierSales.filter(cashier => cashier.pay === 1 && cashier.user_id === null);
+      const workerpurchaseWithPayEqualOne = this.workerPurchases.filter(workerpurchase => workerpurchase.status === 1 && workerpurchase.user_id === null);
 
       // Extraer los IDs de los elementos filtrados
       const carIds = carsWithPayEqualOne.map(car => car.id);
       const cashierIds = cashiersWithPayEqualOne.map(cashier => cashier.id);
+      const workerpurchaseIds = workerpurchaseWithPayEqualOne.map(workerpurchase => workerpurchase.id);
       const requestData = {
         editedCloseBox: this.editedCloseBox, // Datos del sistema
         cashierData: this.cashierData, // Datos de la cajera
         car_ids: carIds,
         cashiersale_ids: cashierIds,
+        workerpurchase_ids: workerpurchaseIds,
         branch_id: this.branch_id,
         nameProfessional: this.nameProfessional,
       };
@@ -4751,15 +4764,18 @@ export default {
       // Preparar los datos para enviar
       const carsWithPayEqualOne = this.results.filter(car => car.pay === 1);
       const cashiersWithPayEqualOne = this.cashierSales.filter(cashier => cashier.pay === 1 && cashier.user_id === null);
+      const workerpurchaseWithPayEqualOne = this.workerPurchases.filter(workerpurchase => workerpurchase.status === 1 && workerpurchase.user_id === null);
 
       // Extraer los IDs de los elementos filtrados
       const carIds = carsWithPayEqualOne.map(car => car.id);
       const cashierIds = cashiersWithPayEqualOne.map(cashier => cashier.id);
+      const workerpurchaseIds = workerpurchaseWithPayEqualOne.map(workerpurchase => workerpurchase.id);
       const requestData = {
         editedCloseBox: this.editedCloseBox, // Datos del sistema
         cashierData: this.cashierData, // Datos de la cajera
         car_ids: carIds,
         cashiersale_ids: cashierIds,
+        workerpurchase_ids: workerpurchaseIds,
         branch_id: this.branch_id,
         nameProfessional: this.nameProfessional,
       };
