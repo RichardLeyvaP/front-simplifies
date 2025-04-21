@@ -149,6 +149,15 @@ const routes = [
         },
       },
       {
+        path: "/workerpurchase",
+        name: "Compra productos Trabajadores",
+        component: () => import("@/views/workerpurchase/WorkkerPurchase.vue"),
+        meta: {
+          requiresAuth: true,
+          requiresPermissions: ["view_advances"],
+        },
+      },
+      {
         path: "/paymentmethod",
         name: "Paymenent Method",
         component: () => import("@/views/paymentmethod/PaymentMethod.vue"),

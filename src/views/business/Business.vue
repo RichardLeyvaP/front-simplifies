@@ -185,7 +185,7 @@
             Exportar a Excel
           </v-btn>
         </v-toolbar>
-        <v-container>
+        <v-container fluid>
           <v-row>
             <!-- Primera columna -->
             <v-col cols="12" sm="6" md="3">
@@ -222,12 +222,9 @@
                 <v-icon>mdi-magnify</v-icon></v-btn>
             </v-col>
           </v-row>
-        </v-container>
-        <v-container>
           <v-alert border type="info" variant="outlined" density="compact">
             <p v-html="formTitleWin"></p>
           </v-alert>
-        </v-container>
         <v-card-text>
           <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
             hide-details></v-text-field>
@@ -264,6 +261,7 @@
             Volver
           </v-btn>
         </v-card-actions>
+        </v-container>
       </v-card>
     </v-dialog>
     <!--end Ganancias Busuness-->

@@ -243,6 +243,7 @@ export default {
       { icon: "mdi-cash-register", title: "Cierres de caja", to: "boxclose", value: "boxclose", permission: "view_cash_closing" },
       { icon: "mdi-account-multiple-check-outline", title: "Clientes Atendidos", to: "boxclosedate", value: "boxclosedate", permission: "view_cash_closing_date" },
       { icon: "mdi-cash-lock", title: "Cierres de mes", to: "monthlyclosure", value: "monthlyclosure", permission: "view_monthly_closing" },
+      { icon: "mdi-cart-arrow-down", title: "Solicitudes de Compra Productos", to: "workerpurchase", value: "workerpurchase", permission: "view_workerpurchase" }, 
     ],
     clientes:[
       { icon: "mdi-account-star-outline", title: "Clientes", to: "client", value: "clients", permission: "view_clients" },

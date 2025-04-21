@@ -63,7 +63,7 @@
               loading-text="Cargando datos...">
               <template v-slot:item.professionalName="{ item }">
                 <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                  <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+                  <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_url}?t=${Date.now()}`" alt="image"></v-img>
                 </v-avatar>
                 {{ item.professionalName }}
               </template>
@@ -71,7 +71,7 @@
               <template v-slot:item.clientName="{ item }">
 
                 <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                  <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.client_image" alt="image"></v-img>
+                  <v-img :src="`${this.$axios.defaults.baseURL}images/${item.client_image}?t=${Date.now()}`" alt="image"></v-img>
                 </v-avatar>
                 {{ item.clientName }}
               </template>

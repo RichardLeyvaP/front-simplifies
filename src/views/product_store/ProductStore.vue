@@ -474,31 +474,39 @@ export default {
 
   computed: {
     headers() {
-      const baseHeaders = [
-        {
-                title: "",  // Personaliza el texto aquí
-                key: "data-table-group",  // Clave especial para grupos
-            },
-        { title: 'Nombre', key: 'name' },
-        { title: 'Referencia', key: 'reference' },
-        { title: 'Código', key: 'code' },
-        { title: 'Estado', key: 'status_product' },
-        { title: 'Precio venta', align: 'start', value: 'sale_price' },
-        { title: 'Existencia', align: 'start', value: 'product_exit' },
-        { title: 'Límite Existencia Alerta', align: 'start', value: 'stock_depletion' },
-      ];
-
-      // Condicionalmente agregamos la columna de 'Precio compra'
-      if (this.charge === 'Administrador') {
-        baseHeaders.splice(4, 0, { title: 'Precio compra', align: 'start', value: 'purchase_price' });
-        baseHeaders.splice(8, 0, { title: 'Acciones', key: 'actions', sortable: false, width: '15%' });
-      }
-      else {
-        baseHeaders.splice(8, 0, { title: 'Acciones', key: 'actions', sortable: false });
-      }
-
-      return baseHeaders;
+  const baseHeaders = [
+    {
+      title: "",  // Personaliza el texto aquí
+      key: "data-table-group",  // Clave especial para grupos
     },
+    { title: 'Nombre', key: 'name' },
+    { title: 'Referencia', key: 'reference' },
+    { title: 'Código', key: 'code' },
+    { title: 'Estado', key: 'status_product' },
+    { title: 'Precio venta', align: 'start', value: 'sale_price' },
+    { title: 'Existencia', align: 'start', value: 'product_exit' },
+    { title: 'Límite Existencia Alerta', align: 'start', value: 'stock_depletion' },
+  ];
+
+  // Agregar columna de Precio compra solo para Administrador
+  if (this.charge === 'Administrador') {
+    baseHeaders.splice(5, 0, { 
+      title: 'Precio compra', 
+      align: 'start', 
+      value: 'purchase_price' 
+    });
+  }
+
+  // Siempre agregar Acciones al final
+  baseHeaders.push({ 
+    title: 'Acciones', 
+    key: 'actions', 
+    sortable: false,
+    width: this.charge === 'Administrador' ? '15%' : undefined
+  });
+
+  return baseHeaders;
+},
 
     formTitle() {
       if (this.editedIndex === -1) {
