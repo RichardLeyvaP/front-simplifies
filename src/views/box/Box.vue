@@ -40,7 +40,8 @@
               class="ml-1">
               Clientes atendidos
             </v-btn>
-            <v-btn :disabled="(closed_box || results.some(item => item.active === 2 || item.active === 3) /*|| ejecutado*/)"
+            <v-btn
+              :disabled="(closed_box || results.some(item => item.active === 2 || item.active === 3) /*|| ejecutado*/)"
               @click="openCloseBox" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-cash-lock"
               class="ml-1">
               Cierre de Caja
@@ -624,9 +625,9 @@
                       <!-- Aquí pasamos el 'selectedWorker' al componente dentro del diálogo 
                       <Coexistence :branch_id="this.branch_id" />
                       <Coexistence :branch_id="branch_id" @update:has-invalid-state="setInvalidState" />-->
-                      <Advance ref="AdvanceStatusRef" :branch_id="branch_id" @total-pagado-calculated="handleTotalPagado"
-                        @update:has-invalid-state="setInvalidStatus" @save-success="handleSaveSuccess"
-                        :is-extraction-enabled="true" />
+                      <Advance ref="AdvanceStatusRef" :branch_id="branch_id"
+                        @total-pagado-calculated="handleTotalPagado" @update:has-invalid-state="setInvalidStatus"
+                        @save-success="handleSaveSuccess" :is-extraction-enabled="true" />
                     </v-card-text>
                     <v-divider></v-divider>
                   </v-card>
@@ -639,12 +640,8 @@
                   <v-spacer></v-spacer>
                   <!--<v-btn color="#E7E9E9" :disabled="hasInvalidState" variant="flat"
                     @click="dialogDeleteDiario = true">Siguiente</v-btn>-->
-                    <v-btn 
-                    color="#E7E9E9" 
-                    :disabled="hasInvalidStatus || isSavingAdvance" 
-                    @click="dialogDeleteDiario = true"
-                    :loading="isSavingAdvance"
-                  >
+                  <v-btn color="#E7E9E9" :disabled="hasInvalidStatus || isSavingAdvance"
+                    @click="dialogDeleteDiario = true" :loading="isSavingAdvance">
                     Siguiente
                   </v-btn>
                 </v-row>
@@ -1009,62 +1006,61 @@
           <v-container fluid>
             <v-row>
               <v-col cols="12" md="6">
-                <v-text-field v-model="editedItem.cash" clearable label="Efectivo" prepend-icon="mdi-cash"
-                  variant="underlined" :rules="pago">
+                <v-text-field v-model="cashFormatted" label="Efectivo" prepend-icon="mdi-cash" variant="underlined" :placeholder="previousPaymentHint('cash')"
+                  :rules="pago" @keypress="onlyNumbers" :hint="previousPaymentHint('cash')" :persistent-placeholder="shouldPersistPlaceholder('cash')">
                 </v-text-field>
               </v-col>
               <v-col cols="12" md="6">
-                <v-text-field v-model="editedItem.creditCard" clearable label="Tarjeta de Crédito"
-                  prepend-icon="mdi-credit-card" variant="underlined" :rules="pago">
-                </v-text-field>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12" md="6">
-                <v-text-field v-model="editedItem.debit" clearable label="Debito" prepend-icon="mdi-credit-card-outline"
-                  variant="underlined" :rules="pago">
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-text-field v-model="editedItem.transfer" clearable label="Transferencia"
-                  prepend-icon="mdi-bank-transfer" variant="underlined" :rules="pago">
+                <v-text-field v-model="creditCardFormatted" label="Tarjeta de Crédito" prepend-icon="mdi-credit-card" :placeholder="previousPaymentHint('creditCard')"
+                  variant="underlined" :rules="pago" @keypress="onlyNumbers" :hint="previousPaymentHint('creditCard')" :persistent-placeholder="shouldPersistPlaceholder('creditCard')">
                 </v-text-field>
               </v-col>
             </v-row>
             <v-row>
               <v-col cols="12" md="6">
-                <v-text-field v-model="editedItem.other" clearable label="Otro Método" prepend-icon="mdi-check"
-                  variant="underlined" :rules="pago">
+                <v-text-field v-model="debitFormatted" label="Debito" prepend-icon="mdi-credit-card-outline" :placeholder="previousPaymentHint('debit')"
+                  variant="underlined" :rules="pago" @keypress="onlyNumbers" :hint="previousPaymentHint('debit')" :persistent-placeholder="shouldPersistPlaceholder('debit')">
+                </v-text-field>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-text-field v-model="transferFormatted" label="Transferencia" prepend-icon="mdi-bank-transfer" :placeholder="previousPaymentHint('transfer')"
+                  variant="underlined" :rules="pago" @keypress="onlyNumbers" :hint="previousPaymentHint('transfer')" :persistent-placeholder="shouldPersistPlaceholder('transfer')">
+                </v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12" md="6">
+                <v-text-field v-model="otherFormatted" label="Otro Método" prepend-icon="mdi-check" :placeholder="previousPaymentHint('other')"
+                  variant="underlined" :rules="pago" @keypress="onlyNumbers" :hint="previousPaymentHint('other')" :persistent-placeholder="shouldPersistPlaceholder('other')">
                 </v-text-field>
               </v-col>
               <v-col cols="12" md="6">
                 <v-row>
                   <v-col cols="6">
-                    <v-text-field v-model="editedItem.tip" clearable label="Propina" prepend-icon="mdi-currency-usd"
-                      variant="underlined" :rules="pago">
+                    <v-text-field v-model="tipFormatted" label="Propina" prepend-icon="mdi-currency-usd" :placeholder="previousPaymentHint('tip')"
+                      variant="underlined" :rules="pago" @keypress="onlyNumbers" :hint="previousPaymentHint('tip')" :persistent-placeholder="shouldPersistPlaceholder('tip')">
                     </v-text-field>
                   </v-col>
                   <v-col cols="6">
-                    <v-select v-model="selectedOption" :items="options" label="Método de pago" variant="underlined"
-                      hide-details></v-select>
+                    <v-select v-model="selectedOption" :items="options" label="Método de pago" variant="underlined" :hint="previousPaymentHint('tipByCash')" persistent-hint ></v-select>
                   </v-col>
                 </v-row>
               </v-col>
             </v-row>
             <v-row>
               <v-col cols="12" md="4">
-                <v-text-field clearable v-model="editedCard.cardGiftUser_id" label="Tarjeta de regalo (código)"
+                <v-text-field v-model="editedCard.cardGiftUser_id" label="Tarjeta de regalo (código)"
                   prepend-icon="mdi-gift" variant="underlined"
                   :rules="customCardGiftValidation"></v-text-field><!--@input="onCardGiftSelected"-->
               </v-col>
               <v-col cols="12" md="4">
-                <v-text-field v-if="mostrarOtroCampo" v-model="editedCard.value" clearable label="Valor"
+                <v-text-field v-if="mostrarOtroCampo" v-model="editedCard.value" label="Valor"
                   prepend-icon="mdi-currency-usd" variant="underlined" :disabled="true">
                 </v-text-field>
               </v-col>
               <v-col cols="12" md="4">
-                <v-text-field v-model="editedItem.cardGif" clearable label="Cantidad" prepend-icon="mdi-currency-usd"
-                  variant="underlined" :rules=[customValidation] v-if="mostrarOtroCampo">
+                <v-text-field v-model="cardGifFormatted" label="Cantidad" prepend-icon="mdi-currency-usd" :placeholder="previousPaymentHint('cardGift')"
+                  variant="underlined" :rules=[customValidation] v-if="mostrarOtroCampo" @keypress="onlyNumbers" :hint="previousPaymentHint('cardGif')" :persistent-placeholder="shouldPersistPlaceholder('cardGif')">
                 </v-text-field>
               </v-col>
             </v-row>
@@ -1671,52 +1667,52 @@
           <v-container>
             <v-row>
               <v-col cols="12" md="6">
-                <v-text-field v-model="editedItem.cash" clearable label="Efectivo" prepend-icon="mdi-cash"
+                <v-text-field v-model="cashFormatted" label="Efectivo" prepend-icon="mdi-cash"
                   variant="underlined" :rules="pago">
                 </v-text-field>
               </v-col>
               <v-col cols="12" md="6">
-                <v-text-field v-model="editedItem.creditCard" clearable label="Tarjeta de Crédito"
+                <v-text-field v-model="creditCardFormatted" label="Tarjeta de Crédito"
                   prepend-icon="mdi-credit-card" variant="underlined" :rules="pago">
                 </v-text-field>
               </v-col>
             </v-row>
             <v-row>
               <v-col cols="12" md="4">
-                <v-text-field v-model="editedItem.debit" clearable label="Debito" prepend-icon="mdi-credit-card-outline"
+                <v-text-field v-model="debitFormatted" label="Debito" prepend-icon="mdi-credit-card-outline"
                   variant="underlined" :rules="pago">
                 </v-text-field>
               </v-col>
               <v-col cols="12" md="4">
-                <v-text-field v-model="editedItem.transfer" clearable label="Transferencia"
+                <v-text-field v-model="transferFormatted" label="Transferencia"
                   prepend-icon="mdi-bank-transfer" variant="underlined" :rules="pago">
                 </v-text-field>
               </v-col>
               <v-col cols="12" md="4">
-                <v-text-field v-model="editedItem.other" clearable label="Otro Método" prepend-icon="mdi-check"
+                <v-text-field v-model="otherFormatted" label="Otro Método" prepend-icon="mdi-check"
                   variant="underlined" :rules="pago">
                 </v-text-field>
               </v-col>
             </v-row>
             <!--<v-row>
                   <v-col cols="12" md="6">
-                    <v-text-field v-model="editedItem.tip" clearable label="Propina" prepend-icon="mdi-currency-usd"
+                    <v-text-field v-model="editedItem.tip" label="Propina" prepend-icon="mdi-currency-usd"
                       variant="underlined" :rules="pago">
                     </v-text-field>
                   </v-col>
                 </v-row>-->
             <v-row>
               <v-col cols="12" md="4">
-                <v-text-field clearable v-model="editedCard.cardGiftUser_id" label="Tarjeta de regalo (código)"
+                <v-text-field v-model="editedCard.cardGiftUser_id" label="Tarjeta de regalo (código)"
                   prepend-icon="mdi-gift" variant="underlined"></v-text-field><!--@input="onCardGiftSelected"-->
               </v-col>
               <v-col cols="12" md="4">
-                <v-text-field v-if="mostrarOtroCampo" v-model="editedCard.value" clearable label="Valor"
+                <v-text-field v-if="mostrarOtroCampo" v-model="editedCard.value" label="Valor"
                   prepend-icon="mdi-currency-usd" variant="underlined" :disabled="true">
                 </v-text-field>
               </v-col>
               <v-col cols="12" md="4">
-                <v-text-field v-model="editedItem.cardGif" clearable label="Cantidad" prepend-icon="mdi-currency-usd"
+                <v-text-field v-model="cardGifFormatted" label="Cantidad" prepend-icon="mdi-currency-usd"
                   variant="underlined" :rules=[customValidation] v-if="mostrarOtroCampo">
                 </v-text-field>
               </v-col>
@@ -2345,7 +2341,8 @@ export default {
       other: '',
       amount: '',
       cardGif: '',
-      tipByCash: 'Débito'
+      tipByCash: 'Débito',
+      payment: []
     },
     editedCloseBox: {
       id: '',
@@ -2490,7 +2487,8 @@ export default {
       other: '',
       amount: '',
       cardGif: '',
-      tipByCash: 'Débito'
+      tipByCash: 'Débito',
+      payment: []
     },
 
     selectedOption: 'Débito',
@@ -2513,7 +2511,63 @@ export default {
   }),
 
   computed: {
-
+    cashFormatted: {
+    get() {
+      return this.formatNumberInput(this.editedItem.cash)
+    },
+    set(value) {
+      this.editedItem.cash = this.parseNumberInput(value)
+    }
+    },
+    creditCardFormatted: {
+    get() {
+      return this.formatNumberInput(this.editedItem.creditCard)
+    },
+    set(value) {
+      this.editedItem.creditCard = this.parseNumberInput(value)
+    }
+    },
+    debitFormatted: {
+    get() {
+      return this.formatNumberInput(this.editedItem.debit)
+    },
+    set(value) {
+      this.editedItem.debit = this.parseNumberInput(value)
+    }
+    },
+    transferFormatted: {
+    get() {
+      return this.formatNumberInput(this.editedItem.transfer)
+    },
+    set(value) {
+      this.editedItem.transfer = this.parseNumberInput(value)
+    }
+    },
+    otherFormatted: {
+    get() {
+      return this.formatNumberInput(this.editedItem.other)
+    },
+    set(value) {
+      this.editedItem.other = this.parseNumberInput(value)
+    }
+    },
+    tipFormatted: {
+    get() {
+      return this.formatNumberInput(this.editedItem.tip)
+    },
+    set(value) {
+      this.editedItem.tip = this.parseNumberInput(value)
+    }
+    },
+    cardGifFormatted: {
+    get() {
+      return this.formatNumberInput(this.editedItem.cardGif)
+    },
+    set(value) {
+      this.editedItem.cardGif = this.parseNumberInput(value)
+    }
+    },
+   
     filteredItems() {
       return this.results.filter(item => item.pay === 0);
     },
@@ -2898,6 +2952,48 @@ export default {
   },
 
   methods: {
+    shouldPersistPlaceholder(field) {
+    const hintValue = this.previousPaymentHint(field);
+    return hintValue !== null && hintValue !== '' && hintValue !== undefined;
+  },
+    previousPaymentHint(field) {
+  if (!this.editedItem.payment) return null
+  
+  // Acceder a los valores del payment (manejo de Proxy)
+  const payment = JSON.parse(JSON.stringify(this.editedItem.payment))
+  let value = payment[field]
+  
+  console.log('Campo:', field, 'Valor:', value)
+  
+  // Caso especial para el campo 'cash' cuando hay propina en efectivo
+  if (field === 'cash' && payment.tipByCash === 'Efectivo' && payment.tip > 0) {
+    value -= payment.tip // Mostramos el valor original (antes de restar la propina)
+    console.log('Campo cash editado:', field, 'Valor:', value)
+    return `${this.formatNumber(value)}`
+  }
+  
+  if (value === undefined || value === null) return null
+  
+  if (typeof value === 'number' && value > 0) {
+    return `${this.formatNumber(value)}`
+  }
+  
+  if (typeof value === 'string' && value.trim() !== '') {
+    return `Método anterior: ${value}`
+  }
+  
+  return null
+},
+    formatNumberInput(value) {
+    if (!value) return ''
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+  },
+  
+  // Parsea el número para guardarlo sin formato
+  parseNumberInput(formattedValue) {
+    if (!formattedValue) return null
+    return Number(formattedValue.toString().replace(/\./g, ''))
+  },
     handleTotalPagado(total) {
       console.group('[Padre] Evento total-pagado-calculated recibido');
       console.log('Total recibido:', total);
@@ -4366,20 +4462,26 @@ export default {
         });
 
         if (result.success) {
-          this.results = result.data.cars;
-          this.box = result.data.box;
-          this.boxClose = result.data.box.box_close;
-          this.payments = result.data.payments;
-          this.cashierSales = result.data.cashierSales;
-          this.workerPurchases = result.data.workerPurchases;
-          this.bonusPay = result.data.bonusPay;
+          this.results = result.data.cars ?? [];
+          this.box = result.data.box ?? [];
+          this.boxClose = result.data.box.box_close ?? [];
+          this.payments = result.data.payments ?? [];
+          this.cashierSales = result.data.cashierSales ?? [];
+          this.workerPurchases = result.data.workerPurchases ?? [];
+          this.bonusPay = result.data.bonusPay ?? 0;
           if (result.data.cashierclosebox && Object.keys(result.data.cashierclosebox).length > 0) {
             // Asignar los valores de result.data.cashierclosebox a cashierData
-            this.cashierBoxClose = result.data.cashierclosebox;
+            this.cashierBoxClose = result.data.cashierclosebox ?? [];
           }
         } else {
           // Si no hay datos, asignamos un array vacío
           this.results = [];
+          this.box = [];
+          this.boxClose = [];
+          this.payments = [];
+          this.cashierSales = [];
+          this.workerPurchases = [];
+          this.bonusPay = [];
         }
       } catch (error) {
         this.loading = false;
@@ -4564,14 +4666,16 @@ export default {
       item = temp[0];
       this.editedIndex = 1;
       this.editedItem.car_id = item.id;
-      this.editedItem.tip = item.tip;
+      this.editedItem.amount = item.amount;
+      /*this.editedItem.tip = item.tip;
       this.editedItem.cash = item.payment ? item.payment.cash : '';
       this.editedItem.creditCard = item.payment ? item.payment.creditCard : '';
       this.editedItem.debit = item.payment ? item.payment.debit : '';
       this.editedItem.transfer = item.payment ? item.payment.transfer : '';
       this.editedItem.other = item.payment ? item.payment.other : '';
-      this.editedItem.amount = item.amount;
-      this.editedItem.cardGif = item.cardGif;
+      
+      this.editedItem.cardGif = item.cardGif;*/
+      this.editedItem.payment = item.payment;
       console.log(this.editedItem.cardGif);
       if (item.pay === 1) {
         this.dialogPay = false;

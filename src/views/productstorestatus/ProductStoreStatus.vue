@@ -293,6 +293,7 @@ export default {
                     this.resultsOriginal = _.cloneDeep(this.results);                        
                     }else{
                         this.results = result.data.products.filter(item => item.branch_id !== 0) || [];
+                        this.resultsOriginal = _.cloneDeep(this.results);
                     }
                 } else {
                     LocalStorageService.setIsLocked(false);

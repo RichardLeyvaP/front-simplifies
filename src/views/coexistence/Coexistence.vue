@@ -50,24 +50,70 @@
         class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles"
         :loading="loadingWorkPlace" loading-text="Cargando datos..." :group-by="groupBy" show-expand="false">
         <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
-          <tr>
-            <td :colspan="columns.length">
-              <div class="d-flex align-center flex-wrap" style="gap: 8px 16px;">
-                <v-btn size="small" variant="text" :icon="isGroupOpen(item) ? '$expand' : '$next'"
-                  @click="toggleGroup(item)" class="mr-1"></v-btn>
-
-                <span class="font-weight-bold mr-2">{{ item.value }}</span>
-
-                <span class="text-success text-caption">Cumplidas: {{ getProfessionalStats(item.value).fulfilled
-                }}</span>
-                <span class="text-error text-caption">Incumplidas: {{ getProfessionalStats(item.value).not_fulfilled
-                }}</span>
-                <span class="text-black text-caption">Sin Actualizar: {{ getProfessionalStats(item.value).not_updated
-                }}</span>
+        <tr>
+          <td :colspan="columns.length">
+            <div class="d-flex align-center flex-wrap" style="gap: 8px 16px;">
+              <!-- Botón para expandir/colapsar -->
+              <v-btn size="small" variant="text" 
+                    :icon="isGroupOpen(item) ? '$expand' : '$next'"
+                    @click="toggleGroup(item)" 
+                    class="mr-1"></v-btn>
+              
+              <!-- Nombre del profesional con ancho fijo -->
+              <div class="professional-name" style="min-width: 230px; max-width: 230px;">
+                <span class="font-weight-bold">{{ item.value }}</span>
               </div>
-            </td>
-          </tr>
-        </template>
+
+              <template v-if="getFirstPendingConvivencia(item.value)">
+                <!-- Contenedor para reglas pendientes con layout fijo -->
+                <div class="d-flex align-center" style="min-width: 600px;">
+                  <!-- Nombre de la regla con elipsis si es muy largo -->
+                  <v-chip color="blue" size="small" class="mr-2" style="min-width: 250px; max-width: 300px;">
+                    <span class="text-caption">{{ getFirstPendingConvivencia(item.value).ruleName }}</span>
+                  </v-chip>
+                  
+                  <!-- Botones de acción -->
+                  <div class="d-flex" style="gap: 2px;">
+                    <v-icon 
+  color="error" 
+  size="33"
+  class="action-icon error-icon"
+  title="Incumplió"
+  @click="handleEstadoChange(getFirstPendingConvivencia(item.value), 0)"
+>
+  mdi-close-circle
+</v-icon>
+
+<v-icon 
+  color="success" 
+  size="33"
+  class="action-icon success-icon"
+  title="Cumplió"
+  @click="handleEstadoChange(getFirstPendingConvivencia(item.value), 1)"
+>
+  mdi-check-circle
+</v-icon>
+                  </div>
+                </div>
+              </template>
+              <template v-else>
+                <!-- Estadísticas con layout fijo -->
+                <div class="d-flex align-center" style="gap: 12px; min-width: 300px;">
+                  <v-chip size="small" color="success" variant="outlined">
+                    <span class="text-caption">Cumplidas: {{ getProfessionalStats(item.value).fulfilled }}</span>
+                  </v-chip>
+                  <v-chip size="small" color="error" variant="outlined">
+                    <span class="text-caption">Incumplidas: {{ getProfessionalStats(item.value).not_fulfilled }}</span>
+                  </v-chip>
+                  <v-chip size="small" color="grey" variant="outlined">
+                    <span class="text-caption">Sin Actualizar: {{ getProfessionalStats(item.value).not_updated }}</span>
+                  </v-chip>
+                </div>
+              </template>
+            </div>
+          </td>
+        </tr>
+      </template>
         <template v-slot:item.estado="{ item }">
           <div class="d-flex align-center" style="height: 100%; width: 48%;">
             <!-- Select de estados -->
@@ -325,6 +371,11 @@ export default {
   },
 
   methods: {
+    getFirstPendingConvivencia(professionalName) {
+    return this.results.find(
+      conv => conv.professionalName === professionalName && conv.estado === 3
+    );
+  },
     showAlert(sb_type, sb_message, sb_timeout) {
       this.sb_type = sb_type
 
@@ -385,6 +436,7 @@ export default {
 
       const requestParams = {
         branch_id: this.branch_id,
+        //date: '2025-04-09',
         date: formattedDate,
       };
 
@@ -416,6 +468,7 @@ export default {
       }
     },
     handleEstadoChange(item, newValue) {
+      console.log('Estado cambiado:', newValue);
       // Guardar el estado original antes de cualquier cambio
       const originalEstado = item.estado;
 
@@ -634,5 +687,27 @@ export default {
 
 .text-info {
   color: #2196f3 !important;
+}
+.error-icon {
+  background-color: rgba(244, 67, 54, 0.1);
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.success-icon {
+  background-color: rgba(76, 175, 80, 0.1);
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.action-icon {
+  cursor: pointer;
+  margin: 0 6px;
+  transition: all 0.2s ease;
+}
+
+.action-icon:hover {
+  transform: scale(1.15);
+  opacity: 0.9;
 }
 </style>
