@@ -151,10 +151,10 @@ const routes = [
       {
         path: "/workerpurchase",
         name: "Compra productos Trabajadores",
-        component: () => import("@/views/workerpurchase/WorkkerPurchase.vue"),
+        component: () => import("@/views/workerpurchase/WorkerPurchase.vue"),
         meta: {
           requiresAuth: true,
-          requiresPermissions: ["view_advances"],
+          requiresPermissions: ["view_workerpurchase"],
         },
       },
       {

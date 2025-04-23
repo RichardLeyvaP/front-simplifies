@@ -2956,33 +2956,43 @@ export default {
     const hintValue = this.previousPaymentHint(field);
     return hintValue !== null && hintValue !== '' && hintValue !== undefined;
   },
-    previousPaymentHint(field) {
-  if (!this.editedItem.payment) return null
+  previousPaymentHint(field) {
+  if (!this.editedItem.payment) return null;
   
-  // Acceder a los valores del payment (manejo de Proxy)
-  const payment = JSON.parse(JSON.stringify(this.editedItem.payment))
-  let value = payment[field]
+  // Mapeo de nombres descriptivos a claves de campo
+  const methodMapping = {
+    'Efectivo': 'cash',
+    'Débito': 'debit',
+    'Transferencia': 'transfer',
+    'Tarjeta de regalo': 'giftCard',
+    'Tarjeta de Crédito': 'creditCard',
+    'Otro Método': 'other'
+  };
   
-  console.log('Campo:', field, 'Valor:', value)
+  const payment = JSON.parse(JSON.stringify(this.editedItem.payment));
+  let value = payment[field];
   
-  // Caso especial para el campo 'cash' cuando hay propina en efectivo
-  if (field === 'cash' && payment.tipByCash === 'Efectivo' && payment.tip > 0) {
-    value -= payment.tip // Mostramos el valor original (antes de restar la propina)
-    console.log('Campo cash editado:', field, 'Valor:', value)
-    return `${this.formatNumber(value)}`
+  // Verificar si hay propina aplicada a este método
+  if (payment.tip > 0 && payment.tipByCash) {
+    const tipField = methodMapping[payment.tipByCash];
+    
+    if (tipField === field) {
+      value -= payment.tip;
+      return `${this.formatNumber(value)}`;
+    }
   }
   
-  if (value === undefined || value === null) return null
+  if (value === undefined || value === null) return null;
   
   if (typeof value === 'number' && value > 0) {
-    return `${this.formatNumber(value)}`
+    return `${this.formatNumber(value)}`;
   }
   
   if (typeof value === 'string' && value.trim() !== '') {
-    return `Método anterior: ${value}`
+    return `Método anterior: ${value}`;
   }
   
-  return null
+  return null;
 },
     formatNumberInput(value) {
     if (!value) return ''
@@ -5032,13 +5042,18 @@ export default {
         //console.log(this.cashierData.existence);
         const formData = new FormData();
         for (let key in this.editedBox) {
-          if (key === 'extraction' && newExtraction !== 0) {
-              formData.append(key, newExtraction);
+        if (key === 'extraction' && newExtraction !== 0) {
+          formData.append(key, newExtraction);
+        } else {
+          // Manejar explícitamente existence para que sea null si es undefined
+          if (key === 'existence') {
+            formData.append(key, this.editedBox[key] === undefined ? 0 : this.editedBox[key]);
           } else {
-              // Para todas las demás claves o cuando no hay newExtraction
-              formData.append(key, this.editedBox[key]);
+            formData.append(key, this.editedBox[key]);
           }
         }
+      }
+
 
         console.log('formData');
         console.log(formData);
