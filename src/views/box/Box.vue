@@ -2358,6 +2358,7 @@ export default {
       totalCardGif: '',
       advancement: '',
       totalBonus: '',
+      workerpurchase: ''
     },
     cashierData: {
       id: '',
@@ -2448,7 +2449,8 @@ export default {
       totalOther: '',
       totalCardGif: '',
       advancement: '',
-      totalBonus: ''
+      totalBonus: '',
+      workerpurchase: ''
     },
     editedBox: {
       branch_id: '',
@@ -3012,7 +3014,7 @@ export default {
       console.groupEnd();
       this.editedCloseBox.advancement = total;
     },
-   async endReservation(item){
+    async endReservation(item){
       const requestParams = {
       car_id: item.id
     };
@@ -3432,6 +3434,7 @@ export default {
         this.totalBonusPay();
         this.totalMountServices();
         this.totalMountProducts();
+        this.totalMountProductsProfessional();
         this.totalMountTips();
         this.totalMountCashs();
         this.totalMount();
@@ -3558,6 +3561,7 @@ export default {
       this.totalBonusPay();
       this.totalMountServices();
       this.totalMountProducts();
+      this.totalMountProductsProfessional();
       this.totalMountTips();
       this.totalMountCashs();
       this.totalMount();
@@ -3652,7 +3656,8 @@ export default {
         .reduce((total, item) => total + item.total, 0);
         console.log('workerpurchase'); // Aquí tienes el array de ids
         console.log(workerpurchase); // Aquí tienes el array de 
-      this.editedCloseBox.totalProduct = totalProduct + cashierSales + workerpurchase;
+      this.editedCloseBox.totalProduct = totalProduct + cashierSales;
+      this.editedCloseBox.workerpurchase = workerpurchase;
 
 
       const totalTip = filteredResults
@@ -4259,17 +4264,28 @@ export default {
       const cashierSales = this.cashierSales
         .filter(item => item.pay === 1)
         .reduce((total, item) => total + item.price, 0);
+      this.editedCloseBox.totalProduct = montosPendientes + cashierSales;
+      const temp = montosPendientes + cashierSales;
+      console.log('temp');
+      console.log(temp);
+      console.log('this.editedCloseBox.totalProduct');
+      console.log(this.editedCloseBox.totalProduct);
+      return this.formatNumber(temp) + " CLP";
+    },
+
+    totalMountProductsProfessional() {
+      // Filtrar elementos con estado "Pendiente" y calcular la sumatoria
     const workerpurchase = this.workerPurchases
         .filter(item => item.status === 1)
         .reduce((total, item) => total + item.total, 0);
         console.log('workerpurchase');
       console.log(workerpurchase);
-      this.editedCloseBox.totalProduct = montosPendientes + cashierSales + workerpurchase;
-      const temp = montosPendientes + cashierSales + workerpurchase;
+      this.editedCloseBox.workerpurchase = workerpurchase;
+      const temp =  workerpurchase;
       console.log('temp');
       console.log(temp);
-      console.log('this.editedCloseBox.totalProduct');
-      console.log(this.editedCloseBox.totalProduct);
+      console.log('this.editedCloseBox.workerpurchasess');
+      console.log(this.editedCloseBox.workerpurchase);
       return this.formatNumber(temp) + " CLP";
     },
 
