@@ -636,7 +636,7 @@
               <v-container fluid>
                 <!-- BOTONES -->
                 <v-row class="mt-1">
-                  <v-btn color="#E7E9E9" variant="flat" @click="prevStep">Volver</v-btn>
+                  <!--<v-btn color="#E7E9E9" variant="flat" @click="prevStep">Volver</v-btn>-->
                   <v-spacer></v-spacer>
                   <!--<v-btn color="#E7E9E9" :disabled="hasInvalidState" variant="flat"
                     @click="dialogDeleteDiario = true">Siguiente</v-btn>-->
