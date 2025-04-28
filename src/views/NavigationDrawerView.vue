@@ -208,8 +208,7 @@ export default {
       { icon: "mdi-security", title: "Permisos del Sistema", to: "permission", value: "permission", permission: "view_permissions" },
       //{ icon: "mdi-account-tie-outline", title: "Profesionales", to: "person", value: "profesionals", permission: "view_professionals" },
       //{ icon: "mdi-account-star-outline", title: "Clientes", to: "client", value: "clients", permission: "view_clients" },
-      { icon: "mdi-handshake", title: "Asociados", to: "associated", value: "associated", permission: "view_associates" },
-      { icon: "mdi-cash-sync", title: "Solicitudes de Adelanto", to: "advance", value: "advance", permission: "view_advances" },      
+      { icon: "mdi-handshake", title: "Asociados", to: "associated", value: "associated", permission: "view_associates" },   
       //{ icon: "mdi-cash-multiple", title: "Gastos e Ingresos", to: "finance", value: "finance", permission: "view_finances" },      
       //{ icon: "mdi-credit-card", title: "Pago a Profesionales", to: "professional-payment", value: "professional-payment", permission: "view_professional_payment" },
       //{ icon: "mdi mdi-delete-outline", title: "Solicitudes de eliminación", to: "car-order-delete", value: "car-order-delete", permission: "view_carorder_delete" },
@@ -232,6 +231,7 @@ export default {
     ],
     professionals:[
       { icon: "mdi-account-tie-outline", title: "Profesionales", to: "person", value: "profesionals", permission: "view_professionals" },
+      { icon: "mdi-cash-sync", title: "Solicitudes de Adelanto", to: "advance", value: "advance", permission: "view_advances" },   
       { icon: "mdi-credit-card", title: "Pago a Profesionales", to: "professional-payment", value: "professional-payment", permission: "view_professional_payment" },
       { icon: "mdi-calendar-check", title: "Permisos Asistencia", to: "vacation", value: "vacation", permission: "view_vacations" }, 
     ],

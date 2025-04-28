@@ -248,7 +248,7 @@
                     <v-card-text>
                       <v-row class="mb-4 mt-2" dense no-gutters>
                         <v-col cols="12" md="6">
-                          <v-card class="mx-2" subtitle="Introduces tus datos de ingresos "
+                          <v-card class="mx-2" subtitle="Introduce tus datos de ingresos "
                             style="background-color: #F18254; color: white;" elevation="4">
                             <template v-slot:prepend>
                               <v-avatar color="white">
@@ -291,7 +291,7 @@
                           </v-card>
                         </v-col>
                         <v-col cols="12" md="6">
-                          <v-card class="mx-2" subtitle="Introduces tus extracciones en caja"
+                          <v-card class="mx-2" subtitle="Introduce tus extracciones en caja"
                             style="background-color: #F18254; color: white;" elevation="4">
                             <template v-slot:prepend>
                               <v-avatar color="white">
@@ -657,7 +657,7 @@
 
                         <!-- Columna 2: Datos de la Cajera -->
                         <v-col cols="12" md="6">
-                          <v-card class="mx-2" subtitle="Introduces tus datos de ingresos "
+                          <v-card class="mx-2" subtitle="Introduce tus datos de ingresos "
                             style="background-color: #F18254; color: white;" elevation="4">
                             <template v-slot:prepend>
                               <v-avatar color="white">
@@ -698,7 +698,7 @@
                         </v-col>
 
                         <v-col cols="12" md="6">
-                          <v-card class="mx-2" subtitle="Introduces tus extracciones en caja"
+                          <v-card class="mx-2" subtitle="Introduce tus extracciones en caja"
                             style="background-color: #F18254; color: white;" elevation="4">
                             <template v-slot:prepend>
                               <v-avatar color="white">

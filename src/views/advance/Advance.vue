@@ -241,8 +241,8 @@ export default {
   computed: {
     formTitle() {
       return this.editedIndex === -1
-        ? "Nueva Convivencia"
-        : "Editar Estado de convivencia";
+        ? "Nuevo Adelanto"
+        : "Editar Estado del adelanto";
     },
   },
 

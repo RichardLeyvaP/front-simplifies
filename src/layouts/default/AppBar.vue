@@ -21,7 +21,7 @@
 
     </v-app-bar-title>
     <v-spacer></v-spacer>
-    <v-badge :content="this.solicitudProduct" color="red" class="mr-4" >
+    <v-badge :content="socilitudWithStatusPending" color="red" class="mr-4" >
       <v-icon color="#F18254" @click="handlePurchaseClick" title="Solicitudes de compra de productos" class="mr-2"
         size="x-large"><!--@click="showMenu = !showMenu; clearNotifications()" poniendo esto podemos hacer la logica de pasar todas las que state sea 0 a uno-->
         mdi-cart-arrow-down
@@ -211,6 +211,9 @@ export default {
   computed: {
     notificationsWithStateZero() {
       return this.results.filter(notification => notification.state2 === 0).length;
+    },
+    socilitudWithStatusPending() {
+      return this.solicitudProduct;
     }
   },
   methods: {

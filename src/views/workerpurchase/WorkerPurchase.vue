@@ -82,15 +82,13 @@
               </template>
               <template v-slot:item.status="{ item }">
                 <div class="d-flex align-center">
-                  <!-- Chip de estado -->
                   <v-chip :color="getStatusColor(item.status)" text-color="black" density="comfortable"
                     class="font-weight-bold mr-2">
                     <v-icon :icon="getStatusIcon(item.status)" start size="small"></v-icon>
                     {{ getStatusText(item.status) }}
                   </v-chip>
 
-                  <!-- Contenedor para botones/menú -->
-                  <template v-if="item.status === 0">
+                  <!--<template v-if="item.status === 0">
                     <v-menu v-model="statusMenu[item.id]" offset-y>
                       <template v-slot:activator="{ props }">
                         <v-btn density="comfortable" icon="mdi-pencil" v-bind="props" color="primary" variant="tonal"
@@ -113,14 +111,18 @@
                         </v-list-item>
                       </v-list>
                     </v-menu>
-                  </template>
-
-                  <template v-else>
-                    <v-btn density="comfortable" icon="mdi-lock" color="grey" variant="tonal"
-                              elevation="1" title="Estado no editable"></v-btn>
-                  </template>
+                  </template>-->
+                  
                 </div>
               </template>
+              <template v-slot:item.actions="{ item }">
+              <div :disabled="item.data !== this.today">
+                    <v-btn density="comfortable" icon="mdi-check" color="success" variant="tonal"  @click="item.status !== 0 ? '' : updateStatus(item, 1)"
+                    elevation="1" class="mr-1" title="Aprobar" :disabled="item.status !== 0"></v-btn>
+                    <v-btn density="comfortable" icon="mdi-close" color="error" variant="tonal" @click="item.status !== 0 ? '' : updateStatus(item, 2)"
+                              elevation="1" class="mr-1" title="Denegar" :disabled="item.status !== 0"></v-btn>
+              </div>
+                </template>
             </v-data-table>
           </v-card-text>
         </v-col>
@@ -257,6 +259,7 @@ export default {
         this.branch_id = this.branches[0].id;
         this.mostrarFila = true;
       }
+      LocalStorageService.setIsLocked(false);
       await this.initialize();
     }
   },
