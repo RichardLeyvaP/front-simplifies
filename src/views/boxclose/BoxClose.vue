@@ -178,7 +178,7 @@
                                                                 </template>
                                                                 <v-card-text class="bg-white pt-4">
                                                                     <v-text-field
-                                                                        :model-value="formatNumber(item.cashier_totalServicio)"
+                                                                        :model-value="formatNumber(item.cashier_totalService)"
                                                                         label="Tarjeta Servicio" readonly
                                                                         prepend-icon="mdi-list-box-outline"
                                                                         variant="underlined"
@@ -239,7 +239,7 @@
                                                                     <span class="text-h6" :class="{
                                                                         'text-red': item.cashier_difference < 0,
                                                                         'text-green': item.cashier_difference >= 0
-                                                                    }">Existe una diferencia total de: {{ item.cashier_difference }}</span>
+                                                                    }">Existe una diferencia total de: {{ formatNumber(item.cashier_difference) }}</span>
                                                                 </v-col>
                                                             </v-row>
                                                             <v-row class="mb-4 mt-1" dense no-gutters>
@@ -257,80 +257,6 @@
                                                 </v-card-text>
                                             </v-card>
                                         </div>
-                                        <!--<v-sheet rounded="lg" border class="mb-4">
-                                            <v-table density="compact">
-                                                <tbody class="bg-surface-light">
-                                                    <tr class="bg-grey-lighten-3">
-                                                        <th>Datos</th>
-                                                        <th>Efectivo</th>
-                                                        <th>Extraccón</th>
-                                                        <th>Débito</th>
-                                                        <th>Tarjeta Crédito</th>
-                                                        <th>Transferencia</th>
-                                                        <th>Gifcard</th>
-                                                        <th>Otros</th>
-                                                        <th>Adelantos</th>
-                                                        <th>Bonos</th>
-                                                    </tr>
-                                                </tbody>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Sistema</td>
-                                                        <td>{{ formatNumber(item.existence) }}</td>
-                                                        <td>{{ formatNumber(item.extraction) }}</td>
-                                                        <td>{{ formatNumber(item.totalDebit) }}</td>
-                                                        <td>{{ formatNumber(item.totalCreditCard) }}</td>
-                                                        <td>{{ formatNumber(item.totalTransfer) }}</td>
-                                                        <td>{{ formatNumber(item.totalCardGif) }}</td>
-                                                        <td>{{ formatNumber(item.totalOther) }}</td>
-                                                        <td>{{ formatNumber(item.advancement) }}</td>
-                                                        <td>{{ formatNumber(item.totalBonus) }}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Cajera</td>
-                                                        <td>{{ formatNumber(item.cashier_existence) }}</td>
-                                                        <td>{{ formatNumber(item.cashier_extraction) }}</td>
-                                                        <td>{{ formatNumber(item.cashier_totalDebit) }}</td>
-                                                        <td>{{ formatNumber(item.cashier_totalCreditCard) }}</td>
-                                                        <td>{{ formatNumber(item.cashier_totalTransfer) }}</td>
-                                                        <td>{{ formatNumber(item.cashier_totalCardGif) }}</td>
-                                                        <td>{{ formatNumber(item.cashier_totalOther) }}</td>
-                                                        <td>{{ formatNumber(item.cashier_advancement) }}</td>
-                                                        <td>{{ formatNumber(item.cashier_totalBonus) }}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </v-table>
-                                        </v-sheet>
-
-                                        <v-sheet rounded="lg" border class="mb-4"
-                                            v-if="(item.cashier_differencePay || item.cashier_difference)">
-                                            <v-table density="compact">
-                                                <tbody class="bg-surface-light">
-                                                    <tr class="bg-grey-lighten-3">
-                                                        <th colspan="2" class="text-left">Diferencias</th>
-                                                    </tr>
-                                                </tbody>
-                                                <tbody>
-                                                    <tr v-if="item.cashier_difference" class="text-left">
-                                                        <td colspan="2">
-                                                            <span :class="{
-                                                                'text-red': item.cashier_difference < 0,
-                                                                'text-green': item.cashier_difference >= 0
-                                                            }">
-                                                                Existe una diferencia total de: {{
-                                                                formatNumber(item.cashier_difference) }}
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr v-if="item.description">
-                                                        <td colspan="2">Comentario</td>
-                                                    </tr>
-                                                    <tr v-if="item.description">
-                                                        <td colspan="2">{{ item.description }}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </v-table>
-                                        </v-sheet>-->
                                     </td>
                                 </tr>
                             </template>
