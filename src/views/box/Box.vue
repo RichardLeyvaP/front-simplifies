@@ -581,15 +581,12 @@
 
               </v-container>
             </template>
-            <template v-slot:item.4>
+            <!--<template v-slot:item.4>
               <v-sheet border>
                 <div style="max-height: 70vh; overflow-y: auto;">
                   <v-card>
                     <v-card-text>
-                      <!-- Aquí pasamos el 'selectedWorker' al componente dentro del diálogo 
-                      <Coexistence :branch_id="this.branch_id" />
-                      <Coexistence :branch_id="branch_id" @update:has-invalid-state="setInvalidState" />-->
-                      <Advance ref="AdvanceStatusRef" :branch_id="branch_id"
+                       <Advance ref="AdvanceStatusRef" :branch_id="branch_id"
                         @total-pagado-calculated="handleTotalPagado" @update:has-invalid-state="setInvalidStatus"
                         @save-success="handleSaveSuccess" :is-extraction-enabled="true" />
                     </v-card-text>
@@ -598,12 +595,8 @@
                 </div>
               </v-sheet>
               <v-container fluid>
-                <!-- BOTONES -->
                 <v-row class="mt-1">
-                  <!--<v-btn color="#E7E9E9" variant="flat" @click="prevStep">Volver</v-btn>-->
                   <v-spacer></v-spacer>
-                  <!--<v-btn color="#E7E9E9" :disabled="hasInvalidState" variant="flat"
-                    @click="dialogDeleteDiario = true">Siguiente</v-btn>-->
                   <v-btn color="#E7E9E9" :disabled="hasInvalidStatus || isSavingAdvance"
                     @click="dialogDeleteDiario = true" :loading="isSavingAdvance">
                     Siguiente
@@ -611,8 +604,8 @@
                 </v-row>
 
               </v-container>
-            </template>
-            <template v-slot:item.5>
+            </template>-->
+            <template v-slot:item.4>
               <v-sheet border>
                 <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                   <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
@@ -711,7 +704,7 @@
                 </v-row>
               </v-container>
             </template>
-            <template v-slot:item.6>
+            <template v-slot:item.5>
               <v-sheet border>
                 <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                   <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
@@ -2077,7 +2070,7 @@ import * as XLSX from 'xlsx';
 import { format } from "date-fns";
 import { VCalendar } from 'vuetify/labs/VCalendar';
 import Coexistence from "../coexistence/Coexistence.vue";
-import Advance from "../advance/Advance.vue";
+//import Advance from "../advance/Advance.vue";
 import { handleRequest } from "@/utils/api";
 import ProductStoreStatus from "../productstorestatus/ProductStoreStatus.vue";
 import _ from 'lodash';
@@ -2098,7 +2091,7 @@ export default {
     VCalendar,
     Coexistence,
     ProductStoreStatus,
-    Advance
+    //Advance
   },
 
   data: () => ({
@@ -2124,7 +2117,7 @@ export default {
       'Inventario',
       'Convivencias',
       'Bonos',
-      'Adelantos',
+      //'Adelantos',
       'Ingresos y Gastos',
       'Resumen',
     ],
@@ -3406,7 +3399,7 @@ export default {
       this.totalBoxExtraction();
       this.existence();
       const differences = this.calculateTotalDifferencesGlobal1;
-          if (this.step === 5){
+          if (this.step === 4){
             await this.saveCloseBox();
           }
       if (this.step < this.items.length) {
@@ -3437,7 +3430,7 @@ export default {
             LocalStorageService.setIsLocked(false);
           });
       }
-      if (this.step === 5) {
+      if (this.step === 4) {
         this.dialogDeleteDiario = false;
 
         this.results = [];
@@ -3483,13 +3476,13 @@ export default {
           this.showAlert('error', 'Ocurrió un error inesperado al cargar los métodos de pago.', 3000);
         }
       }
-      if (this.step === 6) {
+      if (this.step === 5) {
         this.dialogDeleteDiario = false;
       }
-      if (this.step === 6) {
+      if (this.step === 5) {
         this.dialogDeleteDiario = false;
       }
-      if (this.step > 6) {
+      if (this.step > 5) {
         this.dialogDeleteDiario = false;
         this.dialog = false;
       }

@@ -285,8 +285,10 @@
                         <v-card class="pa-2" elevation="2">
                             <v-list-item :subtitle="formatNumber(utilidades)" title="Utilidades">
                                 <template v-slot:prepend>
-                                    <v-avatar color="green">
-                                        <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
+                                    <v-avatar :color="utilidades >= 0 ? 'green' : 'red'">
+                                        <v-icon color="white">
+                                            {{ utilidades >= 0 ? 'mdi-plus-circle' : 'mdi-minus-circle' }}
+                                        </v-icon>
                                     </v-avatar>
                                 </template>
 
@@ -981,7 +983,7 @@ export default {
                         }
                     }, 0);
                     //this.utilidades = this.totalIngresos - this.totalGastos;
-                    this.utilidades = Math.max(0, this.totalIngresos - this.totalGastos);
+                    this.utilidades = this.totalIngresos - this.totalGastos;
                 });
         },
 
