@@ -350,7 +350,7 @@
                                     <v-icon v-if="item.file" @click="openDoc(item)"
                                         color="green">mdi-file-document-outline</v-icon>
                                     <!--<v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                        <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
+                        <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
                     </v-avatar>-->
                                 </template>
                                 <template v-slot:item.comment="{ item }">
