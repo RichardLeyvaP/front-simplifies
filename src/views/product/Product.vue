@@ -67,13 +67,13 @@
                           prepend-icon="mdi-cash" variant="underlined" :rules="requiredRules" density="compact">
                         </v-text-field>
                       </v-col>
-                      <v-col cols="12" md="3">
-                        <v-text-field v-if="mostrarFila" v-model="editedItem.sale_price" label="Precio de Venta"
+                      <v-col cols="12" md="3" v-if="mostrarDatos">
+                        <v-text-field v-model="editedItem.sale_price" label="Precio de Venta"
                           prepend-icon="mdi-currency-usd" variant="underlined" :rules="requiredRules" density="compact">
                         </v-text-field>
                       </v-col>
-                      <v-col cols="12" md="3">
-                        <v-text-field v-if="mostrarFila" v-model="editedItem.worker_discount" type="number" min="0"
+                      <v-col cols="12" md="3" v-if="mostrarDatos">
+                        <v-text-field v-model="editedItem.worker_discount" type="number" min="0"
                           label="Desc. trabajador" prepend-icon="mdi-currency-usd" variant="underlined" suffix="%"
                           :rules="discountRules" density="compact">
                         </v-text-field>
@@ -332,13 +332,14 @@ export default {
       { title: "Precio venta", align: "start", value: "sale_price" },
       { title: "% Descuento", align: "start", value: "worker_discount" },
       { title: "Categoría", align: "start", value: "productcategory.name" },
-      { title: "Acciones", key: "actions", sortable: false },
+      { title: "Acciones", key: "actions", sortable: false, width: '10%' },
     ],
     results: [],
     productCategories: [],
     editedIndex: -1,
     file: "",
     mostrarFila: false,
+    mostrarDatos: true,
     imgMiniatura: "",
     search: "",
     sale_priceTemp: "",
@@ -501,12 +502,12 @@ export default {
       console.log(this.editedItem.status_product);
       if (this.editedItem.status_product === "En venta") {
         this.editedItem.sale_price = this.sale_priceTemp;
-        this.mostrarFila = true;
-        console.log("this.mostrarFila---true");
-        console.log(this.mostrarFila);
+        this.mostrarDatos = true;
+        console.log("this.mostrarDatos---true");
+        console.log(this.mostrarDatos);
       } else {
-        this.mostrarFila = false;
-        (this.editedItem.sale_price = ""), console.log(this.mostrarFila);
+        this.mostrarDatos = false;
+        (this.editedItem.sale_price = ""), console.log(this.mostrarDatos);
       }
     },
     imagenDisponible() {
@@ -566,9 +567,9 @@ export default {
     editItem(item) {
       this.sale_priceTemp = item.sale_price;
       if (item.status_product === "En venta") {
-        this.mostrarFila = true;
+        this.mostrarDatos = true;
       } else {
-        this.mostrarFila = false;
+        this.mostrarDatos = false;
       }
       this.file = null;
       var img = new Image();

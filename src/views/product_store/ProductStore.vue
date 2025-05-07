@@ -62,12 +62,21 @@
                         prepend-inner-icon="mdi-tag" item-title="name" item-value="id" variant="underlined"
                         :rules="selectRules" :disabled="!mover">
                         <template v-slot:item="{ props, item }">
-                        <v-list-item
+                        <!--<v-list-item
                           v-bind="props"
                           :prepend-avatar="'https://testapi.simplifies.cl/api/images/'+item.raw.image_product"
                           :title="item.raw.name"
                         ></v-list-item>
                       </template>
+                      <template v-slot:item="{ props, item }">-->
+                  <v-list-item v-bind="props"
+                    :prepend-avatar="`${this.$axios.defaults.baseURL}images/${item.raw.image_product}`"
+                    :title="item.raw.name">
+                    <v-list-item-subtitle class="d-flex justify-space-between">
+                      Precio: {{ this.formatNumber(item.raw.purchase_price) }}
+                    </v-list-item-subtitle>
+                  </v-list-item>
+                </template>
                       </v-autocomplete>
                       <v-text-field v-model="editedItem.stock_depletion" clearable label="Límite de existencia para alerta"
                         prepend-inner-icon="mdi-package-variant-closed" variant="underlined" :disabled="moverEdit">
@@ -175,7 +184,7 @@
         <template v-slot:item.name="{ item }">
 
           <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-            <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
+            <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_product}`" alt="image"></v-img>
           </v-avatar>
           {{ item.name }}
         </template>
@@ -227,7 +236,7 @@
                             <template v-slot:item.name="{ item }">
 
                                 <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                                    <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_product"
+                                    <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_product}`"
                                         alt="image"></v-img>
                                 </v-avatar>
                                 {{ item.name }}
@@ -298,7 +307,7 @@
                                 <template v-slot:item.nameProfessional="{ item }">
 
                                 <v-avatar class="mr-1" elevation="3" color="grey-lighten-4" size="large">
-                                  <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+                                  <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_url}`" alt="image"></v-img>
                                 </v-avatar><!--+'?$'+Date.now()-->
                                 {{ item.nameProfessional }}
                                 </template>
@@ -325,7 +334,7 @@
   <br>
 </template>
 <script>
-
+import { handleRequest } from "@/utils/api";
 import axios from "axios";
 import { format } from "date-fns";
 import { es } from 'date-fns/locale';
@@ -575,6 +584,30 @@ export default {
   },
 
   methods: {
+    formatNumber(value) {
+      // Verificar si el valor es 0, null, undefined o no es un número
+      if (value === 0 || value === null || value === undefined || isNaN(value)) {
+        return "0.0";
+      }
+      // Si el valor es menor que 1000, devuelve el valor original con dos decimales
+      if (value < 1000) {
+        return (Math.round((value + Number.EPSILON) * 100) / 100).toLocaleString(
+          "en-US",
+          { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+        );
+      }
+
+      // Primero, redondea el valor a dos decimales
+      value = Math.round((value + Number.EPSILON) * 100) / 100;
+
+      // Convierte el valor a cadena con formato de número local (en-US)
+      let formattedValue = value.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+
+      return formattedValue;
+    },
     hasPermission(permission) {
       console.log('permission');
       console.log(permission);
