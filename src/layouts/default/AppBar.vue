@@ -21,12 +21,12 @@
 
     </v-app-bar-title>
     <v-spacer></v-spacer>
-    <!--v-badge :content="socilitudWithStatusPending" color="red" class="mr-4" >
+    <v-badge :content="socilitudWithStatusPending" color="red" class="mr-4" >
       <v-icon color="#F18254" @click="handlePurchaseClick" title="Solicitudes de compra de productos" class="mr-2"
         size="x-large">
         mdi-cart-arrow-down
       </v-icon>
-    </v-badge>-->
+    </v-badge>
     <v-badge :content="notificationsWithStateZero" color="red" class="mr-4">
       <v-icon id="menu-activator" color="#F18254" @click="showMenu = !showMenu; clearNotifications()" class="mr-2"
         size="x-large"><!--@click="showMenu = !showMenu; clearNotifications()" poniendo esto podemos hacer la logica de pasar todas las que state sea 0 a uno-->

@@ -21,12 +21,12 @@
                     <v-col cols="12" md="7" class="ml-4">
                         <span class="text-subtitle-1"> <strong>Solicitudes de Adelanto</strong></span>
                     </v-col>
-                    <!--<v-col cols="12" md="4" class="text-right ml-12">
+                    <v-col cols="12" md="4" class="text-right ml-12">
                         <v-btn class="text-subtitle-1" variant="flat" elevation="2"
-                            prepend-icon="mdi-plus-circle" @click="showAddAdvance" >
+                            prepend-icon="mdi-plus-circle" @click="showAddAdvance" :disabled="this.canAdvanceToday">
                             Solicitar Adelanto
                         </v-btn>
-                        </v-col>-->
+                        </v-col>
 
                 </v-row>
 
@@ -105,17 +105,17 @@
                                     :title="(item.receipt && item.receipt !== 'advances/default.jpg') ? 'Ver comprobante' : 'No hay comprobante disponible'"></v-btn>
                             </template>
                             <template v-slot:item.actions="{ item }">
-                                <v-btn density="comfortable" icon="mdi-cash-check"
+                                <!--<v-btn density="comfortable" icon="mdi-cash-check"
                                     @click="(item.status === 'Aprobado') && advancePay(item)"
                                     :color="(item.status === 'Aprobado') ? 'green' : 'grey'" variant="tonal"
                                     elevation="1" class="mr-1 mt-1 mb-1"
-                                    :title="(item.status === 'Aprobado') ? 'Realizar pago' : 'Solo disponible para solicitudes aprobadas'"></v-btn>
-                                    <!--<v-btn v-if="!mostrarFila && item.status === 'Pendiente'" density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary"
+                                    :title="(item.status === 'Aprobado') ? 'Realizar pago' : 'Solo disponible para solicitudes aprobadas'"></v-btn>-->
+                                    <v-btn :disabled="item.status !== 'Pendiente'" density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary"
                                     variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
                                     title="Editar solicitud de adelanto"></v-btn>
-                                    <v-btn v-if="!mostrarFila && item.status === 'Pendiente'" density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="error"
+                                    <v-btn :disabled="item.status !== 'Pendiente'" density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="error"
                                     variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
-                                    title="Editar solicitud de adelanto"></v-btn>-->
+                                    title="Editar solicitud de adelanto"></v-btn>
                             </template>
                         </v-data-table>
                     </v-card-text>
@@ -151,7 +151,7 @@
             </v-card-text>
         </v-card>
     </v-dialog>
-    <v-dialog v-model="dialog" max-width="600px">
+    <!--<v-dialog v-model="dialog" max-width="600px">
         <v-form ref="form" v-model="valid" enctype="multipart/form-data">
             <v-card>
                 <v-toolbar color="#F18254">
@@ -216,8 +216,8 @@
                 </v-card-actions>
             </v-card>
         </v-form>
-    </v-dialog>
-    <!--<v-dialog v-model="dialogSolicitud" max-width="600px">
+    </v-dialog>-->
+    <v-dialog v-model="dialogSolicitud" max-width="600px">
   <v-card>
     <v-toolbar color="#F18254">
     <v-col cols="12" md="8">
@@ -228,7 +228,7 @@
     <v-card-text>
       <v-form ref="form" v-model="valid" enctype="multipart/form-data">
         <v-container>
-          
+          <!-- Sección de Cards Informativas 
           <v-row class="mb-4">-->
             <!-- Card Total Productos
             <v-col cols="12" md="3" class="pa-1">
@@ -283,7 +283,7 @@
           </v-row>-->
           
           <!-- Campo de Cantidad -->
-          <!--<v-row>
+          <v-row>
             <v-col cols="12" md="12">                      
               <v-text-field 
                 v-model="amountFormatted" 
@@ -339,7 +339,7 @@
 
               </v-card-actions>
             </v-card>
-          </v-dialog> -->         
+          </v-dialog>          
 </template>
 <script>
 
@@ -402,7 +402,7 @@ export default {
         totalMount: null,
         headers: [
             { title: 'Fecha', key: 'data', sortable: true },
-            { title: 'Profesional', key: 'professionalName', sortable: true },
+            //{ title: 'Profesional', key: 'professionalName', sortable: true },
             { title: 'Monto', key: 'amount', sortable: true },
             { title: 'Estado', key: 'status', sortable: true },
             { title: 'Comprobante', key: 'receipt' },
@@ -498,7 +498,7 @@ export default {
         shouldShowAdvanceButton() {
             return !this.mostrarFila && this.cantAdvanceToday;
         },
-        tableHeaders() {
+        /*tableHeaders() {
             const baseHeaders = [
             { title: 'Fecha', key: 'data', sortable: true },
             { title: 'Monto', key: 'amount', sortable: true },
@@ -517,7 +517,7 @@ export default {
             }
             
             return baseHeaders;
-    }
+    }*/
     },
 
     watch: {
@@ -564,7 +564,7 @@ export default {
             }
             /*if (this.charge === "Administrador") {          
             this.professional_id = null;
-            }else{    */  
+            }else{      */
             this.professional_id = LocalStorageService.getItem('professional_id');
             //}
             await this.initialize();
@@ -623,7 +623,7 @@ export default {
             LocalStorageService.setIsLocked(true);
             const requestParams = {
                 branch_id: this.branch_id,
-                //professional_id: this.professional_id,
+                professional_id: this.professional_id,
                 //data: this.date ? format(new Date(this.date), 'yyyy-MM-dd') : format(new Date(), 'yyyy-MM-dd')
             };
             try {
@@ -636,13 +636,15 @@ export default {
                 if (result.success) {
                     // Si la solicitud es exitosa, asignamos las sucursales
                     this.results = result.data.advances;
-                    /*if (this.charge !== "Administrador") {                  
+                    //if (this.charge !== "Administrador") {                  
                     this.cantAdvanceToday = this.canRequestAdvanceToday(this.results); 
-                    }*/
+                    console.log('this.canAdvanceToday');
+                    console.log(this.canAdvanceToday);
+                    //}
                 } else {
                     this.loadingrules = false;
                     LocalStorageService.setIsLocked(false);
-                    //this.canAdvanceToday = false;
+                    this.canAdvanceToday = false;
                     // Si no hay datos, asignamos un array vacío
                     this.results = [];
                 }
@@ -650,7 +652,7 @@ export default {
                 this.results = [];
                 this.loadingrules = false;
                 LocalStorageService.setIsLocked(false);
-                //this.canAdvanceToday = false;
+                this.canAdvanceToday = false;
                 // Captura de errores no controlados
                 this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
             } finally {
@@ -679,7 +681,7 @@ export default {
                 branch_id: this.branch_id,
                 startDate: this.date ? this.date : new Date().toISOString().split('T')[0],
                 endDate: this.endDate ? this.endDate : new Date().toISOString().split('T')[0],
-                //professional_id: this.professional_id,
+                professional_id: this.professional_id,
             };
             try {
                 const result = await handleRequest({
@@ -691,21 +693,21 @@ export default {
                 if (result.success) {
                     // Si la solicitud es exitosa, asignamos las sucursales
                     this.results = result.data.advances;
-                    /*if (this.charge !== "Administrador") {                  
+                    //if (this.charge !== "Administrador") {                  
                     this.cantAdvanceToday = this.canRequestAdvanceToday(this.results); 
-                    }*/
+                    //}
                 } else {
                     this.loadingrules = false;
                     LocalStorageService.setIsLocked(false);
                     // Si no hay datos, asignamos un array vacío
                     this.results = [];
-                    //this.canAdvanceToday = false;
+                    this.canAdvanceToday = false;
                 }
             } catch (error) {
                 this.results = [];
                 this.loadingrules = false;
                 LocalStorageService.setIsLocked(false);
-                //this.canAdvanceToday = false;
+                this.canAdvanceToday = false;
                 // Captura de errores no controlados
                 this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
             } finally {
@@ -727,7 +729,7 @@ export default {
             this.file = null;
             this.imgMiniatura = '';
         },
-        async save() {
+        /*async save() {
             this.valid = false;
             const formData = new FormData();
             for (let key in this.editedItem) {
@@ -758,7 +760,7 @@ export default {
                 this.initialize();
                 this.close();
             }
-        },
+        },*/
         formatNumber(value) {
             // Verificar si el valor es 0, null, undefined o no es un número
             if (value === 0 || value === null || value === undefined || isNaN(value)) {
@@ -826,7 +828,7 @@ export default {
             reader.readAsDataURL(file);
         },
 
-        /*async showAddAdvance(){
+        async showAddAdvance(){
             this.editedIndex = -1;
             this.data = {};
         try {
@@ -873,7 +875,7 @@ export default {
                 this.purchaseIds = [];
                 this.salary = null;
                 this.totalMount = null;
-            this.showAlert("warning", result.message, 3000);
+            //this.showAlert("warning", result.message, 3000);
             }
         } catch (error) {
             // Este bloque captura errores inesperados fuera del manejo estándar
@@ -949,7 +951,7 @@ export default {
             }
         }
         this.close();
-        },*/
+        },
         editItem(item) {
         this.editedIndex = 1;
         this.editedItem = Object.assign({}, item);

@@ -23,14 +23,35 @@
         </v-col>
         <v-col cols="12" md="5"></v-col>
         <v-col cols="12" md="2">
-
-          <v-dialog v-model="dialog" max-width="900px">
-            <template v-slot:activator="{ props }">
-              <v-btn v-bind="props" class="text-subtitle-1  ml-12 " color="#E7E9E9" variant="flat" elevation="2"
+          <v-btn class="text-subtitle-1  ml-12 " color="#E7E9E9" @click="showAdd()" variant="flat" elevation="2"
                 prepend-icon="mdi-plus-circle">
                 Nuevo Permiso
               </v-btn>
-            </template>
+        </v-col>
+      </v-row>
+    </v-toolbar>
+    <v-card-text>
+      <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
+            hide-details>
+          </v-text-field>
+      <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" class="elevation-1" :search="search" no-data-text="No hay datos disponibles"
+        no-results-text="No hay datos disponibles" :loading="loadingPermission" loading-text="Cargando datos...">
+        <template v-slot:item.actions="{ item }">
+          <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
+            mdi-pencil
+          </v-icon>
+          <v-icon size="25" color="red" @click="deleteItem(item)">
+            mdi-delete
+          </v-icon>-->
+          <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
+            elevation="1" class="mr-1 mt-1 mb-1" title="Editar Permiso"></v-btn>
+          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
+            elevation="1" title="Eliminar Permiso"></v-btn>
+        </template>
+      </v-data-table>
+    </v-card-text>
+  </v-card>
+  <v-dialog v-model="dialog" max-width="900px">
             <v-card>
                 <v-toolbar color="#F18254">
                   <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
@@ -94,30 +115,6 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-        </v-col>
-      </v-row>
-    </v-toolbar>
-    <v-card-text>
-      <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
-            hide-details>
-          </v-text-field>
-      <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" class="elevation-1" :search="search" no-data-text="No hay datos disponibles"
-        no-results-text="No hay datos disponibles" :loading="loadingPermission" loading-text="Cargando datos...">
-        <template v-slot:item.actions="{ item }">
-          <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
-            mdi-pencil
-          </v-icon>
-          <v-icon size="25" color="red" @click="deleteItem(item)">
-            mdi-delete
-          </v-icon>-->
-          <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
-            elevation="1" class="mr-1 mt-1 mb-1" title="Editar Permiso"></v-btn>
-          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
-            elevation="1" title="Eliminar Permiso"></v-btn>
-        </template>
-      </v-data-table>
-    </v-card-text>
-  </v-card>
 </template>
 <script>
 
@@ -216,7 +213,11 @@ export default {
   },
 
   methods: {
-
+    showAdd(){
+      this.dialog = true;
+      this.editedIndex = -1;
+      this.editFile = false;
+    },
     showAlert(sb_type, sb_message, sb_timeout) {
       this.sb_type = sb_type
 

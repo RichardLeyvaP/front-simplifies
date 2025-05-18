@@ -220,14 +220,200 @@
       </v-col>
     </v-row>
     <v-row v-else>
-  <v-col cols="12">
+      <v-col cols="12" md="4" lg="4">
+        <v-flex>
+          <v-card elevation="6" @click="detailProducts">
+            <v-toolbar elevation="6" id="bar-login" style="height: 45px;" dark color="amber-darken-1">
+            </v-toolbar>
+            <v-card elevation="5" style="z-index:2; margin-top: -20px; border:0px">
+              <v-card-text>
+                <div>
+                  <v-row>
+                    <v-col cols="12" md="10">
+                      <spam class="text-overline">Comisión de productos</spam>
+                    </v-col>
+                    <v-col cols="12" md="2">
+                      <v-avatar icon="mdi-cart" class=" text-h6 text-amber-darken-1"></v-avatar>
+                    </v-col>
+
+                  </v-row>
+
+                  <v-row>
+                    <v-col cols="12" md="6">
+                      <v-row>
+                        <v-col cols="12">
+                          <spam class="text-overline">
+                            <div v-if="payments && payments.products" class="text-h6 font-weight-bold text-amber-darken-1">
+                              {{ formatNumber(payments.products.commission_neto) }}
+                            </div>
+                            <div class="text-h6 font-weight-bold text-amber-darken-1">
+                              CLP
+                            </div>
+                          </spam>
+                          <p>{{ formattedDate }} </p>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+
+                    <v-col cols="12" md="6">
+                      <v-row>
+                        <v-col cols="12">
+                          <spam class="text-overline">
+                            <div class="text-h6 font-weight-bold text-amber-darken-1">
+                              {{ formatNumber(this.bonusProduct) }}
+                            </div>
+                            <div class="text-h6 font-weight-bold text-amber-darken-1">
+                              CLP
+                            </div>
+                          </spam>
+                          <p>{{ formattedDateAnt }} </p>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+                  </v-row>
+                  <!--<div class="text-right">
+                    <a herf="#" @click="detailProduct">Ver detalles</a>
+                  </div>-->
+                </div>
+              </v-card-text>
+            </v-card>
+            <v-toolbar elevation="6" dark color="amber-darken-1" style="margin-top: -40px; height: 70px;">
+            </v-toolbar>
+          </v-card>
+        </v-flex>
+      </v-col>
+      <v-col cols="12" md="4" lg="4">
+        <v-flex>
+          <v-card elevation="6" @click="detailTips">
+            <v-toolbar elevation="6" id="bar-login" style="height: 45px;" dark color="deep-orange-accent-2">
+            </v-toolbar>
+            <v-card elevation="5" style="z-index:2; margin-top: -20px; border:0px">
+              <v-card-text>
+                <div>
+                  <v-row>
+                    <v-col cols="12" md="10">
+                      <spam class="text-overline">Comisión de propinas</spam>
+                    </v-col>
+                    <v-col cols="12" md="2">
+                      <v-avatar icon="mdi-cash" class=" text-h6 text-deep-orange-accent-2"></v-avatar>
+                    </v-col>
+
+                  </v-row>
+
+                  <v-row>
+                    <v-col cols="12" md="6">
+                      <v-row>
+                        <v-col cols="12">
+                          <spam class="text-overline">
+                            <div v-if="payments && payments.tips" class="text-h6 font-weight-bold text-deep-orange-accent-2">
+                              {{ formatNumber(payments.tips.tip_neto) }}
+                            </div>
+                            <div class="text-h6 font-weight-bold text-deep-orange-accent-2">
+                              CLP
+                            </div>
+                          </spam>
+                          <p>{{ formattedDate }} </p>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+
+                    <v-col cols="12" md="6">
+                      <v-row>
+                        <v-col cols="12">
+                          <spam class="text-overline">
+                            <div class="text-h6 font-weight-bold text-deep-orange-accent-2">
+                              {{ formatNumber(this.commissionTip) }}
+                            </div>
+                            <div class="text-h6 font-weight-bold text-deep-orange-accent-2">
+                              CLP
+                            </div>
+                          </spam>
+                          <p>{{ formattedDateAnt }} </p>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+                  </v-row>
+                  <!--<div class="text-right">
+                    <a herf="#" @click="detailProduct">Ver detalles</a>
+                  </div>-->
+                </div>
+              </v-card-text>
+            </v-card>
+            <v-toolbar elevation="6" dark color="deep-orange-accent-2" style="margin-top: -40px; height: 70px;">
+            </v-toolbar>
+          </v-card>
+        </v-flex>
+      </v-col>
+      <v-col cols="12" md="4" lg="4">
+        <v-flex>
+          <v-card elevation="6" @click="detailAdvances">
+            <v-toolbar elevation="6" id="bar-login" style="height: 45px;" dark color="blue-grey-darken-2">
+            </v-toolbar>
+            <v-card elevation="5" style="z-index:2; margin-top: -20px; border:0px">
+              <v-card-text>
+                <div>
+                  <v-row>
+                    <v-col cols="12" md="10">
+                      <spam class="text-overline">Solicitudes de Adelantos</spam>
+                    </v-col>
+                    <v-col cols="12" md="2">
+                      <v-avatar icon="mdi-bank-transfer" class=" text-h6 text-blue-grey-darken-2"></v-avatar>
+                    </v-col>
+
+                  </v-row>
+
+                  <v-row>
+                    <v-col cols="12" md="6">
+                      <v-row>
+                        <v-col cols="12">
+                          <spam class="text-overline">
+                            <div v-if="advances && advances.current_month" class="text-h6 font-weight-bold text-blue-grey-darken-2">
+                              {{ formatNumber(advances.current_month.total) }}
+                            </div>
+                            <div class="text-h6 font-weight-bold text-blue-grey-darken-2">
+                              CLP
+                            </div>
+                          </spam>
+                          <p>{{ formattedDate }} </p>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+
+                    <v-col cols="12" md="6">
+                      <v-row>
+                        <v-col cols="12">
+                          <spam class="text-overline">
+                            <div v-if="advances && advances.previous_month" class="text-h6 font-weight-bold text-blue-grey-darken-2">
+                              {{ formatNumber(advances.previous_month.total) }}
+                            </div>
+                            <div class="text-h6 font-weight-bold text-blue-grey-darken-2">
+                              CLP
+                            </div>
+                          </spam>
+                          <p>{{ formattedDateAnt }} </p>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+                  </v-row>
+                  <!--<div class="text-right">
+                    <a herf="#" @click="detailProduct">Ver detalles</a>
+                  </div>-->
+                </div>
+              </v-card-text>
+            </v-card>
+            <v-toolbar elevation="6" dark color="blue-grey-darken-2" style="margin-top: -40px; height: 70px;">
+            </v-toolbar>
+          </v-card>
+        </v-flex>
+      </v-col>
+  <!--<v-col cols="12">
     <v-card class="mx-auto" max-width="500" elevation="2">
       <v-card-text class="text-center">
         <div class="headline font-weight-bold">¡Bienvenido a Administración Simplifies!</div>
-        <!-- Puedes agregar más texto o estilos aquí según tus necesidades -->
+         Puedes agregar más texto o estilos aquí según tus necesidades 
       </v-card-text>
     </v-card>
-  </v-col>
+  </v-col>-->
 </v-row>
     <!--Ganancias mounth-->
     <v-dialog v-model="dialogWinners" max-width="400px" transition="dialog-bottom-transition">
@@ -322,8 +508,7 @@
                   no-data-text="No hay datos disponibles">
                   <template v-slot:item.name="{ item }">
                     <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                      <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_service
-                        " alt="image"></v-img>
+                      <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_service}`" alt="image"></v-img>
                     </v-avatar>
                     {{ item.name }}
                   </template>
@@ -339,8 +524,7 @@
                   no-data-text="No hay datos disponibles">
                   <template v-slot:item.name="{ item }">
                     <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                      <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_service
-                        " alt="image"></v-img>
+                      <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_service}`" alt="image"></v-img>
                     </v-avatar>
                     {{ item.name }}
                   </template>
@@ -385,8 +569,7 @@
                   </template>
                   <template v-slot:item.name="{ item }">
                     <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                      <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_product
-                        " alt="image"></v-img>
+                      <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_product}`" alt="image"></v-img>
                     </v-avatar>
                     {{ item.name }}
                   </template>
@@ -405,8 +588,7 @@
                   </template>
                   <template v-slot:item.name="{ item }">
                     <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                      <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_product
-                        " alt="image"></v-img>
+                      <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_product}`" alt="image"></v-img>
                     </v-avatar>
                     {{ item.name }}
                   </template>
@@ -443,14 +625,13 @@
               <template v-slot:item.professionalName="{ item }">
 
                 <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                  <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_data" alt="image"></v-img>
+                  <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_data}`" alt="image"></v-img>
                 </v-avatar>
                 {{ item.professionalName }}
               </template>
               <template v-slot:item.clientName="{ item }">
                 <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                  <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.client_image
-                    " alt="image"></v-img>
+                  <v-img :src="`${this.$axios.defaults.baseURL}images/${item.client_image}`" alt="image"></v-img>
                 </v-avatar>
                 {{ item.clientName }}
               </template>
@@ -468,6 +649,7 @@
 </template>
 
 <script>
+import { handleRequest } from "@/utils/api"; // Ruta al archivo
 import { Bar } from 'vue-chartjs'
 import { Line as LineChart } from 'vue-chartjs'
 
@@ -501,7 +683,8 @@ export default {
       formattedDateMonth: "",
       formattedDateMonthAnt: "",
       amountDay: '',
-      branch_id: '',
+      branch_id: null,
+      professional_id: null,
       business_id: '',
       mostrarFila: false,
       charge: '',
@@ -525,6 +708,7 @@ export default {
       productsDataAnt: [],
       winners: [],
       winnersAnt: [],
+      payments: [],
       serviceName: '',
       serviceNameAnt: '',
       serviceCant: '',
@@ -536,6 +720,9 @@ export default {
       tabBarWinner: null,
       tabBarProduct: null,
       dialogReservas: false,
+      bonusProduct: null,
+      commissionTip: null,
+      advances: [],
       search3: '',
       headers: [
         { title: "Nombre Producto", key: "name", sortable: false },
@@ -591,6 +778,7 @@ export default {
   },
   mounted() {
     this.branch_id = LocalStorageService.getItem("branch_id");
+    this.professional_id = LocalStorageService.getItem("professional_id");
     this.business_id = LocalStorageService.getItem("business_id");
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     if (this.charge === 'Administrador' || this.charge === 'Administrador de Sucursal') {
@@ -602,8 +790,11 @@ export default {
     this.formattedDateAnt = today.getDate() + '-' + (today.getMonth()) + '-' + today.getFullYear();
     this.formattedDateMonth = (today.getMonth() + 1) + '-' + today.getFullYear();
     this.formattedDateMonthAnt = (today.getMonth()) + '-' + today.getFullYear();
-    if (this.charge !== 'Totem' && this.charge !== 'Pizarra' && this.charge !== 'Cajero (a)') {        
+    if (this.charge !== 'Totem' && this.charge !== 'Pizarra' && this.charge !== 'Cajero (a)'  && this.charge !== 'Barbero'  && this.charge !== 'Barbero y Encargado') {        
       this.initialize();    
+    }
+    if(this.charge === 'Cajero (a)'){
+      this.initialize1();
     }
     // this.renderChart(this.chartData, { responsive: true, maintainAspectRatio: false })
   },
@@ -787,6 +978,43 @@ export default {
     console.error('Error fetching data:', error);
   }
     },
+    async initialize1(){
+      LocalStorageService.setIsLocked(true);
+            const requestParams = {
+                branch_id: this.branch_id,
+                professional_id: this.professional_id,
+            };
+            try {
+                const result = await handleRequest({
+                    endpoint: 'calculate-payments',
+                    method: 'POST',
+                    params: requestParams // Aquí pasas los parámetros
+                });
+
+                if (result.success) {
+                    // Si la solicitud es exitosa, asignamos las sucursales
+                    this.payments = result.data.payments;
+                    this.bonusProduct = result.data.total_product_ant;
+                    this.commissionTip = result.data.total_tip_ant;
+                    this.advances = result.data.advances;
+                    //if (this.charge !== "Administrador") {                  
+                    //}
+                } else {
+                    LocalStorageService.setIsLocked(false);
+                    // Si no hay datos, asignamos un array vacío
+                    this.payments = [];
+                    this.advances = [];
+                    this.bonusProduct = null,
+                    this.commissionTip = null;
+                }
+            } catch (error) {
+                LocalStorageService.setIsLocked(false);
+                // Captura de errores no controlados
+                //this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
+            } finally {
+                LocalStorageService.setIsLocked(false);
+            }
+    },
     showReservas() {
       this.dialogReservas = true;
     },
@@ -807,6 +1035,15 @@ export default {
     },
     detailProduct() {
       this.dialogProducts = true;
+    },
+    detailAdvances() {
+      this.$router.push({ path: 'advance-professional' });
+    },
+    detailTips() {
+      this.$router.push({ path: 'professional-tips' });
+    },
+    detailProducts() {
+      this.$router.push({ path: 'professional-products' });
     },
     closeProduct() {
       this.dialogProducts = false;

@@ -202,6 +202,7 @@ export default {
     sb_icon: "",
     charge: "",
     business_id: "",
+    professional_id: null,
     branches: "",
     search: "",
     mostrarFila: false,
@@ -273,7 +274,6 @@ export default {
 
   async mounted() {
     this.business_id = LocalStorageService.getItem("business_id");
-    //this.branch_id = LocalStorageService.getItem('branch_id');
     //this.branch_id = this.branch.id;
     this.charge_id = LocalStorageService.getItem("charge_id");
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));

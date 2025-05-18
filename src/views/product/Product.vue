@@ -25,121 +25,11 @@
               @click="showMostSold">
               Más y menos vendidos
             </v-btn>
-            <v-dialog v-model="dialog" max-width="1000px">
-              <template v-slot:activator="{ props }">
-                <v-btn v-if="this.mostrarFila" v-bind="props" class="text-subtitle-1 ml-1" color="#E7E9E9"
-                  variant="flat" elevation="2" prepend-icon="mdi-plus-circle">
-                  Agregar Producto
-                </v-btn>
-              </template>
-              <v-card>
-                <v-toolbar color="#F18254">
-                  <span class="text-subtitle-2 ml-4"> Producto</span>
-                </v-toolbar>
-                <v-card-text>
-                  <v-form v-model="valid" enctype="multipart/form-data">
-                    <v-row>
-                      <v-col cols="12" md="4">
-                        <v-text-field v-model="editedItem.name" label="Nombre" prepend-icon="mdi-form-textbox"
-                          variant="underlined" :rules="nameRules" density="compact">
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="12" md="4">
-                        <v-text-field v-model="editedItem.reference" label="Referencia" prepend-icon="mdi-shopping"
-                          variant="underlined" :rules="nameRules" density="compact">
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="12" md="4">
-                        <v-text-field v-model="editedItem.code" label="Codigo" prepend-icon="mdi-barcode"
-                          variant="underlined" :rules="requiredRules" density="compact">
-                        </v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col cols="12" md="3">
-                        <v-select label="Estado" v-model="editedItem.status_product"
-                          :items="['En venta', 'No en venta']" :item-value="['En venta', 'No en venta']"
-                          variant="underlined" density="compact" :rules="selectRules" prepend-icon="mdi-check-circle"
-                          @update:model-value="showPrice"></v-select>
-                      </v-col>
-                      <v-col cols="12" md="3">
-                        <v-text-field v-model="editedItem.purchase_price" label="Precio de Compra"
-                          prepend-icon="mdi-cash" variant="underlined" :rules="requiredRules" density="compact">
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="12" md="3" v-if="mostrarDatos">
-                        <v-text-field v-model="editedItem.sale_price" label="Precio de Venta"
-                          prepend-icon="mdi-currency-usd" variant="underlined" :rules="requiredRules" density="compact">
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="12" md="3" v-if="mostrarDatos">
-                        <v-text-field v-model="editedItem.worker_discount" type="number" min="0"
-                          label="Desc. trabajador" prepend-icon="mdi-currency-usd" variant="underlined" suffix="%"
-                          :rules="discountRules" density="compact">
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="12" md="4">
-                        <v-autocomplete :no-data-text="'No hay datos disponibles'"
-                          v-model="editedItem.product_category_id" :items="productCategories" density="compact"
-                          label="Categoría" prepend-icon="mdi-tag" item-title="name" item-value="id"
-                          variant="underlined" :rules="selectRules"></v-autocomplete>
-                      </v-col>
-                      <v-col cols="12" md="8">
-                        <v-text-field v-model="editedItem.description" density="compact" label="Descripción"
-                          prepend-icon="mdi-information" variant="underlined" :rules="dirRules">
-                        </v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-row> </v-row>
-                    <v-row>
-                      <v-col cols="12" md="6">
-                        <v-file-input clearable v-model="file" ref="fileInput" label="Imagen del Productos"
-                          variant="underlined" density="compact" name="file" accept=".png, .jpg, .jpeg"
-                          @change="onFileSelected">
-                        </v-file-input>
-                      </v-col>
-                      <v-col cols="12" md="6" align="center">
-                        <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
-                          <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120" />
-                        </v-card>
-                      </v-col>
-                    </v-row>
-                    <v-divider></v-divider>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
 
-                      <v-btn color="#E7E9E9" variant="flat" @click="close">
-                        Cancelar
-                      </v-btn>
-                      <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
-                        Aceptar
-                      </v-btn>
-                    </v-card-actions>
-                  </v-form>
-                </v-card-text>
-              </v-card>
-            </v-dialog>
-
-            <v-dialog v-model="dialogDelete" max-width="500px">
-              <v-card>
-                <v-toolbar color="red">
-                  <span class="text-subtitle-2 ml-4"> Eliminar Producto</span>
-                </v-toolbar>
-
-                <v-card-text class="mt-2 mb-2">
-                  ¿Desea eliminar el Producto seleccionado?</v-card-text>
-                <v-divider></v-divider>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
-                    Cancelar
-                  </v-btn>
-                  <v-btn color="warning" variant="flat" @click="deleteItemConfirm">
-                    Aceptar
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
+            <v-btn v-if="this.mostrarFila" class="text-subtitle-1 ml-1" color="#E7E9E9" variant="flat" elevation="2"
+              prepend-icon="mdi-plus-circle" @click="showAddProduct">
+              Agregar Producto
+            </v-btn>
           </v-col>
         </v-row>
       </v-toolbar>
@@ -164,8 +54,7 @@
             </template>
             <template v-slot:item.name="{ item }">
               <v-avatar class="mr-2" elevation="3" color="grey-lighten-4">
-                <v-img :src="'https://testapi.simplifies.cl/api/images/' +
-                item.image_product
+                <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_product}`
                 " alt="image"></v-img><!-- +
                   '?$' +
                   Date.now()-->
@@ -173,8 +62,10 @@
               {{ item.name }}
             </template>
             <template v-slot:item.worker_discount="{ item }">
-
               {{ item.worker_discount }} %
+            </template>
+            <template v-slot:item.commission_rate="{ item }">
+              {{ item.commission_rate > 0 ? `${item.commission_rate} %` : '' }}
             </template>
             <template v-slot:item.actions="{ item }">
               <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
@@ -191,7 +82,119 @@
           </v-data-table>
         </div>
       </v-card-text>
+      <v-dialog v-model="dialog" max-width="1000px">
+        <v-card>
+          <v-toolbar color="#F18254">
+            <span class="text-subtitle-2 ml-4"> Producto</span>
+          </v-toolbar>
+          <v-card-text>
+            <v-form v-model="valid" enctype="multipart/form-data">
+              <v-row>
+                <v-col cols="12" md="4">
+                  <v-text-field v-model="editedItem.name" label="Nombre" prepend-icon="mdi-form-textbox"
+                    variant="underlined" :rules="nameRules" density="compact">
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12" md="4">
+                  <v-text-field v-model="editedItem.reference" label="Referencia" prepend-icon="mdi-shopping"
+                    variant="underlined" :rules="nameRules" density="compact">
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12" md="4">
+                  <v-text-field v-model="editedItem.code" label="Codigo" prepend-icon="mdi-barcode" variant="underlined"
+                    :rules="requiredRules" density="compact">
+                  </v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" md="3">
+                  <v-select label="Estado" v-model="editedItem.status_product" :items="['En venta', 'No en venta']"
+                    :item-value="['En venta', 'No en venta']" variant="underlined" density="compact"
+                    :rules="selectRules" prepend-icon="mdi-check-circle" @update:model-value="showPrice"></v-select>
+                </v-col>
+                <v-col cols="12" md="3">
+                  <v-text-field v-model="editedItem.purchase_price" label="Precio de Compra" prepend-icon="mdi-cash"
+                    variant="underlined" :rules="requiredRules" density="compact">
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12" md="3" v-if="mostrarDatos">
+                  <v-text-field v-model="editedItem.sale_price" label="Precio de Venta" prepend-icon="mdi-currency-usd"
+                    variant="underlined" :rules="requiredRules" density="compact">
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12" md="3" v-if="mostrarDatos">
+                  <v-text-field v-model="editedItem.worker_discount" type="number" min="0" label="Desc. trabajador"
+                    prepend-icon="mdi-currency-usd" variant="underlined" suffix="%" :rules="discountRules"
+                    density="compact">
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12" md="3">
+                  <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.product_category_id"
+                    :items="productCategories" density="compact" label="Categoría" prepend-icon="mdi-tag"
+                    item-title="name" item-value="id" variant="underlined" :rules="selectRules"
+                    @update:model-value="updateSelectedCategoryCommission()"></v-autocomplete>
+                </v-col>
+                <v-col cols="12" md="2" v-if="selectedCategoryGivesCommission === 1">
+                  <v-text-field v-model="editedItem.commission_rate" label="Comisión" variant="underlined"
+                    :rules="commissionRules" prepend-icon="mdi-cash-multiple" type="number" min="0" max="100"
+                    density="compact" step="1" suffix="%"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="7">
+                  <v-text-field v-model="editedItem.description" density="compact" label="Descripción"
+                    prepend-icon="mdi-information" variant="underlined" :rules="dirRules">
+                  </v-text-field>
+                </v-col>
+              </v-row>
+              <v-row> </v-row>
+              <v-row>
+                <v-col cols="12" md="6">
+                  <v-file-input clearable v-model="file" ref="fileInput" label="Imagen del Productos"
+                    variant="underlined" density="compact" name="file" accept=".png, .jpg, .jpeg"
+                    @change="onFileSelected">
+                  </v-file-input>
+                </v-col>
+                <v-col cols="12" md="6" align="center">
+                  <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
+                    <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120" />
+                  </v-card>
+                </v-col>
+              </v-row>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
 
+                <v-btn color="#E7E9E9" variant="flat" @click="close">
+                  Cancelar
+                </v-btn>
+                <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
+                  Aceptar
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="dialogDelete" max-width="500px">
+        <v-card>
+          <v-toolbar color="red">
+            <span class="text-subtitle-2 ml-4"> Eliminar Producto</span>
+          </v-toolbar>
+
+          <v-card-text class="mt-2 mb-2">
+            ¿Desea eliminar el Producto seleccionado?</v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
+              Cancelar
+            </v-btn>
+            <v-btn color="warning" variant="flat" @click="deleteItemConfirm">
+              Aceptar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
       <!--Productos mas vendidos-->
       <v-dialog v-model="dialogMostSold" fullscreen transition="dialog-bottom-transition">
         <v-card elevation="6">
@@ -296,6 +299,7 @@ import axios from "axios";
 import { format } from "date-fns";
 import * as XLSX from "xlsx";
 import LocalStorageService from "@/LocalStorageService";
+import { handleRequest } from "@/utils/api"; // Ruta al archivo
 
 axios.interceptors.request.use(config => {
   const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
@@ -322,6 +326,7 @@ export default {
     editando: false,
     message_delete: true,
     dialogDelete: false,
+    selectedCategoryGivesCommission: null,
     headers: [
       { title: "Referencia", key: "reference" },
       { title: "Nombre", key: "name" },
@@ -330,7 +335,8 @@ export default {
       { title: "Estado", key: "status_product" },
       { title: "Precio compra", align: "start", value: "purchase_price" },
       { title: "Precio venta", align: "start", value: "sale_price" },
-      { title: "% Descuento", align: "start", value: "worker_discount" },
+      { title: "Descuento", align: "start", value: "worker_discount" },
+      { title: "Comisión", align: "start", value: "commission_rate" },
       { title: "Categoría", align: "start", value: "productcategory.name" },
       { title: "Acciones", key: "actions", sortable: false, width: '10%' },
     ],
@@ -354,7 +360,8 @@ export default {
       product_category_id: "",
       image_product: "",
       id: "",
-      worker_discount: ""
+      worker_discount: "",
+      commission_rate: null
     },
     data: {},
 
@@ -369,7 +376,8 @@ export default {
       product_category_id: "",
       image_product: "",
       id: "",
-      worker_discount: ""
+      worker_discount: "",
+      commission_rate: null
     },
     //productos mas y menos vendidos
     menu2: false,
@@ -385,7 +393,12 @@ export default {
       { title: "Referencia", key: "reference", sortable: false },
       { title: "Cantidad", key: "orders_count", sortable: true },
     ],
-
+    commissionRules: [
+      (v) => !!v || "El porcentaje de comisión es requerido",
+      (v) => (!isNaN(parseFloat(v)) && isFinite(v)) || "Debe ser un número válido",
+      (v) => (parseFloat(v) >= 0) || "El porcentaje no puede ser negativo",
+      (v) => (parseFloat(v) <= 100) || "El porcentaje máximo es 100%"
+    ],
     nameRules: [
       (v) => !!v || "El campo es requerido",
       (v) => (v && v.length <= 50) || "El campo debe tener menos de 51 caracteres",
@@ -443,6 +456,12 @@ export default {
     getDate2() {
       return this.input2 ? new Date(this.input2) : new Date();
     },
+    selectedCategory() {
+      if (!this.editedItem.product_category_id) return null;
+      return this.productCategories.find(
+        cat => cat.id === this.editedItem.product_category_id
+      );
+    }
   },
 
   watch: {
@@ -452,6 +471,26 @@ export default {
     dialogDelete(val) {
       val || this.closeDelete();
     },
+    /*'editedItem.product_category_id': {
+      handler(newVal) {
+        console.log('this.productCategories');
+          console.log(this.productCategories);
+        console.log('newVal');
+          console.log(newVal);
+        if (newVal) {
+          const category = this.productCategories.find(cat => cat.id === newVal);
+          console.log('this.category');
+          console.log(category);
+          this.selectedCategoryGivesCommission = category?.gives_commission || 0;
+        } else {
+          this.selectedCategoryGivesCommission = null;
+        }
+        
+        console.log('this.selectedCategoryGivesCommission');
+        console.log(this.selectedCategoryGivesCommission);
+      },
+      immediate: true
+    }*/
   },
 
   mounted() {
@@ -463,15 +502,15 @@ export default {
     if (this.charge === 'Administrador') {
           this.mostrarFila = true;
     }
-    axios
+    /*axios
       .get("https://testapi.simplifies.cl/api/product-category")
       .then((response) => {
         this.productCategories = response.data.productcategories;
       })
       .finally(() => {
         LocalStorageService.setIsLocked(false);
+      });*/
         this.initialize();
-      });
   },
 
   methods: {
@@ -564,7 +603,25 @@ export default {
       };
       reader.readAsDataURL(file);
     },
-    editItem(item) {
+    updateSelectedCategoryCommission() {
+    console.log('this.productCategories');
+    console.log(this.productCategories);
+    console.log('this.editedItem.product_category_id');
+    console.log(this.editedItem.product_category_id);
+    
+    if (this.editedItem.product_category_id) {
+      const category = this.productCategories.find(cat => cat.id === this.editedItem.product_category_id);
+      console.log('this.category');
+      console.log(category);
+      this.selectedCategoryGivesCommission = category?.gives_commission || 0;
+    } else {
+      this.selectedCategoryGivesCommission = null;
+    }
+    
+    console.log('this.selectedCategoryGivesCommission');
+    console.log(this.selectedCategoryGivesCommission);
+  },
+    async editItem(item) {
       this.sale_priceTemp = item.sale_price;
       if (item.status_product === "En venta") {
         this.mostrarDatos = true;
@@ -573,17 +630,45 @@ export default {
       }
       this.file = null;
       var img = new Image();
-      img.src = "https://testapi.simplifies.cl/api/images/" + item.image_product;
+      img.src = `${this.$axios.defaults.baseURL}images/${item.image_product}`;
       img.onload = () => {
-        this.imgMiniatura = "https://testapi.simplifies.cl/api/images/" + item.image_product;
+        this.imgMiniatura = `${this.$axios.defaults.baseURL}images/${item.image_product}`;
       };
       img.onerror = () => {
         this.imgMiniatura = "";
       };
       this.editedIndex = 1;
       this.editedItem = Object.assign({}, item);
+      LocalStorageService.setIsLocked(true);
+      handleRequest({
+      endpoint: "product-category",
+      method: "GET",
+      params: { branch_id: this.branch_id }
+    })
+    .then(response => {
+      this.productCategories = response.data.productcategories;
+    })
+    .finally(() => {
+      LocalStorageService.setIsLocked(false);
       this.dialog = true;
+    this.updateSelectedCategoryCommission();
+    });
       this.editando = true;
+    },
+    async showAddProduct(){
+      LocalStorageService.setIsLocked(true);
+      handleRequest({
+      endpoint: "product-category",
+      method: "GET",
+      params: { branch_id: this.branch_id }
+    })
+    .then(response => {
+      this.productCategories = response.data.productcategories;
+    })
+    .finally(() => {
+      LocalStorageService.setIsLocked(false);
+      this.dialog = true;
+    });
     },
     deleteItem(item) {
       this.editedIndex = 1;

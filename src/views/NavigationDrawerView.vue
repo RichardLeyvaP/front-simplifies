@@ -231,9 +231,12 @@ export default {
     ],
     professionals:[
       { icon: "mdi-account-tie-outline", title: "Profesionales", to: "person", value: "profesionals", permission: "view_professionals" },
-      { icon: "mdi-cash-sync", title: "Solicitudes de Adelanto", to: "advance", value: "advance", permission: "view_advances" },   
+      { icon: "mdi-cash-sync", title: "Solicitudes de Adelanto", to: "solicitud-advance", value: "solicitud-advance", permission: "view_advances" },   
+      { icon: "mdi-cash-sync", title: "Adelantos", to: "advance-professional", value: "advance-professional", permission: "view_professional_advances" },   
       { icon: "mdi-credit-card", title: "Pago a Profesionales", to: "professional-payment", value: "professional-payment", permission: "view_professional_payment" },
       { icon: "mdi-calendar-check", title: "Permisos Asistencia", to: "vacation", value: "vacation", permission: "view_vacations" }, 
+      { icon: "mdi-shopping", title: "Venta de Productos", to: "professional-products", value: "professional-products", permission: "view_professional_products" },
+      { icon: "mdi-cash-multiple", title: "Comisiones de Propinas", to: "professional-tips", value: "professional-tips", permission: "view_professional_tips" },
     ],
     caja:[
       { icon: "mdi-cash-register", title: "Caja", to: "box", value: "cash", permission: "view_shopping_carts" },

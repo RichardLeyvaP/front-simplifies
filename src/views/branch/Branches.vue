@@ -15,16 +15,9 @@
 
     </v-row>
   </v-snackbar>
-  <v-overlay
-      :model-value="loading"
-      class="align-center justify-center"
-    >
-      <v-progress-circular
-        color="amber-darken-1"
-        size="64"
-        indeterminate
-      ></v-progress-circular>
-    </v-overlay>
+  <v-overlay :model-value="loading" class="align-center justify-center">
+    <v-progress-circular color="amber-darken-1" size="64" indeterminate></v-progress-circular>
+  </v-overlay>
   <v-container fluid>
     <v-card elevation="6" class="mx-5">
 
@@ -35,8 +28,8 @@
           </v-col>
 
           <v-col cols="12" md="7" class="text-right">
-            <v-btn class="text-subtitle-1 mr-1" color="#E7E9E9" variant="flat" elevation="2" prepend-icon="mdi-plus-circle"
-              @click="showWinner()"
+            <v-btn class="text-subtitle-1 mr-1" color="#E7E9E9" variant="flat" elevation="2"
+              prepend-icon="mdi-plus-circle" @click="showWinner()"
               v-if="this.charge === 'Administrador' || this.charge === 'Administrador de Sucursal'">
               Estadísticas Sucursal
             </v-btn>
@@ -140,36 +133,32 @@
             <template v-slot:item.name="{ item }">
 
               <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_data" alt="image"></v-img>
+                <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_data}`" alt="image"></v-img>
               </v-avatar>
               {{ item.name }}
             </template>
 
             <template v-slot:item.useTechnical="{ item }">
               <div class="justify-center">
-                <v-chip 
-                :color="item.useTechnical ? 'green' : 'red'" 
-                :text="item.useTechnical ? 'Si ' : 'No'"
-                class="text-uppercase" 
-                size="small" 
-                label
-                style="text-align: center;"
-              ></v-chip>
+                <v-chip :color="item.useTechnical ? 'green' : 'red'" :text="item.useTechnical ? 'Si ' : 'No'"
+                  class="text-uppercase" size="small" label style="text-align: center;"></v-chip>
               </div>
             </template>
             <template v-slot:item.actions="{ item }">
               <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-pencil" @click="editItem(item)"
                 color="primary" variant="darken-1" elevation="1" title="Editar Sucursal"></v-btn>
-              <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-account-tie" @click="showProfessionals(item)" 
-              color="indigo" variant="darken-2" elevation="1" title="Agregar Trabajdor"></v-btn>
-              <v-btn v-if="mostrarFila" density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-store-outline" @click="showStores(item)"
-                color="green" variant="tonal" elevation="1" title="Agregar Almacén"></v-btn>
+              <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-account-tie"
+                @click="showProfessionals(item)" color="indigo" variant="darken-2" elevation="1"
+                title="Agregar Trabajdor"></v-btn>
+              <v-btn v-if="mostrarFila" density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-store-outline"
+                @click="showStores(item)" color="green" variant="tonal" elevation="1" title="Agregar Almacén"></v-btn>
               <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-handshake" @click="showAssociates(item)"
                 color="orange" variant="tonal" elevation="1" title="Agregar Asociado"></v-btn>
               <!--<v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-finance" @click="showWinner(item)" color="teal" variant="tonal"
             elevation="1" title="Finanzas de la  sucursal"></v-btn>-->
-              <v-btn v-if="mostrarFila" density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-delete" @click="deleteItem(item)"
-                color="red-darken-4" variant="tonal" elevation="1" title="Eliminar Sucursal"></v-btn>
+              <v-btn v-if="mostrarFila" density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-delete"
+                @click="deleteItem(item)" color="red-darken-4" variant="tonal" elevation="1"
+                title="Eliminar Sucursal"></v-btn>
             </template>
           </v-data-table>
         </v-container>
@@ -199,7 +188,8 @@
             <v-toolbar color="#F18254">
               <span class="text-subtitle-2 ml-4"> Trabajadores de la Sucursal</span>
               <v-spacer></v-spacer>
-              <v-btn v-if="(this.charge === 'Administrador' || this.charge === 'Administrador de Sucursal')" class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAddProfessionals()">
+              <v-btn v-if="(this.charge === 'Administrador' || this.charge === 'Administrador de Sucursal')"
+                class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAddProfessionals()">
                 Agregar Trabajador
               </v-btn>
             </v-toolbar>
@@ -210,24 +200,43 @@
 
               <v-data-table :headers="headers2" :items="branchProfessionals" :search="search2" class="elevation-1"
                 :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
-                no-data-text="No hay datos disponibles" :loading="loadingProfessionals" loading-text="Cargando datos...">
+                no-data-text="No hay datos disponibles" :loading="loadingProfessionals"
+                loading-text="Cargando datos...">
                 <template v-slot:item.ponderation="{ item }">
                   {{ item.ponderation === 0 ? 1 : item.ponderation }}
                 </template>
                 <template v-slot:item.name="{ item }">
 
                   <v-avatar class="mr-1" elevation="3" color="grey-lighten-4" size="large">
-                    <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+                    <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_url}`" alt="image"></v-img>
                   </v-avatar><!--+'?$'+Date.now()-->
                   {{ item.name }}
                 </template>
-
+                <template v-slot:item.limit="{ item }">
+                  {{ formatNumber(item.limit) }}
+                </template>
+                <template v-slot:item.mountpay="{ item }">
+                  {{ formatNumber(item.mountpay) }}
+                </template>
+                <template v-slot:item.salary="{ item }">
+                  {{ formatNumber(item.salary) }}
+                </template>
+                <template v-slot:item.tier1_commission_rate="{ item }">
+                  {{ item.tier1_commission_rate }} %
+                </template>
+                <template v-slot:item.tier2_commission_rate="{ item }">
+                  {{ item.tier2_commission_rate }} %
+                </template>
+                <template v-slot:item.tier3_commission_rate="{ item }">
+                  {{ item.tier3_commission_rate }} %
+                </template>
                 <template v-slot:item.actions="{ item }">
                   <v-btn density="comfortable" icon="mdi-pencil" @click="editItemProfessional(item)" color="primary"
                     variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
                     title="Editar asignación de profesional"></v-btn>
-                  <v-btn v-if="mostrarFila" density="comfortable" icon="mdi-delete" @click="deleteP(item)" color="red-darken-4"
-                    variant="tonal" elevation="1" title="Eliminar afiliación del trabajador"></v-btn>
+                  <v-btn v-if="mostrarFila" density="comfortable" icon="mdi-delete" @click="deleteP(item)"
+                    color="red-darken-4" variant="tonal" elevation="1"
+                    title="Eliminar afiliación del trabajador"></v-btn>
                   <!--<v-icon size="small" color="red" @click="deleteP(item)">
                   mdi-delete
                 </v-icon>-->
@@ -244,7 +253,7 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-        <v-dialog v-model="dialogAddProf" width="500">
+        <!--<v-dialog v-model="dialogAddProf" width="500">
           <v-card>
             <v-toolbar color="#F18254">
               <span class="text-subtitle-2 ml-4"> {{ formTitleProfessional }}</span>
@@ -260,7 +269,7 @@
                         @update:model-value="bonusActiv">
                         <template v-slot:item="{ props, item }">
                           <v-list-item v-bind="props"
-                            :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + item.raw.image_url"
+                            :prepend-avatar="`${this.$axios.defaults.baseURL}images/${item.raw.image_url}`"
                             :subtitle="'Cargo: ' + item.raw.charge" :title="item.raw.name"></v-list-item>
                         </template>
                       </v-autocomplete>
@@ -269,18 +278,135 @@
                       </v-text-field>
                     </v-col>
                     <v-col cols="12" md="12">
-                      <v-text-field v-show="bonus" v-model="editedItem.ponderation" clearable label="Ponderación"
-                        prepend-icon="mdi-arrow-collapse-vertical" variant="underlined" :rules="pago">
+                      <v-text-field v-show="bonus" v-model="editedItem.ponderation" label="Ponderación"
+                        prepend-icon="mdi-arrow-collapse-vertical" variant="underlined" :rules="pago" type="number" min="0">
                       </v-text-field>
-                      <v-text-field v-show="bonus" v-model="editedItem.limit" clearable label="Meta de Productividad"
-                        prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago">
+                      <v-text-field v-show="bonus" v-model="limitFormatted" label="Meta de Productividad"
+                        prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago" @keypress="onlyNumbers">
                       </v-text-field>
-                      <v-text-field v-show="bonus" v-model="editedItem.mountpay" clearable label="Monto a Pagar"
-                        prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago">
+                      <v-text-field v-show="bonus" v-model="mountpayFormatted" label="Monto a Pagar"
+                        prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago" @keypress="onlyNumbers">
+                      </v-text-field>
+                      <v-text-field v-model="salaryFormatted" label="Salario" v-show="!bonus"
+                      prepend-icon="mdi-cash" variant="underlined" type="number" min="0" @keypress="onlyNumbers"
+                      :rules="[v => v === null || v === '' || v >= 0 || 'El salario debe ser positivo']">
+                    </v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-container>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="#E7E9E9" variant="flat" @click="closeP">
+                    Cancelar
+                  </v-btn>
+                  <v-btn color="#F18254" variant="flat" @click="saveP" :disabled="!valid">
+                    Aceptar
+                  </v-btn>
+                </v-card-actions>
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </v-dialog>-->
+        <v-dialog v-model="dialogAddProf" width="700">
+          <v-card>
+            <v-toolbar color="#F18254">
+              <span class="text-subtitle-2 ml-4">{{ formTitleProfessional }}</span>
+            </v-toolbar>
+            <v-card-text class="mt-2 mb-2">
+              <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+                <v-container fluid>
+                  <!-- Fila 1: Selección de profesional -->
+                  <v-row>
+                    <v-col cols="12">
+                      <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.professional_id"
+                        :items="professionals" label="Profesional" prepend-icon="mdi-account-tie-outline"
+                        item-title="name" item-value="id" variant="underlined" :rules="selectRules" v-if="!editando"
+                        @update:model-value="bonusActiv">
+                        <template v-slot:item="{ props, item }">
+                          <v-list-item v-bind="props"
+                            :prepend-avatar="`${this.$axios.defaults.baseURL}images/${item.raw.image_url}`"
+                            :subtitle="'Cargo: ' + item.raw.charge" :title="item.raw.name"></v-list-item>
+                        </template>
+                      </v-autocomplete>
+                      <v-text-field v-model="nameProfessional" label="Professional"
+                        prepend-icon="mdi-account-tie-outline" variant="underlined" v-if="editando" disabled>
+                      </v-text-field>
+                    </v-col>
+                  </v-row>
+
+                  <!-- Fila 2: Campos de salario/ponderación -->
+                  <v-row>
+                    <v-col cols="12" md="6" v-if="bonus">
+                      <v-text-field v-model="editedItem.ponderation" label="Ponderación"
+                        prepend-icon="mdi-arrow-collapse-vertical" variant="underlined" :rules="pago" type="number"
+                        min="0">
+                      </v-text-field>
+                      </v-col>
+                      <v-col cols="12" md="6" v-if="!bonus">
+                      <v-text-field v-model="salaryFormatted" label="Salario" prepend-icon="mdi-cash"
+                        variant="underlined" type="number" min="0" @keypress="onlyNumbers"
+                        :rules="[v => v === null || v === '' || v >= 0 || 'El salario debe ser positivo']">
+                      </v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <v-text-field v-show="bonus" v-model="limitFormatted" label="Meta de Productividad"
+                        prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago" @keypress="onlyNumbers">
+                      </v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <v-text-field v-show="bonus" v-model="mountpayFormatted" label="Monto a Pagar"
+                        prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago" @keypress="onlyNumbers">
+                      </v-text-field>
+                    </v-col>
+                  </v-row>
+
+                  <!-- Fila 3: Comisión Nivel 1 -->
+                  <v-row v-if="this.commission">
+                    <v-col cols="12" md="6">
+                      <v-text-field v-model="editedItem.tier1_min_sales" label="Piso de comisión (Nivel 1)"
+                        prepend-icon="mdi-numeric-1-box" variant="underlined" type="number" min="0"
+                        :rules="[v => !!v || 'Campo requerido']" @update:model-value="updateHints">
+                      </v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <v-text-field v-model="editedItem.tier1_commission_rate" label="Comisión % (Nivel 1)"
+                        prepend-icon="mdi-percent" variant="underlined" type="number" min="0" max="100" suffix="%"
+                        :hint="this.showHints.tier1 ? `A partir de ${editedItem.tier1_min_sales}` : ''" persistent-hint
+                        :rules="[v => !!v || 'Campo requerido']">
+                      </v-text-field>
+                    </v-col>
+
+                    <v-col cols="12" md="6">
+                      <v-text-field v-model="editedItem.tier2_min_sales" label="Piso de comisión (Nivel 2)"
+                        prepend-icon="mdi-numeric-2-box" variant="underlined" type="number" min="0"
+                        :rules="[v => !!v || 'Campo requerido']" @update:model-value="updateHints">
+                      </v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <v-text-field v-model="editedItem.tier2_commission_rate" label="Comisión % (Nivel 2)"
+                        prepend-icon="mdi-percent" variant="underlined" type="number" min="0" max="100" suffix="%"
+                        :hint="this.showHints.tier2 ? `A partir de ${editedItem.tier2_min_sales}` : ''" persistent-hint
+                        :rules="[v => !!v || 'Campo requerido']">
+                      </v-text-field>
+                    </v-col>
+
+                    <v-col cols="12" md="6">
+                      <v-text-field v-model="editedItem.tier3_min_sales" label="Piso de comisión (Nivel 3)"
+                        prepend-icon="mdi-numeric-3-box" variant="underlined" type="number" min="0"
+                        :rules="[v => !!v || 'Campo requerido']" @update:model-value="updateHints">
+                      </v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <v-text-field v-model="editedItem.tier3_commission_rate" label="Comisión % (Nivel 3)"
+                        prepend-icon="mdi-percent" variant="underlined" type="number" min="0" max="100" suffix="%"
+                        :hint="this.showHints.tier3 ? `A partir de ${editedItem.tier3_min_sales}` : ''" persistent-hint
+                        :rules="[v => !!v || 'Campo requerido']">
                       </v-text-field>
                     </v-col>
                   </v-row>
                 </v-container>
+
                 <v-divider></v-divider>
                 <v-card-actions>
                   <v-spacer></v-spacer>
@@ -602,6 +728,7 @@
 <script>
 
 import axios from "axios";
+import { handleRequest } from "@/utils/api"; // Ruta al archivo
 import { format } from "date-fns";
 import LocalStorageService from "@/LocalStorageService";
 
@@ -666,7 +793,20 @@ export default {
       { title: 'Ponderación', value: 'ponderation' },
       { title: 'Meta Productividad', value: 'limit' },
       { title: 'Monto a Pagar', value: 'mountpay' },
-      { title: 'Acciones', key: 'actions', sortable: false },
+      { title: 'Salario', value: 'salary' },
+      {
+      title: 'Pisos de Comisiones',
+      align: 'center',
+      children: [
+        { title: 'Piso 1', value: 'tier1_min_sales' },
+        { title: '% Comisión 1', value: 'tier1_commission_rate' },
+        { title: 'Piso 2', value: 'tier2_min_sales' },
+        { title: '% Comisión 2', value: 'tier2_commission_rate' },
+        { title: 'Piso 3', value: 'tier3_min_sales' },
+        { title: '% Comisión 3', value: 'tier3_commission_rate' },
+      ],
+    },
+      { title: 'Acciones', key: 'actions', sortable: false, width: '10%' },
     ],
     headers3: [
       { title: 'Referencia', value: 'reference' },
@@ -695,6 +835,11 @@ export default {
     file: null,
     imgMiniatura: '',
     nameProfessional: '',
+    showHints: {
+      tier1: false,
+      tier2: false,
+      tier3: false
+    },
     editedItem: {
       id: '',
       name: '',
@@ -709,7 +854,14 @@ export default {
       useTechnical: 0,
       location: '',
       limit: '',
-      mountpay: ''
+      mountpay: '',
+      salary: null,
+      tier1_min_sales: null,
+      tier1_commission_rate: null,
+      tier2_min_sales: null,
+      tier2_commission_rate: null,
+      tier3_min_sales: null,
+      tier3_commission_rate: null,
     },
     data: {},
     options: [
@@ -729,7 +881,14 @@ export default {
       useTechnical: '',
       location: '',
       limit: '',
-      mountpay: ''
+      mountpay: '',
+      salary: null,
+      tier1_min_sales: null,
+      tier1_commission_rate: null,
+      tier2_min_sales: null,
+      tier2_commission_rate: null,
+      tier3_min_sales: null,
+      tier3_commission_rate: null,
     },
     //winners
     winners: [],
@@ -741,7 +900,7 @@ export default {
     fecha: '',
     search5: '',
     editedIndexWin: -1,
-
+    commission: false,
     nameRules: [
       (v) => !!v || "El campo es requerido",
       (v) => (v && v.length <= 100) ||
@@ -764,6 +923,30 @@ export default {
   }),
 
   computed: {
+    salaryFormatted: {
+    get() {
+      return this.formatNumberInput(this.editedItem.salary)
+    },
+    set(value) {
+      this.editedItem.salary = this.parseNumberInput(value)
+    }
+    },
+    limitFormatted: {
+    get() {
+      return this.formatNumberInput(this.editedItem.limit)
+    },
+    set(value) {
+      this.editedItem.limit = this.parseNumberInput(value)
+    }
+    },
+    mountpayFormatted: {
+    get() {
+      return this.formatNumberInput(this.editedItem.mountpay)
+    },
+    set(value) {
+      this.editedItem.mountpay = this.parseNumberInput(value)
+    }
+    },
     imgedit() {
       return this.imgMiniatura;
     },
@@ -839,7 +1022,7 @@ export default {
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     //console.log('this.editedItem.business_id');
     //console.log(this.editedItem.business_id);
-    LocalStorageService.setIsLocked(true);
+    /*LocalStorageService.setIsLocked(true);
     axios
       .get('https://testapi.simplifies.cl/api/business')
       .then((response) => {
@@ -852,10 +1035,74 @@ export default {
           this.mostrarFila = true;
         }
         this.initialize();
-      });
+      });*/
+      LocalStorageService.setIsLocked(true);
+      handleRequest({
+      endpoint: "business",
+      method: "GET",
+      //params: { branch_id: this.branch_id }
+    })
+    .then(response => {
+      this.business = response.data.business;
+    })
+    .finally(() => {
+      LocalStorageService.setIsLocked(false);
+      if (this.business.length > 0) {
+          this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
+        }
+        if (this.charge === "Administrador") {
+          this.mostrarFila = true;
+        }
+        this.initialize();
+    });
   },
 
   methods: {
+    shouldReceiveCommission(charge) {
+    const nonCommissionCharges = ['Administrador', 'Encargado', 'Coordinador', 'Bodega', 'Totem'];
+    return !nonCommissionCharges.includes(charge);
+  },
+    updateHints() {
+    this.showHints = {
+      tier1: !!this.editedItem.tier1_min_sales,
+      tier2: !!this.editedItem.tier2_min_sales,
+      tier3: !!this.editedItem.tier3_min_sales
+    }
+    },
+    formatNumber(value) {
+      // Verificar si el valor es 0, null, undefined o no es un número
+      if (value === 0 || value === null || value === undefined || isNaN(value)) {
+        return "0.0";
+      }
+      // Si el valor es menor que 1000, devuelve el valor original con dos decimales
+      if (value < 1000) {
+        return (Math.round((value + Number.EPSILON) * 100) / 100).toLocaleString(
+          "en-US",
+          { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+        );
+      }
+
+      // Primero, redondea el valor a dos decimales
+      value = Math.round((value + Number.EPSILON) * 100) / 100;
+
+      // Convierte el valor a cadena con formato de número local (en-US)
+      let formattedValue = value.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+
+      return formattedValue;
+    },
+    formatNumberInput(value) {
+    if (!value) return ''
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+    },
+  
+  // Parsea el número para guardarlo sin formato
+  parseNumberInput(formattedValue) {
+    if (!formattedValue) return null
+    return Number(formattedValue.toString().replace(/\./g, ''))
+  },
     bonusActiv(professional_id) {
       const selectedProfessional = this.professionals.find(prof => prof.id === professional_id);
       if (selectedProfessional.charge == "Barbero y Encargado" || selectedProfessional.charge == "Barbero") {
@@ -864,6 +1111,8 @@ export default {
       else {
         this.bonus = false;
       }
+      console.log("selectedProfessional.charge", this.shouldReceiveCommission(selectedProfessional.charge));
+      this.commission = this.shouldReceiveCommission(selectedProfessional.charge);
     },
     imagenDisponible() {
       if (this.imgedit !== undefined && this.imgedit !== '') {
@@ -943,24 +1192,40 @@ export default {
       }
       reader.readAsDataURL(file);
     },
-    editItem(item) {
+    async editItem(item) {
       this.file = null;
       var img = new Image();
-      img.src = 'https://testapi.simplifies.cl/api/images/' + item.image_data;
+      img.src = `${this.$axios.defaults.baseURL}images/${item.image_data}`;
       img.onload = () => {
-        this.imgMiniatura = 'https://testapi.simplifies.cl/api/images/' + item.image_data;
+        this.imgMiniatura = `${this.$axios.defaults.baseURL}images/${item.image_data}`;
       };
       img.onerror = () => {
         this.imgMiniatura = '';
       };
       LocalStorageService.setIsLocked(true);
-      axios
+      /*axios
         .get('https://testapi.simplifies.cl/api/business-type')
         .then((response) => {
           this.businessTypes = response.data.businessTypes;
         }).finally(() => {
             LocalStorageService.setIsLocked(false);
         });
+        LocalStorageService.setIsLocked(true);*/
+    
+        try {
+          const result = await handleRequest({
+            endpoint: "business-type",
+            method: "GET",
+          });
+
+          if (result.success) {
+            this.businessTypes = result.data.businessTypes;
+          }
+        } catch (error) {
+          this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
+        } finally {
+          LocalStorageService.setIsLocked(false);
+        }
       this.editedIndex = 1;
       this.editedItem = Object.assign({}, item);
       this.editedItem.business_type_id = parseInt(item.business_type_id);
@@ -1006,6 +1271,11 @@ export default {
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
       })
+      this.showHints =  {
+      tier1: false,
+      tier2: false,
+      tier3: false
+    };
       //this.showProfessionals(this.branchSelect)
     },
     closestore() {
@@ -1081,7 +1351,7 @@ export default {
       console.log(this.branchSelect);
       this.branch_id = item.id;
       console.log(item.id);
-      axios
+      /*axios
         .get('https://testapi.simplifies.cl/api/branch-professionals', {
           params: {
             branch_id: item.id
@@ -1094,12 +1364,26 @@ export default {
           this.loadingProfessionals = false;
             LocalStorageService.setIsLocked(false);
         });
+      this.dialogProfessionals = true;*/
+      LocalStorageService.setIsLocked(true);
+      handleRequest({
+      endpoint: "branch-professionals",
+      method: "GET",
+      params: { branch_id: item.id }
+    })
+    .then(response => {
+      this.branchProfessionals = response.data.professionals;
+    })
+    .finally(() => {
+      this.loadingProfessionals = false;
+      LocalStorageService.setIsLocked(false);
       this.dialogProfessionals = true;
+    });
     },
     showAddProfessionals() {
       LocalStorageService.setIsLocked(true);
       this.editedIndexP = -1;
-      axios
+      /*axios
         .get('https://testapi.simplifies.cl/api/professional-show-autocomplete-Notin', {
           params: {
             branch_id: this.branchSelect.id
@@ -1110,14 +1394,27 @@ export default {
         }).finally(() => {
             LocalStorageService.setIsLocked(false);
         });
+      this.dialogAddProf = true;*/
+      LocalStorageService.setIsLocked(true);
+      handleRequest({
+      endpoint: "professional-show-autocomplete-Notin",
+      method: "GET",
+      params: { branch_id: this.branchSelect.id }
+    })
+    .then(response => {
+      this.professionals = response.data.professionals;
+    })
+    .finally(() => {
+      LocalStorageService.setIsLocked(false);
       this.dialogAddProf = true;
+    });
     },
     editItemProfessional(item) {
       LocalStorageService.setIsLocked(true);
       this.editedIndexP = 2;
       console.log('Professional');
       console.log(item);
-      axios
+      /*axios
         .get('https://testapi.simplifies.cl/api/professional-show-autocomplete-Notin', {
           params: {
             branch_id: this.branchSelect.id
@@ -1128,17 +1425,31 @@ export default {
         }).finally(() => {
             LocalStorageService.setIsLocked(false);
         });
+        LocalStorageService.setIsLocked(true);*/
+      handleRequest({
+        endpoint: "professional-show-autocomplete-Notin",
+        method: "GET",
+        params: { branch_id: this.branchSelect.id }
+      })
+      .then(response => {
+        this.professionals = response.data.professionals;
+      })
+      .finally(() => {
+        LocalStorageService.setIsLocked(false);
+      });
       this.editedIndex = 2;
       this.editedItem.professional_id = parseInt(item.professional_id);
-      this.editedItem.ponderation = item.ponderation;
+      this.editedItem = Object.assign({}, item);
+      /*this.editedItem.ponderation = item.ponderation;
       this.editedItem.limit = item.limit;
       this.editedItem.mountpay = item.mountpay;
-      this.nameProfessional = item.name;
+      this.nameProfessional = item.name;*/
       this.dialogAddProf = true;
       this.editando = true;
       if (item.charge === 'Barbero' || item.charge === 'Barbero y Encargado') {
         this.bonus = true;
       }
+      this.commission = this.shouldReceiveCommission(item.charge);
     },
     showStores(item) {
             LocalStorageService.setIsLocked(true);
@@ -1176,16 +1487,24 @@ export default {
         });
       this.dialogAddStore = true;
     },
-    saveP() {
+    async saveP() {
       LocalStorageService.setIsLocked(true);
       if (this.editedIndexP == 2) {
-        this.valid = false,
+        this.valid = false;
+        this.data = {};
           this.data.branch_id = this.branch_id;
         this.data.professional_id = this.editedItem.professional_id;
         this.data.ponderation = this.editedItem.ponderation;
         this.data.limit = this.editedItem.limit ? this.editedItem.limit : 0;
         this.data.mountpay = this.editedItem.mountpay ? this.editedItem.mountpay : 0;
-        axios
+        this.data.salary = this.editedItem.salary ? this.editedItem.salary : null;
+        this.data.tier1_min_sales = this.editedItem.tier1_min_sales ? this.editedItem.tier1_min_sales : 0;
+        this.data.tier1_commission_rate = this.editedItem.tier1_commission_rate ? this.editedItem.tier1_commission_rate : 0;
+        this.data.tier2_min_sales = this.editedItem.tier2_min_sales ? this.editedItem.tier2_min_sales : 0;
+        this.data.tier2_commission_rate = this.editedItem.tier2_commission_rate ? this.editedItem.tier2_commission_rate : 0;
+        this.data.tier3_min_sales = this.editedItem.tier3_min_sales ? this.editedItem.tier3_min_sales : 0;
+        this.data.tier3_commission_rate = this.editedItem.tier3_commission_rate ? this.editedItem.tier3_commission_rate : 0;
+        /*axios
           .put('https://testapi.simplifies.cl/api/branchprofessional', this.data)
           .then(() => {
             this.$nextTick(() => {
@@ -1199,7 +1518,60 @@ export default {
             this.editando = false;
             this.bonus = false;
             this.editedIndex = -1;
-          })
+            this.showHints =  {
+            tier1: false,
+            tier2: false,
+            tier3: false
+          };
+          })*/
+          try {
+            const result = await handleRequest({
+              endpoint: "branchprofessional",
+              method: "PUT",
+              data: this.data
+            });
+
+            if (result.success) {
+              this.showAlert("success", result.message, 3000);
+              this.showProfessionals(this.branchSelect);
+            }
+            else {
+                    this.showAlert("warning", result.message, 3000);
+                    LocalStorageService.setIsLocked(false);
+            this.dialogAddProf = false;
+                  this.editando = false;
+                  this.bonus = false;
+                  this.editedIndex = -1;
+                  this.showHints =  {
+                  tier1: false,
+                  tier2: false,
+                  tier3: false
+                };
+                  }
+          } catch (error) {
+            this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
+            LocalStorageService.setIsLocked(false);
+            this.dialogAddProf = false;
+                  this.editando = false;
+                  this.bonus = false;
+                  this.editedIndex = -1;
+                  this.showHints =  {
+                  tier1: false,
+                  tier2: false,
+                  tier3: false
+                };
+          } finally {
+            LocalStorageService.setIsLocked(false);
+            this.dialogAddProf = false;
+                  this.editando = false;
+                  this.bonus = false;
+                  this.editedIndex = -1;
+                  this.showHints =  {
+                  tier1: false,
+                  tier2: false,
+                  tier3: false
+                };
+          }
       } else {
         this.valid = false,
           this.data.branch_id = this.branch_id;
@@ -1207,7 +1579,14 @@ export default {
         this.data.ponderation = this.editedItem.ponderation;
         this.data.limit = this.editedItem.limit ? this.editedItem.limit : 0;
         this.data.mountpay = this.editedItem.mountpay ? this.editedItem.mountpay : 0;
-        axios
+        this.data.salary = this.editedItem.salary ? this.editedItem.salary : null;
+        this.data.tier1_min_sales = this.editedItem.tier1_min_sales ? this.editedItem.tier1_min_sales : 0;
+        this.data.tier1_commission_rate = this.editedItem.tier1_commission_rate ? this.editedItem.tier1_commission_rate : 0;
+        this.data.tier2_min_sales = this.editedItem.tier2_min_sales ? this.editedItem.tier2_min_sales : 0;
+        this.data.tier2_commission_rate = this.editedItem.tier2_commission_rate ? this.editedItem.tier2_commission_rate : 0;
+        this.data.tier3_min_sales = this.editedItem.tier3_min_sales ? this.editedItem.tier3_min_sales : 0;
+        this.data.tier3_commission_rate = this.editedItem.tier3_commission_rate ? this.editedItem.tier3_commission_rate : 0;
+        /*axios
           .post('https://testapi.simplifies.cl/api/branchprofessional', this.data)
           .then(() => {
             this.$nextTick(() => {
@@ -1221,7 +1600,55 @@ export default {
             this.editando = false;
             this.bonus = false;
             this.editedIndex = -1;
-          })
+          })*/
+          try {
+            const result = await handleRequest({
+              endpoint: "branchprofessional",
+              method: "POST",
+              data: this.data
+            });
+
+            if (result.success) {
+              this.showAlert("success", result.message, 3000);
+              this.showProfessionals(this.branchSelect);
+            }
+            else {
+                    this.showAlert("warning", result.message, 3000);
+                    LocalStorageService.setIsLocked(false);
+            this.dialogAddProf = false;
+                  this.editando = false;
+                  this.bonus = false;
+                  this.editedIndex = -1;
+                  this.showHints =  {
+                  tier1: false,
+                  tier2: false,
+                  tier3: false
+                };
+                  }
+          } catch (error) {
+            this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
+            LocalStorageService.setIsLocked(false);
+            this.dialogAddProf = false;
+                  this.editando = false;
+                  this.bonus = false;
+                  this.editedIndex = -1;
+                  this.showHints =  {
+                  tier1: false,
+                  tier2: false,
+                  tier3: false
+                };
+          } finally {
+            LocalStorageService.setIsLocked(false);
+            this.dialogAddProf = false;
+                  this.editando = false;
+                  this.bonus = false;
+                  this.editedIndex = -1;
+                  this.showHints =  {
+                  tier1: false,
+                  tier2: false,
+                  tier3: false
+                };
+          }
       }
     },
     saveStore() {
@@ -1411,20 +1838,6 @@ export default {
     closeShowWinner() {
       this.dialogWinners = false;
       this.editedIndexWin = -1;
-    },
-    formatNumber(value) {
-      // Si el valor es menor que 1000, devuelve el valor original con dos decimales
-      if (value < 1000) {
-        return (Math.round((value + Number.EPSILON) * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      }
-
-      // Primero, redondea el valor a dos decimales
-      value = Math.round((value + Number.EPSILON) * 100) / 100;
-
-      // Convierte el valor a cadena con formato de número local (en-US)
-      let formattedValue = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-      return formattedValue;
     },
     updateDate(val) {
       this.input = val;

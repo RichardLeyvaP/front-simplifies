@@ -34,38 +34,39 @@
             </v-row>
             <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
                 hide-details></v-text-field>
-                <div :style="divStyle">
-            <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search"
-                :items="results" class="elevation-1" no-results-text="No hay datos disponibles"
-                no-data-text="No hay datos disponibles" :loading="loadingPay" loading-text="Cargando datos...">
-                <template v-slot:item.name="{ item }">
+            <div :style="divStyle">
+                <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search"
+                    :items="results" class="elevation-1" no-results-text="No hay datos disponibles"
+                    no-data-text="No hay datos disponibles" :loading="loadingPay" loading-text="Cargando datos...">
+                    <template v-slot:item.name="{ item }">
 
-                    <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                        <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
-                    </v-avatar>
-                    {{ item.name }}
-                </template>
-                <template v-slot:item.actions="{ item }">
-                    <!--<v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary"
+                        <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
+                            <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_url}`" alt="image"></v-img>
+                        </v-avatar>
+                        {{ item.name }}
+                    </template>
+                    <template v-slot:item.actions="{ item }">
+                        <!--<v-btn density="comfortable" icon="mdi-pencil" @click="(item.charge === 'Barbero' || item.charge === 'Barbero y Encargado') ? '' :editItem(item)" :color="(item.charge === 'Barbero' || item.charge === 'Barbero y Encargado') ? 'grey' : 'primary'"
                         variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Editar Pago a profesional"></v-btn>-->
-                    <v-btn density="comfortable" icon="mdi-account-cash" @click="pagoProfessional(item)" color="primary"
-                        variant="tonal" elevation="1" title="Pago a profesional"></v-btn>
-                    <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
+                        <v-btn density="comfortable" icon="mdi-account-cash" @click="pagoProfessional(item)"
+                            color="primary" variant="tonal" elevation="1" title="Pago a profesional"></v-btn>
+                        <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
               mdi-pencil
             </v-icon>
             <v-icon size="25" color="red" @click="deleteItem(item)">
               mdi-delete
             </v-icon>-->
-                </template>
-            </v-data-table>
-                </div>
+                    </template>
+                </v-data-table>
+            </div>
         </v-card-text>
 
         <!--Barbero y encargado-->
         <v-dialog v-model="dialogBarberoEncargado" fullscreen transition="dialog-bottom-transition">
             <v-card>
                 <v-toolbar color="#F18254">
-                    <span class="text-subtitle-1 ml-4">Pagos realizados a [<strong>{{ this.professional_name }}</strong>]</span>
+                    <span class="text-subtitle-1 ml-4">Pagos realizados a [<strong>{{ this.professional_name
+                            }}</strong>]</span>
                     <v-spacer></v-spacer>
                     <v-btn class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat" elevation="2"
                         prepend-icon="mdi-file-excel" @click="exportToExcelProfessional">
@@ -114,67 +115,69 @@
                                 <v-icon>mdi-magnify</v-icon></v-btn>
                         </v-col>
                         <v-col cols="2" class="pa-1" md="2">
-            <v-card class="pa-2" elevation="2"  @click="filterResults('Bono convivencias')">
-                <v-list-item :subtitle="formatNumber(bonoconvivencia)" title="Bono convivencias">
-                    <template v-slot:prepend>
-                        <v-avatar color="green">
-                            <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
-                        </v-avatar>
-                    </template>
-                </v-list-item>
-            </v-card>
-        </v-col>
-        <v-col cols="2" class="pa-1" md="2">
-            <v-card class="pa-2" elevation="2"  @click="filterResults('Bono servicios')">
-                <v-list-item :subtitle="formatNumber(bonoservicios)" title="Bono servicios">
-                    <template v-slot:prepend>
-                        <v-avatar color="green">
-                            <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
-                        </v-avatar>
-                    </template>
-                </v-list-item>
-            </v-card>
-        </v-col>
-        <v-col cols="2" class="pa-1" md="2">
-            <v-card class="pa-2" elevation="2"  @click="filterResults('Bono productos')">
-                <v-list-item :subtitle="formatNumber(bonoproductos)" title="Bono productos">
-                    <template v-slot:prepend>
-                        <v-avatar color="green">
-                            <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
-                        </v-avatar>
-                    </template>
-                </v-list-item>
-            </v-card>
-        </v-col>
+                            <v-card class="pa-2" elevation="2" @click="filterResults('Bono convivencias')">
+                                <v-list-item :subtitle="formatNumber(bonoconvivencia)" title="Bono convivencias">
+                                    <template v-slot:prepend>
+                                        <v-avatar color="green">
+                                            <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
+                                        </v-avatar>
+                                    </template>
+                                </v-list-item>
+                            </v-card>
+                        </v-col>
+                        <v-col cols="2" class="pa-1" md="2">
+                            <v-card class="pa-2" elevation="2" @click="filterResults('Bono servicios')">
+                                <v-list-item :subtitle="formatNumber(bonoservicios)" title="Bono servicios">
+                                    <template v-slot:prepend>
+                                        <v-avatar color="green">
+                                            <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
+                                        </v-avatar>
+                                    </template>
+                                </v-list-item>
+                            </v-card>
+                        </v-col>
+                        <v-col cols="2" class="pa-1" md="2">
+                            <v-card class="pa-2" elevation="2" @click="filterResults('Bono productos')">
+                                <v-list-item :subtitle="formatNumber(bonoproductos)" title="Bono productos">
+                                    <template v-slot:prepend>
+                                        <v-avatar color="green">
+                                            <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
+                                        </v-avatar>
+                                    </template>
+                                </v-list-item>
+                            </v-card>
+                        </v-col>
                     </v-row>
                 </v-container>
                 <v-card-text>
                     <v-text-field class="mt-1 mb-1" v-model="search3" append-icon="mdi-magnify" label="Buscar"
                         single-line hide-details></v-text-field>
-                        <div style="max-height: 60vh; overflow-y: auto;">
-                    <v-data-table :headers="headers3" :items="professionalPayment" :search="search3" class="elevation-1"
-                        :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
-                        no-data-text="No hay datos disponibles" :loading="loadingPayment" loading-text="Cargando datos...">
-                        <template v-slot:item.date="{ item }">
-                            <span :class="{ 'bold-row': item.date == 'Total' }">
-                                {{ item.date }}
-                            </span>
-                        </template>
-                        <template v-slot:item.amount="{ item }">
-                {{ formatNumber(parseFloat(item.amount))}}                                  
-                                          </template>
-                        <template v-slot:item.actions="{ item }">
-                            <v-btn 
-                            v-if="item.date !== 'Total'"
-                            density="comfortable" icon="mdi-delete" 
-                            :color="(item.type !== 'Bono convivencias' && item.type !== 'Bono servicios' && item.type !== 'Bono productos') ? 'red-darken-4' : 'grey'" variant="tonal" elevation="1"
-                                title="Eliminar Pago a profesional"
-                                @click="(item.type !== 'Bono convivencias' && item.type !== 'Bono servicios' && item.type !== 'Bono productos') ? deleteItem(item) : ''"
-        :disabled="item.type === 'Bono servicios' || item.type === 'Bono convivencias' || item.type === 'Bono productos'"
-                                ></v-btn>
-                        </template>
+                    <div style="max-height: 60vh; overflow-y: auto;">
+                        <v-data-table :headers="headers3" :items="professionalPayment" :search="search3"
+                            class="elevation-1" :items-per-page-text="'Elementos por páginas'"
+                            no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles"
+                            :loading="loadingPayment" loading-text="Cargando datos...">
+                            <template v-slot:item.date="{ item }">
+                                <span :class="{ 'bold-row': item.date == 'Total' }">
+                                    {{ item.date }}
+                                </span>
+                            </template>
+                            <template v-slot:item.amount="{ item }">
+                                {{ formatNumber(parseFloat(item.amount))}}
+                            </template>
+                            <template v-slot:item.actions="{ item }">
+                                <v-btn density="comfortable" icon="mdi-pencil"
+                                    @click="(this.charge === 'Barbero' || this.charge === 'Barbero y Encargado'|| item.type !== 'Mes') ? '' :editItem(item)"
+                                    :color="(this.charge === 'Barbero' || this.charge === 'Barbero y Encargado'|| item.type !== 'Mes') ? 'grey' : 'primary'"
+                                    variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
+                                    title="Editar Pago Mensual a profesional"></v-btn>
+                                <v-btn v-if="item.date !== 'Total'" density="comfortable" icon="mdi-delete"
+                                    :color="(item.type === 'Mes') ? 'red-darken-4' : 'grey'" variant="tonal"
+                                    elevation="1" title="Eliminar Pago a profesional"
+                                    @click="(item.type === 'Mes') ? deleteItem(item) : ''"></v-btn>
+                            </template>
 
-                    </v-data-table>
+                        </v-data-table>
                     </div>
                 </v-card-text>
                 <v-divider></v-divider>
@@ -187,15 +190,438 @@
             </v-card>
         </v-dialog>
         <!--Barbero y encargado nuevo pago-->
-        <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition" >                           
-                        <v-card>
-                            <v-toolbar color="#F18254">
-                                <span class="text-subtitle-2 ml-4">{{ formTitle }}  [<strong>{{ this.professional_name }}</strong>]</span>
-                            </v-toolbar>
-                            <v-card-text>
-                            <v-card>
+        <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition">
+
+            <v-card>
+                <v-toolbar color="#F18254">
+                    <span class="text-subtitle-2 ml-4">{{ formTitle }} [<strong>{{ this.professional_name
+                            }}</strong>]</span>
+                </v-toolbar>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+                        <v-stepper elevation="6" bg-color="" v-model="stepProfessional" :items="itemsProfessional"
+                            hide-actions style="max-height: 100vh; min-height: 95vh; overflow-y: auto">
+                            <template v-slot:item.1>
+                                <div style="flex: 1; overflow-y: auto; padding: 16px;">
+                                    <v-row>
+                                        <v-col cols="12" md="3">
+
+                                        </v-col>
+                                        <v-col cols="12" md="4">
+
+                                        </v-col>
+                                        <v-col cols="12" md="5">
+                                            <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
+                                                :subtitle="this.formatNumber(payments.cars.total_neto)"
+                                                append-icon="mdi-check">
+
+                                                <template v-slot:prepend>
+                                                    <v-avatar color="#F18254">
+                                                        <v-icon icon="mdi-currency-usd"></v-icon>
+                                                    </v-avatar>
+                                                </template>
+                                            </v-card>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row>
+
+                                        <v-col cols="12" md="12">
+                                            <v-text-field class="mt-1 mb-1" v-model="search6" append-icon="mdi-magnify"
+                                                label="Buscar" single-line hide-details></v-text-field>
+                                            <div style="max-height: 50vh; overflow-y: auto;">
+                                                <!--<v-data-table :headers="headers6"
+                                                :items-per-page-text="'Elementos por páginas'" :search="search6" :items="cars1"
+                                                class="elevation-1" no-results-text="No hay datos disponibles"
+                                                no-data-text="No hay datos disponibles" :loading="loadingTip" loading-text="Cargando datos...">
+                                                <template v-slot:item.clientName="{ item }">
+
+                                                    <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
+                                                        <v-img :src="`${this.$axios.defaults.baseURL}images/${item.client_image}`"
+                                                            alt="image"></v-img>
+                                                    </v-avatar>
+                                                    {{ item.clientName }}
+                                                </template>
+                                                <template v-slot:item.professionalName="{ item }">
+
+                                                <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
+                                                    <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_url}`"
+                                                        alt="image"></v-img>
+                                                </v-avatar>
+                                                {{ item.professionalName }}
+                                                </template>
+                                                <template v-slot:item.tip="{ item }">
+                        {{ formatNumber(parseFloat(item.tip))}}                                  
+                                                </template>
+                                                <template v-slot:item.tipCashier="{ item }">
+                        {{ formatNumber(parseFloat(item.tipCashier))}}                                  
+                                                </template>
+                                                <template v-slot:item.tipCoffe="{ item }">
+                        {{ formatNumber(parseFloat(item.tipCoffe))}}                                  
+                                                </template>
+                                            </v-data-table>-->
+                                                <v-data-table v-model="selected2" :headers="headers2"
+                                                    :items-per-page-text="'Elementos por páginas'" :search="search2"
+                                                    :items="cars" class="elevation-1"
+                                                    no-results-text="No hay datos disponibles"
+                                                    no-data-text="No hay datos disponibles" item-selectable="selectable"
+                                                    show-select :loading="loadingProfessPay"
+                                                    loading-text="Cargando datos..." sticky-header>
+                                                    <template v-slot:item.clientName="{ item }">
+                                                        <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
+                                                            <v-img
+                                                                :src="`${this.$axios.defaults.baseURL}images/${item.client_image}`"
+                                                                alt="image"></v-img>
+                                                        </v-avatar>
+                                                        {{ item.clientName }}
+                                                    </template>
+                                                    <template v-slot:item.meta="{ item }">
+                                                        <div class="text-center" v-html="formatMeta(item.meta)"></div>
+                                                    </template>
+                                                    <template v-slot:item.pay="{ item }">
+                                                        <strong>{{ formatNumber(Number(item.totalServices) +
+                                                            Number(item.tip)) }}</strong>
+                                                    </template>
+                                                    <template v-slot:item.totalServices="{ item }">
+                                                        {{ formatNumber(item.totalServices)}}
+                                                    </template>
+                                                    <template v-slot:item.amountGenerate="{ item }">
+                                                        {{ formatNumber(item.amountGenerate)}}
+                                                    </template>
+                                                    <template v-slot:item.tip="{ item }">
+                                                        {{ formatNumber(item.tip)}}
+                                                    </template>
+                                                </v-data-table>
+                                            </div>
+                                        </v-col>
+                                    </v-row>
+                                </div>
+                                <v-divider></v-divider>
+                                <div style="padding: 16px; border-top: 1px solid #eee;">
+                                    <!-- BOTONES -->
+                                    <v-row class="mt-1">
+                                        <v-btn color="#E7E9E9" variant="flat" @click="close()">Salir</v-btn>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="#E7E9E9" variant="flat" @click="nextStepProfessional">
+                                            Siguiente
+                                        </v-btn>
+                                    </v-row>
+                                </div>
+                            </template>
+                            <template v-slot:item.2>
+                                <div style="flex: 1; overflow-y: auto; padding: 16px;">
+                                    <v-row>
+                                        <v-col cols="12" md="3">
+                                            <v-select label="Tipo de pago" v-model="editedItem.academia"
+                                                :items="['Pago Academia']" :item-value="['Pago Academia']"
+                                                variant="underlined" :rules="selectRules"
+                                                prepend-icon="mdi-check-circle"
+                                                v-if="this.courses.length > 0"></v-select>
+                                        </v-col>
+                                        <v-col cols="12" md="4">
+                                            <v-text-field v-model="amountFormatted" label="Monto"
+                                                v-if="this.courses.length > 0" prepend-icon="mdi-cash"
+                                                variant="underlined" :rules="[...pago, validateAmount]">
+                                            </v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" md="5">
+                                            <v-card class="mx-auto" max-width="344" title="Pago de Docencia"
+                                                :subtitle="this.formatNumber(Number(editedItem.amountAcadem))"
+                                                append-icon="mdi-check">
+
+                                                <template v-slot:prepend>
+                                                    <v-avatar color="#F18254">
+                                                        <v-icon icon="mdi-currency-usd"></v-icon>
+                                                    </v-avatar>
+                                                </template>
+                                            </v-card>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row>
+
+                                        <v-col cols="12" md="12">
+                                            <v-text-field class="mt-1 mb-1" v-model="search4" append-icon="mdi-magnify"
+                                                label="Buscar" single-line hide-details></v-text-field>
+                                            <div style="max-height: 50vh; overflow-y: auto;">
+                                                <v-data-table :headers="headers4"
+                                                    :items-per-page-text="'Elementos por páginas'" :search="search4"
+                                                    :items="courses" class="elevation-1"
+                                                    no-results-text="No hay datos disponibles"
+                                                    no-data-text="No hay datos disponibles" :loading="loadingCoursePay"
+                                                    loading-text="Cargando datos...">
+                                                    <!--<template v-slot:item.name="{ item }">
+
+                                                    <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                                                    <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_product}`" alt="image"></v-img>
+                                                    </v-avatar>
+                                                    {{ item.name }}
+                                                    </template>
+                                                    <template v-slot:item.price="{ item }">
+                                                        {{ formatNumber(item.price)}}                                  
+                                                                                    </template>
+                                                    <template v-slot:top>
+
+                                                    <v-divider class="mx-4" inset vertical></v-divider>
+                                                    <v-spacer></v-spacer>
+                                                    </template>-->
+                                                    <template v-slot:item.price="{ item }">
+                                                        {{ formatNumber(parseFloat(item.price))}}
+                                                    </template>
+                                                    <template v-slot:item.totalPayment="{ item }">
+                                                        {{ formatNumber(parseFloat(item.totalPayment))}}
+                                                    </template>
+                                                </v-data-table>
+                                            </div>
+                                        </v-col>
+                                    </v-row>
+                                </div>
+                                <v-divider></v-divider>
+                                <div style="padding: 16px; border-top: 1px solid #eee;">
+                                    <!-- BOTONES -->
+                                    <v-row class="mt-1">
+                                        <v-btn color="#E7E9E9" variant="flat"
+                                            @click="prevStepProfessional">Volver</v-btn>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="#E7E9E9" variant="flat" @click="nextStepProfessional"
+                                            :disabled="courses.length > 0 ? !selected2.length && !valid: false">
+                                            Siguiente
+                                        </v-btn>
+                                    </v-row>
+                                </div>
+                            </template>
+                            <template v-slot:item.3>
+                                <div style="flex: 1; overflow-y: auto; padding: 16px;">
+                                    <v-row>
+                                        <v-col cols="12" md="3">
+                                            <!--<v-select label="Tipo de pago" v-model="editedItem.cashierproduct"
+                                                :items="['Pago venta de productos']"
+                                                :item-value="['Pago venta de productos']" variant="underlined"
+                                                :rules="selectRules"
+                                                prepend-icon="mdi-check-circle"></v-select>-->
+                                        </v-col>
+                                        <v-col cols="12" md="4">
+                                            <!--<v-text-field v-model="editedItem.amountSaleProduct" clearable label="Monto"
+                                                                prepend-icon="mdi-cash" variant="underlined" :rules="pago1">
+                                                            </v-text-field>-->
+                                        </v-col>
+                                        <v-col cols="12" md="5">
+                                            <v-card class="mx-auto" max-width="344" title="Bono de Productos"
+                                                :subtitle="this.formatNumber(payments.products.commission_neto)"
+                                                append-icon="mdi-check">
+
+                                                <template v-slot:prepend>
+                                                    <v-avatar color="#F18254">
+                                                        <v-icon icon="mdi-currency-usd"></v-icon>
+                                                    </v-avatar>
+                                                </template>
+                                            </v-card>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row>
+
+                                        <v-col cols="12" md="12">
+                                            <v-text-field class="mt-1 mb-1" v-model="search6" append-icon="mdi-magnify"
+                                                label="Buscar" single-line hide-details></v-text-field>
+                                            <div style="max-height: 50vh; overflow-y: auto;">
+                                                <v-data-table :headers="headers7"
+                                                    :items-per-page-text="'Elementos por páginas'" :search="search7"
+                                                    :items="products" class="elevation-1"
+                                                    no-results-text="No hay datos disponibles"
+                                                    no-data-text="No hay datos disponibles" :loading="loadingSale"
+                                                    loading-text="Cargando datos...">
+                                                    <template v-slot:item.name="{ item }">
+
+                                                        <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                                                            <v-img
+                                                                :src="`${this.$axios.defaults.baseURL}images/${item.image_product}`"
+                                                                alt="image"></v-img>
+                                                        </v-avatar>
+                                                        {{ item.name }}
+                                                    </template>
+                                                    <template v-slot:item.price="{ item }">
+                                                        {{ formatNumber(item.price)}}
+                                                    </template>
+                                                    <template v-slot:top>
+
+                                                        <v-divider class="mx-4" inset vertical></v-divider>
+                                                        <v-spacer></v-spacer>
+                                                    </template>
+                                                </v-data-table>
+                                            </div>
+                                        </v-col>
+                                    </v-row>
+                                </div>
+                                <v-divider></v-divider>
+                                <div style="padding: 16px; border-top: 1px solid #eee;">
+                                    <!-- BOTONES -->
+                                    <v-row class="mt-1">
+                                        <v-btn color="#E7E9E9" variant="flat"
+                                            @click="prevStepProfessional">Volver</v-btn>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="#E7E9E9" variant="flat" @click="nextStepProfessional">
+                                            Siguiente
+                                        </v-btn>
+                                    </v-row>
+                                </div>
+                            </template>
+                            <template v-slot:item.4>
+                                <div style="flex: 1; overflow-y: auto; padding: 16px;">
+                                    <v-container fluid>
+                                        <v-row dense>
+                                            <!-- Ingresos (positivos) -->
+                                            <v-col cols="12" md="4" v-if="payments.products.commission_neto > 0">
+                                                <v-card class="h-100" title="Bono de Productos"
+                                                    :subtitle="formatNumber(payments.products.commission_neto)">
+                                                    <template v-slot:prepend>
+                                                        <v-avatar color="green-lighten-1">
+                                                            <v-icon>mdi-gift-outline</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                    <template v-slot:append>
+                                                        <v-avatar color="green-lighten-4" size="32">
+                                                            <v-icon color="green-darken-2" size="20">mdi-plus</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                </v-card>
+                                            </v-col>
+
+                                            <v-col cols="12" md="4" v-if="payments.tips.tip_neto > 0">
+                                                <v-card class="h-100" title="Comisión de Propinas"
+                                                    :subtitle="formatNumber(payments.tips.tip_neto)">
+                                                    <template v-slot:prepend>
+                                                        <v-avatar color="amber-lighten-1">
+                                                            <v-icon>mdi-hand-coin-outline</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                    <template v-slot:append>
+                                                        <v-avatar color="green-lighten-4" size="32">
+                                                            <v-icon color="green-darken-2" size="20">mdi-plus</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                </v-card>
+                                            </v-col>
+
+                                            <v-col cols="12" md="4" v-if="payments.cars.total_neto > 0">
+                                                <v-card class="h-100" title="Ganancias en Servicios"
+                                                    :subtitle="formatNumber(payments.cars.total_neto)">
+                                                    <template v-slot:prepend>
+                                                        <v-avatar color="blue-lighten-1">
+                                                            <v-icon>mdi-account-cash-outline</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                    <template v-slot:append>
+                                                        <v-avatar color="green-lighten-4" size="32">
+                                                            <v-icon color="green-darken-2" size="20">mdi-plus</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                </v-card>
+                                            </v-col>
+
+                                            <v-col cols="12" md="4" v-if="payments.salary.salary_bruto > 0">
+                                                <v-card class="h-100" title="Salario"
+                                                    :subtitle="formatNumber(payments.salary.salary_bruto)">
+                                                    <template v-slot:prepend>
+                                                        <v-avatar color="deep-purple-lighten-1">
+                                                            <v-icon>mdi-wallet-outline</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                    <template v-slot:append>
+                                                        <v-avatar color="green-lighten-4" size="32">
+                                                            <v-icon color="green-darken-2" size="20">mdi-plus</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                </v-card>
+                                            </v-col>
+
+                                            <!-- Egresos (negativos) -->
+                                            <v-col cols="12" md="4" v-if="payments.workerPurchases.total_purchases > 0">
+                                                <v-card class="h-100" title="Compra de Productos"
+                                                    :subtitle="formatNumber(payments.workerPurchases.total_purchases)">
+                                                    <template v-slot:prepend>
+                                                        <v-avatar color="red-lighten-1">
+                                                            <v-icon>mdi-cart-arrow-down</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                    <template v-slot:append>
+                                                        <v-avatar color="red-lighten-4" size="32">
+                                                            <v-icon color="red-darken-2" size="20">mdi-minus</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                </v-card>
+                                            </v-col>
+
+                                            <v-col cols="12" md="4" v-if="payments.advances.total_advance > 0">
+                                                <v-card class="h-100" title="Solicitud de Adelantos"
+                                                    :subtitle="formatNumber(payments.advances.total_advance)">
+                                                    <template v-slot:prepend>
+                                                        <v-avatar color="orange-lighten-1">
+                                                            <v-icon>mdi-cash-fast</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                    <template v-slot:append>
+                                                        <v-avatar color="red-lighten-4" size="32">
+                                                            <v-icon color="red-darken-2" size="20">mdi-minus</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                </v-card>
+                                            </v-col>
+                                            <v-col cols="12" md="4" v-if="editedItem.amountAcadem > 0">
+                                                <v-card class="h-100" title="Pago por Cursos"
+                                                    :subtitle="formatNumber(Number(editedItem.amountAcadem))">
+                                                    <template v-slot:prepend>
+                                                        <v-avatar color="teal-lighten-1">
+                                                            <v-icon>mdi-school-outline</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                    <template v-slot:append>
+                                                        <v-avatar color="teal-lighten-4" size="32">
+                                                            <v-icon color="teal-darken-2" size="20">mdi-plus</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                </v-card>
+                                            </v-col>
+                                        </v-row>
+
+                                        <!-- Total destacado -->
+                                        <v-row class="mt-4">
+                                            <v-col cols="12">
+                                                <v-card class="bg-indigo-lighten-5" flat>
+                                                    <v-card-item>
+                                                        <template v-slot:prepend>
+                                                            <v-avatar color="indigo-darken-2" size="56">
+                                                                <v-icon size="32">mdi-cash-multiple</v-icon>
+                                                            </v-avatar>
+                                                        </template>
+
+                                                        <v-card-title class="text-h5">Total a Cobrar</v-card-title>
+                                                        <v-card-subtitle class="text-h5 font-weight-bold">
+                                                            {{ formatNumber(payments.totalNeto) }}
+                                                        </v-card-subtitle>
+                                                    </v-card-item>
+                                                </v-card>
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
+                                </div>
+
+                                <v-divider></v-divider>
+                                <div style="padding: 16px; border-top: 1px solid #eee;">
+                                    <v-row class="mt-1">
+                                        <v-btn color="#E7E9E9" variant="flat"
+                                            @click="prevStepProfessional">Volver</v-btn>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="#E7E9E9" variant="flat" @click="close()"
+                                            class="mr-1">Salir</v-btn>
+                                        <v-btn color="#F18254" variant="flat" @click="save">
+                                            Pagar
+                                        </v-btn>
+                                    </v-row>
+                                </div>
+                            </template>
+                        </v-stepper>
+                    </v-form>
+                    <!--<v-card>
                             <v-tabs v-model="tabBar" color="rgb(241, 130, 84)"
-                            elevation="6"><!-- @click="handleTabChange"-->
+                            elevation="6">
                             <v-tab value="one">Pago de carros</v-tab>
                             <v-tab value="two">Pago de docencia</v-tab>
                         </v-tabs>
@@ -211,15 +637,10 @@
                                                     :items="['Adelanto', 'Quincena', 'Mes']"
                                                     :item-value="['Adelanto', 'Quincena', 'Mes']" variant="underlined"
                                                     :rules="selectRules"
-                                                    prepend-icon="mdi-check-circle"></v-select><!--:disabled="!this.mostrarType"-->
+                                                    prepend-icon="mdi-check-circle"></v-select>
                                             </v-col>
                                             
                                             <v-col cols="12" md="4"></v-col>
-                                            <!--<v-col cols="12" md="4">
-                                                    <v-text-field v-model="editedItem.amount" clearable label="Monto"
-                                                        prepend-icon="mdi-cash" variant="underlined" :rules="pago1">
-                                                    </v-text-field>
-                                                </v-col>-->
                                             <v-col cols="12" md="5">
                                                 <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
                                                     :subtitle="this.formatNumber(totalMount())" append-icon="mdi-check"
@@ -304,25 +725,13 @@
                                                     :items="['Pago Academia']"
                                                     :item-value="['Pago Academia']" variant="underlined"
                                                     :rules="selectRules"
-                                                    prepend-icon="mdi-check-circle"></v-select><!--:disabled="!this.mostrarType"-->
+                                                    prepend-icon="mdi-check-circle"></v-select>
                                             </v-col>
                                             <v-col cols="12" md="4">
                                                     <v-text-field v-model="editedItem.amountAcadem" clearable label="Monto"
                                                         prepend-icon="mdi-cash" variant="underlined" :rules="[...pago, validateAmount]">
                                                     </v-text-field>
                                                 </v-col>
-                                            <!--<v-col cols="12" md="5">
-                                                <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
-                                                    :subtitle="this.formatNumber(totalMount())" append-icon="mdi-check"
-                                                    v-if="this.mostrarCars">
-
-                                                    <template v-slot:prepend>
-                                                        <v-avatar color="blue-darken-2">
-                                                            <v-icon icon="mdi-currency-usd"></v-icon>
-                                                        </v-avatar>
-                                                    </template>
-                                                </v-card>
-                                                </v-col>-->
                                         </v-row>
                                         <v-row>
                                                 <v-col cols="12" md="12">
@@ -362,46 +771,186 @@
                                     </v-window-item>
 
                             </v-window>
-                            </v-card>
-                            </v-card-text>
-                        </v-card>
+                            </v-card>-->
+                </v-card-text>
+            </v-card>
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500px">
-                        <v-card>
+            <v-card>
 
-                            <v-toolbar color="red">
-                                <span class="text-subtitle-2 ml-4"> Eliminar Pago a Profesional [<strong>{{ this.professional_name }}</strong>]</span>
-                            </v-toolbar>
+                <v-toolbar color="red">
+                    <span class="text-subtitle-2 ml-4"> Eliminar Pago a Profesional [<strong>{{ this.professional_name
+                            }}</strong>]</span>
+                </v-toolbar>
 
-                            <v-card-text class="mt-2 mb-2"> ¿Desea eliminar el pago al profesional?</v-card-text>
-                            <v-divider></v-divider>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
-                                    Cancelar
-                                </v-btn>
-                                <v-btn color="#F18254" variant="flat" @click="deleteItemConfirm">
-                                    Aceptar
-                                </v-btn>
+                <v-card-text class="mt-2 mb-2"> ¿Desea eliminar el pago al profesional?</v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
+                        Cancelar
+                    </v-btn>
+                    <v-btn color="#F18254" variant="flat" @click="deleteItemConfirm">
+                        Aceptar
+                    </v-btn>
 
-                            </v-card-actions>
-                        </v-card>
-        </v-dialog>           
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
         <v-dialog v-model="dialogOtros" max-width="600px">
             <v-card>
                 <v-toolbar color="#F18254">
-                    <span class="text-subtitle-2 ml-4">{{ formTitle }} [<strong>{{ this.professional_name }}</strong>]</span>
+                    <span class="text-subtitle-2 ml-4">{{ formTitle }} [<strong>{{ this.professional_name
+                            }}</strong>]</span>
                 </v-toolbar>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-                        <v-container fluid>
+                        <div style="flex: 1; overflow-y: auto; padding: 16px;">
+                            <v-container fluid>
+                                <v-row dense>
+                                    <!-- Ingresos (positivos) -->
+                                    <v-col cols="12" md="6" v-if="payments.products.commission_neto > 0">
+                                        <v-card class="h-100" title="Bono de Productos"
+                                            :subtitle="formatNumber(payments.products.commission_neto)">
+                                            <template v-slot:prepend>
+                                                <v-avatar color="green-lighten-1">
+                                                    <v-icon>mdi-gift-outline</v-icon>
+                                                </v-avatar>
+                                            </template>
+                                            <template v-slot:append>
+                                                <v-avatar color="green-lighten-4" size="32">
+                                                    <v-icon color="green-darken-2" size="20">mdi-plus</v-icon>
+                                                </v-avatar>
+                                            </template>
+                                        </v-card>
+                                    </v-col>
+
+                                    <v-col cols="12" md="6" v-if="payments.tips.tip_neto > 0">
+                                        <v-card class="h-100" title="Comisión de Propinas"
+                                            :subtitle="formatNumber(payments.tips.tip_neto)">
+                                            <template v-slot:prepend>
+                                                <v-avatar color="amber-lighten-1">
+                                                    <v-icon>mdi-hand-coin-outline</v-icon>
+                                                </v-avatar>
+                                            </template>
+                                            <template v-slot:append>
+                                                <v-avatar color="green-lighten-4" size="32">
+                                                    <v-icon color="green-darken-2" size="20">mdi-plus</v-icon>
+                                                </v-avatar>
+                                            </template>
+                                        </v-card>
+                                    </v-col>
+
+                                    <v-col cols="12" md="6" v-if="payments.cars.total_neto > 0">
+                                        <v-card class="h-100" title="Ganancias en Servicios"
+                                            :subtitle="formatNumber(payments.cars.total_neto)">
+                                            <template v-slot:prepend>
+                                                <v-avatar color="blue-lighten-1">
+                                                    <v-icon>mdi-account-cash-outline</v-icon>
+                                                </v-avatar>
+                                            </template>
+                                            <template v-slot:append>
+                                                <v-avatar color="green-lighten-4" size="32">
+                                                    <v-icon color="green-darken-2" size="20">mdi-plus</v-icon>
+                                                </v-avatar>
+                                            </template>
+                                        </v-card>
+                                    </v-col>
+
+                                    <v-col cols="12" md="6" v-if="payments.salary.salary_bruto > 0">
+                                        <v-card class="h-100" title="Salario"
+                                            :subtitle="formatNumber(payments.salary.salary_bruto)">
+                                            <template v-slot:prepend>
+                                                <v-avatar color="deep-purple-lighten-1">
+                                                    <v-icon>mdi-wallet-outline</v-icon>
+                                                </v-avatar>
+                                            </template>
+                                            <template v-slot:append>
+                                                <v-avatar color="green-lighten-4" size="32">
+                                                    <v-icon color="green-darken-2" size="20">mdi-plus</v-icon>
+                                                </v-avatar>
+                                            </template>
+                                        </v-card>
+                                    </v-col>
+
+                                    <!-- Egresos (negativos) -->
+                                    <v-col cols="12" md="6" v-if="payments.workerPurchases.total_purchases > 0">
+                                        <v-card class="h-100" title="Compra de Productos"
+                                            :subtitle="formatNumber(payments.workerPurchases.total_purchases)">
+                                            <template v-slot:prepend>
+                                                <v-avatar color="red-lighten-1">
+                                                    <v-icon>mdi-cart-arrow-down</v-icon>
+                                                </v-avatar>
+                                            </template>
+                                            <template v-slot:append>
+                                                <v-avatar color="red-lighten-4" size="32">
+                                                    <v-icon color="red-darken-2" size="20">mdi-minus</v-icon>
+                                                </v-avatar>
+                                            </template>
+                                        </v-card>
+                                    </v-col>
+
+                                    <v-col cols="12" md="6" v-if="payments.advances.total_advance > 0">
+                                        <v-card class="h-100" title="Solicitud de Adelantos"
+                                            :subtitle="formatNumber(payments.advances.total_advance)">
+                                            <template v-slot:prepend>
+                                                <v-avatar color="orange-lighten-1">
+                                                    <v-icon>mdi-cash-fast</v-icon>
+                                                </v-avatar>
+                                            </template>
+                                            <template v-slot:append>
+                                                <v-avatar color="red-lighten-4" size="32">
+                                                    <v-icon color="red-darken-2" size="20">mdi-minus</v-icon>
+                                                </v-avatar>
+                                            </template>
+                                        </v-card>
+                                    </v-col>
+                                    <v-col cols="12" md="6" v-if="editedItem.amountAcadem > 0">
+                                        <v-card class="h-100" title="Pago por Cursos"
+                                            :subtitle="formatNumber(Number(editedItem.amountAcadem))">
+                                            <template v-slot:prepend>
+                                                <v-avatar color="teal-lighten-1">
+                                                    <v-icon>mdi-school-outline</v-icon>
+                                                </v-avatar>
+                                            </template>
+                                            <template v-slot:append>
+                                                <v-avatar color="teal-lighten-4" size="32">
+                                                    <v-icon color="teal-darken-2" size="20">mdi-plus</v-icon>
+                                                </v-avatar>
+                                            </template>
+                                        </v-card>
+                                    </v-col>
+                                </v-row>
+
+                                <!-- Total destacado -->
+                                <v-row class="mt-4">
+                                    <v-col cols="12">
+                                        <v-card class="bg-indigo-lighten-5" flat>
+                                            <v-card-item>
+                                                <template v-slot:prepend>
+                                                    <v-avatar color="indigo-darken-2" size="56">
+                                                        <v-icon size="32">mdi-cash-multiple</v-icon>
+                                                    </v-avatar>
+                                                </template>
+
+                                                <v-card-title class="text-h5">Total a Cobrar</v-card-title>
+                                                <v-card-subtitle class="text-h5 font-weight-bold">
+                                                    {{ formatNumber(payments.totalNeto) }}
+                                                </v-card-subtitle>
+                                            </v-card-item>
+                                        </v-card>
+                                    </v-col>
+                                </v-row>
+                            </v-container>
+                        </div>
+                        <!--<v-container fluid>
                             <v-row>
                                 <v-col cols="12" md="6">
                                     <v-select label="Tipo de pago" v-model="editedItem.type"
                                         :items="['Adelanto', 'Quincena', 'Mes']"
                                         :item-value="['Adelanto', 'Quincena', 'Mes']" variant="underlined"
                                         :rules="selectRules"
-                                        prepend-icon="mdi-check-circle"></v-select><!--:disabled="!this.mostrarType"-->
+                                        prepend-icon="mdi-check-circle"></v-select>
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-text-field v-model="editedItem.amount" clearable label="Monto"
@@ -409,14 +958,14 @@
                                     </v-text-field>
                                 </v-col>
                             </v-row>
-                        </v-container>
+                        </v-container>-->
                         <v-divider></v-divider>
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn color="#E7E9E9" variant="flat" @click="close">
                                 Cancelar
                             </v-btn>
-                            <v-btn color="#F18254" variant="flat" @click="saveOtros" :disabled="!valid">
+                            <v-btn color="#F18254" variant="flat" @click="saveOtrosCharge" :disabled="!valid">
                                 Aceptar
                             </v-btn>
                         </v-card-actions>
@@ -428,7 +977,8 @@
         <v-dialog v-model="dialogCashier" fullscreen transition="dialog-bottom-transition">
             <v-card>
                 <v-toolbar color="#F18254">
-                    <span class="text-subtitle-1 ml-4">Pagos realizados cajero (a)  [<strong>{{ this.professional_name }}</strong>]</span>
+                    <span class="text-subtitle-1 ml-4">Pagos realizados cajero (a) [<strong>{{ this.professional_name
+                            }}</strong>]</span>
                     <v-spacer></v-spacer>
                     <v-btn class="text-subtitle-1  ml-1" color="#E7E9E9" variant="flat" elevation="2"
                         prepend-icon="mdi-file-excel" @click="exportToExcelCashier">
@@ -487,27 +1037,38 @@
                                     label="Buscar" single-line hide-details>
                                 </v-text-field>
                                 <div style="max-height: 50vh; overflow-y: auto;">
-                                <v-data-table :headers="headers5" :items-per-page-text="'Elementos por páginas'"
-                                    :items="results1" :search="search5" class="elevation-2"
-                                    no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles" :loading="loadingCashier" loading-text="Cargando datos...">
-                                    <template v-slot:item.date="{ item }">
-                                        <span :class="{ 'bold-row': item.date == 'Total' }">
-                                            {{ item.date }}
-                                        </span>
-                                    </template>
-                                    
-                                    <template v-slot:item.amount="{ item }">
-                {{ formatNumber(item.amount)}}                                  
-                                          </template>
-                                          <template v-slot:item.coffe_percent="{ item }">
-                {{ formatNumber(item.coffe_percent)}}                                  
-                                          </template>
-                                    <template v-slot:item.actions="{ item }">
-                                        <v-btn density="comfortable" icon="mdi-delete" @click="deleteItemCashier(item)"
+                                    <v-data-table :headers="headers5" :items-per-page-text="'Elementos por páginas'"
+                                        :items="results1" :search="search5" class="elevation-2"
+                                        no-results-text="No hay datos disponibles"
+                                        no-data-text="No hay datos disponibles" :loading="loadingCashier"
+                                        loading-text="Cargando datos...">
+                                        <template v-slot:item.date="{ item }">
+                                            <span :class="{ 'bold-row': item.date == 'Total' }">
+                                                {{ item.date }}
+                                            </span>
+                                        </template>
+
+                                        <template v-slot:item.amount="{ item }">
+                                            {{ formatNumber(item.amount)}}
+                                        </template>
+                                        <template v-slot:item.coffe_percent="{ item }">
+                                            {{ formatNumber(item.coffe_percent)}}
+                                        </template>
+                                        <template v-slot:item.actions="{ item }">
+                                            <!--<v-btn density="comfortable" icon="mdi-delete" @click="deleteItemCashier(item)"
                                             color="red-darken-4" variant="tonal" elevation="1"
-                                            title="Eliminar Pago a profesional"></v-btn>
-                                    </template>
-                                </v-data-table>
+                                            title="Eliminar Pago a profesional"></v-btn>-->
+                                            <v-btn density="comfortable" icon="mdi-pencil"
+                                                @click="(this.charge === 'Barbero' || this.charge === 'Barbero y Encargado'|| item.type !== 'Mes') ? '' :editItemCashier(item)"
+                                                :color="(this.charge === 'Barbero' || this.charge === 'Barbero y Encargado'|| item.type !== 'Mes') ? 'grey' : 'primary'"
+                                                variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
+                                                title="Editar Pago Mensual a profesional"></v-btn>
+                                            <v-btn v-if="item.date !== 'Total'" density="comfortable" icon="mdi-delete"
+                                                :color="(item.type === 'Mes') ? 'red-darken-4' : 'grey'" variant="tonal"
+                                                elevation="1" title="Eliminar Pago a profesional"
+                                                @click="(item.type === 'Mes') ? deleteItem(item) : ''"></v-btn>
+                                        </template>
+                                    </v-data-table>
                                 </div>
                             </v-card-text>
                         </v-col>
@@ -526,7 +1087,8 @@
             <v-card>
 
                 <v-toolbar color="red">
-                    <span class="text-subtitle-2 ml-4"> Eliminar Pago a Professional  [<strong>{{ this.professional_name }}</strong>]</span>
+                    <span class="text-subtitle-2 ml-4"> Eliminar Pago a Professional [<strong>{{ this.professional_name
+                            }}</strong>]</span>
                 </v-toolbar>
 
                 <v-card-text class="mt-2 mb-2"> ¿Desea eliminar el pago al professional?</v-card-text>
@@ -547,169 +1109,363 @@
         <v-dialog v-model="dialogCashierCars" fullscreen transition="dialog-bottom-transition">
             <v-card>
                 <v-toolbar color="#F18254">
-                    <span class="text-subtitle-2 ml-4">{{ formTitle }}  [<strong>{{ this.professional_name }}</strong>]</span>
+                    <span class="text-subtitle-2 ml-4">{{ formTitle }} [<strong>{{ this.professional_name
+                            }}</strong>]</span>
                 </v-toolbar>
                 <v-card-text>
-                    <v-card>
-                        <v-tabs v-model="tabBarCashier" color="rgb(241, 130, 84)"
-                            elevation="6"><!-- @click="handleTabChange"-->
-                            <v-tab value="one">Pago de Ppropinas</v-tab>
-                            <v-tab value="two">Pago de venta de productos</v-tab>
-                        </v-tabs>
-                        <v-card-text>
-                            <v-window v-model="tabBarCashier">
-                        <v-window-item value="one">
-                                    <v-card>
-                                        <v-card-text>
-                                            <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-                        <v-container fluid>
-                            <v-row>
-                                <v-col cols="12" md="3">
-                                    <v-select label="Tipo de pago" v-model="editedItem.type"
-                                        :items="['Adelanto', 'Quincena', 'Mes']"
-                                        :item-value="['Adelanto', 'Quincena', 'Mes']" variant="underlined"
-                                        :rules="selectRules"
-                                        prepend-icon="mdi-check-circle"></v-select><!--:disabled="!this.mostrarType"-->
-                                </v-col>
-                                <v-col cols="12" md="4">
-                                                    <v-text-field v-model="editedItem.amount" clearable label="Monto"
-                                                        prepend-icon="mdi-cash" variant="underlined" :rules="pago1">
-                                                    </v-text-field>
-                                                </v-col>
-                                <v-col cols="12" md="5">
-                                    <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
-                                        :subtitle="this.formatNumber(totalMount1())" append-icon="mdi-check">
+                    <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+                        <v-stepper elevation="6" bg-color="" v-model="step" :items="items" hide-actions
+                            style="max-height: 100vh; min-height: 95vh; overflow-y: auto">
+                            <template v-slot:item.1>
+                                <div style="flex: 1; overflow-y: auto; padding: 16px;">
+                                    <v-row>
+                                        <v-col cols="12" md="3">
 
-                                        <template v-slot:prepend>
-                                            <v-avatar color="blue-darken-2">
-                                                <v-icon icon="mdi-currency-usd"></v-icon>
-                                            </v-avatar>
-                                        </template>
-                                    </v-card>
-                                </v-col>
-                            </v-row>
-                            <v-row>
+                                        </v-col>
+                                        <v-col cols="12" md="4">
 
-                                <v-col cols="12" md="12">
-                                    <v-text-field class="mt-1 mb-1" v-model="search6" append-icon="mdi-magnify"
-                                        label="Buscar" single-line hide-details></v-text-field>
-                                        <div style="max-height: 50vh; overflow-y: auto;">
-                                    <v-data-table v-model="selected2" :headers="headers6"
-                                        :items-per-page-text="'Elementos por páginas'" :search="search6" :items="cars1"
-                                        class="elevation-1" no-results-text="No hay datos disponibles"
-                                        no-data-text="No hay datos disponibles" show-select :loading="loadingTip" loading-text="Cargando datos...">
-                                        <template v-slot:item.clientName="{ item }">
+                                        </v-col>
+                                        <v-col cols="12" md="5">
+                                            <v-card class="mx-auto" max-width="344" title="Monto a Pagar"
+                                                :subtitle="this.formatNumber(totalMount1())" append-icon="mdi-check">
 
-                                            <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                                                <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.client_image"
-                                                    alt="image"></v-img>
-                                            </v-avatar>
-                                            {{ item.clientName }}
-                                        </template>
-                                        <template v-slot:item.professionalName="{ item }">
+                                                <template v-slot:prepend>
+                                                    <v-avatar color="#F18254">
+                                                        <v-icon icon="mdi-currency-usd"></v-icon>
+                                                    </v-avatar>
+                                                </template>
+                                            </v-card>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row>
 
-                                        <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                                            <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url"
-                                                alt="image"></v-img>
-                                        </v-avatar>
-                                        {{ item.professionalName }}
-                                        </template>
-                                        <template v-slot:item.tip="{ item }">
-                {{ formatNumber(parseFloat(item.tip))}}                                  
-                                          </template>
-                                          <template v-slot:item.tipCashier="{ item }">
-                {{ formatNumber(parseFloat(item.tipCashier))}}                                  
-                                          </template>
-                                          <template v-slot:item.tipCoffe="{ item }">
-                {{ formatNumber(parseFloat(item.tipCoffe))}}                                  
-                                          </template>
-                                    </v-data-table>
-                                    </div>
-                                </v-col>
-                            </v-row>
-                        </v-container>
-                        <v-divider></v-divider>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="#E7E9E9" variant="flat" @click="close">
-                                Cancelar
-                            </v-btn>
-                            <v-btn color="#F18254" variant="flat" @click="saveCashier" :disabled="(!valid && (!selected2.length))">
-                                Pagar
-                            </v-btn>
-                        </v-card-actions>
+                                        <v-col cols="12" md="12">
+                                            <v-text-field class="mt-1 mb-1" v-model="search6" append-icon="mdi-magnify"
+                                                label="Buscar" single-line hide-details></v-text-field>
+                                            <div style="max-height: 50vh; overflow-y: auto;">
+                                                <v-data-table :headers="headers6"
+                                                    :items-per-page-text="'Elementos por páginas'" :search="search6"
+                                                    :items="cars1" class="elevation-1"
+                                                    no-results-text="No hay datos disponibles"
+                                                    no-data-text="No hay datos disponibles" :loading="loadingTip"
+                                                    loading-text="Cargando datos...">
+                                                    <template v-slot:item.clientName="{ item }">
+
+                                                        <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
+                                                            <v-img
+                                                                :src="`${this.$axios.defaults.baseURL}images/${item.client_image}`"
+                                                                alt="image"></v-img>
+                                                        </v-avatar>
+                                                        {{ item.clientName }}
+                                                    </template>
+                                                    <template v-slot:item.professionalName="{ item }">
+
+                                                        <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
+                                                            <v-img
+                                                                :src="`${this.$axios.defaults.baseURL}images/${item.image_url}`"
+                                                                alt="image"></v-img>
+                                                        </v-avatar>
+                                                        {{ item.professionalName }}
+                                                    </template>
+                                                    <template v-slot:item.tip="{ item }">
+                                                        {{ formatNumber(parseFloat(item.tip))}}
+                                                    </template>
+                                                    <template v-slot:item.tipCashier="{ item }">
+                                                        {{ formatNumber(parseFloat(item.tipCashier))}}
+                                                    </template>
+                                                    <template v-slot:item.tipCoffe="{ item }">
+                                                        {{ formatNumber(parseFloat(item.tipCoffe))}}
+                                                    </template>
+                                                </v-data-table>
+                                            </div>
+                                        </v-col>
+                                    </v-row>
+                                </div>
+                                <v-divider></v-divider>
+                                <div style="padding: 16px; border-top: 1px solid #eee;">
+                                    <!-- BOTONES -->
+                                    <v-row class="mt-1">
+                                        <v-btn color="#E7E9E9" variant="flat" @click="close()">Salir</v-btn>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="#E7E9E9" variant="flat" @click="nextStep">
+                                            Siguiente
+                                        </v-btn>
+                                    </v-row>
+                                </div>
+                            </template>
+                            <template v-slot:item.2>
+                                <div style="flex: 1; overflow-y: auto; padding: 16px;">
+                                    <v-row>
+                                        <v-col cols="12" md="3">
+                                            <!--<v-select label="Tipo de pago" v-model="editedItem.cashierproduct"
+                                                :items="['Pago venta de productos']"
+                                                :item-value="['Pago venta de productos']" variant="underlined"
+                                                :rules="selectRules"
+                                                prepend-icon="mdi-check-circle"></v-select>-->
+                                        </v-col>
+                                        <v-col cols="12" md="4">
+                                            <!--<v-text-field v-model="editedItem.amountSaleProduct" clearable label="Monto"
+                                                                prepend-icon="mdi-cash" variant="underlined" :rules="pago1">
+                                                            </v-text-field>-->
+                                        </v-col>
+                                        <v-col cols="12" md="5">
+                                            <v-card class="mx-auto" max-width="344" title="Bono de Productos"
+                                                :subtitle="this.formatNumber(payments.products.commission_neto)"
+                                                append-icon="mdi-check">
+
+                                                <template v-slot:prepend>
+                                                    <v-avatar color="#F18254">
+                                                        <v-icon icon="mdi-currency-usd"></v-icon>
+                                                    </v-avatar>
+                                                </template>
+                                            </v-card>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row>
+
+                                        <v-col cols="12" md="12">
+                                            <v-text-field class="mt-1 mb-1" v-model="search6" append-icon="mdi-magnify"
+                                                label="Buscar" single-line hide-details></v-text-field>
+                                            <div style="max-height: 50vh; overflow-y: auto;">
+                                                <v-data-table :headers="headers7"
+                                                    :items-per-page-text="'Elementos por páginas'" :search="search7"
+                                                    :items="cashierSales" class="elevation-1"
+                                                    no-results-text="No hay datos disponibles"
+                                                    no-data-text="No hay datos disponibles" :loading="loadingSale"
+                                                    loading-text="Cargando datos...">
+                                                    <template v-slot:item.name="{ item }">
+
+                                                        <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+                                                            <v-img
+                                                                :src="`${this.$axios.defaults.baseURL}images/${item.image_product}`"
+                                                                alt="image"></v-img>
+                                                        </v-avatar>
+                                                        {{ item.name }}
+                                                    </template>
+                                                    <template v-slot:item.price="{ item }">
+                                                        {{ formatNumber(item.price)}}
+                                                    </template>
+                                                    <template v-slot:top>
+
+                                                        <v-divider class="mx-4" inset vertical></v-divider>
+                                                        <v-spacer></v-spacer>
+                                                    </template>
+                                                </v-data-table>
+                                            </div>
+                                        </v-col>
+                                    </v-row>
+                                </div>
+                                <v-divider></v-divider>
+                                <div style="padding: 16px; border-top: 1px solid #eee;">
+                                    <!-- BOTONES -->
+                                    <v-row class="mt-1">
+                                        <v-btn color="#E7E9E9" variant="flat" @click="prevStep">Volver</v-btn>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="#E7E9E9" variant="flat" @click="nextStep">
+                                            Siguiente
+                                        </v-btn>
+                                    </v-row>
+                                </div>
+                            </template>
+                            <template v-slot:item.3>
+                                <div style="flex: 1; overflow-y: auto; padding: 16px;">
+                                    <v-container fluid>
+                                        <v-row dense>
+                                            <!-- Ingresos (positivos) -->
+                                            <v-col cols="12" md="4" v-if="payments.products.commission_neto > 0">
+                                                <v-card class="h-100" title="Bono de Productos"
+                                                    :subtitle="formatNumber(payments.products.commission_neto)">
+                                                    <template v-slot:prepend>
+                                                        <v-avatar color="green-lighten-1">
+                                                            <v-icon>mdi-gift-outline</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                    <template v-slot:append>
+                                                        <v-avatar color="green-lighten-4" size="32">
+                                                            <v-icon color="green-darken-2" size="20">mdi-plus</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                </v-card>
+                                            </v-col>
+
+                                            <v-col cols="12" md="4" v-if="payments.tips.tip_neto > 0">
+                                                <v-card class="h-100" title="Comisión de Propinas"
+                                                    :subtitle="formatNumber(payments.tips.tip_neto)">
+                                                    <template v-slot:prepend>
+                                                        <v-avatar color="amber-lighten-1">
+                                                            <v-icon>mdi-hand-coin-outline</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                    <template v-slot:append>
+                                                        <v-avatar color="green-lighten-4" size="32">
+                                                            <v-icon color="green-darken-2" size="20">mdi-plus</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                </v-card>
+                                            </v-col>
+
+                                            <v-col cols="12" md="4" v-if="payments.cars.total_neto > 0">
+                                                <v-card class="h-100" title="Ganancias en Servicios"
+                                                    :subtitle="formatNumber(payments.cars.total_neto)">
+                                                    <template v-slot:prepend>
+                                                        <v-avatar color="blue-lighten-1">
+                                                            <v-icon>mdi-account-cash-outline</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                    <template v-slot:append>
+                                                        <v-avatar color="green-lighten-4" size="32">
+                                                            <v-icon color="green-darken-2" size="20">mdi-plus</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                </v-card>
+                                            </v-col>
+
+                                            <v-col cols="12" md="4" v-if="payments.salary.salary_bruto > 0">
+                                                <v-card class="h-100" title="Salario"
+                                                    :subtitle="formatNumber(payments.salary.salary_bruto)">
+                                                    <template v-slot:prepend>
+                                                        <v-avatar color="deep-purple-lighten-1">
+                                                            <v-icon>mdi-wallet-outline</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                    <template v-slot:append>
+                                                        <v-avatar color="green-lighten-4" size="32">
+                                                            <v-icon color="green-darken-2" size="20">mdi-plus</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                </v-card>
+                                            </v-col>
+
+                                            <!-- Egresos (negativos) -->
+                                            <v-col cols="12" md="4" v-if="payments.workerPurchases.total_purchases > 0">
+                                                <v-card class="h-100" title="Compra de Productos"
+                                                    :subtitle="formatNumber(payments.workerPurchases.total_purchases)">
+                                                    <template v-slot:prepend>
+                                                        <v-avatar color="red-lighten-1">
+                                                            <v-icon>mdi-cart-arrow-down</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                    <template v-slot:append>
+                                                        <v-avatar color="red-lighten-4" size="32">
+                                                            <v-icon color="red-darken-2" size="20">mdi-minus</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                </v-card>
+                                            </v-col>
+
+                                            <v-col cols="12" md="4" v-if="payments.advances.total_advance > 0">
+                                                <v-card class="h-100" title="Solicitud de Adelantos"
+                                                    :subtitle="formatNumber(payments.advances.total_advance)">
+                                                    <template v-slot:prepend>
+                                                        <v-avatar color="orange-lighten-1">
+                                                            <v-icon>mdi-cash-fast</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                    <template v-slot:append>
+                                                        <v-avatar color="red-lighten-4" size="32">
+                                                            <v-icon color="red-darken-2" size="20">mdi-minus</v-icon>
+                                                        </v-avatar>
+                                                    </template>
+                                                </v-card>
+                                            </v-col>
+                                        </v-row>
+
+                                        <!-- Total destacado -->
+                                        <v-row class="mt-4">
+                                            <v-col cols="12">
+                                                <v-card class="bg-indigo-lighten-5" flat>
+                                                    <v-card-item>
+                                                        <template v-slot:prepend>
+                                                            <v-avatar color="indigo-darken-2" size="56">
+                                                                <v-icon size="32">mdi-cash-multiple</v-icon>
+                                                            </v-avatar>
+                                                        </template>
+
+                                                        <v-card-title class="text-h5">Total a Cobrar</v-card-title>
+                                                        <v-card-subtitle class="text-h5 font-weight-bold">
+                                                            {{ formatNumber(payments.totalNeto) }}
+                                                        </v-card-subtitle>
+                                                    </v-card-item>
+                                                </v-card>
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
+                                </div>
+
+                                <v-divider></v-divider>
+                                <div style="padding: 16px; border-top: 1px solid #eee;">
+                                    <v-row class="mt-1">
+                                        <v-btn color="#E7E9E9" variant="flat" @click="prevStep">Volver</v-btn>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="#E7E9E9" variant="flat" @click="close()"
+                                            class="mr-1">Salir</v-btn>
+                                        <v-btn color="#F18254" variant="flat" @click="saveCashierProduct">
+                                            Pagar
+                                        </v-btn>
+                                    </v-row>
+                                </div>
+                            </template>
+                        </v-stepper>
                     </v-form>
-                            </v-card-text>
-                                    </v-card>
-                        </v-window-item>
-                        <v-window-item value="two">
-                                    <v-card>
-                            <v-card-text>
-                                <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-                        <v-container fluid>
-                            <v-row>
-                                <v-col cols="12" md="3">
-                                    <v-select label="Tipo de pago" v-model="editedItem.cashierproduct"
-                                        :items="['Pago venta de productos']"
-                                        :item-value="['Pago venta de productos']" variant="underlined"
-                                        :rules="selectRules"
-                                        prepend-icon="mdi-check-circle"></v-select><!--:disabled="!this.mostrarType"-->
-                                </v-col>
-                                <v-col cols="12" md="4">
-                                                    <v-text-field v-model="editedItem.amountSaleProduct" clearable label="Monto"
-                                                        prepend-icon="mdi-cash" variant="underlined" :rules="pago1">
-                                                    </v-text-field>
-                                                </v-col>
-                            </v-row>
-                            <v-row>
-
-                                <v-col cols="12" md="12">
-                                    <v-text-field class="mt-1 mb-1" v-model="search6" append-icon="mdi-magnify"
-                                        label="Buscar" single-line hide-details></v-text-field>
-                                        <div style="max-height: 50vh; overflow-y: auto;">
-                                    <v-data-table v-model="selectedCashier" :headers="headers7"
-                                        :items-per-page-text="'Elementos por páginas'" :search="search7" :items="cashierSales"
-                                        class="elevation-1" no-results-text="No hay datos disponibles"
-                                        no-data-text="No hay datos disponibles" show-select :loading="loadingSale" loading-text="Cargando datos...">
-                                        <template v-slot:item.name="{ item }">
-
-                                            <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                                            <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
-                                            </v-avatar>
-                                            {{ item.name }}
-                                            </template>
-                                            <template v-slot:item.price="{ item }">
-                                                {{ formatNumber(item.price)}}                                  
-                                                                            </template>
-                                            <template v-slot:top>
-
-                                            <v-divider class="mx-4" inset vertical></v-divider>
-                                            <v-spacer></v-spacer>
-                                            </template>
-                                    </v-data-table>
-                                    </div>
-                                </v-col>
-                            </v-row>
-                        </v-container>
-                        <v-divider></v-divider>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="#E7E9E9" variant="flat" @click="close">
-                                Cancelar
-                            </v-btn>
-                            <v-btn color="#F18254" variant="flat" @click="saveCashierProduct" :disabled="!isFormValid">
-                                Pagar
-                            </v-btn>
-                        </v-card-actions>
-                    </v-form>
-                            </v-card-text>
-                            </v-card>
-                            </v-window-item>
-                            </v-window>
-                            </v-card-text>
-                    </v-card>
                 </v-card-text>
             </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="dialogEdit" max-width="400px"> 
+            <v-card>
+                <v-toolbar color="#F18254">
+                    <span class="text-subtitle-2 ml-4"> Editar pago mensual</span>
+                </v-toolbar>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+                        <v-row>
+                                <v-col cols="12" md="12">
+                                    <v-text-field v-model="editedItem.amount" clearable label="Monto"
+                                        prepend-icon="mdi-cash" variant="underlined" :rules="pago">
+                                    </v-text-field>
+                                </v-col>
+                            </v-row>
+                            <v-divider></v-divider>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="#E7E9E9" variant="flat" :disabled="loadingWorkPlace" @click="close">
+                                Cancelar
+                                </v-btn>
+                                <v-btn color="#F18254" variant="flat" @click="editPay" :disabled="!valid" :loading="loadingWorkPlace">
+                                Aceptar
+                                </v-btn>
+                            </v-card-actions>
+                    </v-form>
+                </v-card-text>
+                </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialogEditCashier" max-width="400px"> 
+            <v-card>
+                <v-toolbar color="#F18254">
+                    <span class="text-subtitle-2 ml-4"> Editar pago mensual</span>
+                </v-toolbar>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+                        <v-row>
+                                <v-col cols="12" md="12">
+                                    <v-text-field v-model="editedItem.amount" clearable label="Monto"
+                                        prepend-icon="mdi-cash" variant="underlined" :rules="pago">
+                                    </v-text-field>
+                                </v-col>
+                            </v-row>
+                            <v-divider></v-divider>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="#E7E9E9" variant="flat" :disabled="loadingWorkPlace" @click="close">
+                                Cancelar
+                                </v-btn>
+                                <v-btn color="#F18254" variant="flat" @click="editPayCashier" :disabled="!valid" :loading="loadingWorkPlace">
+                                Aceptar
+                                </v-btn>
+                            </v-card-actions>
+                    </v-form>
+                </v-card-text>
+                </v-card>
         </v-dialog>
     </v-card>
 </template>
@@ -720,6 +1476,7 @@ import axios from "axios";
 import { format } from "date-fns";
 import * as XLSX from 'xlsx';
 import LocalStorageService from "@/LocalStorageService";
+import { handleRequest } from "@/utils/api";
 
 axios.interceptors.request.use(config => {
   const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
@@ -774,6 +1531,8 @@ export default {
         dialogDelete: false,
         dialogBarberoEncargado: false,
         dialogOtros: false,
+        dialogEdit: false,
+        dialogEditCashier: false,
         dialogCashier: false,
         dialogDeleteCashier: false,
         dialogCashierCars: false,
@@ -887,15 +1646,22 @@ export default {
     search7: '',
         search4: '',
         courses: [],
+
+        step: 1,
+        stepProfessional: 1,
+        items: ["Comisión de Propinas", "Comisión de Productos Vendidos", "Resumen de Pago"],
+        itemsProfessional: ["Pago de carros", "Pago de docencia", "Comisión de Productos Vendidos", "Resumen de Pago"],
+        payments: [],
+        products: [],
     }),
 
     computed: {
         divStyle() {
-      return {
-        'max-height': this.mostrarFila ? '63vh' : '70vh', // Cambia el valor de max-height según mostrarFila
-        'overflow-y': 'auto',
-      };
-    },
+            return {
+                'max-height': this.mostrarFila ? '63vh' : '70vh', // Cambia el valor de max-height según mostrarFila
+                'overflow-y': 'auto',
+            };
+            },
         isFormValid() {
             return this.valid && this.selectedCashier.length > 0 && this.editedItem.amountSaleProduct;
         },
@@ -907,17 +1673,17 @@ export default {
                 
         return this.totalMount1();
             }
-    },
+        },
 
-    amountFromMethod1() {
-            if(this.selected2.length === 0){
-                return 0;
-            }
-            else{
-                
-        return this.totalMount();
-            }
-    },
+        amountFromMethod1() {
+                if(this.selected2.length === 0){
+                    return 0;
+                }
+                else{
+                    
+            return this.totalMount();
+                }
+        },
     
         formTitle() {
             return this.editedIndex === -1 ? 'Nuevo Pago a profesional' : 'Editar Pago a profesional'
@@ -945,6 +1711,19 @@ export default {
         getDate2() {
             return this.input2 ? new Date(this.input2) : new Date();
         },
+        calculateTotal() {
+        // Si necesitas sumarlo manualmente
+        const academAmount = Number(this.editedItem.amountAcadem) || 0;
+        return this.payments.totalNeto + academAmount;
+        },
+        amountFormatted: {
+        get() {
+        return this.formatNumberInput(Number(this.editedItem.amountAcadem))
+        },
+        set(value) {
+        this.editedItem.amountAcadem = this.parseNumberInput(value)
+        }
+        },
     },
 
     watch: {
@@ -962,13 +1741,13 @@ export default {
         }*/
     },
 
-    mounted() {
+    async mounted() {
         this.business_id = LocalStorageService.getItem('business_id');
         this.branch_id = LocalStorageService.getItem('branch_id');
         this.charge_id = LocalStorageService.getItem('charge_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         LocalStorageService.setIsLocked(true);
-        axios
+        /*axios
             .get('https://testapi.simplifies.cl/api/show-business', {
                 params: {
                     business_id: this.business_id
@@ -983,36 +1762,96 @@ export default {
                     this.mostrarFila = true;
                 }
                 this.initialize();
+            });*/
+        const requestParams = {
+            business_id: this.business_id
+        };
+        try {
+            const result = await handleRequest({
+                endpoint: 'show-business',
+                method: 'GET',
+                params: requestParams // Aquí pasas los parámetros
             });
+
+            if (result.success) {
+                // Si la solicitud es exitosa, asignamos las sucursales
+                this.branches = result.data.branches;
+            } else {
+                // Si no hay datos, asignamos un array vacío
+                this.branches = [];
+            }
+        } catch (error) {
+            this.branches = [];
+            // Captura de errores no controlados
+            this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
+        } finally {
+            if (this.charge === 'Administrador') {
+                this.branch_id = this.branches[0].id;
+                this.mostrarFila = true;
+            }
+            await this.initialize();
+        }
     },
 
     methods: {
+        formatNumberInput(value) {
+            if (!value) return ''
+            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+            },
+        
+        // Parsea el número para guardarlo sin formato
+        parseNumberInput(formattedValue) {
+            if (!formattedValue) return null
+            return Number(formattedValue.toString().replace(/\./g, ''))
+        },
+        async nextStep() {
+        if (this.step < this.items.length) {
+            this.step++;
+        }
+        },
+
+        prevStep() {
+        if (this.step > 1) {
+            this.step--;
+        }
+        },
+        async nextStepProfessional() {
+        if (this.stepProfessional < this.itemsProfessional.length) {
+            this.stepProfessional++;
+        }
+        },
+
+        prevStepProfessional() {
+        if (this.stepProfessional > 1) {
+            this.stepProfessional--;
+        }
+        },
         formatMeta(meta) {
-      if (meta === 'Si') {
-        return `<span class="green-text">${meta}</span>`;
-      } else {
-        return `<span class="black-text">${meta}</span>`;
-      }
-    },
+        if (meta === 'Si') {
+            return `<span class="green-text">${meta}</span>`;
+        } else {
+            return `<span class="black-text">${meta}</span>`;
+        }
+        },
         validateAmount(value) {
-      if (this.selectedCourse.length === 0) {
-        return true; // No hay curso seleccionado, no validar aún.
-      }
+            if (this.selectedCourse.length === 0) {
+                return true; // No hay curso seleccionado, no validar aún.
+            }
             const selectedItem = this.courses.find(course => course.id === this.selectedCourse[0]);
             console.log(' selectedItem');
-      console.log(selectedItem.price);
-      console.log(' this.selectedCourse');
-      console.log(this.selectedCourse);
-      //const selectedItem = this.selectedCourse[0].price;
-      console.log('value del monto');
-      console.log(value);
-      console.log(' parseInt(selectedItem.price)');
-      console.log( selectedItem.price);
-      return parseInt(value) <= parseInt(selectedItem.price) || 'El monto debe ser menor o igual al precio del curso seleccionado';
-    },
+            console.log(selectedItem.price);
+            console.log(' this.selectedCourse');
+            console.log(this.selectedCourse);
+            //const selectedItem = this.selectedCourse[0].price;
+            console.log('value del monto');
+            console.log(value);
+            console.log(' parseInt(selectedItem.price)');
+            console.log( selectedItem.price);
+            return parseInt(value) <= parseInt(selectedItem.price) || 'El monto debe ser menor o igual al precio del curso seleccionado';
+        },
         filterResults(typeDetail) {
-      this.search3 = typeDetail;
-    },
+        this.search3 = typeDetail;
+        },
         updateDate(val) {
             this.input = val;
             this.menu = false;
@@ -1113,14 +1952,14 @@ export default {
             this.snackbar = true
         },
 
-        initialize() {
+        async initialize() {
             this.loadingPay = true;
             LocalStorageService.setIsLocked(true);
             this.professionals = [];
             this.professional_id = '';
             this.professional_name = '';
 
-            axios
+            /*axios
                 .get('https://testapi.simplifies.cl/api/branch_professionals_web', {
                     params: {
                         branch_id: this.branch_id
@@ -1131,14 +1970,44 @@ export default {
                 }).finally(() => {
             LocalStorageService.setIsLocked(false);
             this.loadingPay = false;
+        });*/
+        try {
+            const requestParams = {
+                branch_id: this.branch_id
+            };
+        const result = await handleRequest({
+          endpoint: "branch_professionals_web",
+          method: "GET",
+          params: requestParams
         });
+
+        if (result.success) {
+          // Si la solicitud es exitosa, asignamos las sucursales
+          this.results = result.data.professionals;
+        } else {
+          // Si no hay datos, asignamos un array vacío
+            this.results = [];
+            LocalStorageService.setIsLocked(false);
+            this.loadingPay = false;
+        }
+        } catch (error) {
+            LocalStorageService.setIsLocked(false);
+            this.loadingPay = false;
+            // Captura de errores no controlados
+            this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
+        } finally {
+            LocalStorageService.setIsLocked(false);
+            this.loadingPay = false;
+        }
         },
-        showAddPago() {
+        async showAddPago() {
             if (this.charge == 'Barbero' || this.charge == 'Barbero y Encargado') {
                 this.loadingProfessPay = true;
                 this.loadingCoursePay = true;
+                this.loadingSale = true;
+                this.stepProfessional = 1;
                 LocalStorageService.setIsLocked(true);
-                axios
+               /* axios
                     .get('https://testapi.simplifies.cl/api/professional-car-notpay', {
                         params: {
                             branch_id: this.branch_id,
@@ -1156,23 +2025,101 @@ export default {
                             this.mostrarCars = true;
                             //this.mostrarType = true;
                         }*/
-                        this.mostrarCars = true;
+                        /*this.mostrarCars = true;
                         this.mostrarDoc = true;
                     }).finally(() => {
             LocalStorageService.setIsLocked(false);
             this.loadingProfessPay = false;
             this.loadingCoursePay = false;
-        });
-                this.dialog = true;
+        });*/
+        try {
+            const requestParams = {
+                branch_id: this.branch_id,
+                professional_id: this.professional_id
+            };
+            const result = await handleRequest({
+            endpoint: "professional-car-notpay",
+            method: "GET",
+            params: requestParams
+            });
+
+            if (result.success) {
+            // Si la solicitud es exitosa, asignamos las sucursales
+                this.cars = result.data.cars;
+                this.courses = result.data.courses;
+                this.payments = result.data.payments;            
+                this.products = result.data.produts;            
             } else {
-                this.dialogOtros = true;
+            // Si no hay datos, asignamos un array vacío
+                this.cars = [];
+                this.courses = [];
+                this.payments = [];
+                this.products = [];
+                LocalStorageService.setIsLocked(false);
+                this.loadingProfessPay = false;
+                this.loadingCoursePay = false;
+                this.loadingSale = false;
+                this.mostrarCars = false;
+                this.mostrarDoc = false;
             }
+        } catch (error) {
+                LocalStorageService.setIsLocked(false);
+                this.loadingProfessPay = false;
+                this.loadingCoursePay = false;
+                this.loadingSale = false;
+                this.mostrarCars = false;
+                this.mostrarDoc = false;
+                // Captura de errores no controlados
+                this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
+        } finally {
+                LocalStorageService.setIsLocked(false);
+                this.mostrarCars = true;
+                this.mostrarDoc = true;
+                this.loadingProfessPay = false;
+                this.loadingCoursePay = false;
+                this.loadingSale = false;
+        }
+            this.dialog = true;
+        } else {
+            try {
+            const requestParams = {
+                branch_id: this.branch_id,
+                professional_id: this.professional_id
+            };
+            const result = await handleRequest({
+            endpoint: "professional-car-notpay",
+            method: "GET",
+            params: requestParams
+            });
+
+            if (result.success) {
+            // Si la solicitud es exitosa, asignamos las sucursales
+                this.payments = result.data.payments;                   
+            } else {
+            // Si no hay datos, asignamos un array vacío
+                this.payments = [];               
+                LocalStorageService.setIsLocked(false);
+            }
+        } catch (error) {
+                LocalStorageService.setIsLocked(false);
+                // Captura de errores no controlados
+                this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
+        } finally {
+                LocalStorageService.setIsLocked(false);
+        }
+            this.dialogOtros = true;
+        }
 
         },
         editItem(item) {
             this.editedIndex = 1;
             this.editedItem = Object.assign({}, item)
-            this.dialog = true
+            this.dialogEdit = true
+        },
+        editItemCashier(item) {
+            this.editedIndex = 1;
+            this.editedItem = Object.assign({}, item)
+            this.dialogEditCashier = true
         },
         pagoProfessional(item) {
             this.professional_id = item.id;
@@ -1186,11 +2133,11 @@ export default {
             }
         },
 
-        showProfessional() {
+        async showProfessional() {
             this.professionalPayment = [];
             this.loadingPayment = true;
             LocalStorageService.setIsLocked(true);
-            axios
+            /*axios
                 .get('https://testapi.simplifies.cl/api/professional-payment-show', {
                     params: {
                         branch_id: this.branch_id,
@@ -1199,14 +2146,6 @@ export default {
                 })
                 .then((response) => {
                     this.professionalPayment = response.data;
-                    /*if(this.cars.length == 0){
-                        //this.editedItem.type = 'Adelanto';
-                        this.mostrarCars = false;
-                        //this.mostrarType = false;
-                    }else{
-                        this.mostrarCars = true;
-                        //this.mostrarType = true;
-                    }*/
                 }).finally(() =>{
                     LocalStorageService.setIsLocked(false);
                     this.loadingPayment = false;
@@ -1246,7 +2185,74 @@ export default {
                         }
                     }, 0);
 
-                });
+                });*/
+                const requestParams = {
+                branch_id: this.branch_id,
+                professional_id: this.professional_id
+                };
+                try {
+                    const result = await handleRequest({
+                        endpoint: 'professional-payment-show',
+                        method: 'GET',
+                        params: requestParams // Aquí pasas los parámetros
+                    });
+
+                    if (result.success) {
+                        // Si la solicitud es exitosa, asignamos las sucursales
+                        this.professionalPayment = result.data;
+                    } else {
+                        this.loadingPayment = false;
+                        LocalStorageService.setIsLocked(false);
+                        // Si no hay datos, asignamos un array vacío
+                        this.professionalPayment = [];                    
+                        this.showAlert("warning", result.message, 3000);
+                    }
+                } catch (error) {
+                    this.professionalPayment = [];
+                    this.loadingPayment = false;
+                    LocalStorageService.setIsLocked(false);
+                    // Captura de errores no controlados
+                    this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
+                } finally {
+                    this.loadingPayment = false;
+                    LocalStorageService.setIsLocked(false);
+                    this.loadingPayment = false;
+                    this.bonoconvivencia = [];
+                    this.bonoconvivencia = [];
+                    this.bonoproductos = [];
+                    this.bonoconvivencia = this.professionalPayment.reduce((total, item) => {
+                        // Verifica si el campo "revenue" tiene un valor numérico
+                        if (item.type === 'Bono convivencias') {
+                            // Suma el valor de "revenue" al total
+                            return total + parseInt(item.amount);
+                        } else {
+                            // Si el campo "revenue" no es un número, no suma nada
+                            return total;
+                        }
+                    }, 0);
+
+                    this.bonoservicios = this.professionalPayment.reduce((total, item) => {
+                        // Verifica si el campo "revenue" tiene un valor numérico
+                        if (item.type === 'Bono servicios') {
+                            // Suma el valor de "revenue" al total
+                            return total + parseInt(item.amount);
+                        } else {
+                            // Si el campo "revenue" no es un número, no suma nada
+                            return total;
+                        }
+                    }, 0);
+
+                    this.bonoproductos = this.professionalPayment.reduce((total, item) => {
+                        // Verifica si el campo "revenue" tiene un valor numérico
+                        if (item.type === 'Bono productos') {
+                            // Suma el valor de "revenue" al total
+                            return total + parseInt(item.amount);
+                        } else {
+                            // Si el campo "revenue" no es un número, no suma nada
+                            return total;
+                        }
+                    }, 0);
+                }
             this.dialogBarberoEncargado = true;
         },
         showProfessionalPeriodo() {
@@ -1309,10 +2315,10 @@ export default {
             this.editedItem.id = item.id;
             this.dialogDelete = true;
         },
-        deleteItemConfirm() {
+        async deleteItemConfirm() {
             LocalStorageService.setIsLocked(true);
             //this.results.splice(this.editedIndex, 1)
-            let request = {
+            /*let request = {
                 id: this.editedItem.id
             };
             axios
@@ -1322,13 +2328,41 @@ export default {
                 }).finally(() => {
                     LocalStorageService.setIsLocked(false);
                     this.showProfessional();
-                });
-            this.closeDelete()
+                });*/
+                const requestParams = {
+                    id: this.editedItem.id
+                };
+                try {
+                    const result = await handleRequest({
+                        endpoint: 'professional-payment-destroy',
+                        method: 'POST',
+                        params: requestParams // Aquí pasas los parámetros
+                    });
+
+                    if (result.success) {
+                        // Si la solicitud es exitosa, asignamos las sucursales
+                        this.showAlert("success", "Pago eliminado correctamente", 3000);
+                    } else {
+                        this.dialogDelete = false;
+                        // Si no hay datos, asignamos un array vacío
+                        this.showAlert("warning", result.message, 3000);
+                        
+                    }
+                } catch (error) {
+                    this.dialogDelete = false;
+                    // Captura de errores no controlados
+                    this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
+                } finally {
+                    this.showProfessional();
+                    this.dialogDelete = false;
+                }
+            //this.closeDelete();
         },
         close() {
             this.dialog = false;
             this.dialogOtros = false;
             this.dialogCashierCars = false;
+            this.dialogEdit = false;
             this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem)
             });
@@ -1357,23 +2391,23 @@ export default {
             });
 
         },
-        save() {
+        async save() {
             LocalStorageService.setIsLocked(true);
             this.valid = false;
-            console.log('this.ironValues');
+            /*console.log('this.ironValues');
             console.log(this.selected2);
             //console.log(this.selectedOption);
-            this.cars.forEach(car => {
+            /*this.cars.forEach(car => {
                 if (car.meta === 'Si') {
                     if (!this.selected2.includes(car.id)) {
                         this.selected2.push(car.id);
                     }
                 }
             });
-            console.log(this.selected);
-            this.data.professional_id = this.professional_id;
+            console.log(this.selected);*/
+            /*this.data.professional_id = this.professional_id;
             this.data.branch_id = this.branch_id;
-            this.data.car_ids = this.selected2;
+            //this.data.car_ids = this.selected2;
 
             const temp = Number(this.totalMount());              
             this.data.amount = temp;
@@ -1381,7 +2415,7 @@ export default {
             this.data.type = this.editedItem.type;
             console.log('this.data');
             console.log(this.data);
-            axios
+            /*axios
                 .post('https://testapi.simplifies.cl/api/professional-payment', this.data)
                 .then(() => {
                     this.$nextTick(() => {
@@ -1396,7 +2430,58 @@ export default {
                     LocalStorageService.setIsLocked(false);
                     this.showAlert("success", "Pago realizado correctamente", 3000);
                     this.showProfessional();
+                });*/
+                try {
+                const requestParams = {
+                    branch_id: this.branch_id,
+                    professional_id: this.professional_id,
+                    payments: this.payments,
+                    type: 'Mes',
+                    typeAcadem: this.editedItem.academia,
+                    amountAcadem: this.editedItem.amountAcadem
+                };
+                const result = await handleRequest({
+                endpoint: "professional-payment-barbero",
+                method: "POST",
+                data: requestParams
                 });
+
+                if (result.success) {
+                // Si la solicitud es exitosa, asignamos las sucursales
+                this.showAlert("success", result.message, 3000);
+                    
+                } else {
+                    this.$nextTick(() => {
+                            this.editedItem = Object.assign({}, this.defaultItem);
+                        });
+                        this.editedIndex = -1;
+                        this.type = null;
+                        this.cars = [];
+                        this.selected2 = [];
+                        this.mostrarCars = false;
+                        this.courses = [];
+                        this.selectedCourse = [];
+                        this.mostrarDoc = false;
+                // Si no hay datos, asignamos un array vacío
+                this.showAlert("warning", result.message, 3000);
+                LocalStorageService.setIsLocked(false);
+                }
+                } catch (error) {
+                    LocalStorageService.setIsLocked(false);
+                        this.editedIndex = -1;
+                        this.type = null;
+                        this.cars = [];
+                        this.selected2 = [];
+                        this.mostrarCars = false;
+                        this.courses = [];
+                        this.selectedCourse = [];
+                        this.mostrarDoc = false;
+                    // Captura de errores no controlados
+                    this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
+                } finally {
+                    LocalStorageService.setIsLocked(false);
+                    this.showProfessional();
+                }
             this.close();
         },
         //course
@@ -1479,6 +2564,78 @@ export default {
                 });
             this.close();
         },
+        async saveOtrosCharge(){
+            /*LocalStorageService.setIsLocked(true);
+            this.valid = false;
+        
+            this.data.professional_id = this.professional_id;
+            this.data.branch_id = this.branch_id;
+            this.data.amount = this.editedItem.amount;
+            this.data.type = this.editedItem.type;
+            console.log('this.data');
+            console.log(this.data);
+            axios
+                .post('https://testapi.simplifies.cl/api/professional-payment', this.data)
+                .then(() => {
+                    this.$nextTick(() => {
+                        this.editedItem = Object.assign({}, this.defaultItem);
+                    });
+                    this.editedIndex = -1;
+                    this.type = null;
+                    this.mostrarCars = false;
+                }).finally(() => {
+                    LocalStorageService.setIsLocked(false);
+                    this.showAlert("success", "Pago realizado correctamente", 3000);
+                    this.showProfessional();
+                });
+            this.close(); */
+            LocalStorageService.setIsLocked(true);
+            this.valid = false;
+        try {
+            const requestParams = {
+                branch_id: this.branch_id,
+                professional_id: this.professional_id,
+                payments: this.payments,
+                type: 'Mes'
+            };
+            const result = await handleRequest({
+            endpoint: "professional-payment-charge",
+            method: "POST",
+            data: requestParams
+            });
+
+            if (result.success) {
+            // Si la solicitud es exitosa, asignamos las sucursales
+            this.showAlert("success", result.message, 3000);
+                
+            } else {
+                this.$nextTick(() => {
+                        this.editedItem = Object.assign({}, this.defaultItem);
+                    });
+                    this.editedIndex = -1;
+                    this.type = null;
+            // Si no hay datos, asignamos un array vacío
+            this.showAlert("warning", result.message, 3000);
+            LocalStorageService.setIsLocked(false);
+            }
+            } catch (error) {
+                LocalStorageService.setIsLocked(false);
+                this.editedIndex = -1;
+                this.type = null;
+                this.$nextTick(() => {
+                        this.editedItem = Object.assign({}, this.defaultItem);
+                    });
+                // Captura de errores no controlados
+                this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
+            } finally {
+                this.$nextTick(() => {
+                        this.editedItem = Object.assign({}, this.defaultItem);
+                    });
+                LocalStorageService.setIsLocked(false);
+                this.showProfessional();
+            }
+            this.close();
+        },
         exportToExcelProfessional() {
             console.log('Entra aqui a exportar professional');
             // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
@@ -1520,11 +2677,12 @@ export default {
             XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
         },
         //cajeros
-        showCashier() {
+        async showCashier() {
             this.results1 = [];
             this.loadingCashier = true;
             LocalStorageService.setIsLocked(true);
-            axios
+            this.step = 1;
+            /*axios
                 .get('https://testapi.simplifies.cl/api/operation-tip', {
                     params: {
                         branch_id: this.branch_id,
@@ -1536,10 +2694,41 @@ export default {
                 }).finally(() => {
             LocalStorageService.setIsLocked(false);
             this.loadingCashier = false;
-        });
+        });*/
+        const requestParams = {
+                branch_id: this.branch_id,
+                professional_id: this.professional_id
+            };
+            try {
+                const result = await handleRequest({
+                    endpoint: 'operation-tip',
+                    method: 'GET',
+                    params: requestParams // Aquí pasas los parámetros
+                });
+
+                if (result.success) {
+                    // Si la solicitud es exitosa, asignamos las sucursales
+                    this.results1 = result.data;
+                } else {
+                    this.loadingCashier = false;
+                    LocalStorageService.setIsLocked(false);
+                    // Si no hay datos, asignamos un array vacío
+                    this.results1 = [];                    
+                    this.showAlert("warning", result.message, 3000);
+                }
+            } catch (error) {
+                this.results1 = [];
+                this.loadingCashier = false;
+                LocalStorageService.setIsLocked(false);
+                // Captura de errores no controlados
+                this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
+            } finally {
+                this.loadingCashier = false;
+                LocalStorageService.setIsLocked(false);
+            }
             this.dialogCashier = true;
         },
-        showPay() {
+        async showPay() {
             this.loadingCashier = true;
             LocalStorageService.setIsLocked(true);
             console.log('Entra aqui a pagos realizados');
@@ -1549,7 +2738,7 @@ export default {
             //this.input3 = new Date()
             const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
             const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-            axios
+            /*axios
                 .get('https://testapi.simplifies.cl/api/operation-tip-periodo', {
                     params: {
                         branch_id: this.branch_id,
@@ -1563,7 +2752,40 @@ export default {
                 }).finally(() => {
             LocalStorageService.setIsLocked(false);
             this.loadingCashier = false;
-        });
+        });*/
+        const requestParams = {
+                branch_id: this.branch_id,
+                professional_id: this.professional_id,
+                startDate: startDate,
+                endDate: endDate
+            };
+            try {
+                const result = await handleRequest({
+                    endpoint: 'operation-tip-periodo',
+                    method: 'GET',
+                    params: requestParams // Aquí pasas los parámetros
+                });
+
+                if (result.success) {
+                    // Si la solicitud es exitosa, asignamos las sucursales
+                    this.results1 = result.data;
+                } else {
+                    this.loadingCashier = false;
+                    LocalStorageService.setIsLocked(false);
+                    // Si no hay datos, asignamos un array vacío
+                    this.results1 = [];                    
+                    this.showAlert("warning", result.message, 3000);
+                }
+            } catch (error) {
+                this.results1 = [];
+                this.loadingCashier = false;
+                LocalStorageService.setIsLocked(false);
+                // Captura de errores no controlados
+                this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
+            } finally {
+                this.loadingCashier = false;
+                LocalStorageService.setIsLocked(false);
+            }
         },
         cashierDelete() {
             this.dialogCashier = false;
@@ -1576,10 +2798,10 @@ export default {
             this.typePay = item.car;
             this.dialogDeleteCashier = true;
         },
-        deleteItemConfirmCashier() {
+        async deleteItemConfirmCashier() {
             LocalStorageService.setIsLocked(true);
             //this.results.splice(this.editedIndex, 1)
-            let request = {
+            /*let request = {
                 id: this.editedItem.id,
                 type: this.typePay
             };
@@ -1590,16 +2812,70 @@ export default {
                     LocalStorageService.setIsLocked(false);
                     this.showAlert("success", "Pago eliminado correctamente", 3000);
                     this.showCashier();
+                });*/
+                /*try {
+                let request = {
+                    id: this.editedItem.id,
+                    type: this.typePay
+                };
+                const result = await handleRequest({
+                endpoint: "operation-tip-destroy",
+                method: "POST",
+                data: request,
                 });
-            this.closeDelete()
+
+                // Manejo de la respuesta según el resultado
+                if (result.success) {
+                this.showAlert("success", result.message, 3000);
+                this.initialize();
+                } else {
+                this.showAlert("warning", result.message, 3000);
+                }
+            } catch (error) {
+                // Este bloque captura errores inesperados fuera del manejo estándar
+                this.showAlert(
+                "error",
+                "Ocurrió un error inesperado al procesar la solicitud.",
+                3000
+                );
+            } finally {
+                this.closeDelete();
+            }*/
+            const requestParams = {
+                    id: this.editedItem.id
+                };
+                try {
+                    const result = await handleRequest({
+                        endpoint: 'professional-payment-destroy',
+                        method: 'POST',
+                        params: requestParams // Aquí pasas los parámetros
+                    });
+
+                    if (result.success) {
+                        // Si la solicitud es exitosa, asignamos las sucursales
+                        this.showAlert("success", "Pago eliminado correctamente", 3000);
+                    } else {
+                        this.dialogDelete = false;
+                        // Si no hay datos, asignamos un array vacío
+                        this.showAlert("warning", result.message, 3000);
+                        
+                    }
+                } catch (error) {
+                    this.dialogDelete = false;
+                    // Captura de errores no controlados
+                    this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
+                } finally {
+                    this.showCashier();
+                    this.dialogDelete = false;
+                }
         },
-        showAddOperationTip() {
+        async showAddOperationTip() {
             this.loadingSale = true;
             this.loadingTip = true;
             this.cars1 = [];
             this.cashierSales = [];
             LocalStorageService.setIsLocked(true);
-            axios
+            /*axios
                 .get('https://testapi.simplifies.cl/api/cashier-car-notpay', {
                     params: {
                         branch_id: this.branch_id,
@@ -1613,8 +2889,45 @@ export default {
             LocalStorageService.setIsLocked(false);
             this.loadingTip = false;
             this.loadingSale = false;
+        });*/
+        try {
+            const requestParams = {
+                branch_id: this.branch_id,
+                professional_id: this.professional_id
+            };
+        const result = await handleRequest({
+          endpoint: "cashier-car-notpay",
+          method: "GET",
+          params: requestParams
         });
+
+        if (result.success) {
+          // Si la solicitud es exitosa, asignamos las sucursales
+            this.cars1 = result.data.cars;
+            this.cashierSales = result.data.sales.products_sold;
+            this.payments = result.data.payments;
+            
+        } else {
+          // Si no hay datos, asignamos un array vacío
+            this.cars1 = [];
+            this.cashierSales = [];
+            this.payments = [];
+            LocalStorageService.setIsLocked(false);
+            this.loadingSale = false;
+            this.loadingTip = false;
+        }
+        } catch (error) {
+            LocalStorageService.setIsLocked(false);
+            this.loadingSale = false;
+            this.loadingTip = false;
+            // Captura de errores no controlados
+            this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
+        } finally {
+            LocalStorageService.setIsLocked(false);
+            this.loadingSale = false;
+            this.loadingTip = false;
             this.dialogCashierCars = true;
+        }
         },
         saveCashier() {
             LocalStorageService.setIsLocked(true);
@@ -1679,17 +2992,60 @@ export default {
                 })*/
             this.close();
         },
-        saveCashierProduct() {
+        async saveCashierProduct() {
             LocalStorageService.setIsLocked(true);
             this.valid = false;
-            this.data.professional_id = this.professional_id;
+            /*this.data.professional_id = this.professional_id;
             this.data.branch_id = this.branch_id;
             this.data.ids = this.selectedCashier;
             this.data.amount = this.editedItem.amountSaleProduct;
             this.data.type = this.editedItem.cashierproduct;
             console.log('this.data');
-            console.log(this.data);
-            axios
+            console.log(this.data);*/
+            try {
+            const requestParams = {
+                branch_id: this.branch_id,
+                professional_id: this.professional_id,
+                payments: this.payments,
+                type: 'Mes'
+            };
+            const result = await handleRequest({
+            endpoint: "professional-payment-cashier-mounth",
+            method: "POST",
+            data: requestParams
+            });
+
+            if (result.success) {
+            // Si la solicitud es exitosa, asignamos las sucursales
+            this.showAlert("success", result.message, 3000);
+                
+            } else {
+                this.$nextTick(() => {
+                        this.editedItem = Object.assign({}, this.defaultItem);
+                    });
+                    this.editedIndex = -1;
+                    this.type = null;
+                    this.cars = [];
+                    this.selected2 = [];
+                    this.mostrarCars = false;
+            // Si no hay datos, asignamos un array vacío
+            this.showAlert("warning", result.message, 3000);
+            LocalStorageService.setIsLocked(false);
+            }
+            } catch (error) {
+                LocalStorageService.setIsLocked(false);
+                this.editedIndex = -1;
+                    this.type = null;
+                    this.cars = [];
+                    this.selected2 = [];
+                    this.mostrarCars = false;
+                // Captura de errores no controlados
+                this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
+            } finally {
+                LocalStorageService.setIsLocked(false);
+                this.showCashier();
+            }
+            /*axios
                 .post('https://testapi.simplifies.cl/api/professional-payment-cashier', this.data)
                 .then(() => {
                     this.$nextTick(() => {
@@ -1704,7 +3060,7 @@ export default {
                     LocalStorageService.setIsLocked(false);
                     this.showAlert("success", "Pago realizado correctamente", 3000);
                     this.showCashier();
-                });
+                });*/
             //}
             /*this.valid = false;
             this.data.name = this.editedItem.name;
@@ -1758,6 +3114,76 @@ export default {
             // Escribe el libro de trabajo a un archivo y desencadena la descarga
             //XLSX.writeFile(wb, "report.xlsx");
             XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
+        },
+        async editPay() {
+            this.loadingWorkPlace= true;
+            LocalStorageService.setIsLocked(true);
+                const requestParams = {
+                    id: this.editedItem.id,
+                    amount: this.editedItem.amount
+                };
+                try {
+                    const result = await handleRequest({
+                        endpoint: 'professional-payment-update',
+                        method: 'POST',
+                        data: requestParams // Aquí pasas los parámetros
+                    });
+
+                    if (result.success) {
+                        // Si la solicitud es exitosa, asignamos las sucursales
+                        this.showAlert("success", "Pago editado correctamente", 3000);
+                    } else {
+                        this.dialogEdit = false;
+                        this.loadingWorkPlace= false;
+                        // Si no hay datos, asignamos un array vacío
+                        this.showAlert("warning", result.message, 3000);
+                        
+                    }
+                } catch (error) {
+                    this.dialogEdit = false;
+                    this.loadingWorkPlace= false;
+                    // Captura de errores no controlados
+                    this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
+                } finally {
+                    this.showProfessional();
+                    this.dialogEdit = false;
+                    this.loadingWorkPlace= false;
+                }
+        },
+        async editPayCashier() {
+            this.loadingWorkPlace= true;
+            LocalStorageService.setIsLocked(true);
+                const requestParams = {
+                    id: this.editedItem.id,
+                    amount: this.editedItem.amount
+                };
+                try {
+                    const result = await handleRequest({
+                        endpoint: 'professional-payment-update',
+                        method: 'POST',
+                        data: requestParams // Aquí pasas los parámetros
+                    });
+
+                    if (result.success) {
+                        // Si la solicitud es exitosa, asignamos las sucursales
+                        this.showAlert("success", "Pago editado correctamente", 3000);
+                    } else {
+                        this.dialogEdit = false;
+                        this.loadingWorkPlace= false;
+                        // Si no hay datos, asignamos un array vacío
+                        this.showAlert("warning", result.message, 3000);
+                        
+                    }
+                } catch (error) {
+                    this.dialogEdit = false;
+                    this.loadingWorkPlace= false;
+                    // Captura de errores no controlados
+                    this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
+                } finally {
+                    this.showCashier();
+                    this.dialogEdit = false;
+                    this.loadingWorkPlace= false;
+                }
         },
     },
 }

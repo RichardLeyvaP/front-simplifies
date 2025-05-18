@@ -140,12 +140,21 @@ const routes = [
         },
       },
       {
-        path: "/advance",
-        name: "Adelantos",
+        path: "/solicitud-advance",
+        name: "Solicitudes",
         component: () => import("@/views/advance/AdvanceAdmin.vue"),
         meta: {
           requiresAuth: true,
           requiresPermissions: ["view_advances"],
+        },
+      },
+      {
+        path: "/advance-professional",
+        name: "Adelantos Profesional",
+        component: () => import("@/views/advance/AdvanceProfessional.vue"),
+        meta: {
+          requiresAuth: true,
+          requiresPermissions: ["view_professional_advances"],
         },
       },
       {
@@ -579,6 +588,26 @@ const routes = [
         meta: {
           requiresAuth: true,
           requiresPermissions: ["view_move_products"],
+        },
+      },
+      {
+        path: "/professional-products",
+        name: "Productos Vendidos",
+        component: () =>
+          import("@/views/bonusproduct/ProductProfessional.vue"),
+        meta: {
+          requiresAuth: true,
+          requiresPermissions: ["view_professional_products"],
+        },
+      },
+      {
+        path: "/professional-tips",
+        name: "Comisiiones de Propinas",
+        component: () =>
+          import("@/views/commissiontips/TipsProfessional.vue"),
+        meta: {
+          requiresAuth: true,
+          requiresPermissions: ["view_professional_tips"],
         },
       },
     ],

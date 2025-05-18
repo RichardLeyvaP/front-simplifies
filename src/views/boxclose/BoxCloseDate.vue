@@ -449,7 +449,12 @@ export default {
     async initialize() {
       this.loadingrules = true;
       const today = new Date();
-      const formattedDate = this.date ? this.date : today.toISOString().split('T')[0]; // Formato: YYYY-MM-DD
+      const formattedDate = today.toLocaleDateString('es-CL', {
+          timeZone: 'America/Santiago',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+      }).split('-').reverse().join('-'); // Convierte "DD-MM-YYYY" a "YYYY-MM-DD"
 
       const requestParams = {
         branch_id: this.branch_id,

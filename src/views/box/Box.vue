@@ -1097,7 +1097,7 @@
           <template v-slot:item.image="{ item }">
 
             <v-avatar elevation="3" color="grey-lighten-4" size="large">
-              <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image" alt="image"></v-img>
+              <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image}`" alt="image"></v-img>
             </v-avatar>
 
           </template>
@@ -1162,7 +1162,7 @@
               </template>-->
                 <template v-slot:item="{ props, item }">
                   <v-list-item v-bind="props"
-                    :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + item.raw.image_product"
+                    :prepend-avatar="`${this.$axios.defaults.baseURL}images/${item.raw.image_product}`"
                     :title="item.raw.name">
                     <v-list-item-subtitle class="d-flex justify-space-between">
                       Existencia: {{ item.raw.product_exit }}
@@ -5344,9 +5344,38 @@ export default {
       this.editedCard = Object.assign({}, this.defaultCard);
       this.dialogPaySales = false;
     },
-    showDialogProduct() {
+    async showDialogProduct() {
+      this.cashierSalesProf = [];
       LocalStorageService.setIsLocked(true);
-      axios
+      const requestParams = {
+            branch_id: this.branch_id,
+            professional_id: this.professional_id
+            };
+            try {
+                const result = await handleRequest({
+                    endpoint: 'cashiersale-show',
+                    method: 'GET',
+                    params: requestParams // Aquí pasas los parámetros
+                });
+
+                if (result.success) {
+                    // Si la solicitud es exitosa, asignamos las sucursales
+                    this.cashierSalesProf = result.data.sales;
+                } else {
+                  this.loadingCashier = false;
+                  LocalStorageService.setIsLocked(false);
+                }
+            } catch (error) {
+              this.loadingCashier = false;
+              LocalStorageService.setIsLocked(false);
+                // Captura de errores no controlados
+                this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
+            } finally {
+              this.loadingCashier = false;
+              LocalStorageService.setIsLocked(false);
+              this.showDialogSaleProducts = true;
+            }
+      /*axios
         .get('https://testapi.simplifies.cl/api/cashiersale-show', {
           params: {
             branch_id: this.branch_id,
@@ -5359,8 +5388,7 @@ export default {
         }).finally(() => {
           this.loadingCashier = false;
           LocalStorageService.setIsLocked(false);
-        });
-      this.showDialogSaleProducts = true;
+        });*/
     },
     closeDialogSaleProduct() {
       this.showDialogSaleProducts = false;
