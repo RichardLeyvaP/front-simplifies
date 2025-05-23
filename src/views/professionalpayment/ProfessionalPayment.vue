@@ -594,7 +594,7 @@
 
                                                         <v-card-title class="text-h5">Total a Cobrar</v-card-title>
                                                         <v-card-subtitle class="text-h5 font-weight-bold">
-                                                            {{ formatNumber(payments.totalNeto) }}
+                                                            {{ formatNumber(payments.totalNeto + Number(editedItem.amountAcadem)) }}
                                                         </v-card-subtitle>
                                                     </v-card-item>
                                                 </v-card>

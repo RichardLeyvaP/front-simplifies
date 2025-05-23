@@ -3308,32 +3308,32 @@ export default {
       }*/
     //},*/
     updateMainField(detail, newValue) {
-  // Primero parseamos el valor formateado (puede venir con puntos/commas)
-  const parsedValue = this.parseNumberInput(newValue);
-  
-  const oldValue = parseFloat(detail.value) || 0;
-  const difference = parsedValue - oldValue;
+      // Primero parseamos el valor formateado (puede venir con puntos/commas)
+      const parsedValue = this.parseNumberInput(newValue);
+      
+      const oldValue = parseFloat(detail.value) || 0;
+      const difference = parsedValue - oldValue;
 
-  if (difference === 0) return;
+      if (difference === 0) return;
 
-  // Verificar si el detalle es un objeto válido
-  if (typeof detail === 'object' && detail !== null) {
-    // Actualizar el valor en el detalle específico (guardamos el valor numérico)
-    detail.value = parsedValue;
-  } else {
-    console.error('El detalle no es un objeto válido:', detail);
-    return;
-  }
+      // Verificar si el detalle es un objeto válido
+      if (typeof detail === 'object' && detail !== null) {
+        // Actualizar el valor en el detalle específico (guardamos el valor numérico)
+        detail.value = parsedValue;
+      } else {
+        console.error('El detalle no es un objeto válido:', detail);
+        return;
+      }
 
-  // Calcular el nuevo total sumando todos los detalles del mismo tipo
-  if (detail.type in this.cashierData) {
-    const total = this.cashierData.details
-      .filter(d => d.type === detail.type)
-      .reduce((sum, d) => sum + (parseFloat(d.value) || 0), 0);
+      // Calcular el nuevo total sumando todos los detalles del mismo tipo
+      if (detail.type in this.cashierData) {
+        const total = this.cashierData.details
+          .filter(d => d.type === detail.type)
+          .reduce((sum, d) => sum + (parseFloat(d.value) || 0), 0);
 
-    this.cashierData[detail.type] = total;
-  }
-},
+        this.cashierData[detail.type] = total;
+      }
+    },
     getFieldName(type) {
       const names = {
         totalCreditCard: 'Tarjeta Crédito',

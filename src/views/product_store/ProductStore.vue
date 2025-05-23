@@ -30,119 +30,11 @@
                         prepend-icon="mdi-trending-up" @click="showMove">
                         Movimiento
                     </v-btn>
-          <v-dialog v-model="dialog" max-width="600px">
-            <template v-slot:activator="{ props }">
-
-              <v-btn v-bind="props" class="text-subtitle-1 ml-1" color="#E7E9E9" variant="flat" elevation="2"
-                prepend-icon="mdi-plus-circle">
+                    <v-btn class="text-subtitle-1 ml-1" color="#E7E9E9" variant="flat" elevation="2"
+                prepend-icon="mdi-plus-circle" @click="showAdd">
                 Asignar Productos
               </v-btn>
-
-            </template>
-            <v-card>
-              <v-toolbar color="#F18254">
-                <span class="text-subtitle-2 ml-4"> {{ formTitle }}</span>
-              </v-toolbar>
-              <v-card-text>
-                <v-form v-model="valid" enctype="multipart/form-data">
-                  <v-row>
-                    <v-col cols="12" md="12">
-                      <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.store_id" :items="stores" clearable label="Almacenes"
-                        prepend-inner-icon="mdi-store" item-title="address" item-value="id" variant="underlined"
-                        :rules="selectRules" :disabled="!mover">
-                        <template v-slot:item="{ props, item }">
-                        <v-list-item
-                          v-bind="props"
-                          :subtitle="'Referencia: '+item.raw.reference"
-                          :title="item.raw.address"
-                        ></v-list-item>
-                        </template>
-                        </v-autocomplete>
-                      <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.product_id" :items="products" clearable label="Productos"
-                        prepend-inner-icon="mdi-tag" item-title="name" item-value="id" variant="underlined"
-                        :rules="selectRules" :disabled="!mover">
-                        <template v-slot:item="{ props, item }">
-                        <!--<v-list-item
-                          v-bind="props"
-                          :prepend-avatar="'https://testapi.simplifies.cl/api/images/'+item.raw.image_product"
-                          :title="item.raw.name"
-                        ></v-list-item>
-                      </template>
-                      <template v-slot:item="{ props, item }">-->
-                  <v-list-item v-bind="props"
-                    :prepend-avatar="`${this.$axios.defaults.baseURL}images/${item.raw.image_product}`"
-                    :title="item.raw.name">
-                    <v-list-item-subtitle class="d-flex justify-space-between">
-                      Precio: {{ this.formatNumber(item.raw.purchase_price) }}
-                    </v-list-item-subtitle>
-                  </v-list-item>
-                </template>
-                      </v-autocomplete>
-                      <v-text-field v-model="editedItem.stock_depletion" clearable label="Límite de existencia para alerta"
-                        prepend-inner-icon="mdi-package-variant-closed" variant="underlined" :disabled="moverEdit">
-                      </v-text-field>
-                        <v-text-field v-model="editedItem.product_quantity" clearable :label="this.texttitle"
-                        prepend-inner-icon="mdi-tag-plus" variant="underlined" :disabled="moverEdit" :rules="pago">
-                      </v-text-field>
-                    </v-col>
-                    <v-col v-if="mostrarCampos">
-                      <!--<v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.branch_idM" :items="branches" clearable
-                        label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
-                        variant="underlined" @update:model-value="updatedstores()"></v-autocomplete>-->
-                      <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.store_idM" :items="stores1" clearable label="Almacenes"
-                        prepend-inner-icon="mdi-store" item-title="address" item-value="id" variant="underlined"
-                        :rules=selectRules>
-                        <template v-slot:item="{ props, item }">
-                        <v-list-item
-                          v-bind="props"
-                          :subtitle="'Referencia: '+item.raw.reference"
-                          :title="item.raw.address"
-                        ></v-list-item>
-                        </template>
-                        </v-autocomplete>
-                      <v-text-field v-model="editedItem.product_quantityM" clearable label="Cantidad a mover"
-                        prepend-inner-icon="mdi-tag-arrow-right" variant="underlined" :rules=[validateCantidad]>
-                      </v-text-field>
-                    </v-col>
-
-                  </v-row>
-                  <v-divider></v-divider>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-
-                    <v-btn color="#E7E9E9" variant="flat" @click="close">
-                      Cancelar
-                    </v-btn>
-                    <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
-                      Aceptar
-                    </v-btn>
-                  </v-card-actions>
-                </v-form>
-              </v-card-text>
-            </v-card>
-          </v-dialog>
-
-          <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-              <v-toolbar color="red">
-                <span class="text-subtitle-2 ml-4"> Eliminar Producto</span>
-              </v-toolbar>
-
-              <v-card-text class="mt-2 mb-2"> ¿Desea eliminar el Producto seleccionado?</v-card-text>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
-                  Cancelar
-                </v-btn>
-                <v-btn color="warning" variant="flat" @click="deleteItemConfirm">
-                  Aceptar
-                </v-btn>
-
-
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+          
         </v-col>
 
       </v-row>
@@ -154,7 +46,7 @@
           <v-card-text>
             <!--<v-col cols="12" sm="12" md="4">
           <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
-            v-if="this.mostrarFila" clearable label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name"
+            v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name"
             item-value="id" variant="underlined" @update:model-value="initialize()"></v-autocomplete>
         </v-col>-->
       <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details>
@@ -203,6 +95,109 @@
     </v-card-text>
         </v-col>
     </v-row>
+    <!--Agregar y eliminar Productos-->
+    <v-dialog v-model="dialog" max-width="600px">
+            <v-card>
+              <v-toolbar color="#F18254">
+                <span class="text-subtitle-2 ml-4"> {{ formTitle }}</span>
+              </v-toolbar>
+              <v-card-text>
+                <v-form v-model="valid" enctype="multipart/form-data">
+                  <v-row>
+                    <v-col cols="12" md="12">
+                      <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.store_id" :items="stores" label="Almacenes"
+                        prepend-inner-icon="mdi-store" item-title="address" item-value="id" variant="underlined"
+                        :rules="selectRules" :disabled="!mover">
+                        <template v-slot:item="{ props, item }">
+                        <v-list-item
+                          v-bind="props"
+                          :subtitle="'Referencia: '+item.raw.reference"
+                          :title="item.raw.address"
+                        ></v-list-item>
+                        </template>
+                        </v-autocomplete>
+                      <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.product_id" :items="products" label="Productos"
+                        prepend-inner-icon="mdi-tag" item-title="name" item-value="id" variant="underlined"
+                        :rules="selectRules" :disabled="!mover">
+                        <template v-slot:item="{ props, item }">
+                  <v-list-item v-bind="props"
+                    :prepend-avatar="`${this.$axios.defaults.baseURL}images/${item.raw.image_product}`"
+                    :title="item.raw.name">
+                    <v-list-item-subtitle class="d-flex flex-column">
+                      <div class="d-flex justify-space-between">
+                        <span>Precio: {{ formatNumber(item.raw.sale_price) }}</span>
+                        <span class="ml-2">Categoría: {{ item.raw.productcategory.name || 'Sin categoría' }}</span>
+                      </div>
+                      <!-- Puedes agregar más información aquí si es necesario -->
+                    </v-list-item-subtitle>
+                  </v-list-item>
+                </template>
+                      </v-autocomplete>
+                      <v-text-field v-model="editedItem.stock_depletion" label="Límite de existencia para alerta"
+                        prepend-inner-icon="mdi-package-variant-closed" variant="underlined" :disabled="moverEdit">
+                      </v-text-field>
+                        <v-text-field v-model="editedItem.product_quantity" :label="this.texttitle"
+                        prepend-inner-icon="mdi-tag-plus" variant="underlined" :disabled="moverEdit" :rules="pago">
+                      </v-text-field>
+                    </v-col>
+                    <v-col v-if="mostrarCampos">
+                      <!--<v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.branch_idM" :items="branches"
+                        label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
+                        variant="underlined" @update:model-value="updatedstores()"></v-autocomplete>-->
+                      <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.store_idM" :items="stores1" label="Almacenes"
+                        prepend-inner-icon="mdi-store" item-title="address" item-value="id" variant="underlined"
+                        :rules=selectRules>
+                        <template v-slot:item="{ props, item }">
+                        <v-list-item
+                          v-bind="props"
+                          :subtitle="'Referencia: '+item.raw.reference"
+                          :title="item.raw.address"
+                        ></v-list-item>
+                        </template>
+                        </v-autocomplete>
+                      <v-text-field v-model="editedItem.product_quantityM" label="Cantidad a mover"
+                        prepend-inner-icon="mdi-tag-arrow-right" variant="underlined" :rules=[validateCantidad]>
+                      </v-text-field>
+                    </v-col>
+
+                  </v-row>
+                  <v-divider></v-divider>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn color="#E7E9E9" variant="flat" @click="close">
+                      Cancelar
+                    </v-btn>
+                    <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
+                      Aceptar
+                    </v-btn>
+                  </v-card-actions>
+                </v-form>
+              </v-card-text>
+            </v-card>
+          </v-dialog>
+
+          <v-dialog v-model="dialogDelete" max-width="500px">
+            <v-card>
+              <v-toolbar color="red">
+                <span class="text-subtitle-2 ml-4"> Eliminar Producto</span>
+              </v-toolbar>
+
+              <v-card-text class="mt-2 mb-2"> ¿Desea eliminar el Producto seleccionado?</v-card-text>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
+                  Cancelar
+                </v-btn>
+                <v-btn color="warning" variant="flat" @click="deleteItemConfirm">
+                  Aceptar
+                </v-btn>
+
+
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
     <!--Reposicion de productos-->
     <v-dialog v-model="dialogReposition" fullscreen transition="dialog-bottom-transition">
                 <v-card elevation="6">
@@ -553,15 +548,15 @@ export default {
     },
   },
 
-  mounted() {
+  async mounted() {
     this.business_id = LocalStorageService.getItem('business_id');
     this.charge_id = LocalStorageService.getItem('charge_id');
     this.branch_id = LocalStorageService.getItem('branch_id');
     this.professional_id = LocalStorageService.getItem('professional_id');
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     this.permissionsUser = LocalStorageService.getItem("permissionsUser") || [],
-    LocalStorageService.setIsLocked(true);
-          axios
+    
+          /*axios
         .get('https://testapi.simplifies.cl/api/show-stores-products', {
         params: {
           business_id: this.business_id,
@@ -579,7 +574,43 @@ export default {
         }
           LocalStorageService.setIsLocked(false);
                 this.initialize();
-          });
+          });*/
+        LocalStorageService.setIsLocked(true);
+          const requestParams = {
+          business_id: this.business_id,
+          branch_id: this.branch_id
+      };
+
+      try {
+        const result = await handleRequest({
+          endpoint: 'show-stores-products',
+          method: 'GET',
+          params: requestParams // Aquí pasas los parámetros
+        });
+
+        if (result.success) {
+          // Si la solicitud es exitosa, asignamos las sucursales
+          this.products = result.data.products;
+          this.stores = result.data.stores;
+          this.branches = result.data.branches;
+        } else {
+          LocalStorageService.setIsLocked(false);
+          this.products = [];
+          this.stores = [];
+          this.branches = [];
+        }
+      } catch (error) {
+        LocalStorageService.setIsLocked(false);
+        // Captura de errores no controlados
+        this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
+      } finally {
+       if (this.charge === 'Administrador') {
+          this.branch_id = 0;
+          this.mostrarFila = true;
+        }
+          LocalStorageService.setIsLocked(false);
+                this.initialize();
+      }
     ///console.log(this.charge_id);
   },
 
@@ -650,6 +681,34 @@ export default {
             this.loadingProducts = false;
         });
 
+    },
+    async showAdd(){
+      /*LocalStorageService.setIsLocked(true);
+          const requestParams = {
+          business_id: this.business_id,
+          branch_id: this.branch_id
+      };*/
+
+      try {
+        const result = await handleRequest({
+          endpoint: 'product',
+          method: 'GET'
+        });
+
+        if (result.success) {
+          // Si la solicitud es exitosa, asignamos las sucursales
+          this.products = result.data.products;
+        } else {
+          LocalStorageService.setIsLocked(false);
+          this.products = [];
+        }
+      } catch (error) {
+        LocalStorageService.setIsLocked(false);
+        // Captura de errores no controlados
+        this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
+      } finally {
+       this.dialog = true;
+      }
     },
     editItem(item) {
       this.mover = false;
