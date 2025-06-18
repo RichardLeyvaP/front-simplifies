@@ -19,7 +19,7 @@
             <v-toolbar color="#F18254">
                 <v-row align="center">
                     <v-col cols="12" md="7" class="ml-4">
-                        <span class="text-subtitle-1"> <strong>Comisión de propinas</strong></span>
+                        <span class="text-subtitle-1"> <strong>Comisión de venta de productos</strong></span>
                     </v-col>
                     <v-col cols="12" md="4" class="text-right ml-12">
                         <!--<v-btn class="text-subtitle-1" variant="flat" elevation="2"
@@ -37,7 +37,7 @@
                         label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
                         variant="underlined"></v-autocomplete>
                 </v-col>
-                <v-col cols="12" md="2">
+                <!--<v-col cols="12" md="2">
                     <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40"
                         transition="scale-transition" offset-y min-width="290px">
                         <template v-slot:activator="{ props }">
@@ -61,9 +61,36 @@
                         <v-locale-provider locale="es">
                             <v-date-picker header="Calendario" title="Seleccione la fecha" color="#F18254"
                                 :modelValue="input2" format="yyyy-MM-dd" :min="dateFormatted"
-                                @update:model-value="updateDate1"></v-date-picker><!--@update:model-value="updateDate2"-->
+                                @update:model-value="updateDate1"></v-date-picker>
                         </v-locale-provider>
                     </v-menu>
+                </v-col>-->
+                 <v-col cols="12" md="2">
+                    <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="underlined"
+                        prepend-icon="mdi-calendar"></v-select><!--@update:model-value="initialize()"-->
+                </v-col>
+                <v-col cols="12" md="2">
+                   <v-select v-model="selectedMounth" :items="months.map(month => ({
+                    value: month.value,
+                    title: `${month.title}`,
+                    //icon: month.icon
+                    }))" label="Mes" density="compact" variant="underlined" prepend-icon="mdi-calendar-month">
+                    <!-- Slot para personalizar cómo se muestran los ítems en la lista -->
+    <template v-slot:item="{ props, item }">
+        <v-list-item
+            v-bind="props"
+            :prepend-icon="item.raw.icon"
+        ></v-list-item>
+    </template>
+    
+    <!-- Slot para personalizar cómo se muestra el ítem seleccionado -->
+    <template v-slot:selection="{ item }">
+        <v-list-item
+            :prepend-icon="item.raw.icon"
+            :title="item.title"
+        ></v-list-item>
+    </template>
+                    </v-select>
                 </v-col>
                 <v-col cols="12" md="1">
                     <v-btn icon @click="products()" color="#F18254">
@@ -79,22 +106,16 @@
                             :search="search" class="elevation-1" style="max-height: 55vh; overflow-y: auto;"
                             no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles"
                             :loading="loadingrules" loading-text="Cargando datos...">
-                            <template v-slot:item.professionalName="{ item }">
+                            <template v-slot:item.name="{ item }">
                                 <v-avatar class="mr-1" elevation="3" color="grey-lighten-4" size="small">
-                                    <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_url}`"
+                                    <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_product}`"
                                         alt="image"></v-img>
                                 </v-avatar><!--+'?$'+Date.now()-->
-                                {{ item.professionalName }}
+                                {{ item.name }}
                             </template>
-                            <template v-slot:item.clientName="{ item }">
-                                <v-avatar class="mr-1" elevation="3" color="grey-lighten-4" size="small">
-                                    <v-img :src="`${this.$axios.defaults.baseURL}images/${item.client_image}`"
-                                        alt="image"></v-img>
-                                </v-avatar><!--+'?$'+Date.now()-->
-                                {{ item.clientName }}
-                            </template>
-                            <template v-slot:item.commission_amount="{ item }">
-                                {{ formatNumber(item.commission_amount) }}
+
+                            <template v-slot:item.professional_commission="{ item }">
+                                {{ formatNumber(item.professional_commission) }}
                             </template>
                         </v-data-table>
                     </v-card-text>
@@ -109,7 +130,44 @@ import LocalStorageService from "@/LocalStorageService";
 import { handleRequest } from "@/utils/api";
 
 export default {
-    data: () => ({
+    data: () => {
+        const currentDate = new Date();
+        const currentDay = currentDate.getDate(); // Día actual del mes
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth() + 1;
+
+        // Cálculo del mes anterior con ajuste de año
+        const previousDate = new Date(currentDate);
+        previousDate.setMonth(previousDate.getMonth() - 1);
+        const previousMonth = previousDate.getMonth() + 1;
+        const previousYear = previousDate.getFullYear();
+        const years = [];
+        for (let year = 2023; year <= currentYear; year++) {
+            years.push(year);
+        }
+        years.reverse();
+        // Array completo de nombres de meses
+        const monthNames = {
+            1: { name: 'Enero', icon: 'mdi-snowflake' },
+            2: { name: 'Febrero', icon: 'mdi-heart' },
+            3: { name: 'Marzo', icon: 'mdi-clover' },
+            4: { name: 'Abril', icon: 'mdi-weather-rainy' },
+            5: { name: 'Mayo', icon: 'mdi-flower' },
+            6: { name: 'Junio', icon: 'mdi-sun-wireless' },
+            7: { name: 'Julio', icon: 'mdi-umbrella-beach' },
+            8: { name: 'Agosto', icon: 'mdi-sunglasses' },
+            9: { name: 'Septiembre', icon: 'mdi-leaf' },
+            10: { name: 'Octubre', icon: 'mdi-ghost' },
+            11: { name: 'Noviembre', icon: 'mdi-weather-windy' },
+            12: { name: 'Diciembre', icon: 'mdi-gift' }
+        };
+        // Determinar qué meses mostrar según el día actual
+        const availableMonths = Object.keys(monthNames).map(monthNumber => ({
+        value: ('0' + monthNumber).slice(-2), // Formato '01', '02', etc.
+        title: monthNames[monthNumber].name,        // Nombre completo del mes
+        icon: monthNames[monthNumber].icon
+        }));
+        return {
         loadingrules: true,
         valid: true,
         mover: true,
@@ -145,6 +203,10 @@ export default {
         totalService: null,
         salesIds: [],
         totalTip: null,
+        years,
+            months: availableMonths, // Usamos el array calculado
+            selectedYear: previousMonth === 12 ? previousYear : currentYear, // Ajuste de año
+            selectedMounth: currentDay <= 10 ? ('0' + previousMonth).slice(-2) : ('0' + currentMonth).slice(-2),
         totalPurchase: null,
         carIds: [],
         tipIds: [],
@@ -159,7 +221,7 @@ export default {
         { title: 'Cantidad', value: 'cant', sortable: true },
         //{ title: 'Tipo de Venta', value: 'type', sortable: true },
         //{ title: 'Importe', value: 'price', sortable: true },
-        { title: 'Comisión Generada', value: 'commission_amount', sortable: true },
+        { title: 'Comisión por Productos', value: 'professional_commission', sortable: true },
         ],
         results: [],
         rules: [],
@@ -200,7 +262,7 @@ export default {
         input3: null,
         professional_id: null,
         selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
-    }),
+    }},
 
     computed: {
         amountFormatted: {
@@ -347,8 +409,9 @@ export default {
             const requestParams = {
                 branch_id: this.branch_id,
                 professional_id: this.professional_id,
-                charge: this.charge
-                //data: this.date ? format(new Date(this.date), 'yyyy-MM-dd') : format(new Date(), 'yyyy-MM-dd')
+                charge: this.charge,
+                 year: Number(this.selectedYear),
+                month: Number(this.selectedMounth),
             };
             try {
                 const result = await handleRequest({
@@ -384,8 +447,8 @@ export default {
             LocalStorageService.setIsLocked(true);
             const requestParams = {
                 branch_id: this.branch_id,
-                startDate: this.date ? this.date : new Date().toISOString().split('T')[0],
-                endDate: this.endDate ? this.endDate : new Date().toISOString().split('T')[0],
+                year: Number(this.selectedYear),
+                month: Number(this.selectedMounth),
                 professional_id: this.professional_id,
                 charge: this.charge,
             };

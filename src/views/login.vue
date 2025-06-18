@@ -127,7 +127,7 @@ import router from '@/router/index';
 export default {
   data: () => ({
     loading: false,
-    selectedOption: null, // Controla la opción seleccionada
+    selectedOption: 'empresa', // Controla la opción seleccionada
     visible: false,
     valid: true,
     snackbar: false,

@@ -1291,11 +1291,45 @@ export default {
   },
 
   methods: {
-    getMonthDateRange(date) {
+    /*getMonthDateRange(date) {
       const start = new Date(date.getFullYear(), date.getMonth(), 1);
       const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
       return { start, end };
-    },
+    },*/
+    getMonthDateRange(date) {
+  if (!date || !(date instanceof Date)) {
+    date = new Date(); // Fallback a fecha actual
+    this.value = [date]; // Actualiza el valor del calendario
+  }
+  
+  const start = new Date(date.getFullYear(), date.getMonth(), 1);
+  const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  return { start, end };
+},
+onCalendarMonthChange(newDate) {
+  console.log('newDate', newDate);
+  
+  // Asegurarnos que newDate es un array con al menos una fecha válida
+  const safeDate = Array.isArray(newDate) && newDate.length > 0 
+    ? newDate[0] 
+    : new Date();
+  
+  // Actualizar el valor reactivo
+  this.value = [safeDate];
+  
+  console.log('Mes seleccionado:', 
+    safeDate.getMonth() + 1, // Mes (1-12)
+    'Año:', 
+    safeDate.getFullYear()
+  );
+  
+  // Opcional: cargar automáticamente las reservaciones si hay un profesional seleccionado
+  if (this.professional_idR) {
+    this.showReservationsProfessional();
+  }else{
+    this.showReservations();
+  }
+},
     // aqui lo del calendario
     getEventColor(event) {
       return event.color
@@ -1477,10 +1511,19 @@ export default {
       this.events = [];
       console.log('this.today');
       console.log(this.today);
-      const today = new Date(this.today);
+          const selectedDate = Array.isArray(this.value) && this.value.length > 0 
+    ? this.value[0] 
+    : new Date();
+  
+  console.log('Consultando reservaciones para:', selectedDate);
+  
+  const range = this.getMonthDateRange(selectedDate);
+  const startDate = range.start.toISOString().split('T')[0];
+  const endDate = range.end.toISOString().split('T')[0];
+      /*const today = new Date(this.today);
       const range = this.getMonthDateRange(today);
       const startDate = range.start.toISOString().split('T')[0];
-      const endDate = range.end.toISOString().split('T')[0];
+      const endDate = range.end.toISOString().split('T')[0];*/
       /*const startDate = this.input
         ? format(this.input, "yyyy-MM-dd")
         : format(new Date(), "yyyy-MM-dd");
@@ -1508,10 +1551,19 @@ export default {
       this.events = [];
       console.log('this.today');
       console.log(this.today);
-      const today = new Date(this.today);
+      /*const today = new Date(this.today);
       const range = this.getMonthDateRange(today);
       const startDate = range.start.toISOString().split('T')[0];
-      const endDate = range.end.toISOString().split('T')[0];
+      const endDate = range.end.toISOString().split('T')[0];*/
+          const selectedDate = Array.isArray(this.value) && this.value.length > 0 
+    ? this.value[0] 
+    : new Date();
+  
+  console.log('Consultando reservaciones para:', selectedDate);
+  
+  const range = this.getMonthDateRange(selectedDate);
+  const startDate = range.start.toISOString().split('T')[0];
+  const endDate = range.end.toISOString().split('T')[0];
       axios
         .get("https://testapi.simplifies.cl/api/professional-reservations-periodo", {
           params: {

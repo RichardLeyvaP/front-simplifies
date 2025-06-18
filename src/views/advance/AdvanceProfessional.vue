@@ -469,32 +469,24 @@ export default {
         imgedit() {
             return this.imgMiniatura;
         },
-        dateFormatted() {
-            const date = this.input ? new Date(this.input) : new Date();
-            return date.toISOString().split('T')[0]
-            //return `${year}-${month}-${day}`;
-        },
-        dateFormatted1() {
-            const date = this.input2 ? new Date(this.input2) : new Date();
-            return date.toISOString().split('T')[0];
-            /*const day = date.getDate().toString().padStart(2, "0");
-            const month = (date.getMonth() + 1).toString().padStart(2, "0");
-            const year = date.getFullYear();
-            return `${year}-${month}-${day}`;*/
-        },
-        dateFormatted3() {
-            const date = this.input3 ? new Date(this.input3) : new Date();
-            return date.toISOString().split('T')[0];
-        },
-        getDate() {
-            return this.input ? new Date(this.input).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
-        },
-        getDate2() {
-            return this.input2 ? new Date(this.input2).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
-        },
-        getDate3() {
-            return this.input3 ? new Date(this.input3).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
-        },
+       dateFormatted() {
+    return this.formatLocalDate(this.input);
+  },
+  dateFormatted1() {
+    return this.formatLocalDate(this.input2);
+  },
+  dateFormatted3() {
+    return this.formatLocalDate(this.input3);
+  },
+  getDate() {
+    return this.formatLocalDate(this.input);
+  },
+  getDate2() {
+    return this.formatLocalDate(this.input2);
+  },
+  getDate3() {
+    return this.formatLocalDate(this.input3);
+  },
         shouldShowAdvanceButton() {
             return !this.mostrarFila && this.cantAdvanceToday;
         },
@@ -677,10 +669,16 @@ export default {
         async advances() {
             this.loadingrules = true;
             LocalStorageService.setIsLocked(true);
+            const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0'); // Meses son 0-11
+      const day = String(today.getDate()).padStart(2, '0');
+
+      const formattedDate = `${year}-${month}-${day}`; // Formato "YYYY-MM-DD"
             const requestParams = {
                 branch_id: this.branch_id,
-                startDate: this.date ? this.date : new Date().toISOString().split('T')[0],
-                endDate: this.endDate ? this.endDate : new Date().toISOString().split('T')[0],
+                startDate: this.date ? this.date : formattedDate,
+                endDate: this.endDate ? this.endDate : formattedDate,
                 professional_id: this.professional_id,
             };
             try {
@@ -997,36 +995,45 @@ export default {
         this.editedIndex = -1
       })
     },        
-    canRequestAdvanceToday() {
-        const today = new Date();
-        const currentMonth = today.getMonth();
-        const currentYear = today.getFullYear();
-        const currentDay = today.getDate();
+canRequestAdvanceToday() {
+    const today = new Date();
+    const currentMonth = today.getMonth();
+    const currentYear = today.getFullYear();
+    const currentDay = today.getDate();
 
-        // Filtrar adelantos del mes actual
-        const currentMonthAdvances = this.results.filter(advance => {
-            const advanceDate = new Date(advance.data);
-            return (
-                advanceDate.getMonth() === currentMonth && 
-                advanceDate.getFullYear() === currentYear
-            );
+    // Filtrar adelantos del mes actual
+    const currentMonthAdvances = this.results.filter(advance => {
+        // Parsear fecha ignorando zona horaria (solución clave)
+        const advanceDate = new Date(advance.data + 'T00:00:00');
+        
+        return (
+            advanceDate.getMonth() === currentMonth && 
+            advanceDate.getFullYear() === currentYear
+        );
+    });
+
+    // Verificar según la quincena actual
+    if (currentDay <= 15) {
+        // Primera quincena (días 1-15)
+        return currentMonthAdvances.some(advance => {
+            const advanceDate = new Date(advance.data + 'T00:00:00');
+            return advanceDate.getDate() <= 15;
         });
-
-        // Verificar según la quincena actual
-        if (currentDay <= 15) {
-            // Primera quincena (días 1-15)
-            return currentMonthAdvances.filter(advance => {
-                const advanceDate = new Date(advance.data);
-                return advanceDate.getDate() <= 15;
-            }).length === 0;
-        } else {
-            // Segunda quincena (días 16-fin de mes)
-            return currentMonthAdvances.filter(advance => {
-                const advanceDate = new Date(advance.data);
-                return advanceDate.getDate() > 15;
-            }).length === 0;
-        }
+    } else {
+        // Segunda quincena (días 16-fin de mes)
+        return currentMonthAdvances.some(advance => {
+            const advanceDate = new Date(advance.data + 'T00:00:00');
+            return advanceDate.getDate() > 15;
+        });
     }
+},
+     formatLocalDate(date) {
+    const d = date ? new Date(date) : new Date();
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
     },
 }
 </script>

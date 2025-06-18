@@ -1,8 +1,6 @@
 <!-- eslint-disable vue/no-use-v-if-with-v-for -->
 <template>
-  <v-card class="full-height">
-    <v-layout class="full-height">
-      <v-navigation-drawer permanent class="pt-4" color="#2B3141" theme="dark">
+  <v-card style="height: 100%; display: flex; flex-direction: column;">
         <template v-slot:prepend>
           <v-list-item color="black" class="text-subtitle-1" lines="two" variant="flat"
           :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + this.imageBusiness" :title="this.titulo" :subtitle="this.subtitle">
@@ -10,7 +8,7 @@
         </template>
 
         <v-divider></v-divider>
-
+        <div style="overflow-y: auto; flex: 1;">
         <v-list color="" density="compact" nav>
           <v-list-item prepend-icon="mdi-view-dashboard-outline" title="Dashboard" to="home" value="home"></v-list-item>
           <v-list-group value="Administración" v-if="filteredMenuAdministracion.length !== 0">
@@ -132,9 +130,8 @@
           </v-list-group>
 
         </v-list>
-      </v-navigation-drawer>
-      <v-main class="full-height" style="overflow-y: auto;"></v-main>
-    </v-layout>
+        </div>
+
   </v-card>
 </template>
 
@@ -246,7 +243,7 @@ export default {
       { icon: "mdi-cash-register", title: "Cierres de caja", to: "boxclose", value: "boxclose", permission: "view_cash_closing" },
       { icon: "mdi-account-multiple-check-outline", title: "Clientes Atendidos", to: "boxclosedate", value: "boxclosedate", permission: "view_cash_closing_date" },
       { icon: "mdi-cash-lock", title: "Cierres de mes", to: "monthlyclosure", value: "monthlyclosure", permission: "view_monthly_closing" },
-      { icon: "mdi-cart-arrow-down", title: "Solicitudes de Compra Productos", to: "workerpurchase", value: "workerpurchase", permission: "view_workerpurchase" }, 
+      { icon: "mdi-cart-arrow-down", title: "Compra Productos", to: "workerpurchase", value: "workerpurchase", permission: "view_workerpurchase" }, 
     ],
     clientes:[
       { icon: "mdi-account-star-outline", title: "Clientes", to: "client", value: "clients", permission: "view_clients" },

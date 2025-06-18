@@ -294,9 +294,12 @@ export default {
 
     async initialize() {
       this.loadingrules = true;
-      const today = new Date();
-      const formattedDate = this.date ? this.date : today.toISOString().split('T')[0]; // Formato: YYYY-MM-DD
+     const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0'); // Meses son 0-11
+      const day = String(today.getDate()).padStart(2, '0');
 
+      const formattedDate = `${year}-${month}-${day}`; // Formato "YYYY-MM-DD"
       const requestParams = {
         branch_id: this.branch_id,
         data: formattedDate,

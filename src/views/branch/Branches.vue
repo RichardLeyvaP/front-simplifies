@@ -410,7 +410,7 @@
                 <v-divider></v-divider>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="#E7E9E9" variant="flat" @click="closeP">
+                  <v-btn color="#E7E9E9" :disabled="!valid" variant="flat" @click="closeP">
                     Cancelar
                   </v-btn>
                   <v-btn color="#F18254" variant="flat" @click="saveP" :disabled="!valid">

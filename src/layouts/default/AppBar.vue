@@ -13,6 +13,10 @@
     </v-row>
   </v-snackbar>
   <v-app-bar scroll-threshold="0">
+   <v-app-bar-nav-icon 
+      @click.stop="$emit('toggle-drawer')"
+      v-if="!$vuetify.display.mdAndUp"
+    />
     <v-app-bar-title>
 
       <v-img src="@/assets/logo_negro.png" class="justify-center" max-height="100" max-width="174"
@@ -148,6 +152,9 @@ axios.interceptors.request.use(config => {
 //import router from '@/router/index';
 //const userTokenStore = UserTokenStore();
 export default {
+   props: {
+    drawerVisible: Boolean
+  },
   data: () => ({
     intervalId: null,
     snackbar: false,

@@ -581,7 +581,7 @@
 
               </v-container>
             </template>
-            <!--<template v-slot:item.4>
+            <template v-slot:item.4>
               <v-sheet border>
                 <div style="max-height: 70vh; overflow-y: auto;">
                   <v-card>
@@ -604,8 +604,8 @@
                 </v-row>
 
               </v-container>
-            </template>-->
-            <template v-slot:item.4>
+            </template>
+            <template v-slot:item.5>
               <v-sheet border>
                 <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                   <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
@@ -704,7 +704,7 @@
                 </v-row>
               </v-container>
             </template>
-            <template v-slot:item.5>
+            <template v-slot:item.6>
               <v-sheet border>
                 <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
                   <v-card style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
@@ -1905,7 +1905,8 @@
                   </v-col>
                 </v-row>
                 <v-calendar ref="calendar" v-model="value" :events="events" locale="es" :event-color="getEventColor"
-                  class="fixed-size-calendar" text="Hoy" type="month">
+                  class="fixed-size-calendar" text="Hoy" type="month"  @update:model-value="onCalendarMonthChange"
+  :model-value="value.length ? value : [new Date()]">
                   <template v-slot:event="{ event }">
                     <div class="event-title">
                       {{ event.title }}
@@ -2070,7 +2071,7 @@ import * as XLSX from 'xlsx';
 import { format } from "date-fns";
 import { VCalendar } from 'vuetify/labs/VCalendar';
 import Coexistence from "../coexistence/Coexistence.vue";
-//import Advance from "../advance/Advance.vue";
+import Advance from "../advance/Advance.vue";
 import { handleRequest } from "@/utils/api";
 import ProductStoreStatus from "../productstorestatus/ProductStoreStatus.vue";
 import _ from 'lodash';
@@ -2091,7 +2092,7 @@ export default {
     VCalendar,
     Coexistence,
     ProductStoreStatus,
-    //Advance
+    Advance
   },
 
   data: () => ({
@@ -2117,7 +2118,7 @@ export default {
       'Inventario',
       'Convivencias',
       'Bonos',
-      //'Adelantos',
+      'Adelantos',
       'Ingresos y Gastos',
       'Resumen',
     ],
@@ -3399,7 +3400,7 @@ export default {
       this.totalBoxExtraction();
       this.existence();
       const differences = this.calculateTotalDifferencesGlobal1;
-          if (this.step === 4){
+          if (this.step === 5){
             await this.saveCloseBox();
           }
       if (this.step < this.items.length) {
@@ -3430,7 +3431,7 @@ export default {
             LocalStorageService.setIsLocked(false);
           });
       }
-      if (this.step === 4) {
+      if (this.step === 5) {
         this.dialogDeleteDiario = false;
 
         this.results = [];
@@ -3476,13 +3477,13 @@ export default {
           this.showAlert('error', 'Ocurrió un error inesperado al cargar los métodos de pago.', 3000);
         }
       }
-      if (this.step === 5) {
+      if (this.step === 6) {
         this.dialogDeleteDiario = false;
       }
-      if (this.step === 5) {
+      if (this.step === 6) {
         this.dialogDeleteDiario = false;
       }
-      if (this.step > 5) {
+      if (this.step > 6) {
         this.dialogDeleteDiario = false;
         this.dialog = false;
       }
@@ -3761,11 +3762,45 @@ export default {
         return true; // Validación exitosa
       }
     },
-    getMonthDateRange(date) {
+    /*getMonthDateRange(date) {
       const start = new Date(date.getFullYear(), date.getMonth(), 1);
       const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
       return { start, end };
-    },
+    },*/
+    getMonthDateRange(date) {
+  if (!date || !(date instanceof Date)) {
+    date = new Date(); // Fallback a fecha actual
+    this.value = [date]; // Actualiza el valor del calendario
+  }
+  
+  const start = new Date(date.getFullYear(), date.getMonth(), 1);
+  const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  return { start, end };
+},
+onCalendarMonthChange(newDate) {
+  console.log('newDate', newDate);
+  
+  // Asegurarnos que newDate es un array con al menos una fecha válida
+  const safeDate = Array.isArray(newDate) && newDate.length > 0 
+    ? newDate[0] 
+    : new Date();
+  
+  // Actualizar el valor reactivo
+  this.value = [safeDate];
+  
+  console.log('Mes seleccionado:', 
+    safeDate.getMonth() + 1, // Mes (1-12)
+    'Año:', 
+    safeDate.getFullYear()
+  );
+  
+  // Opcional: cargar automáticamente las reservaciones si hay un profesional seleccionado
+  if (this.professional_idR) {
+    this.showReservationsProfessional();
+  }else{
+    this.showReservations();
+  }
+},
     // aqui lo del calendario
     getEventColor(event) {
       return event.color
@@ -3792,16 +3827,25 @@ export default {
       this.events = [];
       console.log('this.today');
       console.log(this.today);
-      const today = new Date(this.today);
+      /*const today = new Date(this.today);
       const range = this.getMonthDateRange(today);
       const startDate = range.start.toISOString().split('T')[0];
-      const endDate = range.end.toISOString().split('T')[0];
+      const endDate = range.end.toISOString().split('T')[0];*/
       /*const startDate = this.input
         ? format(this.input, "yyyy-MM-dd")
         : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2
         ? format(this.input2, "yyyy-MM-dd")
         : format(new Date(), "yyyy-MM-dd");*/
+        const selectedDate = Array.isArray(this.value) && this.value.length > 0 
+    ? this.value[0] 
+    : new Date();
+  
+  console.log('Consultando reservaciones para:', selectedDate);
+  
+  const range = this.getMonthDateRange(selectedDate);
+  const startDate = range.start.toISOString().split('T')[0];
+  const endDate = range.end.toISOString().split('T')[0];
       LocalStorageService.setIsLocked(true);
       axios
         .get("https://testapi.simplifies.cl/api/branch-reservations-periodo", {
@@ -3823,10 +3867,21 @@ export default {
       this.events = [];
       console.log('this.today');
       console.log(this.today);
-      const today = new Date(this.today);
+      /*const today = new Date(this.today);
       const range = this.getMonthDateRange(today);
       const startDate = range.start.toISOString().split('T')[0];
-      const endDate = range.end.toISOString().split('T')[0];
+      const endDate = range.end.toISOString().split('T')[0];*/
+  
+  // Obtener la fecha de manera segura del array value
+  const selectedDate = Array.isArray(this.value) && this.value.length > 0 
+    ? this.value[0] 
+    : new Date();
+  
+  console.log('Consultando reservaciones para:', selectedDate);
+  
+  const range = this.getMonthDateRange(selectedDate);
+  const startDate = range.start.toISOString().split('T')[0];
+  const endDate = range.end.toISOString().split('T')[0];
       axios
         .get("https://testapi.simplifies.cl/api/professional-reservations-periodo", {
           params: {
@@ -3857,6 +3912,7 @@ export default {
           LocalStorageService.setIsLocked(false);
         });
     },
+
     openWhatsApp(phone) {
       window.open('http://wa.me/' + '+' + phone);
     },

@@ -128,17 +128,17 @@
                     density="compact">
                   </v-text-field>
                 </v-col>
-                <v-col cols="12" md="3">
+                <v-col cols="12" md="5">
                   <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.product_category_id"
                     :items="productCategories" density="compact" label="Categoría" prepend-icon="mdi-tag"
-                    item-title="name" item-value="id" variant="underlined" :rules="selectRules"
-                    @update:model-value="updateSelectedCategoryCommission()"></v-autocomplete>
+                    item-title="name" item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete> <!--
+                    @update:model-value="updateSelectedCategoryCommission()"-->
                 </v-col>
-                <v-col cols="12" md="2" v-if="selectedCategoryGivesCommission === 1">
+                <!--<v-col cols="12" md="2" v-if="selectedCategoryGivesCommission === 1">
                   <v-text-field v-model="editedItem.commission_rate" label="Comisión" variant="underlined"
                     :rules="commissionRules" prepend-icon="mdi-cash-multiple" type="number" min="0" max="100"
                     density="compact" step="1" suffix="%"></v-text-field>
-                </v-col>
+                </v-col>-->
                 <v-col cols="12" md="7">
                   <v-text-field v-model="editedItem.description" density="compact" label="Descripción"
                     prepend-icon="mdi-information" variant="underlined" :rules="dirRules">
@@ -336,7 +336,7 @@ export default {
       { title: "Precio compra", align: "start", value: "purchase_price" },
       { title: "Precio venta", align: "start", value: "sale_price" },
       { title: "Descuento", align: "start", value: "worker_discount" },
-      { title: "Comisión", align: "start", value: "commission_rate" },
+      //{ title: "Comisión", align: "start", value: "commission_rate" },
       { title: "Categoría", align: "start", value: "productcategory.name" },
       { title: "Acciones", key: "actions", sortable: false, width: '10%' },
     ],
@@ -361,7 +361,7 @@ export default {
       image_product: "",
       id: "",
       worker_discount: "",
-      commission_rate: null
+      commission_rate: ""
     },
     data: {},
 
@@ -377,7 +377,7 @@ export default {
       image_product: "",
       id: "",
       worker_discount: "",
-      commission_rate: null
+      commission_rate: ""
     },
     //productos mas y menos vendidos
     menu2: false,

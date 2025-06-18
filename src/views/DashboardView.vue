@@ -1,13 +1,21 @@
 
 <template>
-    <v-layout class="rounded rounded-md" style="height: 100vh; display: flex;  flex-direction: row;">   
+    <v-layout class="rounded rounded-md" style="height: 100%; display: flex;  flex-direction: row;">
        
-      <AppBarView app style="flex-shrink: 0;"></AppBarView>
-      <NavigationDrawerView app class="pt-12" style="flex-shrink: 0;"></NavigationDrawerView>
-      <!-- Sizes your content based upon application components -->
-      <v-main class="mt-6" style="flex-grow: 1; overflow-y: auto;">
-        <router-view />
-      </v-main>
+      <AppBarView app style="flex-shrink: 0;" @toggle-drawer="drawer = !drawer" 
+      :drawer-visible="drawer"></AppBarView>
+      <v-navigation-drawer class="pt-4" color="#2B3141" theme="dark"
+      v-model="drawer"
+      :permanent="$vuetify.display.mdAndUp"
+      :temporary="!$vuetify.display.mdAndUp"
+    >
+      <!-- Contenido de tu menú -->
+      <NavigationDrawerView />
+    </v-navigation-drawer>
+
+    <v-main class="mt-6">
+      <router-view />
+    </v-main>
     
       <v-footer app>
         <!-- -->
@@ -27,6 +35,18 @@ export default {
     AppBarView,
     
   },
-
+  data() {
+    return {
+      drawer: null
+    }
+  },
+  mounted() {
+    this.drawer = this.$vuetify.display.mdAndUp
+  },
+  watch: {
+    '$vuetify.display.mdAndUp'(newVal) {
+      this.drawer = newVal
+    }
+  }
 }
 </script>
