@@ -243,9 +243,9 @@
                       <v-row>
                         <v-col cols="12">
                           <spam class="text-overline">
-                            <div v-if="payments && payments.products"
+                            <div
                               class="text-h6 font-weight-bold text-amber-darken-1">
-                              {{ formatNumber(payments.products.commission_neto) }}
+                              {{ formatNumber(this.bonusProductAct) }}
                             </div>
                             <div class="text-h6 font-weight-bold text-amber-darken-1">
                               CLP
@@ -304,9 +304,9 @@
                       <v-row>
                         <v-col cols="12">
                           <spam class="text-overline">
-                            <div v-if="payments && payments.tips"
+                            <div 
                               class="text-h6 font-weight-bold text-deep-orange-accent-2">
-                              {{ formatNumber(payments.tips.tip_neto) }}
+                              {{ formatNumber(this.commissionTipAct) }}
                             </div>
                             <div class="text-h6 font-weight-bold text-deep-orange-accent-2">
                               CLP
@@ -866,6 +866,8 @@ export default {
       dialogReservas: false,
       bonusProduct: null,
       commissionTip: null,
+      bonusProductAct: null,
+      commissionTipAct: null,
       current_charged: null,
       previous_charged: null,
       advances: [],
@@ -1142,6 +1144,8 @@ export default {
                     this.payments = result.data.payments;
                     this.bonusProduct = result.data.total_product_ant;
                     this.commissionTip = result.data.total_tip_ant;
+                    this.bonusProductAct = result.data.total_product_act;
+                    this.commissionTipAct = result.data.total_tip_act;
                     this.advances = result.data.advances;
                     this.current_charged = Number(result.data.current_charged);
                     this.previous_charged = Number(result.data.previous_charged);
@@ -1154,6 +1158,8 @@ export default {
                     this.advances = [];
                     this.bonusProduct = null,
                     this.commissionTip = null;
+                    this.bonusProductAct = null,
+                    this.commissionTipAct = null;
                     this.current_charged = null;
                     this.previous_charged = null;
                 }
