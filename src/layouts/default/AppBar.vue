@@ -15,7 +15,7 @@
   <v-app-bar scroll-threshold="0">
    <v-app-bar-nav-icon 
       @click.stop="$emit('toggle-drawer')"
-      v-if="!$vuetify.display.mdAndUp"
+      v-if="!$vuetify.display.mdAndUp && mobile"
     />
     <v-app-bar-title>
 
@@ -25,13 +25,13 @@
 
     </v-app-bar-title>
     <v-spacer></v-spacer>
-    <v-badge :content="socilitudWithStatusPending" color="red" class="mr-4" >
+    <v-badge :content="socilitudWithStatusPending" color="red" class="mr-4" v-if="mobile" >
       <v-icon color="#F18254" @click="handlePurchaseClick" title="Solicitudes de compra de productos" class="mr-2"
         size="x-large">
         mdi-cart-arrow-down
       </v-icon>
     </v-badge>
-    <v-badge :content="notificationsWithStateZero" color="red" class="mr-4">
+    <v-badge :content="notificationsWithStateZero" color="red" class="mr-4" v-if="mobile" >
       <v-icon id="menu-activator" color="#F18254" @click="showMenu = !showMenu; clearNotifications()" class="mr-2"
         size="x-large"><!--@click="showMenu = !showMenu; clearNotifications()" poniendo esto podemos hacer la logica de pasar todas las que state sea 0 a uno-->
         mdi-bell
@@ -156,6 +156,7 @@ export default {
     drawerVisible: Boolean
   },
   data: () => ({
+    mobile: 0,
     intervalId: null,
     snackbar: false,
     sb_type: '',
@@ -198,9 +199,9 @@ export default {
     this.branch_id = LocalStorageService.getItem('branch_id');
     const image = LocalStorageService.getItem('image');
     const cleanedImage = image.replace(/"/g, '');
+    this.mobile = Number(LocalStorageService.getItem('mobile'));
     this.imageUrl = `${this.$axios.defaults.baseURL}images/${cleanedImage}?t=${Date.now()}`;
     
-    console.log(this.imageUrl);
     // Otros datos que hayas almacenado
     // Iniciar el intervalo con la lógica de bloqueo
     if (this.charge !== 'Totem' && this.charge !== 'Pizarra') {

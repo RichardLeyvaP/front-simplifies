@@ -23,7 +23,7 @@
                     </v-col>
                     <v-col cols="12" md="4" class="text-right ml-12">
                         <v-btn class="text-subtitle-1" variant="flat" elevation="2"
-                            prepend-icon="mdi-plus-circle" @click="showAddAdvance" :disabled="this.canAdvanceToday">
+                            prepend-icon="mdi-plus-circle" @click="showAddAdvance" :disabled="!cantAdvanceToday">
                             Solicitar Adelanto
                         </v-btn>
                         </v-col>
@@ -384,7 +384,7 @@ export default {
         selectedImageUrl: '',
         message_delete: true,
         dialogDelete: false,
-        canAdvanceToday: false,
+        cantAdvanceToday: false,
         dialogSolicitud: false,
         totalSales: null,
         totalOrders: null,
@@ -628,15 +628,17 @@ export default {
                 if (result.success) {
                     // Si la solicitud es exitosa, asignamos las sucursales
                     this.results = result.data.advances;
+                    //console.log('this.results');
+                    //console.log(this.results);
                     //if (this.charge !== "Administrador") {                  
-                    this.cantAdvanceToday = this.canRequestAdvanceToday(this.results); 
-                    console.log('this.canAdvanceToday');
-                    console.log(this.canAdvanceToday);
+                    console.log('Valor DIRECTO del método:', this.canRequestAdvanceToday());
+this.cantAdvanceToday = this.canRequestAdvanceToday(); 
+console.log('Valor ASIGNADO:', this.cantAdvanceToday);
                     //}
                 } else {
                     this.loadingrules = false;
                     LocalStorageService.setIsLocked(false);
-                    this.canAdvanceToday = false;
+                    this.cantAdvanceToday = false;
                     // Si no hay datos, asignamos un array vacío
                     this.results = [];
                 }
@@ -644,7 +646,7 @@ export default {
                 this.results = [];
                 this.loadingrules = false;
                 LocalStorageService.setIsLocked(false);
-                this.canAdvanceToday = false;
+                this.cantAdvanceToday = false;
                 // Captura de errores no controlados
                 this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
             } finally {
@@ -692,23 +694,24 @@ export default {
                     // Si la solicitud es exitosa, asignamos las sucursales
                     this.results = result.data.advances;
                     //if (this.charge !== "Administrador") {                  
-                    this.cantAdvanceToday = this.canRequestAdvanceToday(this.results); 
+                    //this.cantAdvanceToday = this.canRequestAdvanceToday(this.results); 
                     //}
                 } else {
                     this.loadingrules = false;
                     LocalStorageService.setIsLocked(false);
                     // Si no hay datos, asignamos un array vacío
                     this.results = [];
-                    this.canAdvanceToday = false;
+                    this.cantAdvanceToday = false;
                 }
             } catch (error) {
                 this.results = [];
                 this.loadingrules = false;
                 LocalStorageService.setIsLocked(false);
-                this.canAdvanceToday = false;
+                this.cantAdvanceToday = false;
                 // Captura de errores no controlados
                 this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
             } finally {
+                this.cantAdvanceToday = false;
                 this.loadingrules = false;
                 LocalStorageService.setIsLocked(false);
             }
@@ -996,37 +999,42 @@ export default {
       })
     },        
 canRequestAdvanceToday() {
-    const today = new Date();
-    const currentMonth = today.getMonth();
-    const currentYear = today.getFullYear();
-    const currentDay = today.getDate();
+     if (!this.results || this.results.length === 0) return true;
+  
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth();
+  const currentDay = now.getDate();
+  const isSecondFortnight = currentDay > 15;
+  
+  console.log('--- FECHA ACTUAL ---');
+  console.log('Fecha:', now.toISOString().split('T')[0]);
+  console.log('Día real:', currentDay);
 
-    // Filtrar adelantos del mes actual
-    const currentMonthAdvances = this.results.filter(advance => {
-        // Parsear fecha ignorando zona horaria (solución clave)
-        const advanceDate = new Date(advance.data + 'T00:00:00');
-        
-        return (
-            advanceDate.getMonth() === currentMonth && 
-            advanceDate.getFullYear() === currentYear
-        );
-    });
+  const advancesThisMonth = this.results.filter(advance => {
+    const advanceDate = new Date(advance.data + 'T00:00:00'); // Fix zona horaria
+    const advanceDay = advanceDate.getDate();
+    
+    console.log('Analizando:', advance.data, '-> Día real:', advanceDay);
+    
+    return (
+      advanceDate.getFullYear() === currentYear &&
+      advanceDate.getMonth() === currentMonth
+    );
+  });
 
-    // Verificar según la quincena actual
-    if (currentDay <= 15) {
-        // Primera quincena (días 1-15)
-        return currentMonthAdvances.some(advance => {
-            const advanceDate = new Date(advance.data + 'T00:00:00');
-            return advanceDate.getDate() <= 15;
-        });
-    } else {
-        // Segunda quincena (días 16-fin de mes)
-        return currentMonthAdvances.some(advance => {
-            const advanceDate = new Date(advance.data + 'T00:00:00');
-            return advanceDate.getDate() > 15;
-        });
-    }
-},
+  if (advancesThisMonth.length === 0) return true;
+
+  const hasConflict = advancesThisMonth.some(advance => {
+    const advanceDate = new Date(advance.data + 'T00:00:00');
+    const advanceDay = advanceDate.getDate();
+    const advanceFortnight = advanceDay > 15;
+    
+    return advanceFortnight === isSecondFortnight;
+  });
+
+  return !hasConflict;
+  },
      formatLocalDate(date) {
     const d = date ? new Date(date) : new Date();
     const year = d.getFullYear();

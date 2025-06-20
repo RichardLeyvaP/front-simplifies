@@ -4,13 +4,17 @@
        
       <AppBarView app style="flex-shrink: 0;" @toggle-drawer="drawer = !drawer" 
       :drawer-visible="drawer"></AppBarView>
-      <v-navigation-drawer class="pt-4" color="#2B3141" theme="dark"
-      v-model="drawer"
-      :permanent="$vuetify.display.mdAndUp"
-      :temporary="!$vuetify.display.mdAndUp"
-    >
+      <v-navigation-drawer
+  v-if="mobile"  
+  v-model="drawer"
+  :permanent="$vuetify.display.mdAndUp"
+  :temporary="!$vuetify.display.mdAndUp"
+  class="pt-4"
+  color="#2B3141"
+  theme="dark"
+>
       <!-- Contenido de tu menú -->
-      <NavigationDrawerView />
+      <NavigationDrawerView v-if="mobile" />
     </v-navigation-drawer>
 
     <v-main class="mt-6">
@@ -27,6 +31,7 @@
 
 import NavigationDrawerView from './NavigationDrawerView.vue'
 import AppBarView from '@/layouts/default/AppBar.vue'
+import LocalStorageService from "@/LocalStorageService";
 
 
 export default {
@@ -37,10 +42,12 @@ export default {
   },
   data() {
     return {
-      drawer: null
+      drawer: null,
+      mobile: 0
     }
   },
   mounted() {
+    this.mobile = Number(LocalStorageService.getItem('mobile'));
     this.drawer = this.$vuetify.display.mdAndUp
   },
   watch: {

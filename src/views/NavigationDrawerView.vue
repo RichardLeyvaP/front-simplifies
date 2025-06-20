@@ -319,7 +319,7 @@ export default {
     this.charge_id = LocalStorageService.getItem("charge_id");
     this.permissionsUser = LocalStorageService.getItem("permissionsUser");
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
-    console.log(this.permissionsUser);
+    //console.log(this.permissionsUser);
     if (this.charge === 'Administrador') {
       // Mostrar la fila con Autocomplete
       this.titulo = this.nameBusiness;
