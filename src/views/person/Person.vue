@@ -683,93 +683,76 @@
 
       <!--ver reservaciones de profesionales-->
       <v-dialog v-model="showReserPrpfessional" fullscreen transition="dialog-bottom-transition">
+    <v-card>
+      <v-toolbar color="#F18254">
+        <v-row align="center">
+          <v-col cols="12" md="8" class="grow ml-4">
+            <span class="text-h8">
+              <strong>Reservas del profesional</strong></span>
+          </v-col>
+        </v-row>
+      </v-toolbar>
+      <v-container fluid>
+        <v-card-text>
+          <v-row>
 
-        <v-card>
+            <v-row>
 
-          <v-toolbar color="#F18254">
-            <v-row align="center">
-              <v-col cols="12" md="8" class="grow ml-4">
-                <span class="text-h8">
-                  <strong>Reservas del profesional</strong></span>
-              </v-col>
             </v-row>
-          </v-toolbar>
-          <v-container fluid>
-            <v-card-text>
-              <v-row>
+            <div class="fixed-size-calendar">
+              <v-sheet>
 
                 <v-row>
-
+                  <v-col cols="12" sm="12" md="3">
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
+                      v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
+                      item-title="name" item-value="id" density="compact" class="ma-2" variant="outlined"
+                      @update:model-value="showReservations()"></v-autocomplete><!--@update:model-value="initialize()"-->
+                  </v-col>
+                  <v-col cols="12" md="3">
+                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id"
+                      :items="professionals" label="Profesional" prepend-inner-icon="mdi-account-tie-outline"
+                      item-title="name" item-value="id" variant="outlined" density="compact" class="ma-2"
+                      :rules="selectRules"><!--@update:model-value="showReservationsProfessional()"-->
+                      <template v-slot:item="{ props, item }">
+                        <v-list-item v-bind="props"
+                          :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + item.raw.image_url"
+                          :subtitle="'Cargo: ' + item.raw.charge" :title="item.raw.name"></v-list-item>
+                      </template>
+                    </v-autocomplete>
+                  </v-col>
+                  <!--<v-col cols="12" md="3">
+                <v-select v-model="type" :items="types" class="ma-2" label="Modo de vista" variant="outlined"
+                  density="compact" hide-details></v-select>
+              </v-col>-->
+                  <v-col cols="12" md="1">
+                    <v-btn :disabled="!this.professional_idR" icon @click="showReservationsProfessional()"
+                      color="#F18254">
+                      <v-icon>mdi-magnify</v-icon></v-btn>
+                  </v-col>
                 </v-row>
-                <div class="fixed-size-calendar">
-                  <v-sheet>
+                <v-calendar ref="calendar" v-model="value" :events="events" locale="es" :event-color="getEventColor"
+                  class="fixed-size-calendar" text="Hoy" type="month"  @update:model-value="onCalendarMonthChange"
+  :model-value="value.length ? value : [new Date()]">
+                  <template v-slot:event="{ event }">
+                    <div class="event-title">
+                      {{ event.title }}
+                    </div>
+                  </template>
+                </v-calendar>
+              </v-sheet>
+            </div>
 
-                    <v-row>
-                      <v-col cols="12" sm="12" md="3" v-if="this.mostrarFila">
-                        <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
-                          v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
-                          item-title="name" item-value="id" density="compact" class="ma-2" variant="outlined"
-                          @update:model-value="showReservations()"></v-autocomplete><!--@update:model-value="initialize()"-->
-                      </v-col>
-                      <v-col cols="12" md="3">
-                        <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id"
-                          :items="professionals" label="Profesional" prepend-inner-icon="mdi-account-tie-outline"
-                          item-title="name" item-value="id" variant="outlined" density="compact" class="ma-2"
-                          :rules="selectRules"><!--@update:model-value="showReservationsProfessional()"-->
-                          <template v-slot:item="{ props, item }">
-                            <v-list-item v-bind="props"
-                              :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + item.raw.image_url"
-                              :subtitle="'Cargo: ' + item.raw.charge" :title="item.raw.name"></v-list-item>
-                          </template>
-                        </v-autocomplete>
-                      </v-col>
-                      <!--<v-col cols="12" md="3">
-                        <v-select v-model="type" :items="types" class="ma-2" label="Modo de vista" variant="outlined"
-                          density="compact" hide-details></v-select>
-                      </v-col>-->
-                      <v-col cols="12" md="1">
-                        <v-btn :disabled="!this.professional_id" icon @click="showReservationsProfessional()"
-                          color="#F18254">
-                          <v-icon>mdi-magnify</v-icon></v-btn>
-                      </v-col>
-                      <!--<v-cols cols="6">
-        <v-select
-        v-model="weekday"
-        :items="weekdays"
-        class="ma-2"
-        label="weekdays"
-        variant="outlined"
-        dense
-        hide-details
-      ></v-select>
-      </v-cols>-->
-                    </v-row>
-                    <v-calendar ref="calendar" v-model="value" :events="events" locale="es" :event-color="getEventColor"
-                      class="fixed-size-calendar" text="Hoy" type="month">
-                    </v-calendar>
-                    <!--<v-sheet>
-        :weekdays="weekday"
-      <v-calendar
-        ref="calendar"
-        v-model="value"
-        :events="events"
-        :view-mode="type"
-        :weekdays="weekday"
-      ></v-calendar>
-    </v-sheet>-->
-                  </v-sheet>
-                </div>
-
-              </v-row>
-            </v-card-text>
-            <v-divider></v-divider>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="#E7E9E9" variant="flat" @click="closeCalendar"> Volver </v-btn>
-            </v-card-actions>
-          </v-container>
-        </v-card>
-      </v-dialog>
+          </v-row>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="#E7E9E9" variant="flat" @click="closeCalendar"> Volver </v-btn>
+        </v-card-actions>
+      </v-container>
+    </v-card>
+  </v-dialog>
 
       <!--BranchRules-->
       <v-dialog v-model="dialogRules" fullscreen transition="dialog-bottom-transition">
@@ -1331,6 +1314,7 @@ onCalendarMonthChange(newDate) {
   }
 },
     // aqui lo del calendario
+    
     getEventColor(event) {
       return event.color
     },
