@@ -4402,7 +4402,7 @@ procesarChangeLog(changeLog) {
         if (result.success) {
           this.results = result.data.cars;
           this.box = result.data.box;
-          this.boxClose = result.data.box.box_close;
+          this.boxClose = this.box.box_close || []; // Asegurar que sea un array
           this.payments = result.data.payments;
           this.cashierSales = result.data.cashierSales;
           this.bonusPay = result.data.bonusPay;
