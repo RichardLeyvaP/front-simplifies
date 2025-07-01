@@ -34,7 +34,7 @@
                   variant="underlined" :rules="selectRules" @update:model-value="handleClientSelection">
                   <template v-slot:item="{ props, item }">
                     <v-list-item v-bind="props"
-                      :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + item.raw.client_image"
+                      :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.client_image"
                       :title="item.raw.name">
                       <v-list-item-subtitle class="d-flex flex-column">
                       <div>Email: {{ item.raw.email }}</div>
@@ -226,7 +226,7 @@ export default {
     //this.charge_id = LocalStorageService.getItem('charge_id');
     this.branch_id = LocalStorageService.getItem('branch_id');
     axios
-      .get('https://testapi.simplifies.cl/api/client-reservation', {
+      .get('https://api2.simplifies.cl/api/client-reservation', {
         params: {
           branch_id: this.branch_id
         }
@@ -362,7 +362,7 @@ export default {
 
     },
     confirmReservation(){
-      axios.get(`https://testapi.simplifies.cl/api/update-confirmation-client?reservation_id=${this.reservation_id}`)
+      axios.get(`https://api2.simplifies.cl/api/update-confirmation-client?reservation_id=${this.reservation_id}`)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.codeConfirmation = response.data;
@@ -412,7 +412,7 @@ export default {
       console.log(this.codeReserva);
 
       // Realiza la solicitud POST Y BUSCO LOS DATOS DEL CLIENTE 
-      axios.get(`https://testapi.simplifies.cl/api/update-confirmation-code?code=${this.codeReserva}&branch_id=${this.branch_id}`)
+      axios.get(`https://api2.simplifies.cl/api/update-confirmation-code?code=${this.codeReserva}&branch_id=${this.branch_id}`)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.codeConfirmation = response.data;

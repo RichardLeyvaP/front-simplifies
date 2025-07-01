@@ -218,7 +218,7 @@ export default {
     this.loadingExpense = true;
     LocalStorageService.setIsLocked(true);
      axios
-       .get('https://testapi.simplifies.cl/api/expense')
+       .get('https://api2.simplifies.cl/api/expense')
        .then((response) => {
          this.results = response.data.expenses;
        }).finally(() => {
@@ -243,7 +243,7 @@ export default {
        id: this.editedItem.id
      };
      axios
-       .post('https://testapi.simplifies.cl/api/expense-destroy', request)
+       .post('https://api2.simplifies.cl/api/expense-destroy', request)
        .then(() => {
         LocalStorageService.setIsLocked(false);
          this.initialize();
@@ -274,7 +274,7 @@ export default {
          this.data.id = this.editedItem.id;
          this.data.name = this.editedItem.name;
          axios
-           .put('https://testapi.simplifies.cl/api/expense', this.data)
+           .put('https://api2.simplifies.cl/api/expense', this.data)
            .then(() => {
            }).finally(() => {
             LocalStorageService.setIsLocked(false);
@@ -285,7 +285,7 @@ export default {
          this.valid = false,
          this.data.name = this.editedItem.name;
          axios
-           .post('https://testapi.simplifies.cl/api/expense', this.data)
+           .post('https://api2.simplifies.cl/api/expense', this.data)
            .then(() => {
            }).finally(() => {
             LocalStorageService.setIsLocked(false);

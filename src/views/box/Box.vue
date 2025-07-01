@@ -147,7 +147,7 @@
             <template v-slot:item.professionalName="{ item }">
 
               <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
               </v-avatar>
               {{ item.professionalName }}
             </template>
@@ -155,7 +155,7 @@
             <template v-slot:item.clientName="{ item }">
 
               <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.client_image" alt="image"></v-img>
+                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.client_image" alt="image"></v-img>
               </v-avatar>
               {{ item.clientName }}
             </template>
@@ -647,7 +647,7 @@
                         <template v-slot:item.name="{ item }">
 
                           <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                            <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+                            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
                           </v-avatar>
                           {{ item.name }}
                         </template>
@@ -1147,7 +1147,7 @@
           <template v-slot:item.image="{ item }">
 
             <v-avatar elevation="3" color="grey-lighten-4" size="large">
-              <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image" alt="image"></v-img>
+              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image" alt="image"></v-img>
             </v-avatar>
 
           </template>
@@ -1206,13 +1206,13 @@
               closable-chips<template v-slot:chip="{ props, item }">
                 <v-chip
                   v-bind="props"
-                  :prepend-avatar="'https://testapi.simplifies.cl/api/images/'+item.raw.image_product"
+                  :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_product"
                   :text="item.raw.name"
                 ></v-chip>
               </template>-->
                 <template v-slot:item="{ props, item }">
                   <v-list-item v-bind="props"
-                    :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + item.raw.image_product"
+                    :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_product"
                     :title="item.raw.name">
                     <v-list-item-subtitle class="d-flex justify-space-between">
                       Existencia: {{ item.raw.product_exit }}
@@ -1262,7 +1262,7 @@
                 item-value="id" variant="underlined" :rules="selectRules">
                 <template v-slot:item="{ props, item }">
                   <v-list-item v-bind="props"
-                    :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + item.raw.image_service"
+                    :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_service"
                     :title="item.raw.name">
                     <v-list-item-subtitle class="d-flex justify-space-between">
                       Precio: {{ this.formatNumber(item.raw.price_service) }}
@@ -1370,7 +1370,7 @@
           <template v-slot:item.professionalName="{ item }">
 
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
             </v-avatar>
             {{ item.professionalName }}
           </template>
@@ -1378,7 +1378,7 @@
           <template v-slot:item.clientName="{ item }">
 
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.client_image" alt="image"></v-img>
+              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.client_image" alt="image"></v-img>
             </v-avatar>
             {{ item.clientName }}
           </template>
@@ -1446,7 +1446,7 @@
                           :title="action.nameProfessional || 'Usuario'">
                           <template v-slot:prepend>
                             <v-avatar>
-                              <v-img :src="'https://testapi.simplifies.cl/api/images/' + action.image" alt="image"></v-img>
+                              <v-img :src="'https://api2.simplifies.cl/api/images/' + action.image" alt="image"></v-img>
                             </v-avatar>
                           </template>
                           <template v-slot:append>
@@ -1507,7 +1507,7 @@
                         <v-list-item :subtitle="formatFecha(registro.timestamp)" :title="registro.nameProfessional">
                           <template v-slot:prepend>
                             <v-avatar>
-                              <v-img :src="'https://testapi.simplifies.cl/api/images/' + registro.image" alt="image"></v-img>
+                              <v-img :src="'https://api2.simplifies.cl/api/images/' + registro.image" alt="image"></v-img>
                             </v-avatar>
                           </template>
                           <template v-slot:append>
@@ -1598,7 +1598,7 @@
           <template v-slot:item.name="{ item }">
 
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
+              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
             </v-avatar>
             {{ item.name }}
           </template>
@@ -1654,7 +1654,7 @@
                 variant="underlined" :rules="selectRules" @update:model-value="cantExist">
                 <template v-slot:item="{ props, item }">
                   <v-list-item v-bind="props"
-                    :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + item.raw.image_product"
+                    :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_product"
                     :title="item.raw.name"><v-list-item-subtitle class="d-flex justify-space-between">
                       Existencia: {{ item.raw.product_exit }}
                       Precio: {{ this.formatNumber(item.raw.price) }}
@@ -1797,7 +1797,7 @@
           <template v-slot:item.name="{ item }">
 
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
             </v-avatar>
             {{ item.name }}
           </template>
@@ -1851,7 +1851,7 @@
           <template v-slot:item.name="{ item }">
 
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
             </v-avatar>
             {{ item.name }}
           </template>
@@ -1939,7 +1939,7 @@
                       :rules="selectRules"><!--@update:model-value="showReservationsProfessional()"-->
                       <template v-slot:item="{ props, item }">
                         <v-list-item v-bind="props"
-                          :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + item.raw.image_url"
+                          :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_url"
                           :subtitle="'Cargo: ' + item.raw.charge" :title="item.raw.name"></v-list-item>
                       </template>
                     </v-autocomplete>
@@ -2871,7 +2871,7 @@ export default {
     this.nameProfessional = JSON.parse(LocalStorageService.getItem("name"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     /*axios
-      .get('https://testapi.simplifies.cl/api/show-business', {
+      .get('https://api2.simplifies.cl/api/show-business', {
         params: {
           business_id: this.business_id
         }
@@ -3304,7 +3304,7 @@ procesarChangeLog(changeLog) {
         this.loadingBonusStep = true;
         LocalStorageService.setIsLocked(true);
         axios
-          .get('https://testapi.simplifies.cl/api/bonus-show', {
+          .get('https://api2.simplifies.cl/api/bonus-show', {
             params: {
               branch_id: this.branch_id
             }
@@ -3712,7 +3712,7 @@ procesarChangeLog(changeLog) {
   const endDate = range.end.toISOString().split('T')[0];
       LocalStorageService.setIsLocked(true);
       axios
-        .get("https://testapi.simplifies.cl/api/branch-reservations-periodo", {
+        .get("https://api2.simplifies.cl/api/branch-reservations-periodo", {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,
@@ -3747,7 +3747,7 @@ procesarChangeLog(changeLog) {
   const startDate = range.start.toISOString().split('T')[0];
   const endDate = range.end.toISOString().split('T')[0];
       axios
-        .get("https://testapi.simplifies.cl/api/professional-reservations-periodo", {
+        .get("https://api2.simplifies.cl/api/professional-reservations-periodo", {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_idR,
@@ -3796,7 +3796,7 @@ procesarChangeLog(changeLog) {
       this.loadingBonus = true;
       LocalStorageService.setIsLocked(true);
       axios
-        .get('https://testapi.simplifies.cl/api/branch-payment-show-bonus', {
+        .get('https://api2.simplifies.cl/api/branch-payment-show-bonus', {
           params: {
             branch_id: this.branch_id
           }
@@ -3813,7 +3813,7 @@ procesarChangeLog(changeLog) {
       this.loadingBonusProf = true;
       LocalStorageService.setIsLocked(true);
       axios
-        .get('https://testapi.simplifies.cl/api/bonus-show', {
+        .get('https://api2.simplifies.cl/api/bonus-show', {
           params: {
             branch_id: this.branch_id
           }
@@ -3846,7 +3846,7 @@ procesarChangeLog(changeLog) {
       this.data.retention = this.bonus_ref.retention;
       LocalStorageService.setIsLocked(true);
       axios
-        .post('https://testapi.simplifies.cl/api/bonu-payment', this.data)
+        .post('https://api2.simplifies.cl/api/bonu-payment', this.data)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -3864,7 +3864,7 @@ procesarChangeLog(changeLog) {
           this.loadingBonusPay = false;
           this.loadingBonusPay = false;
           /*axios
-            .get('https://testapi.simplifies.cl/api/bonus-show', {
+            .get('https://api2.simplifies.cl/api/bonus-show', {
               params: {
                 branch_id: this.branch_id
               }
@@ -3950,7 +3950,7 @@ procesarChangeLog(changeLog) {
       // Realiza cualquier lógica adicional aquí
       console.log('Elemento seleccionado:', code);
       axios
-        .get('https://testapi.simplifies.cl/api/card-gift-user-show-value', {
+        .get('https://api2.simplifies.cl/api/card-gift-user-show-value', {
           params: {
             code: code
           }
@@ -3983,7 +3983,7 @@ procesarChangeLog(changeLog) {
         id: item.id
       };
       axios
-        .put('https://testapi.simplifies.cl/api/car', request)
+        .put('https://api2.simplifies.cl/api/car', request)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -4005,7 +4005,7 @@ procesarChangeLog(changeLog) {
           professional_id: this.professional_id
         };
         axios
-          .post('https://testapi.simplifies.cl/api/order-destroy-solicitud', request)
+          .post('https://api2.simplifies.cl/api/order-destroy-solicitud', request)
           .then(() => {
             //this.initialize();
           }).finally(() => {
@@ -4020,7 +4020,7 @@ procesarChangeLog(changeLog) {
           professional_id: this.professional_id
         };
         axios
-          .post('https://testapi.simplifies.cl/api/order-destroy-web', request)
+          .post('https://api2.simplifies.cl/api/order-destroy-web', request)
           .then(() => {
             //this.initialize();
           }).finally(() => {
@@ -4043,7 +4043,7 @@ procesarChangeLog(changeLog) {
         professional_id: this.professional_id
       };
       axios
-        .post('https://testapi.simplifies.cl/api/cashiersale-destroy-solicitud', request)
+        .post('https://api2.simplifies.cl/api/cashiersale-destroy-solicitud', request)
         .then(() => {
           this.showSaleProducts = false;
         }).finally(() => {
@@ -4064,7 +4064,7 @@ procesarChangeLog(changeLog) {
         professional_id: this.professional_id
       };
       axios
-        .post('https://testapi.simplifies.cl/api/order-destroy-web', request)
+        .post('https://api2.simplifies.cl/api/order-destroy-web', request)
         .then(() => {
           //this.initialize();
         }).finally(() => {
@@ -4089,7 +4089,7 @@ procesarChangeLog(changeLog) {
         branch_id: this.branch_id,
       };
       axios
-        .put('https://testapi.simplifies.cl/api/order-web', request)
+        .put('https://api2.simplifies.cl/api/order-web', request)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -4479,7 +4479,7 @@ procesarChangeLog(changeLog) {
         professional_id: this.professional_id
       };
       axios
-        .post('https://testapi.simplifies.cl/api/car-destroy-solicitud', request)
+        .post('https://api2.simplifies.cl/api/car-destroy-solicitud', request)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -4574,7 +4574,7 @@ procesarChangeLog(changeLog) {
         professional_id: this.professional_id
       };
       axios
-        .post('https://testapi.simplifies.cl/api/car-update-solicitud', request)
+        .post('https://api2.simplifies.cl/api/car-update-solicitud', request)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -4614,7 +4614,7 @@ procesarChangeLog(changeLog) {
       }
 
       /*axios
-        .get('https://testapi.simplifies.cl/api/card-gift-show', {
+        .get('https://api2.simplifies.cl/api/card-gift-show', {
           params: {
             business_id: this.business_id
           }
@@ -4633,7 +4633,7 @@ procesarChangeLog(changeLog) {
       this.car_ref = item
       this.editedItem.id = item.id;
       axios
-        .get('https://testapi.simplifies.cl/api/order-show', {
+        .get('https://api2.simplifies.cl/api/order-show', {
           params: {
             car_id: item.id
           }
@@ -4673,7 +4673,7 @@ procesarChangeLog(changeLog) {
         branch_id: this.branch_id
       };
       axios
-        .post('https://testapi.simplifies.cl/api/car-destroy', request)
+        .post('https://api2.simplifies.cl/api/car-destroy', request)
         .then(() => {
         }).finally(() => {
           this.showAlert("success", "Carro eliminado correctamente", 3000);
@@ -4708,7 +4708,7 @@ procesarChangeLog(changeLog) {
           LocalStorageService.setIsLocked(true);
           this.valid = true;
           axios
-            .put('https://testapi.simplifies.cl/api/payment', this.data)
+            .put('https://api2.simplifies.cl/api/payment', this.data)
             .then(() => {
             }).finally(() => {
               LocalStorageService.setIsLocked(false);
@@ -4966,7 +4966,7 @@ procesarChangeLog(changeLog) {
         console.log('formData');
         console.log(formData);
         axios
-          .post('https://testapi.simplifies.cl/api/box', formData)
+          .post('https://api2.simplifies.cl/api/box', formData)
           .then(() => {
           }).catch(error => {
             if (this.editedBox.newExtraction) {
@@ -5015,7 +5015,7 @@ procesarChangeLog(changeLog) {
       const token = LocalStorageService.getItem('token');
       console.log('Cerrar Sesión')
       axios
-        .get('https://testapi.simplifies.cl/api/logout', {
+        .get('https://api2.simplifies.cl/api/logout', {
           headers: {
             'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
           }
@@ -5072,7 +5072,7 @@ procesarChangeLog(changeLog) {
       console.log(car);
 
       axios
-        .get('https://testapi.simplifies.cl/api/services-professional-branch-web', {
+        .get('https://api2.simplifies.cl/api/services-professional-branch-web', {
           params: {
             branch_id: this.branch_id,
             professional_id: car.professional_id
@@ -5105,7 +5105,7 @@ procesarChangeLog(changeLog) {
       console.log('Datos servicios agregar');
       console.log(this.data);
       axios
-        .post('https://testapi.simplifies.cl/api/order-web', this.data)
+        .post('https://api2.simplifies.cl/api/order-web', this.data)
         .then(() => {
         }).finally(() => {
           this.showAlert("success", "Servicio agregado correctamente", 3000);
@@ -5145,7 +5145,7 @@ procesarChangeLog(changeLog) {
       console.log(car);
       LocalStorageService.setIsLocked(true);
       axios
-        .get('https://testapi.simplifies.cl/api/productstore-show-web', {
+        .get('https://api2.simplifies.cl/api/productstore-show-web', {
           params: {
             branch_id: this.branch_id
           }
@@ -5179,7 +5179,7 @@ procesarChangeLog(changeLog) {
       console.log('Datos producto agregar');
       console.log(this.data);
       axios
-        .post('https://testapi.simplifies.cl/api/order-web', this.data)
+        .post('https://api2.simplifies.cl/api/order-web', this.data)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -5222,7 +5222,7 @@ procesarChangeLog(changeLog) {
     showDialogProduct() {
       LocalStorageService.setIsLocked(true);
       axios
-        .get('https://testapi.simplifies.cl/api/cashiersale-show', {
+        .get('https://api2.simplifies.cl/api/cashiersale-show', {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id
@@ -5244,7 +5244,7 @@ procesarChangeLog(changeLog) {
     showSalegProduct() {
       LocalStorageService.setIsLocked(false);
       axios
-        .get('https://testapi.simplifies.cl/api/productstore-show-web', {
+        .get('https://api2.simplifies.cl/api/productstore-show-web', {
           params: {
             branch_id: this.branch_id
           }
@@ -5289,7 +5289,7 @@ procesarChangeLog(changeLog) {
           LocalStorageService.setIsLocked(true);
           this.valid = true;
           axios
-            .post('https://testapi.simplifies.cl/api/payment-product-sales', this.data)
+            .post('https://api2.simplifies.cl/api/payment-product-sales', this.data)
             .then(() => {
             }).finally(() => {
               LocalStorageService.setIsLocked(false);
@@ -5323,7 +5323,7 @@ procesarChangeLog(changeLog) {
       this.data.professional_id = this.professional_id;
       this.data.cant = this.cant;
       axios
-        .post('https://testapi.simplifies.cl/api/cashiersale', this.data)
+        .post('https://api2.simplifies.cl/api/cashiersale', this.data)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);

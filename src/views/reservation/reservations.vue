@@ -28,7 +28,7 @@
                 :rules="selectRules"><!--@update:model-value="showReservationsProfessional()"-->
                 <template v-slot:item="{ props, item }">
                   <v-list-item v-bind="props"
-                    :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + item.raw.image_url"
+                    :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_url"
                     :subtitle="'Cargo: ' + item.raw.charge" :title="item.raw.name"></v-list-item>
                 </template>
               </v-autocomplete>
@@ -126,7 +126,7 @@ export default {
       this.charge = JSON.parse(LocalStorageService.getItem("charge"));
       LocalStorageService.setIsLocked(true);
       axios
-          .get('https://testapi.simplifies.cl/api/show-business', {
+          .get('https://api2.simplifies.cl/api/show-business', {
               params: {
                   business_id: this.business_id
               }
@@ -178,7 +178,7 @@ export default {
         : format(new Date(), "yyyy-MM-dd");*/
         LocalStorageService.setIsLocked(true);
       axios
-        .get("https://testapi.simplifies.cl/api/branch-reservations-periodo", {
+        .get("https://api2.simplifies.cl/api/branch-reservations-periodo", {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,
@@ -202,7 +202,7 @@ export default {
       const startDate = range.start.toISOString().split('T')[0];
       const endDate = range.end.toISOString().split('T')[0];
       axios
-        .get("https://testapi.simplifies.cl/api/professional-reservations-periodo", {
+        .get("https://api2.simplifies.cl/api/professional-reservations-periodo", {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id,

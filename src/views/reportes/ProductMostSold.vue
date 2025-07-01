@@ -76,7 +76,7 @@
                             <template v-slot:item.name="{ item }">
 
                                 <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                                    <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_product"
+                                    <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product"
                                         alt="image"></v-img>
                                 </v-avatar>
                                 {{ item.name }}
@@ -189,7 +189,7 @@ export default {
         this.charge_id = parseInt(LocalStorageService.getItem('charge_id'));
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         axios
-            .get('https://testapi.simplifies.cl/api/show-business', {
+            .get('https://api2.simplifies.cl/api/show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -262,7 +262,7 @@ export default {
     initialize() {
             this.editedIndex = 1;
             axios
-                .get('https://testapi.simplifies.cl/api/product-mostSold', {
+                .get('https://api2.simplifies.cl/api/product-mostSold', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -276,7 +276,7 @@ export default {
             const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
             const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
             axios
-                .get('https://testapi.simplifies.cl/api/product-mostSold-periodo', {
+                .get('https://api2.simplifies.cl/api/product-mostSold-periodo', {
                     params: {
                         branch_id: this.branch_id,
                         startDate: startDate,

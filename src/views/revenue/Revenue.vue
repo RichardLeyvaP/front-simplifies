@@ -216,7 +216,7 @@ export default {
     this.loadingRevenue = true;
     LocalStorageService.setIsLocked(true);
      axios
-       .get('https://testapi.simplifies.cl/api/revenue')
+       .get('https://api2.simplifies.cl/api/revenue')
        .then((response) => {
          this.results = response.data.revenues;
        }).finally(() => {
@@ -241,7 +241,7 @@ export default {
        id: this.editedItem.id
      };
      axios
-       .post('https://testapi.simplifies.cl/api/revenue-destroy', request)
+       .post('https://api2.simplifies.cl/api/revenue-destroy', request)
        .then(() => {
         LocalStorageService.setIsLocked(false);
          this.initialize();
@@ -272,7 +272,7 @@ export default {
          this.data.id = this.editedItem.id;
          this.data.name = this.editedItem.name;
          axios
-           .put('https://testapi.simplifies.cl/api/revenue', this.data)
+           .put('https://api2.simplifies.cl/api/revenue', this.data)
            .then(() => {
             LocalStorageService.setIsLocked(false);
              this.initialize();
@@ -282,7 +282,7 @@ export default {
          this.valid = false,
          this.data.name = this.editedItem.name;
          axios
-           .post('https://testapi.simplifies.cl/api/revenue', this.data)
+           .post('https://api2.simplifies.cl/api/revenue', this.data)
            .then(() => {
             LocalStorageService.setIsLocked(false);
              this.initialize();
