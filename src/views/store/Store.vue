@@ -221,7 +221,7 @@ export default {
     this.branch_id = LocalStorageService.getItem('branch_id');
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
-      .get('https://api2.simplifies.cl/api/show-business', {
+      .get('https://testapi.simplifies.cl/api/show-business', {
         params: {
           business_id: this.business_id
         }
@@ -266,7 +266,7 @@ export default {
       this.loadingStore = true;
       LocalStorageService.setIsLocked(true);
       axios
-        .get('https://api2.simplifies.cl/api/store-show-branch', {
+        .get('https://testapi.simplifies.cl/api/store-show-branch', {
         params: {
           branch_id: this.branch_id
         }
@@ -296,7 +296,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('https://api2.simplifies.cl/api/store-destroy', request)
+        .post('https://testapi.simplifies.cl/api/store-destroy', request)
         .then(() => {
           LocalStorageService.setIsLocked(false);
           this.initialize();
@@ -329,7 +329,7 @@ export default {
         this.data.description = this.editedItem.description;
         this.data.address = this.editedItem.address;
         axios
-          .put('https://api2.simplifies.cl/api/store', this.data)
+          .put('https://testapi.simplifies.cl/api/store', this.data)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.initialize();
@@ -341,7 +341,7 @@ export default {
         this.data.description = this.editedItem.description;
         this.data.address = this.editedItem.address;
         axios
-          .post('https://api2.simplifies.cl/api/store', this.data)
+          .post('https://testapi.simplifies.cl/api/store', this.data)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.initialize();

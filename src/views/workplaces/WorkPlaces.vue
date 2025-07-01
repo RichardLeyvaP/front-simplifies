@@ -192,7 +192,7 @@ axios.interceptors.request.use(config => {
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         LocalStorageService.setIsLocked(true);
         axios
-            .get('https://api2.simplifies.cl/api/show-business', {
+            .get('https://testapi.simplifies.cl/api/show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -236,7 +236,7 @@ axios.interceptors.request.use(config => {
         this.loadingWorkPlace = true;
         LocalStorageService.setIsLocked(true);
         axios
-          .get('https://api2.simplifies.cl/api/branch-show', {
+          .get('https://testapi.simplifies.cl/api/branch-show', {
             params:{
                 branch_id: this.branch_id
             }
@@ -266,7 +266,7 @@ axios.interceptors.request.use(config => {
           id: this.editedItem.id
         };
         axios
-          .post('https://api2.simplifies.cl/api/workplace-destroy', request)
+          .post('https://testapi.simplifies.cl/api/workplace-destroy', request)
           .then(() => {
           }).finally(() => {
             LocalStorageService.setIsLocked(false);
@@ -296,7 +296,7 @@ axios.interceptors.request.use(config => {
           this.data.id = this.editedItem.id;
           this.data.name = this.editedItem.name;
           axios
-            .put('https://api2.simplifies.cl/api/workplace', this.data)
+            .put('https://testapi.simplifies.cl/api/workplace', this.data)
             .then(() => {
             }).finally(() => {
               LocalStorageService.setIsLocked(false);
@@ -309,7 +309,7 @@ axios.interceptors.request.use(config => {
           this.data.branch_id = this.branch_id
   
           axios
-            .post('https://api2.simplifies.cl/api/workplace', this.data)
+            .post('https://testapi.simplifies.cl/api/workplace', this.data)
             .then(() => {
             }).finally(() => {
               LocalStorageService.setIsLocked(false);

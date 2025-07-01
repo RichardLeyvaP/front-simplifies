@@ -358,7 +358,7 @@ export default {
       this.loadingCharge = true;
       LocalStorageService.setIsLocked(true);
       axios
-        .get('https://api2.simplifies.cl/api/charge')
+        .get('https://testapi.simplifies.cl/api/charge')
         .then((response) => {
           console.log("entra a Buscar cargos")
           this.results = response.data.charges;
@@ -384,7 +384,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('https://api2.simplifies.cl/api/charge-destroy', request)
+        .post('https://testapi.simplifies.cl/api/charge-destroy', request)
         .then(() => {
           LocalStorageService.setIsLocked(false);
           this.initialize();
@@ -418,7 +418,7 @@ export default {
         this.data.description = this.editedItem.description;
 
         axios
-          .put('https://api2.simplifies.cl/api/charge', this.data)
+          .put('https://testapi.simplifies.cl/api/charge', this.data)
           .then(() => {
           }).finally(() => {
             LocalStorageService.setIsLocked(false);
@@ -430,7 +430,7 @@ export default {
         this.data.name = this.editedItem.name;
         this.data.description = this.editedItem.description;
         axios
-          .post('https://api2.simplifies.cl/api/charge', this.data)
+          .post('https://testapi.simplifies.cl/api/charge', this.data)
           .then(() => {
           }).finally(() => {
             LocalStorageService.setIsLocked(false);
@@ -453,7 +453,7 @@ export default {
       this.charge_id = item.id;
       console.log(item.id);
       axios
-        .get('https://api2.simplifies.cl/api/charge-permission-show', {
+        .get('https://testapi.simplifies.cl/api/charge-permission-show', {
           params: {
             charge_id: item.id
           }
@@ -470,7 +470,7 @@ export default {
     showAddPermission() {
       LocalStorageService.setIsLocked(true);
       axios
-        .get('https://api2.simplifies.cl/api/charge-permission-NOTIN', {
+        .get('https://testapi.simplifies.cl/api/charge-permission-NOTIN', {
           params: {
             charge_id: this.chargeSelect.id
           }
@@ -488,7 +488,7 @@ export default {
         this.data.charge_id = this.charge_id;
       this.data.permission_id = this.permission_id;
       axios
-        .post('https://api2.simplifies.cl/api/charge-permission', this.data)
+        .post('https://testapi.simplifies.cl/api/charge-permission', this.data)
         .then(() => {
           this.charge_id = '',
             this.permission_id = '',
@@ -513,7 +513,7 @@ export default {
         permission_id: this.permission_id
       };
       axios
-        .post('https://api2.simplifies.cl/api/charge-permission-destroy', request)
+        .post('https://testapi.simplifies.cl/api/charge-permission-destroy', request)
         .then(() => {
           this.dialogDeletePermission = false
           this.charge_id = '',

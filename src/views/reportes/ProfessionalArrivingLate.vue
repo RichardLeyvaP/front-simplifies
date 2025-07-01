@@ -225,7 +225,7 @@ export default {
     this.business_id = parseInt(LocalStorageService.getItem("business_id"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
-      .get('https://api2.simplifies.cl/api/show-business', {
+      .get('https://testapi.simplifies.cl/api/show-business', {
         params: {
           business_id: this.business_id
         }
@@ -302,7 +302,7 @@ export default {
       console.log(startDate);
       console.log(endDate);
       axios
-        .get('https://api2.simplifies.cl/api/arriving-late-professional-periodo', {
+        .get('https://testapi.simplifies.cl/api/arriving-late-professional-periodo', {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id,
@@ -328,7 +328,7 @@ export default {
       console.log(mes);
       console.log(ano);
       axios
-        .get('https://api2.simplifies.cl/api/arriving-late-professional-month', {
+        .get('https://testapi.simplifies.cl/api/arriving-late-professional-month', {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id,
@@ -351,7 +351,7 @@ export default {
       this.input2 = new Date();
       this.input3 = new Date();
       axios
-        .get('https://api2.simplifies.cl/api/arriving-late-professional-date', {
+        .get('https://testapi.simplifies.cl/api/arriving-late-professional-date', {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id
@@ -361,7 +361,7 @@ export default {
           this.results = response.data;
         });*/
       axios
-        .get('https://api2.simplifies.cl/api/professional-show-autocomplete')
+        .get('https://testapi.simplifies.cl/api/professional-show-autocomplete')
         .then((response) => {
           this.professionals = response.data.professionals;
         });

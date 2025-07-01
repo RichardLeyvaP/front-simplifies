@@ -36,7 +36,7 @@
             <div style="max-height: 60vh; overflow-y: auto;">
               <v-list>
                 <v-list-item-group v-model="selected" multiple active-class="deep-purple--text text--accent-4">
-                  <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + service.image_service"
+                  <v-list-item :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + service.image_service"
                     v-for="service in services" :key="service.id" @click="toggleService(service.id)"
                     :class="{ 'selected-item': isSelected(service.id) }" class="pt-4 pb-4">
 
@@ -90,7 +90,7 @@
 
                 <v-list-item-group v-model="professional" active-class="deep-purple--text text--accent-4">
 
-                  <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + professional.image_url"
+                  <v-list-item :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + professional.image_url"
                     v-for="professional in professionals" :key="professional.id" @click="toggleService2(professional)"
                     :class="{ 'selected-item': isProfessional(professional.id) }" class="pt-4 pb-4">
 
@@ -176,7 +176,7 @@
                         :rules="selectRules">
                         <!--<template v-slot:item="{ props, item }">
                       <v-list-item v-bind="props"
-                        :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.client_image"
+                        :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + item.raw.client_image"
                         :title="item.raw.name">
                         <v-list-item-subtitle class="d-flex justify-space-between">
                           Correo: {{ item.raw.email }}
@@ -626,7 +626,7 @@ export default {
     this.branch_id = parseInt(LocalStorageService.getItem('branch_id'));
     this.nameBranch = JSON.parse(LocalStorageService.getItem("nameBranch"));
     axios
-      .get('https://api2.simplifies.cl/api/show-business', {
+      .get('https://testapi.simplifies.cl/api/show-business', {
         params: {
           business_id: this.business_id
         }
@@ -665,7 +665,7 @@ export default {
       console.log('query en la funcion');
       console.log(this.email_client);
       //if (query) {
-      axios.get(`https://api2.simplifies.cl/api/client-email-phone?email=${this.email_client}`)
+      axios.get(`https://testapi.simplifies.cl/api/client-email-phone?email=${this.email_client}`)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.clientRegister = response.data.client;
@@ -844,7 +844,7 @@ export default {
 
 
       // Realiza la solicitud POST Y BUSCO LOS DATOS DEL CLIENTE 
-      axios.get(`https://api2.simplifies.cl/api/client-email-phone?email=${this.email_client2}`)
+      axios.get(`https://testapi.simplifies.cl/api/client-email-phone?email=${this.email_client2}`)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.clientRegister = response.data.client;
@@ -950,7 +950,7 @@ export default {
       console.log('**********************************---------------------');
 
       // Realiza la solicitud GET con Axios y pasa los parámetros
-      axios.post('https://api2.simplifies.cl/api/reservation_store', request)
+      axios.post('https://testapi.simplifies.cl/api/reservation_store', request)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.message = response.data.msg
@@ -991,7 +991,7 @@ export default {
     },
     showDialogEncuesta() {
       axios
-        .get('https://api2.simplifies.cl/api/survey')
+        .get('https://testapi.simplifies.cl/api/survey')
         .then((response) => {
           this.surveys = response.data.surveys;
         });
@@ -1008,7 +1008,7 @@ export default {
         branch_id: this.branch_id,
 
       }
-      axios.post('https://api2.simplifies.cl/api/client-survey', request)
+      axios.post('https://testapi.simplifies.cl/api/client-survey', request)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           // this.message=response.data.msg
@@ -1196,7 +1196,7 @@ export default {
         return;
       }*/
       axios
-        .get(`https://api2.simplifies.cl/api/branchservice-show?branch_id=${parseInt(branchId)}`)
+        .get(`https://testapi.simplifies.cl/api/branchservice-show?branch_id=${parseInt(branchId)}`)
         .then((response) => {
           console.log(response.data)
           this.services = response.data.services;
@@ -1223,7 +1223,7 @@ export default {
 
       this.array_services = newArrayService;
       axios
-        .get(`https://api2.simplifies.cl/api/branch-professionals-service`, {
+        .get(`https://testapi.simplifies.cl/api/branch-professionals-service`, {
           params: data,
           headers: {
             'Cache-Control': 'no-cache',

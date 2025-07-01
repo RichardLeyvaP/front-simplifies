@@ -168,7 +168,7 @@
   imageUrl: ${item.imageUrl}?${Date.now()}
 }));-->
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_service" alt="image"></v-img>
+              <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_service" alt="image"></v-img>
             </v-avatar><!--+'?$'+Date.now()-->
             {{ item.name }}
           </template>
@@ -395,7 +395,7 @@ return mensaje;
       this.loading = true;
       LocalStorageService.setIsLocked(true);
       axios
-        .get('https://api2.simplifies.cl/api/service')
+        .get('https://testapi.simplifies.cl/api/service')
         .then((response) => {
           this.results = response.data.services;
         }).finally(() => { 
@@ -418,9 +418,9 @@ return mensaje;
     editItem(item) {
       this.file = null;
       var img = new Image();
-      img.src = 'https://api2.simplifies.cl/api/images/' + item.image_service;
+      img.src = 'https://testapi.simplifies.cl/api/images/' + item.image_service;
       img.onload = () => {
-        this.imgMiniatura = 'https://api2.simplifies.cl/api/images/' + item.image_service;
+        this.imgMiniatura = 'https://testapi.simplifies.cl/api/images/' + item.image_service;
       };
       img.onerror = () => {
         this.imgMiniatura = '';
@@ -443,7 +443,7 @@ return mensaje;
         id: this.editedItem.id
       };
       axios
-        .post('https://api2.simplifies.cl/api/service-destroy', request)
+        .post('https://testapi.simplifies.cl/api/service-destroy', request)
         .then(() => {
           this.showAlert("success", "Servicio eliminado correctamente", 3000)
         }).finally(() => {
@@ -479,7 +479,7 @@ return mensaje;
           formData.append(key, this.editedItem[key]);
         }
         axios
-          .post('https://api2.simplifies.cl/api/service-update', formData)
+          .post('https://testapi.simplifies.cl/api/service-update', formData)
           .then(() => {
             this.showAlert("success", "Servicio editado correctamente", 3000);
             this.imgMiniatura = '';
@@ -500,7 +500,7 @@ return mensaje;
         console.log('formData');
         console.log(formData);
         axios
-          .post('https://api2.simplifies.cl/api/service', formData)
+          .post('https://testapi.simplifies.cl/api/service', formData)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.showAlert("success", "Servicio registrado correctamente", 3000);

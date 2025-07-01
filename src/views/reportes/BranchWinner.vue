@@ -192,7 +192,7 @@ export default {
     this.branch_id = parseInt(LocalStorageService.getItem("branch_id"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
-      .get('https://api2.simplifies.cl/api/show-business', {
+      .get('https://testapi.simplifies.cl/api/show-business', {
         params: {
           business_id: this.business_id
         }
@@ -239,7 +239,7 @@ export default {
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       axios
-        .get('https://api2.simplifies.cl/api/branch_winner_icon', {
+        .get('https://testapi.simplifies.cl/api/branch_winner_icon', {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,
@@ -256,7 +256,7 @@ export default {
     initialize() {
       this.editedIndex = 1;
       axios
-        .get('https://api2.simplifies.cl/api/branch_winner_icon', {
+        .get('https://testapi.simplifies.cl/api/branch_winner_icon', {
           params: {
             branch_id: this.branch_id
           }

@@ -214,7 +214,7 @@ export default {
       this.loadingType = true;
       LocalStorageService.setIsLocked(true);
       axios
-        .get('https://api2.simplifies.cl/api/business-type')
+        .get('https://testapi.simplifies.cl/api/business-type')
         .then((response) => {
           this.results = response.data.businessTypes;
         }).finally(() => {
@@ -239,7 +239,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('https://api2.simplifies.cl/api/business-type-destroy', request)
+        .post('https://testapi.simplifies.cl/api/business-type-destroy', request)
         .then(() => {
           LocalStorageService.setIsLocked(false);
           this.initialize();
@@ -270,7 +270,7 @@ export default {
           this.data.id = this.editedItem.id;
           this.data.name = this.editedItem.name;
           axios
-            .put('https://api2.simplifies.cl/api/business-type', this.data)
+            .put('https://testapi.simplifies.cl/api/business-type', this.data)
             .then(() => {
             }).finally(() => {
               LocalStorageService.setIsLocked(false);
@@ -281,7 +281,7 @@ export default {
           this.valid = false,
           this.data.name = this.editedItem.name;
           axios
-            .post('https://api2.simplifies.cl/api/business-type', this.data)
+            .post('https://testapi.simplifies.cl/api/business-type', this.data)
             .then(() => {
             }).finally(() => {
               LocalStorageService.setIsLocked(false);

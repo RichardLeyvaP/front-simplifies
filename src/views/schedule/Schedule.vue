@@ -150,7 +150,7 @@ export default {
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         LocalStorageService.setIsLocked(true);
         axios
-            .get('https://api2.simplifies.cl/api/show-business', {
+            .get('https://testapi.simplifies.cl/api/show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -191,7 +191,7 @@ export default {
         initialize() {
             LocalStorageService.setIsLocked(true);
             axios
-                .get('https://api2.simplifies.cl/api/show_schedule_branch', {
+                .get('https://testapi.simplifies.cl/api/show_schedule_branch', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -241,7 +241,7 @@ export default {
             }));*/
             console.log('request');
             console.log(request);
-            axios.put('https://api2.simplifies.cl/api/schedule', request)
+            axios.put('https://testapi.simplifies.cl/api/schedule', request)
                 .then(() => {
                     LocalStorageService.setIsLocked(false);
                     this.initialize();

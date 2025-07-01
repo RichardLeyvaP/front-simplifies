@@ -204,7 +204,7 @@ axios.interceptors.request.use(config => {
     this.business_id = parseInt(LocalStorageService.getItem("business_id"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
-            .get('https://api2.simplifies.cl/api/show-business', {
+            .get('https://testapi.simplifies.cl/api/show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -276,7 +276,7 @@ axios.interceptors.request.use(config => {
         console.log(startDate);
         console.log(endDate);
         axios
-          .get('https://api2.simplifies.cl/api/arriving-branch-periodo', {
+          .get('https://testapi.simplifies.cl/api/arriving-branch-periodo', {
             params: {
               branch_id: this.branch_id,
               startDate: startDate,
@@ -298,7 +298,7 @@ axios.interceptors.request.use(config => {
         const mes = `${month}`;
         const ano = `${year}`;
         axios
-          .get('https://api2.simplifies.cl/api/arriving-branch-month', {
+          .get('https://testapi.simplifies.cl/api/arriving-branch-month', {
             params: {
               branch_id: this.branch_id,
               mes: mes,
@@ -317,7 +317,7 @@ axios.interceptors.request.use(config => {
           //this.input2 = new Date();
           //this.input3 = new Date()
         axios
-          .get('https://api2.simplifies.cl/api/arriving-branch-date', {
+          .get('https://testapi.simplifies.cl/api/arriving-branch-date', {
             params: {
               branch_id: this.branch_id
             }

@@ -299,7 +299,7 @@ export default {
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       axios
-        .get('https://api2.simplifies.cl/api/company_winner', {
+        .get('https://testapi.simplifies.cl/api/company_winner', {
           params: {
             startDate: startDate,
             endDate: endDate,
@@ -321,7 +321,7 @@ export default {
       const mes = `${month}`;
       const ano = `${year}`;
       axios
-        .get('https://api2.simplifies.cl/api/company_winner', {
+        .get('https://testapi.simplifies.cl/api/company_winner', {
           params: {
             business_id: this.business_id,
             mes: mes,
@@ -337,7 +337,7 @@ export default {
     initialize() {
       this.editedIndex = 1;
       axios
-        .get('https://api2.simplifies.cl/api/company_winner', {
+        .get('https://testapi.simplifies.cl/api/company_winner', {
           params: {
             business_id: this.business_id,
           }
