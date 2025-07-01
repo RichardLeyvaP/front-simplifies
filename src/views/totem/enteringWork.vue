@@ -45,7 +45,7 @@
   <v-sheet border v-if="mostrarSheet">
     <v-list>
       <v-list-item-group v-model="array_Places" multiple active-class="deep-purple--text text--accent-4">
-        <v-list-item :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + puestoT.image_puestoT"
+        <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + puestoT.image_puestoT"
           v-for="puestoT in puestoTs" :key="puestoT.id" @click="togglepuestoT(puestoT.id)"
           :class="{ 'selected-item': isSelected(puestoT.id) }" class="pt-4 pb-4">
 
@@ -63,7 +63,7 @@
           <!-- <v-sheet border>
             <v-list>
               <v-list-item-group v-model="array_Places" multiple active-class="deep-purple--text text--accent-4">
-                <v-list-item :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + puestoT.image_puestoT"
+                <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + puestoT.image_puestoT"
                   v-for="puestoT in puestoTs" :key="puestoT.id" @click="togglepuestoT(puestoT.id)"
                   :class="{ 'selected-item': isSelected(puestoT.id) }" class="pt-4 pb-4">
 
@@ -84,7 +84,7 @@
       @click="togglepuestoBarber(puestoT.id)" :class="{ 'selected-item': isSelected(puestoT.id) }" class="pt-4 pb-4">
 
       <template v-slot:default="{ toggle }">
-        <v-list-item-avatar :src="'https://testapi.simplifies.cl/api/images/' + puestoT.image_puestoT"></v-list-item-avatar>
+        <v-list-item-avatar :src="'https://api2.simplifies.cl/api/images/' + puestoT.image_puestoT"></v-list-item-avatar>
 
         <v-list-item-content @click="toggle">
           <v-list-item-title class="text-h6">{{ puestoT.name }}</v-list-item-title>
@@ -401,7 +401,7 @@ prevStep() {
       //this.email_client2 = 'deylert89@gmail.com';
       this.loading = true
       axios
-        .get('https://testapi.simplifies.cl/api/qrCode', {
+        .get('https://api2.simplifies.cl/api/qrCode', {
           params: {
             branch_id: this.branch_id,
             email: this.email_client2,
@@ -478,7 +478,7 @@ prevStep() {
 
 
      /* // Realiza la solicitud GET con Axios y pasa los parámetros
-      axios.post('https://testapi.simplifies.cl/api/professionalworkplace', request)
+      axios.post('https://api2.simplifies.cl/api/professionalworkplace', request)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.message = response.data.msg
@@ -496,7 +496,7 @@ prevStep() {
       console.log(this.branch_id);
 
       // Realiza la solicitud POST Y BUSCO LOS DATOS DEL CLIENTE 
-      axios.get(`https://testapi.simplifies.cl/api/verify-tec-prof?email=${this.email_client2}&branch_id=${this.branch_id}`)
+      axios.get(`https://api2.simplifies.cl/api/verify-tec-prof?email=${this.email_client2}&branch_id=${this.branch_id}`)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.clientRegister = response.data.professionals;
@@ -551,7 +551,7 @@ prevStep() {
       //this.email_client2 = 'deylert89@gmail.com';
       this.loading = true
       axios
-        .get('https://testapi.simplifies.cl/api/qrCode-otros', {
+        .get('https://api2.simplifies.cl/api/qrCode-otros', {
           params: {
             branch_id: branch_id,
             email: email_client2,
@@ -714,10 +714,10 @@ prevStep() {
 
       let url = ``;
       if (this.tipoProfessional == 'Tecnico') {
-        url = `https://testapi.simplifies.cl/api/branch_workplaces_select?branch_id=${this.branch_id}`;
+        url = `https://api2.simplifies.cl/api/branch_workplaces_select?branch_id=${this.branch_id}`;
       }
       else if (this.tipoProfessional == 'Barbero' || this.tipoProfessional == 'Barbero y Encargado') {
-        url = `https://testapi.simplifies.cl/api/branch_workplaces_busy?branch_id=${this.branch_id}`;
+        url = `https://api2.simplifies.cl/api/branch_workplaces_busy?branch_id=${this.branch_id}`;
       }
 
 
@@ -749,7 +749,7 @@ prevStep() {
 
       this.array_puestoTs = newArraypuestoT;
       axios
-        .get(`https://testapi.simplifies.cl/api/branch-professionals-puestoT`, {
+        .get(`https://api2.simplifies.cl/api/branch-professionals-puestoT`, {
           params: data
         })
         .then((response) => {

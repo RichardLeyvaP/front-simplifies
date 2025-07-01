@@ -136,7 +136,7 @@
                                         <template v-slot:item.name="{ item }">
 
                                             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                                                <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_product"
+                                                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product"
                                                     alt="image"></v-img>
                                             </v-avatar>
                                             {{ item.name }}
@@ -204,7 +204,7 @@
                             <template v-slot:item.name="{ item }">
 
                                 <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                                    <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_product"
+                                    <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product"
                                         alt="image"></v-img>
                                 </v-avatar>
                                 {{ item.name }}
@@ -387,7 +387,7 @@ export default {
         console.log('this.charge')
         console.log(this.charge)
         axios
-            .get('https://testapi.simplifies.cl/api/show-business', {
+            .get('https://api2.simplifies.cl/api/show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -471,7 +471,7 @@ export default {
             if (this.selectedMounth) {
                 this.editedIndex = 2;
                 axios
-                    .get('https://testapi.simplifies.cl/api/move-products', {
+                    .get('https://api2.simplifies.cl/api/move-products', {
                         params: {
                             //branch_id: this.branch_id,
                             year: this.selectedYear,
@@ -492,7 +492,7 @@ export default {
         initialize() {
             this.editedIndex = 1;
             axios
-                .get('https://testapi.simplifies.cl/api/move-products', {
+                .get('https://api2.simplifies.cl/api/move-products', {
                     params: {
                         //branch_id: this.branch_id,
                         year: this.selectedYear,
@@ -512,7 +512,7 @@ export default {
             console.log('Entra aqui a mejores aisitencias');
             this.editedIndex1 = 1;
             axios
-                .get('https://testapi.simplifies.cl/api/product-mostSold', {
+                .get('https://api2.simplifies.cl/api/product-mostSold', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -533,7 +533,7 @@ export default {
             const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
             const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
             axios
-                .get('https://testapi.simplifies.cl/api/product-mostSold-periodo', {
+                .get('https://api2.simplifies.cl/api/product-mostSold-periodo', {
                     params: {
                         branch_id: this.branch_id,
                         startDate: startDate,
@@ -588,7 +588,7 @@ export default {
         showReposition() {
             console.log('Entra aqui a reposicion');
             axios
-                .get('https://testapi.simplifies.cl/api/product-stock'/*, {
+                .get('https://api2.simplifies.cl/api/product-stock'/*, {
                     params: {
                         branch_id: this.branch_id,
                         business_id: this.business_id

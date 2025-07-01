@@ -56,7 +56,7 @@
                       <v-list>
                         <v-list-item-group v-model="professional" active-class="deep-purple--text text--accent-4">
 
-                          <v-list-item :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + professional.image_url"
+                          <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + professional.image_url"
                             v-for="professional in professionals" :key="professional.id"
                             @click="toggleService2(professional.id)"
                             :class="{ 'selected-item': isProfessional(professional.id) }">
@@ -92,7 +92,7 @@
 
                       <v-list item-props v-if="services.length > 0">
                         <v-list-item-group v-model="selectedA" active-class="deep-purple--text text--accent-4">
-                          <v-list-item :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + service.image_service"
+                          <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + service.image_service"
                             v-for="service in services" :key="service.id" @click="toggleService3(service)"
                             :class="{ 'selected-item': isSelected(service.id) }">
 
@@ -143,7 +143,7 @@
                     <v-window-item value="two">
                       <v-list item-props v-if="servicesAsig.length > 0">
                         <v-list-item-group v-model="selected" active-class="deep-purple--text text--accent-4">
-                          <v-list-item :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + serviceA.image_service"
+                          <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + serviceA.image_service"
                             v-for="serviceA in servicesAsig" :key="serviceA.id" @click="toggleService3(serviceA)"
                             :class="{ 'selected-item': isSelected(serviceA.id) }">
 
@@ -178,7 +178,7 @@
         <v-window-item value="tre">
                       <v-list item-props>
                         <v-list-item-group v-model="selectedM" active-class="deep-purple--text text--accent-4"  v-if="serviceMeta.length > 0">
-                          <v-list-item :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + serviceM.image_service"
+                          <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + serviceM.image_service"
                             v-for="serviceM in serviceMeta" :key="serviceM.id" @click="toggleService3(serviceM)"
                             :class="{ 'selected-item': isSelected(serviceM.id) }">
 
@@ -193,7 +193,7 @@
                           <v-divider></v-divider>
                         </v-list-item-group>
                         <v-list-item-group v-model="selected" active-class="deep-purple--text text--accent-4" v-else>
-                          <v-list-item :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + serviceA.image_service"
+                          <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + serviceA.image_service"
                             v-for="serviceA in servicesAsig" :key="serviceA.id" @click="toggleService3(serviceA)"
                             :class="{ 'selected-item': isSelected(serviceA.id) }">
 
@@ -391,7 +391,7 @@ export default {
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     LocalStorageService.setIsLocked(true);
     axios
-      .get('https://testapi.simplifies.cl/api/show-business', {
+      .get('https://api2.simplifies.cl/api/show-business', {
         params: {
           business_id: this.business_id
         }
@@ -512,7 +512,7 @@ export default {
               this.getServicesProfessional();
             }
       /*axios
-        .post('https://testapi.simplifies.cl/api/professionalservice-destroy', request)
+        .post('https://api2.simplifies.cl/api/professionalservice-destroy', request)
         .then(() => {
           LocalStorageService.setIsLocked(false);
           this.showAlert("success", "Desasignado correctamente", 3000);
@@ -590,7 +590,7 @@ export default {
                   this.getServicesProfessional();
                 }
 
-      /*axios.post('https://testapi.simplifies.cl/api/professionalservice', request)
+      /*axios.post('https://api2.simplifies.cl/api/professionalservice', request)
         .then(() => {
           LocalStorageService.setIsLocked(false);
           this.showAlert("success", "Servicio asignado correctamente", 3000);
@@ -622,7 +622,7 @@ export default {
         }
         //CAMBIAR ESTA RUTA POR LA RUTA CORRECTA DE DESASIGNAR SERVICIO AL PROFESIONAL
         axios
-          .post('https://testapi.simplifies.cl/api/professionalservice-meta', request)
+          .post('https://api2.simplifies.cl/api/professionalservice-meta', request)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.showAlert("success", "Servicio Asignado como meta", 3000);
@@ -654,7 +654,7 @@ let request = {
 }
 //CAMBIAR ESTA RUTA POR LA RUTA CORRECTA DE DESASIGNAR SERVICIO AL PROFESIONAL
 axios
-  .post('https://testapi.simplifies.cl/api/professionalservice-meta', request)
+  .post('https://api2.simplifies.cl/api/professionalservice-meta', request)
   .then(() => {
     LocalStorageService.setIsLocked(false);
     this.showAlert("success", "Servicio Asignado como meta", 3000);
@@ -745,7 +745,7 @@ axios
       console.log(this.services);
       //AXIOS
       axios
-        .get(`https://testapi.simplifies.cl/api/services-professional-branch`, {
+        .get(`https://api2.simplifies.cl/api/services-professional-branch`, {
           params: {
             branch_id: idBranch,
             professional_id: idProfessional,
@@ -783,7 +783,7 @@ axios
 
       //AXIOS
       axios
-        .get(`https://testapi.simplifies.cl/api/services-professional-branch`, {
+        .get(`https://api2.simplifies.cl/api/services-professional-branch`, {
           params: {
             branch_id: idBranch,
             professional_id: idProfessional,
@@ -826,7 +826,7 @@ axios
     },
     /*chargeServices() {
       axios
-        .get(`https://testapi.simplifies.cl/api/professionalservice-show`, {
+        .get(`https://api2.simplifies.cl/api/professionalservice-show`, {
           params: {
             branch_id: this.branch_id
           }
@@ -864,7 +864,7 @@ axios
 
       //this.array_services = newArrayService;
       axios
-        .get(`https://testapi.simplifies.cl/api/branch-professionals-barber-totem`, {
+        .get(`https://api2.simplifies.cl/api/branch-professionals-barber-totem`, {
           params: data
         })
         .then((response) => {
