@@ -4936,6 +4936,8 @@ procesarChangeLog(changeLog) {
         console.log(this.cashierData.existence);
         console.log('this.editedBox.newExtraction');
         console.log(this.editedBox.newExtraction);
+        console.log('this.editedBox.existence');
+        console.log(this.editedBox.existence);
         if (this.editedBox.newExtraction) {
         newExtraction = parseFloat(this.editedBox.newExtraction);
         
@@ -4949,6 +4951,12 @@ procesarChangeLog(changeLog) {
           existenceDetail.value = this.cashierData.existence;
         }*/
       } 
+      // Solución definitiva para el campo existence
+      if (this.editedBox.existence === '' || this.editedBox.existence === undefined || this.editedBox.existence === null) {
+        delete this.editedBox.existence; // Eliminamos el campo completamente
+      } else {
+        this.editedBox.existence = parseFloat(this.editedBox.existence); // Aseguramos que sea número
+      }
         this.editedBox.branch_id = this.branch_id;
         this.editedBox.nameProfessional = this.nameProfessional;
         //console.log('this.cashierData.existence2');
