@@ -99,7 +99,7 @@
                                                     prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago">
                                                 </v-text-field>
                                             </v-col>
-                                            <v-col cols="12" md="4" v-show="this.mostrarFila || this.edited">
+                                            <v-col cols="12" md="4" v-show="hasPermission('edited_date_finances') || this.edited">
                                                 <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40"
                                                     transition="scale-transition" offset-y min-width="290px">
                                                     <template v-slot:activator="{ props }">
@@ -409,6 +409,7 @@ axios.interceptors.request.use(config => {
 export default {
     data: () => ({
         valid: true,
+        permissionsUser: '',
         //visibility: true,
         loading: true,
         selectedOption: 'Todas',
@@ -676,6 +677,7 @@ export default {
         this.charge_id = parseInt(LocalStorageService.getItem('charge_id'));
         this.branch_id = parseInt(LocalStorageService.getItem('branch_id'));
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
+        this.permissionsUser = LocalStorageService.getItem("permissionsUser") || [],
         axios
             .get('https://api2.simplifies.cl/api/finance-combined-data', {
                 params: {
@@ -736,6 +738,11 @@ export default {
     },
 
     methods: {
+    hasPermission(permission) {
+      console.log('permission');
+      console.log(permission);
+      return this.permissionsUser.includes(permission);
+    },
         updateDate() {
       this.menu = false;
     },
