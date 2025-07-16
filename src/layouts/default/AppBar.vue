@@ -270,6 +270,9 @@ export default {
       }, 32000);
     },
     redirectBasedOnCharge() {
+      if (this.mobile === 0) {
+    return;
+  }
       switch (this.charge) {
         case 'Cajero (a)':
           this.$router.push({ path: 'box' });
