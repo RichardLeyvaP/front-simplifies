@@ -114,6 +114,7 @@ export default {
         mostrarFila: false,
         dialog: false,
         loading: false,
+        permissionsUser: '',
         groupBy: [
             {
                 key: 'direccionStore',
@@ -187,6 +188,7 @@ export default {
         //this.branch_id = LocalStorageService.getItem('branch_id');
         //this.charge_id = LocalStorageService.getItem('charge_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
+        this.permissionsUser = LocalStorageService.getItem("permissionsUser");
         LocalStorageService.setIsLocked(true);
         // Crear un objeto para los parámetros
         /*const requestParams = {
@@ -286,9 +288,17 @@ export default {
                 });
 
                 if (result.success) {
+                    console.log('this.permissionsUser.includes(view_main_warehouse)');
+                    console.log(this.permissionsUser.includes('view_main_warehouse'));
+                    if (this.permissionsUser.includes('view_main_warehouse'))
+                    {
                     // Si la solicitud es exitosa, asignamos las sucursales
                     this.results = result.data.products || []; // Si no hay roles, asigna un arreglo vacío
-                    this.resultsOriginal = _.cloneDeep(this.results);
+                    this.resultsOriginal = _.cloneDeep(this.results);                        
+                    }else{
+                        this.results = result.data.products.filter(item => item.branch_id !== 0) || [];
+                        this.resultsOriginal = _.cloneDeep(this.results);
+                    }
                 } else {
                     LocalStorageService.setIsLocked(false);
                     // Si no hay datos, asignamos un array vacío
