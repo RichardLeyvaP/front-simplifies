@@ -1,358 +1,354 @@
 <template>
-        <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24"
-        :multi-line="true" vertical v-model="snackbar">
-        <v-row>
-            <v-col md="2">
-                <v-avatar :icon="sb_icon" color="sb_type" size="40"></v-avatar>
-            </v-col>
-            <v-col md="10">
-                <h4>{{ sb_title }}</h4>
-                {{ sb_message }}
-
-            </v-col>
-
-        </v-row>
-    </v-snackbar>
+  <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24"
+    :multi-line="true" vertical v-model="snackbar">
+    <v-row>
+      <v-col md="2">
+        <v-avatar :icon="sb_icon" color="sb_type" size="40"></v-avatar>
+      </v-col>
+      <v-col md="10">
+        <h4>{{ sb_title }}</h4>
+        {{ sb_message }}
+      </v-col>
+    </v-row>
+  </v-snackbar>
   <v-container fluid class="pa-1">
     <v-card flat>
-      <v-toolbar color="#F18254">
-        <span class="text-subtitle-2 ml-2">Listado de Solicitudes</span>
-      </v-toolbar>
-
       <v-card-text class="flex-grow-1 overflow-y-auto px-0" style="max-height: 70vh">
         <template v-if="results.length > 0">
-        <div v-for="(item, index) in results" :key="index" class="mb-2 mx-0">
-          <!-- Request Card -->
-          <v-card class="d-flex" style="overflow: hidden;">
-            <!-- Columna izquierda - Botón DENEGAR -->
-            <div
-              class="d-flex align-center justify-center px-2  flex-shrink-0"
-              style="min-height: fit-content; background-color: red; cursor: pointer"
-              @click.stop="editItem(item)"
-            >
-              <v-icon color="white" size="large">mdi-thumb-down-outline</v-icon>
-            </div>
+          <v-container class="pa-4" style="max-width: 500px">
+            <div v-for="(item, index) in results" :key="index">
+              <v-card class="rounded-xl pa-4" elevation="4">
+                <!-- Título y ID -->
+                <v-row>
+                  <v-col cols="9" class="text-left">
+                    <span class="text-subtitle-1 font-weight-bold mb-2">
+                      {{ item.active == 2 ? "Edición de Carro" : "Eliminación de Carro" }}
+                    </span>
+                  </v-col>
+                  <v-col cols="3" class="text-right">
+                    <span class="text-subtitle-1 text-orange-darken-2 font-weight-bold mb-2">{{
+                      item.id
+                      }}</span>
+                  </v-col>
+                </v-row>
 
-            <!-- Columna central - Contenido -->
-            <div class="flex-grow-1 pa-2" style="min-width: 0; overflow: hidden;">
-            <div class="d-flex align-center mb-2">
-                <span class="text-body-1 font-weight-bold">
-                {{ item.active == 2 ? 'Solicitud de edición de carro' : 'Solicitud de eliminación de carro' }}
-                </span>
-            </div>
-            
-            <!-- Primera fila con dos columnas (Profesional y Cliente) -->
-            <div class="d-flex flex-wrap">
-                <!-- Columna 1: Profesional -->
-                <div class="d-flex align-center mr-4">
-                <v-avatar class="mr-2" elevation="3" color="grey-lighten-4">
-                    <v-img
-                    :src="`${this.$axios.defaults.baseURL}images/${item.image_url}`"
-                    alt="image"
-                    ></v-img>
-                </v-avatar>
-                <div>
-                    <span class="text-body-2 font-weight-bold d-block">{{ item.professionalName }}</span>
-                    <span class="text-caption text-grey">Profesional</span>
-                </div>
-                </div>
-                
-                <!-- Columna 2: Cliente -->
-                <div class="d-flex align-center">
-                <v-avatar class="mr-2" elevation="3" color="grey-lighten-4">
-                    <v-img
-                    :src="`${this.$axios.defaults.baseURL}images/${item.client_image}`"
-                    alt="image"
-                    ></v-img>
-                </v-avatar>
-                <div>
-                    <span class="d-block">{{ item.clientName }}</span>
-                    <span class="text-caption text-grey">Cliente</span>
-                </div>
-                </div>
-            </div>
-
-            <v-divider class="my-2"></v-divider>
-
-            <!-- Segunda fila con dos columnas (Sucursal y Datos numéricos) -->
-            <div class="d-flex flex-wrap">
-                <!-- Columna 1: Sucursal -->
-                <div class="mr-4 mb-2">
-                <div class="text-caption text-grey">Sucursal</div>
-                <div>{{ item.nameBranch }}</div>
-                </div>
-                
-                <!-- Columna 2: Datos numéricos en grid -->
-                <div class="flex-grow-1">
-                <div class="d-flex flex-wrap">
-                    <div class="mr-4 mb-2">
-                    <div class="text-caption text-grey">Técnico</div>
-                    <div>{{ formatNumber(item.technical_assistance) }}</div>
+                <!-- Profesional y Cliente -->
+                <v-row class="my-4" justify="space-between">
+                  <!-- Profesional -->
+                  <v-col cols="6" class="d-flex align-center">
+                    <v-avatar size="40" class="mr-1">
+                      <v-img :src="`${$axios.defaults.baseURL}images/${item.image_url}`" alt="Profesional"></v-img>
+                    </v-avatar>
+                    <div>
+                      <div class="font-weight-bold">{{ item.professionalName }}</div>
+                      <div class="text-caption">Profesional</div>
                     </div>
-                    <div class="mr-4 mb-2">
-                    <div class="text-caption text-grey">Productos</div>
-                    <div>{{ formatNumber(item.product) }}</div>
+                  </v-col>
+                  <!-- Cliente -->
+                  <v-col cols="6" class="d-flex align-center justify-end">
+                    <v-avatar size="40" class="mr-1">
+                      <v-img :src="`${$axios.defaults.baseURL}images/${item.client_image}`" alt="Cliente"></v-img>
+                    </v-avatar>
+                    <div class="text-left">
+                      <div class="font-weight-bold">{{ item.clientName }}</div>
+                      <div class="text-caption">Cliente</div>
                     </div>
-                    <div class="mr-4 mb-2">
-                    <div class="text-caption text-grey">Servicios</div>
-                    <div>{{ formatNumber(item.service) }}</div>
-                    </div>
-                    <div class="mr-4 mb-2">
-                    <div class="text-caption text-grey">Propina</div>
-                    <div>{{ formatNumber(item.tip) }}</div>
-                    </div>
-                    <div class="mr-4 mb-2">
-                    <div class="text-caption text-grey">Monto Total</div>
-                    <div>{{ formatNumber(item.amount) }}</div>
-                    </div>
-                </div>
-                </div>
-            </div>
+                  </v-col>
+                </v-row>
 
-            <!-- Tercera fila (botones) -->
-            <div class="d-flex flex-wrap mt-2">
-                <v-chip
-                @click="
-                    dialogActions = true;
-                    currentActions = item.action_descriptions;
-                "
-                color="indigo-darken-2"
-                small
-                class="px-2 mr-2"
-                :disabled="!item.action_descriptions?.length"
-                >
-                <v-icon
-                    left
-                    color="indigo-darken-2"
-                    icon="mdi-clipboard-text-outline"
-                />
-                {{ item.action_descriptions.length }} Solicitudes
-                </v-chip>
+                <!-- Detalles del Carro (Técnico, Productos, Servicios, Propina, Total) -->
+                <v-card class="rounded-lg mb-2" variant="tonal" flat>
+                  <v-row class="py-2 px-4" align="center">
+                    <v-col cols="6" class="text-subtitle-1 font-weight-bold">Técnico</v-col>
+                    <v-col cols="6" class="text-right font-weight-bold" style="color: #ff6d00">
+                      {{ formatNumber(item.technical_assistance) }}
+                    </v-col>
+                  </v-row>
+                </v-card>
 
-                <v-chip
-                @click="
-                    dialogChages = true;
-                    cambiosProcesados = procesarChangeLog(item.change_log);
-                "
-                color="teal-darken-3"
-                small
-                class="px-2"
-                :disabled="!item.change_log?.length"
-                >
-                <v-icon left color="teal-darken-3" icon="mdi-history" />
-                {{ item.change_log.length }} Cambios
-                </v-chip>
-            </div>
-            </div>
+                <v-card class="rounded-lg mb-2" variant="tonal" flat>
+                  <v-row class="py-2 px-4" align="center">
+                    <v-col cols="6" class="text-subtitle-1 font-weight-bold">Productos</v-col>
+                    <v-col cols="6" class="text-right font-weight-bold" style="color: #ff6d00">
+                      {{ formatNumber(item.product) }}
+                    </v-col>
+                  </v-row>
+                </v-card>
 
-            <!-- Columna derecha - Botón ACEPTAR -->
-            <div
-              class="d-flex align-center justify-center px-2  flex-shrink-0"
-              style="min-height: fit-content; background-color: green; cursor: pointer"
-              @click.stop="deleteItem(item)"
-            >
-              <v-icon color="white" size="large">mdi-thumb-up-outline</v-icon>
+                <v-card class="rounded-lg mb-2" variant="tonal" flat>
+                  <v-row class="py-2 px-4" align="center">
+                    <v-col cols="6" class="text-subtitle-1 font-weight-bold">Servicios</v-col>
+                    <v-col cols="6" class="text-right font-weight-bold" style="color: #ff6d00">
+                      {{ formatNumber(item.service) }}
+                    </v-col>
+                  </v-row>
+                </v-card>
+
+                <v-card class="rounded-lg mb-2" variant="tonal" flat>
+                  <v-row class="py-2 px-4" align="center">
+                    <v-col cols="6" class="text-subtitle-1 font-weight-bold">Propina</v-col>
+                    <v-col cols="6" class="text-right font-weight-bold" style="color: #ff6d00">
+                      {{ formatNumber(item.tip) }}
+                    </v-col>
+                  </v-row>
+                </v-card>
+
+                <v-card class="rounded-lg mb-2" variant="tonal" flat>
+                  <v-row class="py-2 px-4" align="center">
+                    <v-col cols="6" class="text-subtitle-1 font-weight-bold">Monto Total</v-col>
+                    <v-col cols="6" class="text-right font-weight-bold" style="color: #ff6d00">
+                      {{ formatNumber(item.amount) }}
+                    </v-col>
+                  </v-row>
+                </v-card>
+
+                <!-- Tabs: Solicitudes y Cambios (clickeables) -->
+                <v-row class="mt-4 px-2" justify="space-around">
+                  <!-- Solicitudes -->
+                  <v-col cols="6" class="text-center pa-1">
+                    <div class="py-1 px-3 rounded-lg text-caption font-weight-bold text-orange-darken-2"
+                      style="background-color: #F7F7F7; cursor: pointer; font-size: 0.75rem;"
+                      @click="openActionsDialog(item.action_descriptions)">
+                      {{ item.action_descriptions?.length || 0 }} SOLICITUDES
+                    </div>
+                  </v-col>
+
+                  <!-- Cambios -->
+                  <v-col cols="6" class="text-center pa-1">
+                    <div class="py-1 px-3 rounded-lg text-caption font-weight-bold text-blue"
+                      style="background-color: #F7F7F7; cursor: pointer; font-size: 0.75rem;"
+                      @click="openChangesDialog(item.change_log)">
+                      {{ item.change_log?.length || 0 }} CAMBIOS
+                    </div>
+                  </v-col>
+                </v-row>
+
+                <!-- Aprobación: Botones y profesional responsable -->
+                <v-card class="d-flex align-center justify-space-between pa-3 mt-4 rounded-lg"
+                  style="background-color: #e9e9e9">
+                  <v-row no-gutters>
+                    <!-- Rechazar -->
+                    <v-col cols="2" class="text-center">
+                      <v-btn color="error" class="rounded-lg" icon @click.stop="editItem(item)">
+                        <v-icon>mdi-thumb-down</v-icon>
+                      </v-btn>
+                    </v-col>
+
+                    <!-- Información del solicitante -->
+                    <v-col cols="8" class="pl-2">
+                      <div class="d-flex align-center">
+                        <v-avatar size="40" class="mr-1">
+                          <v-img :src="`${$axios.defaults.baseURL}images/${item.image_url}`" alt="Profesional"></v-img>
+                        </v-avatar>
+                        <div>
+                          <div class="text-subtitle-2 font-weight-bold">
+                            {{ item.professionalName }}
+                          </div>
+                          <div class="text-caption" style="color: #ff6d00">
+                            {{ item.nameBranch }}
+                          </div>
+                          <div class="text-caption text-grey-darken-1">
+                            {{ item.professionalRole }}
+                          </div>
+                        </div>
+                      </div>
+                    </v-col>
+
+                    <!-- Aprobar -->
+                    <v-col cols="2" class="text-center">
+                      <v-btn color="success" class="rounded-lg" icon @click.stop="deleteItem(item)">
+                        <v-icon>mdi-thumb-up</v-icon>
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                </v-card>
+              </v-card>
             </div>
-          </v-card>
-        </div>
+          </v-container>
         </template>
         <template v-if="results1.length > 0">
-        <div v-for="(item, index) in results1" :key="index" class="mb-2 mx-0">
-            <!-- Request Card -->
-            <v-card class="d-flex" style="overflow: hidden;">
-            <!-- Columna izquierda - Botón DENEGAR -->
-            <div
-              class="d-flex align-center justify-center px-2  flex-shrink-0"
-              style="min-height: fit-content; background-color: red; cursor: pointer"
-              @click.stop="editItemOrder(item)"
-            >
-              <v-icon color="white" size="large">mdi-thumb-down-outline</v-icon>
-            </div>
+          <v-container class="pa-4" style="max-width: 500px">
+            <div v-for="(item, index) in results1" :key="index">
+              <v-card class="rounded-xl pa-4 mb-4" elevation="4">
+                <!-- Título único -->
 
-           <!-- Columna central - Contenido -->
-            <div class="flex-grow-1 pa-2"  style="min-width: 0; overflow: hidden;">
-            <!-- Fila 1: Título -->
-            <div class="d-flex align-center mb-2">
-                <span class="text-body-1 font-weight-bold">
-                Solicitud de eliminación de orden
-                </span>
-            </div>
+                <v-row>
+                  <v-col cols="7" class="text-left">
+                    <span class="text-subtitle-1 font-weight-bold mb-2">
+                      Eliminación de Orden
+                    </span>
+                  </v-col>
+                  <v-col cols="5" class="text-right">
+                    <span class="text-subtitle-1 font-weight-bold mb-2">Carro: {{ item.car_id }}</span>
+                  </v-col>
+                </v-row>
 
-            <!-- Fila 2: Dos columnas (Profesional y Cliente) -->
-            <div class="d-flex flex-wrap">
-                <!-- Columna 1: Profesional -->
-                <div class="d-flex align-center mr-4 mb-2">
-                <v-avatar class="mr-2" size="40" elevation="3" color="grey-lighten-4">
-                    <v-img
-                    :src="`${$axios.defaults.baseURL}images/${item.image_url}`"
-                    alt="Profesional"
-                    ></v-img>
-                </v-avatar>
-                <div>
-                    <span class="text-body-2 font-weight-bold d-block">{{ item.professionalName }}</span>
-                    <span class="text-caption text-grey">Profesional</span>
-                </div>
-                </div>
+                <!-- Detalle principal: Producto/Servicio + Precio -->
+                <v-card class="d-flex align-center rounded-lg pa-3 mb-4" variant="outlined">
+                  <v-avatar size="48" class="mr-3">
+                    <v-img :src="`${$axios.defaults.baseURL}images/${item.image}`" alt="Producto/Servicio"></v-img>
+                  </v-avatar>
+                  <div>
+                    <div class="text-subtitle-1 font-weight-bold">{{ item.name }}</div>
+                    <div class="text-body-2 text-grey-darken-1">Precio</div>
+                    <div class="text-body-2" style="color: #ff6d00">
+                      {{ formatNumber(item.price) }}
+                    </div>
+                  </div>
+                </v-card>
 
-                <!-- Columna 2: Cliente -->
-                <div class="d-flex align-center mb-2">
-                <v-avatar class="mr-2" size="40" elevation="3" color="grey-lighten-4">
-                    <v-img
-                    :src="`${$axios.defaults.baseURL}images/${item.client_image}`"
-                    alt="Cliente"
-                    ></v-img>
-                </v-avatar>
-                <div>
-                    <span class="text-body-2 d-block">{{ item.clientName }}</span>
-                    <span class="text-caption text-grey">Cliente</span>
-                </div>
-                </div>
-            </div>
+                <!-- Información de usuarios: Profesional y Cliente -->
+                <div class="d-flex justify-space-between align-center mb-4">
+                  <!-- Profesional -->
+                  <div class="d-flex align-center">
+                    <v-avatar size="36" class="mr-2">
+                      <v-img :src="`${$axios.defaults.baseURL}images/${item.image_url}`" alt="Profesional"></v-img>
+                    </v-avatar>
+                    <div>
+                      <div class="text-caption font-weight-medium">
+                        {{ item.professionalName }}
+                      </div>
+                      <div class="text-caption text-grey">Profesional</div>
+                    </div>
+                  </div>
 
-            <!-- Fila 3: Dos columnas (Producto/Servicio y Datos adicionales) -->
-            <div class="d-flex flex-wrap">
-                <!-- Columna 1: Producto/Servicio -->
-                <div class="d-flex align-center mr-4 mb-2">
-                <v-avatar class="mr-2" size="40" elevation="3" color="grey-lighten-4">
-                    <v-img
-                    :src="`${$axios.defaults.baseURL}images/${item.image}`"
-                    alt="Producto"
-                    ></v-img>
-                </v-avatar>
-                <div>
-                    <span class="text-body-2 font-weight-bold d-block">{{ item.name }}</span>
-                    <span class="text-body-2 text-primary">{{ formatNumber(item.price) }}</span>
-                </div>
+                  <!-- Cliente -->
+                  <div class="d-flex align-center">
+                    <v-avatar size="36" class="mr-2">
+                      <v-img :src="`${$axios.defaults.baseURL}images/${item.client_image}`" alt="Cliente"></v-img>
+                    </v-avatar>
+                    <div>
+                      <div class="text-caption font-weight-medium">
+                        {{ item.clientName }}
+                      </div>
+                      <div class="text-caption text-grey">Cliente</div>
+                    </div>
+                  </div>
                 </div>
 
-                <!-- Columna 2: Datos adicionales -->
-                <div class="d-flex flex-wrap align-center">
-                <div class="mr-4 mb-2">
-                    <div class="text-caption text-grey">Sucursal</div>
-                    <div class="text-body-2">{{ item.nameBranch }}</div>
-                </div>
-                <div class="mr-4 mb-2">
-                    <div class="text-caption text-grey">Carro</div>
-                    <div class="text-body-2">{{ item.car_id }}</div>
-                </div>
-                <div class="mr-4 mb-2">
-                    <div class="text-caption text-grey">Categoría</div>
-                    <div class="text-body-2">{{ item.category }}</div>
-                </div>
-                </div>
-            </div>
-            </div>
+                <!-- Aprobación: Botones + Responsable -->
+                <v-card class="d-flex align-center justify-space-between pa-3 rounded-lg"
+                  style="background-color: #e9e9e9">
+                  <v-row no-gutters>
+                    <!-- Rechazar -->
+                    <v-col cols="2" class="text-center">
+                      <v-btn color="error" class="rounded-lg" icon @click.stop="editItemOrder(item)">
+                        <v-icon>mdi-thumb-down</v-icon>
+                      </v-btn>
+                    </v-col>
 
-            <!-- Columna derecha - Botón ACEPTAR -->
-             <div
-              class="d-flex align-center justify-center px-2  flex-shrink-0"
-              style="min-height: fit-content; background-color: green; cursor: pointer"
-              @click.stop="deleteItemOrder(item)"
-            >
-              <v-icon color="white" size="large">mdi-thumb-up-outline</v-icon>
+                    <!-- Profesional que realiza la acción -->
+                    <v-col cols="8" class="pl-2">
+                      <div class="d-flex align-center">
+                        <v-avatar size="40" class="mr-1">
+                          <v-img :src="`${$axios.defaults.baseURL}images/${item.image_url}`" alt="Profesional"></v-img>
+                        </v-avatar>
+                        <div>
+                          <div class="text-subtitle-2 font-weight-bold">
+                            {{ item.professionalName }}
+                          </div>
+                          <div class="text-caption" style="color: #ff6d00">
+                            {{ item.nameBranch }}
+                          </div>
+                          <div class="text-caption text-grey-darken-1">
+                            {{ item.professionalRole }}
+                          </div>
+                        </div>
+                      </div>
+                    </v-col>
+
+                    <!-- Aprobar -->
+                    <v-col cols="2" class="text-center">
+                      <v-btn color="success" class="rounded-lg" icon @click.stop="deleteItemOrder(item)">
+                        <v-icon>mdi-thumb-up</v-icon>
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                </v-card>
+              </v-card>
             </div>
-            </v-card>
-        </div>
+          </v-container>
         </template>
         <template v-if="results2.length > 0">
-        <div v-for="(item, index) in results2" :key="index" class="mb-2 mx-0">
-            <!-- Product Request Card -->
-            <v-card class="d-flex" style="overflow: hidden;">
-            <!-- Columna izquierda - Botón DENEGAR -->
-            <div
-              class="d-flex align-center justify-center px-2 flex-shrink-0"
-              style="min-height: fit-content; background-color: red; cursor: pointer"
-              @click.stop="editItemProduct(item)"
-            >
-              <v-icon color="white" size="large">mdi-thumb-down-outline</v-icon>
-            </div>
+          <v-container class="pa-4" style="max-width: 500px">
+            <div v-for="(item, index) in results2" :key="index">
+              <v-card class="rounded-xl pa-4 mb-4" elevation="4">
+                <!-- Título -->
+                <h2 class="text-subtitle-1 font-weight-bold mb-2">Eliminación de Productos</h2>
 
-            <!-- Columna central - Contenido -->
-            <div class="flex-grow-1 pa-2" style="min-width: 0; overflow: hidden;">
-            <!-- Fila 1: Título -->
-            <div class="d-flex align-center mb-2">
-                <span class="text-body-1 font-weight-bold">
-                Solicitud de eliminación de producto
-                </span>
-            </div>
+                <!-- Producto -->
+                <v-card class="d-flex align-center rounded-lg pa-3 mb-4" variant="outlined">
+                  <v-avatar size="48" class="mr-3">
+                    <v-img :src="`${$axios.defaults.baseURL}images/${item.image_product}`" alt="Producto"></v-img>
+                  </v-avatar>
+                  <div>
+                    <div class="text-subtitle-1 font-weight-bold">
+                      {{ item.productName }}
+                    </div>
+                    <div class="text-body-2 text-grey-darken-1">Precio unitario</div>
+                    <div class="text-body-2" style="color: #ff6d00">
+                      {{ formatNumber(item.price) }}
+                    </div>
+                  </div>
+                  <div class="ml-auto text-center">
+                    <div class="text-h5 font-weight-bold">{{ item.cant }}</div>
+                    <div class="text-caption text-grey">Cantidad</div>
+                  </div>
+                </v-card>
 
-            <!-- Fila 2: Dos columnas (Profesional y Producto) -->
-            <div class="d-flex flex-wrap">
-                <!-- Columna 1: Profesional -->
-                <div class="d-flex align-center mr-4 mb-2">
-                <v-avatar class="mr-2" size="40" elevation="3" color="grey-lighten-4">
-                    <v-img
-                    :src="`${$axios.defaults.baseURL}images/${item.image_url}`"
-                    alt="Profesional"
-                    ></v-img>
-                </v-avatar>
-                <div>
-                    <span class="text-body-2 font-weight-bold d-block">{{ item.professionalName }}</span>
-                    <span class="text-caption text-grey">Profesional</span>
-                </div>
-                </div>
+                <!-- Aprobación -->
+                <v-card class="d-flex align-center justify-space-between pa-3 mt-4 rounded-lg"
+                  style="background-color: #e9e9e9">
+                  <v-row no-gutters>
+                    <!-- Botón Rechazar -->
+                    <v-col cols="2" class="text-center">
+                      <v-btn color="error" class="rounded-lg" icon @click.stop="editItemProduct(item)">
+                        <v-icon>mdi-thumb-down</v-icon>
+                      </v-btn>
+                    </v-col>
 
-                <!-- Columna 2: Producto -->
-                <div class="d-flex align-center mb-2">
-                <v-avatar class="mr-2" size="40" elevation="3" color="grey-lighten-4">
-                    <v-img
-                    :src="`${$axios.defaults.baseURL}images/${item.image_product}`"
-                    alt="Producto"
-                    ></v-img>
-                </v-avatar>
-                <div>
-                    <span class="text-body-2 font-weight-bold d-block">{{ item.productName }}</span>
-                    <span class="text-body-2 text-primary">{{ formatNumber(item.price) }}</span>
-                    <span class="text-caption text-grey">Precio unitario</span>
-                </div>
-                </div>
-            </div>
+                    <!-- Información del Profesional -->
+                    <v-col cols="8" class="pl-2">
+                      <div class="d-flex align-center">
+                        <v-avatar size="40" class="mr-1">
+                          <v-img :src="`${$axios.defaults.baseURL}images/${item.image_url}`" alt="Profesional"></v-img>
+                        </v-avatar>
+                        <div>
+                          <div class="text-subtitle-2 font-weight-bold">
+                            {{ item.professionalName }}
+                          </div>
+                          <div class="text-caption" style="color: #ff6d00">
+                            {{ item.nameBranch }}
+                          </div>
+                          <div class="text-caption text-grey-darken-1">
+                            {{ item.professionalRole }}
+                          </div>
+                        </div>
+                      </div>
+                    </v-col>
 
-            <v-divider class="my-2"></v-divider>
-
-            <!-- Fila 3: Datos adicionales en formato compacto -->
-            <div class="d-flex flex-wrap">
-                <div class="mr-4 mb-2">
-                <div class="text-caption text-grey">No.</div>
-                <div class="text-body-2">#{{ item.id }}</div>
-                </div>
-                <div class="mr-4 mb-2">
-                <div class="text-caption text-grey">Sucursal</div>
-                <div class="text-body-2">{{ item.nameBranch }}</div>
-                </div>
-                <div class="mr-4 mb-2">
-                <div class="text-caption text-grey">Cantidad</div>
-                <div class="text-body-2">{{ item.cant }}</div>
-                </div>
+                    <!-- Botón Aprobar -->
+                    <v-col cols="2" class="text-center">
+                      <v-btn color="success" class="rounded-lg" icon @click.stop="deleteItemProduct(item)">
+                        <v-icon>mdi-thumb-up</v-icon>
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                </v-card>
+              </v-card>
             </div>
-            </div>
-
-            <!-- Columna derecha - Botón ACEPTAR -->
-            <div
-              class="d-flex align-center justify-center px-2 flex-shrink-0"
-              style="min-height: fit-content; background-color: green; cursor: pointer"
-              @click.stop="deleteItemProduct(item)"
-            >
-              <v-icon color="white" size="large">mdi-thumb-up-outline</v-icon>
-            </div>
-            </v-card>
-        </div>
+          </v-container>
         </template>
         <template v-if="results.length === 0 && results1.length === 0 && results2.length === 0">
-        <v-card
-            class="mt-4 pa-6 text-center"
-            variant="flat"
-            color="grey-lighten-4"
-            rounded="lg"
-        >
+          <v-card class="mt-4 pa-6 text-center" variant="flat" color="grey-lighten-4" rounded="lg" elevation="3">
             <v-icon size="60" color="grey-darken-2">mdi-inbox-remove-outline</v-icon>
             <v-card-title class="text-h6 text-grey-darken-3 justify-center">
-            No hay solicitudes
+              No hay solicitudes
             </v-card-title>
             <v-card-subtitle class="text-grey-darken-1">
-            No se encontraron registros para mostrar.
+              No se encontraron registros para mostrar.
             </v-card-subtitle>
-        </v-card>
+          </v-card>
         </template>
       </v-card-text>
     </v-card>
@@ -360,68 +356,49 @@
       <v-card>
         <v-toolbar color="#F18254">
           <v-row align="center">
-            <v-col cols="12" md="5" class="grow ml-4">
-              <span class="text-subtitle-1"
-                ><strong>Detalles de Solicitudes</strong></span
-              >
+            <v-col cols="12" md="5" class="grow ml-1">
+              <span class="text-subtitle-1"><strong>Detalles de Solicitudes</strong></span>
             </v-col>
-            <v-col cols="12" md="5"></v-col>
-            <v-col cols="12" md="1"></v-col>
+            <v-spacer></v-spacer>
+            <v-btn icon @click="dialogActions = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
           </v-row>
         </v-toolbar>
-
-        <v-card-text>
-          <v-card v-for="(action, index) in currentActions" :key="index" class="mb-6">
+        <v-card-text class="pt-4">
+          <v-card v-for="(action, idx) in currentActions" :key="idx" class="mb-4">
             <v-card-title>
-              <v-list-item
-                :subtitle="formatDateTime(action.timestamp)"
-                :title="action.nameProfessional || 'Usuario'"
-              >
+              <v-list-item :title="action.nameProfessional || 'Usuario'" :subtitle="formatDateTime(action.timestamp)">
                 <template v-slot:prepend>
                   <v-avatar>
-                    <v-img
-                      :src="`${this.$axios.defaults.baseURL}images/${action.image}`"
-                      alt="image"
-                    ></v-img>
+                    <v-img :src="`${$axios.defaults.baseURL}images/${action.image}`"></v-img>
                   </v-avatar>
                 </template>
                 <template v-slot:append>
-                  <v-avatar color="grey-lighten-1" size="small">
-                    {{ index + 1 }}
-                  </v-avatar>
+                  <v-avatar color="grey-lighten-1" size="small">{{ idx + 1 }}</v-avatar>
                 </template>
               </v-list-item>
             </v-card-title>
             <v-divider></v-divider>
-
             <v-card-text>
-              <v-list-item
-                :subtitle="action.description"
-                :title="getActionTitle(action.action_type)"
-              >
+              <v-list-item :title="getActionTitle(action.action_type)" :subtitle="action.description">
                 <template v-slot:prepend>
                   <v-avatar color="white">
-                    <v-icon :color="getActionColor(action.action_type)" size="30">{{
-                      getActionIcon(action.action_type)
-                    }}</v-icon>
+                    <v-icon :color="getActionColor(action.action_type)" size="30">
+                      {{ getActionIcon(action.action_type) }}
+                    </v-icon>
                   </v-avatar>
                 </template>
               </v-list-item>
             </v-card-text>
           </v-card>
         </v-card-text>
-
-        <v-divider></v-divider>
-
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="#E7E9E9" variant="flat" @click="dialogActions = false">
-            Cerrar
-          </v-btn>
+          <v-btn color="grey-lighten-1" variant="text" @click="dialogActions = false">Cerrar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-
     <v-dialog v-model="dialogChages" max-width="700px">
       <v-card>
         <v-toolbar color="#F18254">
@@ -433,22 +410,12 @@
         </v-toolbar>
 
         <v-card-text>
-          <v-card
-            v-for="(registro, index) in cambiosProcesados"
-            :key="index"
-            class="mb-6"
-          >
+          <v-card v-for="(registro, index) in cambiosProcesados" :key="index" class="mb-6">
             <v-card-title>
-              <v-list-item
-                :subtitle="formatFecha(registro.timestamp)"
-                :title="registro.nameProfessional"
-              >
+              <v-list-item :subtitle="formatFecha(registro.timestamp)" :title="registro.nameProfessional">
                 <template v-slot:prepend>
                   <v-avatar color="primary">
-                    <v-img
-                      :src="`${this.$axios.defaults.baseURL}images/${registro.image}`"
-                      alt="image"
-                    ></v-img>
+                    <v-img :src="`${this.$axios.defaults.baseURL}images/${registro.image}`" alt="image"></v-img>
                   </v-avatar>
                 </template>
                 <template v-slot:append>
@@ -463,17 +430,13 @@
 
             <v-card-text>
               <v-list density="compact">
-                <v-list-item v-for="(cambio, i) in registro.listaCambios" :key="i">
-                  <v-list-item-content>
-                    <v-list-item-title :class="iconoCambio(cambio).color + '--text'">
-                      <v-list-item-icon>
-                        <v-icon :color="iconoCambio(cambio).color">
-                          {{ iconoCambio(cambio).icon }}
-                        </v-icon>
-                      </v-list-item-icon>
-                      {{ cambio }}
-                    </v-list-item-title>
-                  </v-list-item-content>
+                <v-list-item v-for="(cambio, i) in registro.listaCambios" :key="i" :title="cambio"
+                  :class="iconoCambio(cambio).color + '--text'">
+                  <template v-slot:prepend>
+                    <v-icon :color="iconoCambio(cambio).color" size="small" class="mr-2">
+                      {{ iconoCambio(cambio).icon }}
+                    </v-icon>
+                  </template>
                 </v-list-item>
               </v-list>
             </v-card-text>
@@ -655,9 +618,18 @@ export default {
         .map((c) => c.trim())
         .filter((c) => c !== "");
     },
+    // Abre el diálogo de solicitudes
     openActionsDialog(actions) {
+      if (!actions || actions.length === 0) return;
       this.currentActions = actions;
-      this.actionsDialog = true;
+      this.dialogActions = true;
+    },
+
+    // Abre el diálogo de cambios (correctamente)
+    openChangesDialog(changeLog) {
+      if (!changeLog || !Array.isArray(changeLog) || changeLog.length === 0) return;
+      this.cambiosProcesados = this.procesarChangeLog(changeLog);
+      this.dialogChages = true;
     },
     formatFecha(fechaStr) {
       const fecha = new Date(fechaStr);
