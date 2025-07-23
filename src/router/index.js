@@ -526,6 +526,15 @@ const routes = [
         },
       },
       {
+        path: "/solicitud-delete",
+        name: "Solicitudes de eliminacion",
+        component: () => import("@/views/carorderdelete/Solicitud.vue"),
+        meta: {
+          requiresAuth: true,
+          requiresPermissions: ["view_carorder_delete"],
+        },
+      },
+      {
         path: "/finance-detail-operation",
         name: "Finanzas por detalle de operación",
         component: () => import("@/views/reportes/FinanceBranchDetail.vue"),
