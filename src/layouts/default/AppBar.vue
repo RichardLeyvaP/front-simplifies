@@ -25,7 +25,7 @@
 
     </v-app-bar-title>
     <v-spacer></v-spacer>
-    <v-badge :content="notificationsWithStateZero" color="red" class="mr-4">
+    <v-badge :content="notificationsWithStateZero" color="red" class="mr-4"  v-if="mobile">
       <v-icon id="menu-activator" color="#F18254" @click="showMenu = !showMenu; clearNotifications()" class="mr-2"
         size="x-large"><!--@click="showMenu = !showMenu; clearNotifications()" poniendo esto podemos hacer la logica de pasar todas las que state sea 0 a uno-->
         mdi-bell
