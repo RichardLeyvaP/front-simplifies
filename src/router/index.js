@@ -527,7 +527,7 @@ const routes = [
       },
       {
         path: "/solicitud-delete",
-        name: "Solicitudes de eliminacion",
+        name: "Solicitudes de eliminacion web",
         component: () => import("@/views/carorderdelete/Solicitud.vue"),
         meta: {
           requiresAuth: true,
