@@ -117,7 +117,7 @@
                               :title="action.nameProfessional || 'Usuario'">
                               <template v-slot:prepend>
                                 <v-avatar>
-                                  <v-img :src="'https://testapi.simplifies.cl/api/images/' + action.image" alt="image"></v-img>
+                                  <v-img :src="'https://api2.simplifies.cl/api/images/' + action.image" alt="image"></v-img>
                                 </v-avatar>
                               </template>
                               <template v-slot:append>
@@ -178,7 +178,7 @@
                             <v-list-item :subtitle="formatFecha(registro.timestamp)" :title="registro.nameProfessional">
                               <template v-slot:prepend>
                                 <v-avatar>
-                                  <v-img :src="'https://testapi.simplifies.cl/api/images/' + registro.image" alt="image"></v-img>
+                                  <v-img :src="'https://api2.simplifies.cl/api/images/' + registro.image" alt="image"></v-img>
                                 </v-avatar>
                               </template>
                               <template v-slot:append>

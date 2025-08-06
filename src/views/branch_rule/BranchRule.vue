@@ -217,7 +217,7 @@ export default {
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         LocalStorageService.setIsLocked(true);
         axios
-            .get('https://testapi.simplifies.cl/api/show-business', {
+            .get('https://api2.simplifies.cl/api/show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -266,7 +266,7 @@ export default {
             this.loadingrules = true;
             LocalStorageService.setIsLocked(true);
             axios
-                .get('https://testapi.simplifies.cl/api/branch_rules', {
+                .get('https://api2.simplifies.cl/api/branch_rules', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -282,7 +282,7 @@ export default {
         showAddRules(){
             LocalStorageService.setIsLocked(true);
             axios
-                .get('https://testapi.simplifies.cl/api/branch-rules-noIn', {
+                .get('https://api2.simplifies.cl/api/branch-rules-noIn', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -305,7 +305,7 @@ export default {
             this.data.branch_id = this.branch_id;
             this.data.rule_id = this.editedItem.rule_id;
             axios
-                .post('https://testapi.simplifies.cl/api/branchrule-destroy', this.data)
+                .post('https://api2.simplifies.cl/api/branchrule-destroy', this.data)
                 .then(() => {
                     this.message_delete = true;
                 }).finally(() => {
@@ -339,7 +339,7 @@ export default {
                 this.data.branch_id = this.branch_id;
                 this.data.rule_id = this.editedItem.rule_id;
                 axios
-                    .post('https://testapi.simplifies.cl/api/branchrule', this.data)
+                    .post('https://api2.simplifies.cl/api/branchrule', this.data)
                     .then(() => {
                     }).finally(() => {
                         LocalStorageService.setIsLocked(false);

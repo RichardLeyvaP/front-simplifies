@@ -206,7 +206,7 @@ export default {
     this.nameProfessional = JSON.parse(LocalStorageService.getItem("name"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     axios
-      .get('https://testapi.simplifies.cl/api/show-business', {
+      .get('https://api2.simplifies.cl/api/show-business', {
         params: {
           business_id: this.business_id
         }
@@ -302,7 +302,7 @@ export default {
       console.log('endDate');
       console.log(startDate);
       axios
-        .get('https://testapi.simplifies.cl/api/traces-branch-periodo', {
+        .get('https://api2.simplifies.cl/api/traces-branch-periodo', {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,
@@ -323,7 +323,7 @@ export default {
       const mes = `${month}`;
       const ano = `${year}`;
       axios
-        .get('https://testapi.simplifies.cl/api/traces-branch-month', {
+        .get('https://api2.simplifies.cl/api/traces-branch-month', {
           params: {
               branch_id: this.branch_id,
               month: mes,
@@ -340,7 +340,7 @@ export default {
       console.log('this.nameBranch');
       console.log(this.input);
       axios
-        .get('https://testapi.simplifies.cl/api/traces-branch-day', {
+        .get('https://api2.simplifies.cl/api/traces-branch-day', {
           params: {
             branch_id: this.branch_id,
             day: format(new Date(), "yyyy-MM-dd")

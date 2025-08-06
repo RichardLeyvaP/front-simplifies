@@ -168,7 +168,7 @@
         <template v-slot:item.name="{ item }">
 
         <v-avatar class="mr-1" elevation="3" color="grey-lighten-4" size="large">
-          <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+          <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
         </v-avatar><!--+'?$'+Date.now()-->
         {{ item.name }}
         </template>
@@ -678,7 +678,7 @@ export default {
       this.loadingBusiness = true;
       LocalStorageService.setIsLocked(true);
       axios
-        .get('https://testapi.simplifies.cl/api/business')
+        .get('https://api2.simplifies.cl/api/business')
         .then((response) => {
           //this.results = response.data.business;
           this.results = response.data.business.map(business => {
@@ -704,7 +704,7 @@ export default {
      this.editedItem = Object.assign({}, this.defaultItem)
       //LocalStorageService.setIsLocked(true);
       /*axios
-        .get('https://testapi.simplifies.cl/api/professional-show-autocomplete')
+        .get('https://api2.simplifies.cl/api/professional-show-autocomplete')
         .then((response) => {
           this.professionals = response.data.professionals;
         }).finally(() => {
@@ -717,9 +717,9 @@ export default {
       this.editedItem = Object.assign({}, this.defaultItem)
       this.file = null;
       var img = new Image();
-      img.src = 'https://testapi.simplifies.cl/api/images/' + item.image_url;
+      img.src = 'https://api2.simplifies.cl/api/images/' + item.image_url;
       img.onload = () => {
-        this.imgMiniatura = 'https://testapi.simplifies.cl/api/images/' + item.image_url;
+        this.imgMiniatura = 'https://api2.simplifies.cl/api/images/' + item.image_url;
       };
       img.onerror = () => {
         this.imgMiniatura = '';
@@ -743,7 +743,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('https://testapi.simplifies.cl/api/business-destroy', request)
+        .post('https://api2.simplifies.cl/api/business-destroy', request)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -781,7 +781,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios
-          .post('https://testapi.simplifies.cl/api/business-update', formData)
+          .post('https://api2.simplifies.cl/api/business-update', formData)
           .then(() => {
           }).finally(() => {
             LocalStorageService.setIsLocked(false);
@@ -800,7 +800,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios
-          .post('https://testapi.simplifies.cl/api/business', formData)
+          .post('https://api2.simplifies.cl/api/business', formData)
           .then(() => {
           }).finally(() => {
             LocalStorageService.setIsLocked(false);
@@ -832,7 +832,7 @@ export default {
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       axios
-        .get('https://testapi.simplifies.cl/api/business-winner', {
+        .get('https://api2.simplifies.cl/api/business-winner', {
           params: {
             startDate: startDate,
             endDate: endDate
@@ -867,7 +867,7 @@ export default {
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       axios
-        .get('https://testapi.simplifies.cl/api/business-winner', {
+        .get('https://api2.simplifies.cl/api/business-winner', {
           params: {
             startDate: startDate,
             endDate: endDate
@@ -931,7 +931,7 @@ export default {
       this.loadingWinnerBranch = true;
       LocalStorageService.setIsLocked(true);
       axios
-        .get('https://testapi.simplifies.cl/api/company_winner', {
+        .get('https://api2.simplifies.cl/api/company_winner', {
           params: {
             business_id: this.business_id,
           }
@@ -955,7 +955,7 @@ export default {
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       axios
-        .get('https://testapi.simplifies.cl/api/company_winner', {
+        .get('https://api2.simplifies.cl/api/company_winner', {
           params: {
             startDate: startDate,
             endDate: endDate,

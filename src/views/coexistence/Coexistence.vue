@@ -557,7 +557,7 @@ export default {
         id: this.editedItem.id
       };
       /*axios
-        .post('https://testapi.simplifies.cl/api/workplace-destroy', request)
+        .post('https://api2.simplifies.cl/api/workplace-destroy', request)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -591,7 +591,7 @@ export default {
         this.data.id = this.editedItem.id;
         this.data.name = this.editedItem.name;
         /*axios
-          .put('https://testapi.simplifies.cl/api/workplace', this.data)
+          .put('https://api2.simplifies.cl/api/workplace', this.data)
           .then(() => {
           }).finally(() => {
             LocalStorageService.setIsLocked(false);
@@ -637,7 +637,7 @@ export default {
       }
 
       /*axios
-        .post('https://testapi.simplifies.cl/api/workplace', this.data)
+        .post('https://api2.simplifies.cl/api/workplace', this.data)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
