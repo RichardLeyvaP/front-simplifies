@@ -334,6 +334,10 @@ export default {
         input: null,
         input2: null,
         selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
+        descriptionRules: [
+      (v) => !!v || "El campo es obligatorio", // Campo requerido
+      (v) => (v && v.length <= 500) || "Máximo 500 caracteres", // Límite de caracteres
+    ],
     }),
 
     computed: {

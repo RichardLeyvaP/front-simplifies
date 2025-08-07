@@ -1,4 +1,5 @@
 <template>
+  <div>
   <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24"
     :multi-line="true" vertical v-model="snackbar">
     <v-row>
@@ -133,6 +134,7 @@
       </v-card>
     </v-dialog>
   </v-app-bar>
+  </div>
 </template>
 
 <script>
