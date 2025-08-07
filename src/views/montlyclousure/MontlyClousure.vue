@@ -268,7 +268,7 @@
                                                                     <span class="text-h6 ml-6" :class="{
                                                                 'text-red': item.differences < 0,
                                                                 'text-green': item.differences > 0
-                                                            }">Existe una diferencia total de:</span>
+                                                            }">Existe una diferencia total de: </span>
                                                                     <span :class="`text-body-1 font-weight-bold ${item.differences > 0 ? 'text-green' : 'text-red'
                                                                 }`">
                                                                         {{ formatNumber(item.differences) }}
