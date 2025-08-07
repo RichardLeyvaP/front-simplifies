@@ -112,7 +112,7 @@
                                                                     <v-row dense align="center">
                                                                         <v-col cols="12" md="6">
                                                                             <span
-                                                                                class="text-body-1 font-weight-bold">Ingresos:
+                                                                                class="text-body-1 font-weight-bold">Dinero en Caja:
                                                                                 $</span>
                                                                         </v-col>
                                                                         <v-col cols="12" md="6" class="text-right">
@@ -122,7 +122,7 @@
                                                                                 }}</span>
                                                                         </v-col>
                                                                     </v-row>
-                                                                    <v-row dense align="center">
+                                                                    <!--<v-row dense align="center">
                                                                         <v-col cols="12" md="6">
                                                                             <span
                                                                                 class="text-body-1 font-weight-bold">Utilidad:
@@ -132,32 +132,6 @@
                                                                             <span
                                                                                 class="text-body-1 font-weight-bold text-black">{{
                                                                                 formatNumber(Number(item.client_utility))
-                                                                                }}</span>
-                                                                        </v-col>
-                                                                    </v-row>
-                                                                    <!--<v-row dense align="center">
-                                                                        <v-col cols="12" md="6">
-                                                                            <span
-                                                                                class="text-body-1 font-weight-bold">Gastos:
-                                                                                $</span>
-                                                                        </v-col>
-                                                                        <v-col cols="12" md="6" class="text-right">
-                                                                            <span
-                                                                                class="text-body-1 font-weight-bold text-black">{{
-                                                                                    formatNumber(Number(item.discounts))
-                                                                                }}</span>
-                                                                        </v-col>
-                                                                    </v-row>
-                                                                    <v-row dense align="center">
-                                                                        <v-col cols="12" md="6">
-                                                                            <span
-                                                                                class="text-body-1 font-weight-bold">Retenciones:
-                                                                                $</span>
-                                                                        </v-col>
-                                                                        <v-col cols="12" md="6" class="text-right">
-                                                                            <span
-                                                                                class="text-body-1 font-weight-bold text-black">{{
-                                                                                    formatNumber(Number(item.client_retention))
                                                                                 }}</span>
                                                                         </v-col>
                                                                     </v-row>-->
@@ -176,7 +150,7 @@
                                                                     </v-avatar>
                                                                 </template>
                                                                 <template v-slot:title>
-                                                                    <span class="font-weight-black">Aplicación</span>
+                                                                    <span class="font-weight-black">Datos Aplicación</span>
                                                                 </template>
                                                                 <v-card-text class="bg-white pt-4">
 
@@ -184,11 +158,11 @@
                                                                         <v-col cols="12" md="6">
                                                                             <span
                                                                                 class="text-body-1 font-weight-bold">Ingresos:
-                                                                                $</span>
+                                                                                </span>
                                                                         </v-col>
                                                                         <v-col cols="12" md="6" class="text-right">
                                                                             <span
-                                                                                class="text-body-1 font-weight-bold text-black">{{
+                                                                                class="text-body-1 font-weight-bold text-black">$ {{
                                                                                 formatNumber(Number(item.system_incomes))
                                                                                 }}</span>
                                                                         </v-col>
@@ -197,11 +171,11 @@
                                                                         <v-col cols="12" md="6">
                                                                             <span
                                                                                 class="text-body-1 font-weight-bold">Utilidad:
-                                                                                $</span>
+                                                                                </span>
                                                                         </v-col>
                                                                         <v-col cols="12" md="6" class="text-right">
                                                                             <span
-                                                                                class="text-body-1 font-weight-bold text-black">{{
+                                                                                class="text-body-1 font-weight-bold text-black">$ {{
                                                                                 formatNumber(Number(item.utility))
                                                                                 }}</span>
                                                                         </v-col>
@@ -210,11 +184,11 @@
                                                                         <v-col cols="12" md="6">
                                                                             <span
                                                                                 class="text-body-1 font-weight-bold">Gastos:
-                                                                                $</span>
+                                                                                </span>
                                                                         </v-col>
                                                                         <v-col cols="12" md="6" class="text-right">
                                                                             <span
-                                                                                class="text-body-1 font-weight-bold text-black">{{
+                                                                                class="text-body-1 font-weight-bold text-black">$ {{
                                                                                 formatNumber(Number(item.spent))
                                                                                 }}</span>
                                                                         </v-col>
@@ -223,11 +197,11 @@
                                                                         <v-col cols="12" md="6">
                                                                             <span
                                                                                 class="text-body-1 font-weight-bold">Retención:
-                                                                                $</span>
+                                                                                </span>
                                                                         </v-col>
                                                                         <v-col cols="12" md="6" class="text-right">
                                                                             <span
-                                                                                class="text-body-1 font-weight-bold text-black">{{
+                                                                                class="text-body-1 font-weight-bold text-black">$ {{
                                                                                 formatNumber(Number(item.retention))
                                                                                 }}</span>
                                                                         </v-col>
@@ -254,19 +228,19 @@
                                                                     <v-row dense align="center">
                                                                         <v-col cols="12" md="6">
                                                                             <span
-                                                                                class="text-body-1 font-weight-bold">Ingresos:
-                                                                                $</span>
+                                                                                class="text-body-1 font-weight-bold">Diferencia:
+                                                                                </span>
                                                                         </v-col>
                                                                         <v-col cols="12" md="6" class="text-right">
-                                                                            <span :class="`text-body-1 font-weight-bold ${Number(item.difference_incomes) >= 0 ? 'text-black' : 'text-red'
-                                                                                }`">
+                                                                            <span :class="`text-body-1 font-weight-bold ${Number(item.differences) >= 0 ? 'text-black' : 'text-red'
+                                                                                }`">$ 
                                                                                 {{
-                                                                                formatNumber(Number(item.difference_incomes))
+                                                                                formatNumber(Number(item.differences))
                                                                                 }}
                                                                             </span>
                                                                         </v-col>
                                                                     </v-row>
-                                                                    <v-row dense align="center">
+                                                                    <!--<v-row dense align="center">
                                                                         <v-col cols="12" md="6">
                                                                             <span
                                                                                 class="text-body-1 font-weight-bold">Utilidad:
@@ -280,38 +254,8 @@
                                                                                 }}
                                                                             </span>
                                                                         </v-col>
-                                                                    </v-row>
-                                                                    <!--<v-row dense align="center">
-                                                                        <v-col cols="12" md="6">
-                                                                            <span
-                                                                                class="text-body-1 font-weight-bold">Gastos:
-                                                                                $</span>
-                                                                        </v-col>
-                                                                        <v-col cols="12" md="6" class="text-right">
-                                                                            <span :class="`text-body-1 font-weight-bold ${Number(item.difference_spent) >= 0 ? 'text-black' : 'text-red'
-                                                                                }`">
-                                                                                {{
-                                                                                    formatNumber(Number(item.difference_spent))
-                                                                                }}
-                                                                            </span>
-                                                                        </v-col>
-                                                                    </v-row>
-                                                                    <v-row dense align="center">
-                                                                        <v-col cols="12" md="6">
-                                                                            <span
-                                                                                class="text-body-1 font-weight-bold">Retención:
-                                                                                $</span>
-                                                                        </v-col>
-                                                                        <v-col cols="12" md="6" class="text-right">
-                                                                            <span :class="`text-body-1 font-weight-bold ${Number(item.difference_retention) >= 0 ? 'text-black' : 'text-red'
-                                                                                }`">
-                                                                                {{
-                                                                                    formatNumber(Number(item.difference_retention))
-                                                                                }}
-                                                                            </span>
-                                                                        </v-col>
                                                                     </v-row>-->
-
+                                                                   
                                                                 </v-card-text>
                                                             </v-card>
                                                         </v-col>
@@ -323,9 +267,9 @@
                                                                 <v-col cols="12" md="12">
                                                                     <span class="text-h6 ml-6" :class="{
                                                                 'text-red': item.differences < 0,
-                                                                'text-black': item.differences > 0
-                                                            }">Existe una diferencia total en las utilidades de:</span>
-                                                                    <span :class="`text-body-1 font-weight-bold ${item.differences > 0 ? 'text-black' : 'text-red'
+                                                                'text-green': item.differences > 0
+                                                            }">Existe una diferencia total de:</span>
+                                                                    <span :class="`text-body-1 font-weight-bold ${item.differences > 0 ? 'text-green' : 'text-red'
                                                                 }`">
                                                                         {{ formatNumber(item.differences) }}
                                                                     </span>
@@ -419,7 +363,7 @@
                                                                     <!-- Cambio principal aquí: agrupamos los ingresos de 2 en 2 -->
                                                                     <template v-for="(income, index) in editedItem.incomes" :key="income.id">
                                                                         <!-- Nueva fila cada 2 elementos -->
-                                                                        <v-row v-if="index % 2 === 0" justify="left" class="mb-2">
+                                                                        <v-row v-if="index % 2 === 0" class="mb-2">
                                                                             <!-- Primer elemento del par -->
                                                                             <v-col cols="12" md="5">
                                                                                 <v-text-field
@@ -477,7 +421,7 @@
                                                     <v-divider class="my-2"></v-divider>
                                                     <v-row dense align="center" v-if="editedItem.available_money">
                                                         <v-col cols="12" md="12" class="text-right">
-                                                            <span class="text-body-1 font-weight-bold mr-6">Ingresos: ${{
+                                                            <span class="text-body-1 font-weight-bold mr-6">Dinero en Caja: ${{
                                                                 formatNumber(editedItem.available_money)
                                                                 }}</span>
                                                         </v-col>
@@ -501,7 +445,7 @@
                                 </v-row>
                             </v-container>
                         </template>
-
+                        <!--okk-->
                         <template v-slot:item.2>
                             <v-sheet border>
                                 <div style="max-height: 72vh; min-height: 72vh; overflow-y: auto;">
@@ -519,58 +463,30 @@
                                                             </v-avatar>
                                                         </template>
                                                         <template v-slot:title>
-                                                            <span class="font-weight-black">Datos del
-                                                                Administrador</span>
+                                                            <span class="font-weight-black">Datos del Administrador</span>
                                                         </template>
                                                         <v-card-text class="bg-white pt-4">
-
-
                                                             <v-row dense align="center">
                                                                 <v-col cols="12" md="6">
-                                                                    <span class="text-body-1 font-weight-bold">Ingresos:
-                                                                        $</span>
+                                                                    <span class="text-body-1 font-weight-bold">Dinero en Caja: </span>
                                                                 </v-col>
                                                                 <v-col cols="12" md="6" class="text-right">
                                                                     <span
-                                                                        class="text-body-1 font-weight-bold text-black">{{
+                                                                        class="text-body-1 font-weight-bold text-black">$ {{
                                                                         formatNumber(editedItem.available_money)
                                                                         }}</span>
                                                                 </v-col>
                                                             </v-row>
                                                             <!--<v-row dense align="center">
                                                                 <v-col cols="12" md="6">
-                                                                    <span class="text-body-1 font-weight-bold">Gastos:
-                                                                        $</span>
+                                                                    <span class="text-body-1 font-weight-bold">Utilidad: $</span>
                                                                 </v-col>
                                                                 <v-col cols="12" md="6" class="text-right">
+                                                                
                                                                     <span
-                                                                        class="text-body-1 font-weight-bold text-black">{{
-                                                                            formatNumber(editedItem.discounts)
-                                                                        }}</span>
-                                                                </v-col>
-                                                            </v-row>-->
-                                                            <v-row dense align="center">
-                                                                <v-col cols="12" md="6">
-                                                                    <span class="text-body-1 font-weight-bold">Utilidad:
-                                                                        $</span>
-                                                                </v-col>
-                                                                <v-col cols="12" md="6" class="text-right">
-                                                                    <span
-                                                                        class="text-body-1 font-weight-bold text-black">{{
+                                                                       :class="`text-body-1 font-weight-bold ${editedItem.client_utility >= 0 ? 'text-black' : 'text-red'
+                                                                        }`">{{
                                                                         formatNumber(editedItem.client_utility)
-                                                                        }}</span>
-                                                                </v-col>
-                                                            </v-row>
-                                                            <!--<v-row dense align="center">
-                                                                <v-col cols="12" md="6">
-                                                                    <span
-                                                                        class="text-body-1 font-weight-bold">Retenciones:
-                                                                        $</span>
-                                                                </v-col>
-                                                                <v-col cols="12" md="6" class="text-right">
-                                                                    <span
-                                                                        class="text-body-1 font-weight-bold text-black">{{
-                                                                            formatNumber(editedItem.client_retention)
                                                                         }}</span>
                                                                 </v-col>
                                                             </v-row>-->
@@ -587,18 +503,18 @@
                                                             </v-avatar>
                                                         </template>
                                                         <template v-slot:title>
-                                                            <span class="font-weight-black">Aplicación</span>
+                                                            <span class="font-weight-black">Datos Aplicación</span>
                                                         </template>
                                                         <v-card-text class="bg-white pt-4">
 
                                                             <v-row dense align="center">
                                                                 <v-col cols="12" md="6">
                                                                     <span class="text-body-1 font-weight-bold">Ingresos:
-                                                                        $</span>
+                                                                        </span>
                                                                 </v-col>
                                                                 <v-col cols="12" md="6" class="text-right">
                                                                     <span
-                                                                        class="text-body-1 font-weight-bold text-black">{{
+                                                                        class="text-body-1 font-weight-bold text-black">$ {{
                                                                         formatNumber(editedItem.system_incomes)
                                                                         }}</span>
                                                                 </v-col>
@@ -607,11 +523,11 @@
                                                             <v-row dense align="center">
                                                                 <v-col cols="12" md="6">
                                                                     <span class="text-body-1 font-weight-bold">Utilidad:
-                                                                        $</span>
+                                                                        </span>
                                                                 </v-col>
                                                                 <v-col cols="12" md="6" class="text-right">
                                                                     <span
-                                                                        class="text-body-1 font-weight-bold text-black">{{
+                                                                        class="text-body-1 font-weight-bold text-black">$ {{
                                                                         formatNumber(editedItem.utility)
                                                                         }}</span>
                                                                 </v-col>
@@ -619,11 +535,11 @@
                                                             <v-row dense align="center">
                                                                 <v-col cols="12" md="6">
                                                                     <span class="text-body-1 font-weight-bold">Gastos:
-                                                                        $</span>
+                                                                        </span>
                                                                 </v-col>
                                                                 <v-col cols="12" md="6" class="text-right">
                                                                     <span
-                                                                        class="text-body-1 font-weight-bold text-black">{{
+                                                                        class="text-body-1 font-weight-bold text-black">$ {{
                                                                         formatNumber(editedItem.spent)
                                                                         }}</span>
                                                                 </v-col>
@@ -632,11 +548,11 @@
                                                                 <v-col cols="12" md="6">
                                                                     <span
                                                                         class="text-body-1 font-weight-bold">Retención:
-                                                                        $</span>
+                                                                        </span>
                                                                 </v-col>
                                                                 <v-col cols="12" md="6" class="text-right">
                                                                     <span
-                                                                        class="text-body-1 font-weight-bold text-black">{{
+                                                                        class="text-body-1 font-weight-bold text-black">$ {{
                                                                         formatNumber(editedItem.retention)
                                                                         }}</span>
                                                                 </v-col>
@@ -662,18 +578,18 @@
                                                             <v-row dense align="center">
                                                                 <v-col cols="12" md="6">
                                                                     <span
-                                                                        class="text-body-1 font-weight-bold">Iingresos:
-                                                                        $</span>
+                                                                        class="text-body-1 font-weight-bold">Diferencias:
+                                                                        </span>
                                                                 </v-col>
                                                                 <v-col cols="12" md="6" class="text-right">
-                                                                    <span :class="`text-body-1 font-weight-bold ${editedItem.difference_incomes >= 0 ? 'text-black' : 'text-red'
-                                                                        }`">
-                                                                        {{ formatNumber(editedItem.difference_incomes)
+                                                                    <span :class="`text-body-1 font-weight-bold ${editedItem.differences >= 0 ? 'text-black' : 'text-red'
+                                                                        }`">$ 
+                                                                        {{ formatNumber(editedItem.differences)
                                                                         }}
                                                                     </span>
                                                                 </v-col>
                                                             </v-row>
-                                                            <v-row dense align="center">
+                                                            <!--<v-row dense align="center">
                                                                 <v-col cols="12" md="6">
                                                                     <span class="text-body-1 font-weight-bold">Utilidad:
                                                                         $</span>
@@ -685,7 +601,7 @@
                                                                         }}
                                                                     </span>
                                                                 </v-col>
-                                                            </v-row>
+                                                            </v-row>-->
 
                                                         </v-card-text>
                                                     </v-card>
@@ -698,9 +614,9 @@
                                                         <v-col cols="12" md="12">
                                                             <span class="text-h6 ml-6" :class="{
                                                                 'text-red': editedItem.differences < 0,
-                                                                'text-black': editedItem.differences > 0
-                                                            }">Existe una diferencia total en las utilidades de:</span>
-                                                            <span :class="`text-body-1 font-weight-bold ${editedItem.differences > 0 ? 'text-black' : 'text-red'
+                                                                'text-green': editedItem.differences > 0
+                                                            }">Existe una diferencia total de: </span>
+                                                            <span :class="`text-body-1 font-weight-bold ${editedItem.differences > 0 ? 'text-green' : 'text-red'
                                                                 }`">
                                                                 {{ formatNumber(editedItem.differences) }}
                                                             </span>
@@ -732,7 +648,7 @@
                                         Salir
                                     </v-btn>
                                     <v-btn color="#E7E9E9" variant="flat" @click="saveMonthlyClosure"
-                                        :loading="loadingSave">
+                                        :loading="loadingSave" :disabled="!valid">
                                         Guardar
                                     </v-btn>
                                 </v-row>
@@ -1058,15 +974,19 @@ export default {
             dialogDeleteExpense: false,
             dialogDelete: false,
             dialogMontlyClousure: false,
+             descriptionRules: [
+      (v) => !!v || "El campo es obligatorio", // Campo requerido
+      (v) => (v && v.length <= 500) || "Máximo 500 caracteres", // Límite de caracteres
+    ],
         }
+        
     },
 
     computed: {
-        totalCalculado() {
-            return (parseFloat(this.editedItem.utility) || 0) +
-                (parseFloat(this.editedItem.retention) || 0) -
-                (parseFloat(this.editedItem.discounts) || 0);
-        },
+        /*totalCalculado() {
+            return (parseFloat(this.editedItem.retention) || 0) +
+                (parseFloat(this.editedItem.utility) || 0);
+        },*/
 
         filteredClosures() {
             return this.closures.filter(closure => closure.data !== null);
@@ -1120,55 +1040,57 @@ export default {
     watch: {
         'editedItem.available_money': {
             handler(newVal) {
-                this.updateClientUtility();
+                //this.updateClientUtility();
                 this.calculateDifferences();
+                //this.calculateDifferencesUtility();
             },
             deep: true
         },
-        'editedItem.discounts': {
+        /*'editedItem.discounts': {
             handler(newVal) {
-                this.updateClientUtility();
+                //this.updateClientUtility();
                 this.calculateDifferencesSpent();
             },
             deep: true
-        },
-        'editedItem.system_incomes': {
-            handler(newVal) {
-                this.calculateDifferences();
-            },
-            immediate: true
-        },
-        'editedItem.spent': {
-            handler(newVal) {
-                this.updateClientUtility();
-                this.calculateDifferencesSpent();
-            },
-            immediate: true
-        },
+        },*/
         'editedItem.utility': {
             handler(newVal) {
-                this.calculateDifferencesUtility();
+                this.calculateDifferences();
             },
             immediate: true
         },
-        'editedItem.client_utility': {
+        /*'editedItem.spent': {
+            handler(newVal) {
+                //this.updateClientUtility();
+                this.calculateDifferencesSpent();
+            },
+            immediate: true
+        },*/
+        /*'editedItem.utility': {
             handler(newVal) {
                 this.calculateDifferencesUtility();
             },
             immediate: true
-        },
-        'editedItem.client_retention': {
+        },*/
+        /*'editedItem.client_utility': {
+            handler(newVal) {
+                this.calculateDifferencesUtility();
+            },
+            immediate: true
+        },*/
+        /*'editedItem.client_retention': {
             handler(newVal) {
                 this.calculateDifferencesRetention();
             },
             immediate: true
-        },
-        'editedItem.retention': {
+        },*/
+        /*'editedItem.retention': {
             handler(newVal) {
                 this.calculateDifferencesRetention();
+                //this.calculateDifferencesUtility();
             },
             immediate: true
-        },
+        },*/
         selectedMounth(newVal) {
             if (newVal === '12' && this.selectedYear < new Date().getFullYear()) {
                 this.selectedYear += 1; // Avanza al siguiente año si seleccionan diciembre
@@ -1217,31 +1139,46 @@ export default {
             // Comparar las cadenas generadas
             return JSON.stringify(sortedOriginal) !== JSON.stringify(sortedEdited);
         },
-        updateClientUtility() {
+        //ok utilitys
+        /*updateClientUtility() {
             this.editedItem.client_utility = (parseFloat(this.editedItem.available_money) || 0) -
-                (parseFloat(this.editedItem.spent) || 0);
-        },
+                ((parseFloat(this.editedItem.spent) + parseFloat(this.editedItem.retention)) || 0);
+        },*/
+        //ok diferences
         calculateDifferences() {
             const available = parseFloat(this.editedItem.available_money) || 0;
-            const systemIncomes = parseFloat(this.editedItem.system_incomes) || 0;
-            this.editedItem.difference_incomes = available - systemIncomes;
+            const systemUtility = parseFloat(this.editedItem.utility) || 0;
+            const retentions = parseFloat(this.editedItem.retention) || 0;
+            this.editedItem.difference_incomes = available - (systemUtility + retentions);
+            this.editedItem.differences = available - (systemUtility + retentions);
         },
-        calculateDifferencesSpent() {
+        /*calculateDifferencesSpent() {
             const discounts = parseFloat(this.editedItem.discounts) || 0;
             const spent = parseFloat(this.editedItem.spent) || 0;
             this.editedItem.difference_spent = discounts - spent;
-        },
-        calculateDifferencesUtility() {
+        },*/
+        /*calculateDifferencesUtility() {
             const clientUtility = parseFloat(this.editedItem.client_utility) || 0;
             const utility = parseFloat(this.editedItem.utility) || 0;
             this.editedItem.difference_utility = clientUtility - utility;
             this.editedItem.differences = clientUtility - utility;
-        },
-        calculateDifferencesRetention() {
+        },*/
+        /*calculateDifferencesUtility() {
+            const client_utility = parseFloat(this.editedItem.client_utility) || 0;
+            //console.log('Utilidades cliente:', client_utility);
+            const utility = parseFloat(this.editedItem.utility) || 0;
+            //console.log('Utilidades sistema:', utility);
+            const retention = parseFloat(this.editedItem.retention) || 0;
+            //console.log('Retenciones sistema:', retention);
+            this.editedItem.difference_utility = client_utility - (utility - retention);
+            this.editedItem.differences = client_utility - (utility - retention);
+            //console.log('diferencia en utilidades:', this.editedItem.difference_utility);
+        },*/
+        /*calculateDifferencesRetention() {
             const clientRetention = parseFloat(this.editedItem.client_retention) || 0;
             const retention = parseFloat(this.editedItem.retention) || 0;
             this.editedItem.difference_retention = clientRetention - retention;
-        },
+        },*/
         // Para actualizar ingresos (incomes)
         updateIncome(income, newAmount) {
            
@@ -1440,16 +1377,16 @@ export default {
                 await this.initialize();
             }
         },
-        calcularUtilidadFinal() {
+        /*calcularUtilidadFinal() {
             const available = parseFloat(this.editedItem.available_money) || 0;
             const discounts = parseFloat(this.editedItem.discounts || 0);
             const retention = parseFloat(this.editedItem.retention) || 0;
             this.editedItem.net_utility = available - retention - discounts;
-        },
-        calcularDiferencias() {
-            this.editedItem.differences = this.totalCalculado -
-                (parseFloat(this.editedItem.available_money)) || 0;
-        },
+        },*/
+        /*calcularDiferencias() {
+            this.editedItem.differences = (parseFloat(this.editedItem.available_money)) - ((parseFloat(this.editedItem.retention) || 0) +
+                (parseFloat(this.editedItem.utility) || 0)) || 0;
+        },*/
         formatNumber(value) {
             // Si el valor es menor que 1000, devuelve el valor original con dos decimales
             if (value < 1000) {
