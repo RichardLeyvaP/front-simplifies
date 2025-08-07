@@ -13,6 +13,10 @@
     </v-row>
   </v-snackbar>
   <v-app-bar scroll-threshold="0">
+  <v-app-bar-nav-icon 
+      @click.stop="$emit('toggle-drawer')"
+      v-if="!$vuetify.display.mdAndUp && mobile"
+    />
     <v-app-bar-title>
 
       <v-img src="@/assets/logo_negro.png" class="justify-center" max-height="100" max-width="174"
@@ -27,7 +31,7 @@
         mdi-cart-arrow-down
       </v-icon>
     </v-badge>-->
-    <v-badge :content="notificationsWithStateZero" color="red" class="mr-4">
+    <v-badge :content="notificationsWithStateZero" color="red" class="mr-4" v-if="mobile">
       <v-icon id="menu-activator" color="#F18254" @click="showMenu = !showMenu; clearNotifications()" class="mr-2"
         size="x-large"><!--@click="showMenu = !showMenu; clearNotifications()" poniendo esto podemos hacer la logica de pasar todas las que state sea 0 a uno-->
         mdi-bell
@@ -148,7 +152,11 @@ axios.interceptors.request.use(config => {
 //import router from '@/router/index';
 //const userTokenStore = UserTokenStore();
 export default {
+       props: {
+    drawerVisible: Boolean
+  },
   data: () => ({
+    mobile: 0,
     intervalId: null,
     snackbar: false,
     sb_type: '',
@@ -189,6 +197,7 @@ export default {
     this.user_id = JSON.parse(LocalStorageService.getItem('user_id'));
     this.professional_id = JSON.parse(LocalStorageService.getItem('professional_id'));
     this.branch_id = LocalStorageService.getItem('branch_id');
+    this.mobile = Number(LocalStorageService.getItem('mobile'));
     const image = LocalStorageService.getItem('image');
     const cleanedImage = image.replace(/"/g, '');
     this.imageUrl = `${this.$axios.defaults.baseURL}images/${cleanedImage}?t=${Date.now()}`;

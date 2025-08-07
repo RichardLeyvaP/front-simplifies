@@ -23,6 +23,7 @@ const LocalStorageService = {
     LocalStorageService.removeItem("business_id");
     LocalStorageService.removeItem("permissionsUser");
     LocalStorageService.removeItem("authenticateUser");
+    LocalStorageService.removeItem("mobile");
   },
 
   // Nuevo método para manejar el estado de bloqueo
