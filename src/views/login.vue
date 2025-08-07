@@ -19,7 +19,7 @@
 
     <v-card class="mx-auto mt-12" elevation="12" max-width="448" rounded="lg">
       <v-toolbar color="blue-grey-lighten-5
-" class="pt-12 pb-12" dark>
+  " class="pt-12 pb-12" dark>
         <v-img class="mx-auto my-6" max-width="228" src="@/assets/logo_negro.png"></v-img>
       </v-toolbar>
       <v-progress-linear v-if="loading" color="amber-darken-1" indeterminate></v-progress-linear>
@@ -35,9 +35,45 @@
 
         <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
 
-          <v-spacer></v-spacer>
-          <a class="text-caption text-decoration-none text-blue mb-3" href="#" rel="noopener noreferrer" target="_blank" @click.prevent="toggleForm">
-            Olvidaste tu Contraseña</a>
+         <v-row class="text-subtitle-1 text-medium-emphasis d-flex align-center mb-1">
+  <v-col cols="6" class="d-flex align-center">
+   
+    <!-- Switch sin icono integrado -->
+    <v-switch
+  v-model="mobileAccess"
+  :class="{
+    'd-flex': $vuetify.display.smAndDown,
+    'd-none': $vuetify.display.mdAndUp
+  }"
+  color="orange"
+  :density="$vuetify.display.xs ? 'compact' : 'default'"
+  hide-details
+  :true-value="1"
+  :false-value="0"
+  class="mt-0 pt-0 ml-1 align-center"
+>
+  <template v-slot:label>
+    <span :class="[
+      mobileAccess ? 'text-orange' : '',
+      $vuetify.display.xs ? 'text-subtitle-2' : 'text-subtitle-1'
+    ]">
+      Acceso móvil
+    </span>
+  </template>
+</v-switch>
+  </v-col>
+  
+  <v-col cols="6" class="text-right">
+    <!-- Enlace Olvidaste tu contraseña -->
+    <a class="text-caption text-decoration-none text-blue" 
+       href="#" 
+       rel="noopener noreferrer" 
+       target="_blank" 
+       @click.prevent="toggleForm">
+      Olvidaste tu Contraseña
+    </a>
+  </v-col>
+</v-row>
             
         </div>
         <v-dialog v-model="dialog" max-width="500">
@@ -66,28 +102,6 @@
               </v-card-text>
             </v-card>
             </v-dialog>
-
-              <!--<v-card v-if="formVisible">
-                  <v-card-text>
-                    <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-                    <v-container>                       
-                            <v-text-field v-model="emailpas" clearable label="Correo" prepend-icon="mdi-email-outline"
-                      variant="underlined">
-                    </v-text-field>
-                    </v-container>
-                  <v-divider></v-divider>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="#E7E9E9" variant="flat" @click="toggleForm">
-                      Cancelar
-                    </v-btn>
-                    <v-btn color="#F18254" variant="flat" @click="changePass">
-                      Aceptar
-                    </v-btn>
-                  </v-card-actions>
-                </v-form>
-              </v-card-text>
-              </v-card>-->
 
         <v-radio-group v-model="selectedOption" inline>
           <v-radio color="amber-darken-1" label="Empresa" value="empresa"></v-radio>
@@ -127,7 +141,8 @@ import router from '@/router/index';
 export default {
   data: () => ({
     loading: false,
-    selectedOption: null, // Controla la opción seleccionada
+    selectedOption: 'empresa', // Controla la opción seleccionada
+    permissionsUser: '',
     visible: false,
     valid: true,
     snackbar: false,
@@ -139,6 +154,7 @@ export default {
     dialog: false,
     formVisible: false,
       emailpas: '',
+      mobileAccess: 0,
     //step: 1,
     data: {},
     branches: [],
@@ -244,6 +260,8 @@ export default {
               this.user = response.data;
               console.log('this.user-------');
               console.log(this.user);
+               console.log('this.mobileAccess');
+              console.log(this.mobileAccess);
               /*userTokenStore.setUserToken(this.user.token);
               userTokenStore.setUserName(this.user.name);
               userTokenStore.setBranchId(this.user.branch_id);
@@ -271,14 +289,42 @@ export default {
               LocalStorageService.setItem("authenticateUser", true);
               LocalStorageService.setItem("user_id", this.user.id);
               this.editedItem = Object.assign({}, this.defaultItem);
-              setTimeout(() => {
+                //console.log('this.user.permissions');
+               // console.log(this.user.permissions);
+              if (this.mobileAccess === 1) {
+                this.permissionsUser = LocalStorageService.getItem("permissionsUser") || [];
+                if(this.hasPermission('view_carorder_delete')){
+                  
+                LocalStorageService.setItem("mobile", 0);
+                setTimeout(() => {
+                router.push({ path: "solicitud-delete" });
+              }, 2000);
+                }else{
+                  this.showAlert("warning", "No es posee el permiso de Solicitudes de eliminación", 3000);
+              this.mobileAccess = 0;
+              this.selectedOption= 'empresa';
+              this.loading = false;
+              this.editedItem = Object.assign({}, this.defaultItem);
+              this.valid = true;
+              //LocalStorageService.logout();
+              router.push({ name: "Login" });
+                }
+              }else{
+                LocalStorageService.setItem("mobile", 1);
+                setTimeout(() => {
                 router.push({ name: "Home" });
               }, 2000);
+              }
+              /*setTimeout(() => {
+                router.push({ name: "Home" });
+              }, 2000);*/
 
             }
             else {              
           this.valid = true;
               this.showAlert("warning", "No es usuario de este sitio", 3000);
+              this.mobileAccess = 0;
+              this.selectedOption= 'empresa';
               router.push({ name: "Login" });
               this.loading = false;
               this.editedItem = Object.assign({}, this.defaultItem);
@@ -289,6 +335,8 @@ export default {
           this.showAlert("warning", "Usuario y contraseña incorrectos", 3000)
           this.editedItem = Object.assign({}, this.defaultItem);
           this.loading = false;
+          this.mobileAccess = 0;
+              this.selectedOption= 'empresa';
         })
     },
 
@@ -298,6 +346,11 @@ export default {
         .then((response) => {
           this.branches = response.data.branches;
         });
+    },
+    hasPermission(permission) {
+      //console.log('permission');
+      //console.log(permission);
+      return this.permissionsUser.includes(permission);
     },
   },
   props: {
