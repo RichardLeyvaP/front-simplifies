@@ -355,10 +355,11 @@
                               <v-text-field :model-value="formatNumber(editedCloseBox.totalCreditCard)" label="Tarjeta Crédito" readonly
                                 prepend-icon="mdi-credit-card" variant="underlined" density="compact"></v-text-field>
                               <v-text-field :model-value="formatNumber(editedCloseBox.totalDebit)" label="Débito" readonly
-                                prepend-icon="mdi-credit-card-outline" variant="underlined"
-                                density="compact"></v-text-field>
+                                prepend-icon="mdi-credit-card-outline" variant="underlined" density="compact"></v-text-field>
                               <v-text-field :model-value="formatNumber(editedCloseBox.totalTransfer)" label="Transferencia" readonly
                                 prepend-icon="mdi-bank-transfer" variant="underlined" density="compact"></v-text-field>
+                                 <v-text-field :model-value="formatNumber(editedBox.cashFound)" label="Fondo de Caja" readonly
+                                prepend-icon="mdi-cash-register" variant="underlined" density="compact"></v-text-field>
                               <v-text-field :model-value="formatNumber(editedBox.existence)" label="Efectivo" readonly
                                 prepend-icon="mdi-cash" variant="underlined" density="compact"></v-text-field>
                               <v-text-field :model-value="formatNumber(editedCloseBox.totalOther)" label="Otros" readonly
@@ -392,6 +393,8 @@
                                 density="compact"></v-text-field>
                               <v-text-field :model-value="formatNumber(cashierData.totalTransfer)" label="Transferencia" readonly
                                 prepend-icon="mdi-bank-transfer" variant="underlined" density="compact"></v-text-field>
+                                <v-text-field :model-value="formatNumber(cashierData.cashFound)" label="Fondo de Caja" readonly
+                                prepend-icon="mdi-cash-register" variant="underlined" density="compact"></v-text-field>
                               <v-text-field :model-value="formatNumber(cashierData.existence)" label="Efectivo" readonly
                                 prepend-icon="mdi-cash" variant="underlined" density="compact"></v-text-field>
                               <v-text-field :model-value="formatNumber(cashierData.totalOther)" label="Otros" readonly
@@ -413,7 +416,7 @@
                             datos ingresados</span>
                         </v-col>
                       </v-row>
-                      <v-row v-if=" cashierData.difference !==0">
+                      <v-row v-if="cashierData.difference !==0">
                         <v-col cols="12" md="12">
                           <v-row class="mb-4 mt-2 text-left" dense no-gutters>
 
@@ -732,6 +735,8 @@
                               <v-text-field :model-value="formatNumber(editedCloseBox.totalTransfer)"
                                 label="Transferencia" readonly prepend-icon="mdi-bank-transfer" variant="underlined"
                                 density="compact"></v-text-field>
+                                <v-text-field :model-value="formatNumber(editedBox.cashFound)" label="Fondo de Caja" readonly
+                                prepend-icon="mdi-cash-register" variant="underlined" density="compact"></v-text-field>
                               <v-text-field :model-value="formatNumber(editedBox.existence)" label="Efectivo" readonly
                                 prepend-icon="mdi-cash" variant="underlined" density="compact"></v-text-field>
                               <v-text-field :model-value="formatNumber(editedCloseBox.totalOther)" label="Otros"
@@ -775,6 +780,8 @@
                               <v-text-field :model-value="formatNumber(cashierData.totalTransfer)" label="Transferencia"
                                 readonly prepend-icon="mdi-bank-transfer" variant="underlined"
                                 density="compact"></v-text-field>
+                                <v-text-field :model-value="formatNumber(cashierData.cashFound)" label="Fondo de Caja" readonly
+                                prepend-icon="mdi-cash-register" variant="underlined" density="compact"></v-text-field>
                               <v-text-field :model-value="formatNumber(cashierData.existence)" label="Efectivo" readonly
                                 prepend-icon="mdi-cash" variant="underlined" density="compact"></v-text-field>
                               <v-text-field :model-value="formatNumber(cashierData.totalOther)" label="Otros" readonly
@@ -807,8 +814,7 @@
                                 'text-green': calculateTotalDifferencesGlobal1 >= 0
                               }">Existe una diferencia total de:</span>
 
-                              <v-text-field :model-value="formatNumber(cashierData.difference)"
-                                :value="calculateTotalDifferencesGlobal" readonly variant="underlined" density="compact"
+                              <v-text-field :model-value="formatNumber(cashierData.difference)" readonly variant="underlined" density="compact"
                                 hide-details style="width: 150px;" :class="{
                                   'text-red': calculateTotalDifferencesGlobal1 < 0,
                                   'text-green': calculateTotalDifferencesGlobal1 >= 0
@@ -2374,7 +2380,8 @@ export default {
         { id: 3, type: 'totalTransfer', value: 0, name: 'Transferencia' },
         { id: 4, type: 'existence', value: 0, name: 'Efectivo' },
         { id: 5, type: 'totalOther', value: 0, name: 'Otros' },
-        { id: 6, type: 'totalCardGif', value: 0, name: 'Tarjeta Regalo' }
+        { id: 6, type: 'totalCardGif', value: 0, name: 'Tarjeta Regalo' },
+        { id: 7, type: 'cashFound', value: 0, name: 'Fondo de caja' },
       ]
     },
     defaultcashierData: {
@@ -2804,12 +2811,21 @@ export default {
       return totalGlobal.toFixed(2); // Redondea a 2 decimales
     },
 
+    calculateDifferenceCashFound() {
+      //if (this.cashierData.totalCash) {
+      const transferSistema = parseFloat(this.editedBox.cashFound) || 0;
+      const transferCajera = parseFloat(this.cashierData.cashFound) || 0;
+      const diferencia = transferCajera - transferSistema;
+      return diferencia.toFixed(2); // Redondea a 2 decimales
+    },
+
     calculateTotalDifferencesGlobal1() {
       //const diferenciaCaja = parseFloat(this.calculateTotalDifferences) || 0; // Diferencias de "caja"
       //const diferenciaIngresos = parseFloat(this.calculateTotalDifferencesIngresos) || 0; // Diferencias de "typeingreso"
       //const diferenciaPagos = parseFloat(this.calculateTotalDifferencesPagos) || 0; // Diferencias de "typepago"
       const diferenciaTotales = parseFloat(this.calculateTotalDifferencesTotales1) || 0; // Diferencias de "total"
       const differenceIngreso = parseFloat(this.calculateTotalDifferencesPagos1) || 0;
+      const differenceCashFound = parseFloat(this.calculateDifferenceCashFound) || 0;
       // Suma todas las diferencias
       const totalGlobal = diferenciaTotales + differenceIngreso;
       this.cashierData.difference = totalGlobal;
@@ -3264,6 +3280,7 @@ export default {
         totalCardGif: { icon: 'mdi-gift' },
         totalProduct: { icon: 'mdi-package-variant' },
         totalService: { icon: 'mdi-list-box-outline' },
+        cashFound: { icon: 'mdi-cash-register' },
         // ... otros tipos
       };
 
@@ -4488,6 +4505,7 @@ onCalendarMonthChange(newDate) {
         } else {
           const temp = this.box.existence;
           this.editedBox.existence = this.box.existence;
+          this.editedBox.cashFound = this.box.cashFound;
           this.editedCloseBox.existence = this.box.existence;
           console.log(temp);
           //return temp;

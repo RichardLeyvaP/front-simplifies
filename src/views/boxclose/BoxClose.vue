@@ -127,6 +127,11 @@
                                                                         variant="underlined"
                                                                         density="compact"></v-text-field>
                                                                     <v-text-field
+                                                                        :model-value="formatNumber(item.cashFound)"
+                                                                        label="Fondo de Caja" readonly
+                                                                        prepend-icon="mdi-cash-register" variant="underlined"
+                                                                        density="compact"></v-text-field>
+                                                                    <v-text-field
                                                                         :model-value="formatNumber(item.existence)"
                                                                         label="Efectivo" readonly
                                                                         prepend-icon="mdi-cash" variant="underlined"
@@ -194,6 +199,11 @@
                                                                         label="Transferencia" readonly
                                                                         prepend-icon="mdi-bank-transfer"
                                                                         variant="underlined"
+                                                                        density="compact"></v-text-field>
+                                                                    <v-text-field
+                                                                        :model-value="formatNumber(item.cashier_cashFound)"
+                                                                        label="Fondo de Caja" readonly
+                                                                        prepend-icon="mdi-cash-register" variant="underlined"
                                                                         density="compact"></v-text-field>
                                                                     <v-text-field
                                                                         :model-value="formatNumber(item.cashier_existence)"
