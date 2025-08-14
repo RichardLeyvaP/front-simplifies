@@ -2412,7 +2412,8 @@ export default {
         { id: 3, type: 'totalTransfer', value: 0, name: 'Transferencia' },
         { id: 4, type: 'existence', value: 0, name: 'Efectivo' },
         { id: 5, type: 'totalOther', value: 0, name: 'Otros' },
-        { id: 6, type: 'totalCardGif', value: 0, name: 'Tarjeta Regalo' }
+        { id: 6, type: 'totalCardGif', value: 0, name: 'Tarjeta Regalo' },
+        { id: 7, type: 'cashFound', value: 0, name: 'Fondo de caja' },
       ]
     },
     paymentOptions: [],
