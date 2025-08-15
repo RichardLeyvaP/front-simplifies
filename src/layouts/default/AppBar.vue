@@ -295,8 +295,13 @@ export default {
         .then(() => {
           //this.initialize();
         }).finally(() => {
-          //this.initialize();
-          this.$router.push({ path: 'car-order-delete' });
+          console.log('item de notificación');
+          console.log(item);
+         if (item.tittle?.toLowerCase().includes("adelanto")) {
+  this.$router.push({ path: 'solicitud-advance' });
+} else {
+        this.$router.push({ path: 'car-order-delete' });
+      }
         });
     },
     clearNotifications() {
