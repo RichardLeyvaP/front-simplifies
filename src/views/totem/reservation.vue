@@ -34,22 +34,33 @@
           <v-sheet border>
 
             <div style="max-height: 60vh; overflow-y: auto;">
-              <v-list>
-                <v-list-item-group v-model="selected" multiple active-class="deep-purple--text text--accent-4">
-                  <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + service.image_service"
-                    v-for="service in services" :key="service.id" @click="toggleService(service.id)"
-                    :class="{ 'selected-item': isSelected(service.id) }" class="pt-4 pb-4">
+                          <v-list>
+    <v-list-item
+      v-for="service in services"
+      :key="service.id"
+      @click="toggleService(service.id)"
+      :class="['pt-4 pb-4', { 'selected-item': isSelected(service.id) }]"
+      link
+    >
+      <!-- Avatar y contenido -->
+      <template #prepend>
+        <v-avatar>
+          <v-img
+            :src="`https://api2.simplifies.cl/api/images/${service.image_service}`"
+            alt="Service image"
+          ></v-img>
+        </v-avatar>
+      </template>
 
-                    <v-list-item-content class="d-flex align-center justify-space-between">
-                      <div class="text-h6">{{ service.name }}</div>
-                      <v-btn :color="!isSelected(service.id) ? 'amber-darken-1' : ''" :dark="isSelected(service.id)">
-                        ${{ formatNumber(service.price_service) }}
-                      </v-btn>
-                    </v-list-item-content>
-
-                  </v-list-item>
-                </v-list-item-group>
-              </v-list>
+      <!-- Título y precio -->
+      <div class="d-flex align-center justify-space-between flex-grow-1">
+        <div class="text-h6">{{ service.name }}</div>
+         <v-btn :color="!isSelected(service.id) ? 'amber-darken-1' : ''" :dark="isSelected(service.id)">
+          ${{ formatNumber(service.price_service) }}
+        </v-btn>
+      </div>
+    </v-list-item>
+  </v-list>
             </div>
 
 
@@ -127,41 +138,61 @@
           <h3 class="text-h6">Opciones disponibles</h3>
           <v-sheet border>
             <v-list>
-              <v-list-item-group v-model="selectedItem" active-class="deep-purple--text text--accent-4">
+              <v-list-item-group active-class="deep-purple--text text--accent-4">
+                <!-- Opción 1: Soy Cliente -->
                 <v-list-item :class="{ 'selected-item': selectedItem === 'option1' }"
-                  @click="() => { SelectionRadio('ClientSi'); selectedItem = 'option1' }">
+                  @click="handleSelection('option1', 'ClientSi')">
+                  <v-list-item-title class="text-h6">Soy Cliente</v-list-item-title>
+                </v-list-item>
+
+                <!-- Opción 2: Es mi primera vez -->
+                <v-list-item :class="{ 'selected-item': selectedItem === 'option2' }"
+                  @click="handleSelection('option2', 'ClientNo')">
+                  <v-list-item-title class="text-h6">Es mi primera vez</v-list-item-title>
+                </v-list-item>
+
+                <!-- Opción 3: Incógnito 
+                <v-list-item 
+                  :class="{ 'selected-item': selectedItem === 'option3' }" 
+                  @click="handleSelection('option3')"
+                >
+                  <v-list-item-title class="text-h6">Incógnito</v-list-item-title>
+                </v-list-item>-->
+
+                <!-- Opción 4: Niño -->
+                <v-list-item :class="{ 'selected-item': selectedItem === 'option4' }"
+                  @click="handleSelection('option4', 'ClientNo')">
+                  <v-list-item-title class="text-h6">Niño</v-list-item-title>
+                </v-list-item>
+              </v-list-item-group>
+              <!--<v-list-item-group v-model="selectedItem" active-class="deep-purple--text text--accent-4">
+                <v-list-item :class="{ 'selected-item': selectedItem === 'option1' }"
+                  @click="() => { SelectionRadio('ClientSi'); selectedItem = 'option1'; incognito = 0; }">
                   <v-list-item-content>
                     <v-list-item-title class="text-h6">Soy Cliente</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
 
-                <v-list-item :class="{ 'selected-item': selectedItem === 'option2' }" @click="() => { SelectionRadio('ClientNo'); selectedItem = 'option2' }">
+                <v-list-item :class="{ 'selected-item': selectedItem === 'option2' }" @click="() => { SelectionRadio('ClientNo'); selectedItem = 'option2'; incognito = 0; }">
                   <v-list-item-content>
                     <v-list-item-title class="text-h6">Es mi primera vez</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
-              </v-list-item-group>
+                <v-list-item 
+                :class="{ 'selected-item': selectedItem === 'option3' }" 
+                @click="() => { selectedItem = 'option3'; incognito = 1; }">
+                <v-list-item-content>
+                  <v-list-item-title class="text-h6">Incógnito</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item :class="{ 'selected-item': selectedItem === 'option4' }"
+                  @click="() => { SelectionRadio('ClientNo'); selectedItem = 'option4'; incognito = 0; }">
+                  <v-list-item-content>
+                    <v-list-item-title class="text-h6">Niño</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>-->
             </v-list>
-            <!--<v-dialog v-model="showDialog" max-width="400px">
-              <v-card title="Datos de Cliente">
-                <v-sheet class="mx-auto" width="300">
-                  <v-form @submit.prevent>
-                    <v-text-field v-model="email_client2" label="Teléfono ó Correo Electrónico" outlined
-                      required></v-text-field>
-                    <v-btn size="x-large" color="orange lighten-2" class="mt-2" type="submit"
-                      @click="() => { sendData(); isActive.value = false; }" block>Aceptar</v-btn>
-
-                  </v-form>
-                </v-sheet>
-
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn size="x-large" text="Cancelar"
-                    @click="() => { this.selectedItem = 'option2'; this.radios = 'ClientNo'; showDialog = false; }"></v-btn>
-
-                </v-card-actions>
-              </v-card>
-            </v-dialog>-->
             <v-dialog v-model="showDialog" max-width="400px">
               <v-card title="Datos de Cliente">
                 <v-card-text>
@@ -174,18 +205,8 @@
                       <v-autocomplete v-model="email_client2" :items="clientRegister" item-title="name" item-value="id"
                         label="Seleccione su nombre" :no-data-text="'No hay datos disponibles'" outlined
                         :rules="selectRules">
-                        <!--<template v-slot:item="{ props, item }">
-                      <v-list-item v-bind="props"
-                        :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.client_image"
-                        :title="item.raw.name">
-                        <v-list-item-subtitle class="d-flex justify-space-between">
-                          Correo: {{ item.raw.email }}
-                        </v-list-item-subtitle>
-                      </v-list-item>
-                    </template>--></v-autocomplete>
+                      </v-autocomplete>
                     </template>
-                    <!--<v-btn size="x-large" color="orange lighten-2" class="mt-2" type="submit"
-            @click="() => { sendData(); isActive.value = false; }" block>Aceptar</v-btn>-->
                   </v-form>
                 </v-card-text>
 
@@ -195,6 +216,32 @@
                     @click="() => { this.selectedItem = 'option2'; this.radios = 'ClientNo'; showDialog = false; this.email_client = ''; this.showTextField = true }">Cancelar</v-btn>
                   <v-btn color="#F18254" variant="flat" text="Aceptar" :disabled="!this.email_client"
                     :loading="loadingClient" @click="fetchClients">Aceptar</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+            <v-dialog v-model="showDialogChild" max-width="400px">
+              <v-card title="Datos de Cliente Representante">
+                <v-card-text>
+                  <v-form @submit.prevent>
+                    <template v-if="showTextField">
+                      <v-text-field v-model="editedPhather.parent_email" label="Teléfono ó Correo Electrónico" outlined
+                        required></v-text-field>
+                    </template>
+                    <template v-else>
+                      <v-autocomplete v-model="editedPhather.parent_email2" :items="clientRegister" item-title="name"
+                        item-value="id" label="Seleccione su nombre" :no-data-text="'No hay datos disponibles'" outlined
+                        :rules="selectRules" @update:modelValue="handleParentSelection">
+                      </v-autocomplete>
+                    </template>
+                  </v-form>
+                </v-card-text>
+
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn variant="flat" color="#E7E9E9" text="Cancelar"
+                    @click="() => { this.selectedItem = 'option2'; this.radios = 'ClientNo'; showDialogChild = false; this.editedPhather.parent_email = ''; this.showTextField = true }">Cancelar</v-btn>
+                  <v-btn color="#F18254" variant="flat" text="Aceptar" :disabled="!this.editedPhather.parent_email"
+                    :loading="loadingClient" @click="fetchClientsPhather">Aceptar</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -221,44 +268,57 @@
               <v-row>
                 <v-col cols="12" md="5" class="mt-1">
                   <v-text-field :disabled="verificate" v-model="name_client" :counter="50" :rules="nameRules"
-                    label="Nombre" outlined required></v-text-field>
+                    :label="inputName" outlined required></v-text-field>
                 </v-col>
-
-                <!--<v-col cols="12" md="4" class="mt-2">
-     <v-text-field :disabled="verificate" v-model="surname_client" :counter="50" :rules="surname_client_Rules" label="Apellido Paterno" outlined
-       required></v-text-field>
-     </v-col>
-
-     <v-col cols="12" md="4" class="mt-2">
-     <v-text-field :disabled="verificate" v-model="second_surname" :counter="50" :rules="second_surname_Rules" label="Apellido Materno" outlined
-       required></v-text-field>
-     </v-col>-->
-
-
                 <v-col cols="12" md="4" class="mt-1">
-                  <v-text-field :disabled="verificate" v-model="email_client" :rules="emailRules"
-                    label="Correo Electrónico" outlined required></v-text-field>
+                  <v-text-field :disabled="verificate" v-model="email_client" :rules="emailRules" :label="inputEmail"
+                    outlined required></v-text-field>
                 </v-col>
                 <v-col cols="12" md="3" class="mt-1">
                   <v-text-field :disabled="verificate" v-model="phone_client" :rules="mobileRules"
-                    placeholder="+56912345678" label="Teléfono" outlined required></v-text-field>
+                    placeholder="+56912345678" :label="inputPhone" outlined required></v-text-field>
                 </v-col>
               </v-row>
 
+              <v-row class="px-4" v-if="selectedItem === 'option2' || selectedItem === 'option3'">
+                <v-col cols="12">
+                  <!--<v-checkbox
+                  v-model="incognito"
+                  label="Reservar como Incógnito"
+                  :true-value="1"
+                  :false-value="0"
+                  @change="handleSelection(incognito ? 'option3' : 'option2')"
+                  color="orange"
+                >
+                    </v-checkbox>-->
+                    <v-switch
+      v-model="incognito"
+      label="Reservar como Incógnito"
+      :true-value="1"
+      :false-value="0"
+      @change="handleSelection(incognito ? 'option3' : 'option2')"
+      color="orange"
+    ></v-switch>
+                                </v-col>
+                              </v-row>
 
-
-              <!--<v-row>
-              <v-col cols="12" md="12">
-                <p style="color: #555; text-align: justify;">
-                  <span
-                    style="font-size: 1em; font-weight: bold; color: red; display: block; text-align: center;">¡IMPORTANTE!</span><br>
-                  Puede llegar 10 minutos antes o después de la hora indicada y debe anunciarse en la caja para que se
-                  sitúe de primero en la lista de espera y así su barbero lo pueda atender después del servicio que esté
-                  realizando.
-                </p>
-              </v-col>
-            </v-row>-->
               <v-divider class="pt-4 mt-4"></v-divider>
+              <div v-if="this.selectedItem === 'option4'">
+                <v-row>
+                  <v-col cols="12" md="5" class="mt-1">
+                    <v-text-field :disabled="verificate" v-model="editedPhather.parent_name" :counter="50"
+                      :rules="nameParentRules" label="Nombre del Representante" outlined required></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="4" class="mt-1">
+                    <v-text-field :disabled="verificate" v-model="editedPhather.parent_email" :rules="emailParentRules"
+                      label="Correo Electrónico del Representante" outlined required></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="3" class="mt-1">
+                    <v-text-field :disabled="verificate" v-model="editedPhather.parent_phone" :rules="mobileParentRules"
+                      placeholder="+56912345678" label="Teléfono del Representante" outlined required></v-text-field>
+                  </v-col>
+                </v-row>
+              </div>
               <v-container>
 
                 <v-card class="mx-auto">
@@ -267,7 +327,7 @@
 
                     <p>Ubicación :
                       <span v-for="(item) in filteredBranches" :key="item.title" :value="item.id"> <strong>{{ item.name
-                      }}</strong>, {{ item.address }} </span>
+                          }}</strong>, {{ item.address }} </span>
                     </p>
 
                     <p>Profesional :
@@ -281,7 +341,7 @@
                     </p>
 
                     <p> Duración : <strong> {{ convertirMinutosAHorasYMinutos(filteredServices1.totalDuration)
-                    }}</strong></p>
+                        }}</strong></p>
 
                     <p> Precio Total : <strong> {{ this.formatNumber(filteredServices1.totalPrice) }}</strong></p>
                   </v-card-text>
@@ -332,21 +392,10 @@
             </v-list-item-content>
           </v-list-item>
         </v-col>
-        <!--<v-col cols="12" md="12" class="mt-2">
-                <v-checkbox
-      v-for="survey in surveys"
-      :key="survey.id"
-      v-model="selectedSurveys"
-      :label="survey.name"
-      :value="survey.id"
-      multiple
-      dense
-    ></v-checkbox>
-                    </v-col>-->
         <v-card-actions class="justify-end">
           <v-btn @click="closeEncuesta()" color="#E7E9E9" variant="flat">Cancelar</v-btn>
-          <v-btn @click="addEncuesta()" :disabled="!selectedSurveys.length > 0" color="#F18254"
-            variant="flat" :loading="loadingEncuesta">Aceptar</v-btn>
+          <v-btn @click="addEncuesta()" :disabled="!selectedSurveys.length > 0" color="#F18254" variant="flat"
+            :loading="loadingEncuesta">Aceptar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -381,7 +430,7 @@
 <script>
 import axios from "axios";
 import LocalStorageService from "@/LocalStorageService";
-
+import { handleRequest } from "@/utils/api"; // Ruta al archivo
 axios.interceptors.request.use(config => {
   const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
   if (token) {
@@ -396,6 +445,9 @@ axios.interceptors.request.use(config => {
 export default {
 
   data: () => ({
+    inputName: 'Nombre',
+    inputEmail: 'Correo Electrónico',
+    inputPhone: 'Teléfono',
     showTextField: true,
     snackbar: false,
     sb_type: '',
@@ -410,6 +462,7 @@ export default {
     horarioDisponibleActual: '',
     idProfesionalListo: '',
     showDialog: false,
+    showDialogChild: false,
     selectedItem: null,
     redirectToAnotherPage: false,
     timerId1: null,
@@ -444,7 +497,14 @@ export default {
     nameBranch: '',
     address: '',
     selectedItems: [],
-    nameRules: [
+    editedPhather: {
+      parent_id: '',
+      parent_name: '',
+      parent_email: '',
+      parent_email2: '',
+      parent_phone: '',
+    },
+    nameParentRules: [
       v => !!v || 'El nombre es requerido',
       v => (v && v.length <= 50) || 'El nombre no debe exceder de 50 caracteres',
     ],
@@ -459,13 +519,13 @@ export default {
       v => (v && v.length <= 50) || 'El Apellido Materno no debe exceder de 50 caracteres',
     ],
 
-    emailRules: [
+    emailParentRules: [
       //v => !!v || 'El Correo es requerido',
       (value) => !value || (/.+@.+\..+/.test(value)) || "Correo electrónico no válido",
       //v => /.+@.+\..+/.test(v) || 'Correo electrónico no válido',
     ],
 
-    mobileRules: [
+    mobileParentRules: [
       v => !!v || 'El número de móvil es requerido',
       v => /^\+569\d{8}$/.test(v) || 'Formato de número móvil inválido. Ejemplo: +56912345678'
     ],
@@ -487,8 +547,10 @@ export default {
     dialogEncuesta: false,
     surveys: [],
     branches: [],
+    incognito: 0,
     selectedSurveys: [],
     survey_id: '',
+
     //
     //
     //
@@ -518,7 +580,7 @@ export default {
     totalDuration: '',
   }),
   watch: {
-    showDialog(newValue, oldValue) {
+    /*showDialog(newValue, oldValue) {
       // Ejecutar código en respuesta al cambio en showDialog
       if (!newValue && oldValue) {
         // El modal se ha cerrado
@@ -530,7 +592,7 @@ export default {
         //this.email_clientText = '';
         // Realizar cualquier otra acción necesaria
       }
-    },
+    },*/
     email_client2(newVal) {
       if (this.clientRegister.length > 0) {
         const client = this.clientRegister.filter(item => item.id == newVal)
@@ -546,7 +608,7 @@ export default {
         console.log(newVal);
         this.fetchClients(newVal);
       }
-    }
+    },
   },
 
   computed: {
@@ -584,25 +646,6 @@ export default {
       // Devolver los servicios filtrados y la suma del precio y la duración
       return { filteredServices, totalPrice, totalDuration };
     },
-    /*filteredServices() {
-      //let totalTime = 0; // Inicializar la variable para almacenar el tiempo total
-      // Filtrar los servicios
-      const newArrayService = this.array_services.map(item => parseInt(item));
-  
-      const filteredServices = this.services.filter(item => {
-          // Comprobar si el id de este servicio está presente en la lista de ids seleccionados
-          // Si `this.selected_services` es un solo id, item.id === this.selected_services evaluará a true o false
-          // Si `this.selected_services` es una lista de ids, Array.includes() verificará si item.id está en la lista
-          return Array.isArray(newArrayService) ? newArrayService.includes(item.id) : item.id === newArrayService;
-      });
-  
-      const totalPrice = filteredServices.reduce((total, service) => total + service.price_service, 0);
-      const totalDuration = filteredServices.reduce((total, service) => total + service.duration_service, 0);
-      this.totalDuration = totalDuration;
-      this.totalPrice = totalPrice;
-     // Devolver los servicios filtrados
-      return filteredServices;
-    },*/
     advanceReserva1() {
       console.log()
       return !this.selected.length > 0; // Verdadero si hay elementos, falso si está vacío
@@ -618,6 +661,32 @@ export default {
     total() {
       return this.subtotal + Number(this.shipping ?? 0)
     },
+    nameRules() {
+    return [
+      v => !!v || 'El nombre es requerido', // Siempre obligatorio
+      v => (v && v.length <= 50) || 'El nombre no debe exceder 50 caracteres',
+    ];
+  },
+  emailRules() {
+    return [
+      // Solo valida si se ingresa un valor (nunca es requerido)
+      value => !value || /.+@.+\..+/.test(value) || 'Correo electrónico no válido',
+    ];
+  },
+  mobileRules() {
+    if (this.incognito === 1) {
+      // Si es incógnito, el teléfono es opcional, pero si se ingresa, se valida
+      return [
+        value => !value || /^\+569\d{8}$/.test(value) || 'Formato inválido. Ejemplo: +56912345678',
+      ];
+    } else {
+      // Si no es incógnito, el teléfono es obligatorio y se valida
+      return [
+        v => !!v || 'El número de móvil es requerido',
+        v => /^\+569\d{8}$/.test(v) || 'Formato inválido. Ejemplo: +56912345678',
+      ];
+    }
+  },
   },
   mounted() {
 
@@ -658,6 +727,38 @@ export default {
 
   methods:
   {
+    normalizePhone(phone) {
+    // Eliminar todos los caracteres no numéricos excepto el +
+    const cleaned = phone.replace(/[^\d+]/g, '');
+    
+    // Caso 1: Ya tiene formato completo +569xxxxxxxx
+    if (/^\+569\d{8}$/.test(cleaned)) {
+      console.log('Caso 1: Ya tiene formato completo +569xxxxxxxx');
+      return cleaned;
+    }
+    
+    // Caso 2: Tiene 569xxxxxxxx (sin +)
+    if (/^569\d{8}$/.test(cleaned)) {
+      console.log('Caso 2: Tiene 569xxxxxxxx (sin +)');
+      return `+${cleaned}`;
+    }
+    
+    // Caso 3: Tiene 9xxxxxxxx (8-9 dígitos)
+    if (/^9\d{7,8}$/.test(cleaned)) {
+      console.log('Caso 3: Tiene 569xxxxxxxx (sin +)');
+      return `+56${cleaned}`;
+    }
+    
+    // Caso 4: Tiene xxxxxxxx (8 dígitos sin 9 inicial)
+    if (/^\d{8}$/.test(cleaned)) {
+      console.log('Caso 4: Tiene xxxxxxxx (8 dígitos sin 9 inicial)');
+      return `+569${cleaned}`;
+    }
+    
+    // Si no coincide con ningún formato conocido, devolver el original
+    return phone;
+    },
+    //okk
     fetchClients() {
       this.loadingClient = true;
       this.clientRegister = [];
@@ -676,10 +777,144 @@ export default {
             this.showTextField = false;
             this.email_client = '';
           }
-          else {
+          else {          
             this.showAlert("warning", "No existe ningún cliente con ese correo o teléfono", 2000);
-            this.email_client = '';
-            this.showTextField = true;
+            let inputType = '';
+            //alert(this.email_client);
+            // Expresión regular para validar email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            // Expresión regular para teléfono chileno (simplificado)
+            const phoneRegex = /^(\+56|56)?[\s-]?([2-9])?[\s-]?(\d{4})[\s-]?(\d{4})$/;
+            
+            if (emailRegex.test(this.email_client)) {
+              inputType = 'email';
+              //this.emailValue = this.email_client;  // Asigna a variable para email
+            } else if (phoneRegex.test(this.email_client.replace(/\s+/g, ''))) {
+              inputType = 'phone';
+              //this.phoneValue = this.email_client;  // Asigna a variable para teléfono
+            } else {
+              inputType = 'invalid';
+            }
+            console.log('this.inputType');
+            console.log(inputType);
+            if (inputType === 'email') {
+              this.phone_client = '';
+            } else if (inputType === 'phone'){
+              const normalized = this.normalizePhone(this.email_client);
+              console.log('normalized');
+              console.log(normalized);
+              this.phone_client = normalized;
+              this.email_client = '';
+            }else{
+              this.phone_client = '';
+              this.email_client = '';
+            }
+            this.radios = 'ClientNo';
+             this.showDialog = false;
+              this.showTextField = true;
+              this.changeStep(4);
+            this.clientRegister = [];
+          }
+          this.loadingClient = false;
+        });
+      //}
+    },
+    handleParentSelection(selectedId) {
+      if (!selectedId) return; // Si no hay selección, no hacer nada
+
+      // 1. Buscar el padre seleccionado en `clientRegister`
+      const selectedParent = this.clientRegister.find(parent => parent.id === selectedId);
+      
+      if (selectedParent) {
+        const phone = selectedParent.phone ? String(selectedParent.phone) : '';
+      const normalizedPhone = this.normalizePhone(phone);
+
+        // 2. Actualizar `editedPhather` con los nuevos datos (sin perder los existentes)
+        this.editedPhather = {
+          ...this.editedPhather,  // Mantener datos actuales
+          parent_name: selectedParent.name,      // Ejemplo: Actualizar nombre
+          parent_phone: normalizedPhone,   // Ejemplo: Actualizar teléfono
+          parent_email: selectedParent.email,    // Ejemplo: Actualizar email
+          parent_id: selectedParent.id, 
+          // ... otros campos que necesites
+        };
+
+        this.email_client = selectedParent.email;
+        this.phone_client = normalizedPhone;
+
+        // 3. (Opcional) Debuggear en consola
+        console.log('Datos del padre actualizados:', this.editedPhather);
+        this.showDialogChild = false;
+        this.changeStep(4);
+      }
+    },
+    resetEditedPhather() {
+      this.editedPhather = {
+        parent_id: '',
+        parent_name: '',
+        parent_email: '',
+        parent_email2: '',
+        parent_phone: '',
+      };
+    },
+    fetchClientsPhather() {
+      this.loadingClient = true;
+      this.clientRegister = [];
+      this.client_id = '';
+      console.log('query en la funcion');
+      console.log(this.editedPhather.parent_email);
+      //if (query) {
+      axios.get(`https://api2.simplifies.cl/api/client-email-phone?email=${this.editedPhather.parent_email}`)
+        .then(response => {
+          // Maneja la respuesta de la solicitud aquí
+          this.clientRegister = response.data.client;
+          console.log('-------------------------------clientRegister----------------------------------------');
+          console.log('this.clientRegister.length');
+          console.log(this.clientRegister);
+          if (this.clientRegister.length > 0) {
+            this.showTextField = false;
+            this.editedPhather.parent_email = '';
+            this.radios = 'ClientSi';
+          }
+          else {          
+            this.showAlert("warning", "No existe ningún cliente con ese correo o teléfono", 2000);
+            let inputType = '';
+            //alert(this.email_client);
+            // Expresión regular para validar email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            // Expresión regular para teléfono chileno (simplificado)
+            const phoneRegex = /^(\+56|56)?[\s-]?([2-9])?[\s-]?(\d{4})[\s-]?(\d{4})$/;
+            
+            if (emailRegex.test(this.editedPhather.parent_email)) {
+              inputType = 'email';
+              //this.emailValue = this.editedPhather.parent_email;  // Asigna a variable para email
+            } else if (phoneRegex.test(this.editedPhather.parent_email.replace(/\s+/g, ''))) {
+              inputType = 'phone';
+              //this.phoneValue = this.email_client;  // Asigna a variable para teléfono
+            } else {
+              inputType = 'invalid';
+            }
+            console.log('this.inputType');
+            console.log(inputType);
+            if (inputType === 'email') {
+              this.editedPhather.parent_phone = '';
+              this.editedPhather.parent_name = '';
+              this.editedPhather.parent_id = '';
+            } else if (inputType === 'phone'){
+              const normalized = this.normalizePhone(this.editedPhather.parent_email);
+              console.log('normalized');
+              console.log(normalized);
+              this.editedPhather.parent_phone = normalized;
+              this.editedPhather.parent_name = '';
+              this.editedPhather.parent_email = '';
+              this.editedPhather.parent_id = '';
+            }else{
+              this.resetEditedPhather();
+            }
+            this.radios = 'ClientNo';
+             this.showDialogChild = false;
+              this.showTextField = true;
+              this.changeStep(4);
             this.clientRegister = [];
           }
           this.loadingClient = false;
@@ -812,9 +1047,62 @@ export default {
       // Cambiar el valor de step al índice especificado
       this.step = index;
     },
-    SelectionRadio(value) {
+    handleSelection(option, radioValue = null) {
+      console.log('option:', option);
+    // 1. Actualiza selectedItem e incognito primero
+    this.selectedItem = option;
+    this.incognito = (option === 'option3') ? 1 : 0;
+
+    // 2. Si hay un valor para SelectionRadio, lo procesa después
+    if (radioValue) {
+      this.SelectionRadio(radioValue);
+    }
+    if(option === 'option3'){
+      this.SelectionRadio('ClientSi');
+      
+      this.name_client = '';
+      this.email_client = '';
+      this.phone_client = '';
+      this.nextStep();
+    }
+    
+    // 3. Fuerza la actualización del DOM (opcional, pero útil)
+    this.$nextTick(() => {
+      console.log("Estado actualizado:", {
+        selectedItem: this.selectedItem,
+        incognito: this.incognito,
+        radios: this.radios
+      });
+    });
+    console.log('Aqui se muestra el seletectItem');
+      console.log(this.selectedItem);
+  },
+
+  SelectionRadio(value) {
+    this.radios = value;
+    if (value === 'ClientSi' && this.selectedItem === 'option1') {
+      this.email_client = '';
+      this.client_id = '';
+      this.clientRegister = [];
+      this.showTextField = true;
+      this.showDialog = true;
+    }
+    if (value === 'ClientNo' && this.selectedItem === 'option4') {
+      this.email_client = '';
+      this.client_id = '';
+      this.clientRegister = [];
+      this.showTextField = true;
+      this.showDialogChild = true;
+      this.inputName='Nombre del niño';
+      this.inputEmail='Correo electrónico del del niño';
+      this.inputPhone='Teléfono del niño';
+ '';
+      this.resetEditedPhather();
+    }
+  },
+    /*SelectionRadio(value) {
       this.radios = value;
-      if (value === 'ClientSi') {
+      if (value === 'ClientSi' && this.selectedItem === 'option2') {
         this.email_client = '';
         this.client_id = '';
         this.clientRegister = [];
@@ -824,8 +1112,11 @@ export default {
       
       console.log('this.radios');
       console.log(this.radios);
+      console.log('this.selectedItem');
+      console.log(this.selectedItem);
 
-    },
+    },*/
+    //okk
     clearTextClient() {
       this.name_client = '';
       this.phone_client = '+569';
@@ -836,8 +1127,11 @@ export default {
       this.email_client2 = '';
       this.client_id = '';
       this.showTextField = true;
+      this.incognito = 0;
+      this.resetEditedPhather();
 
     },
+
     sendData() {
       console.log('-------------------------------sendData()----------------------------------------');
       console.log(this.email_client2);
@@ -925,7 +1219,8 @@ export default {
           //second_surname:this.second_surname,
           select_professional: 0,
           services: newArrayService,
-          from_home: 0
+          from_home: 0,
+          incognito: this.incognito
         }
 
       }
@@ -942,7 +1237,10 @@ export default {
           client_id: this.client_id,
           //second_surname:this.second_surname,
           services: newArrayService,
-          from_home: 0
+          from_home: 0,
+          incognito: this.incognito,
+          editedPhather: this.editedPhather
+         
         }
 
       }
@@ -950,7 +1248,7 @@ export default {
       console.log('**********************************---------------------');
 
       // Realiza la solicitud GET con Axios y pasa los parámetros
-      axios.post('https://api2.simplifies.cl/api/reservation_store', request)
+      axios.post('https://api2.simplifies.cl/api/reservation-store-tottem', request)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.message = response.data.msg
@@ -1033,15 +1331,22 @@ export default {
       // Por ejemplo, si deseas desactivar los horarios '10:00' y '11:00':
       return this.disabledIntervals.includes(time);
     },
-
-    nextStep() {
+//ook  
+    async nextStep() {
+      if (this.step === 3 && this.selectedItem === 'option3') {
+        this.name_client = '';
+        this.phone_client = '';
+        this.email_client = '';
+        this.radios = 'ClientSi';
+        this.incognito = 1;
+        this.client_id = '';
+      }
       if (this.step < this.items.length) {
         this.step++;
       }
       console.log('Aqui se muestran los Step');
       console.log(this.step);
       this.verificateStep(this.step);
-
     },
 
     prevStep() {
@@ -1059,6 +1364,9 @@ export default {
       }
       if (this.step === 3) {
         this.selectedItem = 'option2';
+        this.inputName='Nombre';
+        this.inputEmail='Correo electrónico';
+        this.inputPhone='Teléfono';
         //this.clearTextClient();
         this.verificate = false;
       }
