@@ -905,6 +905,7 @@ export default {
               console.log('normalized');
               console.log(normalized);
               this.editedPhather.parent_phone = normalized;
+              this.phone_client = normalized;
               this.editedPhather.parent_name = '';
               this.editedPhather.parent_email = '';
               this.editedPhather.parent_id = '';

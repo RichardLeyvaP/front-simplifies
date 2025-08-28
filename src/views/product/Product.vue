@@ -65,7 +65,7 @@
               {{ item.worker_discount }} %
             </template>
             <template v-slot:item.commission_rate="{ item }">
-              {{ item.commission_rate > 0 ? `${item.commission_rate} %` : '' }}
+              {{ item.commission_rate > 0 ? `${item.commission_rate} %` : 0 }}
             </template>
             <template v-slot:item.actions="{ item }">
               <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
@@ -361,7 +361,7 @@ export default {
       image_product: "",
       id: "",
       worker_discount: "",
-      commission_rate: ""
+      commission_rate: 0
     },
     data: {},
 
@@ -377,7 +377,7 @@ export default {
       image_product: "",
       id: "",
       worker_discount: "",
-      commission_rate: ""
+      commission_rate: 0
     },
     //productos mas y menos vendidos
     menu2: false,
