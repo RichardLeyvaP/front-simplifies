@@ -35,21 +35,32 @@
 
             <div style="max-height: 60vh; overflow-y: auto;">
               <v-list>
-                <v-list-item-group v-model="selected" multiple active-class="deep-purple--text text--accent-4">
-                  <v-list-item :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + service.image_service"
-                    v-for="service in services" :key="service.id" @click="toggleService(service.id)"
-                    :class="{ 'selected-item': isSelected(service.id) }" class="pt-4 pb-4">
+    <v-list-item
+      v-for="service in services"
+      :key="service.id"
+      @click="toggleService(service.id)"
+      :class="['pt-4 pb-4', { 'selected-item': isSelected(service.id) }]"
+      link
+    >
+      <!-- Avatar y contenido -->
+      <template #prepend>
+        <v-avatar>
+          <v-img
+            :src="`https://testapi.simplifies.cl/api/images/${service.image_service}`"
+            alt="Service image"
+          ></v-img>
+        </v-avatar>
+      </template>
 
-                    <v-list-item-content class="d-flex align-center justify-space-between">
-                      <div class="text-h6">{{ service.name }}</div>
-                      <v-btn :color="!isSelected(service.id) ? 'amber-darken-1' : ''" :dark="isSelected(service.id)">
-                        ${{ formatNumber(service.price_service) }}
-                      </v-btn>
-                    </v-list-item-content>
-
-                  </v-list-item>
-                </v-list-item-group>
-              </v-list>
+      <!-- Título y precio -->
+      <div class="d-flex align-center justify-space-between flex-grow-1">
+        <div class="text-h6">{{ service.name }}</div>
+         <v-btn :color="!isSelected(service.id) ? 'amber-darken-1' : ''" :dark="isSelected(service.id)">
+          ${{ formatNumber(service.price_service) }}
+        </v-btn>
+      </div>
+    </v-list-item>
+  </v-list>
             </div>
 
 

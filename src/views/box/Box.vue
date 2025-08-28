@@ -393,8 +393,8 @@
                                 density="compact"></v-text-field>
                               <v-text-field :model-value="formatNumber(cashierData.totalTransfer)" label="Transferencia" readonly
                                 prepend-icon="mdi-bank-transfer" variant="underlined" density="compact"></v-text-field>
-                                <v-text-field :model-value="formatNumber(cashierData.cashFound)" label="Fondo de Caja" readonly
-                                prepend-icon="mdi-cash-register" variant="underlined" density="compact"></v-text-field>
+                              <!--<v-text-field :model-value="formatNumber(cashierData.cashFound)" label="Fondo de Caja" readonly
+                                prepend-icon="mdi-cash-register" variant="underlined" density="compact"></v-text-field>-->
                               <v-text-field :model-value="formatNumber(cashierData.existence)" label="Efectivo" readonly
                                 prepend-icon="mdi-cash" variant="underlined" density="compact"></v-text-field>
                               <v-text-field :model-value="formatNumber(cashierData.totalOther)" label="Otros" readonly
@@ -780,8 +780,8 @@
                               <v-text-field :model-value="formatNumber(cashierData.totalTransfer)" label="Transferencia"
                                 readonly prepend-icon="mdi-bank-transfer" variant="underlined"
                                 density="compact"></v-text-field>
-                                <v-text-field :model-value="formatNumber(cashierData.cashFound)" label="Fondo de Caja" readonly
-                                prepend-icon="mdi-cash-register" variant="underlined" density="compact"></v-text-field>
+                                <!--<v-text-field :model-value="formatNumber(cashierData.cashFound)" label="Fondo de Caja" readonly
+                                prepend-icon="mdi-cash-register" variant="underlined" density="compact"></v-text-field>-->
                               <v-text-field :model-value="formatNumber(cashierData.existence)" label="Efectivo" readonly
                                 prepend-icon="mdi-cash" variant="underlined" density="compact"></v-text-field>
                               <v-text-field :model-value="formatNumber(cashierData.totalOther)" label="Otros" readonly
@@ -2378,10 +2378,10 @@ export default {
         { id: 1, type: 'totalService', value: 0, name: 'Tarjeta Servicio' },
         { id: 2, type: 'totalProduct', value: 0, name: 'Tarjeta Producto' },
         { id: 3, type: 'totalTransfer', value: 0, name: 'Transferencia' },
-        { id: 4, type: 'cashFound', value: 0, name: 'Fondo de caja' },
-        { id: 5, type: 'existence', value: 0, name: 'Efectivo' },
-        { id: 6, type: 'totalOther', value: 0, name: 'Otros' },
-        { id: 7, type: 'totalCardGif', value: 0, name: 'Tarjeta Regalo' },
+        //{ id: 4, type: 'cashFound', value: 0, name: 'Fondo de caja' },
+        { id: 4, type: 'existence', value: 0, name: 'Efectivo' },
+        { id: 5, type: 'totalOther', value: 0, name: 'Otros' },
+        { id: 6, type: 'totalCardGif', value: 0, name: 'Tarjeta Regalo' },
       ]
     },
     defaultcashierData: {
@@ -2410,10 +2410,10 @@ export default {
         { id: 1, type: 'totalService', value: 0, name: 'Tarjeta Servicio' },
         { id: 2, type: 'totalProduct', value: 0, name: 'Tarjeta Producto' },
         { id: 3, type: 'totalTransfer', value: 0, name: 'Transferencia' },
-        { id: 4, type: 'cashFound', value: 0, name: 'Fondo de caja' },
-        { id: 5, type: 'existence', value: 0, name: 'Efectivo' },
-        { id: 6, type: 'totalOther', value: 0, name: 'Otros' },
-        { id: 7, type: 'totalCardGif', value: 0, name: 'Tarjeta Regalo' },
+        //{ id: 4, type: 'cashFound', value: 0, name: 'Fondo de caja' },
+        { id: 4, type: 'existence', value: 0, name: 'Efectivo' },
+        { id: 5, type: 'totalOther', value: 0, name: 'Otros' },
+        { id: 6, type: 'totalCardGif', value: 0, name: 'Tarjeta Regalo' },
       ]
     },
     paymentOptions: [],
