@@ -557,7 +557,7 @@ export default {
     this.permissionsUser = LocalStorageService.getItem("permissionsUser") || [],
     
           /*axios
-        .get('https://testapi.simplifies.cl/api/show-stores-products', {
+        .get('https://api2.simplifies.cl/api/show-stores-products', {
         params: {
           business_id: this.business_id,
           branch_id: this.branch_id
@@ -669,7 +669,7 @@ export default {
       this.loadingProducts = true;
       LocalStorageService.setIsLocked(true);
       axios
-        .get('https://testapi.simplifies.cl/api/productstore-show', {
+        .get('https://api2.simplifies.cl/api/productstore-show', {
           params: {
             branch_id: this.branch_id
           }
@@ -730,7 +730,7 @@ export default {
       this.mostrarCampos = true;
       this.texttitle = 'Existencia';
       axios
-        .get('https://testapi.simplifies.cl/api/store-show-notin', {
+        .get('https://api2.simplifies.cl/api/store-show-notin', {
           params: {
             store_id: this.editedItem.store_id
           }
@@ -757,7 +757,7 @@ export default {
       this.data.store_id = this.editedItem.store_id;
       //this.data.branch_id = this.branch_id;
       axios
-        .post('https://testapi.simplifies.cl/api/productstore-destroy', this.data)
+        .post('https://api2.simplifies.cl/api/productstore-destroy', this.data)
         .then(() => {
           LocalStorageService.setIsLocked(false);
           this.message_delete = true;
@@ -796,7 +796,7 @@ export default {
         console.log(this.data);
         console.log('editar');
         axios
-          .put('https://testapi.simplifies.cl/api/productstore', this.data)
+          .put('https://api2.simplifies.cl/api/productstore', this.data)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.initialize();
@@ -816,7 +816,7 @@ export default {
         this.data.product_quantity = this.editedItem.product_quantityM;
         //this.data.branch_id = this.branch_id;
         axios
-          .post('https://testapi.simplifies.cl/api/move-product-store', this.data)
+          .post('https://api2.simplifies.cl/api/move-product-store', this.data)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.showAlert("success", "Producto asignado correctamente", 3000)
@@ -835,7 +835,7 @@ export default {
         this.data.stock_depletion = this.editedItem.stock_depletion;
         //this.data.branch_id = this.branch_id;
         axios
-          .post('https://testapi.simplifies.cl/api/productstore', this.data)
+          .post('https://api2.simplifies.cl/api/productstore', this.data)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.showAlert("success", "Producto asignado correctamente", 3000);
@@ -852,7 +852,7 @@ export default {
       LocalStorageService.setIsLocked(true);
             console.log('Entra aqui a reposicion');
             axios
-                .get('https://testapi.simplifies.cl/api/product-stock', {
+                .get('https://api2.simplifies.cl/api/product-stock', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -923,7 +923,7 @@ export default {
         this.selectedYear = currentYear;
         this.editedIndexMov = 1;
             axios
-                .get('https://testapi.simplifies.cl/api/move-products', {
+                .get('https://api2.simplifies.cl/api/move-products', {
                     params: {
                         branch_id: this.branch_id,
                         year: this.selectedYear,
@@ -949,7 +949,7 @@ export default {
               console.log('Mes seleccionado');
                 this.editedIndexMov = 2;
                 axios
-                    .get('https://testapi.simplifies.cl/api/move-products', {
+                    .get('https://api2.simplifies.cl/api/move-products', {
                         params: {
                             branch_id: this.branch_id,
                             year: this.selectedYear,

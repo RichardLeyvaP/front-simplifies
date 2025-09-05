@@ -249,7 +249,7 @@ export default {
       this.loadingRule = true;
       LocalStorageService.setIsLocked(true);
       axios
-        .get('https://testapi.simplifies.cl/api/rule')
+        .get('https://api2.simplifies.cl/api/rule')
         .then((response) => {
           console.log("entra a Buscar las reglas")
           this.results = response.data.rules;
@@ -277,7 +277,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('https://testapi.simplifies.cl/api/rule-destroy', request)
+        .post('https://api2.simplifies.cl/api/rule-destroy', request)
         .then(() => {
           LocalStorageService.setIsLocked(false);
           this.initialize();
@@ -313,7 +313,7 @@ export default {
         console.log('this.editedItem.automatic');
         console.log(this.editedItem.automatic);
         axios
-          .put('https://testapi.simplifies.cl/api/rule', this.data)
+          .put('https://api2.simplifies.cl/api/rule', this.data)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.initialize();
@@ -327,7 +327,7 @@ export default {
         //this.data.automatic = this.editedItem.automatic;
         console.log(this.editedItem.automatic);
         axios
-          .post('https://testapi.simplifies.cl/api/rule', this.data)
+          .post('https://api2.simplifies.cl/api/rule', this.data)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.initialize();

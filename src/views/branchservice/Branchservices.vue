@@ -44,7 +44,7 @@
                                                 v-if="!editando">
                                                 <template v-slot:item="{ props, item }">
                                                     <v-list-item v-bind="props"
-                                                        :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + item.raw.image_service"
+                                                        :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_service"
                                                         :subtitle="'Precio: ' + item.raw.price_service"
                                                         :title="item.raw.name"></v-list-item>
                                                 </template>
@@ -131,7 +131,7 @@
                 <template v-slot:item.name="{ item }">
 
                     <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                        <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_service"
+                        <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_service"
                             alt="image"></v-img>
                     </v-avatar>
                     {{ item.name }}
@@ -286,7 +286,7 @@ export default {
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         LocalStorageService.setIsLocked(true);
         axios
-            .get('https://testapi.simplifies.cl/api/show-business', {
+            .get('https://api2.simplifies.cl/api/show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -332,7 +332,7 @@ export default {
             this.loadingService = true;
             LocalStorageService.setIsLocked(true);
             axios
-                .get('https://testapi.simplifies.cl/api/professionalservice-show', {
+                .get('https://api2.simplifies.cl/api/professionalservice-show', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -347,7 +347,7 @@ export default {
         showAddService() {
             LocalStorageService.setIsLocked(true);
             axios
-                .get('https://testapi.simplifies.cl/api/branch-service-show', {
+                .get('https://api2.simplifies.cl/api/branch-service-show', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -404,7 +404,7 @@ export default {
             }
             
             /*axios
-                .post('https://testapi.simplifies.cl/api/branchservice-destroy', this.data)
+                .post('https://api2.simplifies.cl/api/branchservice-destroy', this.data)
                 .then(() => {
                     this.message_delete = true;
                 }).finally(() => {
@@ -467,7 +467,7 @@ export default {
                 this.data.service_id = this.editedItem.service_id;
                 this.data.ponderation = this.editedItem.ponderation;
                 axios
-                    .post('https://testapi.simplifies.cl/api/branchservice', this.data)
+                    .post('https://api2.simplifies.cl/api/branchservice', this.data)
                     .then(() => {
                     }).finally(() => {
                         LocalStorageService.setIsLocked(false);
@@ -481,7 +481,7 @@ export default {
                 this.data.service_id = this.editedItem.service_id;
                 this.data.ponderation = this.editedItem.ponderation;
                 axios
-                    .put('https://testapi.simplifies.cl/api/branchservice', this.data)
+                    .put('https://api2.simplifies.cl/api/branchservice', this.data)
                     .then(() => {
                     }).finally(() => {
                         LocalStorageService.setIsLocked(false);

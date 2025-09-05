@@ -1003,7 +1003,7 @@ export default {
      /* //this.reservationWeek = [40, 20, 12, 10, 35, 22, 0];
       this.editedIndex = 1;
       /*axios
-        .get('https://testapi.simplifies.cl/api/cars-winner-day', {
+        .get('https://api2.simplifies.cl/api/cars-winner-day', {
           params: {
             branch_id: this.branch_id,
             business_id: this.business_id
@@ -1014,7 +1014,7 @@ export default {
           console.log(this.amountDay);
         });*/
       /*axios
-        .get('https://testapi.simplifies.cl/api/car-products-services', {
+        .get('https://api2.simplifies.cl/api/car-products-services', {
           params: {
             branch_id: this.branch_id,
             business_id: this.business_id
@@ -1039,7 +1039,7 @@ export default {
           //console.log(this.services[0].services);
         });
       axios
-        .get('https://testapi.simplifies.cl/api/cars-winner-mounth', {
+        .get('https://api2.simplifies.cl/api/cars-winner-mounth', {
           params: {
             branch_id: this.branch_id,
             business_id: this.business_id
@@ -1053,7 +1053,7 @@ export default {
           console.log(this.amountMounth);
         });
       axios
-        .get('https://testapi.simplifies.cl/api/cars-winner-week', {
+        .get('https://api2.simplifies.cl/api/cars-winner-week', {
           params: {
             branch_id: this.branch_id,
             business_id: this.business_id
@@ -1064,7 +1064,7 @@ export default {
           console.log(this.winnerWeek);
         });
       axios
-        .get('https://testapi.simplifies.cl/api/reservations-count-week', {
+        .get('https://api2.simplifies.cl/api/reservations-count-week', {
           params: {
             branch_id: this.branch_id,
             business_id: this.business_id
@@ -1078,7 +1078,7 @@ export default {
         try {
     this.editedIndex = 1;
 
-    const responseProducts = await axios.get('https://testapi.simplifies.cl/api/car-products-services', {
+    const responseProducts = await axios.get('https://api2.simplifies.cl/api/car-products-services', {
       params: {
         branch_id: this.branch_id,
         business_id: this.business_id
@@ -1094,7 +1094,7 @@ export default {
     this.servicesDataAnt = this.services[0].servicesAnt;
     this.serviceCant = this.services[0].cant;
     this.serviceCantAnt = this.services[0].cantAnt;
-    const responseWeekWinner = await axios.get('https://testapi.simplifies.cl/api/cars-winner-week', {
+    const responseWeekWinner = await axios.get('https://api2.simplifies.cl/api/cars-winner-week', {
       params: {
         branch_id: this.branch_id,
         business_id: this.business_id
@@ -1102,7 +1102,7 @@ export default {
     });
     this.winnerWeek = responseWeekWinner.data;
 
-    const responseReservations = await axios.get('https://testapi.simplifies.cl/api/reservations-count-week', {
+    const responseReservations = await axios.get('https://api2.simplifies.cl/api/reservations-count-week', {
       params: {
         branch_id: this.branch_id,
         business_id: this.business_id
@@ -1111,7 +1111,7 @@ export default {
     this.reservationWeek = responseReservations.data.cantReservations;
     this.reservationWeekData = responseReservations.data.reservations;    
 
-    const responseMounth = await axios.get('https://testapi.simplifies.cl/api/cars-winner-mounth', {
+    const responseMounth = await axios.get('https://api2.simplifies.cl/api/cars-winner-mounth', {
       params: {
         branch_id: this.branch_id,
         business_id: this.business_id

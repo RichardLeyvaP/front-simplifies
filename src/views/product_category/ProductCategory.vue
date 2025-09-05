@@ -319,7 +319,7 @@ export default {
       this.loadingCategory = true;
       LocalStorageService.setIsLocked(true);
       /*axios
-        .get('https://testapi.simplifies.cl/api/product-category')
+        .get('https://api2.simplifies.cl/api/product-category')
         .then((response) => {
           console.log("entra a Buscar almacenes")
           this.results = response.data.productcategories;
@@ -365,7 +365,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('https://testapi.simplifies.cl/api/product-category-destroy', request)
+        .post('https://api2.simplifies.cl/api/product-category-destroy', request)
         .then(() => {
           LocalStorageService.setIsLocked(false);
           this.initialize();
@@ -401,7 +401,7 @@ export default {
         this.data.commission_rate = this.editedItem.commission_rate;
     
         axios
-          .put('https://testapi.simplifies.cl/api/product-category', this.data)
+          .put('https://api2.simplifies.cl/api/product-category', this.data)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.initialize();
@@ -441,7 +441,7 @@ export default {
         this.data.gives_commission = this.editedItem.gives_commission;
         this.data.commission_rate = this.editedItem.commission_rate;
       axios
-          .post('https://testapi.simplifies.cl/api/product-category', this.data)
+          .post('https://api2.simplifies.cl/api/product-category', this.data)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.initialize();

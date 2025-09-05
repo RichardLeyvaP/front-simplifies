@@ -464,7 +464,7 @@
                 <!--<template v-slot:item.name="{ item }">
 
                     <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                      <v-img :src="'https://testapi.simplifies.cl/api/images/'+item.image_url" alt="image"></v-img>
+                      <v-img :src="'https://api2.simplifies.cl/api/images/'+item.image_url" alt="image"></v-img>
                     </v-avatar>
                     {{ item.name+' '+item.surname+' '+item.second_surname}}
                   </template>-->
@@ -562,7 +562,7 @@
                 <!--<template v-slot:item.name="{ item }">
 
                     <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                      <v-img :src="'https://testapi.simplifies.cl/api/images/'+item.image_url" alt="image"></v-img>
+                      <v-img :src="'https://api2.simplifies.cl/api/images/'+item.image_url" alt="image"></v-img>
                     </v-avatar>
                     {{ item.name+' '+item.surname+' '+item.second_surname}}
                   </template>-->
@@ -1024,7 +1024,7 @@ export default {
     //console.log(this.editedItem.business_id);
     /*LocalStorageService.setIsLocked(true);
     axios
-      .get('https://testapi.simplifies.cl/api/business')
+      .get('https://api2.simplifies.cl/api/business')
       .then((response) => {
         this.business = response.data.business;
       }).finally(() => {
@@ -1150,7 +1150,7 @@ export default {
       this.loadingBranch = true;
       LocalStorageService.setIsLocked(true);
       axios
-        .get('https://testapi.simplifies.cl/api/branch-prueba')
+        .get('https://api2.simplifies.cl/api/branch-prueba')
         .then((response) => {
           // Filtra las sucursales si no es administrador
       if (this.charge !== "Administrador") {
@@ -1171,7 +1171,7 @@ export default {
     showAddBranch() {
       LocalStorageService.setIsLocked(true);
       axios
-        .get('https://testapi.simplifies.cl/api/business-type')
+        .get('https://api2.simplifies.cl/api/business-type')
         .then((response) => {
           this.businessTypes = response.data.businessTypes;
         }).finally(() => {
@@ -1204,7 +1204,7 @@ export default {
       };
       LocalStorageService.setIsLocked(true);
       /*axios
-        .get('https://testapi.simplifies.cl/api/business-type')
+        .get('https://api2.simplifies.cl/api/business-type')
         .then((response) => {
           this.businessTypes = response.data.businessTypes;
         }).finally(() => {
@@ -1246,7 +1246,7 @@ export default {
         id: this.editedItem.id
       };
       axios
-        .post('https://testapi.simplifies.cl/api/branch-destroy', request)
+        .post('https://api2.simplifies.cl/api/branch-destroy', request)
         .then(() => {
           this.initialize();
           this.showAlert("success", "Sucursal eliminada correctamente", 3000)
@@ -1312,7 +1312,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios
-          .post('https://testapi.simplifies.cl/api/branch-update', formData)
+          .post('https://api2.simplifies.cl/api/branch-update', formData)
           .then(() => {
             this.file = null;
             this.imgMiniatura = '';
@@ -1333,7 +1333,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         axios
-          .post('https://testapi.simplifies.cl/api/branch', formData)
+          .post('https://api2.simplifies.cl/api/branch', formData)
           .then(() => {
             this.file = null;
             this.imgMiniatura = '';
@@ -1352,7 +1352,7 @@ export default {
       this.branch_id = item.id;
       console.log(item.id);
       /*axios
-        .get('https://testapi.simplifies.cl/api/branch-professionals', {
+        .get('https://api2.simplifies.cl/api/branch-professionals', {
           params: {
             branch_id: item.id
           }
@@ -1384,7 +1384,7 @@ export default {
       LocalStorageService.setIsLocked(true);
       this.editedIndexP = -1;
       /*axios
-        .get('https://testapi.simplifies.cl/api/professional-show-autocomplete-Notin', {
+        .get('https://api2.simplifies.cl/api/professional-show-autocomplete-Notin', {
           params: {
             branch_id: this.branchSelect.id
           }
@@ -1415,7 +1415,7 @@ export default {
       console.log('Professional');
       console.log(item);
       /*axios
-        .get('https://testapi.simplifies.cl/api/professional-show-autocomplete-Notin', {
+        .get('https://api2.simplifies.cl/api/professional-show-autocomplete-Notin', {
           params: {
             branch_id: this.branchSelect.id
           }
@@ -1458,7 +1458,7 @@ export default {
       this.branch_id = item.id;
       console.log(item.id);
       axios
-        .get('https://testapi.simplifies.cl/api/branchstore-show', {
+        .get('https://api2.simplifies.cl/api/branchstore-show', {
           params: {
             branch_id: item.id
           }
@@ -1475,7 +1475,7 @@ export default {
     showAddStores() {
       LocalStorageService.setIsLocked(true);
       axios
-        .get('https://testapi.simplifies.cl/api/branchstore-show-notInt', {
+        .get('https://api2.simplifies.cl/api/branchstore-show-notInt', {
           params: {
             branch_id: this.branchSelect.id
           }
@@ -1505,7 +1505,7 @@ export default {
         this.data.tier3_min_sales = this.editedItem.tier3_min_sales ? this.editedItem.tier3_min_sales : 0;
         this.data.tier3_commission_rate = this.editedItem.tier3_commission_rate ? this.editedItem.tier3_commission_rate : 0;
         /*axios
-          .put('https://testapi.simplifies.cl/api/branchprofessional', this.data)
+          .put('https://api2.simplifies.cl/api/branchprofessional', this.data)
           .then(() => {
             this.$nextTick(() => {
               this.editedItem = Object.assign({}, this.defaultItem)
@@ -1587,7 +1587,7 @@ export default {
         this.data.tier3_min_sales = this.editedItem.tier3_min_sales ? this.editedItem.tier3_min_sales : 0;
         this.data.tier3_commission_rate = this.editedItem.tier3_commission_rate ? this.editedItem.tier3_commission_rate : 0;
         /*axios
-          .post('https://testapi.simplifies.cl/api/branchprofessional', this.data)
+          .post('https://api2.simplifies.cl/api/branchprofessional', this.data)
           .then(() => {
             this.$nextTick(() => {
               this.editedItem = Object.assign({}, this.defaultItem)
@@ -1657,7 +1657,7 @@ export default {
         this.data.branch_id = this.branch_id;
       this.data.store_id = this.editedItem.store_id;
       axios
-        .post('https://testapi.simplifies.cl/api/branchstore', this.data)
+        .post('https://api2.simplifies.cl/api/branchstore', this.data)
         .then(() => {
           this.dialogAddStore = false;
         }).finally(() => {
@@ -1686,7 +1686,7 @@ export default {
         professional_id: this.editedItem.professional_id
       };
       axios
-        .post('https://testapi.simplifies.cl/api/branchprofessional-destroy', request)
+        .post('https://api2.simplifies.cl/api/branchprofessional-destroy', request)
         .then(() => {
           this.dialogRequest = false;
         }).finally(() => {
@@ -1705,7 +1705,7 @@ export default {
         store_id: this.editedItem.store_id
       };
       axios
-        .post('https://testapi.simplifies.cl/api/branchstore-destroy', request)
+        .post('https://api2.simplifies.cl/api/branchstore-destroy', request)
         .then(() => {
           this.dialogRequestStore = false
         }).finally(() => {
@@ -1738,7 +1738,7 @@ export default {
       this.branchSelect = item;
       this.branch_id = item.id;
       axios
-        .get('https://testapi.simplifies.cl/api/associate-branch', {
+        .get('https://api2.simplifies.cl/api/associate-branch', {
           params: {
             branch_id: item.id
           }
@@ -1755,7 +1755,7 @@ export default {
     showAddAssociates() {
       LocalStorageService.setIsLocked(true);
       axios
-        .get('https://testapi.simplifies.cl/api/associated-show', {
+        .get('https://api2.simplifies.cl/api/associated-show', {
           params: {
             branch_id: this.branchSelect.id
           }
@@ -1778,7 +1778,7 @@ export default {
         this.data.branch_id = this.branch_id;
       this.data.associated_id = this.associated_id;
       axios
-        .post('https://testapi.simplifies.cl/api/associate-branch', this.data)
+        .post('https://api2.simplifies.cl/api/associate-branch', this.data)
         .then(() => {
           this.dialogAddAssociate = false;
         }).finally(() => {
@@ -1805,7 +1805,7 @@ export default {
         associated_id: this.associated_id
       };
       axios
-        .post('https://testapi.simplifies.cl/api/associate-branch-destroy', request)
+        .post('https://api2.simplifies.cl/api/associate-branch-destroy', request)
         .then(() => {
           this.dialogRequestAssociate = false
         }).finally(() => {
@@ -1822,7 +1822,7 @@ export default {
       //this.branchSelect = item;
       this.editedIndexWin = -1;
       axios
-        .get('https://testapi.simplifies.cl/api/branch_winner_icon', {
+        .get('https://api2.simplifies.cl/api/branch_winner_icon', {
           params: {
             branch_id: this.branch_id
           }
@@ -1856,7 +1856,7 @@ export default {
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       axios
-        .get('https://testapi.simplifies.cl/api/branch_winner_icon', {
+        .get('https://api2.simplifies.cl/api/branch_winner_icon', {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,

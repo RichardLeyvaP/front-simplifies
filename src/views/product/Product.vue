@@ -270,7 +270,7 @@
                       loading-text="Cargando datos...">
                       <template v-slot:item.name="{ item }">
                         <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                          <v-img :src="'https://testapi.simplifies.cl/api/images/' + item.image_product
+                          <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product
                             " alt="image"></v-img>
                         </v-avatar>
                         {{ item.name }}
@@ -503,7 +503,7 @@ export default {
           this.mostrarFila = true;
     }
     /*axios
-      .get("https://testapi.simplifies.cl/api/product-category")
+      .get("https://api2.simplifies.cl/api/product-category")
       .then((response) => {
         this.productCategories = response.data.productcategories;
       })
@@ -583,7 +583,7 @@ export default {
     initialize() {
       this.loading = true;
       LocalStorageService.setIsLocked(true);
-      axios.get("https://testapi.simplifies.cl/api/product").then((response) => {
+      axios.get("https://api2.simplifies.cl/api/product").then((response) => {
         this.results = response.data.products;
       }).finally(() => {  
         LocalStorageService.setIsLocked(false);      
@@ -682,7 +682,7 @@ export default {
       let request = {
         id: this.editedItem.id,
       };
-      axios.post("https://testapi.simplifies.cl/api/product-destroy", request).then(() => {
+      axios.post("https://api2.simplifies.cl/api/product-destroy", request).then(() => {
         LocalStorageService.setIsLocked(false);
         this.initialize();
         this.message_delete = true;
@@ -720,7 +720,7 @@ export default {
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
         }
-        axios.post("https://testapi.simplifies.cl/api/product-update", formData).then(() => {
+        axios.post("https://api2.simplifies.cl/api/product-update", formData).then(() => {
           LocalStorageService.setIsLocked(false);
           this.initialize();
           this.showAlert("success", "Producto editado correctamente", 3000);
@@ -734,7 +734,7 @@ export default {
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
         }
-        axios.post("https://testapi.simplifies.cl/api/product", formData).then(() => {
+        axios.post("https://api2.simplifies.cl/api/product", formData).then(() => {
           LocalStorageService.setIsLocked(false);
           this.initialize();
           this.showAlert("success", "Producto registrado correctamente", 3000);
@@ -753,7 +753,7 @@ export default {
       console.log('Entra aqui a mejores aisitencias');
       this.editedIndex1 = 1;
       axios
-        .get('https://testapi.simplifies.cl/api/product-mostSold', {
+        .get('https://api2.simplifies.cl/api/product-mostSold', {
           params: {
             branch_id: this.branch_id
           }
@@ -779,7 +779,7 @@ export default {
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       axios
-        .get('https://testapi.simplifies.cl/api/product-mostSold-periodo', {
+        .get('https://api2.simplifies.cl/api/product-mostSold-periodo', {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,

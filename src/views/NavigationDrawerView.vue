@@ -3,7 +3,7 @@
   <v-card style="height: 100%; display: flex; flex-direction: column;">
         <template v-slot:prepend>
           <v-list-item color="black" class="text-subtitle-1" lines="two" variant="flat"
-          :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + this.imageBusiness" :title="this.titulo" :subtitle="this.subtitle">
+          :prepend-avatar="'https://api2.simplifies.cl/api/images/' + this.imageBusiness" :title="this.titulo" :subtitle="this.subtitle">
           </v-list-item>
         </template>
 

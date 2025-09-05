@@ -42,7 +42,7 @@
     <v-menu activator="#menu-activator">
       <v-list>
         <v-list-item v-for="item in results" :key="item.id"
-          :prepend-avatar="'https://testapi.simplifies.cl/api/images/' + item.image_url" @click="handleItemClickNotif(item)">
+          :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.image_url" @click="handleItemClickNotif(item)">
           <div class="d-flex align-center justify-space-between w-100"> <!-- Contenedor flex -->
             <v-list-item-title class="mr-2" :class="{ 'highlight': item.state2 === 2, 'accent': item.state !== 2 }">{{
               item.tittle }}</v-list-item-title>
@@ -291,7 +291,7 @@ export default {
         charge: this.charge
       };
       axios
-        .put('https://testapi.simplifies.cl/api/notification3', request)
+        .put('https://api2.simplifies.cl/api/notification3', request)
         .then(() => {
           //this.initialize();
         }).finally(() => {
@@ -314,7 +314,7 @@ export default {
           charge: this.charge
         };
         axios
-          .put('https://testapi.simplifies.cl/api/notification-charge', request)
+          .put('https://api2.simplifies.cl/api/notification-charge', request)
           .then(() => {
             //this.initialize();
           }).finally(() => {
@@ -346,7 +346,7 @@ export default {
     shangePassword() {
       this.loading = true;
       axios
-        .get('https://testapi.simplifies.cl/api/change_password', {
+        .get('https://api2.simplifies.cl/api/change_password', {
           params: {
             id: this.user_id,
             password: this.confirmPassword,
@@ -372,7 +372,7 @@ export default {
         const token = LocalStorageService.getItem('token');
         console.log('Cerrar Sesión')
         axios
-          .get('https://testapi.simplifies.cl/api/logout', {
+          .get('https://api2.simplifies.cl/api/logout', {
             headers: {
               'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
             }
@@ -384,7 +384,7 @@ export default {
       if (item.title === 'Mi Perfil') {
         console.log('Mi Perfil')
         axios
-          .get('https://testapi.simplifies.cl/api/professional-show', {
+          .get('https://api2.simplifies.cl/api/professional-show', {
             params: {
               id: this.professional_id,
             }
@@ -416,7 +416,7 @@ export default {
       console.log('Este es el token Bearer');
       console.log(`Bearer ${token}`);
       axios
-        .get('https://testapi.simplifies.cl/api/notification-professional-web', {
+        .get('https://api2.simplifies.cl/api/notification-professional-web', {
           /*headers: {
                 'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
             },*/
