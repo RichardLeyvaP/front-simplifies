@@ -726,7 +726,7 @@
                   density="compact" hide-details></v-select>
               </v-col>-->
                   <v-col cols="12" md="1">
-                    <v-btn :disabled="!this.professional_idR" icon @click="showReservationsProfessional()"
+                    <v-btn :disabled="!this.professional_id" icon @click="showReservationsProfessional()"
                       color="#F18254">
                       <v-icon>mdi-magnify</v-icon></v-btn>
                   </v-col>

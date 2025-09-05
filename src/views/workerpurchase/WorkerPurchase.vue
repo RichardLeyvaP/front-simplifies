@@ -299,7 +299,7 @@ export default {
       const month = String(today.getMonth() + 1).padStart(2, '0'); // Meses son 0-11
       const day = String(today.getDate()).padStart(2, '0');
 
-      const formattedDate = `${year}-${month}-${day}`; // Formato "YYYY-MM-DD"
+      const formattedDate = this.date ? this.date : `${year}-${month}-${day}`; // Formato "YYYY-MM-DD"
       const requestParams = {
         branch_id: this.branch_id,
         data: formattedDate,

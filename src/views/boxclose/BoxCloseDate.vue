@@ -63,7 +63,7 @@
               loading-text="Cargando datos...">
               <template v-slot:item.professionalName="{ item }">
                 <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                  <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_url}?t=${Date.now()}`" alt="image"></v-img>
+                  <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_url}`" alt="image"></v-img>
                 </v-avatar>
                 {{ item.professionalName }}
               </template>
@@ -71,7 +71,7 @@
               <template v-slot:item.clientName="{ item }">
 
                 <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                  <v-img :src="`${this.$axios.defaults.baseURL}images/${item.client_image}?t=${Date.now()}`" alt="image"></v-img>
+                  <v-img :src="`${this.$axios.defaults.baseURL}images/${item.client_image}`" alt="image"></v-img>
                 </v-avatar>
                 {{ item.clientName }}
               </template>
@@ -314,8 +314,13 @@ export default {
     },
     dateFormatted() {
       const date = this.input ? new Date(this.input) : new Date();
-      return date.toISOString().split('T')[0]
-      //return `${year}-${month}-${day}`;
+
+      return date.toLocaleDateString('es-CL', {
+        timeZone: 'America/Santiago',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }).split('-').reverse().join('-'); // Convierte DD-MM-YYYY → YYYY-MM-DD
     },
     getDate() {
       return this.input ? new Date(this.input).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
@@ -448,13 +453,12 @@ export default {
 
     async initialize() {
       this.loadingrules = true;
-      const today = new Date();
-      const formattedDate = today.toLocaleDateString('es-CL', {
-          timeZone: 'America/Santiago',
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit'
-      }).split('-').reverse().join('-'); // Convierte "DD-MM-YYYY" a "YYYY-MM-DD"
+      const formattedDate = this.date || new Date().toLocaleDateString('es-CL', {
+      timeZone: 'America/Santiago',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).split('-').reverse().join('-');
 
       const requestParams = {
         branch_id: this.branch_id,
