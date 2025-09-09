@@ -30,10 +30,10 @@
                         prepend-icon="mdi-trending-up" @click="showMove">
                         Movimiento
                     </v-btn>
-                    <v-btn class="text-subtitle-1 ml-1" color="#E7E9E9" variant="flat" elevation="2"
-                prepend-icon="mdi-plus-circle" @click="showAdd">
-                Asignar Productos
-              </v-btn>
+                    <v-btn v-if="hasPermission('view_asigned_product')" class="text-subtitle-1 ml-1" color="#E7E9E9" variant="flat" elevation="2"
+                    prepend-icon="mdi-plus-circle" @click="showAdd">
+                    Asignar Productos
+                  </v-btn>
           
         </v-col>
 
@@ -373,7 +373,7 @@ export default {
     professional_id: '',
     message_delete: true,
     dialogDelete: false,
-    permissionUser: '',
+    permissionsUser: '',
     groupBy: [
       {
         key: 'direccionStore',
