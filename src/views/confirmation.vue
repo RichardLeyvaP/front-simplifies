@@ -33,19 +33,6 @@
 import axios from 'axios';
 export default {
   name: "ConfirmationPage",
-  /*mounted() {
-    // Configurar Axios para incluir el referer en todas las solicitudes
-    axios.defaults.headers.common['referer'] = 'http://localhost:3000/reserv';
-
-    // Realizar una solicitud de ejemplo
-    axios.get('https://localhost:3000/api/reserv/confirmation')
-      .then(response => {
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.error('Error:', error.response.data);
-      });
-  },*/
   methods: {
     handleBackToHome() {
         window.location.href = 'https://landingbh.simplifies.cl/';

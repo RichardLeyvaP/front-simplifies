@@ -55,28 +55,6 @@
                           prepend-icon="mdi-account-tie-outline" variant="underlined" :rules="nameRules">
                         </v-text-field>
                       </v-col>
-                      <!--<v-col cols="12" md="6">
-                        <v-text-field
-                          v-model="editedItem.surname"
-                          clearable
-                          label="Primer Apellido"
-                          prepend-icon="mdi-account-tie-outline"
-                          variant="underlined"
-                          :rules="nameRules"
-                        >
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="12" md="6">
-                        <v-text-field
-                          v-model="editedItem.second_surname"
-                          clearable
-                          label="Segundo Apellido"
-                          prepend-icon="mdi-account-tie-outline"
-                          variant="underlined"
-                          :rules="nameRules"
-                        >
-                        </v-text-field>
-                      </v-col>-->
                       <v-col cols="12" md="6">
                         <v-text-field v-model="editedItem.email" clearable label="Correo Electrónico"
                           prepend-icon="mdi-email-outline" variant="underlined" :rules="emailRules"
@@ -230,21 +208,11 @@
             </template>
             <template v-slot:item.name="{ item }">
               <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img><!--+ '?$' + Date.now()
-                -->
+                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
               </v-avatar>
               {{ item.name }}
             </template>
             <template v-slot:item.actions="{ item }">
-              <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
-            mdi-pencil
-          </v-icon>
-          <v-icon size="25" color="green" class="me-2" @click="changePass(item)">
-            mdi-lock-reset
-          </v-icon>
-          <v-icon size="25" color="red" @click="deleteItem(item)">
-            mdi-delete
-          </v-icon>-->
               <v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary" variant="tonal"
                 elevation="1" class="mr-1 mt-1 mb-1" title="Editar Profesional"></v-btn>
               <v-btn density="comfortable" icon="mdi-calendar-blank" @click="showFreeday(item)" color="green"
@@ -253,18 +221,6 @@
                 elevation="1" class="mr-1 mt-1 mb-1" title="Modificar contraseña"></v-btn>
               <v-btn density="comfortable" icon="mdi-timer-off" @click="showLater(item)" color="orange" variant="tonal"
                 elevation="1" class="mr-1 mt-1 mb-1" title="Legadas tardes por sucursal"></v-btn>
-              <!--<v-btn density="comfortable" icon="mdi-gavel" @click="showRules(item)" color="blue" variant="tonal"
-              elevation="1" class="mr-1 mt-1 mb-1" title="Reglas de Convivencias"></v-btn>-->
-              <!--<v-btn
-              density="comfortable"
-              icon="mdi-clipboard-text"
-              @click="chargeData(item)"
-              color="teal"
-              variant="tonal"
-              elevation="1"
-              class="mr-1 mt-1 mb-1"
-              title="Ver Reservaciones"
-            ></v-btn>-->
               <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4"
                 variant="tonal" elevation="1" title="Eliminar Profesional"></v-btn>
             </template>
@@ -282,18 +238,6 @@
                   <strong>Monto generado por Profesionales</strong></span>
               </v-col>
               <v-spacer></v-spacer>
-              <!--<v-col cols="12" md="3">
-                <v-btn
-                  class="text-subtitle-1 ml-12"
-                  color="#E7E9E9"
-                  variant="flat"
-                  elevation="2"
-                  prepend-icon="mdi-file-excel"
-                  @click="exportToExcel"
-                >
-                  Exportar a Excel
-                </v-btn>
-              </v-col>-->
             </v-row>
           </v-toolbar>
           <v-container fluid>
@@ -332,7 +276,7 @@
                 <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
                   v-if="this.mostrarFila" clearable label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
                   item-title="name" item-value="id"
-                  variant="outlined"></v-autocomplete><!-- @update:model-value="initialize()">-->
+                  variant="outlined"></v-autocomplete>
               </v-col>
               <v-col cols="12" md="1">
                 <v-btn icon @click="updateDate2" color="#F18254">
@@ -350,7 +294,7 @@
                     <v-data-table :headers="headers1" :items-per-page-text="'Elementos por páginas'" :items="winner"
                       :search="search2" class="elevation-2" no-results-text="No hay datos disponibles"
                       no-data-text="No hay datos disponibles" :loading="loadingGenerate"
-                      loading-text="Cargando datos..."><!--:group-by="groupBy"-->
+                      loading-text="Cargando datos...">
                       <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
                         <tr>
                           <td :colspan="columns.length">
@@ -402,8 +346,7 @@
                       </template>
                       <template v-slot:item.name="{ item }">
                         <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                          <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img><!--+ '?$' + Date.now()
-                          -->
+                          <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
                         </v-avatar>
                         {{ item.name }}
                       </template>
@@ -475,7 +418,7 @@
                 <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
                   v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
                   item-title="name" item-value="id"
-                  variant="outlined"></v-autocomplete><!--@update:model-value="initialize()"-->
+                  variant="outlined"></v-autocomplete>
               </v-col>
               <v-col cols="12" md="1">
                 <v-btn icon @click="updateDate3" color="#F18254">
@@ -540,7 +483,7 @@
                   <v-locale-provider locale="es">
                     <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
                       :modelValue="getDate2" format="yyyy-MM-dd" :min="dateFormatted"
-                      @update:model-value="updateDate1"></v-date-picker><!--@update:model-value="updateDate2"-->
+                      @update:model-value="updateDate1"></v-date-picker>
                   </v-locale-provider>
                 </v-menu>
               </v-col>
@@ -548,7 +491,7 @@
                 <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
                   v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
                   item-title="name" item-value="id"
-                  variant="outlined"></v-autocomplete><!--@update:model-value="onBranchChange"-->
+                  variant="outlined"></v-autocomplete>
               </v-col>
               <v-col cols="12" md="1">
                 <v-btn icon @click="updateDate5" color="#F18254">
@@ -556,7 +499,7 @@
               </v-col>
               <v-col cols="12" md="12">
                 <v-card elevation="2">
-                  <v-tabs v-model="tabBar" color="rgb(241, 130, 84)" elevation="6"><!-- @click="handleTabChange"-->
+                  <v-tabs v-model="tabBar" color="rgb(241, 130, 84)" elevation="6">
                     <v-tab value="one">Llegadas tardes por profesional</v-tab>
                     <v-tab value="two">Mejores asistencias por profesional</v-tab>
                   </v-tabs>
@@ -707,13 +650,13 @@
                     <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
                       v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
                       item-title="name" item-value="id" density="compact" class="ma-2" variant="outlined"
-                      @update:model-value="showReservations()"></v-autocomplete><!--@update:model-value="initialize()"-->
+                      @update:model-value="showReservations()"></v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="3">
                     <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id"
                       :items="professionals" label="Profesional" prepend-inner-icon="mdi-account-tie-outline"
                       item-title="name" item-value="id" variant="outlined" density="compact" class="ma-2"
-                      :rules="selectRules"><!--@update:model-value="showReservationsProfessional()"-->
+                      :rules="selectRules">
                       <template v-slot:item="{ props, item }">
                         <v-list-item v-bind="props"
                           :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_url"
@@ -721,10 +664,6 @@
                       </template>
                     </v-autocomplete>
                   </v-col>
-                  <!--<v-col cols="12" md="3">
-                <v-select v-model="type" :items="types" class="ma-2" label="Modo de vista" variant="outlined"
-                  density="compact" hide-details></v-select>
-              </v-col>-->
                   <v-col cols="12" md="1">
                     <v-btn :disabled="!this.professional_id" icon @click="showReservationsProfessional()"
                       color="#F18254">
@@ -808,7 +747,7 @@
                 <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
                   v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
                   item-title="name" item-value="id" variant="outlined"
-                  @update:model-value="initialize()"></v-autocomplete><!--@update:model-value="initialize()"-->
+                  @update:model-value="initialize()"></v-autocomplete>
               </v-col>
               <v-col cols="12" sm="12" md="3">
                 <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id"
@@ -818,7 +757,7 @@
                     <v-list-item v-bind="props" :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_url"
                       :title="item.raw.name"></v-list-item>
                   </template>
-                </v-autocomplete><!--@update:model-value="initialize()"-->
+                </v-autocomplete>
               </v-col>
               <v-col cols="12" md="1">
                 <v-btn icon @click="updateDate8" color="#F18254" :disabled="!this.professional_id">
@@ -1027,18 +966,11 @@ export default {
       { title: "Renta", key: "renta", sortable: true },
       { title: "Total", key: "total", sortable: true },
     ],
-    /*groupBy: [
-      {
-        key: "name",
-      },
-    ],*/
     //laters
     dialogLater: false,
     laters: [],
     charge: "",
     headers2: [
-      /*{ title: 'Profesional', key: 'name', sortable: false },
-      { title: 'Monto', key: 'amount', sortable: false },*/
       { title: "Hora de entrada", key: "start_time", sortable: false },
       { title: "Hora de salida", key: "end_time", sortable: false },
     ],
@@ -1274,11 +1206,6 @@ export default {
   },
 
   methods: {
-    /*getMonthDateRange(date) {
-      const start = new Date(date.getFullYear(), date.getMonth(), 1);
-      const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-      return { start, end };
-    },*/
     getMonthDateRange(date) {
   if (!date || !(date instanceof Date)) {
     date = new Date(); // Fallback a fecha actual
@@ -1290,8 +1217,6 @@ export default {
   return { start, end };
 },
 onCalendarMonthChange(newDate) {
-  console.log('newDate', newDate);
-  
   // Asegurarnos que newDate es un array con al menos una fecha válida
   const safeDate = Array.isArray(newDate) && newDate.length > 0 
     ? newDate[0] 
@@ -1299,13 +1224,6 @@ onCalendarMonthChange(newDate) {
   
   // Actualizar el valor reactivo
   this.value = [safeDate];
-  
-  console.log('Mes seleccionado:', 
-    safeDate.getMonth() + 1, // Mes (1-12)
-    'Año:', 
-    safeDate.getFullYear()
-  );
-  
   // Opcional: cargar automáticamente las reservaciones si hay un profesional seleccionado
   if (this.professional_idR) {
     this.showReservationsProfessional();
@@ -1365,7 +1283,6 @@ onCalendarMonthChange(newDate) {
     },
     shangePassword() {
       LocalStorageService.setIsLocked(true);
-      console.log(this.editedItem.user_id);
       this.loadingRules = true;
       axios
         .get("https://api2.simplifies.cl/api/change_password", {
@@ -1376,7 +1293,6 @@ onCalendarMonthChange(newDate) {
         })
         .then((response) => {
           LocalStorageService.setIsLocked(false);
-          console.log(response);
           this.showAlert("success", "Contraseña modificada correctamente", 3000);
           this.confirmPassword = "";
           this.confirmNewPassword = "";
@@ -1441,7 +1357,6 @@ onCalendarMonthChange(newDate) {
     onFileSelected(event) {
       let file = event.target.files[0];
       this.editedItem.image_url = file;
-      console.log(this.editedItem.image_url);
       this.cargarImage(file);
     },
     cargarImage(file) {
@@ -1479,8 +1394,6 @@ onCalendarMonthChange(newDate) {
     },
     changePass(item) {
       this.editedItem = Object.assign({}, item);
-      console.log("this.editedItem");
-      console.log(this.editedItem);
       this.showPasswordForm = true;
     },
     chargeData(item) {//aqui cargo el componente del calendar
@@ -1493,28 +1406,14 @@ onCalendarMonthChange(newDate) {
       this.professional_id = '';
       this.type = 'month';
       this.events = [];
-      console.log('this.today');
-      console.log(this.today);
           const selectedDate = Array.isArray(this.value) && this.value.length > 0 
     ? this.value[0] 
     : new Date();
   
-  console.log('Consultando reservaciones para:', selectedDate);
-  
   const range = this.getMonthDateRange(selectedDate);
   const startDate = range.start.toISOString().split('T')[0];
   const endDate = range.end.toISOString().split('T')[0];
-      /*const today = new Date(this.today);
-      const range = this.getMonthDateRange(today);
-      const startDate = range.start.toISOString().split('T')[0];
-      const endDate = range.end.toISOString().split('T')[0];*/
-      /*const startDate = this.input
-        ? format(this.input, "yyyy-MM-dd")
-        : format(new Date(), "yyyy-MM-dd");
-      const endDate = this.input2
-        ? format(this.input2, "yyyy-MM-dd")
-        : format(new Date(), "yyyy-MM-dd");*/
-        LocalStorageService.setIsLocked(true);
+    LocalStorageService.setIsLocked(true);
       axios
         .get("https://api2.simplifies.cl/api/branch-reservations-periodo", {
           params: {
@@ -1533,18 +1432,10 @@ onCalendarMonthChange(newDate) {
     showReservationsProfessional() {//aqui cargo el componente del calendar  
       LocalStorageService.setIsLocked(true);      
       this.events = [];
-      console.log('this.today');
-      console.log(this.today);
-      /*const today = new Date(this.today);
-      const range = this.getMonthDateRange(today);
-      const startDate = range.start.toISOString().split('T')[0];
-      const endDate = range.end.toISOString().split('T')[0];*/
           const selectedDate = Array.isArray(this.value) && this.value.length > 0 
     ? this.value[0] 
     : new Date();
-  
-  console.log('Consultando reservaciones para:', selectedDate);
-  
+ 
   const range = this.getMonthDateRange(selectedDate);
   const startDate = range.start.toISOString().split('T')[0];
   const endDate = range.end.toISOString().split('T')[0];
@@ -1559,11 +1450,7 @@ onCalendarMonthChange(newDate) {
         })
         .then((response) => {
           this.reservations = response.data.reservaciones;
-          console.log('Reservaciones');
-          console.log(this.reservations);
           let tempEvents = [];
-
-
           this.reservations.forEach(reservacion => {
             tempEvents.push({
               title: reservacion.clientName,
@@ -1626,15 +1513,6 @@ onCalendarMonthChange(newDate) {
       LocalStorageService.setIsLocked(true);
       if (this.editedIndex > -1) {
         this.valid = false;
-        /*this.data.id = this.editedItem.id;
-        this.data.name = this.editedItem.name;
-        this.data.surname = this.editedItem.surname;
-        this.data.second_surname = this.editedItem.second_surname;
-        this.data.email = this.editedItem.email;
-        this.data.phone = this.editedItem.phone;
-        this.data.user_id = this.editedItem.user_id;
-        this.data.charge_id = this.editedItem.charge_id;
-        this.data.state = this.editedItem.state;*/
         const formData = new FormData();
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
@@ -1657,15 +1535,6 @@ onCalendarMonthChange(newDate) {
           });
       } else {
         this.valid = false;
-        /*this.data.name = this.editedItem.name;
-        this.data.name = this.editedItem.name;
-        this.data.surname = this.editedItem.surname;
-        this.data.second_surname = this.editedItem.second_surname;
-        this.data.email = this.editedItem.email;
-        this.data.phone = this.editedItem.phone;        
-        this.data.user_id = this.editedItem.user_id;        
-        this.data.charge_id = this.editedItem.charge_id;
-        this.data.state = this.editedItem.state;*/
         const formData = new FormData();
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
@@ -1680,7 +1549,6 @@ onCalendarMonthChange(newDate) {
             this.file = null;
           })
           .catch((error) => {
-            console.log(error.response);
             if (error.response.status === 400) {
               this.showAlert("warning", "Usuario ya existe", 3000);
             } else if (error.response.status === 401) {
@@ -1934,7 +1802,6 @@ onCalendarMonthChange(newDate) {
       this.loadingAsistLate = true;
       this.loadingAsist = true;
       LocalStorageService.setIsLocked(true);
-      console.log("Entra aqui a mejores aisitencias del periodo");
       //this.input2 = val;
       this.editedIndexAsist1 = 2;
       this.editedIndexAsist2 = 2;
@@ -1944,8 +1811,6 @@ onCalendarMonthChange(newDate) {
       const endDate = this.input2
         ? format(this.input2, "yyyy-MM-dd")
         : format(new Date(), "yyyy-MM-dd");
-      console.log(startDate);
-      console.log(endDate);
       axios
         .get("https://api2.simplifies.cl/api/arriving-branch-periodo", {
           params: {
@@ -1978,8 +1843,6 @@ onCalendarMonthChange(newDate) {
         })
         .then((response) => {
           this.freedays = response.data.Schedules
-          console.log('this.freedays dias de descanso');
-          console.log(this.freedays);
         })
         .finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -2011,14 +1874,7 @@ onCalendarMonthChange(newDate) {
         professional_id: this.professional_id,
         schedule: updatedData,
       };
-      /*const updatedData = this.dias.map(dia => ({
-                day: dia.nombre,
-                start_time: dia.entradaHora + ':' + dia.entradaMinuto,
-                closing_time: dia.salidaHora + ':' + dia.salidaMinuto,
-            }));*/
-      console.log("request");
-      console.log(request);
-      axios
+       axios
         .put("https://api2.simplifies.cl/api/restday", request)
         .then(() => {
           this.showAlert("success", "Días de descanso actualizado correctamente", 3000);
@@ -2046,36 +1902,8 @@ onCalendarMonthChange(newDate) {
       this.professional_id = ''; 
       this.rules = []; 
       this.dialogRules = true;
-      /*this.professional_id = item.id;
-      this.editedIndexLater = -1;
-      this.loadingRules = true;
-      LocalStorageService.setIsLocked(true);
-      const startDate = this.input6
-        ? format(this.input6, "yyyy-MM-dd")
-        : format(new Date(), "yyyy-MM-dd");
-      const endDate = this.input7
-        ? format(this.input7, "yyyy-MM-dd")
-        : format(new Date(), "yyyy-MM-dd");
-      axios
-        .get("https://api2.simplifies.cl/api/branch-rule-professional-periodo", {
-          params: {
-            branch_id: this.branch_id,
-            professional_id: this.professional_id,
-            startDate: startDate,
-            endDate: endDate,
-          },
-        })
-        .then((response) => {
-          LocalStorageService.setIsLocked(false);
-          this.rules = response.data;
-        }).finally(()=>{
-      this.dialogRules = true;
-          this.loadingRules = false;
-        });*/
     },
     updateDate8() {
-      //this.professional_id = this.professional_d;
-      console.log('Professional_id:'+this.professional_id);
       this.editedIndexRules = 1;
       this.loadingRules = true;
       LocalStorageService.setIsLocked(true);

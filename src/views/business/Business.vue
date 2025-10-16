@@ -169,7 +169,7 @@
 
         <v-avatar class="mr-1" elevation="3" color="grey-lighten-4" size="large">
           <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
-        </v-avatar><!--+'?$'+Date.now()-->
+        </v-avatar>
         {{ item.name }}
         </template>
       </v-data-table>
@@ -522,13 +522,10 @@ export default {
   computed: {
     formattedStartDate() {
       if (this.editedItem.start_date) {
-        console.log('this.editedItem.startDate datos');
-        console.log(this.editedItem.start_date);
         const date = new Date(this.editedItem.start_date);
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, "0");
         const day = String(date.getDate()).padStart(2, "0");
-        console.log(`${year}-${month}-${day}`);
 
         return `${year}-${month}-${day}`;
       }
@@ -537,13 +534,10 @@ export default {
     },
     formattedEndDate() {
       if (this.editedItem.end_date) {
-        console.log('this.editedItem.endDate');
-        console.log(this.editedItem.end_date);
         const date = new Date(this.editedItem.end_date);
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, "0");
         const day = String(date.getDate()).padStart(2, "0");
-        console.log(`${year}-${month}-${day}`);
         return `${year}-${month}-${day}`;
 
       }
@@ -664,7 +658,6 @@ export default {
     onFileSelected(event) {
       let file = event.target.files[0];
       this.editedItem.image_url = file;
-      //console.log(this.editedItem.image_cardgift);
       this.cargarImage(file);
     },
     cargarImage(file) {

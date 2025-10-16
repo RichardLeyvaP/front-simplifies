@@ -24,7 +24,6 @@
                 </v-col>
             </v-row>
         </v-toolbar>
-        <!--<v-container class="fill-height" fluid>-->
         <v-row>
             <v-col cols="12" sm="12" md="4">
                 <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
@@ -38,7 +37,7 @@
                 <v-col cols="12" md="12">
                     <v-card elevation="2">
                         <v-tabs v-model="tabBar" color="rgb(241, 130, 84)"
-                            elevation="6"><!-- @click="handleTabChange"-->
+                            elevation="6">
                             <v-tab value="one">Solicitud de carros</v-tab>
                             <v-tab value="two">Solicitud ordenes</v-tab>
                             <v-tab value="tree">Solicitud Productos</v-tab>
@@ -374,7 +373,6 @@
                 </v-col>
             </v-container>
         </v-row>
-        <!---->
     </v-card>
 </template>
 
@@ -655,8 +653,6 @@ export default {
                     this.results = response.data.cars;
                     this.results1 = response.data.orders;
                     this.results2 = response.data.cashier;
-                    console.log('this.results2 productos');
-                    console.log(this.results2);
                 }).finally(() => {
                     LocalStorageService.setIsLocked(false);
                     this.loadingCar = false;

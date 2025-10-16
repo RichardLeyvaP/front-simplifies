@@ -57,15 +57,6 @@
                           prepend-icon="mdi-ruler" variant="underlined" :rules="nameRules" :disabled="editedItem.automatic === 1">
                         </v-text-field>
                       </v-col>
-                      <!--<v-col cols="12" md="4">
-                        <v-switch
-                        v-model="editedItem.automatic"
-                        label="Automática"
-                        hide-details
-                        inset
-                      ></v-switch>
-
-                      </v-col>-->
                     </v-row>
                   </v-container>
                 <v-divider></v-divider>
@@ -251,9 +242,7 @@ export default {
       axios
         .get('https://api2.simplifies.cl/api/rule')
         .then((response) => {
-          console.log("entra a Buscar las reglas")
           this.results = response.data.rules;
-          console.log(this.results);
         }).finally(() => {
             LocalStorageService.setIsLocked(false);
             this.loadingRule = false;
@@ -309,9 +298,6 @@ export default {
         this.data.name = this.editedItem.name;
         this.data.description = this.editedItem.description;
         this.data.type = this.editedItem.type;
-        //this.data.automatic = this.editedItem.automatic;
-        console.log('this.editedItem.automatic');
-        console.log(this.editedItem.automatic);
         axios
           .put('https://api2.simplifies.cl/api/rule', this.data)
           .then(() => {
@@ -324,8 +310,6 @@ export default {
         this.data.name = this.editedItem.name;
         this.data.description = this.editedItem.description;
         this.data.type = this.editedItem.type;
-        //this.data.automatic = this.editedItem.automatic;
-        console.log(this.editedItem.automatic);
         axios
           .post('https://api2.simplifies.cl/api/rule', this.data)
           .then(() => {

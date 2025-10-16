@@ -23,27 +23,11 @@
         </v-col>
         <v-col cols="12" md="2">
           <div v-if="!isExtractionEnabled" class="justify-end">
-            <!--<v-btn @click="cancelChanges" color="black" prepend-icon="mdi-close" class=" ml-2"
-              :disabled="changes.length === 0" title="Cancelar Cambios" style="background-color: #E7E9E9;">
-              <span class="btn-text">Cancelar</span>
-            </v-btn>
-            <v-btn @click="save" color="black" prepend-icon="mdi-check" :disabled="changes.length === 0"
-              title="Actualizar convivencias" style="background-color: #E7E9E9;">
-              <span class="btn-text">Aceptar</span>
-            </v-btn>-->
-
           </div>
         </v-col>
       </v-row>
     </v-toolbar>
     <v-card-text>
-      <!--<v-row>
-        <v-col cols="12" sm="12" md="4">
-          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
-            v-if="this.mostrarFila" clearable label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name"
-            item-value="id" variant="underlined" @update:model-value="initialize()"></v-autocomplete>
-        </v-col>
-      </v-row>-->
       <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
         hide-details></v-text-field>
       <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search" :items="results"
@@ -75,24 +59,24 @@
                   <!-- Botones de acción -->
                   <div class="d-flex" style="gap: 2px;">
                     <v-icon 
-  color="error" 
-  size="33"
-  class="action-icon error-icon"
-  title="Incumplió"
-  @click="handleEstadoChange(getFirstPendingConvivencia(item.value), 0)"
->
-  mdi-close-circle
-</v-icon>
+                      color="error" 
+                      size="33"
+                      class="action-icon error-icon"
+                      title="Incumplió"
+                      @click="handleEstadoChange(getFirstPendingConvivencia(item.value), 0)"
+                    >
+                      mdi-close-circle
+                    </v-icon>
 
-<v-icon 
-  color="success" 
-  size="33"
-  class="action-icon success-icon"
-  title="Cumplió"
-  @click="handleEstadoChange(getFirstPendingConvivencia(item.value), 1)"
->
-  mdi-check-circle
-</v-icon>
+                    <v-icon 
+                      color="success" 
+                      size="33"
+                      class="action-icon success-icon"
+                      title="Cumplió"
+                      @click="handleEstadoChange(getFirstPendingConvivencia(item.value), 1)"
+                    >
+                      mdi-check-circle
+                    </v-icon>
                   </div>
                 </div>
               </template>
@@ -139,21 +123,6 @@
             </v-select>
           </div>
         </template>
-        <!--<template v-slot:item.estado="{ item }">
-          <div class="d-flex align-center" style="height: 100%;">
-
-            <v-switch v-model="item.estado" :true-value="1" :false-value="0" :color="getEstadoInfo(item.estado).color"
-              @change="save(item)" class="mr-2" style="margin-top: 20px;"></v-switch>
-
-
-            <div class="d-flex align-center">
-              <v-icon :color="getEstadoInfo(item.estado).color" class="mr-2">
-                {{ getEstadoInfo(item.estado).icon }}
-              </v-icon>
-              <span>{{ getEstadoInfo(item.estado).name }}</span>
-            </div>
-          </div>
-        </template>-->
         <!-- Eliminar flecha en las filas normales -->
         <template v-slot:item.data-table-expand="{ item, isExpanded, toggleExpand }">
           <!-- Template vacío para ocultar el expand en filas normales -->
@@ -164,12 +133,6 @@
 
 
   <v-dialog v-model="dialog" max-width="500px">
-    <!-- <template v-slot:activator="{ props }">
-                <v-btn v-bind="props" class="text-subtitle-1  ml-12 " color="#E7E9E9" variant="flat" elevation="2"
-                  prepend-icon="mdi-plus-circle">
-                  Nuevo Puesto
-                </v-btn>
-              </template>-->
     <v-card>
       <v-toolbar color="#F18254">
         <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
@@ -188,18 +151,6 @@
                     </v-icon>
                     {{ getEstadoInfo(item.raw.id).name }}
                   </template>
-
-                  <!-- Personalizar cada ítem en la lista desplegable 
-                          <template v-slot:item="{ item }">
-                            <v-list-item>
-                              <template v-slot:prepend>
-                                <v-icon :color="getEstadoInfo(item.raw.id).color" class="mr-2">
-                                  {{ getEstadoInfo(item.raw.id).icon }}
-                                </v-icon>
-                              </template>
-                              <v-list-item-title>{{ getEstadoInfo(item.raw.id).name }}</v-list-item-title>
-                            </v-list-item>
-                          </template>-->
                 </v-select>
               </v-col>
             </v-row>
@@ -317,56 +268,13 @@ export default {
        // Notificar si hay cambios
        this.$emit('changes-updated', this.hasChanges());
     }
-    /*results(newVal) {
-    const hasStateThree = newVal.some(item => item.estado === 3);
-    //const arraysAreEqual = _.isEqual(newVal, this.resultsOriginal); // Usamos lodash para comparación profunda
-    
-    // Emitimos false si:
-    // 1. No hay estado 3 Y los arrays son iguales
-    // O emitimos true si:
-    // 1. Hay estado 3 O los arrays son diferentes
-    this.$emit('update:has-invalid-state', hasStateThree);
-  }*/
   },
 
   async mounted() {
     this.business_id = LocalStorageService.getItem('business_id');
-    //this.branch_id = LocalStorageService.getItem('branch_id');
-    //this.branch_id = this.branch.id;
     this.charge_id = LocalStorageService.getItem('charge_id');
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     LocalStorageService.setIsLocked(true);
-    // Crear un objeto para los parámetros
-    /*const requestParams = {
-      business_id: this.business_id,
-    };
-
-    /*try {
-      this.loading = true;
-      const result = await handleRequest({
-        endpoint: 'show-business',
-        method: 'GET',
-        params: requestParams // Aquí pasas los parámetros
-      });
-
-      if (result.success) {
-        // Si la solicitud es exitosa, asignamos las sucursales
-        this.branches = result.data.branches || []; // Si no hay roles, asigna un arreglo vacío
-      } else {
-        // Si no hay datos, asignamos un array vacío
-        this.branches = [];
-      }
-    } catch (error) {
-      this.loading = false;
-      // Captura de errores no controlados
-      this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
-    } finally {
-      LocalStorageService.setIsLocked(false);
-      if (this.charge === 'Administrador') {
-        this.branch_id = this.branches[0].id;
-        this.mostrarFila = true;
-      }
-    }*/
     await this.initialize();
   },
 
@@ -473,7 +381,6 @@ export default {
       }
     },
     handleEstadoChange(item, newValue) {
-      console.log('Estado cambiado:', newValue);
       // Guardar el estado original antes de cualquier cambio
       const originalEstado = item.estado;
 
@@ -561,15 +468,6 @@ export default {
       let request = {
         id: this.editedItem.id
       };
-      /*axios
-        .post('https://api2.simplifies.cl/api/workplace-destroy', request)
-        .then(() => {
-        }).finally(() => {
-          LocalStorageService.setIsLocked(false);
-          this.showAlert("success", "Puesto de trabajo eliminado correctamente", 3000);
-          this.initialize();
-        });
-      this.closeDelete()*/
     },
     close() {
       this.dialog = false
@@ -591,27 +489,10 @@ export default {
                 return true;
             }
       LocalStorageService.setIsLocked(true);
-      /*if (this.editedIndex > -1) {
-        this.valid = false;
-        this.data.id = this.editedItem.id;
-        this.data.name = this.editedItem.name;
-        /*axios
-          .put('https://api2.simplifies.cl/api/workplace', this.data)
-          .then(() => {
-          }).finally(() => {
-            LocalStorageService.setIsLocked(false);
-            this.showAlert("success", "Puesto de trabajo editado correctamente", 3000);
-            this.initialize();
-          });*/
-      /*} else {*/
       this.valid = false;
       this.editedIndex = 1;
       this.editedItem = Object.assign({}, item);
       this.loadingWorkPlace = true;
-
-      //this.data = {};
-      //this.data.id = this.editedItem.id;
-      //this.data.estado = this.editedItem.estado;
       try {
         const result = await handleRequest({
           endpoint: 'branchruleprofessional-state',
@@ -640,16 +521,6 @@ export default {
         this.changes = [];
         await this.initialize();
       }
-
-      /*axios
-        .post('https://api2.simplifies.cl/api/workplace', this.data)
-        .then(() => {
-        }).finally(() => {
-          LocalStorageService.setIsLocked(false);
-          this.showAlert("success", "Puesto de trabajo creado correctamente", 3000);
-          this.initialize();
-        });*/
-      //}
       this.close()
     },
     // Método para cancelar cambios

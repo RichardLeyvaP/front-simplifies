@@ -105,9 +105,6 @@
                   :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
                   no-data-text="No hay datos disponibles" :loading="loadingPermission" loading-text="Cargando datos...">
                   <template v-slot:item.actions="{ item }">
-                    <!--<v-icon size="25" color="red" @click="closePermissosRequest(item)">
-                  mdi-delete
-                </v-icon>-->
                     <v-btn density="comfortable" icon="mdi-delete" @click="closePermissosRequest(item)"
                       color="red-darken-4" variant="tonal" elevation="1" title="Eliminar asignación"></v-btn>
                   </template>
@@ -202,19 +199,6 @@
         class="elevation-1" no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles"
         :loading="loadingCharge" loading-text="Cargando datos...">
         <template v-slot:item.actions="{ item }">
-          <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
-            mdi-pencil
-          </v-icon>          
-          <v-icon size="25" color="green" @click="showPermission(item)">
-            mdi-lock
-          </v-icon>
-          <v-icon size="25" :color="(item.name === 'Barbero' || item.name === 'Encargado' || item.name === 'Tecnico' || item.name === 'Coordinador' || item.name === 'Administrador') ? 'grey' : 'red'"
-        @click="!(item.name === 'Barbero' || item.name === 'Encargado' || item.name === 'Tecnico' || item.name === 'Coordinador'  || item.name === 'Administrador') && deleteItem(item)">
-  mdi-delete
-</v-icon>-->
-          <!--<v-icon size="25" color="red" @click="deleteItem(item)">
-            mdi-delete
-          </v-icon>-->
           <v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar cargo"></v-btn>
           <v-btn density="comfortable" icon="mdi-lock" @click="showPermission(item)" color="green" variant="tonal"
@@ -360,7 +344,6 @@ export default {
       axios
         .get('https://api2.simplifies.cl/api/charge')
         .then((response) => {
-          console.log("entra a Buscar cargos")
           this.results = response.data.charges;
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -449,9 +432,7 @@ export default {
       this.loadingPermission = true;
       LocalStorageService.setIsLocked(true);
       this.chargeSelect = item;
-      console.log(this.chargeSelect);
       this.charge_id = item.id;
-      console.log(item.id);
       axios
         .get('https://api2.simplifies.cl/api/charge-permission-show', {
           params: {
@@ -500,7 +481,6 @@ export default {
         });
     },
     closePermissosRequest(item) {
-      console.log(item);
       this.dialogDeletePermission = true
       //this.editedItem.branch_id=item.id
       this.permission_id = item.permission_id;
@@ -518,8 +498,7 @@ export default {
           this.dialogDeletePermission = false
           this.charge_id = '',
             this.permission_id = '',
-            console.log(this.chargeSelect);
-          this.showPermission(this.chargeSelect)
+           this.showPermission(this.chargeSelect)
           this.showAlert("success", "Permiso eliminado a este cargo correctamente", 3000)
         }).finally(() => {
           LocalStorageService.setIsLocked(false);

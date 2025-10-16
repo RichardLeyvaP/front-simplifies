@@ -260,19 +260,10 @@ export default {
         },
         formattedStartDate() {
             if (this.startDate) {
-                //console.log('this.startDate');
-                //console.log(new Date(this.startDate));
-                //return new Date(this.startDate);
-
-                /*console.log('this.startDate');
-                console.log(this.startDate);*/
                 const date = new Date(this.startDate); //2024-04-06
                 const year = date.getFullYear();
                 const month = String(date.getMonth() + 1).padStart(2, "0");
                 const day = String(date.getDate()).padStart(2, "0");
-                console.log(`${year}-${month}-${day}`);
-                //new Date('2018-03-02');
-
                 return `${year}-${month}-${day}`;
             }
             return "";
@@ -288,26 +279,6 @@ export default {
             }
             return "";
         },
-        /* dateFormatted() {
-       const date = this.input ? new Date(this.input) : new Date();
-       const day = date.getDate().toString().padStart(2, '0');
-       const month = (date.getMonth() + 1).toString().padStart(2, '0');
-       const year = date.getFullYear();
-       return `${year}-${month}-${day}`;
-     },
-     getDate() {
-       return this.input ? new Date(this.input) : new Date();
-     },
-     dateFormatted2() {
-       const date = this.input ? new Date(this.input) : new Date();
-       const day = date.getDate().toString().padStart(2, '0');
-       const month = (date.getMonth() + 1).toString().padStart(2, '0');
-       const year = date.getFullYear();
-       return `${year}-${month}-${day}`;
-     },
-     getDate2() {
-       return this.input ? new Date(this.input) : new Date();
-     },*/
     },
 
     watch: {
@@ -357,16 +328,6 @@ export default {
       this.sb_timeout= sb_timeout
       this.snackbar= true
     },
-        /*formatDate(date) {
-            if (!date) return null;
-
-            /*const dateObject = new Date(date);
-            const year = dateObject.getFullYear();
-            const month = String(dateObject.getMonth() + 1).padStart(2, "0");
-            const day = String(dateObject.getDate()).padStart(2, "0");
-
-            return `${year}-${month}-${day}`;*/
-        //},*/
         initialize() {
             this.loadingVacation = true;
             LocalStorageService.setIsLocked(true);
@@ -381,7 +342,6 @@ export default {
             this.loadingVacation = false;
         });
             } else {
-                console.log('No es administrador');
                 axios
                     .get('https://api2.simplifies.cl/api/vacation-show', {
                         params: {
@@ -454,7 +414,6 @@ export default {
                     this.data.professional_id = this.professional_id;
                     this.data.startDate = this.formattedStartDate;
                 this.data.endDate = this.formattedEndDate;
-                console.log(this.data);
                 axios
                     .put('https://api2.simplifies.cl/api/vacation', this.data)
                     .then(() => {
@@ -473,7 +432,6 @@ export default {
                 this.data.description = this.description;
                 this.data.startDate = this.formattedStartDate;
                 this.data.endDate = this.formattedEndDate;
-                console.log(this.data);
                 axios
                     .post('https://api2.simplifies.cl/api/vacation', this.data)
                     .then(() => {

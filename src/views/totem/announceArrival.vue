@@ -23,11 +23,6 @@
         <template v-slot:item.1>
           <v-sheet border>
             <v-row>
-
-              <!--<v-col cols="12" md="4" class="mt-2">
-                <v-text-field :disabled="verificate" v-model="codeReserva"
-                  label="Código" outlined :rules="nameRules"></v-text-field>
-              </v-col>-->
               <v-col cols="12" md="4">
                 <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="reservation_id" :items="clients"
                   label="Clientes" prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id"
@@ -239,12 +234,9 @@ export default {
   computed: {
 
     advanceReserva1() {
-      console.log()
       return !this.selected.length > 0; // Verdadero si hay elementos, falso si está vacío
     },
     advanceReserva2() {
-      console.log('this.array_Places.length');
-      console.log(this.selected.length);
       return this.selected.length === 0; // Verdadero si hay elementos, falso si está vacío
     },
 
@@ -309,8 +301,6 @@ export default {
       if (this.step < this.items.length) {
         this.step++;
       }
-      console.log('Aqui se muestran los Step');
-      console.log(this.step);
       this.verificateStep(this.step);
 
     },
@@ -340,7 +330,6 @@ export default {
 
 
       const newArrayPlaces = this.array_Places.map(item => parseInt(item));
-      console.log(newArrayPlaces[0]);
       if (this.tipoProfessional === 'Tecnico')//es tecnico
       {
 
@@ -372,7 +361,6 @@ export default {
           //ASIGNO A LOS CAMPOS DEL FORMULARIO TDS LOS DATOS
           if (code === 4) {
             this.showAlert("success", "Se ha confirmado su llegada.Espere ser atendido", 3000);
-            //console.log("LA RESERVA FUE CONFIRMADA");
             this.startTimer();
             this.showDetails = false;
             //MADAR MENSAJE Y EN 5 SEGUNDOS IR AL INICIO
@@ -381,15 +369,9 @@ export default {
           else if (code === 5) {
             this.showAlert("warning", "No puede anunciar su llegada, por favor acérquese al coordinador más cercano disponible", 3000);
             this.clearTextClient();
-            //console.log("LA RESERVA NO ES VALIDA, NO COINCIDE");
             this.changeStep(1);
             this.showDetails = false;
           }
-          /*else {
-            this.changeStep(1);
-            console.log("NO COINCIDE EL CÓDIGO Y NO MANDO NINGUNO DE LOS VALORES ESPERADOS");
-          }*/
-
           this.clearTextClient();
         })
         .catch(error => {
@@ -397,43 +379,25 @@ export default {
           this.startTimer();
           this.showDetails = false;
           this.clearTextClient();
-          console.log('******error******');
-          console.log(error);
-          //simulando que diera un tecnico
-          //  this.togglepuestoT2(1);
-          // Maneja cualquier error que pueda ocurrir durante la solicitud
-          // console.error('Error al hacer la solicitud:', error);
         });
     },
     sendData() {
-      console.log('-------------------this.branch_id-----------------');
-      console.log(this.branch_id);
-      console.log('-------------------this.codeReserva-----------------');
-      console.log(this.codeReserva);
-
       // Realiza la solicitud POST Y BUSCO LOS DATOS DEL CLIENTE 
       axios.get(`https://api2.simplifies.cl/api/update-confirmation-code?code=${this.codeReserva}&branch_id=${this.branch_id}`)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.codeConfirmation = response.data;
-          console.log('-------------------------------Respuesta del codigo----------------------------------------');
-          console.log(this.codeConfirmation);
-
-
-
           const code = this.codeConfirmation;
 
           //ASIGNO A LOS CAMPOS DEL FORMULARIO TDS LOS DATOS
           if (code === 4) {
             this.showAlert("success", "Se ha confirmado su llegada.Espere ser atendido", 3000);
-            //console.log("LA RESERVA FUE CONFIRMADA");
             this.startTimer();
             //MADAR MENSAJE Y EN 5 SEGUNDOS IR AL INICIO
 
           }
           else if (code === 3) {
             this.showAlert("warning", "Su reserva se encuantra cancelada por no ser confirmada en tiempo", 3000);
-            //console.log("LA RESERVA FUE CANCELADA");
             this.startTimer();
             //MANDA UN MENSAJE QUE CONTACTE CON EL PERSONAL D ELA BARBERIA
 
@@ -441,26 +405,14 @@ export default {
           else if (code === 5) {
             this.showAlert("warning", "El código no es válido, digite un código válido", 3000);
             this.clearTextClient();
-            //console.log("LA RESERVA NO ES VALIDA, NO COINCIDE");
             this.changeStep(1);
           }
-          /*else {
-            this.changeStep(1);
-            console.log("NO COINCIDE EL CÓDIGO Y NO MANDO NINGUNO DE LOS VALORES ESPERADOS");
-          }*/
-
           this.clearTextClient();
         })
         .catch(error => {
           this.showAlert("warning", "Error de conexión, vuelva a intentarlo", 3000);
           this.startTimer();
           this.clearTextClient();
-          console.log('******error******');
-          console.log(error);
-          //simulando que diera un tecnico
-          //  this.togglepuestoT2(1);
-          // Maneja cualquier error que pueda ocurrir durante la solicitud
-          // console.error('Error al hacer la solicitud:', error);
         });
 
     },

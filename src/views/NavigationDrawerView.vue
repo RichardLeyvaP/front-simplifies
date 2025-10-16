@@ -137,9 +137,7 @@
 
 <script>
 import LocalStorageService from "@/LocalStorageService";
-/*import { UserTokenStore } from "@/store/UserTokenStore";
 
-const userTokenStore = UserTokenStore();*/
 export default {
   data: () => ({
     user: [],
@@ -272,7 +270,6 @@ export default {
   computed: {
     // Filtra los ítems de menú basándose en los permisos permitidos
     filteredMenuAdministracion() {
-      //console.log(this.permissionsUser);
       return this.administracion.filter(item => this.permissionsUser.includes(item.permission));
     },
     filteredMenuAcademia() {
@@ -310,7 +307,6 @@ export default {
     }
 },
   mounted() {
-    //this.loadedData = LocalStorageService.getItem("myDataKey");
     // Recuperar datos del localStorage al cargar la aplicación
     this.nameBranch = JSON.parse(LocalStorageService.getItem("nameBranch"));
     this.nameBusiness = JSON.parse(LocalStorageService.getItem("nameBusiness"));
@@ -319,7 +315,6 @@ export default {
     this.charge_id = LocalStorageService.getItem("charge_id");
     this.permissionsUser = LocalStorageService.getItem("permissionsUser");
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
-    //console.log(this.permissionsUser);
     if (this.charge === 'Administrador') {
       // Mostrar la fila con Autocomplete
       this.titulo = this.nameBusiness;
@@ -329,12 +324,6 @@ export default {
       this.titulo = this.nameBranch;
       this.subtitle = 'Sucursal';
     }
-    console.log('this.imageBusiness');
-    console.log(this.imageBusiness);
-    /*this.nameBranch = userTokenStore.nameBranch;
-    this.nameBusiness = userTokenStore.nameBusiness;
-    this.name = userTokenStore.userName;*/
-    // Otros datos que hayas almacenado
   }
 }
 </script>

@@ -94,28 +94,6 @@
                       >
                       </v-text-field>
                     </v-col>
-                    <!--<v-col cols="12" md="6">
-                      <v-text-field
-                        v-model="editedItem.surname"
-                        clearable
-                        label="Primer Apellido"
-                        prepend-icon="mdi-account-tie-outline"
-                        variant="underlined"
-                        :rules="nameRules"
-                      >
-                      </v-text-field>
-                    </v-col>
-                    <v-col cols="12" md="6">
-                      <v-text-field
-                        v-model="editedItem.second_surname"
-                        clearable
-                        label="Segundo Apellido"
-                        prepend-icon="mdi-account-tie-outline"
-                        variant="underlined"
-                        :rules="nameRules"
-                      >
-                      </v-text-field>
-                    </v-col>-->
                     <v-col cols="12" md="6">
                       <v-text-field
                         v-model="editedItem.email"
@@ -140,9 +118,6 @@
                       >
                       </v-text-field>
                     </v-col>
-                    <!--<v-col cols="12" md="6">
-                    <v-autocomplete :no-data-text="'No hay datos disponibles'" clearable v-model="editedItem.user_id" :items="users" label="Usuario" prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete>
-                  </v-col>-->
                     <v-col cols="12" md="6">
                       <v-file-input
                         clearable
@@ -255,8 +230,7 @@
                 'https://api2.simplifies.cl/api/images/' +
                 item.client_image"
               alt="image"
-            ></v-img><!--+ '?$' + Date.now()
-                -->
+            ></v-img>
           </v-avatar>
           {{ item.name }}
         </template>
@@ -546,14 +520,14 @@
             </template>
             <v-locale-provider locale="es">
               <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2" :modelValue="getDate2" 
-                format="yyyy-MM-dd" :min="dateFormatted" @update:model-value="updateDate1"></v-date-picker><!--@update:model-value="updateDate2"-->
+                format="yyyy-MM-dd" :min="dateFormatted" @update:model-value="updateDate1"></v-date-picker>
             </v-locale-provider>
           </v-menu>
         </v-col>
         <v-col cols="12" md="3">
           <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches" v-if="this.mostrarFila" 
             label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name" item-value="id"
-            variant="outlined" ></v-autocomplete><!--@update:model-value="initialize()"-->
+            variant="outlined" ></v-autocomplete>
         </v-col>
         <v-col cols="12" md="1">
                         <v-btn icon @click="updateDate2" color="#F18254" >
@@ -801,9 +775,6 @@
               </template>
 
               <template v-slot:item.actions="{ item }">
-                <!--<v-icon size="25" color="red" @click="deleteS(item)">
-                  mdi-delete
-                </v-icon>-->
                 <v-btn density="comfortable" icon="mdi-delete" @click="deleteCardGiftUser(item)" color="red-darken-4" variant="tonal"
                   elevation="1" title="Eliminar asignación"></v-btn>
               </template>
@@ -903,7 +874,6 @@
         </v-chip>
     </v-card-title>
 </v-img>
-                  <!--<v-img :src="'https://api2.simplifies.cl/api/images/' + details.imageLook" alt="image"></v-img>-->
                 </v-card>
       </v-col>
       <v-col cols="12" sm="6" class="text-left">
@@ -962,9 +932,6 @@
               </template>
 
               <template v-slot:item.actions="{ item }">
-                <!--<v-icon size="25" color="red" @click="deleteS(item)">
-                  mdi-delete
-                </v-icon>-->
                 <v-btn density="comfortable" icon="mdi-delete" @click="deleteUserCardGift(item)" color="red-darken-4" variant="tonal"
                   elevation="1" title="Eliminar asignación"></v-btn>
               </template>
@@ -1090,7 +1057,7 @@
             <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_idSurvey" :items="branches"
               v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-inner-icon="mdi-store" item-title="name"
               item-value="id" variant="outlined"
-              @update:modelValue="showSurvey()"></v-autocomplete><!-- @update:modelValue="nameBranchSelect"-->
+              @update:modelValue="showSurvey()"></v-autocomplete>
           </v-col>
         </v-container>
 
@@ -1319,6 +1286,7 @@ export default {
       { title: 'Acciones', key: 'actions', sortable: false },
     ],
     details: '',
+    mostrarFila: false,
     nameRules: [
       (v) => !!v || "El campo es requerido",
       (v) => (v && v.length <= 50) || "El campo debe tener menos de 51 caracteres",
@@ -1567,7 +1535,6 @@ export default {
       let file = event.target.files[0];
       this.editedItem.client_image = file;
       this.editedItemCardGift.image_cardgift = file;
-      console.log(this.editedItem.client_image);
       this.cargarImage(file);
     },
     cargarImage(file) {
@@ -1683,7 +1650,6 @@ export default {
     },
     showHistory(item) {
       LocalStorageService.setIsLocked(true);
-      console.log("Client History");
       axios
         .get("https://api2.simplifies.cl/api/client-history", {
           params: {
@@ -1873,8 +1839,6 @@ export default {
     },
     saveCardGift() {
       LocalStorageService.setIsLocked(true);
-
-        //console.log(this.editedItem.id);
         this.valid = false;
         const formData = new FormData();
         for (let key in this.editedItemCardGift) {
@@ -1920,8 +1884,6 @@ export default {
       img.onerror = () => {
         this.imgMiniatura = '';
       };
-      console.log('item de cardGift');
-      console.log(item);
       this.editedItemCardGift = Object.assign({}, item);
     },
     deleteItemCardGift(item) {
@@ -1954,9 +1916,7 @@ export default {
     showCardGiftUser(item) {
       this.cardgiftUser = [];
       this.cardSelect = item;
-      //console.log(this.cardSelect);
       this.loadingCardGftUser = true;
-      console.log(item.id);
       this.editedCardGiftUser.card_gift_id = item.id
       this.data.card_gift_id = item.id
       LocalStorageService.setIsLocked(true);
@@ -2044,8 +2004,6 @@ export default {
       const selectedUser = this.users.find(user => user.user_id === selectedItem);
       this.details = selectedUser.details;
       this.nameClient = selectedUser.name;
-    console.log('this.details');
-    console.log(this.details);
   }
     },
     saveCardGiftUser() {
@@ -2055,8 +2013,6 @@ export default {
       this.data.user_id = this.editedCardGiftUser.user_id;
       this.data.branch_id = this.branch_id;
       this.data.expiration_date = this.dateFormatted;
-      console.log('this.editedCardGiftUser.expiration_date');
-      console.log(this.data.expiration_date);
       axios
         .post('https://api2.simplifies.cl/api/card-gift-user', this.data)
         .then(() => {
@@ -2077,9 +2033,7 @@ export default {
     showUserCardGift(item) {
       this.cardGiftsData = [];
       this.userSelect = item;
-      console.log(item.user_id);
       this.loadingUserCardGft = true;
-      console.log(item.id);
       this.editedCardGiftUser.user_id = item.user_id
       this.data.user_id = item.user_id
       LocalStorageService.setIsLocked(true);
@@ -2153,8 +2107,6 @@ export default {
       this.data.user_id = this.userSelect.user_id;
       this.data.branch_id = this.branch_id;
       this.data.expiration_date = this.dateFormatted;
-      console.log('this.editedCardGiftUser.expiration_date');
-      console.log(this.data.expiration_date);
       axios
         .post('https://api2.simplifies.cl/api/card-gift-user', this.data)
         .then(() => {

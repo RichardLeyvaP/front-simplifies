@@ -240,7 +240,6 @@ export default {
                     this.loading = false;
                 }
             } else {
-                console.log('entrando a editar');
                 try {
                     this.data = {};
                 this.data.id = this.editedItem.id;

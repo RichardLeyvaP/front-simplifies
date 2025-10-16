@@ -55,9 +55,7 @@
             <template v-slot:item.name="{ item }">
               <v-avatar class="mr-2" elevation="3" color="grey-lighten-4">
                 <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_product}`
-                " alt="image"></v-img><!-- +
-                  '?$' +
-                  Date.now()-->
+                " alt="image"></v-img>
               </v-avatar>
               {{ item.name }}
             </template>
@@ -68,12 +66,6 @@
               {{ item.commission_rate > 0 ? `${item.commission_rate} %` : 0 }}
             </template>
             <template v-slot:item.actions="{ item }">
-              <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
-         mdi-pencil
-       </v-icon>
-       <v-icon size="25" color="red" @click="deleteItem(item)">
-         mdi-delete
-       </v-icon>-->
               <v-btn v-if="this.mostrarFila" density="comfortable" icon="mdi-pencil" @click="editItem(item)"
                 color="primary" variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Editar Producto"></v-btn>
               <v-btn v-if="this.mostrarFila" density="comfortable" icon="mdi-delete" @click="deleteItem(item)"
@@ -131,17 +123,11 @@
                 <v-col cols="12" md="5">
                   <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.product_category_id"
                     :items="productCategories" density="compact" label="Categoría" prepend-icon="mdi-tag"
-                    item-title="name" item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete> <!--
-                    @update:model-value="updateSelectedCategoryCommission()"-->
+                    item-title="name" item-value="id" variant="underlined" :rules="selectRules"></v-autocomplete> 
                 </v-col>
-                <!--<v-col cols="12" md="2" v-if="selectedCategoryGivesCommission === 1">
-                  <v-text-field v-model="editedItem.commission_rate" label="Comisión" variant="underlined"
-                    :rules="commissionRules" prepend-icon="mdi-cash-multiple" type="number" min="0" max="100"
-                    density="compact" step="1" suffix="%"></v-text-field>
-                </v-col>-->
                 <v-col cols="12" md="7">
                   <v-text-field v-model="editedItem.description" density="compact" label="Descripción"
-                    prepend-icon="mdi-information" variant="underlined" :rules="dirRules">
+                    prepend-icon="mdi-information" variant="underlined">
                   </v-text-field>
                 </v-col>
               </v-row>
@@ -244,7 +230,7 @@
                     <v-locale-provider locale="es">
                       <v-date-picker header="Calendario" title="Seleccione la fecha" color="orange lighten-2"
                         :modelValue="getDate2" format="yyyy-MM-dd" :min="dateFormatted"
-                        @update:model-value="updateDate1"></v-date-picker><!--@update:model-value="updateDate2"-->
+                        @update:model-value="updateDate1"></v-date-picker>
                     </v-locale-provider>
                   </v-menu>
                 </v-col>
@@ -471,26 +457,6 @@ export default {
     dialogDelete(val) {
       val || this.closeDelete();
     },
-    /*'editedItem.product_category_id': {
-      handler(newVal) {
-        console.log('this.productCategories');
-          console.log(this.productCategories);
-        console.log('newVal');
-          console.log(newVal);
-        if (newVal) {
-          const category = this.productCategories.find(cat => cat.id === newVal);
-          console.log('this.category');
-          console.log(category);
-          this.selectedCategoryGivesCommission = category?.gives_commission || 0;
-        } else {
-          this.selectedCategoryGivesCommission = null;
-        }
-        
-        console.log('this.selectedCategoryGivesCommission');
-        console.log(this.selectedCategoryGivesCommission);
-      },
-      immediate: true
-    }*/
   },
 
   mounted() {
@@ -502,14 +468,6 @@ export default {
     if (this.charge === 'Administrador') {
           this.mostrarFila = true;
     }
-    /*axios
-      .get("https://api2.simplifies.cl/api/product-category")
-      .then((response) => {
-        this.productCategories = response.data.productcategories;
-      })
-      .finally(() => {
-        LocalStorageService.setIsLocked(false);
-      });*/
         this.initialize();
   },
 
@@ -537,16 +495,12 @@ export default {
       this.menu2 = false;
     },
     showPrice() {
-      console.log("this.editedItem.status_product");
-      console.log(this.editedItem.status_product);
       if (this.editedItem.status_product === "En venta") {
         this.editedItem.sale_price = this.sale_priceTemp;
         this.mostrarDatos = true;
-        console.log("this.mostrarDatos---true");
-        console.log(this.mostrarDatos);
       } else {
         this.mostrarDatos = false;
-        (this.editedItem.sale_price = ""), console.log(this.mostrarDatos);
+        (this.editedItem.sale_price = "");
       }
     },
     imagenDisponible() {
@@ -593,7 +547,6 @@ export default {
     onFileSelected(event) {
       let file = event.target.files[0];
       this.editedItem.image_product = file;
-      console.log(this.editedItem.image_product);
       this.cargarImage(file);
     },
     cargarImage(file) {
@@ -603,23 +556,13 @@ export default {
       };
       reader.readAsDataURL(file);
     },
-    updateSelectedCategoryCommission() {
-    console.log('this.productCategories');
-    console.log(this.productCategories);
-    console.log('this.editedItem.product_category_id');
-    console.log(this.editedItem.product_category_id);
-    
+    updateSelectedCategoryCommission() {    
     if (this.editedItem.product_category_id) {
       const category = this.productCategories.find(cat => cat.id === this.editedItem.product_category_id);
-      console.log('this.category');
-      console.log(category);
       this.selectedCategoryGivesCommission = category?.gives_commission || 0;
     } else {
       this.selectedCategoryGivesCommission = null;
     }
-    
-    console.log('this.selectedCategoryGivesCommission');
-    console.log(this.selectedCategoryGivesCommission);
   },
     async editItem(item) {
       this.sale_priceTemp = item.sale_price;
@@ -750,7 +693,6 @@ export default {
     showMostSold() {
       this.loadingProducts = true;
       LocalStorageService.setIsLocked(true);
-      console.log('Entra aqui a mejores aisitencias');
       this.editedIndex1 = 1;
       axios
         .get('https://api2.simplifies.cl/api/product-mostSold', {

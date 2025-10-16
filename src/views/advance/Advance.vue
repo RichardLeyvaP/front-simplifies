@@ -58,7 +58,7 @@
               :src="`${this.$axios.defaults.baseURL}images/${item.image}?t=${Date.now()}`"
               alt="image"
             ></v-img> </v-avatar
-          ><!--+'?$'+Date.now()-->
+          >
           {{ item.professionalName }}
         </template>
         <template v-slot:item.amount="{ item }">
@@ -75,22 +75,7 @@
             {{ item.status }}
           </v-chip>
         </template>
-        <!--<template v-slot:item.actions="{ item }">
-          <v-btn
-            density="comfortable"
-            icon="mdi-cash-check"
-            @click="item.status === 'Pendiente' && save(item)"
-            :color="item.status === 'Pendiente' ? 'green' : 'grey'"
-            variant="tonal"
-            elevation="1"
-            class="mr-1 mt-1 mb-1"
-            :title="
-              item.status === 'Pendiente'
-                ? 'Realizar pago'
-                : 'Solo disponible para solicitudes pendientes'
-            "
-          ></v-btn> </template>-->
-          <template v-slot:item.actions="{ item }">
+        <template v-slot:item.actions="{ item }">
           <v-btn
             density="comfortable"
             icon="mdi-cash-check"
@@ -108,12 +93,6 @@
   </v-card>
 
   <v-dialog v-model="dialog" max-width="500px">
-    <!-- <template v-slot:activator="{ props }">
-                <v-btn v-bind="props" class="text-subtitle-1  ml-12 " color="#E7E9E9" variant="flat" elevation="2"
-                  prepend-icon="mdi-plus-circle">
-                  Nuevo Puesto
-                </v-btn>
-              </template>-->
     <v-card>
       <v-toolbar color="#F18254">
         <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
@@ -138,18 +117,6 @@
                     </v-icon>
                     {{ getEstadoInfo(item.raw.id).name }}
                   </template>
-
-                  <!-- Personalizar cada ítem en la lista desplegable 
-                          <template v-slot:item="{ item }">
-                            <v-list-item>
-                              <template v-slot:prepend>
-                                <v-icon :color="getEstadoInfo(item.raw.id).color" class="mr-2">
-                                  {{ getEstadoInfo(item.raw.id).icon }}
-                                </v-icon>
-                              </template>
-                              <v-list-item-title>{{ getEstadoInfo(item.raw.id).name }}</v-list-item-title>
-                            </v-list-item>
-                          </template>-->
                 </v-select>
               </v-col>
             </v-row>
@@ -260,16 +227,6 @@ export default {
         this.checkPendingStatus();
       },
     },
-    /*results(newVal) {
-    const hasStateThree = newVal.some(item => item.estado === 3);
-    //const arraysAreEqual = _.isEqual(newVal, this.resultsOriginal); // Usamos lodash para comparación profunda
-    
-    // Emitimos false si:
-    // 1. No hay estado 3 Y los arrays son iguales
-    // O emitimos true si:
-    // 1. Hay estado 3 O los arrays son diferentes
-    this.$emit('update:has-invalid-state', hasStateThree);
-  }*/
   },
 
   async mounted() {
@@ -303,31 +260,13 @@ export default {
       this.sb_timeout = sb_timeout;
       this.snackbar = true;
     },
-    /*checkPendingStatus() {
-      const hasPending = this.results.some((item) => item.status === "Pendiente");
-
-      if (!hasPending) {
-        // Calcular suma de amount con status "Pagado"
-        const totalPagado = this.results
-          .filter(item => item.status === 'Pagado')
-          .reduce((sum, item) => sum + (item.amount || 0), 0);
-        console.log('totalPagado:', totalPagado);
-        // Emitir evento al padre con el total
-        this.$emit('total-pagado-calculated', totalPagado);
-      }
-      // Emitir evento al padre con el estado actual
-      this.$emit("update:has-invalid-state", hasPending);
-    },*/
     checkPendingStatus() {
   const hasPending = this.results.some(item => item.status === "Pendiente");
 
   if (!hasPending) {
     const totalPagado = this.results
           .filter(item => item.status === 'Pagado')
-          .reduce((sum, item) => sum + (item.amount || 0), 0);
-    
-    console.log('[Hijo] Emitiendo totalPagado:', totalPagado, 'Tipo:', typeof totalPagado);
-    
+          .reduce((sum, item) => sum + (item.amount || 0), 0);    
     // Emitir de dos formas diferentes para asegurar
     this.$emit('total-pagado-calculated', totalPagado);
   }
@@ -371,98 +310,7 @@ export default {
     getStatusIcon(status) {
       return this.getStatusColor(status).icon;
     },
-    /*async initialize() {
-      this.loadingWorkPlace = true;
-      LocalStorageService.setIsLocked(true);
-      const today = new Date();
-      const formattedDate = today.toISOString().split("T")[0]; // Formato: YYYY-MM-DD
-
-      const requestParams = {
-        branch_id: this.branch_id,
-        date: formattedDate,
-      };
-
-      try {
-        const result = await handleRequest({
-          endpoint: "advance-branch-pendents",
-          method: "GET",
-          params: requestParams, // Aquí pasas los parámetros
-        });
-
-        if (result.success) {
-          // Si la solicitud es exitosa, asignamos las sucursales
-          this.results = result.data.advances || []; // Si no hay roles, asigna un arreglo vacío
-          this.resultsOriginal = _.cloneDeep(this.results);
-        } else {
-          LocalStorageService.setIsLocked(false);
-          this.loadingWorkPlace = false;
-          // Si no hay datos, asignamos un array vacío
-          this.results = [];
-          this.resultsOriginal = [];
-        }
-      } catch (error) {
-        this.loadingWorkPlace = false;
-        // Captura de errores no controlados
-        this.showAlert(
-          "error",
-          "Ocurrió un error inesperado al procesar la solicitud.",
-          3000
-        );
-      } finally {
-        LocalStorageService.setIsLocked(false);
-        this.loadingWorkPlace = false;
-      }
-    },
-    async save(item) {
-      LocalStorageService.setIsLocked(true);
-      this.data = {};
-      this.valid = false;
-      this.editedIndex = 1;
-      this.editedItem = Object.assign({}, item);
-      this.loadingWorkPlace = true;
-
-      //this.data = {};
-      this.data.id = this.editedItem.id;
-      this.data.status = 'Pagado';
-      try {
-        const result = await handleRequest({
-          endpoint: "advance-update",
-          method: "POST",
-          data: this.data, // Aquí pasas los parámetros
-        });
-
-        if (result.success) {
-          this.dialog = false;
-          this.showAlert(
-            "success",
-            "Estado de la convivencia actualizado correctamente",
-            3000
-          );
-          this.$emit("save-success");
-          this.editedItem = Object.assign({}, this.defaultItem);
-          return true; // Indicamos éxito
-        }
-      } catch (error) {
-        this.dialog = false;
-        LocalStorageService.setIsLocked(false);
-        this.editedItem = Object.assign({}, this.defaultItem);
-        // Captura de errores no controlados
-        this.showAlert(
-          "error",
-          "Ocurrió un error inesperado al procesar la solicitud.",
-          3000
-        );
-        return false; // Indicamos fallo
-      } finally {
-        this.dialog = false;
-        LocalStorageService.setIsLocked(false);
-        this.loadingWorkPlace = false;
-        this.editedItem = Object.assign({}, this.defaultItem);
-        await this.initialize();
-      }
-      this.close();
-    },*/
-    async initialize() {
+   async initialize() {
     this.loadingWorkPlace = true;
     handleRequest({
       endpoint: "advance-branch-pendents",

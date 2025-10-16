@@ -50,7 +50,7 @@
                     <v-row>
                       <v-col cols="12" md="6">
                         <v-text-field v-model="editedItem.name" clearable label="Nombre"
-                          prepend-icon="mdi-storefront-outline" variant="underlined" density="compact">
+                          prepend-icon="mdi-storefront-outline" variant="underlined">
                         </v-text-field>
                       </v-col>
                       <v-col cols="12" md="6">
@@ -90,12 +90,9 @@
 
                       <v-col cols="12" md="6">
                         <v-file-input clearable v-model="file" ref="fileInput" label="Imagen Sucursal"
-                          variant="underlined" density="compact" name="file" accept=".png, .jpg, .jpeg"
+                          variant="underlined" name="file" accept=".png, .jpg, .jpeg"
                           @change="onFileSelected">
                         </v-file-input>
-                        <!--<v-avatar elevation="3" color="grey-lighten-4" size="large">
-                          <img v-if="imgedit" :src="imgedit" height="70" width="70">
-                        </v-avatar>-->
                         <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
                           <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
                         </v-card>
@@ -146,16 +143,14 @@
             </template>
             <template v-slot:item.actions="{ item }">
               <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-pencil" @click="editItem(item)"
-                color="primary" variant="darken-1" elevation="1" title="Editar Sucursal"></v-btn>
+                color="primary" variant="tonal" elevation="1" title="Editar Sucursal"></v-btn>
               <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-account-tie"
-                @click="showProfessionals(item)" color="indigo" variant="darken-2" elevation="1"
+                @click="showProfessionals(item)" color="indigo" variant="tonal" elevation="1"
                 title="Agregar Trabajdor"></v-btn>
               <v-btn v-if="mostrarFila" density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-store-outline"
                 @click="showStores(item)" color="green" variant="tonal" elevation="1" title="Agregar Almacén"></v-btn>
               <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-handshake" @click="showAssociates(item)"
                 color="orange" variant="tonal" elevation="1" title="Agregar Asociado"></v-btn>
-              <!--<v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-finance" @click="showWinner(item)" color="teal" variant="tonal"
-            elevation="1" title="Finanzas de la  sucursal"></v-btn>-->
               <v-btn v-if="mostrarFila" density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-delete"
                 @click="deleteItem(item)" color="red-darken-4" variant="tonal" elevation="1"
                 title="Eliminar Sucursal"></v-btn>
@@ -209,7 +204,7 @@
 
                   <v-avatar class="mr-1" elevation="3" color="grey-lighten-4" size="large">
                     <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_url}`" alt="image"></v-img>
-                  </v-avatar><!--+'?$'+Date.now()-->
+                  </v-avatar>
                   {{ item.name }}
                 </template>
                 <template v-slot:item.limit="{ item }">
@@ -237,9 +232,6 @@
                   <v-btn v-if="mostrarFila" density="comfortable" icon="mdi-delete" @click="deleteP(item)"
                     color="red-darken-4" variant="tonal" elevation="1"
                     title="Eliminar afiliación del trabajador"></v-btn>
-                  <!--<v-icon size="small" color="red" @click="deleteP(item)">
-                  mdi-delete
-                </v-icon>-->
                 </template>
 
               </v-data-table>
@@ -253,61 +245,6 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-        <!--<v-dialog v-model="dialogAddProf" width="500">
-          <v-card>
-            <v-toolbar color="#F18254">
-              <span class="text-subtitle-2 ml-4"> {{ formTitleProfessional }}</span>
-            </v-toolbar>
-            <v-card-text class="mt-2 mb-2">
-              <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-                <v-container fluid>
-                  <v-row>
-                    <v-col cols="12" md="12">
-                      <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.professional_id"
-                        :items="professionals" label="Profesional" prepend-icon="mdi-account-tie-outline"
-                        item-title="name" item-value="id" variant="underlined" :rules="selectRules" v-if="!editando"
-                        @update:model-value="bonusActiv">
-                        <template v-slot:item="{ props, item }">
-                          <v-list-item v-bind="props"
-                            :prepend-avatar="`${this.$axios.defaults.baseURL}images/${item.raw.image_url}`"
-                            :subtitle="'Cargo: ' + item.raw.charge" :title="item.raw.name"></v-list-item>
-                        </template>
-                      </v-autocomplete>
-                      <v-text-field v-model="nameProfessional" label="Professional"
-                        prepend-icon="mdi-account-tie-outline" variant="underlined" v-if="editando" disabled="true">
-                      </v-text-field>
-                    </v-col>
-                    <v-col cols="12" md="12">
-                      <v-text-field v-show="bonus" v-model="editedItem.ponderation" label="Ponderación"
-                        prepend-icon="mdi-arrow-collapse-vertical" variant="underlined" :rules="pago" type="number" min="0">
-                      </v-text-field>
-                      <v-text-field v-show="bonus" v-model="limitFormatted" label="Meta de Productividad"
-                        prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago" @keypress="onlyNumbers">
-                      </v-text-field>
-                      <v-text-field v-show="bonus" v-model="mountpayFormatted" label="Monto a Pagar"
-                        prepend-icon="mdi-currency-usd" variant="underlined" :rules="pago" @keypress="onlyNumbers">
-                      </v-text-field>
-                      <v-text-field v-model="salaryFormatted" label="Salario" v-show="!bonus"
-                      prepend-icon="mdi-cash" variant="underlined" type="number" min="0" @keypress="onlyNumbers"
-                      :rules="[v => v === null || v === '' || v >= 0 || 'El salario debe ser positivo']">
-                    </v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-container>
-                <v-divider></v-divider>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="#E7E9E9" variant="flat" @click="closeP">
-                    Cancelar
-                  </v-btn>
-                  <v-btn color="#F18254" variant="flat" @click="saveP" :disabled="!valid">
-                    Aceptar
-                  </v-btn>
-                </v-card-actions>
-              </v-form>
-            </v-card-text>
-          </v-card>
-        </v-dialog>-->
         <v-dialog v-model="dialogAddProf" width="700">
           <v-card>
             <v-toolbar color="#F18254">
@@ -460,15 +397,6 @@
               <v-data-table :headers="headers3" :items="branchStores" :search="search3" class="elevation-1"
                 :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
                 no-data-text="No hay datos disponibles" :loading="loadingStore" loading-text="Cargando datos...">
-
-                <!--<template v-slot:item.name="{ item }">
-
-                    <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                      <v-img :src="'https://api2.simplifies.cl/api/images/'+item.image_url" alt="image"></v-img>
-                    </v-avatar>
-                    {{ item.name+' '+item.surname+' '+item.second_surname}}
-                  </template>-->
-
                 <template v-slot:item.actions="{ item }">
                   <v-btn density="comfortable" icon="mdi-delete" @click="closestoreRequest(item)" color="red-darken-4"
                     variant="tonal" elevation="1" title="Eliminar afiliación del almacén"></v-btn>
@@ -558,21 +486,9 @@
               <v-data-table :headers="headers4" :items="branchAssociates" :search="search4" class="elevation-1"
                 :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
                 no-data-text="No hay datos disponibles" :loading="loadingAssociates" loading-text="Cargando datos...">
-
-                <!--<template v-slot:item.name="{ item }">
-
-                    <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                      <v-img :src="'https://api2.simplifies.cl/api/images/'+item.image_url" alt="image"></v-img>
-                    </v-avatar>
-                    {{ item.name+' '+item.surname+' '+item.second_surname}}
-                  </template>-->
-
                 <template v-slot:item.actions="{ item }">
                   <v-btn density="comfortable" icon="mdi-delete" @click="closeassociateRequest(item)"
                     color="red-darken-4" variant="tonal" elevation="1" title="Eliminar afiliación del asociado"></v-btn>
-                  <!--<v-icon size="small" color="red" @click="closestoreRequest(item)">
-                  mdi-delete
-                </v-icon>-->
                 </template>
 
               </v-data-table>
@@ -681,7 +597,7 @@
                   <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" v-if="mostrarFila"
                     :items="results" clearable label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
                     item-title="name" item-value="id"
-                    variant="outlined"></v-autocomplete><!-- @update:model-value="initialize()">-->
+                    variant="outlined"></v-autocomplete>
                 </v-col>
                 <v-col cols="12" md="1">
                   <v-btn icon @click="updateDate3" color="#F18254">
@@ -1020,22 +936,6 @@ export default {
     this.editedItem.business_id = this.business_id; // Establecer el primer negocio como valor predeterminado
     this.branch_id = parseInt(LocalStorageService.getItem("branch_id"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
-    //console.log('this.editedItem.business_id');
-    //console.log(this.editedItem.business_id);
-    /*LocalStorageService.setIsLocked(true);
-    axios
-      .get('https://api2.simplifies.cl/api/business')
-      .then((response) => {
-        this.business = response.data.business;
-      }).finally(() => {
-        if (this.business.length > 0) {
-          this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
-        }
-        if (this.charge === "Administrador") {
-          this.mostrarFila = true;
-        }
-        this.initialize();
-      });*/
       LocalStorageService.setIsLocked(true);
       handleRequest({
       endpoint: "business",
@@ -1111,7 +1011,6 @@ export default {
       else {
         this.bonus = false;
       }
-      console.log("selectedProfessional.charge", this.shouldReceiveCommission(selectedProfessional.charge));
       this.commission = this.shouldReceiveCommission(selectedProfessional.charge);
     },
     imagenDisponible() {
@@ -1158,8 +1057,6 @@ export default {
       }else{        
           this.results = response.data.branches;
       }
-          console.log('imprime sucursales');
-          console.log(this.results);
         }).finally(() => {          
           LocalStorageService.setIsLocked(false);
           if (this.charge === "Administrador") {
@@ -1182,7 +1079,6 @@ export default {
     onFileSelected(event) {
       let file = event.target.files[0];
       this.editedItem.image_data = file;
-      console.log(this.editedItem.image_data);
       this.cargarImage(file);
     },
     cargarImage(file) {
@@ -1203,16 +1099,7 @@ export default {
         this.imgMiniatura = '';
       };
       LocalStorageService.setIsLocked(true);
-      /*axios
-        .get('https://api2.simplifies.cl/api/business-type')
-        .then((response) => {
-          this.businessTypes = response.data.businessTypes;
-        }).finally(() => {
-            LocalStorageService.setIsLocked(false);
-        });
-        LocalStorageService.setIsLocked(true);*/
-    
-        try {
+      try {
           const result = await handleRequest({
             endpoint: "business-type",
             method: "GET",
@@ -1301,12 +1188,6 @@ export default {
       LocalStorageService.setIsLocked(true);
       if (this.editedIndex > -1) {
         this.valid = false;
-        /*this.data.id = this.editedItem.id;
-        this.data.name = this.editedItem.name;
-        this.data.phone = this.editedItem.phone;
-        this.data.address = this.editedItem.address;
-        this.data.business_id = this.editedItem.business.id;
-        this.data.business_type_id = this.editedItem.businessType;*/
         const formData = new FormData();
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
@@ -1323,11 +1204,6 @@ export default {
           });
       } else {
         this.valid = false;
-        /*this.data.name = this.editedItem.name;
-        this.data.phone = this.editedItem.phone;
-        this.data.address = this.editedItem.address;
-        this.data.business_id = this.editedItem.business;
-        this.data.business_type_id = this.editedItem.businessType;*/
         const formData = new FormData();
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
@@ -1348,23 +1224,7 @@ export default {
     showProfessionals(item) {
       LocalStorageService.setIsLocked(true);
       this.branchSelect = item;
-      console.log(this.branchSelect);
       this.branch_id = item.id;
-      console.log(item.id);
-      /*axios
-        .get('https://api2.simplifies.cl/api/branch-professionals', {
-          params: {
-            branch_id: item.id
-          }
-        })
-        .then((response) => {
-          this.branchProfessionals = response.data.professionals;
-          console.log('imprime professionals');
-        }).finally(() => {
-          this.loadingProfessionals = false;
-            LocalStorageService.setIsLocked(false);
-        });
-      this.dialogProfessionals = true;*/
       LocalStorageService.setIsLocked(true);
       handleRequest({
       endpoint: "branch-professionals",
@@ -1383,19 +1243,7 @@ export default {
     showAddProfessionals() {
       LocalStorageService.setIsLocked(true);
       this.editedIndexP = -1;
-      /*axios
-        .get('https://api2.simplifies.cl/api/professional-show-autocomplete-Notin', {
-          params: {
-            branch_id: this.branchSelect.id
-          }
-        })
-        .then((response) => {
-          this.professionals = response.data.professionals;
-        }).finally(() => {
-            LocalStorageService.setIsLocked(false);
-        });
-      this.dialogAddProf = true;*/
-      LocalStorageService.setIsLocked(true);
+     LocalStorageService.setIsLocked(true);
       handleRequest({
       endpoint: "professional-show-autocomplete-Notin",
       method: "GET",
@@ -1412,20 +1260,6 @@ export default {
     editItemProfessional(item) {
       LocalStorageService.setIsLocked(true);
       this.editedIndexP = 2;
-      console.log('Professional');
-      console.log(item);
-      /*axios
-        .get('https://api2.simplifies.cl/api/professional-show-autocomplete-Notin', {
-          params: {
-            branch_id: this.branchSelect.id
-          }
-        })
-        .then((response) => {
-          this.professionals = response.data.professionals;
-        }).finally(() => {
-            LocalStorageService.setIsLocked(false);
-        });
-        LocalStorageService.setIsLocked(true);*/
       handleRequest({
         endpoint: "professional-show-autocomplete-Notin",
         method: "GET",
@@ -1440,10 +1274,6 @@ export default {
       this.editedIndex = 2;
       this.editedItem.professional_id = parseInt(item.professional_id);
       this.editedItem = Object.assign({}, item);
-      /*this.editedItem.ponderation = item.ponderation;
-      this.editedItem.limit = item.limit;
-      this.editedItem.mountpay = item.mountpay;
-      this.nameProfessional = item.name;*/
       this.dialogAddProf = true;
       this.editando = true;
       if (item.charge === 'Barbero' || item.charge === 'Barbero y Encargado') {
@@ -1454,9 +1284,7 @@ export default {
     showStores(item) {
             LocalStorageService.setIsLocked(true);
       this.branchSelect = item;
-      console.log(this.branchSelect);
       this.branch_id = item.id;
-      console.log(item.id);
       axios
         .get('https://api2.simplifies.cl/api/branchstore-show', {
           params: {
@@ -1465,7 +1293,6 @@ export default {
         })
         .then((response) => {
           this.branchStores = response.data.stores;
-          console.log('imprime professionals');
         }).finally(() => {
           this.loadingStore = false;
             LocalStorageService.setIsLocked(false);
@@ -1504,27 +1331,7 @@ export default {
         this.data.tier2_commission_rate = this.editedItem.tier2_commission_rate ? this.editedItem.tier2_commission_rate : 0;
         this.data.tier3_min_sales = this.editedItem.tier3_min_sales ? this.editedItem.tier3_min_sales : 0;
         this.data.tier3_commission_rate = this.editedItem.tier3_commission_rate ? this.editedItem.tier3_commission_rate : 0;
-        /*axios
-          .put('https://api2.simplifies.cl/api/branchprofessional', this.data)
-          .then(() => {
-            this.$nextTick(() => {
-              this.editedItem = Object.assign({}, this.defaultItem)
-            }).finally(() => {
-              this.showAlert("success", "Asignación del trabajado a la sucursal editada correctamente", 3000);
-              this.showProfessionals(this.branchSelect);
-              LocalStorageService.setIsLocked(false);
-            });
-            this.dialogAddProf = false;
-            this.editando = false;
-            this.bonus = false;
-            this.editedIndex = -1;
-            this.showHints =  {
-            tier1: false,
-            tier2: false,
-            tier3: false
-          };
-          })*/
-          try {
+         try {
             const result = await handleRequest({
               endpoint: "branchprofessional",
               method: "PUT",
@@ -1586,22 +1393,7 @@ export default {
         this.data.tier2_commission_rate = this.editedItem.tier2_commission_rate ? this.editedItem.tier2_commission_rate : 0;
         this.data.tier3_min_sales = this.editedItem.tier3_min_sales ? this.editedItem.tier3_min_sales : 0;
         this.data.tier3_commission_rate = this.editedItem.tier3_commission_rate ? this.editedItem.tier3_commission_rate : 0;
-        /*axios
-          .post('https://api2.simplifies.cl/api/branchprofessional', this.data)
-          .then(() => {
-            this.$nextTick(() => {
-              this.editedItem = Object.assign({}, this.defaultItem)
-            }).finally(() => {
-              this.showAlert("success", "Trabajdor afiliado correctamente a la sucursal", 3000);
-              this.showProfessionals(this.branchSelect);
-              LocalStorageService.setIsLocked(false);
-            });
-            this.dialogAddProf = false;
-            this.editando = false;
-            this.bonus = false;
-            this.editedIndex = -1;
-          })*/
-          try {
+         try {
             const result = await handleRequest({
               endpoint: "branchprofessional",
               method: "POST",
@@ -1745,7 +1537,6 @@ export default {
         })
         .then((response) => {
           this.branchAssociates = response.data.associates;
-          console.log('imprime professionals');
         }).finally(() => {
           this.loadingAssociates = false,
             LocalStorageService.setIsLocked(false);

@@ -37,13 +37,7 @@
       <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" class="elevation-1" :search="search" no-data-text="No hay datos disponibles"
         no-results-text="No hay datos disponibles" :loading="loadingPermission" loading-text="Cargando datos...">
         <template v-slot:item.actions="{ item }">
-          <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
-            mdi-pencil
-          </v-icon>
-          <v-icon size="25" color="red" @click="deleteItem(item)">
-            mdi-delete
-          </v-icon>-->
-          <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
+           <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar Permiso"></v-btn>
           <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
             elevation="1" title="Eliminar Permiso"></v-btn>
@@ -247,7 +241,6 @@ export default {
       axios
         .get('https://api2.simplifies.cl/api/permission')
         .then((response) => {
-          console.log("entra a Buscar permisos")
           this.results = response.data;
         }).finally(() => {
             LocalStorageService.setIsLocked(false);

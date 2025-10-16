@@ -222,10 +222,8 @@
               elevation="1" class="mr-1 mt-1 mb-1" title="Editar Curso"></v-btn>
             <v-btn density="comfortable" icon="mdi-account-school" @click="showStudents(item)" color="green"
               variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Estudiantes inscritos"></v-btn>
-            <!--<v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-storefront" @click="showProducts(item)" color="orange-darken-1" variant="tonal"
-            elevation="1" title="Vender productos a estudiantes"></v-btn>-->
             <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-account-tie"
-              @click="showAddProfessional(item)" color="indigo" variant="darken-2" elevation="1"
+              @click="showAddProfessional(item)" color="indigo" variant="tonal" elevation="1"
               title="Asignar Professional"></v-btn>
             <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4"
               variant="tonal" elevation="1" title="Eliminar Curso"></v-btn>
@@ -322,10 +320,6 @@
                 </template>
 
                 <template v-slot:item.image_url="{ item }">
-                  <!-- Verifica si image_url cumple las condiciones -->
-                  <!--<v-icon color="green" v-if="item.image_url && item.image_url !== 'image/default.png'" @click="openModal(item.image_url)">
-              mdi-eye
-            </v-icon>-->
                   <v-btn density="comfortable" icon="mdi-eye" color="green"
                     v-if="item.image_url && item.image_url !== 'image/default.png'" @click="openModal(item.image_url)"
                     variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Ver detalles"></v-btn>
@@ -360,13 +354,7 @@
                   {{ formatNumber(item.total_payment) }}
                 </template>
                 <template v-slot:item.actions="{ item }">
-                  <!--<v-icon size="25" color="primary" @click="editS(item)">
-                    mdi-pencil
-                  </v-icon>
-                  <v-icon size="25" color="red" @click="deleteS(item)">
-                    mdi-delete
-                  </v-icon>-->
-                  <v-btn density="comfortable" icon="mdi-pencil" @click="editS(item)" color="primary" variant="tonal"
+                   <v-btn density="comfortable" icon="mdi-pencil" @click="editS(item)" color="primary" variant="tonal"
                     elevation="1" class="mr-1 mt-1 mb-1" title="Editar Asignación"></v-btn>
                   <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-storefront" @click="showProducts(item)"
                     color="orange-darken-1" variant="tonal" elevation="1"
@@ -481,15 +469,6 @@
           <v-data-table :headers="headers3" :items="productSales" :search="search3" class="elevation-1"
             :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles"
             no-data-text="No hay datos disponibles" :loading="loadingProducts" loading-text="Cargando datos...">
-            <!--<template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">:group-by="groupBy"
-              <tr>
-                <td :colspan="columns.length">
-                  <VBtn size="small" variant="text" :icon="isGroupOpen(item) ? '$expand' : '$next'"
-                    @click="toggleGroup(item)"></VBtn>
-                  {{ item.value }}
-                </td>
-              </tr>
-            </template>-->
             <template v-slot:item.price="{ item }">
               {{ formatNumber(item.price) }}
             </template>
@@ -501,22 +480,9 @@
               {{ item.nameProduct }}
             </template>
 
-            <!--<template v-slot:item.nameStudent="{ item }">
-
-            <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.student_image" alt="image"></v-img>
-            </v-avatar>
-            {{ item.nameStudent }}
-            </template>-->
-
             <template v-slot:item.actions="{ item }">
-              <!--<v-btn density="comfortable" icon="mdi-pencil"  @click="editItemProduct(item)" color="primary" variant="tonal"
-            elevation="1" class="mr-1 mt-1 mb-1" title="Editar existencia"></v-btn>-->
               <v-btn density="comfortable" icon="mdi-delete" @click="closeproductRequest(item)" color="red-darken-4"
                 variant="tonal" elevation="1" title="Eliminar existencia de producto"></v-btn>
-              <!--<v-icon size="small" color="red" @click="closestoreRequest(item)">
-                  mdi-delete
-                </v-icon>-->
             </template>
 
           </v-data-table>
@@ -540,9 +506,6 @@
             <v-container fluid>
               <v-row>
                 <v-col cols="12" md="12">
-                  <!--<v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="student_id" :items="studentsCourse" label="Estudiantes"
-                      prepend-icon="mdi-account-tie-outline" item-title="name" item-value="id" variant="underlined"
-                      :rules="selectRules"></v-autocomplete>-->
                   <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="product_id" :items="products"
                     clearable label="Productos" prepend-icon="mdi-tag" item-title="name" item-value="id"
                     variant="underlined" :rules="selectRules" @update:model-value="cantExist">
@@ -622,16 +585,13 @@
 
               <v-avatar elevation="3" color="grey-lighten-4" size="large">
                 <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
-              </v-avatar><!--+'?$'+Date.now()-->
+              </v-avatar>
               {{ item.name }}
             </template>
 
             <template v-slot:item.actions="{ item }">
               <v-btn density="comfortable" icon="mdi-delete" @click="deleteProfessional(item)" color="red-darken-4"
                 variant="tonal" elevation="1" title="Eliminar afiliación del professional"></v-btn>
-              <!--<v-icon size="small" color="red" @click="deleteP(item)">
-                  mdi-delete
-                </v-icon>-->
             </template>
 
           </v-data-table>
@@ -989,14 +949,10 @@ export default {
 
     formattedStartDate() {
       if (this.editedItem.startDate) {
-        console.log('this.editedItem.startDate datos');
-        console.log(this.editedItem.startDate);
         const date = new Date(this.editedItem.startDate);
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, "0");
         const day = String(date.getDate()).padStart(2, "0");
-        console.log(`${year}-${month}-${day}`);
-
         return `${year}-${month}-${day}`;
       }
       return "";
@@ -1004,13 +960,10 @@ export default {
     },
     formattedEndDate() {
       if (this.editedItem.endDate) {
-        console.log('this.editedItem.endDate');
-        console.log(this.editedItem.endDate);
         const date = new Date(this.editedItem.endDate);
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, "0");
         const day = String(date.getDate()).padStart(2, "0");
-        console.log(`${year}-${month}-${day}`);
         return `${year}-${month}-${day}`;
 
       }
@@ -1076,8 +1029,6 @@ export default {
     cantExist() {
       let exist = this.products.filter(item => item.id == this.product_id);
       this.product_exit = exist[0].product_exit;
-
-      console.log(exist[0].product_exit);
     },
 
     openModal(imageUrl) {
@@ -1098,10 +1049,7 @@ export default {
       this.loadingStudent = true;
       LocalStorageService.setIsLocked(true);
       this.courseSelect = item;
-      /*console.log('this.courseSelect');
-      console.log(this.courseSelect);*/
       this.course_id = item.id;
-      //console.log(item.id);
       axios
         .get('https://api2.simplifies.cl/api/course-student-show', {
           params: {
@@ -1110,8 +1058,6 @@ export default {
         })
         .then((response) => {
           this.courseStudents = response.data.students;
-          /*console.log('imprime estudiantes');
-          console.log(response.data.students);*/
 
         }).finally(() => {
           this.loadingStudent = false;
@@ -1141,8 +1087,6 @@ export default {
     },
 
     editS(item) {
-      console.log("Este es el Item")
-      console.log(item)
       this.dialogUpdateS = true;
       //this.editedItem.branch_id=item.id
       this.editedItemS.reservation_payment = item.reservation_payment;
@@ -1158,11 +1102,6 @@ export default {
       img.onerror = () => {
         this.imgMiniatura = '';
       };
-      /*  this.editedItemS.id_course=
-      
-      
-      */
-
       this.editedStudent.student_id = item.id
 
     },
@@ -1178,7 +1117,6 @@ export default {
       this.valid = false,
         this.data.course_id = this.course_id;
       this.data.student_id = this.editedStudent.student_id;
-      console.log(this.data);
       axios
         .post('https://api2.simplifies.cl/api/course-student', this.data)
         .then(() => {
@@ -1202,8 +1140,6 @@ export default {
       this.editedItemS.image_url = this.editedItem.course_image;
       this.editedItemS.course_id = this.course_id;
       let formData = new FormData();
-      console.log('this.editedItemS------------');
-      console.log(this.editedItemS);
       formData.append('file', this.editedItemS.image_url);
 
       for (let key in this.editedItemS) {
@@ -1300,7 +1236,6 @@ export default {
     onFileSelected(event) {
       let file = event.target.files[0];
       this.editedItem.course_image = file;
-      console.log(this.editedItem.course_image);
       this.cargarImage(file);
     },
     cargarImage(file) {
@@ -1382,19 +1317,12 @@ export default {
       LocalStorageService.setIsLocked(true);
       if (this.editedIndex == 2) {
         this.valid = false;
-        /*this.data.id = this.editedItem.id;
-        this.data.name = this.editedItem.name;
-        this.data.surname = this.editedItem.surname;
-        this.data.second_surname = this.editedItem.second_surname;
-        this.data.email = this.editedItem.email;
-        this.data.phone = this.editedItem.phone;*/
         this.editedItem.startDate = this.formattedStartDate;
         this.editedItem.endDate = this.formattedEndDate;
         const formData = new FormData();
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
         }
-        console.log(formData);
         axios
           .post('https://api2.simplifies.cl/api/course-update', formData)
           .then(() => {
@@ -1407,12 +1335,6 @@ export default {
           });
       } if (this.editedIndex == 1) {
         this.valid = false;
-        /*this.data.name = this.editedItem.name;
-        this.data.name = this.editedItem.name;
-        this.data.surname = this.editedItem.surname;
-        this.data.second_surname = this.editedItem.second_surname;
-        this.data.email = this.editedItem.email;
-        this.data.phone = this.editedItem.phone;*/
         this.editedItem.startDate = this.formattedStartDate;
         this.editedItem.endDate = this.formattedEndDate;
         const formData = new FormData();
@@ -1436,18 +1358,10 @@ export default {
     showProducts(item) {
       this.loadingProducts = true;
       LocalStorageService.setIsLocked(true);
-      console.log('this.courseSelect');
-      console.log(this.courseSelect);
       this.productSelect = item;
-      console.log('this.productSelect');
-      console.log(this.productSelect);
-      console.log('this.courseSelect[0].enrollment_confirmed');
-      console.log(this.courseSelect.enrollment_id);
       this.course_id = this.courseSelect.id;
       this.enrollment_id = this.courseSelect.enrollment_id;
       this.student_id = item.id;
-      /*this.courseSelect = item;
-      console.log(item.id);*/
       axios
         .get('https://api2.simplifies.cl/api/productsale-show', {
           params: {
@@ -1462,16 +1376,6 @@ export default {
             LocalStorageService.setIsLocked(false);
             this.loadingProducts = false;
         });
-      /*axios
-      .get('https://api2.simplifies.cl/api/course-student-product-show',{
-        params: {
-          course_id: item.id
-        }
-      })
-      .then((response) => {
-        this.studentsCourse = response.data.students;
-      });*/
-
       this.editedIndex = 3;
       this.dialogProducts = true;
     },
@@ -1501,15 +1405,11 @@ export default {
       LocalStorageService.setIsLocked(true);
       if (this.editedIndex == 3) {
         this.valid = false,
-          /*console.log('this.course_id');
-        console.log(this.course_id);*/
           this.data.enrollment_id = this.enrollment_id;
         this.data.student_id = this.student_id;
         this.data.id = this.product_id;
         this.data.cant = this.cant;
         this.data.course_id = this.course_id;
-        /*console.log('this.data');
-        console.log(this.data);*/
         axios
           .post('https://api2.simplifies.cl/api/productsale', this.data)
           .then(() => {
@@ -1524,25 +1424,7 @@ export default {
             this.showProducts(this.productSelect);
           });
       }
-      /*if (this.editedIndex == 4){
-        this.valid = false,
-        this.data.enrollment_id = this.enrollment_id;
-      this.data.store_id = this.store_id;
-      this.data.product_id = this.product_id;
-      this.data.product_quantity = this.product_quantity;
-      console.log('this.data');
-      console.log(this.data);
-      axios
-          .put('https://api2.simplifies.cl/api/productstore', this.data)
-          .then(() => {
-          this.dialogAddProduct = false;
-          this.store_id = '',
-          this.product_id = '';
-          this.product_quantity = '';
-          this.showProducts(this.enrollmentSelect);
-          this.showAlert("success", "Asignacion editada correctamente", 3000);
-        })
-      }*/
+      
     },
     closeproductRequest(item) {
       this.dialogRequestProduct = true
@@ -1593,17 +1475,12 @@ export default {
     },
     closeProfessional() {
       this.dialogAddProfessional = false;
-      /*this.$nextTick(() => {
-        this.editedStudent = Object.assign({}, this.defaultStudent)
-      })*/
-      //this.showStudents(this.courseSelect)
     },
     saveProfessional() {
       LocalStorageService.setIsLocked(true);
       this.valid = false,
         this.data.course_id = this.courseSelect.id;
       this.data.professional_id = this.professional_id;
-      console.log(this.data);
       axios
         .post('https://api2.simplifies.cl/api/course-professional', this.data)
         .then(() => {
@@ -1662,15 +1539,11 @@ export default {
     },
     //
     editState(item) {
-      console.log("Este es el Item")
-      console.log(item)
       this.dialogUpdateState = true;
-      //this.editedItem.branch_id=item.id
-      this.enabled = item.enabled;
+        this.enabled = item.enabled;
       this.payment_status = item.payment_status;
       this.amount_pay = item.amount_pay;
-      //this.editedItemS.image_url = item.image_url;
-      this.editedItemS.student_id = item.id;
+       this.editedItemS.student_id = item.id;
       this.editedStudent.student_id = item.id;
 
     },
@@ -1691,10 +1564,6 @@ export default {
       this.data.enabled = this.enabled;
       this.data.payment_status = this.payment_status;
       this.data.amount_pay = this.payment_status ? 0 : this.amount_pay;
-
-      console.log('this.data------------');
-      console.log(this.data);
-
       axios
         .post('https://api2.simplifies.cl/api/course-student-update2', this.data)
         .then(() => {

@@ -347,9 +347,6 @@ export default {
     items: [
       'Servicios',
       'Profesionales',
-      /*'Horario Disponible',
-      'Seleccione si es Cliente',
-      'Datos Personales',*/
     ],
     products: [
       {
@@ -430,20 +427,14 @@ export default {
         this.selected = [];
         this.selectedA = [];
         this.selectedM = [];
-        //this.getServicesProfessional();
+
       }else if (this.tabBar === 'tre') {
         this.selected = [];
         this.selectedA = [];
         this.selectedM = [];
-        //this.getServicesProfessional();
       }
-      //}
+
     },
-    /*isSelected(serviceId) {
-      console.log('entra a seleccionado');
-      console.log(this.selected.id == serviceId);
-      return this.selected.id == serviceId;
-    },*/
     showAlert(sb_type, sb_message, sb_timeout) {
       this.sb_type = sb_type
 
@@ -473,11 +464,6 @@ export default {
 
     async desasignService() {
       LocalStorageService.setIsLocked(true);
-      console.log('*********DATOS POARA ENVIAR PARA LA API***************');
-      console.log('this.professional');
-      console.log(this.professional[0]);
-      console.log('this.selected');
-      console.log(this.selected[0]);
       let request = {
         professional_id: this.professional[0],
         branch_service_id: this.selected[0]
@@ -511,38 +497,10 @@ export default {
             } finally {                
               this.getServicesProfessional();
             }
-      /*axios
-        .post('https://api2.simplifies.cl/api/professionalservice-destroy', request)
-        .then(() => {
-          LocalStorageService.setIsLocked(false);
-          this.showAlert("success", "Desasignado correctamente", 3000);
-          this.profitPercen = '';
-          this.getServicesProfessional();
-          //this.handleTabChange('two');
-          //this.professional = '';
-          this.selected = '';
-        }).catch(error => {
-          // Maneja cualquier error que pueda ocurrir durante la solicitud
-          console.log(error);
-          this.showAlert("warning", "Error al hacer la asignación".error, 3000);
-
-        });*/
-
     },
     async asignService()//todooo
     {
       LocalStorageService.setIsLocked(true);
-      console.log('*********DATOS POARA ENVIAR PARA LA API***************');
-      console.log('this.profitPercen');
-      console.log(this.profitPercen);
-      console.log('this.professional');
-      console.log(this.professional[0]);
-      console.log('this.selected');
-      console.log(this.selected[0]);
-      console.log('type_service');
-      console.log(this.type_service);
-      console.log('this.especial');
-      console.log(this.especial);
       if (this.especial === true) {
         this.type_service = 'Especial';
       }
@@ -556,9 +514,6 @@ export default {
         type_service: this.type_service
 
       }
-
-      console.log('request');
-      console.log(request);
       try {
                 const result = await handleRequest({
                     endpoint: 'professionalservice',
@@ -589,32 +544,9 @@ export default {
                 } finally {                    
                   this.getServicesProfessional();
                 }
-
-      /*axios.post('https://api2.simplifies.cl/api/professionalservice', request)
-        .then(() => {
-          LocalStorageService.setIsLocked(false);
-          this.showAlert("success", "Servicio asignado correctamente", 3000);
-          this.profitPercen = '';
-          //this.professional = '';
-          //this.handleTabChange('one');
-          this.getServicesProfessional();
-          this.selected = '';
-          this.especial = false;
-          this.type_service = '';
-        }).catch(error => {
-          // Maneja cualquier error que pueda ocurrir durante la solicitud
-          this.showAlert("warning", "Error al hacer la asignación", 3000);
-          this.profitPercen = '';
-          this.especial = false;
-        });*/
     },
     metaService() {
       LocalStorageService.setIsLocked(true);
-        console.log('*********DATOS POARA ENVIAR PARA LA API***************');
-        console.log('this.professional');
-        console.log(this.professional[0]);
-        console.log('this.selected');
-        console.log(this.selected[0]);
         let request = {
           professional_id: this.professional[0],
           branch_service_id: this.selected[0],
@@ -633,7 +565,6 @@ export default {
             this.selected = '';
           }).catch(error => {
             // Maneja cualquier error que pueda ocurrir durante la solicitud
-            console.log(error);
             this.showAlert("warning", "Error al hacer la asignación".error, 3000);
 
       });
@@ -642,11 +573,6 @@ export default {
 
     metaServiceDelete() {
       LocalStorageService.setIsLocked(true);
-console.log('*********DATOS POARA ENVIAR PARA LA API***************');
-console.log('this.professional');
-console.log(this.professional[0]);
-console.log('this.selected');
-console.log(this.selected[0]);
 let request = {
   professional_id: this.professional[0],
   branch_service_id: this.selected[0],
@@ -665,7 +591,6 @@ axios
     this.selected = '';
   }).catch(error => {
     // Maneja cualquier error que pueda ocurrir durante la solicitud
-    console.log(error);
     this.showAlert("warning", "Error al hacer la asignación".error, 3000);
 
 });
@@ -678,7 +603,6 @@ axios
     },
     SelectionRadio(value) {
       this.radios = value;
-      console.log(this.radios);
     },
     clearTextClient() {
       this.name_client = '';
@@ -691,7 +615,6 @@ axios
     //servicios
     toggleService(serviceId) {
       const index = this.selected.indexOf(serviceId);
-      console.log(this.selected);
       if (index > -1) {
         this.selected.splice(index, 1);
       } else {
@@ -724,7 +647,6 @@ axios
 
       // Limpiar la selección anterior y agregar el nuevo servicio seleccionado
       this.professional = [serviceId2];
-      console.log(this.professional);
       //HACER LLAMADA A BUSCAR LOS SERVICIOS DISPONIBLES Y SERVICIOS ASIGNADOS
       this.getServicesProfessional();
       //this.getServicesProfessional();
@@ -739,10 +661,6 @@ axios
       const idBranch = this.branch_id;
       this.servicesAsig = [];
       this.services = [];
-      console.log('this.servicesAsig');
-      console.log(this.servicesAsig);
-      console.log('this.services');
-      console.log(this.services);
       //AXIOS
       axios
         .get(`https://api2.simplifies.cl/api/services-professional-branch`, {
@@ -753,53 +671,21 @@ axios
         })
         .then((response) => {
           LocalStorageService.setIsLocked(false);
-          console.log(response.data.metaData)
           //this.services = response.data.branchServices;
           this.servicesAsig = response.data.assignedServices;
           this.services = response.data.unassignedServices;
           this.serviceMeta = response.data.metaData;
           if (this.services && this.services.length > 0) {
             this.mostrarSwitch = true;
-            console.log('this.mostrarSwitch');
-            console.log(this.mostrarSwitch);
           } else {
             this.mostrarSwitch = false;
-            console.log('this.mostrarSwitch');
-            console.log(this.mostrarSwitch);
           }
         })
         .catch((err) => {
-          console.log(err, "error");
 
         });
 
     },
-    /*getServicesProfessional() {
-      //LLAMAR AL METODO
-      //DADO EL ID DEL PROFESSIONAL Y LA BRANCH
-
-      const idProfessional = this.professional[0];
-      const idBranch = this.branch_id;
-
-      //AXIOS
-      axios
-        .get(`https://api2.simplifies.cl/api/services-professional-branch`, {
-          params: {
-            branch_id: idBranch,
-            professional_id: idProfessional,
-          }
-        })
-        .then((response) => {
-          console.log(response.data)
-          this.servicesAsig = response.data.assignedServices;
-          this.services = response.data.unassignedServices;
-        })
-        .catch((err) => {
-          console.log(err, "error");
-
-        });
-
-    },*/
     toggleService3(service) {
       const index = this.selected.indexOf(service.id);
 
@@ -812,49 +698,17 @@ axios
       this.selected = [service.id];
       this.selectedServiceType = [service.type_service];
       this.profitPercentaje = service.profit_percentaje;
-      //
-      //
-      console.log('this.profitPercentaje');
-      console.log(this.selected);
-      console.log(this.selectedServiceType);
-      console.log(this.profitPercentaje);
       this.profitPercen = this.profitPercentaje;
 
       //this.typeService(this.selectedServiceType[0],this.profitPercentaje[0]);
 
 
     },
-    /*chargeServices() {
-      axios
-        .get(`https://api2.simplifies.cl/api/professionalservice-show`, {
-          params: {
-            branch_id: this.branch_id
-          }
-        })
-        .then((response) => {
-          console.log(response.data)
-          this.services = response.data.branchServices;
-
-        })
-        .catch((err) => {
-          console.log(err, "error");
-
-        });
-    },*/
-
     chargeProfessionals() {
       LocalStorageService.setIsLocked(true);
-      //const newArrayService = valueServices.map(item => parseInt(item)); // Convertir a enteros si es necesario
-      //console.log(newArrayService);
       this.servicesAsig = [];
       this.services = [];
       this.professional = [];
-      console.log('this.professional');
-      console.log(this.professional);
-      console.log('this.servicesAsig');
-      console.log(this.servicesAsig);
-      console.log('this.services');
-      console.log(this.services);
       const data = {
 
         //services: newArrayService,
@@ -870,17 +724,8 @@ axios
         .then((response) => {
           LocalStorageService.setIsLocked(false);
           this.professionals = response.data.professionals;
-          console.log('estos son los profesionales');
-          console.log(response.data);
-
         })
         .catch((err) => {
-          console.log(err, "error");
-          /*  this.displayNotification(
-              "error",
-              "Error",
-              "Error al obtener el calendario de la Sucursal"
-            );*/
         });
     },
 

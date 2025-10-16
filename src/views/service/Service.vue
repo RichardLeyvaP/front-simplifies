@@ -57,21 +57,11 @@
                       </v-col>
                     </v-row>
                     <v-row>
-                      <!--<v-col cols="12" md="4">
-                      <v-select clearable label="Tipo" v-model="editedItem.type_service"
-                        :items="['Especial', 'Regular']" variant="underlined" prepend-icon="mdi-view-grid"
-                        :rules="selectRules"></v-select>
-                    </v-col>-->
                       <v-col cols="12" md="4">
                         <v-text-field v-model="editedItem.duration_service" clearable label="Duración"
                           prepend-icon="mdi-clock-time-eight" variant="underlined" :rules="requiredRules">
                         </v-text-field>
                       </v-col>
-                      <!--<v-col cols="12" md="4">
-                      <v-text-field v-model="editedItem.ponderation" clearable label="Ponderación"
-                        prepend-icon="mdi-arrow-collapse-vertical" variant="underlined" :rules="pago">
-                      </v-text-field>
-                    </v-col>-->
                       <v-col cols="12" md="4">
                         <v-text-field v-model="editedItem.profit_percentaje" clearable label="% Ganancia"
                           prepend-icon="mdi-percent" variant="underlined" :rules="requiredRules">
@@ -163,23 +153,13 @@
             </div>
           </template>
           <template v-slot:item.name="{ item }">
-            <!--this.items = data.map(item => ({
-  ...item,
-  imageUrl: ${item.imageUrl}?${Date.now()}
-}));-->
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
               <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_service" alt="image"></v-img>
-            </v-avatar><!--+'?$'+Date.now()-->
+            </v-avatar>
             {{ item.name }}
           </template>
 
           <template v-slot:item.actions="{ item }">
-            <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
-            mdi-pencil
-          </v-icon>
-          <v-icon size="25" color="red" @click="deleteItem(item)">
-            mdi-delete
-          </v-icon>-->
             <v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary" variant="tonal"
               elevation="1" class="mr-1 mt-1 mb-1" title="Editar servicio"></v-btn>
             <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4"
@@ -317,10 +297,6 @@ export default {
 
   methods: {
     convertirMinutosAHorasYMinutos(minutos) {
-
-//console.log("estos son los minutos")
-//console.log(minutos)
-// Calcular las horas
 var horas = Math.floor(minutos / 60);
 // Calcular los minutos restantes después de convertir a horas
 var minutosRestantes = minutos % 60;
@@ -473,7 +449,6 @@ return mensaje;
       if (this.editedIndex > -1) {
         this.valid = false;
         this.editedItem.profit_percentaje = this.editedItem.profit_percentaje ? this.editedItem.profit_percentaje : '';
-        console.log(this.editedItem.profit_percentaje);
         const formData = new FormData();
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
@@ -497,8 +472,6 @@ return mensaje;
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
         }
-        console.log('formData');
-        console.log(formData);
         axios
           .post('https://api2.simplifies.cl/api/service', formData)
           .then(() => {

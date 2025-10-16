@@ -53,40 +53,6 @@
                     <!-- Segunda fila: Campos de comisión -->
                     <v-row>
                       <v-col cols="12" md="6">
-                        
-                        <!--<v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.gives_commission"
-                        :items="commissionOptions" label="Da comisión" item-title="name" item-value="id"
-                        variant="underlined" :rules="commissionSelectRules" prepend-icon="mdi-cash-multiple">
-                        <template v-slot:item="{ props, item }">
-                          <v-list-item
-                            v-bind="props"
-                            :prepend-icon="item.raw.icon"
-                            :class="item.raw.id ? 'text-green-darken-3' : 'text-red-darken-3'"
-                            :title="item.raw.name"
-                          >
-                            <template v-slot:prepend>
-                              <v-icon 
-                                :icon="item.raw.icon" 
-                                :color="item.raw.id ? 'green-darken-3' : 'red-darken-3'"
-                                size="large"
-                              />
-                            </template>
-                          </v-list-item>
-                        </template>
-                        
-                        <template v-slot:selection="{ item }">
-                          <div class="d-flex align-center">
-                            <v-icon 
-                              :icon="item.raw.icon"
-                              :color="item.raw.id ? 'green-darken-3' : 'red-darken-3'"
-                              class="mr-2"
-                            />
-                            <span class="font-weight-medium">
-                              {{ item.title }}
-                            </span>
-                          </div>
-                        </template>
-                      </v-autocomplete>-->
                       <v-switch
                         v-model="editedItem.gives_commission"
                         :true-value="1"
@@ -318,15 +284,6 @@ export default {
     async initialize() {
       this.loadingCategory = true;
       LocalStorageService.setIsLocked(true);
-      /*axios
-        .get('https://api2.simplifies.cl/api/product-category')
-        .then((response) => {
-          console.log("entra a Buscar almacenes")
-          this.results = response.data.productcategories;
-        }).finally(() => {
-            LocalStorageService.setIsLocked(false);
-            this.loadingCategory = false;
-        });*/
         try {
         const result = await handleRequest({
           endpoint: 'product-category',
@@ -393,20 +350,6 @@ export default {
       LocalStorageService.setIsLocked(true);
       this.data = {};
       if (this.editedIndex > -1) {
-        /*this.valid = false;
-        this.data.id = this.editedItem.id;
-        this.data.name = this.editedItem.name;
-        this.data.description = this.editedItem.description;
-        this.data.gives_commission = this.editedItem.gives_commission;
-        this.data.commission_rate = this.editedItem.commission_rate;
-    
-        axios
-          .put('https://api2.simplifies.cl/api/product-category', this.data)
-          .then(() => {
-            LocalStorageService.setIsLocked(false);
-            this.initialize();
-            this.showAlert("success", "Categoría de Producto editada correctamente", 3000)
-          });*/
           this.valid = false;
           this.data.id = this.editedItem.id;
           this.data.name = this.editedItem.name;
@@ -436,17 +379,6 @@ export default {
       } else {
         this.valid = false;
         this.data = {};
-        /*this.data.name = this.editedItem.name;
-        this.data.description = this.editedItem.description;
-        this.data.gives_commission = this.editedItem.gives_commission;
-        this.data.commission_rate = this.editedItem.commission_rate;
-      axios
-          .post('https://api2.simplifies.cl/api/product-category', this.data)
-          .then(() => {
-            LocalStorageService.setIsLocked(false);
-            this.initialize();
-            this.showAlert("success", "Categoría de Producto registrada correctamente", 3000)
-          })*/
           this.data.id = this.editedItem.id;
           this.data.name = this.editedItem.name;
           this.data.description = this.editedItem.description;

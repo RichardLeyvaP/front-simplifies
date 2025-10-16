@@ -182,9 +182,6 @@
               </template>
 
               <template v-slot:item.actions="{ item }">
-                <!--<v-icon size="25" color="red" @click="deleteS(item)">
-                  mdi-delete
-                </v-icon>-->
                 <v-btn density="comfortable" icon="mdi-delete" @click="deleteS(item)" color="red-darken-4" variant="tonal"
                   elevation="1" title="Eliminar asignación"></v-btn>
               </template>
@@ -261,7 +258,6 @@
         </v-chip>
     </v-card-title>
 </v-img>
-                  <!--<v-img :src="'https://api2.simplifies.cl/api/images/' + details.imageLook" alt="image"></v-img>-->
                 </v-card>
       </v-col>
       <v-col cols="12" sm="6" class="text-left">
@@ -326,17 +322,6 @@
                     </v-text-field>
 
                   </v-col>
-                  <!--<v-col cols="12" md="6">
-                    <v-text-field v-model="editedItemClient.surname" clearable label="Primer Apellido"
-                      prepend-icon="mdi-account-tie-outline" variant="underlined" :rules="nameRules">
-                    </v-text-field>
-
-                  </v-col>
-                  <v-col cols="12" md="6">
-                    <v-text-field v-model="editedItemClient.second_surname" clearable label="Segundo Apellido"
-                      prepend-icon="mdi-account-tie-outline" variant="underlined" :rules="nameRules">
-                    </v-text-field>
-                  </v-col>-->
                   <v-col cols="12" md="6">
                     <v-text-field v-model="editedItemClient.email" clearable label="Correo Electrónico"
                       prepend-icon="mdi-email-outline" variant="underlined" :rules="emailRules" @change="handleEmailChange">
@@ -639,8 +624,6 @@ export default {
       const selectedUser = this.users.find(user => user.user_id === selectedItem);
       this.details = selectedUser.details;
       this.nameClient = selectedUser.name;
-    console.log('this.details');
-    console.log(this.details);
   }
     },
     imagenDisponible() {
@@ -690,13 +673,10 @@ export default {
     updateDate(val) {
       this.input = val;
       this.editedCardGiftUser.expiration_date = format(val, "yyyy-MM-dd");
-      console.log(this.editedCardGiftUser.expiration_date);
       this.menu = false;
     },
     showCardGifts(item) {
       this.cardSelect = item;
-      //console.log(this.cardSelect);
-      console.log(item.id);
       this.editedCardGiftUser.card_gift_id = item.id
       this.data.card_gift_id = item.id
       axios
@@ -725,13 +705,11 @@ export default {
     onFileSelectedClient(event) {
       let file = event.target.files[0];
       this.editedItemClient.client_image = file;
-      //console.log(this.editedItem.image_cardgift);
       this.cargarImage(file);
     },
     onFileSelected(event) {
       let file = event.target.files[0];
       this.editedItem.image_cardgift = file;
-      //console.log(this.editedItem.image_cardgift);
       this.cargarImage(file);
     },
     cargarImage(file) {
@@ -831,7 +809,6 @@ export default {
     save() {
       LocalStorageService.setIsLocked(true);
       if (this.editedIndex > -1) {
-        //console.log(this.editedItem.id);
         this.valid = false;
         const formData = new FormData();
         for (let key in this.editedItem) {
@@ -885,9 +862,7 @@ export default {
       this.valid = false,
         this.data.card_gift_id = this.cardSelect.id;
       this.data.user_id = this.editedCardGiftUser.user_id;
-      this.data.expiration_date = this.editedCardGiftUser.expiration_date ? this.editedCardGiftUser.expiration_date : format(new Date(), "yyyy-MM-dd");/*this.input ? format(new Date(this.input), "") : new Date();*/
-      console.log('this.editedCardGiftUser.expiration_date');
-      console.log(this.data.expiration_date);
+      this.data.expiration_date = this.editedCardGiftUser.expiration_date ? this.editedCardGiftUser.expiration_date : format(new Date(), "yyyy-MM-dd");
       axios
         .post('https://api2.simplifies.cl/api/card-gift-user', this.data)
         .then(() => {
@@ -916,18 +891,10 @@ export default {
       {
         LocalStorageService.setIsLocked(true);
         this.valid = false;
-        /*this.data.name = this.editedItem.name;
-        this.data.name = this.editedItem.name;
-        this.data.surname = this.editedItem.surname;
-        this.data.second_surname = this.editedItem.second_surname;
-        this.data.email = this.editedItem.email;
-        this.data.phone = this.editedItem.phone;*/
         const formData = new FormData();
           for (let key in this.editedItemClient) {
             formData.append(key, this.editedItemClient[key]);
           } 
-          console.log('formData');
-          console.log(formData);
         axios
           .post('https://api2.simplifies.cl/api/client', formData)
           .then(() => {

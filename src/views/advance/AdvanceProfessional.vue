@@ -61,7 +61,7 @@
                         <v-locale-provider locale="es">
                             <v-date-picker header="Calendario" title="Seleccione la fecha" color="#F18254"
                                 :modelValue="input2" format="yyyy-MM-dd" :min="dateFormatted"
-                                @update:model-value="updateDate1"></v-date-picker><!--@update:model-value="updateDate2"-->
+                                @update:model-value="updateDate1"></v-date-picker>
                         </v-locale-provider>
                     </v-menu>
                 </v-col>
@@ -83,7 +83,7 @@
                                 <v-avatar class="mr-1" elevation="3" color="grey-lighten-4" size="small">
                                     <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image}?t=${Date.now()}`"
                                         alt="image"></v-img>
-                                </v-avatar><!--+'?$'+Date.now()-->
+                                </v-avatar>
                                 {{ item.professionalName }}
                             </template>
                             <template v-slot:item.amount="{ item }">
@@ -105,11 +105,6 @@
                                     :title="(item.receipt && item.receipt !== 'advances/default.jpg') ? 'Ver comprobante' : 'No hay comprobante disponible'"></v-btn>
                             </template>
                             <template v-slot:item.actions="{ item }">
-                                <!--<v-btn density="comfortable" icon="mdi-cash-check"
-                                    @click="(item.status === 'Aprobado') && advancePay(item)"
-                                    :color="(item.status === 'Aprobado') ? 'green' : 'grey'" variant="tonal"
-                                    elevation="1" class="mr-1 mt-1 mb-1"
-                                    :title="(item.status === 'Aprobado') ? 'Realizar pago' : 'Solo disponible para solicitudes aprobadas'"></v-btn>-->
                                     <v-btn :disabled="item.status !== 'Pendiente'" density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary"
                                     variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
                                     title="Editar solicitud de adelanto"></v-btn>
@@ -151,72 +146,6 @@
             </v-card-text>
         </v-card>
     </v-dialog>
-    <!--<v-dialog v-model="dialog" max-width="600px">
-        <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-            <v-card>
-                <v-toolbar color="#F18254">
-                    <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
-                </v-toolbar>
-                <v-card-text>
-                    <v-container>
-                        <v-row>
-                            <v-col cols="12" md="6">
-                                <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40"
-                                    transition="scale-transition" offset-y min-width="290px">
-                                    <template v-slot:activator="{ props }">
-                                        <v-text-field v-bind="props" :modelValue="dateFormatted3" variant="underlined"
-                                            prepend-icon="mdi-calendar" label="Fecha" density="compact"></v-text-field>
-                                    </template>
-                                    <v-locale-provider locale="es">
-                                        <v-date-picker header="Calendario" title="Seleccione la fecha" color="#F18254"
-                                            :modelValue="input3" @update:model-value="updateDate3" format="yyyy-MM-dd"
-                                            :min="new Date().toISOString().split('T')[0]"></v-date-picker>
-                                    </v-locale-provider>
-                                </v-menu>
-                            </v-col>
-                            <v-col cols="12" md="6">
-                                <v-select v-model="editedItem.status" :items="statusOptions" item-value="value"
-                                    item-title="text" label="Estado" :prepend-icon="getStatusIcon(editedItem.status)"
-                                    variant="underlined" density="compact" :rules="[v => v === 'Pagado']">
-                                    <template v-slot:item="{ props }">
-                                        <v-list-item v-bind="props">
-                                            <template v-slot:prepend>
-                                                <v-icon :color="getStatusColor(props.value).color">
-                                                    {{ getStatusIcon(props.value) }}
-                                                </v-icon>
-                                            </template>
-                                        </v-list-item>
-                                    </template>
-                                </v-select>
-                            </v-col>
-                        </v-row>
-                        <v-row>
-                            <v-col cols="12" md="6">
-                                <v-file-input clearable v-model="file" ref="fileInput" label="Comprobante"
-                                    variant="underlined" density="compact" name="file" accept=".png, .jpg, .jpeg"
-                                    @change="onFileSelected">
-                                </v-file-input>
-                            </v-col>
-                            <v-col cols="12" md="6">
-                                <v-card elevation="6" class="mx-auto" max-width="210" max-height="120">
-                                    <img v-if="imagenDisponible()" :src="imgedit" height="120" width="210">
-                                </v-card>
-
-
-                            </v-col>
-                        </v-row>
-                    </v-container>
-                </v-card-text>
-                <v-divider></v-divider>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="#E7E9E9" variant="flat" @click="close">Cancelar</v-btn>
-                    <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid"
-                        :loading="loading">Aceptar</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-form>
-    </v-dialog>-->
     <v-dialog v-model="dialogSolicitud" max-width="600px">
   <v-card>
     <v-toolbar color="#F18254">
@@ -228,60 +157,6 @@
     <v-card-text>
       <v-form ref="form" v-model="valid" enctype="multipart/form-data">
         <v-container>
-          <!-- Sección de Cards Informativas 
-          <v-row class="mb-4">-->
-            <!-- Card Total Productos
-            <v-col cols="12" md="3" class="pa-1">
-              <v-card class="pa-2" elevation="2">
-                <v-list-item subtitle="Producto" :title="formatNumber(this.totalSales)">
-                  <template v-slot:prepend>
-                    <v-avatar color="blue">
-                      <v-icon color="white">mdi-cart</v-icon>
-                    </v-avatar>
-                  </template>
-                </v-list-item>
-              </v-card>
-            </v-col> -->
-            
-            <!-- Card Total Propinas 
-            <v-col cols="12" md="3" class="pa-1">
-              <v-card class="pa-2" elevation="2">
-                <v-list-item subtitle="Propinas" :title="formatNumber(this.totalTip)">
-                  <template v-slot:prepend>
-                    <v-avatar color="amber">
-                      <v-icon color="white">mdi-cash</v-icon>
-                    </v-avatar>
-                  </template>
-                </v-list-item>
-              </v-card>
-            </v-col>-->
-            
-            <!-- Card Salario 
-            <v-col cols="12" md="3" class="pa-1">
-              <v-card class="pa-2" elevation="2">
-                <v-list-item subtitle="Salario" :title="formatNumber(this.salary)">
-                  <template v-slot:prepend>
-                    <v-avatar color="green">
-                      <v-icon color="white">mdi-wallet</v-icon>
-                    </v-avatar>
-                  </template>
-                </v-list-item>
-              </v-card>
-            </v-col>-->
-            <!-- Card Total General 
-            <v-col cols="12" md="3" class="pa-0">
-              <v-card class="pa-0" elevation="2">
-                <v-list-item class="px-2 py-1" subtitle="Total" :title="formatNumber(this.totalMount)">
-                  <template v-slot:prepend>
-                    <v-avatar color="white">
-                      <v-icon color="primary">mdi-calculator</v-icon>
-                    </v-avatar>
-                  </template>
-                </v-list-item>
-              </v-card>
-            </v-col>
-          </v-row>-->
-          
           <!-- Campo de Cantidad -->
           <v-row>
             <v-col cols="12" md="12">                      
@@ -345,16 +220,6 @@
 
 import LocalStorageService from "@/LocalStorageService";
 import { handleRequest } from "@/utils/api";
-/*axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
-*/
 export default {
     data: () => ({
         loadingrules: true,
@@ -490,26 +355,6 @@ export default {
         shouldShowAdvanceButton() {
             return !this.mostrarFila && this.cantAdvanceToday;
         },
-        /*tableHeaders() {
-            const baseHeaders = [
-            { title: 'Fecha', key: 'data', sortable: true },
-            { title: 'Monto', key: 'amount', sortable: true },
-            { title: 'Estado', key: 'status', sortable: true },
-            { title: 'Comprobante', key: 'receipt' },
-            { title: 'Acciones', key: 'actions', sortable: false }
-            ];
-            
-            if (this.mostrarFila) {
-            // Insertamos la columna de Profesional en la posición 1
-            baseHeaders.splice(1, 0, { 
-                title: 'Profesional', 
-                key: 'professionalName', 
-                sortable: true 
-            });
-            }
-            
-            return baseHeaders;
-    }*/
     },
 
     watch: {
@@ -554,9 +399,6 @@ export default {
                 this.branch_id = this.branches[0].id;
                 this.mostrarFila = true;
             }
-            /*if (this.charge === "Administrador") {          
-            this.professional_id = null;
-            }else{      */
             this.professional_id = LocalStorageService.getItem('professional_id');
             //}
             await this.initialize();
@@ -628,12 +470,8 @@ export default {
                 if (result.success) {
                     // Si la solicitud es exitosa, asignamos las sucursales
                     this.results = result.data.advances;
-                    //console.log('this.results');
-                    //console.log(this.results);
-                    //if (this.charge !== "Administrador") {                  
-                    console.log('Valor DIRECTO del método:', this.canRequestAdvanceToday());
-this.cantAdvanceToday = this.canRequestAdvanceToday(); 
-console.log('Valor ASIGNADO:', this.cantAdvanceToday);
+                    this.cantAdvanceToday = this.canRequestAdvanceToday(); 
+
                     //}
                 } else {
                     this.loadingrules = false;
@@ -730,38 +568,6 @@ console.log('Valor ASIGNADO:', this.cantAdvanceToday);
             this.file = null;
             this.imgMiniatura = '';
         },
-        /*async save() {
-            this.valid = false;
-            const formData = new FormData();
-            for (let key in this.editedItem) {
-            formData.append(key, this.editedItem[key]);
-            }
-            try {
-                const result = await handleRequest({
-                    endpoint: "advance-update-admin",
-                    method: "POST",
-                    data: formData,
-                });
-
-                // Manejo de la respuesta según el resultado
-                if (result.success) {
-                    this.showAlert("success", result.message, 3000);
-                    this.initialize();
-                } else {
-                    this.showAlert("warning", result.message, 3000);
-                }
-            } catch (error) {
-                // Este bloque captura errores inesperados fuera del manejo estándar
-                this.showAlert(
-                    "error",
-                    "Ocurrió un error inesperado al procesar la solicitud.",
-                    3000
-                );
-            } finally {
-                this.initialize();
-                this.close();
-            }
-        },*/
         formatNumber(value) {
             // Verificar si el valor es 0, null, undefined o no es un número
             if (value === 0 || value === null || value === undefined || isNaN(value)) {

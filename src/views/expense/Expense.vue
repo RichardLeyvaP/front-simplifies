@@ -92,12 +92,6 @@
    <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search" :items="results" class="elevation-1" no-data-text="No hay datos disponibles"
      no-results-text="No hay datos disponibles" :loading="loadingExpense" loading-text="Cargando datos...">
      <template v-slot:item.actions="{ item }">
-       <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
-         mdi-pencil
-       </v-icon>
-       <v-icon size="25" color="red" @click="deleteItem(item)">
-         mdi-delete
-       </v-icon>-->
        <v-btn density="comfortable" icon="mdi-pencil"  @click="(item.id == 4 || item.id == 5 || item.id == 6 || item.id == 10) ? '' : editItem(item)" :color="(item.id == 4 || item.id == 5 || item.id == 6|| item.id == 10) ? 'grey' : 'primary'" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar operación de gasto"></v-btn>
           <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" :color="(item.id == 4 || item.id == 5 || item.id == 6 || item.id == 10) ? 'grey' : 'red-darken-4'" variant="tonal"

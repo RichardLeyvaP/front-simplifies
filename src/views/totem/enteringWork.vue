@@ -298,12 +298,9 @@ export default {
   },
   computed: {
       advanceReserva1() {
-      console.log()
       return !this.selected.length > 0; // Verdadero si hay elementos, falso si está vacío
     },
       advanceReserva2() {
-      console.log('this.array_Places.length');
-      console.log(this.selected.length);
       return this.selected.length === 0; // Verdadero si hay elementos, falso si está vacío
     },
 
@@ -336,8 +333,6 @@ export default {
     if(this.step < this.items.length) { 
       this.step++;
     }
-    console.log('Aqui se muestran los Step');
-    console.log(this.step );
    this.verificateStep(this.step);
  
 },
@@ -354,7 +349,6 @@ prevStep() {
   { 
     this.stopTimer();
     //SI NO ES TYPE 1 NI 2
-    console.log(this.type_professional);
     if(this.type_professional === 0)
     {
       //lo mando para el inicio, para el correo
@@ -375,15 +369,10 @@ prevStep() {
         this.stopTimer();
       } 
       if (newValue === 2) {
-        // Llama a tu método aquí
-        console.log("--------------Se ha pasado del paso 1 al paso 2");
         this.sendData();
         this.stopTimer();
       } // Verifica si se está pasando del paso 2 al paso 3
       if (newValue === 3) {
-        // Llama a tu método aquí
-        console.log("--------------Se ha pasado del paso 2 al paso 3 -divideInterval----------------------------");
-        console.log(this.array_Places);
         //llamar a insertar los puestos seleccionado
         this.send();
         // :loading="loading" @click="GenerateQr()"
@@ -412,8 +401,7 @@ prevStep() {
           this.qrCode = response.data;
           let svgData = atob(this.qrCode);
           this.qrCodeBase64 = 'data:image/svg+xml;base64,' + btoa(svgData);
-          console.log(this.qrCodeBase64);
-          this.redirectToAnotherPage = true;
+            this.redirectToAnotherPage = true;
           this.startTimer();
         });
       if (this.qrCode) {
@@ -442,7 +430,6 @@ prevStep() {
     },
     SelectionRadio(value) {
       this.radios = value;
-      console.log(this.radios);
     },
     clearTextClient() {
       this.verificate_menssj = '';
@@ -457,7 +444,6 @@ prevStep() {
 
 
       const newArrayPlaces = this.array_Places.map(item => parseInt(item));
-      console.log(newArrayPlaces[0]);
       if (this.tipoProfessional === 'Tecnico')//es tecnico
       {
 
@@ -475,44 +461,18 @@ prevStep() {
           places: 0,
         }
       }
-
-
-     /* // Realiza la solicitud GET con Axios y pasa los parámetros
-      axios.post('https://api2.simplifies.cl/api/professionalworkplace', request)
-        .then(response => {
-          // Maneja la respuesta de la solicitud aquí
-          this.message = response.data.msg
-
-        })
-        .catch(error => {
-          // Maneja cualquier error que pueda ocurrir durante la solicitud
-          console.error('Error al hacer la solicitud:', error);
-        });
-        */
-
     },
     sendData() {
-      console.log('-------------------this.branch_id-----------------');
-      console.log(this.branch_id);
-
       // Realiza la solicitud POST Y BUSCO LOS DATOS DEL CLIENTE 
       axios.get(`https://api2.simplifies.cl/api/verify-tec-prof?email=${this.email_client2}&branch_id=${this.branch_id}`)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.clientRegister = response.data.professionals;
-          console.log('-------------------------------clientRegister----------------------------------------');
-          console.log(this.clientRegister);
-
-
-
           const client = this.clientRegister;
-
           //ASIGNO A LOS CAMPOS DEL FORMULARIO TDS LOS DATOS
           if (client.professional_id != 0) {
-          console.log('-------client.type-----');
           
           this.type_professional = client.type;
-          console.log(client.type);
             if (client.type != 0) {//es BARBERO O TECNICO
 
             this.name_professional = client.name;
@@ -532,16 +492,11 @@ prevStep() {
         }
           else {
             this.changeStep(1);
-            console.log("NO COINCIDE EL CORREO");
           }
 
 
         })
         .catch(error => {
-          //simulando que diera un tecnico
-          //  this.togglepuestoT2(1);
-          // Maneja cualquier error que pueda ocurrir durante la solicitud
-          console.error('Error al hacer la solicitud:', error);
         });
 
     },
@@ -562,7 +517,6 @@ prevStep() {
           this.qrCode = response.data;
           let svgData = atob(this.qrCode);
           this.qrCodeBase64 = 'data:image/svg+xml;base64,' + btoa(svgData);
-          console.log(this.qrCodeBase64);
           this.redirectToAnotherPage = true;
           this.startTimer();
         });
@@ -595,13 +549,10 @@ prevStep() {
       // Verifica si se está pasando del paso 1 al paso 2
       if (newValue === 2) {
         // Llama a tu método aquí
-        console.log("--------------Se ha pasado del paso 1 al paso 2");
-        this.sendData();
+         this.sendData();
       } // Verifica si se está pasando del paso 2 al paso 3
       if (newValue === 3) {
         // Llama a tu método aquí
-        console.log("--------------Se ha pasado del paso 2 al paso 3 -divideInterval----------------------------");
-        console.log(this.array_Places);
         //llamar a insertar los puestos seleccionado
         this.send();
         // :loading="loading" @click="GenerateQr()"
@@ -617,7 +568,6 @@ prevStep() {
     togglepuestoT(puestoTId) {
       this.array_Places.push(puestoTId);
       const index = this.selected.indexOf(puestoTId);
-      console.log(this.selected);
       if (index > -1) {
         this.selected.splice(index, 1);
       } else {
@@ -692,7 +642,6 @@ prevStep() {
     //profesionales
     toggleTimer(hour) {
       const index = this.hourSelect.indexOf(hour);
-      console.log(this.hourSelect);
       if (index > -1) {
         // Si el servicio ya está seleccionado, no hagas nada
         return;
@@ -703,9 +652,6 @@ prevStep() {
       this.hourSelect = [hour];
       this.start_time1 = this.hourSelect;
     },
-    /*  isProfessional(puestoTId2) {
-          return this.professional.length === 1 && this.professional[0] === puestoTId2;
-      },*/
     isTimer(hour) {
       return this.hourSelect.length === 1 && this.hourSelect[0] === hour;
     },
@@ -725,13 +671,11 @@ prevStep() {
       axios
         .get(url)
         .then((response) => {
-          console.log(response.data)
           this.puestoTs = response.data.workplaces;
 
 
         })
         .catch((err) => {
-          console.log(err, "error");
 
         });
     },
@@ -739,7 +683,6 @@ prevStep() {
     chargeProfessionals(valuepuestoTs) {
 
       const newArraypuestoT = valuepuestoTs.map(item => parseInt(item)); // Convertir a enteros si es necesario
-      console.log(newArraypuestoT);
       const data = {
 
         puestoTs: newArraypuestoT,
@@ -754,16 +697,8 @@ prevStep() {
         })
         .then((response) => {
           this.professionals = response.data.professionals;
-          console.log(response.data);
-
         })
         .catch((err) => {
-          console.log(err, "error");
-          /*  this.displayNotification(
-              "error",
-              "Error",
-              "Error al obtener el calendario de la Sucursal"
-            );*/
         });
     },
 

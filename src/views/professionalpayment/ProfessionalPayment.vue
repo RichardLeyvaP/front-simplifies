@@ -46,16 +46,8 @@
                         {{ item.name }}
                     </template>
                     <template v-slot:item.actions="{ item }">
-                        <!--<v-btn density="comfortable" icon="mdi-pencil" @click="(item.charge === 'Barbero' || item.charge === 'Barbero y Encargado') ? '' :editItem(item)" :color="(item.charge === 'Barbero' || item.charge === 'Barbero y Encargado') ? 'grey' : 'primary'"
-                        variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Editar Pago a profesional"></v-btn>-->
                         <v-btn density="comfortable" icon="mdi-account-cash" @click="pagoProfessional(item)"
                             color="primary" variant="tonal" elevation="1" title="Pago a profesional"></v-btn>
-                        <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
-              mdi-pencil
-            </v-icon>
-            <v-icon size="25" color="red" @click="deleteItem(item)">
-              mdi-delete
-            </v-icon>-->
                     </template>
                 </v-data-table>
             </div>
@@ -316,7 +308,7 @@
                                                     :items="courses" class="elevation-1"
                                                     no-results-text="No hay datos disponibles"
                                                     no-data-text="No hay datos disponibles" :loading="loadingCoursePay"
-                                                    loading-text="Cargando datos..."><!--v-model="selectedCourse" select-strategy="single" show-select-->
+                                                    loading-text="Cargando datos...">
                                                     <template v-slot:item.price="{ item }">
                                                         {{ formatNumber(parseFloat(item.price))}}
                                                     </template>
@@ -346,16 +338,8 @@
                                 <div style="flex: 1; overflow-y: auto; padding: 16px;">
                                     <v-row>
                                         <v-col cols="12" md="3">
-                                            <!--<v-select label="Tipo de pago" v-model="editedItem.cashierproduct"
-                                                :items="['Pago venta de productos']"
-                                                :item-value="['Pago venta de productos']" variant="underlined"
-                                                :rules="selectRules"
-                                                prepend-icon="mdi-check-circle"></v-select>-->
                                         </v-col>
                                         <v-col cols="12" md="4">
-                                            <!--<v-text-field v-model="editedItem.amountSaleProduct" clearable label="Monto"
-                                                                prepend-icon="mdi-cash" variant="underlined" :rules="pago1">
-                                                            </v-text-field>-->
                                         </v-col>
                                         <v-col cols="12" md="5">
                                             <v-card class="mx-auto" max-width="344" title="Bono de Productos"
@@ -840,9 +824,6 @@
                                             {{ formatNumber(item.coffe_percent)}}
                                         </template>
                                         <template v-slot:item.actions="{ item }">
-                                            <!--<v-btn density="comfortable" icon="mdi-delete" @click="deleteItemCashier(item)"
-                                            color="red-darken-4" variant="tonal" elevation="1"
-                                            title="Eliminar Pago a profesional"></v-btn>-->
                                             <v-btn density="comfortable" icon="mdi-pencil"
                                                 @click="(this.charge === 'Barbero' || this.charge === 'Barbero y Encargado'|| item.type !== 'Mes') ? '' :editItemCashier(item)"
                                                 :color="(this.charge === 'Barbero' || this.charge === 'Barbero y Encargado'|| item.type !== 'Mes') ? 'grey' : 'primary'"
@@ -982,16 +963,8 @@
                                 <div style="flex: 1; overflow-y: auto; padding: 16px;">
                                     <v-row>
                                         <v-col cols="12" md="3">
-                                            <!--<v-select label="Tipo de pago" v-model="editedItem.cashierproduct"
-                                                :items="['Pago venta de productos']"
-                                                :item-value="['Pago venta de productos']" variant="underlined"
-                                                :rules="selectRules"
-                                                prepend-icon="mdi-check-circle"></v-select>-->
                                         </v-col>
                                         <v-col cols="12" md="4">
-                                            <!--<v-text-field v-model="editedItem.amountSaleProduct" clearable label="Monto"
-                                                                prepend-icon="mdi-cash" variant="underlined" :rules="pago1">
-                                                            </v-text-field>-->
                                         </v-col>
                                         <v-col cols="12" md="5">
                                             <v-card class="mx-auto" max-width="344" title="Bono de Productos"
@@ -1518,12 +1491,6 @@ export default {
         dialogDelete(val) {
             val || this.closeDelete()
         },
-        /*selected2(newVal) {
-            if (newVal.length == 0) {
-                // Si selected2 cambia a null, establecer editedItem.amount en cero
-                this.editedItem.amount = '';
-            }
-        }*/
     },
 
     async mounted() {
@@ -1532,22 +1499,6 @@ export default {
         this.charge_id = LocalStorageService.getItem('charge_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         LocalStorageService.setIsLocked(true);
-        /*axios
-            .get('https://api2.simplifies.cl/api/show-business', {
-                params: {
-                    business_id: this.business_id
-                }
-            })
-            .then((response) => {
-                this.branches = response.data.branches;
-            }).finally(() => {
-                LocalStorageService.setIsLocked(false);
-                if (this.charge === 'Administrador') {
-                    this.branch_id = this.branches[0].id;
-                    this.mostrarFila = true;
-                }
-                this.initialize();
-            });*/
         const requestParams = {
             business_id: this.business_id
         };
@@ -1623,15 +1574,6 @@ export default {
                 return true; // No hay curso seleccionado, no validar aún.
             }
             const selectedItem = this.courses.find(course => course.id === this.selectedCourse[0]);
-            console.log(' selectedItem');
-            console.log(selectedItem.price);
-            console.log(' this.selectedCourse');
-            console.log(this.selectedCourse);
-            //const selectedItem = this.selectedCourse[0].price;
-            console.log('value del monto');
-            console.log(value);
-            console.log(' parseInt(selectedItem.price)');
-            console.log( selectedItem.price);
             return parseInt(value) <= parseInt(selectedItem.price) || 'El monto debe ser menor o igual al precio del curso seleccionado';
         },
         filterResults(typeDetail) {
@@ -1695,12 +1637,6 @@ export default {
                 }, 0);
             }
         },
-
-        /*professionalChange(){
-            this.chargeProfessional = this.professionals.find(professional => professional.id == this.professional_id);
-            console.log('this.chargeProfessional');
-            console.log(this.chargeProfessional);
-        },*/
         formatNumber(value) {
         // Si el valor es menor que 1000, devuelve el valor original con dos decimales
         if (value < 1000) {
@@ -1743,19 +1679,6 @@ export default {
             this.professionals = [];
             this.professional_id = '';
             this.professional_name = '';
-
-            /*axios
-                .get('https://api2.simplifies.cl/api/branch_professionals_web', {
-                    params: {
-                        branch_id: this.branch_id
-                    }
-                })
-                .then((response) => {
-                    this.results = response.data.professionals;
-                }).finally(() => {
-            LocalStorageService.setIsLocked(false);
-            this.loadingPay = false;
-        });*/
         try {
             const requestParams = {
                 branch_id: this.branch_id
@@ -1792,31 +1715,6 @@ export default {
                 this.loadingSale = true;
                 this.stepProfessional = 1;
                 LocalStorageService.setIsLocked(true);
-               /* axios
-                    .get('https://api2.simplifies.cl/api/professional-car-notpay', {
-                        params: {
-                            branch_id: this.branch_id,
-                            professional_id: this.professional_id
-                        }
-                    })
-                    .then((response) => {
-                        this.cars = response.data.cars;
-                        this.courses = response.data.courses;
-                        /*if(this.cars.length == 0){
-                            //this.editedItem.type = 'Adelanto';
-                            this.mostrarCars = false;
-                            //this.mostrarType = false;
-                        }else{
-                            this.mostrarCars = true;
-                            //this.mostrarType = true;
-                        }*/
-                        /*this.mostrarCars = true;
-                        this.mostrarDoc = true;
-                    }).finally(() => {
-            LocalStorageService.setIsLocked(false);
-            this.loadingProfessPay = false;
-            this.loadingCoursePay = false;
-        });*/
         try {
             const requestParams = {
                 branch_id: this.branch_id,
@@ -1925,55 +1823,6 @@ export default {
             this.professionalPayment = [];
             this.loadingPayment = true;
             LocalStorageService.setIsLocked(true);
-            /*axios
-                .get('https://api2.simplifies.cl/api/professional-payment-show', {
-                    params: {
-                        branch_id: this.branch_id,
-                        professional_id: this.professional_id
-                    }
-                })
-                .then((response) => {
-                    this.professionalPayment = response.data;
-                }).finally(() =>{
-                    LocalStorageService.setIsLocked(false);
-                    this.loadingPayment = false;
-                    this.bonoconvivencia = [];
-                    this.bonoconvivencia = [];
-                    this.bonoproductos = [];
-                    this.bonoconvivencia = this.professionalPayment.reduce((total, item) => {
-                        // Verifica si el campo "revenue" tiene un valor numérico
-                        if (item.type === 'Bono convivencias') {
-                            // Suma el valor de "revenue" al total
-                            return total + parseInt(item.amount);
-                        } else {
-                            // Si el campo "revenue" no es un número, no suma nada
-                            return total;
-                        }
-                    }, 0);
-
-                    this.bonoservicios = this.professionalPayment.reduce((total, item) => {
-                        // Verifica si el campo "revenue" tiene un valor numérico
-                        if (item.type === 'Bono servicios') {
-                            // Suma el valor de "revenue" al total
-                            return total + parseInt(item.amount);
-                        } else {
-                            // Si el campo "revenue" no es un número, no suma nada
-                            return total;
-                        }
-                    }, 0);
-
-                    this.bonoproductos = this.professionalPayment.reduce((total, item) => {
-                        // Verifica si el campo "revenue" tiene un valor numérico
-                        if (item.type === 'Bono productos') {
-                            // Suma el valor de "revenue" al total
-                            return total + parseInt(item.amount);
-                        } else {
-                            // Si el campo "revenue" no es un número, no suma nada
-                            return total;
-                        }
-                    }, 0);
-
-                });*/
                 const requestParams = {
                 branch_id: this.branch_id,
                 professional_id: this.professional_id
@@ -2105,18 +1954,6 @@ export default {
         },
         async deleteItemConfirm() {
             LocalStorageService.setIsLocked(true);
-            //this.results.splice(this.editedIndex, 1)
-            /*let request = {
-                id: this.editedItem.id
-            };
-            axios
-                .post('https://api2.simplifies.cl/api/professional-payment-destroy', request)
-                .then(() => {
-                    this.showAlert("success", "Pago eliminado correctamente", 3000);
-                }).finally(() => {
-                    LocalStorageService.setIsLocked(false);
-                    this.showProfessional();
-                });*/
                 const requestParams = {
                     id: this.editedItem.id
                 };
@@ -2183,43 +2020,6 @@ export default {
         async save() {
             LocalStorageService.setIsLocked(true);
             this.valid = false;
-            /*console.log('this.ironValues');
-            console.log(this.selected2);
-            //console.log(this.selectedOption);
-            /*this.cars.forEach(car => {
-                if (car.meta === 'Si') {
-                    if (!this.selected2.includes(car.id)) {
-                        this.selected2.push(car.id);
-                    }
-                }
-            });
-            console.log(this.selected);*/
-            /*this.data.professional_id = this.professional_id;
-            this.data.branch_id = this.branch_id;
-            //this.data.car_ids = this.selected2;
-
-            const temp = Number(this.totalMount());              
-            this.data.amount = temp;
-
-            this.data.type = this.editedItem.type;
-            console.log('this.data');
-            console.log(this.data);
-            /*axios
-                .post('https://api2.simplifies.cl/api/professional-payment', this.data)
-                .then(() => {
-                    this.$nextTick(() => {
-                        this.editedItem = Object.assign({}, this.defaultItem);
-                    });
-                    this.editedIndex = -1;
-                    this.type = null;
-                    this.cars = [];
-                    this.selected2 = [];
-                    this.mostrarCars = false;
-                }).finally(() => {
-                    LocalStorageService.setIsLocked(false);
-                    this.showAlert("success", "Pago realizado correctamente", 3000);
-                    this.showProfessional();
-                });*/
                 try {
                 const requestParams = {
                     branch_id: this.branch_id,
@@ -2278,29 +2078,12 @@ export default {
         saveCourse() {
             LocalStorageService.setIsLocked(true);
             this.valid = false;
-            /* if (this.editedIndex > -1) {
-                 this.data.id = this.editedItem.id;
-                 this.data.name = this.editedItem.name;
-                 axios
-                     .put('https://api2.simplifies.cl/api/workplace', this.data)
-                     .then(() => {
-                         this.initialize();
-                         this.showAlert("success", "Pago editado correctamente", 3000);
-                     })
-             } else {*/
-            console.log('this.selectedCourse');
-            console.log(this.selectedCourse);
-            //const newArrayCar = this.selected.map(item => parseInt(item)); // Convertir a enteros si es necesario
-            //console.log('newArrayCar');
-            //console.log(newArrayCar);
             this.data.professional_id = this.professional_id;
             this.data.branch_id = this.branch_id;
             this.data.course_ids = this.selectedCourse[0];
                 this.data.amount = this.editedItem.amountAcadem;
             this.data.type = this.editedItem.academia;
-            console.log('this.data');
-            console.log(this.data);
-            axios
+             axios
                 .post('https://api2.simplifies.cl/api/professional-payment', this.data)
                 .then(() => {
                     this.$nextTick(() => {
@@ -2315,17 +2098,6 @@ export default {
                     this.showAlert("success", "Pago realizado correctamente", 3000);
                     this.showProfessional();
                 });
-            //}
-            /*this.valid = false;
-            this.data.name = this.editedItem.name;
-            this.data.branch_id = this.branch_id
-
-            axios
-                .post('https://api2.simplifies.cl/api/workplace', this.data)
-                .then(() => {
-                    this.initialize();
-                    this.showAlert("success", "Puesto de trabajo editado correctamente", 3000);
-                })*/
             this.close();
         },
         saveOtros() {
@@ -2336,8 +2108,6 @@ export default {
             this.data.branch_id = this.branch_id;
             this.data.amount = this.editedItem.amount;
             this.data.type = this.editedItem.type;
-            console.log('this.data');
-            console.log(this.data);
             axios
                 .post('https://api2.simplifies.cl/api/professional-payment', this.data)
                 .then(() => {
@@ -2355,30 +2125,6 @@ export default {
             this.close();
         },
         async saveOtrosCharge(){
-            /*LocalStorageService.setIsLocked(true);
-            this.valid = false;
-        
-            this.data.professional_id = this.professional_id;
-            this.data.branch_id = this.branch_id;
-            this.data.amount = this.editedItem.amount;
-            this.data.type = this.editedItem.type;
-            console.log('this.data');
-            console.log(this.data);
-            axios
-                .post('https://api2.simplifies.cl/api/professional-payment', this.data)
-                .then(() => {
-                    this.$nextTick(() => {
-                        this.editedItem = Object.assign({}, this.defaultItem);
-                    });
-                    this.editedIndex = -1;
-                    this.type = null;
-                    this.mostrarCars = false;
-                }).finally(() => {
-                    LocalStorageService.setIsLocked(false);
-                    this.showAlert("success", "Pago realizado correctamente", 3000);
-                    this.showProfessional();
-                });
-            this.close(); */
             LocalStorageService.setIsLocked(true);
             this.valid = false;
         try {
@@ -2427,7 +2173,6 @@ export default {
             this.close();
         },
         exportToExcelProfessional() {
-            console.log('Entra aqui a exportar professional');
             // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
             let rows = [];
 
@@ -2472,19 +2217,6 @@ export default {
             this.loadingCashier = true;
             LocalStorageService.setIsLocked(true);
             this.step = 1;
-            /*axios
-                .get('https://api2.simplifies.cl/api/operation-tip', {
-                    params: {
-                        branch_id: this.branch_id,
-                        professional_id: this.professional_id
-                    }
-                })
-                .then((response) => {
-                    this.results1 = response.data;
-                }).finally(() => {
-            LocalStorageService.setIsLocked(false);
-            this.loadingCashier = false;
-        });*/
         const requestParams = {
                 branch_id: this.branch_id,
                 professional_id: this.professional_id
@@ -2521,28 +2253,8 @@ export default {
         async showPay() {
             this.loadingCashier = true;
             LocalStorageService.setIsLocked(true);
-            console.log('Entra aqui a pagos realizados');
-            //this.editedIndex1 = 1;
-            //this.state=true;
-            //this.input2 = new Date();
-            //this.input3 = new Date()
             const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
             const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-            /*axios
-                .get('https://api2.simplifies.cl/api/operation-tip-periodo', {
-                    params: {
-                        branch_id: this.branch_id,
-                        professional_id: this.professional_id,
-                        startDate: startDate,
-                        endDate: endDate
-                    }
-                })
-                .then((response) => {
-                    this.results1 = response.data;
-                }).finally(() => {
-            LocalStorageService.setIsLocked(false);
-            this.loadingCashier = false;
-        });*/
         const requestParams = {
                 branch_id: this.branch_id,
                 professional_id: this.professional_id,
@@ -2590,47 +2302,6 @@ export default {
         },
         async deleteItemConfirmCashier() {
             LocalStorageService.setIsLocked(true);
-            //this.results.splice(this.editedIndex, 1)
-            /*let request = {
-                id: this.editedItem.id,
-                type: this.typePay
-            };
-            axios
-                .post('https://api2.simplifies.cl/api/operation-tip-destroy', request)
-                .then(() => {
-                }).finally(() => {
-                    LocalStorageService.setIsLocked(false);
-                    this.showAlert("success", "Pago eliminado correctamente", 3000);
-                    this.showCashier();
-                });*/
-                /*try {
-                let request = {
-                    id: this.editedItem.id,
-                    type: this.typePay
-                };
-                const result = await handleRequest({
-                endpoint: "operation-tip-destroy",
-                method: "POST",
-                data: request,
-                });
-
-                // Manejo de la respuesta según el resultado
-                if (result.success) {
-                this.showAlert("success", result.message, 3000);
-                this.initialize();
-                } else {
-                this.showAlert("warning", result.message, 3000);
-                }
-            } catch (error) {
-                // Este bloque captura errores inesperados fuera del manejo estándar
-                this.showAlert(
-                "error",
-                "Ocurrió un error inesperado al procesar la solicitud.",
-                3000
-                );
-            } finally {
-                this.closeDelete();
-            }*/
             const requestParams = {
                     id: this.editedItem.id
                 };
@@ -2665,21 +2336,6 @@ export default {
             this.cars1 = [];
             this.cashierSales = [];
             LocalStorageService.setIsLocked(true);
-            /*axios
-                .get('https://api2.simplifies.cl/api/cashier-car-notpay', {
-                    params: {
-                        branch_id: this.branch_id,
-                        professional_id: this.professional_id
-                    }
-                })
-                .then((response) => {
-                    this.cars1 = response.data.cars;
-                    this.cashierSales = response.data.sales;
-                }).finally(() => {
-            LocalStorageService.setIsLocked(false);
-            this.loadingTip = false;
-            this.loadingSale = false;
-        });*/
         try {
             const requestParams = {
                 branch_id: this.branch_id,
@@ -2722,23 +2378,6 @@ export default {
         saveCashier() {
             LocalStorageService.setIsLocked(true);
             this.valid = false;
-            /* if (this.editedIndex > -1) {
-                 this.data.id = this.editedItem.id;
-                 this.data.name = this.editedItem.name;
-                 axios
-                     .put('https://api2.simplifies.cl/api/workplace', this.data)
-                     .then(() => {
-                         this.initialize();
-                         this.showAlert("success", "Pago editado correctamente", 3000);
-                     })
-             } else {*/
-            console.log('this.ironValues');
-            console.log(this.selected2);
-            //console.log(this.selectedOption);
-            console.log(this.selected);
-            //const newArrayCar = this.selected.map(item => parseInt(item)); // Convertir a enteros si es necesario
-            //console.log('newArrayCar');
-            //console.log(newArrayCar);
             this.data.professional_id = this.professional_id;
             this.data.branch_id = this.branch_id;
             this.data.car_ids = this.selected2;
@@ -2751,8 +2390,6 @@ export default {
             this.data.coffe_percent = 0; 
             }
             this.data.type = this.editedItem.type;
-            console.log('this.data');
-            console.log(this.data);
             axios
                 .post('https://api2.simplifies.cl/api/operation-tip', this.data)
                 .then(() => {
@@ -2769,29 +2406,11 @@ export default {
                     this.showAlert("success", "Pago realizado correctamente", 3000);
                     this.showCashier();
                 });
-            //}
-            /*this.valid = false;
-            this.data.name = this.editedItem.name;
-            this.data.branch_id = this.branch_id
-
-            axios
-                .post('https://api2.simplifies.cl/api/workplace', this.data)
-                .then(() => {
-                    this.initialize();
-                    this.showAlert("success", "Puesto de trabajo editado correctamente", 3000);
-                })*/
             this.close();
         },
         async saveCashierProduct() {
             LocalStorageService.setIsLocked(true);
             this.valid = false;
-            /*this.data.professional_id = this.professional_id;
-            this.data.branch_id = this.branch_id;
-            this.data.ids = this.selectedCashier;
-            this.data.amount = this.editedItem.amountSaleProduct;
-            this.data.type = this.editedItem.cashierproduct;
-            console.log('this.data');
-            console.log(this.data);*/
             try {
             const requestParams = {
                 branch_id: this.branch_id,
@@ -2835,37 +2454,9 @@ export default {
                 LocalStorageService.setIsLocked(false);
                 this.showCashier();
             }
-            /*axios
-                .post('https://api2.simplifies.cl/api/professional-payment-cashier', this.data)
-                .then(() => {
-                    this.$nextTick(() => {
-                        this.editedItem = Object.assign({}, this.defaultItem);
-                    });
-                    this.editedIndex = -1;
-                    this.type = null;
-                    this.cars = [];
-                    this.selected2 = [];
-                    this.mostrarCars = false;
-                }).finally(() => {
-                    LocalStorageService.setIsLocked(false);
-                    this.showAlert("success", "Pago realizado correctamente", 3000);
-                    this.showCashier();
-                });*/
-            //}
-            /*this.valid = false;
-            this.data.name = this.editedItem.name;
-            this.data.branch_id = this.branch_id
-
-            axios
-                .post('https://api2.simplifies.cl/api/workplace', this.data)
-                .then(() => {
-                    this.initialize();
-                    this.showAlert("success", "Puesto de trabajo editado correctamente", 3000);
-                })*/
             this.close();
         },
         exportToExcelCashier() {
-            console.log('Entra aqui a exportar');
             // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
             let rows = [];
 

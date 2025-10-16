@@ -101,9 +101,6 @@
                       </v-row>
                     </v-col>
                   </v-row>
-                  <!--<div class="text-right">
-                    <a herf="#" @click="detailProduct">Ver detalles</a>
-                  </div>-->
                 </div>
               </v-card-text>
             </v-card>
@@ -162,9 +159,6 @@
                       </v-row>
                     </v-col>
                   </v-row>
-                  <!--<div class="text-right">
-                    <a herf="#" @click="detailService">Ver detalles</a>
-                  </div>-->
                 </div>
               </v-card-text>
             </v-card>
@@ -196,12 +190,6 @@
 
       <v-col cols="6">
         <v-card class="mx-auto  overflow-visible">
-          <!--<Bar class="pa-6"
-    id="my-chart-id"
-    :options="chartOptions"
-    :data="chartData4"
-    padding="16"
-  />-->
           <LineChart class="pa-6" id="my-chart-id" :options="chartOptions" :data="chartData4" padding="16" />
 
           <v-card-text class="pt-0">
@@ -637,16 +625,13 @@
           <v-spacer></v-spacer>
         </v-toolbar>
         <v-card elevation="2">
-          <v-tabs v-model="tabBarService" color="rgb(241, 130, 84)" elevation="6"><!-- @click="handleTabChange"-->
+          <v-tabs v-model="tabBarService" color="rgb(241, 130, 84)" elevation="6">
             <v-tab value="one">Día mes Actual</v-tab>
             <v-tab value="two">Día mes Anterior</v-tab>
           </v-tabs>
           <v-card-text style="max-height: 400px; overflow-y: auto;">
             <v-window v-model="tabBarService">
               <v-window-item value="one">
-                <!--<v-text-field class="mt-1 mb-1" v-model="search5" append-icon="mdi-magnify" label="Buscar" single-line:search="search5"
-                                hide-details>
-                              </v-text-field>-->
                 <v-data-table :headers="headers1" :items-per-page-text="'Elementos por páginas'" :items="servicesData"
                   class="elevation-2" no-results-text="No hay datos disponibles"
                   no-data-text="No hay datos disponibles">
@@ -660,9 +645,6 @@
               </v-window-item>
 
               <v-window-item value="two">
-                <!--<v-text-field class="mt-1 mb-1" v-model="search6" append-icon="mdi-magnify" label="Buscar" single-line:search="search6" 
-                hide-details>
-              </v-text-field>-->
                 <v-data-table :headers="headers1" :items-per-page-text="'Elementos por páginas'"
                   :items="servicesDataAnt" class="elevation-2" no-results-text="No hay datos disponibles"
                   no-data-text="No hay datos disponibles">
@@ -695,16 +677,13 @@
           <v-spacer></v-spacer>
         </v-toolbar>
         <v-card elevation="2">
-          <v-tabs v-model="tabBarProduct" color="rgb(241, 130, 84)" elevation="6"><!-- @click="handleTabChange"-->
+          <v-tabs v-model="tabBarProduct" color="rgb(241, 130, 84)" elevation="6">
             <v-tab value="one">Día mes Actual</v-tab>
             <v-tab value="two">Día mes Anterior</v-tab>
           </v-tabs>
           <v-card-text style="max-height: 400px; overflow-y: auto;">
             <v-window v-model="tabBarProduct">
               <v-window-item value="one">
-                <!--<v-text-field class="mt-1 mb-1" v-model="search5" append-icon="mdi-magnify" label="Buscar" single-line:search="search5"
-                                hide-details>
-                              </v-text-field>-->
                 <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="productsData"
                   class="elevation-2" no-results-text="No hay datos disponibles"
                   no-data-text="No hay datos disponibles">
@@ -721,9 +700,6 @@
               </v-window-item>
 
               <v-window-item value="two">
-                <!--<v-text-field class="mt-1 mb-1" v-model="search6" append-icon="mdi-magnify" label="Buscar" single-line:search="search6" 
-                hide-details>
-              </v-text-field>-->
                 <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="productsDataAnt"
                   class="elevation-2" no-results-text="No hay datos disponibles"
                   no-data-text="No hay datos disponibles">
@@ -894,12 +870,7 @@ export default {
           label: 'Reservas Web',
           backgroundColor: ["#FFB300", "#FF7043", "#00796B", "#B0BEC5", "#C0CA33", "#8D6E63", "#616161"], data: this.reservationWeek
         }]
-      },/*
-      chartData: {
-        labels: [ 'Lunes', 'Martes', 'Miércoles' , 'Jueves' , 'Viernes', 'Sábado', 'Domingo' ],
-        datasets: [ { label: 'Reservas',
-        backgroundColor:  ["#FFB300", "#FF7043", "#00796B", "#B0BEC5", "#C0CA33", "#8D6E63", "#616161"], data: [40, 20, 12, 10, 35, 22, 0]}]
-      },*/
+      },
       chartOptions: {
         responsive: true
       },
@@ -932,7 +903,6 @@ export default {
     if (this.charge === 'Administrador' || this.charge === 'Administrador de Sucursal') {
       this.mostrarFila = true;
     }
-    console.log(this.business_id);
     const today = new Date();
     this.formattedDate = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
     this.formattedDateAnt = today.getDate() + '-' + (today.getMonth()) + '-' + today.getFullYear();
@@ -999,82 +969,6 @@ export default {
       ]
     },
     async initialize() {
-
-     /* //this.reservationWeek = [40, 20, 12, 10, 35, 22, 0];
-      this.editedIndex = 1;
-      /*axios
-        .get('https://api2.simplifies.cl/api/cars-winner-day', {
-          params: {
-            branch_id: this.branch_id,
-            business_id: this.business_id
-          }
-        })
-        .then((response) => {
-          this.amountDay = response.data;
-          console.log(this.amountDay);
-        });*/
-      /*axios
-        .get('https://api2.simplifies.cl/api/car-products-services', {
-          params: {
-            branch_id: this.branch_id,
-            business_id: this.business_id
-          }
-        })
-        .then((response) => {
-          this.products = response.data.product;
-          this.productsData = this.products[0].products;
-          this.productsDataAnt = this.products[0].productsAnt;
-          //this.productName = this.products[0].name;
-          //this.productNameAnt = this.products[0].nameAnt;
-          this.productCant = this.products[0].cant;
-          this.productCantAnt = this.products[0].cantAnt;
-          this.services = response.data.service;
-          this.servicesData = this.services[0].services;
-          this.servicesDataAnt = this.services[0].servicesAnt;
-          //this.serviceName = this.services[0].name;
-          //this.serviceNameAnt = this.services[0].nameAnt;
-          this.serviceCant = this.services[0].cant;
-          this.serviceCantAnt = this.services[0].cantAnt;
-          //this.servicesData = this.services[0].services;
-          //console.log(this.services[0].services);
-        });
-      axios
-        .get('https://api2.simplifies.cl/api/cars-winner-mounth', {
-          params: {
-            branch_id: this.branch_id,
-            business_id: this.business_id
-          }
-        })
-        .then((response) => {
-          this.amountMounth = response.data.cars;
-          this.amountMounthAnt = response.data.carsAnt;
-          this.winners = response.data.carsDetail;
-          this.winnersAnt = response.data.carsDetailAnt;
-          console.log(this.amountMounth);
-        });
-      axios
-        .get('https://api2.simplifies.cl/api/cars-winner-week', {
-          params: {
-            branch_id: this.branch_id,
-            business_id: this.business_id
-          }
-        })
-        .then((response) => {
-          this.winnerWeek = response.data;
-          console.log(this.winnerWeek);
-        });
-      axios
-        .get('https://api2.simplifies.cl/api/reservations-count-week', {
-          params: {
-            branch_id: this.branch_id,
-            business_id: this.business_id
-          }
-        })
-        .then((response) => {
-          this.reservationWeek = response.data.cantReservations;
-          this.reservationWeekData = response.data.reservations;
-          //console.log(this.reservationWeek);
-        });*/
         try {
     this.editedIndex = 1;
 
@@ -1123,7 +1017,7 @@ export default {
     this.winnersAnt = responseMounth.data.carsDetailAnt;
     
   } catch (error) {
-    console.error('Error fetching data:', error);
+
   }
     },
     async initialize1(){

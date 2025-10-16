@@ -22,30 +22,12 @@
                     <span class="text-subtitle-1 ml-2"> <strong>Actualizar productos</strong></span>
                 </v-col>
                 <v-col cols="12" md="2">
-                    <!--<div v-if="hasChanges" class="justify-end">
-
-                        <v-btn @click="cancel" color="black" prepend-icon="mdi-close" class=" ml-2" title="Cancelar Cambios"
-                            style="background-color: #E7E9E9;">
-                            <span>Cancelar</span>
-                        </v-btn>
-                        <v-btn @click="save" color="black" prepend-icon="mdi-check" title="Actualizar existencia"
-                            style="background-color: #E7E9E9;" :loading="loadingAcept">
-                            <span>Aceptar</span>
-                        </v-btn>
-                    </div>-->
                 </v-col>
             </v-row>
         </v-toolbar>
         <v-card-text>
             <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line
                 hide-details></v-text-field>
-            <!-- Botones globales de Aceptar y Cancelar 
-            <div v-if="changes.length > 0" class="d-flex justify-end my-4">
-                <v-btn density="comfortable" class="ml-2" icon="mdi-check" @click="save" color="primary" variant="tonal"
-                    elevation="1" title="Aceptar Actualizar existencia" :disabled="changes.length === 0" />
-                <v-btn density="comfortable" class="ml-2" icon="mdi-close" @click="cancel" color="red-darken-4"
-                    variant="tonal" elevation="1" title="Cancelar actualización" :disabled="changes.length === 0" />
-            </div>-->
             <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :search="search"
                 :items="results" class="elevation-1" no-results-text="No hay datos disponibles"
                 no-data-text="No hay datos disponibles" :loading="loadingWorkPlace" loading-text="Cargando datos..."
@@ -185,42 +167,9 @@ export default {
 
     async mounted() {
         this.business_id = LocalStorageService.getItem('business_id');
-        //this.branch_id = LocalStorageService.getItem('branch_id');
-        //this.charge_id = LocalStorageService.getItem('charge_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         this.permissionsUser = LocalStorageService.getItem("permissionsUser");
         LocalStorageService.setIsLocked(true);
-        // Crear un objeto para los parámetros
-        /*const requestParams = {
-            business_id: this.business_id,
-        };
-
-        try {
-            this.loading = true;
-            const result = await handleRequest({
-                endpoint: 'show-business',
-                method: 'GET',
-                params: requestParams // Aquí pasas los parámetros
-            });
-
-            if (result.success) {
-                // Si la solicitud es exitosa, asignamos las sucursales
-                this.branches = result.data.branches || []; // Si no hay roles, asigna un arreglo vacío
-            } else {
-                // Si no hay datos, asignamos un array vacío
-                this.branches = [];
-            }
-        } catch (error) {
-            this.loading = false;
-            // Captura de errores no controlados
-            this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
-        } finally {
-            LocalStorageService.setIsLocked(false);
-            if (this.charge === 'Administrador') {
-                this.branch_id = this.branches[0].id;
-                this.mostrarFila = true;
-            }
-        }*/
         await this.initialize();
     },
 
@@ -246,12 +195,6 @@ export default {
             this.sb_timeout = sb_timeout
             this.snackbar = true
         },
-        /*decrementProductExit(item) {
-            if (item.product_exit > 0) {
-                item.product_exit -= 1; // Decrementa en 1
-                item.quantity += 1; // Actualiza editedItem.quantity
-            }
-        },*/
         decrementProductExit(item) {
             if (item.product_exit > 0) {
                 item.product_exit -= 1; // Decrementa en 1
@@ -288,8 +231,6 @@ export default {
                 });
 
                 if (result.success) {
-                    console.log('this.permissionsUser.includes(view_main_warehouse)');
-                    console.log(this.permissionsUser.includes('view_main_warehouse'));
                     if (this.permissionsUser.includes('view_main_warehouse'))
                     {
                     // Si la solicitud es exitosa, asignamos las sucursales
@@ -322,10 +263,6 @@ export default {
             }
             LocalStorageService.setIsLocked(true);
             this.loadingAcept = true;
-            /*const requestParams = {
-                id: item.id,
-                quantity: item.quantity,
-            };*/
             const requestParams = {
                 changes: this.changes,
                 branch_id: this.branch_id,
@@ -356,10 +293,6 @@ export default {
             }
             //
         },
-        /*cancel(item) {
-            // Restaurar el valor original de product_exit (si es necesario)
-            item.product_exit += item.quantity;
-        },*/
         cancel() {
             // Restaurar el valor original de product_exit para cada cambio
             this.changes.forEach(change => {

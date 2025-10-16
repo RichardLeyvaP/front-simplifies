@@ -1,112 +1,193 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
-    <v-snackbar class="mt-12" location="right top" :timeout="sb_timeout" :color="sb_type" elevation="24" :multi-line="true"
-      vertical v-model="snackbar">
-      <v-row>
-        <v-col md="2">
-          <v-avatar :icon="sb_icon" color="sb_type" size="40"></v-avatar>
-        </v-col>
-        <v-col md="10">
-          <h4>{{ sb_title }}</h4>
-          {{ sb_message }}
-  
-        </v-col>
-  
-      </v-row>
-    </v-snackbar>
-    <v-card elevation="6" class="mx-5" width="auto">    
-      <v-container fluid>
+  <v-snackbar
+    class="mt-12"
+    location="right top"
+    :timeout="sb_timeout"
+    :color="sb_type"
+    elevation="24"
+    :multi-line="true"
+    vertical
+    v-model="snackbar"
+  >
+    <v-row>
+      <v-col md="2">
+        <v-avatar :icon="sb_icon" color="sb_type" size="40"></v-avatar>
+      </v-col>
+      <v-col md="10">
+        <h4>{{ sb_title }}</h4>
+        {{ sb_message }}
+      </v-col>
+    </v-row>
+  </v-snackbar>
+  <v-card elevation="6" class="mx-5" width="auto">
+    <v-container fluid>
       <v-toolbar color="#F18254">
         <v-row align="center">
           <v-col cols="12" md="4" class="grow ml-4 t">
             <span class="text-subtitle-1"> <strong>Academias</strong></span>
           </v-col>
           <v-col cols="12" md="4" class="mr-12"></v-col>
-          <v-col cols="12" md="3" class="pl-12 ">
-  
+          <v-col cols="12" md="3" class="pl-12">
             <v-dialog v-model="dialog" max-width="700px">
               <template v-slot:activator="{ props }">
-                <v-btn v-bind="props" class="text-subtitle-1  ml-12 " color="#E7E9E9" variant="flat" elevation="2"
-                  prepend-icon="mdi-plus-circle">
+                <v-btn
+                  v-bind="props"
+                  class="text-subtitle-1 ml-12"
+                  color="#E7E9E9"
+                  variant="flat"
+                  elevation="2"
+                  prepend-icon="mdi-plus-circle"
+                >
                   Nueva Academia
                 </v-btn>
               </template>
               <v-card>
-                  <v-toolbar color="#F18254">
-                    <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
-                  </v-toolbar>
-                  <v-card-text>
-                    <v-form ref="form" v-model="valid"  enctype="multipart/form-data">
+                <v-toolbar color="#F18254">
+                  <span class="text-subtitle-2 ml-4">{{ formTitle }}</span>
+                </v-toolbar>
+                <v-card-text>
+                  <v-form ref="form" v-model="valid" enctype="multipart/form-data">
                     <v-container fluid>
                       <v-row>
                         <v-col cols="12" md="12">
-                          <v-text-field v-model="editedItem.name" clearable label="Nombre de la Academia"
-                            prepend-icon="mdi-ruler" variant="underlined" :rules="nameRules" density="compact">
+                          <v-text-field
+                            v-model="editedItem.name"
+                            clearable
+                            label="Nombre de la Academia"
+                            prepend-icon="mdi-ruler"
+                            variant="underlined"
+                            :rules="nameRules"
+                            density="compact"
+                          >
                           </v-text-field>
                         </v-col>
                       </v-row>
                       <v-row>
                         <v-col cols="12" md="12">
-                          <v-text-field v-model="editedItem.description" clearable label="Descripción"
-                            prepend-icon="mdi-form-textarea" variant="underlined" :rules="descripRules" density="compact">
+                          <v-text-field
+                            v-model="editedItem.description"
+                            clearable
+                            label="Descripción"
+                            prepend-icon="mdi-form-textarea"
+                            variant="underlined"
+                            :rules="descripRules"
+                            density="compact"
+                          >
                           </v-text-field>
                         </v-col>
-                        </v-row>
-                        <v-row>
-                        <v-col cols="12" md="6">
-                        <v-text-field v-model="editedItem.address" clearable label="Dirección"
-                          prepend-icon="mdi-map-marker-outline" variant="underlined" :rules="dirRules" density="compact">
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="12" md="6">
-                        <v-text-field v-model="editedItem.phone" clearable label="Teléfono"
-                          prepend-icon="mdi-phone-outline" variant="underlined"  placeholder="+56912345678" :rules="mobileRules" density="compact">
-                        </v-text-field>
-                      </v-col>
                       </v-row>
                       <v-row>
                         <v-col cols="12" md="6">
-                          <v-text-field v-model="editedItem.location" clearable label="Localización (Google Maps)"
-                          prepend-icon="mdi-map-marker" variant="underlined" density="compact">
-                        </v-text-field>
+                          <v-text-field
+                            v-model="editedItem.address"
+                            clearable
+                            label="Dirección"
+                            prepend-icon="mdi-map-marker-outline"
+                            variant="underlined"
+                            :rules="dirRules"
+                            density="compact"
+                          >
+                          </v-text-field>
                         </v-col>
                         <v-col cols="12" md="6">
-                          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.business_id" :items="business" clearable label="Negocio" prepend-icon="mdi-domain" item-title="name" item-value="id" variant="underlined" :rules="selectRules" density="compact"></v-autocomplete>
+                          <v-text-field
+                            v-model="editedItem.phone"
+                            clearable
+                            label="Teléfono"
+                            prepend-icon="mdi-phone-outline"
+                            variant="underlined"
+                            placeholder="+56912345678"
+                            :rules="mobileRules"
+                            density="compact"
+                          >
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row>
+                        <v-col cols="12" md="6">
+                          <v-text-field
+                            v-model="editedItem.location"
+                            clearable
+                            label="Localización (Google Maps)"
+                            prepend-icon="mdi-map-marker"
+                            variant="underlined"
+                            density="compact"
+                          >
+                          </v-text-field>
                         </v-col>
                         <v-col cols="12" md="6">
-                        <v-file-input clearable v-model="file" ref="fileInput" label="Imagen Academia" variant="underlined"
-                          density="compact" name="file" accept=".png, .jpg, .jpeg" @change="onFileSelected">
-                        </v-file-input>
+                          <v-autocomplete
+                            :no-data-text="'No hay datos disponibles'"
+                            v-model="editedItem.business_id"
+                            :items="business"
+                            clearable
+                            label="Negocio"
+                            prepend-icon="mdi-domain"
+                            item-title="name"
+                            item-value="id"
+                            variant="underlined"
+                            :rules="selectRules"
+                            density="compact"
+                          ></v-autocomplete>
                         </v-col>
                         <v-col cols="12" md="6">
-                        <v-card elevation="6" class="mx-auto" max-width="120" max-height="120">
-                        <img v-if="imagenDisponible()" :src="imgedit" height="120" width="120">
-                      </v-card>
-                      </v-col>
+                          <v-file-input
+                            clearable
+                            v-model="file"
+                            ref="fileInput"
+                            label="Imagen Academia"
+                            variant="underlined"
+                            density="compact"
+                            name="file"
+                            accept=".png, .jpg, .jpeg"
+                            @change="onFileSelected"
+                          >
+                          </v-file-input>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                          <v-card
+                            elevation="6"
+                            class="mx-auto"
+                            max-width="120"
+                            max-height="120"
+                          >
+                            <img
+                              v-if="imagenDisponible()"
+                              :src="imgedit"
+                              height="120"
+                              width="120"
+                            />
+                          </v-card>
+                        </v-col>
                       </v-row>
                     </v-container>
-                  <v-divider></v-divider>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="#E7E9E9" variant="flat" @click="close">
-                      Cancelar
-                    </v-btn>
-                    <v-btn color="#F18254" variant="flat" @click="save" :disabled="!valid">
-                      Aceptar
-                    </v-btn>
-                  </v-card-actions>
-                </v-form>              
-              </v-card-text>
+                    <v-divider></v-divider>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="#E7E9E9" variant="flat" @click="close">
+                        Cancelar
+                      </v-btn>
+                      <v-btn
+                        color="#F18254"
+                        variant="flat"
+                        @click="save"
+                        :disabled="!valid"
+                      >
+                        Aceptar
+                      </v-btn>
+                    </v-card-actions>
+                  </v-form>
+                </v-card-text>
               </v-card>
             </v-dialog>
             <v-dialog v-model="dialogDelete" max-width="500px">
               <v-card>
-  
                 <v-toolbar color="red">
                   <span class="text-subtitle-2 ml-4"> Eliminar Academia</span>
                 </v-toolbar>
-  
+
                 <v-card-text class="mt-2 mb-2"> ¿Desea eliminar la Academia?</v-card-text>
                 <v-divider></v-divider>
                 <v-card-actions>
@@ -117,7 +198,6 @@
                   <v-btn color="#F18254" variant="flat" @click="deleteItemConfirm">
                     Aceptar
                   </v-btn>
-  
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -125,714 +205,635 @@
         </v-row>
       </v-toolbar>
       <v-card-text>
-        <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar"
-                                single-line hide-details>
-                            </v-text-field>
-        <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :search="search" class="elevation-1" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles" :loading="loading" loading-text="Cargando datos...">
+        <v-text-field
+          class="mt-1 mb-1"
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Buscar"
+          single-line
+          hide-details
+        >
+        </v-text-field>
+        <v-data-table
+          :headers="headers"
+          :items-per-page-text="'Elementos por páginas'"
+          :items="results"
+          :search="search"
+          class="elevation-1"
+          no-results-text="No hay datos disponibles"
+          no-data-text="No hay datos disponibles"
+          :loading="loading"
+          loading-text="Cargando datos..."
+        >
           <template v-slot:item.name="{ item }">
-
-<v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_data" alt="image"></v-img>
-</v-avatar>
-{{ item.name }}
-</template>
-<template v-slot:item.description="{ item }">
-  <div class="description-cell">{{ item.description }}</div>
-</template>
-<template v-slot:item.address="{ item }">
-  <div class="address-cell">{{ item.address }}</div>
-</template>
-<template v-slot:item.location="{ item }">
-  <div class="location-cell">{{ item.location }}</div>
-</template>
+            <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
+              <v-img
+                :src="'https://api2.simplifies.cl/api/images/' + item.image_data"
+                alt="image"
+              ></v-img>
+            </v-avatar>
+            {{ item.name }}
+          </template>
+          <template v-slot:item.description="{ item }">
+            <div class="description-cell">{{ item.description }}</div>
+          </template>
+          <template v-slot:item.address="{ item }">
+            <div class="address-cell">{{ item.address }}</div>
+          </template>
+          <template v-slot:item.location="{ item }">
+            <div class="location-cell">{{ item.location }}</div>
+          </template>
           <template v-slot:item.actions="{ item }">
-            <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
-            elevation="1" class="mr-1 mt-1 mb-1" title="Editar Academia"></v-btn>
-            <v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-store-outline" @click="showStores(item)" color="green" variant="tonal"
-            elevation="1" title="Agregar Almacén"></v-btn>
-            <!--<v-btn density="comfortable" class="mr-1 mt-1 mb-1" icon="mdi-storefront" @click="showProducts(item)" color="orange-darken-1" variant="tonal"
-            elevation="1" title="Agregar productos a Academia"></v-btn>-->
-          <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
-            elevation="1" title="Eliminar Academia"></v-btn>
-            <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
-              mdi-pencil
-            </v-icon>
-            <v-icon size="25" color="red" @click="deleteItem(item)">
-              mdi-delete
-            </v-icon>-->
+            <v-btn
+              density="comfortable"
+              icon="mdi-pencil"
+              @click="editItem(item)"
+              color="primary"
+              variant="tonal"
+              elevation="1"
+              class="mr-1 mt-1 mb-1"
+              title="Editar Academia"
+            ></v-btn>
+            <v-btn
+              density="comfortable"
+              class="mr-1 mt-1 mb-1"
+              icon="mdi-store-outline"
+              @click="showStores(item)"
+              color="green"
+              variant="tonal"
+              elevation="1"
+              title="Agregar Almacén"
+            ></v-btn>
+            <v-btn
+              density="comfortable"
+              icon="mdi-delete"
+              @click="deleteItem(item)"
+              color="red-darken-4"
+              variant="tonal"
+              elevation="1"
+              title="Eliminar Academia"
+            ></v-btn>
           </template>
         </v-data-table>
         <!--Sotores-->
         <!--Store-->
-      <v-dialog v-model="dialogStores" fullscreen transition="dialog-bottom-transition">
-        <v-card>
-          <v-toolbar color="#F18254">
-            <span class="text-subtitle-1 ml-4"> Almacenes de la Academia</span>
-            <v-spacer></v-spacer>
-            <v-btn class="text-subtitle-1  ml-12" color="#E7E9E9" variant="flat" @click="showAddStores()">
-              Agregar Almacén
-            </v-btn>
-          </v-toolbar>
-          <v-card-text class="mt-2 mb-2">
-            <v-text-field class="mt-1 mb-1" v-model="search2" append-icon="mdi-magnify" label="Buscar" single-line
-              hide-details></v-text-field>
-            <v-data-table :headers="headers2" :items="enrollmentStores" :search="search2" class="elevation-1" :items-per-page-text="'Elementos por páginas'" no-results-text="No hay datos disponibles" no-data-text="No hay datos disponibles" :loading="loadingStore" loading-text="Cargando datos...">
-
-              <!--<template v-slot:item.name="{ item }">
-
-                    <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                      <v-img :src="'https://api2.simplifies.cl/api/images/'+item.image_url" alt="image"></v-img>
-                    </v-avatar>
-                    {{ item.name+' '+item.surname+' '+item.second_surname}}
-                  </template>-->
-
-              <template v-slot:item.actions="{ item }">
-          <v-btn density="comfortable" icon="mdi-delete" @click="closestoreRequest(item)" color="red-darken-4" variant="tonal"
-            elevation="1" title="Eliminar afiliación del almacén"></v-btn>
-                <!--<v-icon size="small" color="red" @click="closestoreRequest(item)">
-                  mdi-delete
-                </v-icon>-->
-              </template>
-
-            </v-data-table>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
-              Volver
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <v-dialog v-model="dialogAddStore" width="500">
-        <v-card>
-          <v-toolbar color="#F18254">
-            <span class="text-subtitle-2 ml-4">Agregar Almacén</span>
-          </v-toolbar>
-          <v-card-text class="mt-2 mb-2">
-            <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-              <v-container fluid>
-                <v-row>
-                  <v-col cols="12" md="12">
-                    <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="store_id" :items="stores" label="Almacén"
-                      prepend-icon="mdi-store-outline" item-title="address" item-value="id" variant="underlined"
-                      :rules="selectRules">
-                      <template v-slot:item="{ props, item }">
-                        <v-list-item
-                          v-bind="props"
-                          :subtitle="'Referencia: '+item.raw.reference"
-                          :title="item.raw.address"
-                        ></v-list-item>
+        <v-dialog v-model="dialogStores" fullscreen transition="dialog-bottom-transition">
+          <v-card>
+            <v-toolbar color="#F18254">
+              <span class="text-subtitle-1 ml-4"> Almacenes de la Academia</span>
+              <v-spacer></v-spacer>
+              <v-btn
+                class="text-subtitle-1 ml-12"
+                color="#E7E9E9"
+                variant="flat"
+                @click="showAddStores()"
+              >
+                Agregar Almacén
+              </v-btn>
+            </v-toolbar>
+            <v-card-text class="mt-2 mb-2">
+              <v-text-field
+                class="mt-1 mb-1"
+                v-model="search2"
+                append-icon="mdi-magnify"
+                label="Buscar"
+                single-line
+                hide-details
+              ></v-text-field>
+              <v-data-table
+                :headers="headers2"
+                :items="enrollmentStores"
+                :search="search2"
+                class="elevation-1"
+                :items-per-page-text="'Elementos por páginas'"
+                no-results-text="No hay datos disponibles"
+                no-data-text="No hay datos disponibles"
+                :loading="loadingStore"
+                loading-text="Cargando datos..."
+              >
+                <template v-slot:item.actions="{ item }">
+                  <v-btn
+                    density="comfortable"
+                    icon="mdi-delete"
+                    @click="closestoreRequest(item)"
+                    color="red-darken-4"
+                    variant="tonal"
+                    elevation="1"
+                    title="Eliminar afiliación del almacén"
+                  ></v-btn>
+                </template>
+              </v-data-table>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="#E7E9E9" variant="flat" @click="closeDelete"> Volver </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialogAddStore" width="500">
+          <v-card>
+            <v-toolbar color="#F18254">
+              <span class="text-subtitle-2 ml-4">Agregar Almacén</span>
+            </v-toolbar>
+            <v-card-text class="mt-2 mb-2">
+              <v-form ref="form" v-model="valid" enctype="multipart/form-data">
+                <v-container fluid>
+                  <v-row>
+                    <v-col cols="12" md="12">
+                      <v-autocomplete
+                        :no-data-text="'No hay datos disponibles'"
+                        v-model="store_id"
+                        :items="stores"
+                        label="Almacén"
+                        prepend-icon="mdi-store-outline"
+                        item-title="address"
+                        item-value="id"
+                        variant="underlined"
+                        :rules="selectRules"
+                      >
+                        <template v-slot:item="{ props, item }">
+                          <v-list-item
+                            v-bind="props"
+                            :subtitle="'Referencia: ' + item.raw.reference"
+                            :title="item.raw.address"
+                          ></v-list-item>
                         </template>
                       </v-autocomplete>
-                  </v-col>
-                </v-row>
-              </v-container>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="#E7E9E9" variant="flat" @click="closestore">
-                  Cancelar
-                </v-btn>
-                <v-btn color="#F18254" variant="flat" @click="saveStore" :disabled="!valid">
-                  Aceptar
-                </v-btn>
-              </v-card-actions>
-            </v-form>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
-      <v-dialog v-model="dialogRequestStore" width="500">
-        <v-card>
+                    </v-col>
+                  </v-row>
+                </v-container>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="#E7E9E9" variant="flat" @click="closestore">
+                    Cancelar
+                  </v-btn>
+                  <v-btn
+                    color="#F18254"
+                    variant="flat"
+                    @click="saveStore"
+                    :disabled="!valid"
+                  >
+                    Aceptar
+                  </v-btn>
+                </v-card-actions>
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialogRequestStore" width="500">
+          <v-card>
+            <v-toolbar color="red">
+              <span class="text-subtitle-2 ml-4">
+                Eliminar afiliación del almacén de esta academia</span
+              >
+            </v-toolbar>
 
-          <v-toolbar color="red">
-            <span class="text-subtitle-2 ml-4"> Eliminar afiliación del almacén de esta academia</span>
-          </v-toolbar>
-
-          <v-card-text class="mt-2 mb-2"> ¿Desea eliminar esta afiliación del almacén con la academia?</v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="#E7E9E9" variant="flat" @click="closerequestStore">
-              Cancelar
-            </v-btn>
-            <v-btn color="#F18254" variant="flat" @click="storeDelete">
-              Aceptar
-            </v-btn>
-
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+            <v-card-text class="mt-2 mb-2">
+              ¿Desea eliminar esta afiliación del almacén con la academia?</v-card-text
+            >
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="#E7E9E9" variant="flat" @click="closerequestStore">
+                Cancelar
+              </v-btn>
+              <v-btn color="#F18254" variant="flat" @click="storeDelete"> Aceptar </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-card-text>
     </v-container>
-    </v-card>
-  </template>
-  
-  <script>
-  
-  import axios from "axios";
-  import LocalStorageService from "@/LocalStorageService";
+  </v-card>
+</template>
 
-  // Interceptor para agregar el token a cada solicitud
-  axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
+<script>
+import axios from "axios";
+import LocalStorageService from "@/LocalStorageService";
+
+// Interceptor para agregar el token a cada solicitud
+axios.interceptors.request.use(
+  (config) => {
+    const token = LocalStorageService.getItem("token"); // Suponiendo que guardaste el token en localStorage
+    if (token) {
+      config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, "")}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
   }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
+);
 
-  export default {
-    data: () => ({
-      loading: true,
-      loadingStore: true,
-      valid: true,
-      snackbar: false,
-      sb_type: '',
-      sb_message: '',
-      sb_timeout: 2000,
-      sb_title:'',
-      sb_icon:'',
-      business_id: '',
-      search:'',
-      dialog: false,
-      dialogDelete: false,
-      //stores
-      dialogStores: false,
-      search2: '',
-      dialogAddStore: false,
-      stores:[],
-      store_id: '',
-      dialogRequestStore: false,
-      //products
-      /*dialogStoresProducts: false,
-      search3: '',
-      product_id: '',
-      product_quantity: '',
-      dialogAddProduct: false,
-      editar: false,
-      dialogRequestProduct: false,*/
-      groupBy: [
+export default {
+  data: () => ({
+    loading: true,
+    loadingStore: true,
+    valid: true,
+    snackbar: false,
+    sb_type: "",
+    sb_message: "",
+    sb_timeout: 2000,
+    sb_title: "",
+    sb_icon: "",
+    business_id: "",
+    search: "",
+    dialog: false,
+    dialogDelete: false,
+    //stores
+    dialogStores: false,
+    search2: "",
+    dialogAddStore: false,
+    stores: [],
+    store_id: "",
+    dialogRequestStore: false,
+    groupBy: [
       {
-        key: 'direccionStore',
+        key: "direccionStore",
       },
     ],
-      headers: [
-  
-        { title: 'Academia', value: 'name' },
-        { title: 'Descripción', value: 'description' },
-        { title: 'Dirección', value: 'address' },
-        { title: 'Localización', value: 'location' },
-        { title: 'Teléfono', value: 'phone' },
-        { title: 'Acciones', key: 'actions', sortable: false },
-      ],
-      headers2: [
-      { title: 'Referencia', value: 'reference' },
-      { title: 'Dirección', value: 'address' },
-      { title: 'Descripción', value: 'description' },
-      { title: 'Acciones', key: 'actions', sortable: false },
+    headers: [
+      { title: "Academia", value: "name" },
+      { title: "Descripción", value: "description" },
+      { title: "Dirección", value: "address" },
+      { title: "Localización", value: "location" },
+      { title: "Teléfono", value: "phone" },
+      { title: "Acciones", key: "actions", sortable: false },
     ],
-      results: [],
-  
-      business: [],
-      enrollmentStores:[],
-      enrollmentStoresProducts: [],
-      storesAcademy: [],
-      products: [],
-      editedIndex: 1,
-      //stores
-      enrollment_id: '',
-      enrollmentSelect: '',
-      file: null,
-      imgMiniatura: '',
-      editedItem: {
-        id: '',
-        name: '',
-        description: '',
-        address: '',
-        phone: '',
-        image_data: '',
-        business_id: '',
-        location: ''
-      },
-      data: {},
-  
-      defaultItem: {
-        id: '',
-        name: '',
-        description: '',
-        address: '',
-        phone: '',
-        business_id: '',
-        image_data: '',
-        location: ''
-      },
-      nameRules: [
-       (v) => !!v || "El campo es requerido",
-       (v) => (v && v.length <= 100) ||
-         "El campo debe tener menos de 101 caracteres",
-         (v) => (v && v.length >= 3) ||
-         "El campo debe tener al menos de 3 caracteres",
-     ],
-      descripRules: [
-        (v) => !!v || "El campo es requerido",
-        (v) => (v && v.length <= 250) ||
-          "El campo debe tener menos de 251 caracteres",
-          (v) => (v && v.length >= 3) ||
-          "El campo debe tener al menos 3 caracteres",
-        ],
+    headers2: [
+      { title: "Referencia", value: "reference" },
+      { title: "Dirección", value: "address" },
+      { title: "Descripción", value: "description" },
+      { title: "Acciones", key: "actions", sortable: false },
+    ],
+    results: [],
+
+    business: [],
+    enrollmentStores: [],
+    enrollmentStoresProducts: [],
+    storesAcademy: [],
+    products: [],
+    editedIndex: 1,
+    //stores
+    enrollment_id: "",
+    enrollmentSelect: "",
+    file: null,
+    imgMiniatura: "",
+    editedItem: {
+      id: "",
+      name: "",
+      description: "",
+      address: "",
+      phone: "",
+      image_data: "",
+      business_id: "",
+      location: "",
+    },
+    data: {},
+
+    defaultItem: {
+      id: "",
+      name: "",
+      description: "",
+      address: "",
+      phone: "",
+      business_id: "",
+      image_data: "",
+      location: "",
+    },
+    nameRules: [
+      (v) => !!v || "El campo es requerido",
+      (v) => (v && v.length <= 100) || "El campo debe tener menos de 101 caracteres",
+      (v) => (v && v.length >= 3) || "El campo debe tener al menos de 3 caracteres",
+    ],
+    descripRules: [
+      (v) => !!v || "El campo es requerido",
+      (v) => (v && v.length <= 250) || "El campo debe tener menos de 251 caracteres",
+      (v) => (v && v.length >= 3) || "El campo debe tener al menos 3 caracteres",
+    ],
     mobileRules: [
-      v => !!v || 'El número de móvil es requerido',
-      v => /^\+569\d{8}$/.test(v) || 'Formato de número móvil inválido. Ejemplo: +56912345678'
+      (v) => !!v || "El número de móvil es requerido",
+      (v) =>
+        /^\+569\d{8}$/.test(v) ||
+        "Formato de número móvil inválido. Ejemplo: +56912345678",
     ],
-     selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
-    }),
-  
-    computed: {
-      imgedit() {
+    selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
+  }),
+
+  computed: {
+    imgedit() {
       return this.imgMiniatura;
     },
-      formTitle() {
-        if(this.editedIndex == 1){
-        return 'Nueva Academia';
-        }
-        if (this.editedIndex == 2) {
-          return 'Editar Academia';
-        }
-        if (this.editedIndex == 3) {
-          return 'Asiganar Producto';
-        }
-        if (this.editedIndex == 4) {
-          return 'Editar Existencia';
-        }
-        else {
-          return 'Asignar Almacén';
-        }
-      },
+    formTitle() {
+      if (this.editedIndex == 1) {
+        return "Nueva Academia";
+      }
+      if (this.editedIndex == 2) {
+        return "Editar Academia";
+      }
+      if (this.editedIndex == 3) {
+        return "Asiganar Producto";
+      }
+      if (this.editedIndex == 4) {
+        return "Editar Existencia";
+      } else {
+        return "Asignar Almacén";
+      }
     },
-  
-    watch: {
-      dialog(val) {
-        val || this.close()
-      },
-      dialogDelete(val) {
-        val || this.closeDelete()
-      },
-    },
-  
-    mounted() {
-      LocalStorageService.setIsLocked(true);
-      this.business_id = LocalStorageService.getItem('business_id');
-      this.editItem.business_id = this.business_id;
-      axios
-          .get('https://api2.simplifies.cl/api/business')
-          .then((response) => {
-            console.log(response.data);
-            this.business = response.data.business;      
-              }).finally(() => {
-                if (this.business.length > 0) {
-            this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
-            LocalStorageService.setIsLocked(false);
-            this.initialize();
-            }  
-          });
-    },
-  
-    methods: {
-      imagenDisponible() {
-        if (this.imgedit !== undefined && this.imgedit !== '') {
-            // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
-            let img = new Image();
-            img.src = this.imgedit;
+  },
 
-            return true; // Devuelve true si la imagen está disponible
+  watch: {
+    dialog(val) {
+      val || this.close();
+    },
+    dialogDelete(val) {
+      val || this.closeDelete();
+    },
+  },
+
+  mounted() {
+    LocalStorageService.setIsLocked(true);
+    this.business_id = LocalStorageService.getItem("business_id");
+    this.editItem.business_id = this.business_id;
+    axios
+      .get("https://api2.simplifies.cl/api/business")
+      .then((response) => {
+        this.business = response.data.business;
+      })
+      .finally(() => {
+        if (this.business.length > 0) {
+          this.editedItem.business_id = this.business[0].id; // Establecer el primer negocio como valor predeterminado
+          LocalStorageService.setIsLocked(false);
+          this.initialize();
         }
-        return false; // Si la URL de la imagen no está definida o está vacía, devuelve false*/
+      });
+  },
+
+  methods: {
+    imagenDisponible() {
+      if (this.imgedit !== undefined && this.imgedit !== "") {
+        // Intenta cargar la imagen en un elemento oculto para verificar si está disponible
+        let img = new Image();
+        img.src = this.imgedit;
+
+        return true; // Devuelve true si la imagen está disponible
+      }
+      return false; // Si la URL de la imagen no está definida o está vacía, devuelve false*/
     },
     showAlert(sb_type, sb_message, sb_timeout) {
-      this.sb_type = sb_type
+      this.sb_type = sb_type;
 
       if (sb_type == "success") {
-        this.sb_title = 'Éxito'
-        this.sb_icon = 'mdi-check-circle'
+        this.sb_title = "Éxito";
+        this.sb_icon = "mdi-check-circle";
       }
 
       if (sb_type == "error") {
-        this.sb_title = 'Error'
-        this.sb_icon = 'mdi-check-circle'
+        this.sb_title = "Error";
+        this.sb_icon = "mdi-check-circle";
       }
 
       if (sb_type == "warning") {
-        this.sb_title = 'Advertencia'
-        this.sb_icon = 'mdi-alert-circle'
+        this.sb_title = "Advertencia";
+        this.sb_icon = "mdi-alert-circle";
       }
 
-      this.sb_message = sb_message
-      this.sb_timeout = sb_timeout
-      this.snackbar = true
+      this.sb_message = sb_message;
+      this.sb_timeout = sb_timeout;
+      this.snackbar = true;
     },
     onFileSelected(event) {
       let file = event.target.files[0];
       this.editedItem.image_data = file;
-      console.log(this.editedItem.image_data);
       this.cargarImage(file);
     },
     cargarImage(file) {
       let reader = new FileReader();
       reader.onload = (e) => {
         this.imgMiniatura = e.target.result;
-      }
+      };
       reader.readAsDataURL(file);
     },
     initialize() {
       this.loading = true;
       LocalStorageService.setIsLocked(true);
-        axios
-          .get('https://api2.simplifies.cl/api/enrollment-show', {
-            params: {
-                business_id: this.business_id
-            }
-          })
-          .then((response) => {
-            this.results = response.data.enrollments;
-          }).finally(() => {
-            LocalStorageService.setIsLocked(false);
-            this.loading = false;
-        });  
-      },
-      editItem(item) {
-        this.file = null;
-        var img = new Image();
-      img.src = 'https://api2.simplifies.cl/api/images/' + item.image_data;
+      axios
+        .get("https://api2.simplifies.cl/api/enrollment-show", {
+          params: {
+            business_id: this.business_id,
+          },
+        })
+        .then((response) => {
+          this.results = response.data.enrollments;
+        })
+        .finally(() => {
+          LocalStorageService.setIsLocked(false);
+          this.loading = false;
+        });
+    },
+    editItem(item) {
+      this.file = null;
+      var img = new Image();
+      img.src = "https://api2.simplifies.cl/api/images/" + item.image_data;
       img.onload = () => {
-        this.imgMiniatura = 'https://api2.simplifies.cl/api/images/' + item.image_data;
+        this.imgMiniatura = "https://api2.simplifies.cl/api/images/" + item.image_data;
       };
       img.onerror = () => {
-        this.imgMiniatura = '';
+        this.imgMiniatura = "";
       };
-        //this.editedItem.id = item.id;
-     
-        this.editedIndex = 2;
-        this.editedItem = Object.assign({}, item);
-        this.editedItem.business_id = parseInt(item.business_id);
-        this.dialog = true
-      },
-      deleteItem(item) {
-        this.editedIndex = 1;
-        this.editedItem.id = item.id;
-        this.dialogDelete = true;
-      },
-      deleteItemConfirm() {
-        LocalStorageService.setIsLocked(true);
-        //this.results.splice(this.editedIndex, 1)
-        let request = {
-          id: this.editedItem.id
-        };
-        axios
-          .post('https://api2.simplifies.cl/api/enrollment-destroy', request)
-          .then(() => {
-          }).finally(() => {
-            LocalStorageService.setIsLocked(false);            
-            this.initialize();
-            this.showAlert("success","Academia eliminada correctamente", 3000)
+      //this.editedItem.id = item.id;
+
+      this.editedIndex = 2;
+      this.editedItem = Object.assign({}, item);
+      this.editedItem.business_id = parseInt(item.business_id);
+      this.dialog = true;
+    },
+    deleteItem(item) {
+      this.editedIndex = 1;
+      this.editedItem.id = item.id;
+      this.dialogDelete = true;
+    },
+    deleteItemConfirm() {
+      LocalStorageService.setIsLocked(true);
+      //this.results.splice(this.editedIndex, 1)
+      let request = {
+        id: this.editedItem.id,
+      };
+      axios
+        .post("https://api2.simplifies.cl/api/enrollment-destroy", request)
+        .then(() => {})
+        .finally(() => {
+          LocalStorageService.setIsLocked(false);
+          this.initialize();
+          this.showAlert("success", "Academia eliminada correctamente", 3000);
         });
-        this.closeDelete()
-      },
-      close() {
-        this.file = null;
-      this.imgMiniatura = '';
-        this.dialog = false;
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-      closeDelete() {
-        this.dialogDelete = false;
-        this.dialogStores = false;
-        //this.dialogStoresProducts = false;
-        this.editedItem.name = '';        
-        this.editedItem.description = '';        
-        this.editedItem.business_id = parseInt(this.business_id);        
-        this.editedIndex = 1;
-        this.enrollmentSelect ='',
-        this.enrollment_id = ';'
-      },
-      save() {
-        
-        LocalStorageService.setIsLocked(true);
-        if (this.editedIndex == 2) {
-          this.valid = false;
-          /*this.data.id = this.editedItem.id;
-          this.data.name = this.editedItem.name;
-          this.data.description = this.editedItem.description;
-          this.data.business_id = this.editedItem.business_id;*/
-          const formData = new FormData();
+      this.closeDelete();
+    },
+    close() {
+      this.file = null;
+      this.imgMiniatura = "";
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+    closeDelete() {
+      this.dialogDelete = false;
+      this.dialogStores = false;
+      //this.dialogStoresProducts = false;
+      this.editedItem.name = "";
+      this.editedItem.description = "";
+      this.editedItem.business_id = parseInt(this.business_id);
+      this.editedIndex = 1;
+      (this.enrollmentSelect = ""), (this.enrollment_id = ";");
+    },
+    save() {
+      LocalStorageService.setIsLocked(true);
+      if (this.editedIndex == 2) {
+        this.valid = false;
+        const formData = new FormData();
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
         }
-        console.log('formData');
-        console.log(formData);
-          axios
-            .post('https://api2.simplifies.cl/api/enrollment-updated', formData)
-            .then(() => {
-              this.file = null;
-            this.imgMiniatura = '';
-            }).finally(() => {              
+        axios
+          .post("https://api2.simplifies.cl/api/enrollment-updated", formData)
+          .then(() => {
+            this.file = null;
+            this.imgMiniatura = "";
+          })
+          .finally(() => {
             LocalStorageService.setIsLocked(false);
-              this.showAlert("success","Academia actualizada correctamente", 3000);
-              this.initialize();
+            this.showAlert("success", "Academia actualizada correctamente", 3000);
+            this.initialize();
           });
-        } 
-        if (this.editedIndex == 1) {
-          this.valid = false;
-          /*this.data.name = this.editedItem.name;
-          this.data.description = this.editedItem.description;
-          this.data.business_id = this.editedItem.business_id;*/
-          const formData = new FormData();
+      }
+      if (this.editedIndex == 1) {
+        this.valid = false;
+        const formData = new FormData();
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
         }
-          axios
-            .post('https://api2.simplifies.cl/api/enrollment', formData)
-            .then(() => {
-              this.file = null;
-            this.imgMiniatura = '';
-            }).finally(() => {
+        axios
+          .post("https://api2.simplifies.cl/api/enrollment", formData)
+          .then(() => {
+            this.file = null;
+            this.imgMiniatura = "";
+          })
+          .finally(() => {
             LocalStorageService.setIsLocked(false);
-              this.showAlert("success","Academia creada correctamente", 3000);
-              this.initialize();
+            this.showAlert("success", "Academia creada correctamente", 3000);
+            this.initialize();
           });
-        }
-        this.close()
-      },
-      //Stores logica
-    showStores(item){      
+      }
+      this.close();
+    },
+    //Stores logica
+    showStores(item) {
       LocalStorageService.setIsLocked(true);
       this.editedIndex = 5;
-        this.enrollmentSelect = item;
-        console.log(this.enrollmentSelect);
-        this.enrollment_id = item.id;
-        console.log(item.id);
-        axios
-          .get('https://api2.simplifies.cl/api/enrollmentstore-show', {
-            params: {
-              enrollment_id: item.id
-            }
-          })
-          .then((response) => {
-            this.enrollmentStores = response.data.enrollmentStores;
-          }).finally(() => {
-            this.loadingStore = false;
-            LocalStorageService.setIsLocked(false);
+      this.enrollmentSelect = item;
+      this.enrollment_id = item.id;
+      axios
+        .get("https://api2.simplifies.cl/api/enrollmentstore-show", {
+          params: {
+            enrollment_id: item.id,
+          },
+        })
+        .then((response) => {
+          this.enrollmentStores = response.data.enrollmentStores;
+        })
+        .finally(() => {
+          this.loadingStore = false;
+          LocalStorageService.setIsLocked(false);
         });
-        this.dialogStores = true;
+      this.dialogStores = true;
     },
-    showAddStores(){
+    showAddStores() {
       LocalStorageService.setIsLocked(true);
       axios
-          .get('https://api2.simplifies.cl/api/enrollmentstore-show-notIn', {
+        .get("https://api2.simplifies.cl/api/enrollmentstore-show-notIn", {
           params: {
-            enrollment_id: this.enrollmentSelect.id
-          }
+            enrollment_id: this.enrollmentSelect.id,
+          },
         })
-          .then((response) => {
-            this.stores = response.data.stores;
-          }).finally(() => {
-            LocalStorageService.setIsLocked(false);
+        .then((response) => {
+          this.stores = response.data.stores;
+        })
+        .finally(() => {
+          LocalStorageService.setIsLocked(false);
         });
 
-          this.dialogAddStore = true;
+      this.dialogAddStore = true;
     },
     closestore() {
       this.dialogAddStore = false;
-      this.store_id = '';
+      this.store_id = "";
       //this.showStores(this.enrollmentSelect)
     },
     saveStore() {
       LocalStorageService.setIsLocked(true);
-      this.valid = false,
-        this.data.enrollment_id = this.enrollment_id;
+      (this.valid = false), (this.data.enrollment_id = this.enrollment_id);
       this.data.store_id = this.store_id;
-      console.log('this.data');
-      console.log(this.data);
       axios
-        .post('https://api2.simplifies.cl/api/enrollmentstore', this.data)
+        .post("https://api2.simplifies.cl/api/enrollmentstore", this.data)
         .then(() => {
           this.dialogAddStore = false;
-          this.store_id = '';
-        }).finally(() => {       
-          LocalStorageService.setIsLocked(false);     
+          this.store_id = "";
+        })
+        .finally(() => {
+          LocalStorageService.setIsLocked(false);
           this.showStores(this.enrollmentSelect);
           this.showAlert("success", "Almacén afiliado correctamente a la academia", 3000);
-          });
+        });
     },
     closestoreRequest(item) {
-      this.dialogRequestStore = true
+      this.dialogRequestStore = true;
       //this.editedItem.branch_id=item.id
-      this.store_id = item.store_id
+      this.store_id = item.store_id;
     },
     closerequestStore() {
       this.dialogRequestStore = false;
-      this.store_id = '';
+      this.store_id = "";
       //this.showStores(this.enrollmentSelect)
     },
     storeDelete() {
       LocalStorageService.setIsLocked(true);
       let request = {
         enrollment_id: this.enrollment_id,
-        store_id: this.store_id
+        store_id: this.store_id,
       };
       axios
-        .post('https://api2.simplifies.cl/api/enrollmentstore-destroy', request)
+        .post("https://api2.simplifies.cl/api/enrollmentstore-destroy", request)
         .then(() => {
           this.dialogRequestStore = false;
-          this.store_id = '';
-          //console.log(this.branchSelect);
-        }).finally(() => {  
-          LocalStorageService.setIsLocked(false);          
-          this.showStores(this.enrollmentSelect)
+          this.store_id = "";
+        })
+        .finally(() => {
+          LocalStorageService.setIsLocked(false);
+          this.showStores(this.enrollmentSelect);
           this.showAlert("success", "Afiliación eliminada correctamente", 3000);
-          });
-    },//endStores
-   /*//Asignar Productos
-    showProducts(item){
-      this.editedIndex = 3;
-        this.enrollmentSelect = item;
-        console.log(this.enrollmentSelect);
-        this.enrollment_id = item.id;
-        console.log(item.id);
-        axios
-          .get('https://api2.simplifies.cl/api/productstore-academy-show', {
-            params: {
-              enrollment_id: item.id
-            }
-          })
-          .then((response) => {
-            this.enrollmentStoresProducts = response.data.products;
-            console.log('imprime products');
-          });
-        this.dialogStoresProducts = true;
-
-        axios
-        .get('https://api2.simplifies.cl/api/store-academy-show', {
-          params: {
-            enrollment_id: this.enrollment_id
-          }
-        })
-        .then((response) => {
-          this.storesAcademy = response.data.stores;
         });
-      axios
-        .get('https://api2.simplifies.cl/api/product')
-        .then((response) => {
-          this.products = response.data.products;
-        });
-    },
-    closeproduct() {
-      this.dialogAddProduct = false;
-      this.store_id = '';
-      this.product_id = '';
-      this.product_quantity = '';
-      this.showProducts(this.enrollmentSelect)
-    },
-    saveProduct() {
-      if (this.editedIndex == 3) {
-        this.valid = false,
-        this.data.enrollment_id = this.enrollment_id;
-      this.data.store_id = this.store_id;
-      this.data.product_id = this.product_id;
-      this.data.product_quantity = this.product_quantity;
-      console.log('this.data');
-      console.log(this.data);
-      axios
-          .post('https://api2.simplifies.cl/api/productstore', this.data)
-          .then(() => {
-          this.dialogAddProduct = false;
-          this.store_id = '',
-          this.product_id = '';
-          this.product_quantity = '';
-          this.showProducts(this.enrollmentSelect);
-          this.showAlert("success", "Producto asignado correctamente al almacén", 3000);
-        })
-      }
-      if (this.editedIndex == 4){
-        this.valid = false,
-        this.data.enrollment_id = this.enrollment_id;
-      this.data.store_id = this.store_id;
-      this.data.product_id = this.product_id;
-      this.data.product_quantity = this.product_quantity;
-      console.log('this.data');
-      console.log(this.data);
-      axios
-          .put('https://api2.simplifies.cl/api/productstore', this.data)
-          .then(() => {
-          this.dialogAddProduct = false;
-          this.store_id = '',
-          this.product_id = '';
-          this.product_quantity = '';
-          this.showProducts(this.enrollmentSelect);
-          this.showAlert("success", "Asignacion editada correctamente", 3000);
-        })
-      }
-    },
-    editItemProduct(item) {
-      this.editedIndex = 4;
-      this.dialogAddProduct = true;
-      this.store_id = item.store_id;
-      this.product_id = item.product_id;
-      this.product_quantity = item.product_exit;
-    },
-    closeproductRequest(item) {
-      this.dialogRequestProduct = true
-      //this.editedItem.branch_id=item.id
-      this.store_id = item.store_id;
-      this.product_id = item.product_id;
+    }, //endStores
+  }, //endMethods
+};
+</script>
 
-    },
-    closerequestProduct() {
-      this.dialogRequestProduct = false;
-      this.store_id = '';
-      this.product_id = '';
-      this.showProducts(this.enrollmentSelect)
-    },
-    deleteProduct() {
-      this.data.product_id = this.product_id;
-      this.data.store_id = this.store_id;
-      this.data.enrollment_id = this.enrollment_id;
-      axios
-        .post('https://api2.simplifies.cl/api/productstore-destroy', this.data)
-        .then(() => {
-          this.dialogRequestProduct = false;
-          this.store_id = '',
-          this.product_id = '';
-          console.log('this.enrollmentSelect');
-          console.log(this.enrollmentSelect);
-          this.showProducts(this.enrollmentSelect);
-          this.showAlert("success", "Asignación eliminada correctamente", 3000);    
-        })
-    },*/
-    },//endMethods
-  }
-  </script>
-
-  <style>
+<style>
 .description-cell {
-    max-width: 400px; /* Define el ancho máximo del campo de descripción */
-    overflow: hidden; /* Oculta el texto que se desborda del campo de descripción */
-    text-overflow: ellipsis; /* Muestra puntos suspensivos (...) cuando el texto se recorta */
+  max-width: 400px; /* Define el ancho máximo del campo de descripción */
+  overflow: hidden; /* Oculta el texto que se desborda del campo de descripción */
+  text-overflow: ellipsis; /* Muestra puntos suspensivos (...) cuando el texto se recorta */
 }
 .address-cell {
-    max-width: 200px; /* Define el ancho máximo del campo de descripción */
-    overflow: hidden; /* Oculta el texto que se desborda del campo de descripción */
-    text-overflow: ellipsis; /* Muestra puntos suspensivos (...) cuando el texto se recorta */
+  max-width: 200px; /* Define el ancho máximo del campo de descripción */
+  overflow: hidden; /* Oculta el texto que se desborda del campo de descripción */
+  text-overflow: ellipsis; /* Muestra puntos suspensivos (...) cuando el texto se recorta */
 }
 .location-cell {
-    max-width: 200px; /* Define el ancho máximo del campo de descripción */
-    overflow: hidden; /* Oculta el texto que se desborda del campo de descripción */
-    text-overflow: ellipsis; /* Muestra puntos suspensivos (...) cuando el texto se recorta */
+  max-width: 200px; /* Define el ancho máximo del campo de descripción */
+  overflow: hidden; /* Oculta el texto que se desborda del campo de descripción */
+  text-overflow: ellipsis; /* Muestra puntos suspensivos (...) cuando el texto se recorta */
 }
 </style>

@@ -215,13 +215,6 @@ export default {
             LocalStorageService.setIsLocked(true);
 
             const updatedData = this.dias.map(dia => {
-        
-                console.log('`${dia.entradaHora}:${dia.entradaMinuto}`');
-                console.log(`${dia.entradaHora}:${dia.entradaMinuto}`);
-                console.log('`${dia.salidaHora}:${dia.salidaMinuto}`');
-                console.log(`${dia.salidaHora}:${dia.salidaMinuto}`);
-                //console.log('${dia.salidaMinuto}');
-                //console.log(dia.salidaMinuto);
                 const start_time = (dia.entradaHora || dia.entradaMinuto) ? `${dia.entradaHora}:${dia.entradaMinuto}` : null;
                 const closing_time = (dia.salidaHora || dia.salidaMinuto) ? `${dia.salidaHora}:${dia.salidaMinuto}` : null;
                 return {
@@ -234,13 +227,6 @@ export default {
                 branch_id: this.branch_id,
                 schedule: updatedData
             };
-            /*const updatedData = this.dias.map(dia => ({
-                day: dia.nombre,
-                start_time: dia.entradaHora + ':' + dia.entradaMinuto,
-                closing_time: dia.salidaHora + ':' + dia.salidaMinuto,
-            }));*/
-            console.log('request');
-            console.log(request);
             axios.put('https://api2.simplifies.cl/api/schedule', request)
                 .then(() => {
                     LocalStorageService.setIsLocked(false);

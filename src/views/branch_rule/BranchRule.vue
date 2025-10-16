@@ -231,12 +231,9 @@ export default {
                 this.branch_id = this.branches[0].id;
                 this.mostrarFila = true;
             }
-                            //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
                             this.initialize()
           });
             
-
-        console.log(this.charge_id);
     },
 
     methods: {
@@ -297,8 +294,6 @@ export default {
         deleteItem(item) {
             this.editedItem.rule_id = item.rule_id;
             this.dialogDelete = true;
-            console.log('item');
-            console.log(this.editedItem);
         },
         deleteItemConfirm() {
             LocalStorageService.setIsLocked(true);
@@ -334,7 +329,6 @@ export default {
         save() {
             LocalStorageService.setIsLocked(true);
             if (this.editedIndex === -1) {
-                console.log('insertar');
                 this.valid = false;
                 this.data.branch_id = this.branch_id;
                 this.data.rule_id = this.editedItem.rule_id;

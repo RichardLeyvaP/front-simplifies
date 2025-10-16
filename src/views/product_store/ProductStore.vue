@@ -44,11 +44,6 @@
     <v-row>
         <v-col cols="12" md="12">
           <v-card-text>
-            <!--<v-col cols="12" sm="12" md="4">
-          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
-            v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name"
-            item-value="id" variant="underlined" @update:model-value="initialize()"></v-autocomplete>
-        </v-col>-->
       <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details>
       </v-text-field>
       <v-data-table :headers="headers" :items-per-page-text="'Elementos por páginas'" :items="results" :group-by="groupBy"
@@ -141,9 +136,6 @@
                       </v-text-field>
                     </v-col>
                     <v-col v-if="mostrarCampos">
-                      <!--<v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.branch_idM" :items="branches"
-                        label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
-                        variant="underlined" @update:model-value="updatedstores()"></v-autocomplete>-->
                       <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="editedItem.store_idM" :items="stores1" label="Almacenes"
                         prepend-inner-icon="mdi-store" item-title="address" item-value="id" variant="underlined"
                         :rules=selectRules>
@@ -273,11 +265,11 @@
           <v-row>
                 <v-col cols="12" md="4">
                     <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="outlined"
-                        prepend-inner-icon="mdi-calendar"></v-select><!-- @update:model-value="initialize()"-->
+                        prepend-inner-icon="mdi-calendar"></v-select>
                 </v-col>
                 <v-col cols="12" md="4">
                     <v-select v-model="selectedMounth" :items="months" label="Selecciona un mes" variant="outlined"
-                        prepend-inner-icon="mdi-calendar" ></v-select><!--@update:model-value="moveProductsMounth()"-->
+                        prepend-inner-icon="mdi-calendar" ></v-select>
                 </v-col>
                 <v-col cols="12" md="1">
                     <v-btn icon @click="moveProductsMounth()" color="#F18254">
@@ -303,7 +295,7 @@
 
                                 <v-avatar class="mr-1" elevation="3" color="grey-lighten-4" size="large">
                                   <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_url}`" alt="image"></v-img>
-                                </v-avatar><!--+'?$'+Date.now()-->
+                                </v-avatar>
                                 {{ item.nameProfessional }}
                                 </template>
                             </v-data-table>
@@ -379,18 +371,6 @@ export default {
         key: 'direccionStore',
       },
     ],
-    /*headers: [
-      //{ title: 'Almacén', align: 'start', value: 'direccionStore' },
-      { title: 'Nombre', key: 'name' },
-      { title: 'Referencia', key: 'reference' },
-      { title: 'Código', key: 'code' },
-      { title: 'Estado', key: 'status_product' },
-      //{ title: 'Precio compra', align: 'start', value: 'purchase_price' },
-      { title: 'Precio venta', align: 'start', value: 'sale_price' },
-      { title: 'Existencia', align: 'start', value: 'product_exit' },
-      { title: 'Límite Existencia Alerta', align: 'start', value: 'stock_depletion' },
-      { title: 'Acciones', key: 'actions', sortable: false },
-    ],*/
     results: [],
     stores: [],
     stores1: [],
@@ -555,26 +535,6 @@ export default {
     this.professional_id = LocalStorageService.getItem('professional_id');
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     this.permissionsUser = LocalStorageService.getItem("permissionsUser") || [],
-    
-          /*axios
-        .get('https://api2.simplifies.cl/api/show-stores-products', {
-        params: {
-          business_id: this.business_id,
-          branch_id: this.branch_id
-        }
-      })
-        .then((response) => {
-          this.products = response.data.products;
-          this.stores = response.data.stores;
-          this.branches = response.data.branches;
-        }).finally(() => {
-          if (this.charge === 'Administrador') {
-          this.branch_id = 0;
-          this.mostrarFila = true;
-        }
-          LocalStorageService.setIsLocked(false);
-                this.initialize();
-          });*/
         LocalStorageService.setIsLocked(true);
           const requestParams = {
           business_id: this.business_id,
@@ -683,12 +643,6 @@ export default {
 
     },
     async showAdd(){
-      /*LocalStorageService.setIsLocked(true);
-          const requestParams = {
-          business_id: this.business_id,
-          branch_id: this.branch_id
-      };*/
-
       try {
         const result = await handleRequest({
           endpoint: 'product',

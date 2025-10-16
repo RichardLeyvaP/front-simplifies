@@ -140,15 +140,6 @@
                     {{ item.ponderation === 0 ? 1 : item.ponderation }}
                 </template>
                 <template v-slot:item.actions="{ item }">
-                    <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
-         mdi-pencil
-       </v-icon>
-                    <v-icon size="25" color="green" @click="showProfessionals(item)">
-                        mdi-account-tie-outline
-                    </v-icon>
-                    <v-icon size="25" color="red" @click="deleteItem(item)">
-                        mdi-delete
-                    </v-icon>-->
                     <v-btn density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary"
                         variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
                         title="Editar asignación de servicio"></v-btn>
@@ -201,31 +192,18 @@ export default {
         search2: '',
         message_delete: true,
         editando: false,
-        //dialogAddProfessionals: false,
         dialogDelete: false,
-        ///dialogDeleteProfessional: false,
         headers: [
-            //{ title: 'Almacén', align: 'start', value: 'direccionStore' },
             { title: 'Nombre', key: 'name' },
-            //{ title: 'Tipo Servicio', key: 'type_service' },
             { title: 'Duración', key: 'duration_service' },
             { title: 'Descripción', key: 'service_comment' },
             { title: 'Precio', align: 'start', value: 'price_service' },
             { title: 'Ponderación', align: 'start', value: 'ponderation' },
             { title: 'Acciones', key: 'actions', sortable: false },
         ],
-        /*headers2: [
-            { title: 'Nombre', key: 'name' },
-            { title: 'Correo', key: 'email' },
-            { title: 'Teléfono', key: 'phone' },
-            { title: 'Acciones', key: 'actions', sortable: false },
-        ],*/
         results: [],
         services: [],
-        //professionals: [],
         branches: [],
-        //branchServiceProfessionals: [],
-        //branchServiceSelect: '',
         editedIndex: -1,
         editedItem: {
             service_id: '',
@@ -302,7 +280,6 @@ export default {
                 }
                 this.initialize();
             });
-        console.log(this.charge_id);
     },
 
     methods: {
@@ -372,9 +349,6 @@ export default {
         },
         async deleteItemConfirm() {
             LocalStorageService.setIsLocked(true);
-            //this.data.branch_id = this.branch_id;
-            //this.data.service_id = this.editedItem.service_id;
-            
             try {
                 let request = {
                     id: this.editedItem.id,
@@ -402,17 +376,6 @@ export default {
                 this.closeDelete();                
                 this.initialize();
             }
-            
-            /*axios
-                .post('https://api2.simplifies.cl/api/branchservice-destroy', this.data)
-                .then(() => {
-                    this.message_delete = true;
-                }).finally(() => {
-                    LocalStorageService.setIsLocked(false);
-                    this.showAlert("success", "Asignación eliminada correctamente", 3000);
-                    this.initialize();
-                });
-            this.closeDelete()*/
         },
         close() {
             this.dialog = false;
@@ -458,22 +421,9 @@ export default {
                 // Este bloque captura errores inesperados fuera del manejo estándar
                 this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
                 } finally {
-                    //this.showAlert("success", "Servicio asignado correctamente", 3000);
                     this.close();
                     this.initialize();
                 }
-                /*console.log('insertar');
-                this.data.branch_id = this.branch_id;
-                this.data.service_id = this.editedItem.service_id;
-                this.data.ponderation = this.editedItem.ponderation;
-                axios
-                    .post('https://api2.simplifies.cl/api/branchservice', this.data)
-                    .then(() => {
-                    }).finally(() => {
-                        LocalStorageService.setIsLocked(false);
-                        this.showAlert("success", "Servicio asignado correctamente", 3000);
-                        this.initialize();
-                    });*/
             }
             else {
                 this.valid = false;

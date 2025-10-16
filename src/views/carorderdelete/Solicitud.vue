@@ -765,8 +765,6 @@ export default {
           this.results = response.data.cars;
           this.results1 = response.data.orders;
           this.results2 = response.data.cashier;
-          console.log("this.results2 productos");
-          console.log(this.results2);
         })
         .finally(() => {
           LocalStorageService.setIsLocked(false);

@@ -12,13 +12,6 @@
           <v-col cols="12" md="6"></v-col>
         </v-row>
  <!-- Botón para reproducir sonido -->
-<!--
-  <v-row class="mt-6">
-      <v-col cols="12" md="12" class="text-center">
-        <v-btn color="primary" @click="run_sound">Reproducir Sonido</v-btn>
-      </v-col>
-    </v-row>
--->
         <v-row class="mt-6">
           <v-col cols="12" md="12">
             <p class="text-h4 font-weight-black mb-2 " style="text-align: center;">
@@ -35,7 +28,6 @@
             </p>
             <p class="text-h3 font-weight-black" :class="{ 'parpadea': parpadeando }"
               style="text-align: center; font-size: 40px; font-family: 'Poppins', sans-serif; font-weight: bold; color: #AD0101;">
-              <!-- Richard Leyva -->
               {{ client }}
             </p>
           </v-col>
@@ -205,7 +197,6 @@ export default {
     this.fetchItems(this.clientes);
     // Establecer un intervalo para mostrar duplas cada 5 segundos    
     this.branch_id = LocalStorageService.getItem("branch_id");
-    console.log('ESTOY ENTRANDO AL mounted()');
     this.callForTime();
     setInterval(this.callForTime, 9000);
     // setInterval(this.mostrarDupla, 5000);
@@ -226,12 +217,7 @@ export default {
     return str;
     },
     fetchItems(valueClient) {
-      console.log('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww ENTRE EN fetchItems');
       this.items = this.createArrayOfArrays(valueClient, 8);
-      console.log('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww this.items');
-      console.log(this.items);
-
-
     },
     createArrayOfArrays(originalArray, subsetSize) {
       const arrayOfArrays = [];
@@ -247,10 +233,6 @@ export default {
         const startIndex = i % originalLength; // Circular index
       let page = subsetSize;
         const subset = [];
-       /* if(originalLength < 8)
-        {
-          page = 1; 
-        }*/
         for (let j = 0; j < page; j++) {
           const index = (startIndex + j) % originalLength;
           subset.push(originalArray[index]);
@@ -276,25 +258,15 @@ export default {
 
       this.reservationsAux = [...this.reservationsAux, ...missingReservations];
       if (missingReservations.length > 0) {
-        console.log('ENTRE A MOSTRAR AL NUEVO');
         this.mostrarDupla(missingReservations);
       }
-
-      console.log('missingReservations');
-      console.log(missingReservations);
-      console.log(this.reservationsAux);
     },
 
 
 
     callForTime() {
-      //const token = LocalStorageService.getItem('token');
-      console.log('AQUI SI ESTOY ENTRANDO -callForTime()');
       axios
         .get('https://api2.simplifies.cl/api/tail_branch_attended_shiftboard', {
-          /*headers: {
-                'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
-            },*/
           params: {
             branch_id: this.branch_id
           }
@@ -302,18 +274,11 @@ export default {
         .then((response) => {
           this.reservations = response.data.attended;
           this.clientes = response.data.tail;
-         
-
-            console.log("Estoy entrando siiii");
             
           this.compararYAgregar();
 
         }).finally(() => {
-          console.log("****************finally***************");
-          console.log(this.clientes);
           this.fetchItems(this.clientes);
-          console.log("****************fetchItems***************");
-          console.log(this.items);
           
         })
     },
@@ -321,8 +286,6 @@ export default {
 
       this.parpadeando = true;
       // Crear una instancia del objeto Audio y reproducir el sonido
-  /* const audio = new Audio(require('@/assets/ALERT.mp3')); // Ruta al archivo de sonido
-      audio.play();*/
       this.run_sound();
       setTimeout(() => {
         this.parpadeando = false;
@@ -332,21 +295,17 @@ export default {
     },
 
     run_sound(){
-      console.log('Entrando a playing audio');
        // Crear una instancia del objeto Audio y reproducir el sonido
        const audio = new Audio('/beep.mp3'); // Ruta al archivo de sonido
       audio.play().catch(error => {
-        console.error('Error playing audio:', error);
       });
 
     },
 
     mostrarDupla(missingReservations) {
-      console.log('AQUI SI ESTOY ENTRANDO -mostrarDupla()');
       if (missingReservations.length > 0) {
 
         const reservation = missingReservations.shift(); // Seleccionar la primera reserva del arreglo
-        console.log(missingReservations.length);
         if (this.duplas.length >= 5) {
           // Si hay al menos 5 duplas, quitar la última dupla antes de insertar la nueva
           this.duplas.pop();
@@ -368,27 +327,6 @@ export default {
           number: this.numero
         });
       }
-      //},
-      /*if (this.clientes.length > 0 && this.trabajadores.length > 0) {
-        // Obtener un cliente y un trabajador al azar
-        const clienteIndex = Math.floor(Math.random() * this.clientes.length);
-        const trabajadorIndex = Math.floor(Math.random() * this.trabajadores.length);
-        const cliente = this.clientes[clienteIndex];
-        const trabajador = this.trabajadores[trabajadorIndex];
-
-        this.module++,
-        this.numero++,
-        this.client=cliente.nombre;
-        this.professional=trabajador.nombre;
-        
-      
- 
-   this.iniciarParpadeo()
-        // Agregar la dupla a la lista de duplas y eliminar cliente y trabajador
-        this.duplas.push({ cliente: cliente.nombre, trabajador: trabajador.nombre , module: this.module, number:this.numero });
-        this.clientes.splice(clienteIndex, 1);
-        this.trabajadores.splice(trabajadorIndex, 1);
-      }*/
     },
   }
 }

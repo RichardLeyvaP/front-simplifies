@@ -98,24 +98,11 @@
       </v-row>
     </v-toolbar>
     <v-card-text>
-      <!--<v-row>
-        <v-col cols="12" sm="12" md="4">
-          <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
-            v-if="this.mostrarFila" clearable label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name"
-            item-value="id" variant="underlined" @update:model-value="initialize()"></v-autocomplete>
-        </v-col>
-      </v-row>-->
       <v-text-field class="mt-1 mb-1" v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details>
       </v-text-field>
       <v-data-table :headers="headers" :search="search" :items-per-page-text="'Elementos por páginas'" :items="results"
         class="elevation-1" no-data-text="No hay datos disponibles" no-results-text="No hay datos disponibles" :loading="loadingStore" loading-text="Cargando datos...">
         <template v-slot:item.actions="{ item }">
-          <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
-            mdi-pencil
-          </v-icon>
-          <v-icon size="25" color="red" @click="deleteItem(item)">
-            mdi-delete
-          </v-icon>-->
           <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar Almacén"></v-btn>
           <v-btn v-if="this.mostrarFila" density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
@@ -272,7 +259,6 @@ export default {
         }
       })
         .then((response) => {
-          console.log("entra a Buscar almacenes")
           this.results = response.data.stores;
         }).finally(() => {
             LocalStorageService.setIsLocked(false);

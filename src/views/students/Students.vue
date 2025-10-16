@@ -49,17 +49,6 @@
                  prepend-icon="mdi-email-outline" variant="underlined" :rules="emailRules">
                </v-text-field>
              </v-col>
-             <!--<v-col cols="12" md="4">
-               <v-text-field v-model="editedItem.surname" clearable label="Primer Apellido"
-                 prepend-icon="mdi-account-tie-outline" variant="underlined" :rules="nameRules">
-               </v-text-field>
-
-             </v-col>
-             <v-col cols="12" md="4">
-               <v-text-field v-model="editedItem.second_surname" clearable label="Segundo Apellido"
-                 prepend-icon="mdi-account-tie-outline" variant="underlined" :rules="nameRules">
-               </v-text-field>
-             </v-col>-->
            </v-row>
            <v-row>
              <v-col cols="12" md="6">
@@ -144,20 +133,10 @@
    {{ item.name }}
    </template>
    <template v-slot:item.qr_url="{ item }">
-            <!-- Verifica si image_url cumple las condiciones -->
-            <!--<v-icon color="green" v-if="item.image_url && item.image_url !== 'image/default.png'" @click="openModal(item.image_url)">
-              mdi-eye
-            </v-icon>-->
               <v-btn density="comfortable" icon="mdi-eye" color="green" v-if="item.qr_url && item.qr_url !== 'image/default.png'" @click="openModal(item.qr_url)" variant="tonal"
                   elevation="1" class="mr-1 mt-1 mb-1" title="Ver detalles"></v-btn>
             </template>
    <template v-slot:item.actions="{ item }">
-     <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
-       mdi-pencil
-     </v-icon>
-     <v-icon size="25" color="red" @click="deleteItem(item)">
-       mdi-delete
-     </v-icon>-->
      <v-btn density="comfortable" icon="mdi-pencil"  @click="editItem(item)" color="primary" variant="tonal"
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar Estudiante"></v-btn>
           <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"

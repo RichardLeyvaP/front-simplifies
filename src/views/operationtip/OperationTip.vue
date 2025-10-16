@@ -425,9 +425,6 @@ export default {
     },
 
     watch: {
-        /*dialog(val) {
-            val || this.close();
-        },*/
         dialogDelete(val) {
             val || this.closeDelete()
         },
@@ -514,12 +511,6 @@ export default {
             }
 
         },
-
-        /*professionalChange(){
-            this.chargeProfessional = this.professionals.find(professional => professional.id == this.professional_id);
-            console.log('this.chargeProfessional');
-            console.log(this.chargeProfessional);
-        },*/
         showAlert(sb_type, sb_message, sb_timeout) {
             this.sb_type = sb_type
 
@@ -560,17 +551,6 @@ export default {
             LocalStorageService.setIsLocked(false);
             this.loadingPCashier = false;
         });
-            /*axios
-                .get('https://api2.simplifies.cl/api/cashier-car-notpay', {
-                    params: {
-                        branch_id: this.branch_id
-                    }
-                })
-                .then((response) => {
-                    this.cars = response.data;
-                    console.log('this.cars');
-                    console.log(this.cars);
-                });*/
 
         },
         showAddOperationTip() {
@@ -589,32 +569,8 @@ export default {
                 }).finally(() => {
             LocalStorageService.setIsLocked(false);
         });
-
-            /*axios
-            .get('https://api2.simplifies.cl/api/branch_professionals_cashier', {
-                params: {
-                    branch_id: this.branch_id
-                }
-            })
-            .then((response) => {
-                this.professionals = response.data.professionals;
-            });*/
             this.dialog = true;
         },
-        /*editItem(item) {
-            axios
-                .get('https://api2.simplifies.cl/api/cashier-car-notpay', {
-                    params: {
-                        branch_id: this.branch_id
-                    }
-                })
-                .then((response) => {
-                    this.cars = response.data;
-                });
-            this.editedIndex = 1;
-            this.editedItem = Object.assign({}, item)
-            this.dialog = true
-        },*/
         deleteItem(item) {
             this.editedIndex = -1;
             this.editedItem.id = item.id;
@@ -665,31 +621,12 @@ export default {
         save() {
             LocalStorageService.setIsLocked(true);
             this.valid = false;
-            /* if (this.editedIndex > -1) {
-                 this.data.id = this.editedItem.id;
-                 this.data.name = this.editedItem.name;
-                 axios
-                     .put('https://api2.simplifies.cl/api/workplace', this.data)
-                     .then(() => {
-                         this.initialize();
-                         this.showAlert("success", "Pago editado correctamente", 3000);
-                     })
-             } else {*/
-            console.log('this.ironValues');
-            console.log(this.selected2);
-            //console.log(this.selectedOption);
-            console.log(this.selected);
-            //const newArrayCar = this.selected.map(item => parseInt(item)); // Convertir a enteros si es necesario
-            //console.log('newArrayCar');
-            //console.log(newArrayCar);
             this.data.professional_id = this.professional_id;
             this.data.branch_id = this.branch_id;
             this.data.car_ids = this.selected2;
             this.data.amount = this.editedItem.amount;
             this.data.coffe_percent = this.editedItem.coffe_percent;
             this.data.type = this.editedItem.type;
-            console.log('this.data');
-            console.log(this.data);
             axios
                 .post('https://api2.simplifies.cl/api/operation-tip', this.data)
                 .then(() => {
@@ -707,28 +644,12 @@ export default {
                     this.showAlert("success", "Pago realizado correctamente", 3000);
                     this.updatedBranch();
                 });
-            //}
-            /*this.valid = false;
-            this.data.name = this.editedItem.name;
-            this.data.branch_id = this.branch_id
-
-            axios
-                .post('https://api2.simplifies.cl/api/workplace', this.data)
-                .then(() => {
-                    this.initialize();
-                    this.showAlert("success", "Puesto de trabajo editado correctamente", 3000);
-                })*/
             this.close();
         },
         //reporte
         showPay() {
             this.loadingPay = true;
             LocalStorageService.setIsLocked(true);
-            console.log('Entra aqui a pagos realizados');
-            //this.editedIndex1 = 1;
-            //this.state=true;
-            //this.input2 = new Date();
-            //this.input3 = new Date()
             const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
             const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
             axios
@@ -751,29 +672,7 @@ export default {
             this.dialogPay = false;
             //this.initialize();
         },
-        /*updateDate3() {
-            console.log('Entra aqui a pagos realizados');
-            //this.editedIndex1 = 1;
-            //this.state=true;
-            //this.input2 = new Date();
-            //this.input3 = new Date()
-            const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-            const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-            axios
-                .get('https://api2.simplifies.cl/api/operation-tip-periodo', {
-                    params: {
-                        branch_id: this.branch_id,
-                        startDate: startDate,
-                        endDate: endDate
-                    }
-                })
-                .then((response) => {
-                    this.results1 = response.data;
-                });
-            this.dialogPay = true;
-        },*/
         exportToExcel() {
-            console.log('Entra aqui a exportar');
             // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados
             let rows = [];
 

@@ -198,7 +198,6 @@ export default {
                     }
                 })
         .then((response) => {
-          console.log(response);
           if (response.data){
             this.showAlert("success", "Contraseña enviada a su correo", 3000)
             this.email2 = '';
@@ -231,48 +230,18 @@ export default {
       this.sb_timeout = sb_timeout
       this.snackbar = true
     },
-    /*logout() {
-      const token = LocalStorageService.getItem('token');
-      if(token){
-        axios
-        .get('https://api2.simplifies.cl/api/logout', {
-          headers: {
-                'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
-            }
-                })
-        .then();
-      }
-      LocalStorageService.logout();
-    },*/
     save() {
       this.valid = false;
       this.loading = true;
       this.data.email = this.editedItem.email;
       this.data.password = this.editedItem.password;
       this.data.branch_id = this.editedItem.branch_id;
-
-      console.log(this.data);
       axios
         .post('https://api2.simplifies.cl/api/login', this.data)
         .then((response) => {
           if (response.data) {
             if (this.editedItem.branch_id === response.data.branch_id || (this.selectedOption === "empresa" && response.data.business_id && !response.data.branch_id)) {
               this.user = response.data;
-              console.log('this.user-------');
-              console.log(this.user);
-               console.log('this.mobileAccess');
-              console.log(this.mobileAccess);
-              /*userTokenStore.setUserToken(this.user.token);
-              userTokenStore.setUserName(this.user.name);
-              userTokenStore.setBranchId(this.user.branch_id);
-              userTokenStore.setProfessionalId(this.user.professional_id);
-              userTokenStore.setCharge(this.user.charge);
-              userTokenStore.setNameBranch(this.user.nameBranch);
-              userTokenStore.setNameBusiness(this.user.nameBusiness);
-              userTokenStore.setImage(this.user.image);
-              userTokenStore.setBusinessId(this.user.business_id);
-              userTokenStore.setPermissionsUser(this.user.permissions);
-              userTokenStore.setAuthenticateUser(true);*/
               //localStorage
               LocalStorageService.setItem("token", this.user.token);
               LocalStorageService.setItem("name", this.user.name);
@@ -289,8 +258,6 @@ export default {
               LocalStorageService.setItem("authenticateUser", true);
               LocalStorageService.setItem("user_id", this.user.id);
               this.editedItem = Object.assign({}, this.defaultItem);
-                //console.log('this.user.permissions');
-               // console.log(this.user.permissions);
               if (this.mobileAccess === 1) {
                 this.permissionsUser = LocalStorageService.getItem("permissionsUser") || [];
                 if(this.hasPermission('view_carorder_delete')){
@@ -315,9 +282,6 @@ export default {
                 router.push({ name: "Home" });
               }, 2000);
               }
-              /*setTimeout(() => {
-                router.push({ name: "Home" });
-              }, 2000);*/
 
             }
             else {              
@@ -348,8 +312,6 @@ export default {
         });
     },
     hasPermission(permission) {
-      //console.log('permission');
-      //console.log(permission);
       return this.permissionsUser.includes(permission);
     },
   },

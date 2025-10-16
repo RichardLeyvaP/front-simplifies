@@ -151,47 +151,12 @@
                   <v-list-item-title class="text-h6">Es mi primera vez</v-list-item-title>
                 </v-list-item>
 
-                <!-- Opción 3: Incógnito 
-                <v-list-item 
-                  :class="{ 'selected-item': selectedItem === 'option3' }" 
-                  @click="handleSelection('option3')"
-                >
-                  <v-list-item-title class="text-h6">Incógnito</v-list-item-title>
-                </v-list-item>-->
-
                 <!-- Opción 4: Niño -->
                 <v-list-item :class="{ 'selected-item': selectedItem === 'option4' }"
                   @click="handleSelection('option4', 'ClientNo')">
                   <v-list-item-title class="text-h6">Niño</v-list-item-title>
                 </v-list-item>
               </v-list-item-group>
-              <!--<v-list-item-group v-model="selectedItem" active-class="deep-purple--text text--accent-4">
-                <v-list-item :class="{ 'selected-item': selectedItem === 'option1' }"
-                  @click="() => { SelectionRadio('ClientSi'); selectedItem = 'option1'; incognito = 0; }">
-                  <v-list-item-content>
-                    <v-list-item-title class="text-h6">Soy Cliente</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-
-                <v-list-item :class="{ 'selected-item': selectedItem === 'option2' }" @click="() => { SelectionRadio('ClientNo'); selectedItem = 'option2'; incognito = 0; }">
-                  <v-list-item-content>
-                    <v-list-item-title class="text-h6">Es mi primera vez</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item 
-                :class="{ 'selected-item': selectedItem === 'option3' }" 
-                @click="() => { selectedItem = 'option3'; incognito = 1; }">
-                <v-list-item-content>
-                  <v-list-item-title class="text-h6">Incógnito</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item :class="{ 'selected-item': selectedItem === 'option4' }"
-                  @click="() => { SelectionRadio('ClientNo'); selectedItem = 'option4'; incognito = 0; }">
-                  <v-list-item-content>
-                    <v-list-item-title class="text-h6">Niño</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list-item-group>-->
             </v-list>
             <v-dialog v-model="showDialog" max-width="400px">
               <v-card title="Datos de Cliente">
@@ -282,23 +247,14 @@
 
               <v-row class="px-4" v-if="selectedItem === 'option2' || selectedItem === 'option3'">
                 <v-col cols="12">
-                  <!--<v-checkbox
-                  v-model="incognito"
-                  label="Reservar como Incógnito"
-                  :true-value="1"
-                  :false-value="0"
-                  @change="handleSelection(incognito ? 'option3' : 'option2')"
-                  color="orange"
-                >
-                    </v-checkbox>-->
                     <v-switch
-      v-model="incognito"
-      label="Reservar como Incógnito"
-      :true-value="1"
-      :false-value="0"
-      @change="handleSelection(incognito ? 'option3' : 'option2')"
-      color="orange"
-    ></v-switch>
+                    v-model="incognito"
+                    label="Reservar como Incógnito"
+                    :true-value="1"
+                    :false-value="0"
+                    @change="handleSelection(incognito ? 'option3' : 'option2')"
+                    color="orange"
+                  ></v-switch>
                                 </v-col>
                               </v-row>
 
@@ -332,7 +288,7 @@
 
                     <p>Profesional :
                       <span v-for="(item) in filteredProfessionals" :key="item.title" :value="item.id">
-                        <strong> {{ item.name }} <!--{{ item.surname }} {{ item.second_surname }}--></strong> </span>
+                        <strong> {{ item.name }}</strong> </span>
                     </p>
 
                     <p>Servicios : <br>
@@ -580,32 +536,14 @@ export default {
     totalDuration: '',
   }),
   watch: {
-    /*showDialog(newValue, oldValue) {
-      // Ejecutar código en respuesta al cambio en showDialog
-      if (!newValue && oldValue) {
-        // El modal se ha cerrado
-        console.log('El modal se ha cerrado');
-        this.selectedItem = 'option2';
-        //this.clientRegister = [];
-        //this.client_id = '';
-        //this.email_client = '';
-        //this.email_clientText = '';
-        // Realizar cualquier otra acción necesaria
-      }
-    },*/
     email_client2(newVal) {
       if (this.clientRegister.length > 0) {
         const client = this.clientRegister.filter(item => item.id == newVal)
-        console.log('client seleccionado');
-        console.log(client[0]);
         this.updateClientData(client[0]);
       }
     },
     email_clientText(newVal) {
       if (newVal) {
-
-        console.log('correo seleccionado');
-        console.log(newVal);
         this.fetchClients(newVal);
       }
     },
@@ -615,18 +553,6 @@ export default {
     filteredProfessionals() {
       return this.professionals.filter(item => item.id === this.professional[0]);
     },
-    /*filteredBranches() {
-      const filteredBranch = this.branches.find(item => item.id === this.branch_id);
-      if (filteredBranch) {
-          this.address = filteredBranch.address;
-          console.log('this.address');
-          console.log(this.address);
-          return filteredBranch;
-      } else {
-          // Si no se encuentra ninguna coincidencia, puedes devolver un array vacío o null según tu preferencia
-          return [];
-      }
-    },*/
     filteredBranches() {
       return this.branches.filter(item => item.id == this.branch_id);
     },
@@ -647,11 +573,9 @@ export default {
       return { filteredServices, totalPrice, totalDuration };
     },
     advanceReserva1() {
-      console.log()
       return !this.selected.length > 0; // Verdadero si hay elementos, falso si está vacío
     },
     advanceReserva2() {
-      console.log()
       return this.professional.length === 0 && !this.barberAleatorie; // Verdadero si hay elementos, falso si está vacío
     },
 
@@ -704,25 +628,7 @@ export default {
         this.branches = response.data.branches;
       });
     this.chargeServices();
-    /*window.addEventListener('offline', this.handleOffline);
-  window.addEventListener('online', this.handleOnline);*/
-
-    //this.chargeCalendarsBranches();
-    // this. chargeProfessionals();
-
-    /*this.arrayEvents = [...Array(1)].map(() => {
-        const day = Math.floor(Math.random() * 30)
-        const d = new Date()
-        d.setDate(day)
-
-
-        return "2023-11-24"
-    })*/
   },
-  /*beforeUnmount() {
-  window.removeEventListener('offline', this.handleOffline);
-  window.removeEventListener('online', this.handleOnline);
-},*/
 
 
   methods:
@@ -733,25 +639,21 @@ export default {
     
     // Caso 1: Ya tiene formato completo +569xxxxxxxx
     if (/^\+569\d{8}$/.test(cleaned)) {
-      console.log('Caso 1: Ya tiene formato completo +569xxxxxxxx');
       return cleaned;
     }
     
     // Caso 2: Tiene 569xxxxxxxx (sin +)
     if (/^569\d{8}$/.test(cleaned)) {
-      console.log('Caso 2: Tiene 569xxxxxxxx (sin +)');
       return `+${cleaned}`;
     }
     
     // Caso 3: Tiene 9xxxxxxxx (8-9 dígitos)
     if (/^9\d{7,8}$/.test(cleaned)) {
-      console.log('Caso 3: Tiene 569xxxxxxxx (sin +)');
       return `+56${cleaned}`;
     }
     
     // Caso 4: Tiene xxxxxxxx (8 dígitos sin 9 inicial)
     if (/^\d{8}$/.test(cleaned)) {
-      console.log('Caso 4: Tiene xxxxxxxx (8 dígitos sin 9 inicial)');
       return `+569${cleaned}`;
     }
     
@@ -763,16 +665,11 @@ export default {
       this.loadingClient = true;
       this.clientRegister = [];
       this.client_id = '';
-      console.log('query en la funcion');
-      console.log(this.email_client);
       //if (query) {
       axios.get(`https://api2.simplifies.cl/api/client-email-phone?email=${this.email_client}`)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.clientRegister = response.data.client;
-          console.log('-------------------------------clientRegister----------------------------------------');
-          console.log('this.clientRegister.length');
-          console.log(this.clientRegister);
           if (this.clientRegister.length > 0) {
             this.showTextField = false;
             this.email_client = '';
@@ -795,14 +692,10 @@ export default {
             } else {
               inputType = 'invalid';
             }
-            console.log('this.inputType');
-            console.log(inputType);
             if (inputType === 'email') {
               this.phone_client = '';
             } else if (inputType === 'phone'){
               const normalized = this.normalizePhone(this.email_client);
-              console.log('normalized');
-              console.log(normalized);
               this.phone_client = normalized;
               this.email_client = '';
             }else{
@@ -841,9 +734,6 @@ export default {
 
         this.email_client = selectedParent.email;
         this.phone_client = normalizedPhone;
-
-        // 3. (Opcional) Debuggear en consola
-        console.log('Datos del padre actualizados:', this.editedPhather);
         this.showDialogChild = false;
         this.changeStep(4);
       }
@@ -861,16 +751,11 @@ export default {
       this.loadingClient = true;
       this.clientRegister = [];
       this.client_id = '';
-      console.log('query en la funcion');
-      console.log(this.editedPhather.parent_email);
       //if (query) {
       axios.get(`https://api2.simplifies.cl/api/client-email-phone?email=${this.editedPhather.parent_email}`)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.clientRegister = response.data.client;
-          console.log('-------------------------------clientRegister----------------------------------------');
-          console.log('this.clientRegister.length');
-          console.log(this.clientRegister);
           if (this.clientRegister.length > 0) {
             this.showTextField = false;
             this.editedPhather.parent_email = '';
@@ -894,16 +779,12 @@ export default {
             } else {
               inputType = 'invalid';
             }
-            console.log('this.inputType');
-            console.log(inputType);
             if (inputType === 'email') {
               this.editedPhather.parent_phone = '';
               this.editedPhather.parent_name = '';
               this.editedPhather.parent_id = '';
             } else if (inputType === 'phone'){
               const normalized = this.normalizePhone(this.editedPhather.parent_email);
-              console.log('normalized');
-              console.log(normalized);
               this.editedPhather.parent_phone = normalized;
               this.phone_client = normalized;
               this.editedPhather.parent_name = '';
@@ -923,16 +804,12 @@ export default {
       //}
     },
     updateClientData(client) {
-      console.log(client);
       if (client) {
         // Llamar a una función para actualizar datos con el cliente seleccionado
         this.setClientData(client);
       }
     },
     setClientData(client) {
-      console.log('client seleccionado setclientData');
-      console.log('client seleccionado setclientData:' + client.id);
-
       // Actualiza los campos con los datos del cliente seleccionado
       this.name_client = client.name;
       this.phone_client = '+' + client.phone;
@@ -940,7 +817,6 @@ export default {
       //this.second_surname = client.second_surname;
       this.email_client = client.email;
       this.valid = true;
-      console.log(this.email_client);
       this.showDialog = false;
       this.verificate = true;
       this.showTextField = true;
@@ -962,9 +838,6 @@ export default {
       return formattedValue;
     },
     convertirMinutosAHorasYMinutos(minutos) {
-
-      console.log("estos son los minutos")
-      console.log(minutos)
       // Calcular las horas
       var horas = Math.floor(minutos / 60);
       // Calcular los minutos restantes después de convertir a horas
@@ -1034,7 +907,6 @@ export default {
 
     changeStep(index) {
       if (index == 1) {
-        console.log('limpiar los servicios');
         this.selected = [];
         this.professional = [];
         this.professionals = [];
@@ -1049,7 +921,6 @@ export default {
       this.step = index;
     },
     handleSelection(option, radioValue = null) {
-      console.log('option:', option);
     // 1. Actualiza selectedItem e incognito primero
     this.selectedItem = option;
     this.incognito = (option === 'option3') ? 1 : 0;
@@ -1075,8 +946,6 @@ export default {
         radios: this.radios
       });
     });
-    console.log('Aqui se muestra el seletectItem');
-      console.log(this.selectedItem);
   },
 
   SelectionRadio(value) {
@@ -1101,23 +970,6 @@ export default {
       this.resetEditedPhather();
     }
   },
-    /*SelectionRadio(value) {
-      this.radios = value;
-      if (value === 'ClientSi' && this.selectedItem === 'option2') {
-        this.email_client = '';
-        this.client_id = '';
-        this.clientRegister = [];
-        this.showTextField = true;
-        this.showDialog = true;
-      }
-      
-      console.log('this.radios');
-      console.log(this.radios);
-      console.log('this.selectedItem');
-      console.log(this.selectedItem);
-
-    },*/
-    //okk
     clearTextClient() {
       this.name_client = '';
       this.phone_client = '+569';
@@ -1134,23 +986,14 @@ export default {
     },
 
     sendData() {
-      console.log('-------------------------------sendData()----------------------------------------');
-      console.log(this.email_client2);
-
-
       // Realiza la solicitud POST Y BUSCO LOS DATOS DEL CLIENTE 
       axios.get(`https://api2.simplifies.cl/api/client-email-phone?email=${this.email_client2}`)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.clientRegister = response.data.client;
-          console.log('-------------------------------clientRegister----------------------------------------');
-          console.log('this.clientRegister.length');
-          console.log(this.clientRegister.length);
-          if (this.clientRegister.length > 0) {
+            if (this.clientRegister.length > 0) {
             const client = this.clientRegister[0];
-            console.log('client Seleccionado sendData');
-            console.log(this.clientRegister[0]);
-            //ASIGNO A LOS CAMPOS DEL FORMULARIO TDS LOS DATOS
+             //ASIGNO A LOS CAMPOS DEL FORMULARIO TDS LOS DATOS
             this.name_client = client.name;
             this.phone_client = client.phone;
             //this.surname_client = client.surname;
@@ -1178,18 +1021,13 @@ export default {
         })
         .catch(error => {
           // Maneja cualquier error que pueda ocurrir durante la solicitud
-          console.error('Error al hacer la solicitud:', error);
+
         });
 
     },
     send() {
       this.valid = false;
       this.loading = true;
-
-      console.log('***************console.log(this.professionalHorario[0]);*******************');
-      console.log(this.horarioDisponibleActual);
-      console.log('***************console.log(this.idProfesionalListo);*******************');
-      console.log(this.idProfesionalListo);
       const newArrayService = this.array_services.map(item => parseInt(item));
 
       //FECHA DE HOY-------------
@@ -1245,9 +1083,6 @@ export default {
         }
 
       }
-
-      console.log('**********************************---------------------');
-
       // Realiza la solicitud GET con Axios y pasa los parámetros
       axios.post('https://api2.simplifies.cl/api/reservation-store-tottem', request)
         .then(response => {
@@ -1265,28 +1100,7 @@ export default {
             // Redirige a la URL externa deseada
             //window.location.href = 'https://landingbh.simplifies.cl/';
           }, 1000);
-        });/*.finally(() => {
-                setTimeout(() => {
-                this.showAlert("success","Reserva realizada correctamente", 3000); 
-                  if(this.radios === 'ClientNo'){
-
-                  this.showDialogEncuesta();
-
-                  }else{
-                    this.$router.push('/totem');
-                  }
-        // Redirige a la URL externa deseada
-        //window.location.href = 'https://landingbh.simplifies.cl/';
-      }, 3000); 
-          });*/
-      /*.catch(error => {
-        this.loading = false;
-        // Maneja cualquier error que pueda ocurrir durante la solicitud
-        this.$router.push('/totem');
-      });*/
-
-
-
+        });
     },
     showDialogEncuesta() {
       axios
@@ -1298,7 +1112,6 @@ export default {
     },
 
     addEncuesta() {
-      console.log(this.selectedSurveys);
       this.valid = false;
       this.loadingEncuesta = true;
       let request = {
@@ -1312,7 +1125,7 @@ export default {
           // Maneja la respuesta de la solicitud aquí
           // this.message=response.data.msg
           const t = response.data.msg
-          console.log(t);
+
         }).finally(() => {
           this.dialogEncuesta = false;
           this.loadingEncuesta = false;
@@ -1345,8 +1158,6 @@ export default {
       if (this.step < this.items.length) {
         this.step++;
       }
-      console.log('Aqui se muestran los Step');
-      console.log(this.step);
       this.verificateStep(this.step);
     },
 
@@ -1379,36 +1190,21 @@ export default {
 
       if (newValue === 2) {
         //cancelo los demas timer  
-        console.log("Limpiando las variables de professional");
         this.professional = [];
         this.professionals = [];
         this.barberAleatorie = '';
-        console.log("--------------Se ha pasado del paso 1 al paso 2");
-        console.log('---------' + this.selected);
         this.chargeProfessionals(this.selected);
       }
 
       if (newValue === 3) {
         this.selectedItem = 'option2';
-        console.log("--------------Se ha pasado del paso 3 al paso 4 -RECIVIENDO LA HORA");
         if (this.radios === 'ClientNo') {
           this.clearTextClient();
           this.verificate = false;
         }
-        console.log(this.hourSelect);
       }
 
       if (newValue === 4) {
-        //          //cancelo los demas timer
-        //          clearTimeout(this.timerId1);
-        //         clearTimeout(this.timerId2);
-        //         clearTimeout(this.timerId3);
-
-        //         this.timerId4 = setTimeout(() => {
-        //     this.$router.push('/totem');
-        // }, 20000);
-        console.log("--------------Se ha pasado del paso 4 al paso 4 -RECIVIENDO LA SELECCION DEL RADIO");
-        console.log(this.radios);
         if (this.radios === 'ClientSi') {
           // le muestro un dialogo para que ponga correo y teefono
           //hago la busqueda en la dd si esta le llevo tds los datos al formulario y le enavilito los campos que no pueda editarlos
@@ -1428,7 +1224,6 @@ export default {
     //servicios
     toggleService(serviceId) {
       const index = this.selected.indexOf(serviceId);
-      console.log(this.selected);
       if (index > -1) {
         this.selected.splice(index, 1);
       } else {
@@ -1450,8 +1245,6 @@ export default {
     },
 
     toggleService2(serviceId2) {
-      //console.log(this.serviceId2.id);
-
       if (serviceId2 === -99) {
         this.barberAleatorie = true;
         // Limpiar la selección cuando barberAleatorie es true
@@ -1459,7 +1252,6 @@ export default {
       } else {
         this.barberAleatorie = false;
         const index = this.professional.indexOf(serviceId2.id);
-        console.log(this.professional);
         if (index > -1) {
           // Si el servicio ya está seleccionado, no hagas nada
           return;
@@ -1469,7 +1261,6 @@ export default {
         this.professional = [serviceId2.id];
         this.professionalHorario = [serviceId2.start_time];
       }
-      console.log(this.barberAleatorie);
     }
 
 
@@ -1477,7 +1268,6 @@ export default {
     //profesionales
     toggleTimer(hour) {
       const index = this.hourSelect.indexOf(hour);
-      console.log(this.hourSelect);
       if (index > -1) {
         // Si el servicio ya está seleccionado, no hagas nada
         return;
@@ -1488,33 +1278,21 @@ export default {
       this.hourSelect = [hour];
       this.start_time1 = this.hourSelect;
     },
-    /*  isProfessional(serviceId2) {
-          return this.professional.length === 1 && this.professional[0] === serviceId2;
-      },*/
     isTimer(hour) {
       return this.hourSelect.length === 1 && this.hourSelect[0] === hour;
     },
 
     chargeServices() {
-      console.log('limpiar los servicios');
       this.services = [];
       this.selected = [];
       const branchId = Number(this.branch_id);
-      /*if (isNaN(branchId)) {
-        console.log("El branch_id no es un número válido.");
-        return;
-      }*/
       axios
         .get(`https://api2.simplifies.cl/api/branchservice-show?branch_id=${parseInt(branchId)}`)
         .then((response) => {
-          console.log(response.data)
           this.services = response.data.services;
-
-
         })
         .catch((err) => {
-          console.log(err, "error");
-
+      
         });
     },
 
@@ -1522,8 +1300,7 @@ export default {
       this.professional = [];
       this.valid = true;
       const newArrayService = valueServices.map(item => parseInt(item)); // Convertir a enteros si es necesario
-      console.log(newArrayService);
-      const data = {
+        const data = {
 
         services: newArrayService,
         branch_id: this.branch_id
@@ -1542,9 +1319,7 @@ export default {
         })
         .then((response) => {
           this.professionals = response.data.professionals;
-          console.log('this.professionals------');
-          console.log(this.professionals);
-          // Obtener la menor hora disponible
+             // Obtener la menor hora disponible
           //  this.horarioDisponibleActual = this.professionals
           // Filtrar profesionales con horarios disponibles y obtener la menor hora
           const horariosDisponibles = this.professionals
@@ -1575,18 +1350,11 @@ export default {
             // Aquí puedes manejar este caso según tus necesidades
           }
           if (this.horarioDisponibleActual === null && this.idProfesionalListo === '') {
-            console.log('NO HAY DISPONIBILIDAD');
             this.showAlert("warning", "No hay profesional con horario disponible", 3000);
             this.changeStep(1);
           }
-
-          console.log(response.data);
-          console.log('this.horarioDisponibleActual');
-          console.log(this.horarioDisponibleActual);
-
         })
         .catch((err) => {
-          console.log(err, "error");
         });
     },
 

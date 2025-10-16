@@ -22,10 +22,6 @@
                         <span class="text-subtitle-1"> <strong>Comisión de venta de productos</strong></span>
                     </v-col>
                     <v-col cols="12" md="4" class="text-right ml-12">
-                        <!--<v-btn class="text-subtitle-1" variant="flat" elevation="2"
-                            prepend-icon="mdi-plus-circle" @click="showAddAdvance" :disabled="this.canAdvanceToday">
-                            Solicitar Adelanto
-                        </v-btn>-->
                         </v-col>
 
                 </v-row>
@@ -37,37 +33,9 @@
                         label="Seleccione una Sucursal" prepend-icon="mdi-store" item-title="name" item-value="id"
                         variant="underlined"></v-autocomplete>
                 </v-col>
-                <!--<v-col cols="12" md="2">
-                    <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40"
-                        transition="scale-transition" offset-y min-width="290px">
-                        <template v-slot:activator="{ props }">
-                            <v-text-field v-bind="props" :modelValue="dateFormatted" variant="underlined"
-                                prepend-icon="mdi-calendar" label="Fecha de inicio"></v-text-field>
-                        </template>
-                        <v-locale-provider locale="es">
-                            <v-date-picker header="Calendario" title="Seleccione la fecha" color="#F18254"
-                                :modelValue="input" @update:model-value="updateDate"
-                                format="yyyy-MM-dd"></v-date-picker>
-                        </v-locale-provider>
-                    </v-menu>
-                </v-col>
-                <v-col cols="12" md="2">
-                    <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40"
-                        transition="scale-transition" offset-y min-width="290px">
-                        <template v-slot:activator="{ props }">
-                            <v-text-field v-bind="props" :modelValue="dateFormatted1" variant="underlined"
-                                prepend-icon="mdi-calendar" label="Fecha Terminación"></v-text-field>
-                        </template>
-                        <v-locale-provider locale="es">
-                            <v-date-picker header="Calendario" title="Seleccione la fecha" color="#F18254"
-                                :modelValue="input2" format="yyyy-MM-dd" :min="dateFormatted"
-                                @update:model-value="updateDate1"></v-date-picker>
-                        </v-locale-provider>
-                    </v-menu>
-                </v-col>-->
                  <v-col cols="12" md="2">
                     <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="underlined"
-                        prepend-icon="mdi-calendar"></v-select><!--@update:model-value="initialize()"-->
+                        prepend-icon="mdi-calendar"></v-select>
                 </v-col>
                 <v-col cols="12" md="2">
                    <v-select v-model="selectedMounth" :items="months.map(month => ({
@@ -110,7 +78,7 @@
                                 <v-avatar class="mr-1" elevation="3" color="grey-lighten-4" size="small">
                                     <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_product}`"
                                         alt="image"></v-img>
-                                </v-avatar><!--+'?$'+Date.now()-->
+                                </v-avatar>
                                 {{ item.name }}
                             </template>
 
@@ -347,11 +315,7 @@ export default {
                 this.branch_id = this.branches[0].id;
                 this.mostrarFila = true;
             }
-            /*if (this.charge === "Administrador") {          
-            this.professional_id = null;
-            }else{      */
             this.professional_id = LocalStorageService.getItem('professional_id');
-            //}
             await this.initialize();
         }
     },

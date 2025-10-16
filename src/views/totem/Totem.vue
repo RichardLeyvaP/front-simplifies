@@ -182,7 +182,6 @@ export default {
     //this.business_id = LocalStorageService.getItem('business_id');
     //this.charge_id = LocalStorageService.getItem('charge_id');
   this.branch_id = LocalStorageService.getItem('branch_id');
-  console.log(this.branch_id);
     // Establecer un intervalo para mostrar duplas cada 5 segundos
     setInterval(this.mostrarDupla, 5000);
   },
@@ -233,7 +232,6 @@ export default {
           this.qrCode = response.data;
           let svgData = atob(this.qrCode);
           this.qrCodeBase64 = 'data:image/svg+xml;base64,' + btoa(svgData);
-          console.log(this.qrCodeBase64);
         });
       if (this.qrCode) {
         this.showAlert = true;

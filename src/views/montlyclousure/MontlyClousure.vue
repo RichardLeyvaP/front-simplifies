@@ -23,7 +23,7 @@
                     </v-col>
                     <v-col cols="12" md="2">
                         <v-btn @click="showMonthlyClosure" color="black" prepend-icon="mdi-plus-circle"
-                            title="Cierre de mes" style="background-color: #E7E9E9;" :loading="loadingAcept"
+                            title="Cierre de mes" style="background-color: #E7E9E9;"
                             :disabled="Number(selectedYear) !== new Date().getFullYear()">
                             <span>Cierre de mes</span>
                         </v-btn>
@@ -40,7 +40,7 @@
                 </v-col>
                 <v-col cols="12" md="2">
                     <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="underlined"
-                        prepend-icon="mdi-calendar"></v-select><!--@update:model-value="initialize()"-->
+                        prepend-icon="mdi-calendar"></v-select>
                 </v-col>
                 <v-col cols="12" md="1">
                     <v-btn icon @click="initialize()" color="#F18254">
@@ -122,19 +122,6 @@
                                                                                 }}</span>
                                                                         </v-col>
                                                                     </v-row>
-                                                                    <!--<v-row dense align="center">
-                                                                        <v-col cols="12" md="6">
-                                                                            <span
-                                                                                class="text-body-1 font-weight-bold">Utilidad:
-                                                                                $</span>
-                                                                        </v-col>
-                                                                        <v-col cols="12" md="6" class="text-right">
-                                                                            <span
-                                                                                class="text-body-1 font-weight-bold text-black">{{
-                                                                                formatNumber(Number(item.client_utility))
-                                                                                }}</span>
-                                                                        </v-col>
-                                                                    </v-row>-->
                                                                 </v-card-text>
                                                             </v-card>
                                                         </v-col>
@@ -239,23 +226,7 @@
                                                                                 }}
                                                                             </span>
                                                                         </v-col>
-                                                                    </v-row>
-                                                                    <!--<v-row dense align="center">
-                                                                        <v-col cols="12" md="6">
-                                                                            <span
-                                                                                class="text-body-1 font-weight-bold">Utilidad:
-                                                                                $</span>
-                                                                        </v-col>
-                                                                        <v-col cols="12" md="6" class="text-right">
-                                                                            <span :class="`text-body-1 font-weight-bold ${Number(item.difference_utility) >= 0 ? 'text-black' : 'text-red'
-                                                                                }`">
-                                                                                {{
-                                                                                formatNumber(Number(item.difference_utility))
-                                                                                }}
-                                                                            </span>
-                                                                        </v-col>
-                                                                    </v-row>-->
-                                                                   
+                                                                    </v-row>                                                                   
                                                                 </v-card-text>
                                                             </v-card>
                                                         </v-col>
@@ -983,11 +954,6 @@ export default {
     },
 
     computed: {
-        /*totalCalculado() {
-            return (parseFloat(this.editedItem.retention) || 0) +
-                (parseFloat(this.editedItem.utility) || 0);
-        },*/
-
         filteredClosures() {
             return this.closures.filter(closure => closure.data !== null);
         }
@@ -1040,57 +1006,16 @@ export default {
     watch: {
         'editedItem.available_money': {
             handler(newVal) {
-                //this.updateClientUtility();
                 this.calculateDifferences();
-                //this.calculateDifferencesUtility();
-            },
+               },
             deep: true
         },
-        /*'editedItem.discounts': {
-            handler(newVal) {
-                //this.updateClientUtility();
-                this.calculateDifferencesSpent();
-            },
-            deep: true
-        },*/
         'editedItem.utility': {
             handler(newVal) {
                 this.calculateDifferences();
             },
             immediate: true
         },
-        /*'editedItem.spent': {
-            handler(newVal) {
-                //this.updateClientUtility();
-                this.calculateDifferencesSpent();
-            },
-            immediate: true
-        },*/
-        /*'editedItem.utility': {
-            handler(newVal) {
-                this.calculateDifferencesUtility();
-            },
-            immediate: true
-        },*/
-        /*'editedItem.client_utility': {
-            handler(newVal) {
-                this.calculateDifferencesUtility();
-            },
-            immediate: true
-        },*/
-        /*'editedItem.client_retention': {
-            handler(newVal) {
-                this.calculateDifferencesRetention();
-            },
-            immediate: true
-        },*/
-        /*'editedItem.retention': {
-            handler(newVal) {
-                this.calculateDifferencesRetention();
-                //this.calculateDifferencesUtility();
-            },
-            immediate: true
-        },*/
         selectedMounth(newVal) {
             if (newVal === '12' && this.selectedYear < new Date().getFullYear()) {
                 this.selectedYear += 1; // Avanza al siguiente año si seleccionan diciembre
@@ -1098,7 +1023,6 @@ export default {
                 this.selectedYear -= 1; // Retrocede al año anterior si seleccionan enero
             }
             this.initialize();
-            console.log(this.selectedYear);
         }
     },
 
@@ -1139,11 +1063,6 @@ export default {
             // Comparar las cadenas generadas
             return JSON.stringify(sortedOriginal) !== JSON.stringify(sortedEdited);
         },
-        //ok utilitys
-        /*updateClientUtility() {
-            this.editedItem.client_utility = (parseFloat(this.editedItem.available_money) || 0) -
-                ((parseFloat(this.editedItem.spent) + parseFloat(this.editedItem.retention)) || 0);
-        },*/
         //ok diferences
         calculateDifferences() {
             const available = parseFloat(this.editedItem.available_money) || 0;
@@ -1152,33 +1071,6 @@ export default {
             this.editedItem.difference_incomes = available - (systemUtility + retentions);
             this.editedItem.differences = available - (systemUtility + retentions);
         },
-        /*calculateDifferencesSpent() {
-            const discounts = parseFloat(this.editedItem.discounts) || 0;
-            const spent = parseFloat(this.editedItem.spent) || 0;
-            this.editedItem.difference_spent = discounts - spent;
-        },*/
-        /*calculateDifferencesUtility() {
-            const clientUtility = parseFloat(this.editedItem.client_utility) || 0;
-            const utility = parseFloat(this.editedItem.utility) || 0;
-            this.editedItem.difference_utility = clientUtility - utility;
-            this.editedItem.differences = clientUtility - utility;
-        },*/
-        /*calculateDifferencesUtility() {
-            const client_utility = parseFloat(this.editedItem.client_utility) || 0;
-            //console.log('Utilidades cliente:', client_utility);
-            const utility = parseFloat(this.editedItem.utility) || 0;
-            //console.log('Utilidades sistema:', utility);
-            const retention = parseFloat(this.editedItem.retention) || 0;
-            //console.log('Retenciones sistema:', retention);
-            this.editedItem.difference_utility = client_utility - (utility - retention);
-            this.editedItem.differences = client_utility - (utility - retention);
-            //console.log('diferencia en utilidades:', this.editedItem.difference_utility);
-        },*/
-        /*calculateDifferencesRetention() {
-            const clientRetention = parseFloat(this.editedItem.client_retention) || 0;
-            const retention = parseFloat(this.editedItem.retention) || 0;
-            this.editedItem.difference_retention = clientRetention - retention;
-        },*/
         // Para actualizar ingresos (incomes)
         updateIncome(income, newAmount) {
            
@@ -1293,57 +1185,17 @@ export default {
         },
         async loadClosureData() {
             const month = `${this.selectedYear}-${String(this.selectedMounth).padStart(2, '0')}`;
-            console.log('month seleccionado');
-            console.log(month);
             let foundClosure = this.closures.find(closure => {
                 const closureMonth = closure.month?.toString().trim();
                 return closureMonth === month;
             });
-
-            /*const safeParse = (data) => {
-                if (Array.isArray(data)) return data;
-                if (typeof data !== 'string') return [];
-                try {
-                    return JSON.parse(data || '[]');
-                } catch (e) {
-                    console.error('Error al parsear:', e);
-                    return [];
-                }
-            };*/
-            console.log('foundClosure');
-            console.log(foundClosure);
             if(foundClosure){
-                //this.editedItem = Object.assign({}, foundClosure);
-                //this.originalItem = Object.assign({}, foundClosure);
                 this.originalItem = _.cloneDeep(foundClosure);
                 this.editedItem = _.cloneDeep(foundClosure);
             }else{
-                //this.editedItem = Object.assign({}, this.defaultEditedItem);
-                //this.originalItem = Object.assign({}, this.defaultEditedItem);
                 this.originalItem = _.cloneDeep(this.defaultEditedItem);
                 this.editedItem = _.cloneDeep(this.defaultEditedItem); 
             }
-            console.log('this.editedItem');
-            console.log(this.editedItem);
-            /*this.editedItem = foundClosure
-                ? {
-                    ...foundClosure,
-                    incomes: safeParse(foundClosure.incomes),
-                    expenses: safeParse(foundClosure.expenses)
-                }
-                : { ...this.defaultEditedItem,
-                    incomes: this.defaultEditedItem.incomes,
-                    expenses: this.defaultEditedItem.expenses };
-
-                this.originalItem = foundClosure
-                ? {
-                    ...foundClosure,
-                    incomes: safeParse(foundClosure.incomes),
-                    expenses: safeParse(foundClosure.expenses)
-                }
-                : { ...this.defaultEditedItem,
-                    incomes: this.defaultEditedItem.incomes,
-                    expenses: this.defaultEditedItem.expenses  };*/
         },
         formatMonth(dateString) {
             if (!dateString) return '';
@@ -1377,16 +1229,6 @@ export default {
                 await this.initialize();
             }
         },
-        /*calcularUtilidadFinal() {
-            const available = parseFloat(this.editedItem.available_money) || 0;
-            const discounts = parseFloat(this.editedItem.discounts || 0);
-            const retention = parseFloat(this.editedItem.retention) || 0;
-            this.editedItem.net_utility = available - retention - discounts;
-        },*/
-        /*calcularDiferencias() {
-            this.editedItem.differences = (parseFloat(this.editedItem.available_money)) - ((parseFloat(this.editedItem.retention) || 0) +
-                (parseFloat(this.editedItem.utility) || 0)) || 0;
-        },*/
         formatNumber(value) {
             // Si el valor es menor que 1000, devuelve el valor original con dos decimales
             if (value < 1000) {
@@ -1418,8 +1260,6 @@ export default {
                 });
 
                 this.closures = result.data.success ? result.data.closures : [];
-                console.log('this.closures');
-                console.log(this.closures);
                 this.loading = false;
 
             } catch (error) {
@@ -1469,8 +1309,6 @@ export default {
                     this.editedItem.system_incomes = Number(result.data.system_incomes);
                     this.finance_ids = result.data.finance_ids;
                     this.retention_ids = result.data.retention_ids;
-                    console.log('this.editedItem');
-                    console.log(this.editedItem);
                 } else {
                     // Si no hay datos, asignamos un array vacío
                     this.editedItem.utility = 0;
@@ -1490,9 +1328,7 @@ export default {
                 this.retention_ids = [];
                 // Captura de errores no controlados
                 this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
-            } /*finally {
-                this.loadClosureData();
-            }*/
+            } 
         },
         changeStep(index) {
             this.step = index;
@@ -1508,14 +1344,12 @@ export default {
                                 ? JSON.stringify(this.editedItem[key]) !== JSON.stringify(this.originalItem[key])
                                 : this.areArraysDifferent(this.originalItem[key], this.editedItem[key])
                         );
-                        if (isDifferent) console.log(`Campo diferente: ${key}`);
+                        if (isDifferent);
                         return isDifferent;
                     })
                     .reduce((obj, key) => ({ ...obj, [key]: this.editedItem[key] }), {});
         if (Object.keys(updatedFields).length > 0)
         {
-            console.log('Object.keys(updatedFields).length');
-            console.log(Object.keys(updatedFields).length);
             this.editedItem.branch_id = this.type === 'Branch' ? this.branch_id : null;
                 this.editedItem.business_id = this.type === 'Business' ? this.business_id : null;
                 this.loadingAddIncomes = true;
@@ -1552,8 +1386,6 @@ export default {
                 await this.initialize();
                 await this.utilityMonthlyClosure();
             }
-        }else{
-            console.log('No hubo cambios');
         }
                 /**/
             }
@@ -1565,11 +1397,6 @@ export default {
                 
                 await this.utilityMonthlyClosure();
             }
-
-            console.log('Aqui se muestran los Step');
-            console.log(this.step);
-            //this.verificateStep(this.step);
-
         },
         salir(){
             this.dialogMontlyClousure = false;
@@ -1594,13 +1421,7 @@ export default {
             const requestData = {
                 editedItem: this.editedItem, // Datos del sistema
                 month: `${this.selectedYear}-${this.selectedMounth}`,  // Formato YYYY-MM
-                //branch_id: this.branch_id,
-                //business_id: this.business_id,
-                //finance_ids: this.finance_ids,
-                //retention_ids: this.retention_ids,
-            };
-            console.log('this.data para cierre mensual');
-            console.log(requestData);
+               };
             try {
                 const result = await handleRequest({
                     endpoint: 'mounthly-clousure',

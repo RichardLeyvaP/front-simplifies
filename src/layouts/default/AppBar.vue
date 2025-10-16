@@ -33,7 +33,7 @@
     </v-badge>
     <v-badge :content="notificationsWithStateZero" color="red" class="mr-4" v-if="mobile" >
       <v-icon id="menu-activator" color="#F18254" @click="showMenu = !showMenu; clearNotifications()" class="mr-2"
-        size="x-large"><!--@click="showMenu = !showMenu; clearNotifications()" poniendo esto podemos hacer la logica de pasar todas las que state sea 0 a uno-->
+        size="x-large">
         mdi-bell
       </v-icon>
     </v-badge>
@@ -43,14 +43,9 @@
       <v-list>
         <v-list-item v-for="item in results" :key="item.id"
           :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.image_url" @click="handleItemClickNotif(item)">
-          <div class="d-flex align-center justify-space-between w-100"> <!-- Contenedor flex -->
+          <div class="d-flex align-center justify-space-between w-100">
             <v-list-item-title class="mr-2" :class="{ 'highlight': item.state2 === 2, 'accent': item.state !== 2 }">{{
               item.tittle }}</v-list-item-title>
-            <!-- Iconos de acción 
-        <div v-if="item.tittle === 'Solicitud'">
-          <v-icon @click.stop="acceptRequest(item)">mdi-check</v-icon>
-          <v-icon @click.stop="rejectRequest(item)">mdi-close</v-icon>
-        </div>-->
           </div>
           <v-list-item-subtitle :class="{ 'highlight': item.state2 === 2, 'accent': item.state2 !== 2 }">{{
             item.nameProfessional }}</v-list-item-subtitle> <!-- Título del elemento de la lista -->
@@ -189,7 +184,6 @@ export default {
     ],
   }),
   mounted() {
-    //console.log(userTokenStore);
     // Recuperar datos del localStorage al cargar la aplicación
     this.nameBranch = JSON.parse(LocalStorageService.getItem('nameBranch'));
     this.name = JSON.parse(LocalStorageService.getItem('name'));
@@ -252,8 +246,6 @@ export default {
               // Si la solicitud es exitosa, asignamos las sucursales
               this.results = result.data.notifications || []; // Si no hay roles, asigna un arreglo vacío
               this.solicitudProduct = result.data.solicitudes || 0; // Si no hay roles, asigna un arreglo vacío
-              console.log(result.data);
-              console.log('result.data');
             } else {
               // Si no hay datos, asignamos un array vacío
               this.solicitudProduct = 0;
@@ -295,8 +287,6 @@ export default {
         .then(() => {
           //this.initialize();
         }).finally(() => {
-          console.log('item de notificación');
-          console.log(item);
          if (item.tittle?.toLowerCase().includes("adelanto")) {
   this.$router.push({ path: 'solicitud-advance' });
 } else {
@@ -353,7 +343,6 @@ export default {
           }
         })
         .then((response) => {
-          console.log(response);
           this.loading = false;
           this.confirmPassword = '';
           this.confirmNewPassword = '';
@@ -364,13 +353,11 @@ export default {
     },
     handleItemClick(item) {
       if (item.title === 'Cambiar Contraseña') {
-        console.log('Cambiar contraseña')
         // Aquí puedes mostrar el modal
         this.showPasswordForm = true; // Reemplaza 'modal' con la referencia a tu modal
       }
       if (item.title === 'Cerrar Sesión') {
         const token = LocalStorageService.getItem('token');
-        console.log('Cerrar Sesión')
         axios
           .get('https://api2.simplifies.cl/api/logout', {
             headers: {
@@ -382,7 +369,6 @@ export default {
         this.$router.push({ path: '/' });
       }
       if (item.title === 'Mi Perfil') {
-        console.log('Mi Perfil')
         axios
           .get('https://api2.simplifies.cl/api/professional-show', {
             params: {
@@ -391,12 +377,6 @@ export default {
           })
           .then((response) => {
             this.results = response.data.professional;
-            console.log(this.results);
-            /*console.log(response);
-              this.showAlert("success", "Contraseña modificada correctamente", 3000)
-              this.confirmPassword = '';
-              this.confirmNewPassword = '';
-              this.showPasswordForm = false;*/
           });
         // Aquí puedes mostrar el modal
         //this.showPasswordForm = true; // Reemplaza 'modal' con la referencia a tu modal
@@ -411,15 +391,8 @@ export default {
     },
     initialize() {
       const token = LocalStorageService.getItem('token');
-      console.log('Este es el token');
-      console.log(token);
-      console.log('Este es el token Bearer');
-      console.log(`Bearer ${token}`);
       axios
         .get('https://api2.simplifies.cl/api/notification-professional-web', {
-          /*headers: {
-                'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
-            },*/
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id

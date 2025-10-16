@@ -634,18 +634,12 @@ router.beforeEach((to, from, next) => {
 
   // Requiere autenticación
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    console.log("Esta entrando aqui");
-    // El usuario no está autenticado
-
     // const lastRouteName = localStorage.getItem('permissions')
 
-    console.log(LocalStorageService.getItem("authenticateUser"));
-    //console.log(localStorage.getItem("isAuthenticated"));
     if (
       LocalStorageService.getItem("authenticateUser") == false ||
       !LocalStorageService.getItem("authenticateUser")
     ) {
-      console.log("aqui entra tambien");
       next({
         path: "/login",
         query: { redirect: to.fullPath },
@@ -660,7 +654,6 @@ router.beforeEach((to, from, next) => {
     //const userPermissions1 = userTokenStore.permissionsUser;
     
     const userPermissions = LocalStorageService.getItem("permissionsUser");
-    //console.log(userPermissions);
     const hasPermissions = permissions.every((permission) =>
       //userPermissions.includes(permission)
       userPermissions.includes(permission)

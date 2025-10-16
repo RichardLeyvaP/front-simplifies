@@ -19,13 +19,13 @@
               <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="branch_id" :items="branches"
                 v-if="this.mostrarFila" label="Seleccione una Sucursal" prepend-inner-icon="mdi-store"
                 item-title="name" item-value="id" density="compact" class="ma-2" variant="outlined"
-                @update:model-value="initialize()"></v-autocomplete><!--@update:model-value="initialize()"-->
+                @update:model-value="initialize()"></v-autocomplete>
             </v-col>
             <v-col cols="12" md="3">
               <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="professional_id"
                 :items="professionals" label="Profesional" prepend-inner-icon="mdi-account-tie-outline"
                 item-title="name" item-value="id" variant="outlined" density="compact" class="ma-2"
-                :rules="selectRules"><!--@update:model-value="showReservationsProfessional()"-->
+                :rules="selectRules">
                 <template v-slot:item="{ props, item }">
                   <v-list-item v-bind="props"
                     :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_url"
@@ -164,18 +164,10 @@ export default {
       this.professional_id = '';
       this.type = 'month';
       this.events = [];
-      console.log('this.today');
-      console.log(this.today);
       const today = new Date(this.today);
       const range = this.getMonthDateRange(today);
       const startDate = range.start.toISOString().split('T')[0];
       const endDate = range.end.toISOString().split('T')[0];
-      /*const startDate = this.input
-        ? format(this.input, "yyyy-MM-dd")
-        : format(new Date(), "yyyy-MM-dd");
-      const endDate = this.input2
-        ? format(this.input2, "yyyy-MM-dd")
-        : format(new Date(), "yyyy-MM-dd");*/
         LocalStorageService.setIsLocked(true);
       axios
         .get("https://api2.simplifies.cl/api/branch-reservations-periodo", {
@@ -195,8 +187,6 @@ export default {
     showReservationsProfessional() {//aqui cargo el componente del calendar  
       LocalStorageService.setIsLocked(true);      
       this.events = [];
-      console.log('this.today');
-      console.log(this.today);
       const today = new Date(this.today);
       const range = this.getMonthDateRange(today);
       const startDate = range.start.toISOString().split('T')[0];
@@ -212,8 +202,6 @@ export default {
         })
         .then((response) => {
           this.reservations = response.data.reservaciones;
-          console.log('Reservaciones');
-          console.log(this.reservations);
           let tempEvents = [];
 
 

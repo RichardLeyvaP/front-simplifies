@@ -56,7 +56,7 @@
                                                 v-model="editedItem.branch_id" :items="branches" clearable
                                                 label="Sucursales" prepend-icon="mdi-office-building" item-title="name"
                                                 item-value="id" variant="underlined" :rules="selectRules"
-                                                @update:model-value="selectBranches" :disabled="this.edited"></v-autocomplete><!--@update:model-value="selectBranches"-->
+                                                @update:model-value="selectBranches" :disabled="this.edited"></v-autocomplete>
                                         </v-col>
                                     </v-row>
 
@@ -66,7 +66,7 @@
                                                 v-model="editedItem.enrollment_id" :items="enrollments" clearable
                                                 label="Academias" prepend-icon="mdi-school" item-title="name"
                                                 item-value="id" variant="underlined" :rules="selectRules"
-                                                @update:model-value="selectEnrollments" :disabled="this.edited"></v-autocomplete><!--@update:model-value="selectEnrollments"-->
+                                                @update:model-value="selectEnrollments" :disabled="this.edited"></v-autocomplete>
                                         </v-col>
                                     </v-row>
                                     <v-form v-model="valid" enctype="multipart/form-data">
@@ -187,12 +187,12 @@
                         <v-col cols="12" md="3">
                             <v-select v-model="selectedYear" :items="years" label="Selecciona un año" variant="outlined"
                                 prepend-inner-icon="mdi-calendar" @update:model-value="initialize()" density="compact"
-                                class="ma-2"></v-select><!--@update:model-value="initialize()"-->
+                                class="ma-2"></v-select>
                         </v-col>
                         <v-col cols="12" md="3">
                             <v-select v-model="selectedMounth" :items="months" label="Selecciona un mes"
                                 variant="outlined" prepend-inner-icon="mdi-calendar" density="compact" class="ma-2"
-                                @update:model-value="initialize()"></v-select><!--@update:model-value="operationDetails()"-->
+                                @update:model-value="initialize()"></v-select>
                         </v-col>
                     </v-row>
 
@@ -311,30 +311,6 @@
             </v-col>
                 </v-container>
             </v-row>
-            <!--<v-col cols="12" md="2">
-                <v-card class="pa-2 pl-0 mb-2" elevation="2">
-                    <v-list-item :subtitle="formatNumber(utilidades)" title="Utilidades">
-                        <template v-slot:prepend>
-                            <v-avatar color="green">
-                                <v-icon color="white">{{ 'mdi-plus-circle' }}</v-icon>
-                            </v-avatar>
-                        </template>
-
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" md="2">
-                <v-card class="pa-2 pl-0 mb-2" elevation="2">
-                    <v-list-item :subtitle="formatNumber(totalGastos)" title="Gastos">
-                        <template v-slot:prepend>
-                            <v-avatar color="red">
-                                <v-icon color="white">{{ 'mdi-minus-circle' }}</v-icon>
-                            </v-avatar>
-                        </template>
-
-                    </v-list-item>
-                </v-card>
-            </v-col>-->
             <v-row>
                 <v-card style="min-width: 99%; max-width: 99%;">
                 <v-col cols="12" md="12">
@@ -349,9 +325,6 @@
                                 <template v-slot:item.file="{ item }">
                                     <v-icon v-if="item.file" @click="openDoc(item)"
                                         color="green">mdi-file-document-outline</v-icon>
-                                    <!--<v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                        <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
-                    </v-avatar>-->
                                 </template>
                                 <template v-slot:item.comment="{ item }">
                                     {{ getString(item.comment) }}
@@ -369,12 +342,6 @@
                                 </template>
 
                                 <template v-slot:item.actions="{ item }">
-                                    <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
-                        mdi-pencil
-                    </v-icon>
-                    <v-icon size="25" color="red" @click="deleteItem(item)">
-                        mdi-delete
-                    </v-icon>-->
                                     <v-btn density="comfortable" icon="mdi-pencil" @click="(item.nameDetalle != 'Ingresos por pago de servicios' && item.nameDetalle != 'Ingreso venta de productos en la caja' && item.nameDetalle != 'Pago de bono a profesionales' && item.nameDetalle != 'Pago a profesionales') && editItem(item)"
                                         :color="(item.nameDetalle != 'Ingresos por pago de servicios' && item.nameDetalle != 'Ingreso venta de productos en la caja' && item.nameDetalle != 'Pago de bono a profesionales' && item.nameDetalle != 'Pago a profesionales') ? 'primary':'grey'" variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
                                         title="Editar operación"></v-btn>
@@ -575,8 +542,6 @@ export default {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, "0");
         const day = String(date.getDate()).padStart(2, "0");
-        console.log(`${year}-${month}-${day}`);
-
         return `${year}-${month}-${day}`;
       }else{
         const currentDate = new Date();
@@ -618,15 +583,10 @@ export default {
                     this.initialize();
                     break;
                 case this.options[1]:
-                    console.log(this.options[1]);
                     // Operaciones para la opción 2
                     this.editedItem.type = 'Sucursal'
                     this.editedItem.business_id = '';
                     this.editedItem.enrollment_id = '';
-                    //this.editedItem.branch_id = parseInt(this.branches[0].id);
-                    console.log(this.editedItem.branch_id);
-                    console.log(this.editedItem.enrollment_id);
-                    console.log(this.editedItem.business_id);
                     this.totalIngresos = 0;
                     this.totalGastos = 0;
                     this.utilidades = 0;
@@ -642,10 +602,6 @@ export default {
                     this.editedItem.type = 'Academia'
                     this.editedItem.business_id = '';
                     this.editedItem.branch_id = '';
-                    //this.editedItem.enrollment_id = parseInt(this.enrollments[0].id);
-                    console.log(this.editedItem.branch_id);
-                    console.log(this.editedItem.enrollment_id);
-                    console.log(this.editedItem.business_id);
                     this.results = [];
                     this.totalIngresos = 0;
                     this.totalGastos = 0;
@@ -736,13 +692,10 @@ export default {
             this.gastoServices = 0;
             this.initialize();
         }
-        console.log(this.charge_id);
     },
 
     methods: {
         hasPermission(permission) {
-      console.log('permission');
-      console.log(permission);
       return this.permissionsUser.includes(permission);
     },
         updateDate() {
@@ -821,27 +774,18 @@ export default {
             this.editedItem.type = 'Negocio'
             this.editedItem.branch_id = '';
             this.editedItem.enrollment_id = '';
-            console.log(this.editedItem.branch_id);
-            console.log(this.editedItem.enrollment_id);
-            console.log(this.editedItem.business_id);
             this.initialize();
         },
         selectBranches() {
             this.editedItem.type = 'Sucursal'
             this.editedItem.business_id = '';
             this.editedItem.enrollment_id = '';
-            console.log(this.editedItem.branch_id);
-            console.log(this.editedItem.enrollment_id);
-            console.log(this.editedItem.business_id);
             this.initialize();
         },
         selectEnrollments() {
             this.editedItem.type = 'Academia'
             this.editedItem.business_id = '';
             this.editedItem.branch_id = '';
-            console.log(this.editedItem.branch_id);
-            console.log(this.editedItem.enrollment_id);
-            console.log(this.editedItem.business_id);
             this.initialize();
         },
         openDoc(item) {
@@ -851,7 +795,6 @@ export default {
         onFileSelected(event) {
             let file = event.target.files[0];
             this.editedItem.file = file;
-            console.log(this.editedItem.file);
             //this.cargarImage(file);
         },
         editItem(item) {
@@ -866,8 +809,6 @@ export default {
             // Procesar el valor del comentario al cargar el componente
             this.editedItem.comment = this.getString(item.comment);
             this.editedItem.data = this.parseDate(item.data);
-            console.log('this.editedItem seleccionado');
-            console.log(this.editedItem);
             this.dialog = true;
             this.edited = true;
         },
@@ -904,13 +845,8 @@ export default {
             this.ingresoServices = 0;
             this.gastoServices = 0;
             this.loading = true;
-            console.log('this.editedItem--------');
-            console.log(this.editedItem);
             axios
                 .get('https://api2.simplifies.cl/api/finance-show', {
-                    /*headers: {
-                'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
-            },*/
                     params: {
                         branch_id: this.editedItem.branch_id,
                         business_id: this.editedItem.business_id,
@@ -924,19 +860,7 @@ export default {
                     this.results = response.data.finances;
 
                     this.editedItem.control = this.results.length !== 0 ? this.results[0].control + 1 : 1;
-                    
-                    //this.visibility = !this.editedItem.control ? false : true;
-
-                    //this.editedItem.control = !this.results ? 0 : this.results[0].control + 1 ;// Obtener el numero de control realizado
-                    /*if (!this.editedItem.control) {
-                        console.log('es cero');
-                        this.visibility = true;
-                    }*/
-                    //console.log('this.results');
-                    //console.log(this.results);
-                    /*console.log('this.editedItem.control');
-                    console.log(this.editedItem.control);*/
-                }).finally(() => {
+                    }).finally(() => {
                     LocalStorageService.setIsLocked(false);
                     this.loading = false;
                     this.totalIngresos = this.results.filter(item => item.operation == "Ingreso")
@@ -997,8 +921,6 @@ export default {
         deleteItem(item) {
             this.editedItem.id = item.id;
             this.dialogDelete = true;
-            console.log('item');
-            console.log(this.editedItem);
         },
         deleteItemConfirm() {
             LocalStorageService.setIsLocked(true);
@@ -1015,9 +937,6 @@ export default {
             this.closeDelete()
         },
         close() {
-
-            console.log('this.type');
-            console.log(this.selectedOption);
             this.dialog = false;
             this.file = '';
             this.editedItem.amount = '';
@@ -1030,14 +949,9 @@ export default {
             this.input = null;
             this.edited = false;
             this.editedIndex = -1;
-            //this.selectedOption = 'Negocio',
-            //this.initialize();
         },
         closeDelete() {
             this.dialogDelete = false;            
-            /*this.$nextTick(() => {
-                this.editedItem = Object.assign({}, this.defaultItem);
-            });*/
             this.file = '';
             //this.initialize();
         },
@@ -1051,9 +965,6 @@ export default {
                 for (let key in this.editedItem) {
                     formData.append(key, this.editedItem[key]);
                 }
-
-                console.log('formData');
-                console.log(formData);
                 axios
                     .post('https://api2.simplifies.cl/api/finance-updated', formData)
                     .then(() => {
@@ -1074,14 +985,10 @@ export default {
                 this.valid = false;
                 //this.editedItem.branch_id = this.branch_id;
                 this.editedItem.data = this.dateFormatted;                
-                console.log('this.editedItem');
-                console.log(this.editedItem);
-                const formData = new FormData();
+                   const formData = new FormData();
                 for (let key in this.editedItem) {
                     formData.append(key, this.editedItem[key]);
                 }
-                console.log('formData');
-                console.log(formData);
                 axios
                     .post('https://api2.simplifies.cl/api/finance', formData)
                     .then(() => {

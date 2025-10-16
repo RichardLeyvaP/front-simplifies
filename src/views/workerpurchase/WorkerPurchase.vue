@@ -86,33 +86,7 @@
                     class="font-weight-bold mr-2">
                     <v-icon :icon="getStatusIcon(item.status)" start size="small"></v-icon>
                     {{ getStatusText(item.status) }}
-                  </v-chip>
-
-                  <!--<template v-if="item.status === 0">
-                    <v-menu v-model="statusMenu[item.id]" offset-y>
-                      <template v-slot:activator="{ props }">
-                        <v-btn density="comfortable" icon="mdi-pencil" v-bind="props" color="primary" variant="tonal"
-                          elevation="1" class="mr-1 mt-1 mb-1" title="Cambiar estado" :disabled="item.data !== this.today"></v-btn>
-                      </template>
-                      <v-list density="compact">
-                        <v-list-item @click="updateStatus(item, 1)">
-                          <template v-slot:prepend>
-                            <v-btn density="comfortable" icon="mdi-check" color="success" variant="tonal"
-                              elevation="1" class="mr-3" title="Aprobar"></v-btn>
-                          </template>
-                          <v-list-item-title>Aprobar</v-list-item-title>
-                        </v-list-item>
-                        <v-list-item @click="updateStatus(item, 2)">
-                          <template v-slot:prepend>
-                            <v-btn density="comfortable" icon="mdi-close" color="error" variant="tonal"
-                              elevation="1" class="mr-3" title="Denegar"></v-btn>
-                          </template>
-                          <v-list-item-title>Denegar</v-list-item-title>
-                        </v-list-item>
-                      </v-list>
-                    </v-menu>
-                  </template>-->
-                  
+                  </v-chip>                  
                 </div>
               </template>
               <template v-slot:item.actions="{ item }">

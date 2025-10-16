@@ -21,13 +21,6 @@
                     <v-col cols="12" md="7" class="ml-4">
                         <span class="text-subtitle-1"> <strong>Solicitudes de Adelanto</strong></span>
                     </v-col>
-                    <!--<v-col cols="12" md="4" class="text-right ml-12">
-                        <v-btn class="text-subtitle-1" variant="flat" elevation="2"
-                            prepend-icon="mdi-plus-circle" @click="showAddAdvance" >
-                            Solicitar Adelanto
-                        </v-btn>
-                        </v-col>-->
-
                 </v-row>
 
             </v-toolbar>
@@ -61,7 +54,7 @@
                         <v-locale-provider locale="es">
                             <v-date-picker header="Calendario" title="Seleccione la fecha" color="#F18254"
                                 :modelValue="input2" format="yyyy-MM-dd" :min="dateFormatted"
-                                @update:model-value="updateDate1"></v-date-picker><!--@update:model-value="updateDate2"-->
+                                @update:model-value="updateDate1"></v-date-picker>
                         </v-locale-provider>
                     </v-menu>
                 </v-col>
@@ -83,7 +76,7 @@
                                 <v-avatar class="mr-1" elevation="3" color="grey-lighten-4" size="small">
                                     <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image}?t=${Date.now()}`"
                                         alt="image"></v-img>
-                                </v-avatar><!--+'?$'+Date.now()-->
+                                </v-avatar>
                                 {{ item.professionalName }}
                             </template>
                             <template v-slot:item.amount="{ item }">
@@ -110,12 +103,6 @@
                                     :color="(item.status === 'Aprobado') ? 'green' : 'grey'" variant="tonal"
                                     elevation="1" class="mr-1 mt-1 mb-1"
                                     :title="(item.status === 'Aprobado') ? 'Realizar pago' : 'Solo disponible para solicitudes aprobadas'"></v-btn>
-                                    <!--<v-btn v-if="!mostrarFila && item.status === 'Pendiente'" density="comfortable" icon="mdi-pencil" @click="editItem(item)" color="primary"
-                                    variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
-                                    title="Editar solicitud de adelanto"></v-btn>
-                                    <v-btn v-if="!mostrarFila && item.status === 'Pendiente'" density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="error"
-                                    variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
-                                    title="Editar solicitud de adelanto"></v-btn>-->
                             </template>
                         </v-data-table>
                     </v-card-text>
@@ -216,145 +203,12 @@
                 </v-card-actions>
             </v-card>
         </v-form>
-    </v-dialog>
-    <!--<v-dialog v-model="dialogSolicitud" max-width="600px">
-  <v-card>
-    <v-toolbar color="#F18254">
-    <v-col cols="12" md="8">
-      <span class="text-subtitle-2 ml-4">{{ formTitle }}</span></v-col>
-    <v-col cols="12" md="4"> Disponible: {{ formatNumber(this.totalMount) }} </v-col>
-    </v-toolbar>
-    
-    <v-card-text>
-      <v-form ref="form" v-model="valid" enctype="multipart/form-data">
-        <v-container>
-          
-          <v-row class="mb-4">-->
-            <!-- Card Total Productos
-            <v-col cols="12" md="3" class="pa-1">
-              <v-card class="pa-2" elevation="2">
-                <v-list-item subtitle="Producto" :title="formatNumber(this.totalSales)">
-                  <template v-slot:prepend>
-                    <v-avatar color="blue">
-                      <v-icon color="white">mdi-cart</v-icon>
-                    </v-avatar>
-                  </template>
-                </v-list-item>
-              </v-card>
-            </v-col> -->
-            
-            <!-- Card Total Propinas 
-            <v-col cols="12" md="3" class="pa-1">
-              <v-card class="pa-2" elevation="2">
-                <v-list-item subtitle="Propinas" :title="formatNumber(this.totalTip)">
-                  <template v-slot:prepend>
-                    <v-avatar color="amber">
-                      <v-icon color="white">mdi-cash</v-icon>
-                    </v-avatar>
-                  </template>
-                </v-list-item>
-              </v-card>
-            </v-col>-->
-            
-            <!-- Card Salario 
-            <v-col cols="12" md="3" class="pa-1">
-              <v-card class="pa-2" elevation="2">
-                <v-list-item subtitle="Salario" :title="formatNumber(this.salary)">
-                  <template v-slot:prepend>
-                    <v-avatar color="green">
-                      <v-icon color="white">mdi-wallet</v-icon>
-                    </v-avatar>
-                  </template>
-                </v-list-item>
-              </v-card>
-            </v-col>-->
-            <!-- Card Total General 
-            <v-col cols="12" md="3" class="pa-0">
-              <v-card class="pa-0" elevation="2">
-                <v-list-item class="px-2 py-1" subtitle="Total" :title="formatNumber(this.totalMount)">
-                  <template v-slot:prepend>
-                    <v-avatar color="white">
-                      <v-icon color="primary">mdi-calculator</v-icon>
-                    </v-avatar>
-                  </template>
-                </v-list-item>
-              </v-card>
-            </v-col>
-          </v-row>-->
-          
-          <!-- Campo de Cantidad -->
-          <!--<v-row>
-            <v-col cols="12" md="12">                      
-              <v-text-field 
-                v-model="amountFormatted" 
-                label="Cantidad" 
-                prepend-icon="mdi-cash" 
-                variant="underlined" 
-                type="number" 
-                min="0" 
-                @keypress="onlyNumbers"
-                :rules="[
-                v => !!v || 'La cantidad es requerida',
-                v => (v && Number(v) >= 0) || 'La cantidad debe ser positiva',
-                v => (v && !isNaN(v)) || 'Debe ser un número válido',
-                v => (v && this.parseNumberInput(v) <= this.totalMount) || `El monto no puede exceder ${this.formatNumber(this.totalMount)}`
-                ]"
-                required>
-              </v-text-field>
-            </v-col>
-          </v-row>
-        </v-container>
-        
-        <v-divider></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="#E7E9E9" variant="flat" @click="close" :disabled="loadingSave">
-            Cancelar
-          </v-btn>
-          <v-btn color="#F18254" variant="flat" @click="saveSolicitud" :disabled="!valid" :loading="loadingSave">
-            Aceptar
-          </v-btn>
-        </v-card-actions>
-      </v-form>
-    </v-card-text>
-  </v-card>
-</v-dialog>
-<v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-
-              <v-toolbar color="red">
-                <span class="text-subtitle-2 ml-4"> Eliminar solicitud de adelanto</span>
-              </v-toolbar>
-
-              <v-card-text class="mt-2 mb-2"> ¿Desea eliminar la solicitud de adelanto?</v-card-text>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="#E7E9E9" variant="flat" @click="closeDelete">
-                  Cancelar
-                </v-btn>
-                <v-btn color="#F18254" variant="flat" @click="deleteItemConfirm">
-                  Aceptar
-                </v-btn>
-
-              </v-card-actions>
-            </v-card>
-          </v-dialog> -->         
+    </v-dialog>      
 </template>
 <script>
 
 import LocalStorageService from "@/LocalStorageService";
 import { handleRequest } from "@/utils/api";
-/*axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
-*/
 export default {
     data: () => ({
         loadingrules: true,
@@ -477,10 +331,6 @@ export default {
         dateFormatted1() {
             const date = this.input2 ? new Date(this.input2) : new Date();
             return date.toISOString().split('T')[0];
-            /*const day = date.getDate().toString().padStart(2, "0");
-            const month = (date.getMonth() + 1).toString().padStart(2, "0");
-            const year = date.getFullYear();
-            return `${year}-${month}-${day}`;*/
         },
         dateFormatted3() {
             const date = this.input3 ? new Date(this.input3) : new Date();
@@ -562,11 +412,7 @@ export default {
                 this.branch_id = this.branches[0].id;
                 this.mostrarFila = true;
             }
-            /*if (this.charge === "Administrador") {          
-            this.professional_id = null;
-            }else{    */  
             this.professional_id = LocalStorageService.getItem('professional_id');
-            //}
             await this.initialize();
         }
     },
@@ -636,10 +482,7 @@ export default {
                 if (result.success) {
                     // Si la solicitud es exitosa, asignamos las sucursales
                     this.results = result.data.advances;
-                    /*if (this.charge !== "Administrador") {                  
-                    this.cantAdvanceToday = this.canRequestAdvanceToday(this.results); 
-                    }*/
-                } else {
+                  } else {
                     this.loadingrules = false;
                     LocalStorageService.setIsLocked(false);
                     //this.canAdvanceToday = false;
@@ -691,9 +534,6 @@ export default {
                 if (result.success) {
                     // Si la solicitud es exitosa, asignamos las sucursales
                     this.results = result.data.advances;
-                    /*if (this.charge !== "Administrador") {                  
-                    this.cantAdvanceToday = this.canRequestAdvanceToday(this.results); 
-                    }*/
                 } else {
                     this.loadingrules = false;
                     LocalStorageService.setIsLocked(false);
@@ -815,7 +655,6 @@ export default {
             }
             this.valid = true;
             this.editedItem.receipt = file;
-            //console.log(this.editedItem.image_cardgift);
             this.cargarImage(file);
         },
         cargarImage(file) {
@@ -825,131 +664,6 @@ export default {
             }
             reader.readAsDataURL(file);
         },
-
-        /*async showAddAdvance(){
-            this.editedIndex = -1;
-            this.data = {};
-        try {
-            
-            this.data.professional_id = Number(this.professional_id),
-            this.data.branch_id = Number(this.branch_id),
-            this.data.charge = this.charge;
-         
-            const result = await handleRequest({
-            endpoint: 'cashier-car-salary',
-            method: 'POST',
-            data: this.data
-            });
-
-            // Manejo de la respuesta según el resultado
-            if (result.success) {
-                console.log("Resultado:", result.data);
-                this.totalSales = Number(result.data.total_sales) || 0;
-                this.totalTip = Number(result.data.total_tip_cashier) || 0;
-                this.totalAdvance = Number(result.data.total_advance) || 0;
-                this.salary = Number(result.data.salary) || 0;
-                this.totalOrders = Number(result.data.total_orders) || 0;
-                this.totalPurchase = Number(result.data.total_purchase) || 0;
-                this.totalService = Number(result.data.total_services) || 0;
-                
-                // Asignación de arrays
-                this.salesIds = result.data.sales_ids || [];
-                this.carIds = result.data.car_ids || [];
-                this.tipIds = result.data.tip_ids || [];
-                this.advanceIds = result.data.advance_ids || [];
-                this.orderIds = result.data.order_ids || [];
-                this.purchaseIds = result.data.purchase_ids || [];
-                this.totalMount = Number(result.data.total);
-                console.log('this.totalMount');
-                console.log(this.totalMount);
-            } else {
-                this.totalSales = null;
-                this.salesIds = [];
-                this.totalTip = null;
-                this.carIds = [];
-                this.totalAdvance = null;
-                this.totalPurchase = null;
-                this.advanceIds = [];
-                this.purchaseIds = [];
-                this.salary = null;
-                this.totalMount = null;
-            this.showAlert("warning", result.message, 3000);
-            }
-        } catch (error) {
-            // Este bloque captura errores inesperados fuera del manejo estándar
-            this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
-        } finally {
-            this.dialogSolicitud = true;
-        }
-
-        },
-
-        async saveSolicitud() {
-        this.loadingSave = true;
-        if (this.editedIndex === -1) {
-            this.valid = false;
-            this.data.branch_id = this.branch_id;
-            this.data.professional_id = this.professional_id;
-            this.data.amount = this.editedItem.amount;
-            try {
-            const result = await handleRequest({
-                endpoint: 'advance',
-                method: 'POST',
-                data: this.data
-            });
-
-            // Manejo de la respuesta según el resultado
-            if (result.success) {
-                this.showAlert("success", result.message, 3000);
-                this.initialize();
-            } else {
-                this.loading = false;
-                this.showAlert("warning", result.message, 3000);
-            }
-            } catch (error) {
-            this.loadingSave = false;
-            // Este bloque captura errores inesperados fuera del manejo estándar
-            this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
-            } finally {
-            this.loadingSave = false;
-            }
-        } else {
-            const fieldsToUpdate = ['amount'];
-            let updatedFields = Object.keys(this.editedItem)
-            .filter((key) => fieldsToUpdate.includes(key) && this.editedItem[key] !== this.originalItem[key])
-            .reduce((obj, key) => {
-                obj[key] = this.editedItem[key];
-                return obj;
-            }, {});
-            if (Object.keys(updatedFields).length > 0) {
-            updatedFields.id = this.editedItem.id;
-            try {
-                const result = await handleRequest({
-                endpoint: 'advance-update-amount',
-                method: 'POST',
-                data: updatedFields
-                });
-
-                // Manejo de la respuesta según el resultado
-                if (result.success) {
-                this.showAlert("success", result.message, 3000);
-                this.initialize();
-                } else {
-                this.loadingSave = false;
-                this.showAlert("warning", result.message, 3000);
-                }
-            } catch (error) {
-                this.loadingSave = false;
-                // Este bloque captura errores inesperados fuera del manejo estándar
-                this.showAlert("error", "Ocurrió un error inesperado al procesar la solicitud.", 3000);
-            }
-            } else {
-            this.loadingSave = false;
-            this.showAlert("success", "No se realizaron cambios.", 3000);
-            }
-        }
-        this.close();
-        },*/
         editItem(item) {
         this.editedIndex = 1;
         this.editedItem = Object.assign({}, item);

@@ -98,12 +98,6 @@
             elevation="1" class="mr-1 mt-1 mb-1" title="Editar Asociados"></v-btn>
           <v-btn density="comfortable" icon="mdi-delete" @click="deleteItem(item)" color="red-darken-4" variant="tonal"
             elevation="1" title="Eliminar Asociado"></v-btn>
-       <!--<v-icon size="25" color="blue" class="me-2" @click="editItem(item)">
-         mdi-pencil
-       </v-icon>
-       <v-icon size="25" color="red" @click="deleteItem(item)">
-         mdi-delete
-       </v-icon>-->
      </template>
    </v-data-table>
  </v-card-text>
