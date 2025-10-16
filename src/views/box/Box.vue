@@ -2340,6 +2340,8 @@ export default {
       id: '',
       totalCash: '',
       totalService: '',
+      existence: '',
+      cashFound: '',
       totalProduct: '',
       totalTip: '',
       totalCreditCard: '',
@@ -2435,6 +2437,8 @@ export default {
       totalCash: '',
       totalService: '',
       totalProduct: '',
+      existence: '',
+      cashFound: '',
       totalTip: '',
       totalCreditCard: '',
       totalMount: '',
@@ -4507,6 +4511,7 @@ onCalendarMonthChange(newDate) {
           const temp = this.box.existence;
           this.editedBox.existence = this.box.existence;
           this.editedBox.cashFound = this.box.cashFound;
+          this.editedCloseBox.cashFound = this.box.cashFound;
           this.editedCloseBox.existence = this.box.existence;
           console.log(temp);
           //return temp;
