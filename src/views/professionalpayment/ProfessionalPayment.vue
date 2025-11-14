@@ -167,14 +167,14 @@
                             </template>
                             <template v-slot:item.actions="{ item }">
                                 <v-btn density="comfortable" icon="mdi-pencil"
-                                    @click="(this.charge === 'Barbero' || this.charge === 'Barbero y Encargado'|| item.type !== 'Mes') ? '' :editItem(item)"
-                                    :color="(this.charge === 'Barbero' || this.charge === 'Barbero y Encargado'|| item.type !== 'Mes') ? 'grey' : 'primary'"
+                                    @click="(item.type === 'Mes' && isBeforeOrOn10th()) ? editItem(item) : ''"
+                                    :color="(item.type === 'Mes' && isBeforeOrOn10th()) ? 'primary' : 'grey'"
                                     variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
                                     title="Editar Pago Mensual a profesional"></v-btn>
                                 <v-btn v-if="item.date !== 'Total'" density="comfortable" icon="mdi-delete"
                                     :color="(item.type === 'Mes') ? 'red-darken-4' : 'grey'" variant="tonal"
                                     elevation="1" title="Eliminar Pago a profesional"
-                                    @click="(item.type === 'Mes') ? deleteItem(item) : ''"></v-btn>
+                                    @click="(item.type === 'Mes' && this.isBeforeOrOn10th()) ? deleteItem(item) : ''"></v-btn>
                             </template>
 
                         </v-data-table>
@@ -844,14 +844,14 @@
                                             color="red-darken-4" variant="tonal" elevation="1"
                                             title="Eliminar Pago a profesional"></v-btn>-->
                                             <v-btn density="comfortable" icon="mdi-pencil"
-                                                @click="(this.charge === 'Barbero' || this.charge === 'Barbero y Encargado'|| item.type !== 'Mes') ? '' :editItemCashier(item)"
-                                                :color="(this.charge === 'Barbero' || this.charge === 'Barbero y Encargado'|| item.type !== 'Mes') ? 'grey' : 'primary'"
+                                                @click="(item.type === 'Mes' && isBeforeOrOn10th()) ? editItemCashier(item) : ''"
+                                                :color="(item.type === 'Mes' && isBeforeOrOn10th()) ? 'primary' : 'grey'"
                                                 variant="tonal" elevation="1" class="mr-1 mt-1 mb-1"
                                                 title="Editar Pago Mensual a profesional"></v-btn>
                                             <v-btn v-if="item.date !== 'Total'" density="comfortable" icon="mdi-delete"
                                                 :color="(item.type === 'Mes') ? 'red-darken-4' : 'grey'" variant="tonal"
                                                 elevation="1" title="Eliminar Pago a profesional"
-                                                @click="(item.type === 'Mes') ? deleteItem(item) : ''"></v-btn>
+                                                @click="(item.type === 'Mes' && this.isBeforeOrOn10th()) ? deleteItem(item) : ''"></v-btn>
                                         </template>
                                     </v-data-table>
                                 </div>
@@ -1275,6 +1275,7 @@ axios.interceptors.request.use(config => {
 
 export default {
     data: () => ({
+        loadingWorkPlace: false,
         tabBar: false,
         tabBarCashier: false,
         loadingProfessPay: true,
@@ -1371,6 +1372,7 @@ export default {
             cashierproduct: 'Pago venta de Productos',
             amountAcadem: '',
             amountSaleProduct: '',
+            car: null,
         },
         data: {},
 
@@ -1384,6 +1386,7 @@ export default {
             cashierproduct: 'Pago venta de Productos',
             amountAcadem: '',
             amountSaleProduct: '',
+            car: null
         },
         nameRules: [
             (v) => !!v || "El campo es requerido",
@@ -1579,6 +1582,10 @@ export default {
     },
 
     methods: {
+        isBeforeOrOn10th() {
+            const today = new Date();
+            return today.getDate() <= 10;
+        },
         formatNumberInput(value) {
             if (!value) return ''
             return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
@@ -1904,9 +1911,10 @@ export default {
             this.editedItem = Object.assign({}, item)
             this.dialogEdit = true
         },
+        //ok
         editItemCashier(item) {
             this.editedIndex = 1;
-            this.editedItem = Object.assign({}, item)
+            this.editedItem = Object.assign({}, item);
             this.dialogEditCashier = true
         },
         pagoProfessional(item) {
@@ -2101,6 +2109,7 @@ export default {
         deleteItem(item) {
             this.editedIndex = -1;
             this.editedItem.id = item.id;
+            this.editedItem.car = item.car;
             this.dialogDelete = true;
         },
         async deleteItemConfirm() {
@@ -2118,7 +2127,8 @@ export default {
                     this.showProfessional();
                 });*/
                 const requestParams = {
-                    id: this.editedItem.id
+                    id: this.editedItem.id,
+                    car: this.editedItem.car || 0
                 };
                 try {
                     const result = await handleRequest({
@@ -2141,7 +2151,11 @@ export default {
                     // Captura de errores no controlados
                     this.showAlert('error', 'Ocurrió un error inesperado al procesar la solicitud.', 3000);
                 } finally {
+                    if(this.editedItem.car === 1){
+                    this.showCashier();
+                    }else{
                     this.showProfessional();
+                }
                     this.dialogDelete = false;
                 }
             //this.closeDelete();
@@ -2632,7 +2646,8 @@ export default {
                 this.closeDelete();
             }*/
             const requestParams = {
-                    id: this.editedItem.id
+                    id: this.editedItem.id,
+                    car: this.editedItem.car || 0
                 };
                 try {
                     const result = await handleRequest({
@@ -2910,7 +2925,8 @@ export default {
             LocalStorageService.setIsLocked(true);
                 const requestParams = {
                     id: this.editedItem.id,
-                    amount: this.editedItem.amount
+                    amount: this.editedItem.amount,
+                    car: this.editedItem.car || 0
                 };
                 try {
                     const result = await handleRequest({
@@ -2945,7 +2961,8 @@ export default {
             LocalStorageService.setIsLocked(true);
                 const requestParams = {
                     id: this.editedItem.id,
-                    amount: this.editedItem.amount
+                    amount: this.editedItem.amount,
+                    car: this.editedItem.car || 0
                 };
                 try {
                     const result = await handleRequest({

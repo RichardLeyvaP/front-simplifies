@@ -129,7 +129,7 @@
                                             </v-col>
                                             <v-col cols="12" md="12">
                                                 <v-file-input clearable v-model="file" ref="fileInput"
-                                                    label="Comprobante" variant="underlined" density="compact" :rules="selectRules"
+                                                    label="Comprobante" variant="underlined" density="compact" :rules="selectRulesFiles"
                                                     name="file" accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .odt, .ods, .odp, .rtf, .html, .xml, .csv, .png, .jpg, .jpeg"  @change="onFileSelected">
                                                 </v-file-input>
                                             </v-col>
@@ -516,7 +516,7 @@ export default {
             (value) => /^\d+(\.\d+)?$/.test(value) || "Debe ser un número con punto decimal (10.00)",
             (value) => !isNaN(parseFloat(value)) || 'Debe ser un número'],
         selectRules: [(v) => !!v || "Seleccionar al menos un elemento"],
-        nameRules: [
+          nameRules: [
             (v) => !!v || "El campo es requerido"],
     }),
     setup() {
@@ -537,6 +537,14 @@ export default {
   },
 
     computed: {
+        selectRulesFiles() {
+      return [
+        (v) => {
+          if (this.editedIndex !== -1) return true;
+          return !!v || 'Seleccionar al menos un elemento';
+        }
+      ];
+    },
         minDate() {
             const today = new Date();
             const currentDay = today.getDate();
