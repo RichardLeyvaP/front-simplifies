@@ -117,20 +117,8 @@
           </v-dialog>
 </template>
 <script>
-
-import axios from "axios";
 import LocalStorageService from "@/LocalStorageService";
 
-
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
 
@@ -244,8 +232,7 @@ export default {
     initialize() {
       this.loadingPermission = true;
       LocalStorageService.setIsLocked(true);
-      axios
-        .get('https://api2.simplifies.cl/api/permission')
+      this.$axios.get('permission')
         .then((response) => {
           console.log("entra a Buscar permisos")
           this.results = response.data;
@@ -271,8 +258,7 @@ export default {
       let request = {
         id: this.editedItem.id
       };
-      axios
-        .post('https://api2.simplifies.cl/api/permission-destroy', request)
+      this.$axios.post('permission-destroy', request)
         .then(() => {
           LocalStorageService.setIsLocked(false);
           this.initialize();
@@ -305,8 +291,7 @@ export default {
         this.data.name = this.editedItem.name;
         this.data.description = this.editedItem.description;
         this.data.module = this.editedItem.module;
-        axios
-          .put('https://api2.simplifies.cl/api/permission', this.data)
+        this.$axios.put('permission', this.data)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.initialize();
@@ -317,8 +302,7 @@ export default {
         this.data.name = this.editedItem.name;
         this.data.description = this.editedItem.description;
         this.data.module = this.editedItem.module;
-        axios
-          .post('https://api2.simplifies.cl/api/permission', this.data)
+        this.$axios.post('permission', this.data)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.initialize();

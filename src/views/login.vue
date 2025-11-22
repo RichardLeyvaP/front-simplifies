@@ -132,8 +132,6 @@
 </template>
 
 <script>
-
-import axios from "axios";
 //import { UserTokenStore } from "@/store/UserTokenStore";
 import LocalStorageService from "@/LocalStorageService";
 import router from '@/router/index';
@@ -191,8 +189,8 @@ export default {
       this.dialog = !this.dialog ;
     },
     changePass (){
-      axios
-        .get('https://api2.simplifies.cl/api/reactive-password', {
+      this.$axios
+        .get('reactive-password', {
                     params: {
                         email: this.emailpas,
                     }
@@ -231,19 +229,6 @@ export default {
       this.sb_timeout = sb_timeout
       this.snackbar = true
     },
-    /*logout() {
-      const token = LocalStorageService.getItem('token');
-      if(token){
-        axios
-        .get('https://api2.simplifies.cl/api/logout', {
-          headers: {
-                'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
-            }
-                })
-        .then();
-      }
-      LocalStorageService.logout();
-    },*/
     save() {
       this.valid = false;
       this.loading = true;
@@ -252,8 +237,8 @@ export default {
       this.data.branch_id = this.editedItem.branch_id;
 
       console.log(this.data);
-      axios
-        .post('https://api2.simplifies.cl/api/login', this.data)
+      this.$axios
+        .post('login', this.data)
         .then((response) => {
           if (response.data) {
             if (this.editedItem.branch_id === response.data.branch_id || (this.selectedOption === "empresa" && response.data.business_id && !response.data.branch_id)) {
@@ -341,8 +326,8 @@ export default {
     },
 
     initialize() {
-      axios
-        .get('https://api2.simplifies.cl/api/branch-prueba')
+      this.$axios
+        .get('branch-prueba')
         .then((response) => {
           this.branches = response.data.branches;
         });

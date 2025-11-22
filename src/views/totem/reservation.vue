@@ -46,7 +46,7 @@
       <template #prepend>
         <v-avatar>
           <v-img
-            :src="`https://api2.simplifies.cl/api/images/${service.image_service}`"
+            :src="`${this.$axios.defaults.baseURL}images/${service.image_service}`"
             alt="Service image"
           ></v-img>
         </v-avatar>
@@ -101,7 +101,7 @@
 
                 <v-list-item-group v-model="professional" active-class="deep-purple--text text--accent-4">
 
-                  <v-list-item :prepend-avatar="'https://api2.simplifies.cl/api/images/' + professional.image_url"
+                  <v-list-item :prepend-avatar="`${this.$axios.defaults.baseURL}images/${professional.image_url}`"
                     v-for="professional in professionals" :key="professional.id" @click="toggleService2(professional)"
                     :class="{ 'selected-item': isProfessional(professional.id) }" class="pt-4 pb-4">
 
@@ -428,19 +428,8 @@
 </template>
 
 <script>
-import axios from "axios";
 import LocalStorageService from "@/LocalStorageService";
 import { handleRequest } from "@/utils/api"; // Ruta al archivo
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
-
 
 export default {
 
@@ -694,8 +683,7 @@ export default {
     //this.charge_id = LocalStorageService.getItem('charge_id');
     this.branch_id = parseInt(LocalStorageService.getItem('branch_id'));
     this.nameBranch = JSON.parse(LocalStorageService.getItem("nameBranch"));
-    axios
-      .get('https://api2.simplifies.cl/api/show-business', {
+     this.$axios.get('show-business', {
         params: {
           business_id: this.business_id
         }
@@ -766,7 +754,7 @@ export default {
       console.log('query en la funcion');
       console.log(this.email_client);
       //if (query) {
-      axios.get(`https://api2.simplifies.cl/api/client-email-phone?email=${this.email_client}`)
+       this.$axios.get(`client-email-phone?email=${this.email_client}`)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.clientRegister = response.data.client;
@@ -864,7 +852,7 @@ export default {
       console.log('query en la funcion');
       console.log(this.editedPhather.parent_email);
       //if (query) {
-      axios.get(`https://api2.simplifies.cl/api/client-email-phone?email=${this.editedPhather.parent_email}`)
+       this.$axios.get(`client-email-phone?email=${this.editedPhather.parent_email}`)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.clientRegister = response.data.client;
@@ -1139,7 +1127,7 @@ export default {
 
 
       // Realiza la solicitud POST Y BUSCO LOS DATOS DEL CLIENTE 
-      axios.get(`https://api2.simplifies.cl/api/client-email-phone?email=${this.email_client2}`)
+      this.$axios.get(`client-email-phone?email=${this.email_client2}`)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.clientRegister = response.data.client;
@@ -1249,7 +1237,7 @@ export default {
       console.log('**********************************---------------------');
 
       // Realiza la solicitud GET con Axios y pasa los parámetros
-      axios.post('https://api2.simplifies.cl/api/reservation-store-tottem', request)
+      this.$axios.post('reservation-store-tottem', request)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           this.message = response.data.msg
@@ -1289,8 +1277,7 @@ export default {
 
     },
     showDialogEncuesta() {
-      axios
-        .get('https://api2.simplifies.cl/api/survey')
+      this.$axios.get('survey')
         .then((response) => {
           this.surveys = response.data.surveys;
         });
@@ -1307,7 +1294,7 @@ export default {
         branch_id: this.branch_id,
 
       }
-      axios.post('https://api2.simplifies.cl/api/client-survey', request)
+      axios.post('client-survey', request)
         .then(response => {
           // Maneja la respuesta de la solicitud aquí
           // this.message=response.data.msg
@@ -1504,8 +1491,7 @@ export default {
         console.log("El branch_id no es un número válido.");
         return;
       }*/
-      axios
-        .get(`https://api2.simplifies.cl/api/branchservice-show?branch_id=${parseInt(branchId)}`)
+      this.$axios.get(`branchservice-show?branch_id=${parseInt(branchId)}`)
         .then((response) => {
           console.log(response.data)
           this.services = response.data.services;
@@ -1531,8 +1517,7 @@ export default {
       };
 
       this.array_services = newArrayService;
-      axios
-        .get(`https://api2.simplifies.cl/api/branch-professionals-service-tottem`, {
+      this.$axios.get(`branch-professionals-service-tottem`, {
           params: data,
           headers: {
             'Cache-Control': 'no-cache',

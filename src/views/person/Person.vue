@@ -230,7 +230,7 @@
             </template>
             <template v-slot:item.name="{ item }">
               <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img><!--+ '?$' + Date.now()
+                <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_url}`" alt="image"></v-img><!--+ '?$' + Date.now()
                 -->
               </v-avatar>
               {{ item.name }}
@@ -402,7 +402,7 @@
                       </template>
                       <template v-slot:item.name="{ item }">
                         <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                          <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img><!--+ '?$' + Date.now()
+                          <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_url}`" alt="image"></v-img><!--+ '?$' + Date.now()
                           -->
                         </v-avatar>
                         {{ item.name }}
@@ -664,7 +664,7 @@
 
           <v-card-text class="d-flex align-center mt-2">
             <v-avatar class="mr-2">
-              <v-img :src="'https://api2.simplifies.cl/api/images/' + clientImage" alt="Avatar del cliente"></v-img>
+              <v-img :src="`${this.$axios.defaults.baseURL}images/${clientImage}`" alt="Avatar del cliente"></v-img>
             </v-avatar>
             <span>{{ clientName }}</span>
           </v-card-text>
@@ -716,7 +716,7 @@
                       :rules="selectRules"><!--@update:model-value="showReservationsProfessional()"-->
                       <template v-slot:item="{ props, item }">
                         <v-list-item v-bind="props"
-                          :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_url"
+                          :prepend-avatar="`${this.$axios.defaults.baseURL}images/${item.raw.image_url}`"
                           :subtitle="'Cargo: ' + item.raw.charge" :title="item.raw.name"></v-list-item>
                       </template>
                     </v-autocomplete>
@@ -815,7 +815,7 @@
                   :items="professRules" label="Seleccione un Profesional" prepend-inner-icon="mdi-store-outline"
                   item-title="name" item-value="id" variant="outlined" :rules="selectRules">
                   <template v-slot:item="{ props, item }">
-                    <v-list-item v-bind="props" :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_url"
+                    <v-list-item v-bind="props" :prepend-avatar="`${this.$axios.defaults.baseURL}images/${item.raw.image_url}`"
                       :title="item.raw.name"></v-list-item>
                   </template>
                 </v-autocomplete><!--@update:model-value="initialize()"-->
@@ -851,21 +851,12 @@
   </v-container>
 </template>
 <script>
-import axios from "axios";
+
 import { format } from "date-fns";
 import * as XLSX from "xlsx";
 import LocalStorageService from "@/LocalStorageService";
 import { VCalendar } from 'vuetify/labs/VCalendar'
 
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
   components: {
@@ -1247,8 +1238,7 @@ export default {
     this.business_id = parseInt(LocalStorageService.getItem("business_id"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     LocalStorageService.setIsLocked(true);
-    axios
-      .get("https://api2.simplifies.cl/api/charge-web", {
+    this.$axios.get("charge-web", {
         params: {
           business_id: this.business_id,
         },
@@ -1330,8 +1320,7 @@ onCalendarMonthChange(newDate) {
     // aqui lo del calendario
     handleEmailChange() {
       LocalStorageService.setIsLocked(true);
-      axios
-        .get("https://api2.simplifies.cl/api/professional-email", {
+      this.$axios.get("professional-email", {
           params: {
             email: this.editedItem.email
           },
@@ -1367,8 +1356,7 @@ onCalendarMonthChange(newDate) {
       LocalStorageService.setIsLocked(true);
       console.log(this.editedItem.user_id);
       this.loadingRules = true;
-      axios
-        .get("https://api2.simplifies.cl/api/change_password", {
+      this.$axios.get("change_password", {
           params: {
             id: this.editedItem.user_id,
             password: this.confirmPassword,
@@ -1414,7 +1402,7 @@ onCalendarMonthChange(newDate) {
       this.professional_id = '';
       this.loading = true;
       LocalStorageService.setIsLocked(true);
-      axios.get("https://api2.simplifies.cl/api/professionalsBranch", {
+      this.$axios.get("professionalsBranch", {
                     params: {
                         branch_id: this.branch_id,
                     }
@@ -1462,10 +1450,11 @@ onCalendarMonthChange(newDate) {
     },
     editItem(item) {
       this.file = null;
+      const imagUrl = `${this.$axios.defaults.baseURL}images/${item.image_url}`
       var img = new Image();
-      img.src = "https://api2.simplifies.cl/api/images/" + item.image_url;
+      img.src = imagUrl;
       img.onload = () => {
-        this.imgMiniatura = "https://api2.simplifies.cl/api/images/" + item.image_url;
+        this.imgMiniatura = imagUrl;
       };
       img.onerror = () => {
         this.imgMiniatura = "";
@@ -1515,8 +1504,7 @@ onCalendarMonthChange(newDate) {
         ? format(this.input2, "yyyy-MM-dd")
         : format(new Date(), "yyyy-MM-dd");*/
         LocalStorageService.setIsLocked(true);
-      axios
-        .get("https://api2.simplifies.cl/api/branch-reservations-periodo", {
+      this.$axios.get("branch-reservations-periodo", {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,
@@ -1548,8 +1536,7 @@ onCalendarMonthChange(newDate) {
   const range = this.getMonthDateRange(selectedDate);
   const startDate = range.start.toISOString().split('T')[0];
   const endDate = range.end.toISOString().split('T')[0];
-      axios
-        .get("https://api2.simplifies.cl/api/professional-reservations-periodo", {
+      this.$axios.get("professional-reservations-periodo", {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id,
@@ -1590,7 +1577,7 @@ onCalendarMonthChange(newDate) {
       let request = {
         id: this.editedItem.id,
       };
-      axios.post("https://api2.simplifies.cl/api/professional-destroy", request).then(() => {
+      this.$axios.post("professional-destroy", request).then(() => {
         LocalStorageService.setIsLocked(false);
         this.initialize();
         this.message_delete = true;
@@ -1639,8 +1626,7 @@ onCalendarMonthChange(newDate) {
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
         }
-        axios
-          .post("https://api2.simplifies.cl/api/professional-update", formData)
+        this.$axios.post("professional-update", formData)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.initialize();
@@ -1670,8 +1656,7 @@ onCalendarMonthChange(newDate) {
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
         }
-        axios
-          .post("https://api2.simplifies.cl/api/register_professional", formData)
+        this.$axios.post("register_professional", formData)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.initialize();
@@ -1696,8 +1681,7 @@ onCalendarMonthChange(newDate) {
       this.loadingGenerate = true;
       LocalStorageService.setIsLocked(true);
       this.editedIndexWin = -1;
-      axios
-        .get("https://api2.simplifies.cl/api/branch_professionals_winner", {
+      this.$axios.get("branch_professionals_winner", {
           params: {
             branch_id: this.branch_id
           },
@@ -1793,8 +1777,7 @@ onCalendarMonthChange(newDate) {
       const endDate = this.input2
         ? format(this.input2, "yyyy-MM-dd")
         : format(new Date(), "yyyy-MM-dd");
-      axios
-        .get("https://api2.simplifies.cl/api/branch_professionals_winner", {
+      this.$axios.get("branch_professionals_winner", {
           params: {
             startDate: startDate,
             endDate: endDate,
@@ -1814,8 +1797,7 @@ onCalendarMonthChange(newDate) {
       this.editedIndexLater = -1;
       this.loadingLaters = true;
       LocalStorageService.setIsLocked(true);
-      axios
-        .get("https://api2.simplifies.cl/api/arriving-late-professional-date", {
+      this.$axios.get("arriving-late-professional-date", {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id
@@ -1843,8 +1825,7 @@ onCalendarMonthChange(newDate) {
       const endDate = this.input2
         ? format(this.input2, "yyyy-MM-dd")
         : format(new Date(), "yyyy-MM-dd");
-      axios
-        .get("https://api2.simplifies.cl/api/arriving-late-professional-periodo", {
+      this.$axios.get("arriving-late-professional-periodo", {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id,
@@ -1910,8 +1891,7 @@ onCalendarMonthChange(newDate) {
       LocalStorageService.setIsLocked(true);
       this.editedIndexAsist1 = -1;
       this.editedIndexAsist2 = -1;
-      axios
-        .get("https://api2.simplifies.cl/api/arriving-branch-date", {
+      this.$axios.get("arriving-branch-date", {
           params: {
             branch_id: this.branch_id,
           },
@@ -1946,8 +1926,7 @@ onCalendarMonthChange(newDate) {
         : format(new Date(), "yyyy-MM-dd");
       console.log(startDate);
       console.log(endDate);
-      axios
-        .get("https://api2.simplifies.cl/api/arriving-branch-periodo", {
+      this.$axios.get("arriving-branch-periodo", {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,
@@ -1970,8 +1949,7 @@ onCalendarMonthChange(newDate) {
       LocalStorageService.setIsLocked(true);
       this.selectedProfessional = item;
       this.professional_id = item.id;
-      axios
-        .get("https://api2.simplifies.cl/api/restday-show", {
+      this.$axios.get("restday-show", {
           params: {
             professional_id: this.professional_id,
           },
@@ -2018,8 +1996,7 @@ onCalendarMonthChange(newDate) {
             }));*/
       console.log("request");
       console.log(request);
-      axios
-        .put("https://api2.simplifies.cl/api/restday", request)
+      this.$axios.put("restday", request)
         .then(() => {
           this.showAlert("success", "Días de descanso actualizado correctamente", 3000);
         })
@@ -2046,32 +2023,7 @@ onCalendarMonthChange(newDate) {
       this.professional_id = ''; 
       this.rules = []; 
       this.dialogRules = true;
-      /*this.professional_id = item.id;
-      this.editedIndexLater = -1;
-      this.loadingRules = true;
-      LocalStorageService.setIsLocked(true);
-      const startDate = this.input6
-        ? format(this.input6, "yyyy-MM-dd")
-        : format(new Date(), "yyyy-MM-dd");
-      const endDate = this.input7
-        ? format(this.input7, "yyyy-MM-dd")
-        : format(new Date(), "yyyy-MM-dd");
-      axios
-        .get("https://api2.simplifies.cl/api/branch-rule-professional-periodo", {
-          params: {
-            branch_id: this.branch_id,
-            professional_id: this.professional_id,
-            startDate: startDate,
-            endDate: endDate,
-          },
-        })
-        .then((response) => {
-          LocalStorageService.setIsLocked(false);
-          this.rules = response.data;
-        }).finally(()=>{
-      this.dialogRules = true;
-          this.loadingRules = false;
-        });*/
+      
     },
     updateDate8() {
       //this.professional_id = this.professional_d;
@@ -2085,8 +2037,7 @@ onCalendarMonthChange(newDate) {
       const endDate = this.input7
         ? format(this.input7, "yyyy-MM-dd")
         : format(new Date(), "yyyy-MM-dd");
-      axios
-        .get("https://api2.simplifies.cl/api/branch-rule-professional-periodo", {
+      this.$axios.get("branch-rule-professional-periodo", {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id,

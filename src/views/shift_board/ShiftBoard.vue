@@ -159,19 +159,7 @@
 </template>
 <script>
 
-
-import axios from "axios";
 import LocalStorageService from "@/LocalStorageService";
-
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
 
@@ -290,8 +278,7 @@ export default {
     callForTime() {
       //const token = LocalStorageService.getItem('token');
       console.log('AQUI SI ESTOY ENTRANDO -callForTime()');
-      axios
-        .get('https://api2.simplifies.cl/api/tail_branch_attended_shiftboard', {
+      this.$axios.get('tail_branch_attended_shiftboard', {
           /*headers: {
                 'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
             },*/

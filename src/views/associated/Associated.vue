@@ -112,18 +112,6 @@
 <script>
 
 import LocalStorageService from "@/LocalStorageService";
-import axios from "axios";
-
-// Interceptor para agregar el token a cada solicitud
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
 
@@ -226,8 +214,7 @@ export default {
    initialize() {
     this.loading = true;
     LocalStorageService.setIsLocked(true);
-     axios
-       .get('https://api2.simplifies.cl/api/associated')
+     this.$axios.get('associated')
        .then((response) => {
          this.results = response.data.associates;
        }).finally(() => {
@@ -251,8 +238,7 @@ export default {
      let request = {
        id: this.editedItem.id
      };
-     axios
-       .post('https://api2.simplifies.cl/api/associated-destroy', request)
+     this.$axios.post('associated-destroy', request)
        .then(() => {
         LocalStorageService.setIsLocked(false);
          this.initialize();
@@ -283,8 +269,7 @@ export default {
          this.data.id = this.editedItem.id;
          this.data.name = this.editedItem.name;
          this.data.email = this.editedItem.email;
-         axios
-           .put('https://api2.simplifies.cl/api/associated', this.data)
+         this.$axios.put('associated', this.data)
            .then(() => {
             LocalStorageService.setIsLocked(false);
              this.initialize();
@@ -298,8 +283,7 @@ export default {
          this.data.id = this.editedItem.id;
          this.data.name = this.editedItem.name;
          this.data.email = this.editedItem.email;
-         axios
-           .post('https://api2.simplifies.cl/api/associated', this.data)
+         this.$axios.post('associated', this.data)
            .then(() => {
             LocalStorageService.setIsLocked(false);
              this.initialize();

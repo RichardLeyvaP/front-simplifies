@@ -330,22 +330,11 @@
 </template>
 <script>
 import { handleRequest } from "@/utils/api";
-import axios from "axios";
 import { format } from "date-fns";
 import { es } from 'date-fns/locale';
 import * as XLSX from 'xlsx';
 import LocalStorageService from "@/LocalStorageService";
 
-// Interceptor para agregar el token a cada solicitud
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
   data: () => ({
@@ -556,25 +545,6 @@ export default {
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     this.permissionsUser = LocalStorageService.getItem("permissionsUser") || [],
     
-          /*axios
-        .get('https://api2.simplifies.cl/api/show-stores-products', {
-        params: {
-          business_id: this.business_id,
-          branch_id: this.branch_id
-        }
-      })
-        .then((response) => {
-          this.products = response.data.products;
-          this.stores = response.data.stores;
-          this.branches = response.data.branches;
-        }).finally(() => {
-          if (this.charge === 'Administrador') {
-          this.branch_id = 0;
-          this.mostrarFila = true;
-        }
-          LocalStorageService.setIsLocked(false);
-                this.initialize();
-          });*/
         LocalStorageService.setIsLocked(true);
           const requestParams = {
           business_id: this.business_id,
@@ -668,8 +638,7 @@ export default {
     initialize() {
       this.loadingProducts = true;
       LocalStorageService.setIsLocked(true);
-      axios
-        .get('https://api2.simplifies.cl/api/productstore-show', {
+      this.$axios.get('productstore-show', {
           params: {
             branch_id: this.branch_id
           }
@@ -729,8 +698,7 @@ export default {
       this.dialog = true;
       this.mostrarCampos = true;
       this.texttitle = 'Existencia';
-      axios
-        .get('https://api2.simplifies.cl/api/store-show-notin', {
+      this.$axios.get('store-show-notin', {
           params: {
             store_id: this.editedItem.store_id
           }
@@ -756,8 +724,7 @@ export default {
       this.data.product_id = this.editedItem.product_id;
       this.data.store_id = this.editedItem.store_id;
       //this.data.branch_id = this.branch_id;
-      axios
-        .post('https://api2.simplifies.cl/api/productstore-destroy', this.data)
+      this.$axios.post('productstore-destroy', this.data)
         .then(() => {
           LocalStorageService.setIsLocked(false);
           this.message_delete = true;
@@ -795,8 +762,7 @@ export default {
         this.data.branch_id = this.branch_id;
         console.log(this.data);
         console.log('editar');
-        axios
-          .put('https://api2.simplifies.cl/api/productstore', this.data)
+        this.$axios.put('productstore', this.data)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.initialize();
@@ -815,8 +781,7 @@ export default {
         //this.data.branch_idM = this.editedItem.branch_idM;
         this.data.product_quantity = this.editedItem.product_quantityM;
         //this.data.branch_id = this.branch_id;
-        axios
-          .post('https://api2.simplifies.cl/api/move-product-store', this.data)
+        this.$axios.post('move-product-store', this.data)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.showAlert("success", "Producto asignado correctamente", 3000)
@@ -834,8 +799,7 @@ export default {
         this.data.product_quantity = this.editedItem.product_quantity;
         this.data.stock_depletion = this.editedItem.stock_depletion;
         //this.data.branch_id = this.branch_id;
-        axios
-          .post('https://api2.simplifies.cl/api/productstore', this.data)
+        this.$axios.post('productstore', this.data)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.showAlert("success", "Producto asignado correctamente", 3000);
@@ -851,8 +815,7 @@ export default {
       this.loadingagot = true;
       LocalStorageService.setIsLocked(true);
             console.log('Entra aqui a reposicion');
-            axios
-                .get('https://api2.simplifies.cl/api/product-stock', {
+            this.$axios.get('product-stock', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -922,8 +885,7 @@ export default {
         // Establecer el año actual como el seleccionado por defecto
         this.selectedYear = currentYear;
         this.editedIndexMov = 1;
-            axios
-                .get('https://api2.simplifies.cl/api/move-products', {
+            this.$axios.get('move-products', {
                     params: {
                         branch_id: this.branch_id,
                         year: this.selectedYear,
@@ -948,8 +910,7 @@ export default {
             if (this.selectedMounth) {
               console.log('Mes seleccionado');
                 this.editedIndexMov = 2;
-                axios
-                    .get('https://api2.simplifies.cl/api/move-products', {
+                this.$axios.get('move-products', {
                         params: {
                             branch_id: this.branch_id,
                             year: this.selectedYear,

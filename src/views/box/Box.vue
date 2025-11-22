@@ -148,7 +148,7 @@
             <template v-slot:item.professionalName="{ item }">
 
               <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+                <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_url}`" alt="image"></v-img>
               </v-avatar>
               {{ item.professionalName }}
             </template>
@@ -156,7 +156,7 @@
             <template v-slot:item.clientName="{ item }">
 
               <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.client_image" alt="image"></v-img>
+                <v-img :src="`${this.$axios.defaults.baseURL}images/${item.client_image}`" alt="image"></v-img>
               </v-avatar>
               {{ item.clientName }}
             </template>
@@ -549,7 +549,7 @@
                         <template v-slot:item.name="{ item }">
 
                           <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+                            <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_url}`" alt="image"></v-img>
                           </v-avatar>
                           {{ item.name }}
                         </template>
@@ -1158,15 +1158,7 @@
               <v-autocomplete :no-data-text="'No hay datos disponibles'" v-model="product_store_id" :items="products"
                 clearable label="Productos" prepend-icon="mdi-tag-outline" item-title="name" item-value="id"
                 variant="underlined" :rules="selectRules" @update:model-value="cantExist">
-                <!--chips
-              closable-chips<template v-slot:chip="{ props, item }">
-                <v-chip
-                  v-bind="props"
-                  :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_product"
-                  :text="item.raw.name"
-                ></v-chip>
-              </template>-->
-                <template v-slot:item="{ props, item }">
+                   <template v-slot:item="{ props, item }">
                   <v-list-item v-bind="props"
                     :prepend-avatar="`${this.$axios.defaults.baseURL}images/${item.raw.image_product}`"
                     :title="item.raw.name">
@@ -1218,7 +1210,7 @@
                 item-value="id" variant="underlined" :rules="selectRules">
                 <template v-slot:item="{ props, item }">
                   <v-list-item v-bind="props"
-                    :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_service"
+                    :prepend-avatar="`${this.$axios.defaults.baseURL}images/${item.raw.image_service}`"
                     :title="item.raw.name">
                     <v-list-item-subtitle class="d-flex justify-space-between">
                       Precio: {{ this.formatNumber(item.raw.price_service) }}
@@ -1326,7 +1318,7 @@
           <template v-slot:item.professionalName="{ item }">
 
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+              <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_url}`" alt="image"></v-img>
             </v-avatar>
             {{ item.professionalName }}
           </template>
@@ -1334,7 +1326,7 @@
           <template v-slot:item.clientName="{ item }">
 
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.client_image" alt="image"></v-img>
+              <v-img :src="`${this.$axios.defaults.baseURL}images/${item.client_image}`" alt="image"></v-img>
             </v-avatar>
             {{ item.clientName }}
           </template>
@@ -1402,7 +1394,7 @@
                           :title="action.nameProfessional || 'Usuario'">
                           <template v-slot:prepend>
                             <v-avatar>
-                              <v-img :src="'https://api2.simplifies.cl/api/images/' + action.image" alt="image"></v-img>
+                              <v-img :src="`${this.$axios.defaults.baseURL}images/${action.image}`" alt="image"></v-img>
                             </v-avatar>
                           </template>
                           <template v-slot:append>
@@ -1463,7 +1455,7 @@
                         <v-list-item :subtitle="formatFecha(registro.timestamp)" :title="registro.nameProfessional">
                           <template v-slot:prepend>
                             <v-avatar>
-                              <v-img :src="'https://api2.simplifies.cl/api/images/' + registro.image" alt="image"></v-img>
+                              <v-img :src="`${this.$axios.defaults.baseURL}images/${registro.image}`" alt="image"></v-img>
                             </v-avatar>
                           </template>
                           <template v-slot:append>
@@ -1554,7 +1546,7 @@
           <template v-slot:item.name="{ item }">
 
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
+              <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_product}`" alt="image"></v-img>
             </v-avatar>
             {{ item.name }}
           </template>
@@ -1610,7 +1602,7 @@
                 variant="underlined" :rules="selectRules" @update:model-value="cantExist">
                 <template v-slot:item="{ props, item }">
                   <v-list-item v-bind="props"
-                    :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_product"
+                    :prepend-avatar="`${this.$axios.defaults.baseURL}images/${item.raw.image_product}`"
                     :title="item.raw.name"><v-list-item-subtitle class="d-flex justify-space-between">
                       Existencia: {{ item.raw.product_exit }}
                       Precio: {{ this.formatNumber(item.raw.price) }}
@@ -1753,7 +1745,7 @@
           <template v-slot:item.name="{ item }">
 
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+              <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_url}`" alt="image"></v-img>
             </v-avatar>
             {{ item.name }}
           </template>
@@ -1807,7 +1799,7 @@
           <template v-slot:item.name="{ item }">
 
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+              <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_url}`" alt="image"></v-img>
             </v-avatar>
             {{ item.name }}
           </template>
@@ -1895,7 +1887,7 @@
                       :rules="selectRules"><!--@update:model-value="showReservationsProfessional()"-->
                       <template v-slot:item="{ props, item }">
                         <v-list-item v-bind="props"
-                          :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_url"
+                          :prepend-avatar="`${this.$axios.defaults.baseURL}images/${item.raw.image_url}`"
                           :subtitle="'Cargo: ' + item.raw.charge" :title="item.raw.name"></v-list-item>
                       </template>
                     </v-autocomplete>
@@ -2071,7 +2063,6 @@
 
 <script>
 
-import axios from "axios";
 import LocalStorageService from "@/LocalStorageService";
 import * as XLSX from 'xlsx';
 import { format } from "date-fns";
@@ -2081,17 +2072,6 @@ import Advance from "../advance/Advance.vue";
 import { handleRequest } from "@/utils/api";
 import ProductStoreStatus from "../productstorestatus/ProductStoreStatus.vue";
 import _ from 'lodash';
-
-// Interceptor para agregar el token a cada solicitud
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
   components: {
@@ -2903,21 +2883,6 @@ export default {
     this.nameBranch = LocalStorageService.getItem('nameBranch');
     this.nameProfessional = JSON.parse(LocalStorageService.getItem("name"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
-    /*axios
-      .get('https://api2.simplifies.cl/api/show-business', {
-        params: {
-          business_id: this.business_id
-        }
-      })
-      .then((response) => {
-        this.branches = response.data.branches;
-      }).finally(() => {
-        if (this.charge === 'Administrador') {
-          this.branch_id = this.branches[0].id;
-          this.mostrarFila = true;
-        }
-        this.initialize();
-      });*/
     const requestParams = {
       business_id: this.business_id
     };
@@ -3437,8 +3402,7 @@ export default {
         this.bonusProf = [];
         this.loadingBonusStep = true;
         LocalStorageService.setIsLocked(true);
-        axios
-          .get('https://api2.simplifies.cl/api/bonus-show', {
+        this.$axios.get('bonus-show', {
             params: {
               branch_id: this.branch_id
             }
@@ -3869,8 +3833,7 @@ onCalendarMonthChange(newDate) {
   const startDate = range.start.toISOString().split('T')[0];
   const endDate = range.end.toISOString().split('T')[0];
       LocalStorageService.setIsLocked(true);
-      axios
-        .get("https://api2.simplifies.cl/api/branch-reservations-periodo", {
+      this.$axios.get("branch-reservations-periodo", {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,
@@ -3904,8 +3867,7 @@ onCalendarMonthChange(newDate) {
   const range = this.getMonthDateRange(selectedDate);
   const startDate = range.start.toISOString().split('T')[0];
   const endDate = range.end.toISOString().split('T')[0];
-      axios
-        .get("https://api2.simplifies.cl/api/professional-reservations-periodo", {
+      this.$axios.get("professional-reservations-periodo", {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_idR,
@@ -3954,8 +3916,7 @@ onCalendarMonthChange(newDate) {
     showBonus() {
       this.loadingBonus = true;
       LocalStorageService.setIsLocked(true);
-      axios
-        .get('https://api2.simplifies.cl/api/branch-payment-show-bonus', {
+      this.$axios.get('branch-payment-show-bonus', {
           params: {
             branch_id: this.branch_id
           }
@@ -3971,8 +3932,7 @@ onCalendarMonthChange(newDate) {
     showBonusProf() {
       this.loadingBonusProf = true;
       LocalStorageService.setIsLocked(true);
-      axios
-        .get('https://api2.simplifies.cl/api/bonus-show', {
+      this.$axios.get('bonus-show', {
           params: {
             branch_id: this.branch_id
           }
@@ -4006,8 +3966,7 @@ onCalendarMonthChange(newDate) {
       this.data.cant = this.bonus_ref.cant;
       this.data.retention = this.bonus_ref.retention;
       LocalStorageService.setIsLocked(true);
-      axios
-        .post('https://api2.simplifies.cl/api/bonu-payment', this.data)
+      this.$axios.post('bonu-payment', this.data)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -4024,19 +3983,6 @@ onCalendarMonthChange(newDate) {
           this.dialogConfBonus = false;
           this.loadingBonusPay = false;
           this.loadingBonusPay = false;
-          /*axios
-            .get('https://api2.simplifies.cl/api/bonus-show', {
-              params: {
-                branch_id: this.branch_id
-              }
-            })
-            .then((response) => {
-              this.bonusProf = response.data.bonus;
-            }).finally(() => {
-              //this.showDialogBonusProf = true;
-              this.loadingBonusProf = false;
-              LocalStorageService.setIsLocked(false);
-            });*/
         });
       LocalStorageService.setIsLocked(false);
     },
@@ -4110,8 +4056,7 @@ onCalendarMonthChange(newDate) {
       LocalStorageService.setIsLocked(true);
       // Realiza cualquier lógica adicional aquí
       console.log('Elemento seleccionado:', code);
-      axios
-        .get('https://api2.simplifies.cl/api/card-gift-user-show-value', {
+      this.$axios.get('card-gift-user-show-value', {
           params: {
             code: code
           }
@@ -4143,8 +4088,7 @@ onCalendarMonthChange(newDate) {
       let request = {
         id: item.id
       };
-      axios
-        .put('https://api2.simplifies.cl/api/car', request)
+      this.axios.put('car', request)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -4165,8 +4109,7 @@ onCalendarMonthChange(newDate) {
           branch_id: this.branch_id,
           professional_id: this.professional_id
         };
-        axios
-          .post('https://api2.simplifies.cl/api/order-destroy-solicitud', request)
+        this.axios.post('order-destroy-solicitud', request)
           .then(() => {
             //this.initialize();
           }).finally(() => {
@@ -4180,8 +4123,7 @@ onCalendarMonthChange(newDate) {
           id: item.id,
           professional_id: this.professional_id
         };
-        axios
-          .post('https://api2.simplifies.cl/api/order-destroy-web', request)
+        this.$axios.post('order-destroy-web', request)
           .then(() => {
             //this.initialize();
           }).finally(() => {
@@ -4203,8 +4145,7 @@ onCalendarMonthChange(newDate) {
         branch_id: this.branch_id,
         professional_id: this.professional_id
       };
-      axios
-        .post('https://api2.simplifies.cl/api/cashiersale-destroy-solicitud', request)
+      this.$axios.post('cashiersale-destroy-solicitud', request)
         .then(() => {
           this.showSaleProducts = false;
         }).finally(() => {
@@ -4224,8 +4165,7 @@ onCalendarMonthChange(newDate) {
         branch_id: this.branch_id,
         professional_id: this.professional_id
       };
-      axios
-        .post('https://api2.simplifies.cl/api/order-destroy-web', request)
+      this.$axios.post('order-destroy-web', request)
         .then(() => {
           //this.initialize();
         }).finally(() => {
@@ -4249,8 +4189,7 @@ onCalendarMonthChange(newDate) {
         nameProfessional: this.nameProfessional,
         branch_id: this.branch_id,
       };
-      axios
-        .put('https://api2.simplifies.cl/api/order-web', request)
+      this.$axios.put('order-web', request)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -4670,8 +4609,7 @@ onCalendarMonthChange(newDate) {
         branch_id: this.branch_id,
         professional_id: this.professional_id
       };
-      axios
-        .post('https://api2.simplifies.cl/api/car-destroy-solicitud', request)
+      this.$axios.post('car-destroy-solicitud', request)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -4765,8 +4703,7 @@ onCalendarMonthChange(newDate) {
         branch_id: this.branch_id,
         professional_id: this.professional_id
       };
-      axios
-        .post('https://api2.simplifies.cl/api/car-update-solicitud', request)
+      this.$axios.post('car-update-solicitud', request)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -4806,17 +4743,6 @@ onCalendarMonthChange(newDate) {
       else {
         this.dialogPay = true;
       }
-
-      /*axios
-        .get('https://api2.simplifies.cl/api/card-gift-show', {
-          params: {
-            business_id: this.business_id
-          }
-        })
-        .then((response) => {
-          this.cardGifts = response.data.cardGifts;
-          this.value = this.cardGifts.value;
-        });*/
     },
     showDetails(item) {
       LocalStorageService.setIsLocked(true);
@@ -4826,8 +4752,7 @@ onCalendarMonthChange(newDate) {
       this.orders = [];
       this.car_ref = item
       this.editedItem.id = item.id;
-      axios
-        .get('https://api2.simplifies.cl/api/order-show', {
+      this.$axios.get('order-show', {
           params: {
             car_id: item.id
           }
@@ -4866,8 +4791,7 @@ onCalendarMonthChange(newDate) {
         nameProfessional: this.nameProfessional,
         branch_id: this.branch_id
       };
-      axios
-        .post('https://api2.simplifies.cl/api/car-destroy', request)
+      this.$axios.post('car-destroy', request)
         .then(() => {
         }).finally(() => {
           this.showAlert("success", "Carro eliminado correctamente", 3000);
@@ -4901,8 +4825,7 @@ onCalendarMonthChange(newDate) {
         if (suma === this.editedItem.amount + this.data.tip) {
           LocalStorageService.setIsLocked(true);
           this.valid = true;
-          axios
-            .put('https://api2.simplifies.cl/api/payment', this.data)
+          this.$axios.put('payment', this.data)
             .then(() => {
             }).finally(() => {
               LocalStorageService.setIsLocked(false);
@@ -5170,8 +5093,7 @@ onCalendarMonthChange(newDate) {
 
         console.log('formData');
         console.log(formData);
-        axios
-          .post('https://api2.simplifies.cl/api/box', formData)
+        this.$axios.post('box', formData)
           .then(() => {
           }).catch(error => {
             if (this.editedBox.newExtraction) {
@@ -5219,8 +5141,7 @@ onCalendarMonthChange(newDate) {
       });
       const token = LocalStorageService.getItem('token');
       console.log('Cerrar Sesión')
-      axios
-        .get('https://api2.simplifies.cl/api/logout', {
+      this.$axios.get('logout', {
           headers: {
             'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
           }
@@ -5276,8 +5197,7 @@ onCalendarMonthChange(newDate) {
       console.log('imprime Carro');
       console.log(car);
 
-      axios
-        .get('https://api2.simplifies.cl/api/services-professional-branch-web', {
+      this.$axios.get('services-professional-branch-web', {
           params: {
             branch_id: this.branch_id,
             professional_id: car.professional_id
@@ -5309,8 +5229,7 @@ onCalendarMonthChange(newDate) {
       this.data.cant = 1;
       console.log('Datos servicios agregar');
       console.log(this.data);
-      axios
-        .post('https://api2.simplifies.cl/api/order-web', this.data)
+      this.$axios.post('order-web', this.data)
         .then(() => {
         }).finally(() => {
           this.showAlert("success", "Servicio agregado correctamente", 3000);
@@ -5349,8 +5268,7 @@ onCalendarMonthChange(newDate) {
       console.log('imprime Carro');
       console.log(car);
       LocalStorageService.setIsLocked(true);
-      axios
-        .get('https://api2.simplifies.cl/api/productstore-show-web', {
+      this.$axios.get('productstore-show-web', {
           params: {
             branch_id: this.branch_id
           }
@@ -5383,8 +5301,7 @@ onCalendarMonthChange(newDate) {
       this.data.cant = this.cant;
       console.log('Datos producto agregar');
       console.log(this.data);
-      axios
-        .post('https://api2.simplifies.cl/api/order-web', this.data)
+      this.$axios.post('order-web', this.data)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -5455,20 +5372,6 @@ onCalendarMonthChange(newDate) {
               LocalStorageService.setIsLocked(false);
               this.showDialogSaleProducts = true;
             }
-      /*axios
-        .get('https://api2.simplifies.cl/api/cashiersale-show', {
-          params: {
-            branch_id: this.branch_id,
-            professional_id: this.professional_id
-          }
-        })
-        .then((response) => {
-          this.cashierSalesProf = response.data.sales;
-          console.log(this.cashierSalesProf);
-        }).finally(() => {
-          this.loadingCashier = false;
-          LocalStorageService.setIsLocked(false);
-        });*/
     },
     closeDialogSaleProduct() {
       this.showDialogSaleProducts = false;
@@ -5476,8 +5379,7 @@ onCalendarMonthChange(newDate) {
     },
     showSalegProduct() {
       LocalStorageService.setIsLocked(false);
-      axios
-        .get('https://api2.simplifies.cl/api/productstore-show-web', {
+      this.$axios.get('productstore-show-web', {
           params: {
             branch_id: this.branch_id
           }
@@ -5521,8 +5423,7 @@ onCalendarMonthChange(newDate) {
         if (suma === this.amountSales + this.data.tip) {
           LocalStorageService.setIsLocked(true);
           this.valid = true;
-          axios
-            .post('https://api2.simplifies.cl/api/payment-product-sales', this.data)
+          this.$axios.post('payment-product-sales', this.data)
             .then(() => {
             }).finally(() => {
               LocalStorageService.setIsLocked(false);
@@ -5555,8 +5456,7 @@ onCalendarMonthChange(newDate) {
       this.data.branch_id = this.branch_id;
       this.data.professional_id = this.professional_id;
       this.data.cant = this.cant;
-      axios
-        .post('https://api2.simplifies.cl/api/cashiersale', this.data)
+      this.$axios.post('cashiersale', this.data)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);

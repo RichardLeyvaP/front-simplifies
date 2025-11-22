@@ -98,21 +98,11 @@
 </template>
 <script>
 
-import axios from "axios";
+
 import { format } from "date-fns";
 import * as XLSX from 'xlsx';
 
 import LocalStorageService from "@/LocalStorageService";
-
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
   props: {
@@ -277,8 +267,7 @@ export default {
       //this.input2 = val;
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      axios
-        .get('https://api2.simplifies.cl/api/business-winner', {
+      this.$axios.get('business-winner', {
           params: {
             startDate: startDate,
             endDate: endDate
@@ -291,30 +280,10 @@ export default {
         })
       //this.menu2 = false;
     },
-    /*updateDate3(val) {
-      this.editedIndex = 3;
-      this.input3 = val;
-      const month = (val.getMonth() + 1).toString().padStart(2, '0');
-      const year = val.getFullYear();
-      const mes = `${month}`;
-      const ano = `${year}`;
-      axios
-        .get('https://api2.simplifies.cl/api/business-winner', {
-          params: {
-            mes: mes,
-            year: ano
-          }
-        })
-        .then((response) => {
-          this.results = response.data;
-          //this.input3 = new Date();
-        })
-      this.menu3 = false;
-    },*/
+   
     initialize() {
       this.editedIndex = 1;
-      axios
-        .get('https://api2.simplifies.cl/api/business-winner')
+      this.$axios.get('business-winner')
         .then((response) => {
           this.results = response.data;
         })

@@ -251,9 +251,7 @@
         <template v-slot:item.name="{ item }">
           <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
             <v-img
-              :src="
-                'https://api2.simplifies.cl/api/images/' +
-                item.client_image"
+              :src="`${this.$axios.defaults.baseURL}images/${item.client_image}`"
               alt="image"
             ></v-img><!--+ '?$' + Date.now()
                 -->
@@ -318,9 +316,9 @@
               <v-img
                 class="align-end text-white"
                 height="300"
-                :src="'https://api2.simplifies.cl/api/images/' + history.imageLook"
+                :src="`${this.$axios.defaults.baseURL}images/${history.imageLook}`"
                 cover
-                v-on:click="openImageDialog('https://api2.simplifies.cl/api/images/' + history.imageLook)"
+                v-on:click="openImageDialog(`${this.$axios.defaults.baseURL}images/${history.imageLook}`)"
               >
                 <v-card-title>
                   <v-chip class="ma-2" color="" label>
@@ -367,7 +365,7 @@
                         max-height="60"
                       >
                         <v-img
-                          :src="'https://api2.simplifies.cl/api/images/' + history.image_url"
+                          :src="`${this.$axios.defaults.baseURL}images/${history.image_url}`"
                           alt="Imagen"
                         ></v-img>
                       </v-avatar>
@@ -413,7 +411,7 @@
                   <template v-slot:prepend>
                     <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
                       <v-img
-                        :src="'https://api2.simplifies.cl/api/images/' + service.image_service"
+                        :src="`${this.$axios.defaults.baseURL}images/${service.image_service}`"
                         alt="image"
                       ></v-img>
                     </v-avatar>
@@ -443,7 +441,7 @@
                   <template v-slot:prepend>
                     <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
                       <v-img
-                        :src="'https://api2.simplifies.cl/api/images/' + product.image_product"
+                        :src="`${this.$axios.defaults.baseURL}images/${product.image_product}`"
                         alt="image"
                       ></v-img>
                     </v-avatar>
@@ -579,7 +577,7 @@
               <template v-slot:item.name="{ item }">
 
                 <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.client_image" alt="image"></v-img>
+                  <v-img :src="`${this.$axios.defaults.baseURL}images/${item.client_image}`" alt="image"></v-img>
                 </v-avatar>
                 {{ item.name }}
               </template>
@@ -616,7 +614,7 @@
 
                 <v-card-text class="d-flex align-center mt-2">
                   <v-avatar class="mr-2">
-                    <v-img :src="'https://api2.simplifies.cl/api/images/' + profesImage" alt="Avatar del profesional"></v-img>
+                    <v-img :src="`${this.$axios.defaults.baseURL}images/${profesImage}`" alt="Avatar del profesional"></v-img>
                   </v-avatar>
                   <span>{{ profesName }}</span>
                 </v-card-text>
@@ -663,7 +661,7 @@
         <template v-slot:item.image_cardgift="{ item }">
 
           <v-card class="my-2" rounded elevation="10" width="100">
-            <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_cardgift" alt="image" cover></v-img>
+            <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_cardgift}`" alt="image" cover></v-img>
           </v-card>
         </template>
         <template v-slot:item.actions="{ item }">
@@ -787,7 +785,7 @@
               <template v-slot:item.name="{ item }">
 
                 <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_cardgift" alt="image"></v-img>
+                  <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_cardgift}`" alt="image"></v-img>
                 </v-avatar>
                 {{ item.name }}
               </template>
@@ -795,7 +793,7 @@
               <template v-slot:item.userName="{ item }">
 
                 <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+                  <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_url}`" alt="image"></v-img>
                 </v-avatar>
                 {{ item.userName }}
               </template>
@@ -859,7 +857,7 @@
                       <template v-slot:item="{ props, item }">
                                                     <v-list-item
                                                         v-bind="props"
-                                                        :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.client_image"
+                                                        :prepend-avatar="`${this.$axios.defaults.baseURL}images/${item.raw.client_image}`"
                                                         :title="item.raw.name"
                                                     ></v-list-item>
                                                     </template>
@@ -895,7 +893,7 @@
     <v-row>
       <v-col cols="12" sm="3" class="text-left">
         <v-card elevation="3" max-width="130" max-height="130">
-          <v-img class="d-flex align-end text-white" height="130" :src="'https://api2.simplifies.cl/api/images/' + details.imageLook" cover>
+          <v-img class="d-flex align-end text-white" height="130" :src="`${this.$axios.defaults.baseURL}images/${details.imageLook}`" cover>
     <v-card-title class="pa-0">
         <v-chip color="">
             <v-icon icon="mdi-camera" class="mr-1"></v-icon>
@@ -903,7 +901,7 @@
         </v-chip>
     </v-card-title>
 </v-img>
-                  <!--<v-img :src="'https://api2.simplifies.cl/api/images/' + details.imageLook" alt="image"></v-img>-->
+                  
                 </v-card>
       </v-col>
       <v-col cols="12" sm="6" class="text-left">
@@ -956,7 +954,7 @@
               <template v-slot:item.name="{ item }">
 
                 <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                  <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_cardgift" alt="image"></v-img>
+                  <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_cardgift}`" alt="image"></v-img>
                 </v-avatar>
                 {{ item.name }}
               </template>
@@ -1018,7 +1016,7 @@
                       :rules="selectRules">
                       <template v-slot:item="{ props, item }">
                       <v-list-item v-bind="props"
-                        :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_cardgift"
+                        :prepend-avatar="`${this.$axios.defaults.baseURL}images/${item.raw.image_cardgift}`"
                         :title="item.raw.name">
                         <v-list-item-subtitle class="d-flex justify-space-between">
                           Valor: {{ item.raw.value }}
@@ -1121,20 +1119,10 @@
   </v-card>
 </template>
 <script>
-import axios from "axios";
 import * as XLSX from 'xlsx';
 import { format } from "date-fns";
 import LocalStorageService from "@/LocalStorageService";
 
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
   data: () => ({
@@ -1410,8 +1398,7 @@ export default {
     this.charge_id = parseInt(LocalStorageService.getItem('charge_id'));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
     LocalStorageService.setIsLocked(true);
-    axios
-      .get('https://api2.simplifies.cl/api/show-business', {
+    this.$axios.get('show-business', {
         params: {
           business_id: this.business_id
         }
@@ -1471,8 +1458,7 @@ export default {
     },
     handleEmailChange() {
       LocalStorageService.setIsLocked(true);
-      axios
-        .get("https://api2.simplifies.cl/api/client-email", {
+      this.$axios.get("client-email", {
           params: {
             email: this.editedItem.email
           },
@@ -1547,7 +1533,7 @@ export default {
     initialize() {
       this.loadingClient = true;
       LocalStorageService.setIsLocked(true);
-      axios.get("https://api2.simplifies.cl/api/client-branch", {
+      this.$axios.get("client-branch", {
                     params: {
                         branch_id: this.branch_id,
                     }
@@ -1557,11 +1543,6 @@ export default {
             LocalStorageService.setIsLocked(false);
             this.loadingClient = false;
         });
-      /*axios
-        .get('https://api2.simplifies.cl/api/usuario')
-        .then((response) => {
-          this.users = response.data.users;
-        });*/
     },
     onFileSelected(event) {
       let file = event.target.files[0];
@@ -1580,9 +1561,10 @@ export default {
     editItem(item) {
       this.file = null;
       var img = new Image();
-      img.src = "https://api2.simplifies.cl/api/images/" + item.client_image;
+      const imagUrl = `${this.$axios.defaults.baseURL}images/${item.client_image}`
+      img.src = imagUrl;
       img.onload = () => {
-        this.imgMiniatura = "https://api2.simplifies.cl/api/images/" + item.client_image;
+        this.imgMiniatura = imagUrl;
       };
       img.onerror = () => {
         this.imgMiniatura = "";
@@ -1604,8 +1586,7 @@ export default {
       let request = {
         id: this.editedItem.id,
       };
-      axios
-        .post("https://api2.simplifies.cl/api/client-destroy", request)
+      this.$axios.post("client-destroy", request)
         .then(() => {})
         .finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -1644,8 +1625,7 @@ export default {
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
         }
-        axios
-          .post("https://api2.simplifies.cl/api/client-update", formData)
+        this.$axios.post("client-update", formData)
           .then(() => {})
           .finally(() => {
             LocalStorageService.setIsLocked(false);
@@ -1664,8 +1644,7 @@ export default {
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
         }
-        axios
-          .post("https://api2.simplifies.cl/api/client", formData)
+        this.$axios.post("client", formData)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.initialize();
@@ -1684,8 +1663,7 @@ export default {
     showHistory(item) {
       LocalStorageService.setIsLocked(true);
       console.log("Client History");
-      axios
-        .get("https://api2.simplifies.cl/api/client-history", {
+      this.$axios.get("client-history", {
           params: {
             //branch_id: this.branch_id,
             client_id: item.id,
@@ -1708,8 +1686,7 @@ export default {
       this.editedIndex = 2;
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      axios
-        .get('https://api2.simplifies.cl/api/clients-frecuence-periodo', {
+      this.$axios.get('clients-frecuence-periodo', {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,
@@ -1743,8 +1720,7 @@ export default {
       this.editedIndexF = 2;
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      axios
-        .get('https://api2.simplifies.cl/api/clients-frecuence-periodo', {
+      this.$axios.get('clients-frecuence-periodo', {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,
@@ -1843,8 +1819,7 @@ export default {
       this.dialogGistCard = true;
       this.loadingCardGift = true;
       LocalStorageService.setIsLocked(true);
-      axios
-        .get('https://api2.simplifies.cl/api/card-gift')
+      this.$axios.get('card-gift')
         .then((response) => {
           this.cardGiftsData = response.data.cardGifts;
           this.business = response.data.business;
@@ -1881,8 +1856,7 @@ export default {
           formData.append(key, this.editedItemCardGift[key]);
         }
         if( this.editedIndexG == -1){
-          axios
-          .post('https://api2.simplifies.cl/api/card-gift', formData)
+          this.$axios.post('card-gift', formData)
           .then(() => {
             this.imgMiniatura = '';
             this.file = null;
@@ -1893,8 +1867,7 @@ export default {
             this.showGiftCard();
           });
         }else{
-          axios
-          .post('https://api2.simplifies.cl/api/card-gift-update', formData)
+          this.$axios.post('card-gift-update', formData)
           .then(() => {
             this.imgMiniatura = '';
             this.file = null;
@@ -1913,9 +1886,10 @@ export default {
       this.dialogAddCardGift = true;
       this.file = null;
       var img = new Image();
-      img.src = 'https://api2.simplifies.cl/api/images/' + item.image_cardgift;
+      const imagUrl = `${this.$axios.defaults.baseURL}images/${item.image_cardgift}`
+      img.src = imagUrl;
       img.onload = () => {
-        this.imgMiniatura = 'https://api2.simplifies.cl/api/images/' + item.image_cardgift;
+        this.imgMiniatura = imagUrl;
       };
       img.onerror = () => {
         this.imgMiniatura = '';
@@ -1941,8 +1915,7 @@ export default {
       let request = {
         id: this.editedItemCardGift.id
       };
-      axios
-        .post('https://api2.simplifies.cl/api/card-gift-destroy', request)
+      this.$axios.post('card-gift-destroy', request)
         .then(() => {
           this.dialogDeleteCardGift = false;
         }).finally(() => {
@@ -1960,8 +1933,7 @@ export default {
       this.editedCardGiftUser.card_gift_id = item.id
       this.data.card_gift_id = item.id
       LocalStorageService.setIsLocked(true);
-      axios
-        .get('https://api2.simplifies.cl/api/card-gift-user-show', {
+      this.$axios.get('card-gift-user-show', {
           params: {
             card_gift_id: item.id,
             branch_id : this.branch_id
@@ -1998,8 +1970,7 @@ export default {
       let request = {
         id: this.editedCardGiftUser.id
       };
-      axios
-        .post('https://api2.simplifies.cl/api/card-gift-user-destroy', request)
+      this.$axios.post('card-gift-user-destroy', request)
         .then(() => {
           this.loading = false;
           this.dialogDeleteCardGiftUser = false;
@@ -2015,8 +1986,7 @@ export default {
     showAddCardGiftClient(){
       this.details = '';
       LocalStorageService.setIsLocked(true);
-      axios
-        .get('https://api2.simplifies.cl/api/client-autocomplete1', {
+      this.$axios.get('client-autocomplete1', {
                     params: {
                         branch_id: this.branch_id,
                     }
@@ -2057,8 +2027,7 @@ export default {
       this.data.expiration_date = this.dateFormatted;
       console.log('this.editedCardGiftUser.expiration_date');
       console.log(this.data.expiration_date);
-      axios
-        .post('https://api2.simplifies.cl/api/card-gift-user', this.data)
+      this.$axios.post('card-gift-user', this.data)
         .then(() => {
           this.$nextTick(() => {
             this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser);
@@ -2083,8 +2052,7 @@ export default {
       this.editedCardGiftUser.user_id = item.user_id
       this.data.user_id = item.user_id
       LocalStorageService.setIsLocked(true);
-      axios
-        .get('https://api2.simplifies.cl/api/card-gift-user-cardgift', {
+      this.$axios.get('card-gift-user-cardgift', {
           params: {
             user_id: item.user_id,
             business_id: this.business_id
@@ -2122,8 +2090,7 @@ export default {
       let request = {
         id: this.editedCardGiftUser.id
       };
-      axios
-        .post('https://api2.simplifies.cl/api/card-gift-user-destroy', request)
+      this.$axios.post('card-gift-user-destroy', request)
         .then(() => {
           this.loading = false;
           this.dialogUserDeleteCardGift = false;
@@ -2155,8 +2122,7 @@ export default {
       this.data.expiration_date = this.dateFormatted;
       console.log('this.editedCardGiftUser.expiration_date');
       console.log(this.data.expiration_date);
-      axios
-        .post('https://api2.simplifies.cl/api/card-gift-user', this.data)
+      this.$axios.post('card-gift-user', this.data)
         .then(() => {
           this.$nextTick(() => {
             this.editedCardGiftUser = Object.assign({}, this.defaultCardGiftUser);
@@ -2175,8 +2141,7 @@ export default {
       this.dialogSurvey = true;
       LocalStorageService.setIsLocked(true);
       this.loadingSurveyMost = true;
-      axios
-        .get('https://api2.simplifies.cl/api/surveyCounts', {
+      this.$axios.get('surveyCounts', {
           params: {
             branch_id: this.branch_idSurvey
           }

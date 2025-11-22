@@ -32,7 +32,7 @@
 
               <v-card class="mx-auto" max-width="400">
                 <v-img class="align-end text-white" height="300"
-                  :src="'https://api2.simplifies.cl/api/images/' + results.imageLook" cover>
+                  :src="`${this.$axios.defaults.baseURL}images/${results.imageLook}`" cover>
                   <v-card-title>
 
                     <v-chip class="ma-2" color="" label>
@@ -56,12 +56,6 @@
                   </v-chip>
                   <br>
                   <v-divider class="mt-2"></v-divider>
-                  <!--<v-subheader class="text-h8 mt-3">Última vez atendido</v-subheader><br>
-                  <v-avatar elevation="3" class="mx-auto" max-width="60" max-height="60">
-                    <v-img :src="'https://api2.simplifies.cl/api/images/' + results.image_url" alt="Imagen"></v-img>
-                  </v-avatar>
-                  {{ results.professionalName }}
-                -->
   <v-row>
     <!-- First column -->
     <v-col cols="12" md="6">
@@ -79,7 +73,7 @@
     <v-row>
       <v-col cols="12" md="12">
       <v-subheader class="text-h8 text-center mt-3">Profesional: <v-avatar elevation="3" class="mx-auto" max-width="60" max-height="60">
-        <v-img :src="'https://api2.simplifies.cl/api/images/' + results.image_url" alt="Imagen"></v-img>
+        <v-img :src="`${this.$axios.defaults.baseURL}images/${results.image_url}`" alt="Imagen"></v-img>
       </v-avatar>
       {{ results.professionalName }}</v-subheader>
     </v-col>
@@ -108,7 +102,7 @@
                     :subtitle="service.cant">
                     <template v-slot:prepend>
                       <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                        <v-img :src="'https://api2.simplifies.cl/api/images/' + service.image_service" alt="image"></v-img>
+                        <v-img :src="`${this.$axios.defaults.baseURL}images/${service.image_service}`" alt="image"></v-img>
                       </v-avatar>
                     </template>
                   </v-list-item>
@@ -130,7 +124,7 @@
                     :subtitle="product.cant">
                     <template v-slot:prepend>
                       <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                        <v-img :src="'https://api2.simplifies.cl/api/images/' + product.image_product" alt="image"></v-img>
+                        <v-img :src="`${this.$axios.defaults.baseURL}images/${product.image_product}`" alt="image"></v-img>
                       </v-avatar>
                     </template>
                   </v-list-item>
@@ -145,18 +139,9 @@
 </template>
 
 <script>
-import axios from "axios";
+
 import LocalStorageService from "@/LocalStorageService";
 
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
   watch: {
@@ -179,42 +164,16 @@ export default {
     this.branch_id = parseInt(LocalStorageService.getItem("branch_id"));
     this.business_id = parseInt(LocalStorageService.getItem("business_id"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
-    axios
-        .get('https://api2.simplifies.cl/api/client-index-autocomplete')
+    this.$axios.get('client-index-autocomplete')
         .then((response) => {
           this.clients = response.data.clients;
         });
-    /*axios
-      .get('https://api2.simplifies.cl/api/show-business', {
-        params: {
-          business_id: this.business_id
-        }
-      })
-      .then((response) => {
-        this.branches = response.data.branches;
-        //this.branch_id = !this.branch_id ? this.branch_id : this.branches[0].id;
-        if (this.charge === 'Administrador') {
-          this.branch_id = this.branches[0].id;
-        }
-
-        this.initialize()
-      });*/
-
-      //this.initialize();
   },
   methods: {
-    /*initialize() {
-      axios
-        .get('https://api2.simplifies.cl/api/client-index-autocomplete')
-        .then((response) => {
-          this.clients = response.data.clients;
-        });
-    },*/
     clientHistory() {
       console.log(this.client_id);
       this.results = [];
-      axios
-        .get('https://api2.simplifies.cl/api/client-history', {
+      this.$axios.get('client-history', {
           params: {
             //branch_id: this.branch_id,
             client_id: this.client_id

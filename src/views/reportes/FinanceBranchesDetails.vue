@@ -102,20 +102,9 @@
 </template>
 <script>
 
-import axios from "axios";
 import { format } from "date-fns";
 import * as XLSX from 'xlsx';
 import LocalStorageService from "@/LocalStorageService";
-
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
     //name: 'LoginPage',
@@ -218,8 +207,7 @@ export default {
         this.charge_id = parseInt(LocalStorageService.getItem('charge_id'));
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
 
-        axios
-            .get('https://api2.simplifies.cl/api/show-business', {
+        this.$axios.get('show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -295,8 +283,7 @@ export default {
             this.editedIndex = 1;
             console.log('this.branch_id')
             console.log(this.branch_id)
-            axios
-                .get('https://api2.simplifies.cl/api/revenue-expense-details', {
+            this.$axios.get('revenue-expense-details', {
                     params: {
                         branch_id: this.branch_id,
                         year: this.selectedYear,
@@ -314,8 +301,7 @@ export default {
         },
         operationDetails() {
             this.editedIndex = 2;
-            axios
-                .get('https://api2.simplifies.cl/api/revenue-expense-details', {
+            this.$axios.get('revenue-expense-details', {
                     params: {
                         branch_id: this.branch_id,
                         year: this.selectedYear,

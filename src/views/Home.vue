@@ -800,17 +800,6 @@ import { Line as LineChart } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js'
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement,)
 import LocalStorageService from "@/LocalStorageService";
-import axios from "axios";
-
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
   name: 'LoginPage',
@@ -999,86 +988,10 @@ export default {
       ]
     },
     async initialize() {
-
-     /* //this.reservationWeek = [40, 20, 12, 10, 35, 22, 0];
-      this.editedIndex = 1;
-      /*axios
-        .get('https://api2.simplifies.cl/api/cars-winner-day', {
-          params: {
-            branch_id: this.branch_id,
-            business_id: this.business_id
-          }
-        })
-        .then((response) => {
-          this.amountDay = response.data;
-          console.log(this.amountDay);
-        });*/
-      /*axios
-        .get('https://api2.simplifies.cl/api/car-products-services', {
-          params: {
-            branch_id: this.branch_id,
-            business_id: this.business_id
-          }
-        })
-        .then((response) => {
-          this.products = response.data.product;
-          this.productsData = this.products[0].products;
-          this.productsDataAnt = this.products[0].productsAnt;
-          //this.productName = this.products[0].name;
-          //this.productNameAnt = this.products[0].nameAnt;
-          this.productCant = this.products[0].cant;
-          this.productCantAnt = this.products[0].cantAnt;
-          this.services = response.data.service;
-          this.servicesData = this.services[0].services;
-          this.servicesDataAnt = this.services[0].servicesAnt;
-          //this.serviceName = this.services[0].name;
-          //this.serviceNameAnt = this.services[0].nameAnt;
-          this.serviceCant = this.services[0].cant;
-          this.serviceCantAnt = this.services[0].cantAnt;
-          //this.servicesData = this.services[0].services;
-          //console.log(this.services[0].services);
-        });
-      axios
-        .get('https://api2.simplifies.cl/api/cars-winner-mounth', {
-          params: {
-            branch_id: this.branch_id,
-            business_id: this.business_id
-          }
-        })
-        .then((response) => {
-          this.amountMounth = response.data.cars;
-          this.amountMounthAnt = response.data.carsAnt;
-          this.winners = response.data.carsDetail;
-          this.winnersAnt = response.data.carsDetailAnt;
-          console.log(this.amountMounth);
-        });
-      axios
-        .get('https://api2.simplifies.cl/api/cars-winner-week', {
-          params: {
-            branch_id: this.branch_id,
-            business_id: this.business_id
-          }
-        })
-        .then((response) => {
-          this.winnerWeek = response.data;
-          console.log(this.winnerWeek);
-        });
-      axios
-        .get('https://api2.simplifies.cl/api/reservations-count-week', {
-          params: {
-            branch_id: this.branch_id,
-            business_id: this.business_id
-          }
-        })
-        .then((response) => {
-          this.reservationWeek = response.data.cantReservations;
-          this.reservationWeekData = response.data.reservations;
-          //console.log(this.reservationWeek);
-        });*/
         try {
     this.editedIndex = 1;
 
-    const responseProducts = await axios.get('https://api2.simplifies.cl/api/car-products-services', {
+    const responseProducts = await this.$axios.get('car-products-services', {
       params: {
         branch_id: this.branch_id,
         business_id: this.business_id
@@ -1094,7 +1007,7 @@ export default {
     this.servicesDataAnt = this.services[0].servicesAnt;
     this.serviceCant = this.services[0].cant;
     this.serviceCantAnt = this.services[0].cantAnt;
-    const responseWeekWinner = await axios.get('https://api2.simplifies.cl/api/cars-winner-week', {
+    const responseWeekWinner = await this.$axios.get('cars-winner-week', {
       params: {
         branch_id: this.branch_id,
         business_id: this.business_id
@@ -1102,7 +1015,7 @@ export default {
     });
     this.winnerWeek = responseWeekWinner.data;
 
-    const responseReservations = await axios.get('https://api2.simplifies.cl/api/reservations-count-week', {
+    const responseReservations = await this.$axios.get('reservations-count-week', {
       params: {
         branch_id: this.branch_id,
         business_id: this.business_id
@@ -1111,7 +1024,7 @@ export default {
     this.reservationWeek = responseReservations.data.cantReservations;
     this.reservationWeekData = responseReservations.data.reservations;    
 
-    const responseMounth = await axios.get('https://api2.simplifies.cl/api/cars-winner-mounth', {
+    const responseMounth = await this.$axios.get('cars-winner-mounth', {
       params: {
         branch_id: this.branch_id,
         business_id: this.business_id

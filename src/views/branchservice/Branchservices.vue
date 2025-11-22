@@ -44,7 +44,7 @@
                                                 v-if="!editando">
                                                 <template v-slot:item="{ props, item }">
                                                     <v-list-item v-bind="props"
-                                                        :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_service"
+                                                        :prepend-avatar="`${this.$axios.defaults.baseURL}images/${item.raw.image_service}`"
                                                         :subtitle="'Precio: ' + item.raw.price_service"
                                                         :title="item.raw.name"></v-list-item>
                                                 </template>
@@ -131,7 +131,7 @@
                 <template v-slot:item.name="{ item }">
 
                     <v-avatar class="mr-1" elevation="3" color="grey-lighten-4">
-                        <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_service"
+                        <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_service}`"
                             alt="image"></v-img>
                     </v-avatar>
                     {{ item.name }}
@@ -166,18 +166,8 @@
 </template>
 <script>
 
-import axios from "axios";
 import LocalStorageService from "@/LocalStorageService";
 
-axios.interceptors.request.use(config => {
-    const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-    if (token) {
-        config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-    }
-    return config;
-}, error => {
-    return Promise.reject(error);
-});
 import { handleRequest } from "@/utils/api";
 export default {
     data: () => ({
@@ -285,8 +275,7 @@ export default {
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         LocalStorageService.setIsLocked(true);
-        axios
-            .get('https://api2.simplifies.cl/api/show-business', {
+        this.$axios.get('show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -331,8 +320,7 @@ export default {
         initialize() {
             this.loadingService = true;
             LocalStorageService.setIsLocked(true);
-            axios
-                .get('https://api2.simplifies.cl/api/professionalservice-show', {
+            this.$axios.get('professionalservice-show', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -346,8 +334,7 @@ export default {
         },
         showAddService() {
             LocalStorageService.setIsLocked(true);
-            axios
-                .get('https://api2.simplifies.cl/api/branch-service-show', {
+            this.$axios.get('branch-service-show', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -403,16 +390,6 @@ export default {
                 this.initialize();
             }
             
-            /*axios
-                .post('https://api2.simplifies.cl/api/branchservice-destroy', this.data)
-                .then(() => {
-                    this.message_delete = true;
-                }).finally(() => {
-                    LocalStorageService.setIsLocked(false);
-                    this.showAlert("success", "Asignación eliminada correctamente", 3000);
-                    this.initialize();
-                });
-            this.closeDelete()*/
         },
         close() {
             this.dialog = false;
@@ -462,26 +439,14 @@ export default {
                     this.close();
                     this.initialize();
                 }
-                /*console.log('insertar');
-                this.data.branch_id = this.branch_id;
-                this.data.service_id = this.editedItem.service_id;
-                this.data.ponderation = this.editedItem.ponderation;
-                axios
-                    .post('https://api2.simplifies.cl/api/branchservice', this.data)
-                    .then(() => {
-                    }).finally(() => {
-                        LocalStorageService.setIsLocked(false);
-                        this.showAlert("success", "Servicio asignado correctamente", 3000);
-                        this.initialize();
-                    });*/
+             
             }
             else {
                 this.valid = false;
                 this.data.branch_id = this.branch_id;
                 this.data.service_id = this.editedItem.service_id;
                 this.data.ponderation = this.editedItem.ponderation;
-                axios
-                    .put('https://api2.simplifies.cl/api/branchservice', this.data)
+                this.$axios.put('branchservice', this.data)
                     .then(() => {
                     }).finally(() => {
                         LocalStorageService.setIsLocked(false);

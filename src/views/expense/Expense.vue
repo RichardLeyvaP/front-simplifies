@@ -109,19 +109,9 @@
 </template>
 <script>
 
-import axios from "axios";
+
 import LocalStorageService from "@/LocalStorageService";
 
-
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
 
@@ -217,8 +207,7 @@ export default {
    initialize() {
     this.loadingExpense = true;
     LocalStorageService.setIsLocked(true);
-     axios
-       .get('https://api2.simplifies.cl/api/expense')
+     this.$axios.get('expense')
        .then((response) => {
          this.results = response.data.expenses;
        }).finally(() => {
@@ -242,8 +231,7 @@ export default {
      let request = {
        id: this.editedItem.id
      };
-     axios
-       .post('https://api2.simplifies.cl/api/expense-destroy', request)
+     this.$axios.post('expense-destroy', request)
        .then(() => {
         LocalStorageService.setIsLocked(false);
          this.initialize();
@@ -273,8 +261,7 @@ export default {
          this.valid = false,
          this.data.id = this.editedItem.id;
          this.data.name = this.editedItem.name;
-         axios
-           .put('https://api2.simplifies.cl/api/expense', this.data)
+         this.$axios.put('expense', this.data)
            .then(() => {
            }).finally(() => {
             LocalStorageService.setIsLocked(false);
@@ -284,8 +271,7 @@ export default {
        } else {
          this.valid = false,
          this.data.name = this.editedItem.name;
-         axios
-           .post('https://api2.simplifies.cl/api/expense', this.data)
+         this.$axios.post('expense', this.data)
            .then(() => {
            }).finally(() => {
             LocalStorageService.setIsLocked(false);

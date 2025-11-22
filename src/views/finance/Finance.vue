@@ -349,9 +349,6 @@
                                 <template v-slot:item.file="{ item }">
                                     <v-icon v-if="item.file" @click="openDoc(item)"
                                         color="green">mdi-file-document-outline</v-icon>
-                                    <!--<v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                        <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
-                    </v-avatar>-->
                                 </template>
                                 <template v-slot:item.comment="{ item }">
                                     {{ getString(item.comment) }}
@@ -392,21 +389,10 @@
 </template>
 <script>
 
-import axios from "axios";
 import * as XLSX from 'xlsx';
 import { useDate } from 'vuetify';
 import LocalStorageService from "@/LocalStorageService";
 
-
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
     data: () => ({
@@ -688,8 +674,7 @@ export default {
         this.branch_id = parseInt(LocalStorageService.getItem('branch_id'));
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         this.permissionsUser = LocalStorageService.getItem("permissionsUser") || [],
-        axios
-            .get('https://api2.simplifies.cl/api/finance-combined-data', {
+        this.$axios.get('finance-combined-data', {
                 params: {
                     business_id: this.business_id
                 }
@@ -853,7 +838,7 @@ export default {
             this.initialize();
         },
         openDoc(item) {
-            const url = 'https://api2.simplifies.cl/api/images/' + item.file;
+            const url = `${this.$axios.defaults.baseURL}images/${item.file}`;
             window.open(url, '_blanK');
         },
         onFileSelected(event) {
@@ -914,8 +899,7 @@ export default {
             this.loading = true;
             console.log('this.editedItem--------');
             console.log(this.editedItem);
-            axios
-                .get('https://api2.simplifies.cl/api/finance-show', {
+            this.$axios.get('finance-show', {
                     /*headers: {
                 'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
             },*/
@@ -1011,8 +995,7 @@ export default {
         deleteItemConfirm() {
             LocalStorageService.setIsLocked(true);
             this.data.id = this.editedItem.id;
-            axios
-                .post('https://api2.simplifies.cl/api/finance-destroy', this.data)
+            this.$axios.post('finance-destroy', this.data)
                 .then(() => {
                     this.file = '';
                 }).finally(() => {
@@ -1062,8 +1045,7 @@ export default {
 
                 console.log('formData');
                 console.log(formData);
-                axios
-                    .post('https://api2.simplifies.cl/api/finance-updated', formData)
+                this.$axios.post('finance-updated', formData)
                     .then(() => {
                         this.editedIndex = -1
                         this.editedItem.amount = '',
@@ -1091,7 +1073,7 @@ export default {
                 console.log('formData');
                 console.log(formData);
                 axios
-                    .post('https://api2.simplifies.cl/api/finance', formData)
+                    .post('finance', formData)
                     .then(() => {
                         this.editedIndex = -1;
                         this.editedItem.amount = '',

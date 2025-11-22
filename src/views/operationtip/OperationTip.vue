@@ -94,7 +94,7 @@
 
                                                         <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
                                                             <v-img
-                                                                :src="'https://api2.simplifies.cl/api/images/' + item.client_image"
+                                                                :src="`${this.$axios.defaults.baseURL}images/${item.client_image}`"
                                                                 alt="image"></v-img>
                                                         </v-avatar>
                                                         {{ item.clientName }}
@@ -161,14 +161,14 @@
                 <template v-slot:item.nameClient="{ item }">
 
                     <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                        <v-img :src="'https://api2.simplifies.cl/api/images/' + item.client_image" alt="image"></v-img>
+                        <v-img :src="`${this.$axios.defaults.baseURL}images/${item.client_image}`" alt="image"></v-img>
                     </v-avatar>
                     {{ item.nameClient }}
                 </template>
                 <template v-slot:item.nameProfessional="{ item }">
 
                     <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                        <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+                        <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_url}`" alt="image"></v-img>
                     </v-avatar>
                     {{ item.nameProfessional }}
                 </template>
@@ -291,20 +291,10 @@
 
 <script>
 
-import axios from "axios";
 import { format } from "date-fns";
 import * as XLSX from 'xlsx';
 import LocalStorageService from "@/LocalStorageService";
 
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
     data: () => ({
@@ -445,8 +435,7 @@ export default {
         this.charge_id = LocalStorageService.getItem('charge_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         LocalStorageService.setIsLocked(true);
-        axios
-            .get('https://api2.simplifies.cl/api/show-business', {
+        this.$axios.get('show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -548,8 +537,7 @@ export default {
             this.professionals = [];
             this.professional_id = '';
 
-            axios
-                .get('https://api2.simplifies.cl/api/operation-tip-show', {
+            this.$axios.get('operation-tip-show', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -560,24 +548,12 @@ export default {
             LocalStorageService.setIsLocked(false);
             this.loadingPCashier = false;
         });
-            /*axios
-                .get('https://api2.simplifies.cl/api/cashier-car-notpay', {
-                    params: {
-                        branch_id: this.branch_id
-                    }
-                })
-                .then((response) => {
-                    this.cars = response.data;
-                    console.log('this.cars');
-                    console.log(this.cars);
-                });*/
 
         },
         showAddOperationTip() {
             this.loadingCashier = true;
             LocalStorageService.setIsLocked(true);
-            axios
-                .get('https://api2.simplifies.cl/api/cashier-car-notpay', {
+            this.$axios.get('cashier-car-notpay', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -590,31 +566,9 @@ export default {
             LocalStorageService.setIsLocked(false);
         });
 
-            /*axios
-            .get('https://api2.simplifies.cl/api/branch_professionals_cashier', {
-                params: {
-                    branch_id: this.branch_id
-                }
-            })
-            .then((response) => {
-                this.professionals = response.data.professionals;
-            });*/
             this.dialog = true;
         },
-        /*editItem(item) {
-            axios
-                .get('https://api2.simplifies.cl/api/cashier-car-notpay', {
-                    params: {
-                        branch_id: this.branch_id
-                    }
-                })
-                .then((response) => {
-                    this.cars = response.data;
-                });
-            this.editedIndex = 1;
-            this.editedItem = Object.assign({}, item)
-            this.dialog = true
-        },*/
+        
         deleteItem(item) {
             this.editedIndex = -1;
             this.editedItem.id = item.id;
@@ -626,8 +580,7 @@ export default {
             let request = {
                 id: this.editedItem.id
             };
-            axios
-                .post('https://api2.simplifies.cl/api/operation-tip-destroy', request)
+            this.$axios.post('operation-tip-destroy', request)
                 .then(() => {
                 }).finally(() => {
                     LocalStorageService.setIsLocked(false);
@@ -665,16 +618,7 @@ export default {
         save() {
             LocalStorageService.setIsLocked(true);
             this.valid = false;
-            /* if (this.editedIndex > -1) {
-                 this.data.id = this.editedItem.id;
-                 this.data.name = this.editedItem.name;
-                 axios
-                     .put('https://api2.simplifies.cl/api/workplace', this.data)
-                     .then(() => {
-                         this.initialize();
-                         this.showAlert("success", "Pago editado correctamente", 3000);
-                     })
-             } else {*/
+           
             console.log('this.ironValues');
             console.log(this.selected2);
             //console.log(this.selectedOption);
@@ -690,8 +634,7 @@ export default {
             this.data.type = this.editedItem.type;
             console.log('this.data');
             console.log(this.data);
-            axios
-                .post('https://api2.simplifies.cl/api/operation-tip', this.data)
+            this.$axios.post('operation-tip', this.data)
                 .then(() => {
                     this.$nextTick(() => {
                         this.editedItem = Object.assign({}, this.defaultItem);
@@ -707,17 +650,7 @@ export default {
                     this.showAlert("success", "Pago realizado correctamente", 3000);
                     this.updatedBranch();
                 });
-            //}
-            /*this.valid = false;
-            this.data.name = this.editedItem.name;
-            this.data.branch_id = this.branch_id
-
-            axios
-                .post('https://api2.simplifies.cl/api/workplace', this.data)
-                .then(() => {
-                    this.initialize();
-                    this.showAlert("success", "Puesto de trabajo editado correctamente", 3000);
-                })*/
+            
             this.close();
         },
         //reporte
@@ -731,8 +664,7 @@ export default {
             //this.input3 = new Date()
             const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
             const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-            axios
-                .get('https://api2.simplifies.cl/api/operation-tip-periodo', {
+            this.$axios.get('operation-tip-periodo', {
                     params: {
                         branch_id: this.branch_id,
                         startDate: startDate,
@@ -751,27 +683,7 @@ export default {
             this.dialogPay = false;
             //this.initialize();
         },
-        /*updateDate3() {
-            console.log('Entra aqui a pagos realizados');
-            //this.editedIndex1 = 1;
-            //this.state=true;
-            //this.input2 = new Date();
-            //this.input3 = new Date()
-            const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-            const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-            axios
-                .get('https://api2.simplifies.cl/api/operation-tip-periodo', {
-                    params: {
-                        branch_id: this.branch_id,
-                        startDate: startDate,
-                        endDate: endDate
-                    }
-                })
-                .then((response) => {
-                    this.results1 = response.data;
-                });
-            this.dialogPay = true;
-        },*/
+      
         exportToExcel() {
             console.log('Entra aqui a exportar');
             // Primero, prepara una matriz que contendrá todas las filas de datos, incluidos los encabezados

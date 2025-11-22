@@ -129,18 +129,7 @@
 </template>
 <script>
 
-import axios from "axios";
 import LocalStorageService from "@/LocalStorageService";
-
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
     data: () => ({
@@ -216,8 +205,7 @@ export default {
         this.branch_id = LocalStorageService.getItem('branch_id');
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         LocalStorageService.setIsLocked(true);
-        axios
-            .get('https://api2.simplifies.cl/api/show-business', {
+        this.$axios.get('show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -265,8 +253,7 @@ export default {
         initialize() {
             this.loadingrules = true;
             LocalStorageService.setIsLocked(true);
-            axios
-                .get('https://api2.simplifies.cl/api/branch_rules', {
+            this.$axios.get('branch_rules', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -281,8 +268,7 @@ export default {
 
         showAddRules(){
             LocalStorageService.setIsLocked(true);
-            axios
-                .get('https://api2.simplifies.cl/api/branch-rules-noIn', {
+            this.$axios.get('branch-rules-noIn', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -304,8 +290,7 @@ export default {
             LocalStorageService.setIsLocked(true);
             this.data.branch_id = this.branch_id;
             this.data.rule_id = this.editedItem.rule_id;
-            axios
-                .post('https://api2.simplifies.cl/api/branchrule-destroy', this.data)
+            this.$axios.post('branchrule-destroy', this.data)
                 .then(() => {
                     this.message_delete = true;
                 }).finally(() => {
@@ -338,8 +323,7 @@ export default {
                 this.valid = false;
                 this.data.branch_id = this.branch_id;
                 this.data.rule_id = this.editedItem.rule_id;
-                axios
-                    .post('https://api2.simplifies.cl/api/branchrule', this.data)
+                this.$axios.post('branchrule', this.data)
                     .then(() => {
                     }).finally(() => {
                         LocalStorageService.setIsLocked(false);

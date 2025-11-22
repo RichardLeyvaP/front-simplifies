@@ -63,19 +63,9 @@
 </template>
 <script>
 
-import axios from "axios";
 import * as XLSX from 'xlsx';
 import LocalStorageService from "@/LocalStorageService";
 
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
   props: {
@@ -115,8 +105,7 @@ export default {
   mounted() {
 
     this.business_id = parseInt(LocalStorageService.getItem("business_id"));
-    axios
-      .get('https://api2.simplifies.cl/api/enrollment-show', {
+    this.$axios.get('enrollment-show', {
         params: {
           business_id: this.business_id
         }
@@ -186,8 +175,7 @@ export default {
 
     initialize() {
       this.editedIndex = 1;
-      axios
-        .get('https://api2.simplifies.cl/api/calculate-course-earnings', {
+      this.$axios.get('calculate-course-earnings', {
           params: {
             business_id: this.business_id,
           }
@@ -199,8 +187,7 @@ export default {
 
     onEnrollmetChange() {
       this.editedIndex = 1;
-      axios
-        .get('https://api2.simplifies.cl/api/calculate-course-earnings-enrollment', {
+      this.$axios.get('calculate-course-earnings-enrollment', {
           params: {
             enrollment_id: this.enrollment_id,
           }

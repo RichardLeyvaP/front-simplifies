@@ -119,21 +119,11 @@
 </template>
 <script>
 
-import axios from "axios";
 import { format } from "date-fns";
 import * as XLSX from 'xlsx';
 
 import LocalStorageService from "@/LocalStorageService";
 
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
   props: {
@@ -277,8 +267,7 @@ export default {
     this.business_id = parseInt(LocalStorageService.getItem("business_id"));
     this.branch_id = parseInt(LocalStorageService.getItem("branch_id"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
-    axios
-      .get('https://api2.simplifies.cl/api/show-business', {
+    this.$axios.get('show-business', {
           params: {
             business_id: this.business_id
           }
@@ -362,8 +351,7 @@ export default {
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       console.log(startDate);
       console.log(endDate);
-      axios
-        .get('https://api2.simplifies.cl/api/arriving-late-branch-periodo', {
+      this.$axios.get('arriving-late-branch-periodo', {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,
@@ -380,8 +368,7 @@ export default {
     initialize() {
       this.editedIndex = 1;
       this.state=true;
-      axios
-        .get('https://api2.simplifies.cl/api/arriving-late-branch-date', {
+      this.$axios.get('arriving-late-branch-date', {
           params: {
             branch_id: this.branch_id
           }
@@ -398,8 +385,7 @@ export default {
         this.state=true;
           //this.input2 = new Date();
           //this.input3 = new Date()
-        axios
-          .get('https://api2.simplifies.cl/api/arriving-branch-date', {
+        this.$axios.get('arriving-branch-date', {
             params: {
               branch_id: this.branch_id
             }
@@ -421,8 +407,7 @@ export default {
       const endDate = this.input4 ? format(this.input4, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
         console.log(startDate);
         console.log(endDate);
-        axios
-          .get('https://api2.simplifies.cl/api/arriving-branch-periodo', {
+        this.$axios.get('arriving-branch-periodo', {
             params: {
               branch_id: this.branch_id,
               startDate: startDate,

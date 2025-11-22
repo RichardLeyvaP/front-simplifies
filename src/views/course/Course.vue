@@ -206,7 +206,7 @@
           <template v-slot:item.name="{ item }">
 
             <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.course_image" alt="image"></v-img>
+              <v-img :src="`${this.$axios.defaults.baseURL}images/${item.course_image}`" alt="image"></v-img>
             </v-avatar>
             {{ item.name }}
           </template>
@@ -316,7 +316,7 @@
 
                 <template v-slot:item.name="{ item }">
                   <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                    <v-img :src="'https://api2.simplifies.cl/api/images/' + item.student_image" alt="image"></v-img>
+                    <v-img :src="`${this.$axios.defaults.baseURL}images/${item.student_image}`" alt="image"></v-img>
                   </v-avatar>
                   {{ item.name}}
                 </template>
@@ -404,7 +404,7 @@
                         item-value="id" variant="underlined" :rules="selectRules">
                         <template v-slot:item="{ props, item }">
                           <v-list-item v-bind="props"
-                            :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.client_image"
+                            :prepend-avatar="`${this.$axios.defaults.baseURL}images/${item.raw.client_image}`"
                             :title="item.raw.name"></v-list-item>
                         </template>
                       </v-autocomplete>
@@ -496,18 +496,10 @@
             <template v-slot:item.nameProduct="{ item }">
 
               <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product" alt="image"></v-img>
+                <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_product}`" alt="image"></v-img>
               </v-avatar>
               {{ item.nameProduct }}
             </template>
-
-            <!--<template v-slot:item.nameStudent="{ item }">
-
-            <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-              <v-img :src="'https://api2.simplifies.cl/api/images/' + item.student_image" alt="image"></v-img>
-            </v-avatar>
-            {{ item.nameStudent }}
-            </template>-->
 
             <template v-slot:item.actions="{ item }">
               <!--<v-btn density="comfortable" icon="mdi-pencil"  @click="editItemProduct(item)" color="primary" variant="tonal"
@@ -548,7 +540,7 @@
                     variant="underlined" :rules="selectRules" @update:model-value="cantExist">
                     <template v-slot:item="{ props, item }">
                       <v-list-item v-bind="props"
-                        :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_product"
+                        :prepend-avatar="`${this.$axios.defaults.baseURL}images/${item.raw.image_product}`"
                         :subtitle="'Existencia: ' + item.raw.product_exit" :title="item.raw.name"></v-list-item>
                     </template>
                   </v-autocomplete>
@@ -621,7 +613,7 @@
             <template v-slot:item.name="{ item }">
 
               <v-avatar elevation="3" color="grey-lighten-4" size="large">
-                <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+                <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_url}`" alt="image"></v-img>
               </v-avatar><!--+'?$'+Date.now()-->
               {{ item.name }}
             </template>
@@ -660,7 +652,7 @@
                     item-value="id" variant="underlined" :rules="selectRules">
                     <template v-slot:item="{ props, item }">
                       <v-list-item v-bind="props"
-                        :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.raw.image_url"
+                        :prepend-avatar="`${this.$axios.defaults.baseURL}images/${item.raw.image_url}`"
                         :subtitle="'Cargo: ' + item.raw.charge" :title="item.raw.name"></v-list-item>
                     </template>
                   </v-autocomplete>
@@ -750,18 +742,8 @@
 <script>
 
 import LocalStorageService from "@/LocalStorageService";
-import axios from "axios";
 import { useDate } from 'vuetify';
 
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
   data: () => ({
@@ -1082,10 +1064,11 @@ export default {
 
     openModal(imageUrl) {
 
+      const imagUrl = `${this.$axios.defaults.baseURL}images/${imageUrl}`
       var img = new Image();
-      img.src = 'https://api2.simplifies.cl/api/images/' + imageUrl;
+      img.src = imagUrl;
       img.onload = () => {
-        this.selectedImageUrl = 'https://api2.simplifies.cl/api/images/' + imageUrl;
+        this.selectedImageUrl = imagUrl;
       };
       img.onerror = () => {
         this.selectedImageUrl = '';
@@ -1102,8 +1085,7 @@ export default {
       console.log(this.courseSelect);*/
       this.course_id = item.id;
       //console.log(item.id);
-      axios
-        .get('https://api2.simplifies.cl/api/course-student-show', {
+      this.$axios.get('course-student-show', {
           params: {
             course_id: item.id
           }
@@ -1121,8 +1103,7 @@ export default {
     },
     showAddStudent() {
       LocalStorageService.setIsLocked(true);
-      axios
-        .get('https://api2.simplifies.cl/api/student-show', {
+      this.$axios.get('student-show', {
           params: {
             course_id: this.courseSelect.id
           }
@@ -1150,10 +1131,11 @@ export default {
       this.editedItemS.enrollment_confirmed = item.enrollment_confirmed;
       //this.editedItemS.image_url = item.image_url;
       this.editedItemS.student_id = item.id;
+      const imagUrl = `${this.$axios.defaults.baseURL}images/${item.image_url}`
       var img = new Image();
-      img.src = 'https://api2.simplifies.cl/api/images/' + item.image_url;
+      img.src = imagUrl;
       img.onload = () => {
-        this.imgMiniatura = 'https://api2.simplifies.cl/api/images/' + item.image_url;
+        this.imgMiniatura = imagUrl;
       };
       img.onerror = () => {
         this.imgMiniatura = '';
@@ -1179,8 +1161,7 @@ export default {
         this.data.course_id = this.course_id;
       this.data.student_id = this.editedStudent.student_id;
       console.log(this.data);
-      axios
-        .post('https://api2.simplifies.cl/api/course-student', this.data)
+      this.$axios.post('course-student', this.data)
         .then(() => {
           this.$nextTick(() => {
             this.editedStudent = Object.assign({}, this.defaultStudent)
@@ -1209,8 +1190,7 @@ export default {
       for (let key in this.editedItemS) {
         formData.append(key, this.editedItemS[key]);
       }
-      axios
-        .post('https://api2.simplifies.cl/api/course-student-update', formData)
+      this.$axios.post('course-student-update', formData)
         .then(() => {
           this.dialogAddStudent = false;
         }).finally(() => {
@@ -1233,8 +1213,7 @@ export default {
         course_id: this.course_id,
         student_id: this.editedStudent.student_id
       };
-      axios
-        .post('https://api2.simplifies.cl/api/course-student-destroy', request)
+      this.$axios.post('course-student-destroy', request)
         .then(() => {
           this.dialogRequest = false;
         }).finally(() => {
@@ -1268,8 +1247,7 @@ export default {
     initialize() {
       this.loadingCourse = true;
       LocalStorageService.setIsLocked(true);
-      axios
-        .get('https://api2.simplifies.cl/api/course-show', {
+      this.$axios.get('course-show', {
           params: {
             business_id: this.business_id
           }
@@ -1284,8 +1262,7 @@ export default {
     },
     showAddCurso() {
       LocalStorageService.setIsLocked(true);
-      axios
-        .get('https://api2.simplifies.cl/api/enrollment-show', {
+      this.$axios.get('enrollment-show', {
           params: {
             business_id: this.business_id
           }
@@ -1312,10 +1289,11 @@ export default {
     },
     editItem(item) {
       this.file = null;
+      const imagUrl = `${this.$axios.defaults.baseURL}images/${item.image_data}`
       var img = new Image();
-      img.src = 'https://api2.simplifies.cl/api/images/' + item.image_data;
+      img.src = imagUrl;
       img.onload = () => {
-        this.imgMiniatura = 'https://api2.simplifies.cl/api/images/' + item.image_data;
+        this.imgMiniatura = imagUrl;
       };
       img.onerror = () => {
         this.imgMiniatura = '';
@@ -1339,8 +1317,7 @@ export default {
       let request = {
         id: this.editedItem.id
       };
-      axios
-        .post('https://api2.simplifies.cl/api/course-destroy', request)
+      this.$axios.post('course-destroy', request)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -1395,8 +1372,7 @@ export default {
           formData.append(key, this.editedItem[key]);
         }
         console.log(formData);
-        axios
-          .post('https://api2.simplifies.cl/api/course-update', formData)
+        this.$axios.post('course-update', formData)
           .then(() => {
             this.imgMiniatura = '';
             this.file = null;
@@ -1419,8 +1395,7 @@ export default {
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
         }
-        axios
-          .post('https://api2.simplifies.cl/api/course', formData)
+        this.$axios.post('course', formData)
           .then(() => {
             this.imgMiniatura = '';
             this.file = null;
@@ -1448,8 +1423,7 @@ export default {
       this.student_id = item.id;
       /*this.courseSelect = item;
       console.log(item.id);*/
-      axios
-        .get('https://api2.simplifies.cl/api/productsale-show', {
+      this.$axios.get('productsale-show', {
           params: {
             course_id: item.course_id,
             enrollment_id: this.courseSelect.enrollment_id,
@@ -1462,23 +1436,13 @@ export default {
             LocalStorageService.setIsLocked(false);
             this.loadingProducts = false;
         });
-      /*axios
-      .get('https://api2.simplifies.cl/api/course-student-product-show',{
-        params: {
-          course_id: item.id
-        }
-      })
-      .then((response) => {
-        this.studentsCourse = response.data.students;
-      });*/
 
       this.editedIndex = 3;
       this.dialogProducts = true;
     },
     showAddProduct() {
       LocalStorageService.setIsLocked(true);
-      axios
-        .get('https://api2.simplifies.cl/api/products-academy-show', {
+      this.$axios.get('products-academy-show', {
           params: {
             enrollment_id: this.courseSelect.enrollment_id
           }
@@ -1510,8 +1474,7 @@ export default {
         this.data.course_id = this.course_id;
         /*console.log('this.data');
         console.log(this.data);*/
-        axios
-          .post('https://api2.simplifies.cl/api/productsale', this.data)
+        this.$axios.post('productsale', this.data)
           .then(() => {
             this.dialogAddProduct = false;
             this.student_id = '',
@@ -1524,25 +1487,6 @@ export default {
             this.showProducts(this.productSelect);
           });
       }
-      /*if (this.editedIndex == 4){
-        this.valid = false,
-        this.data.enrollment_id = this.enrollment_id;
-      this.data.store_id = this.store_id;
-      this.data.product_id = this.product_id;
-      this.data.product_quantity = this.product_quantity;
-      console.log('this.data');
-      console.log(this.data);
-      axios
-          .put('https://api2.simplifies.cl/api/productstore', this.data)
-          .then(() => {
-          this.dialogAddProduct = false;
-          this.store_id = '',
-          this.product_id = '';
-          this.product_quantity = '';
-          this.showProducts(this.enrollmentSelect);
-          this.showAlert("success", "Asignacion editada correctamente", 3000);
-        })
-      }*/
     },
     closeproductRequest(item) {
       this.dialogRequestProduct = true
@@ -1560,8 +1504,7 @@ export default {
       let request = {
         id: this.productsale_id
       };
-      axios
-        .post('https://api2.simplifies.cl/api/productsale-destroy', request)
+      this.$axios.post('productsale-destroy', request)
         .then(() => {
           this.dialogRequestProduct = false;
           this.productsale_id = '';
@@ -1577,8 +1520,7 @@ export default {
       this.loadingProfessionals = true;
       LocalStorageService.setIsLocked(true);
       this.courseSelect = item;
-      axios
-        .get('https://api2.simplifies.cl/api/course-professional', {
+      this.$axios.get('course-professional', {
           params: {
             course_id: this.courseSelect.id
           }
@@ -1604,8 +1546,7 @@ export default {
         this.data.course_id = this.courseSelect.id;
       this.data.professional_id = this.professional_id;
       console.log(this.data);
-      axios
-        .post('https://api2.simplifies.cl/api/course-professional', this.data)
+      this.$axios.post('course-professional', this.data)
         .then(() => {
           this.dialogAddProf = false;
           //this.initialize();
@@ -1617,8 +1558,7 @@ export default {
     },
     showAdddialogProfessionals() {
       LocalStorageService.setIsLocked(true);
-      axios
-        .get('https://api2.simplifies.cl/api/course-professional-show-Notin', {
+      this.$axios.get('course-professional-show-Notin', {
           params: {
             course_id: this.courseSelect.id
           }
@@ -1644,8 +1584,7 @@ export default {
         course_id: this.courseSelect.id,
         professional_id: this.professional_id
       };
-      axios
-        .post('https://api2.simplifies.cl/api/course-professional-destroy', request)
+      this.$axios.post('course-professional-destroy', request)
         .then(() => {
           this.dialogRequestProfessional = false;
         }).finally(() => {
@@ -1695,8 +1634,7 @@ export default {
       console.log('this.data------------');
       console.log(this.data);
 
-      axios
-        .post('https://api2.simplifies.cl/api/course-student-update2', this.data)
+      this.$axios.post('course-student-update2', this.data)
         .then(() => {
           this.dialogUpdateState = false;
         }).finally(() => {

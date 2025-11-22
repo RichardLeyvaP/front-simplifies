@@ -108,20 +108,9 @@
 </template>
 <script>
 
-import axios from "axios";
 import { format } from "date-fns";
 import * as XLSX from 'xlsx';
 import LocalStorageService from "@/LocalStorageService";
-
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
   props: {
@@ -224,8 +213,7 @@ export default {
     this.branch_id = parseInt(LocalStorageService.getItem("branch_id"));
     this.business_id = parseInt(LocalStorageService.getItem("business_id"));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
-    axios
-      .get('https://api2.simplifies.cl/api/show-business', {
+    this.$axios.get('show-business', {
         params: {
           business_id: this.business_id
         }
@@ -301,8 +289,7 @@ export default {
       console.log(this.professional_id);
       console.log(startDate);
       console.log(endDate);
-      axios
-        .get('https://api2.simplifies.cl/api/arriving-late-professional-periodo', {
+      this.$axios.get('arriving-late-professional-periodo', {
           params: {
             branch_id: this.branch_id,
             professional_id: this.professional_id,
@@ -317,51 +304,10 @@ export default {
         })
       this.menu2 = false;
     },
-    /*updateDate3(val) {
-      this.editedIndex = 3;
-      this.input3 = val;
-      const month = (val.getMonth() + 1).toString().padStart(2, '0');
-      const year = val.getFullYear();
-      const mes = `${month}`;
-      const ano = `${year}`;
-      console.log('mes y año');
-      console.log(mes);
-      console.log(ano);
-      axios
-        .get('https://api2.simplifies.cl/api/arriving-late-professional-month', {
-          params: {
-            branch_id: this.branch_id,
-            professional_id: this.professional_id,
-            mes: mes,
-            year: ano
-          }
-        })
-        .then((response) => {
-          this.results = response.data;
-          console.log('this.results');
-          console.log(this.results);
-          //this.input3 = new Date();
-        })
-      this.menu3 = false;
-    },*/
+
     initialize() {
       this.state = true;
-      /*this.editedIndex = 1;
-      
-      this.input2 = new Date();
-      this.input3 = new Date();
-      axios
-        .get('https://api2.simplifies.cl/api/arriving-late-professional-date', {
-          params: {
-            branch_id: this.branch_id,
-            professional_id: this.professional_id
-          }
-        })
-        .then((response) => {
-          this.results = response.data;
-        });*/
-      axios
-        .get('https://api2.simplifies.cl/api/professional-show-autocomplete')
+      this.$axios.get('professional-show-autocomplete')
         .then((response) => {
           this.professionals = response.data.professionals;
         });

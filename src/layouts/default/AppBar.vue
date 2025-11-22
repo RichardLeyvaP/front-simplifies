@@ -42,7 +42,7 @@
     <v-menu activator="#menu-activator">
       <v-list>
         <v-list-item v-for="item in results" :key="item.id"
-          :prepend-avatar="'https://api2.simplifies.cl/api/images/' + item.image_url" @click="handleItemClickNotif(item)">
+          :prepend-avatar="`${this.$axios.defaults.baseURL}images/${item.image_url}`" @click="handleItemClickNotif(item)">
           <div class="d-flex align-center justify-space-between w-100"> <!-- Contenedor flex -->
             <v-list-item-title class="mr-2" :class="{ 'highlight': item.state2 === 2, 'accent': item.state !== 2 }">{{
               item.tittle }}</v-list-item-title>
@@ -138,7 +138,7 @@
 <script>
 import LocalStorageService from "@/LocalStorageService";
 import { handleRequest } from "@/utils/api"; // Ruta al archivo
-import axios from "axios";
+/*import axios from "axios";
 // Interceptor para agregar el token a cada solicitud
 axios.interceptors.request.use(config => {
   const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
@@ -148,7 +148,7 @@ axios.interceptors.request.use(config => {
   return config;
 }, error => {
   return Promise.reject(error);
-});
+});*/
 //import router from '@/router/index';
 //const userTokenStore = UserTokenStore();
 export default {
@@ -290,8 +290,7 @@ export default {
         id: item.id,
         charge: this.charge
       };
-      axios
-        .put('https://api2.simplifies.cl/api/notification3', request)
+      this.$axios.put('notification3', request)
         .then(() => {
           //this.initialize();
         }).finally(() => {
@@ -313,8 +312,7 @@ export default {
           ids: results,
           charge: this.charge
         };
-        axios
-          .put('https://api2.simplifies.cl/api/notification-charge', request)
+        this.$axios.put('notification-charge', request)
           .then(() => {
             //this.initialize();
           }).finally(() => {
@@ -345,8 +343,7 @@ export default {
     },
     shangePassword() {
       this.loading = true;
-      axios
-        .get('https://api2.simplifies.cl/api/change_password', {
+      this.$axios.get('change_password', {
           params: {
             id: this.user_id,
             password: this.confirmPassword,
@@ -371,8 +368,8 @@ export default {
       if (item.title === 'Cerrar Sesión') {
         const token = LocalStorageService.getItem('token');
         console.log('Cerrar Sesión')
-        axios
-          .get('https://api2.simplifies.cl/api/logout', {
+        this.$axios
+          .get('logout', {
             headers: {
               'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
             }
@@ -383,8 +380,7 @@ export default {
       }
       if (item.title === 'Mi Perfil') {
         console.log('Mi Perfil')
-        axios
-          .get('https://api2.simplifies.cl/api/professional-show', {
+        this.$axios.get('professional-show', {
             params: {
               id: this.professional_id,
             }
@@ -415,8 +411,7 @@ export default {
       console.log(token);
       console.log('Este es el token Bearer');
       console.log(`Bearer ${token}`);
-      axios
-        .get('https://api2.simplifies.cl/api/notification-professional-web', {
+      this.$axios.get('notification-professional-web', {
           /*headers: {
                 'Authorization': `Bearer ${token.replace(/['"]+/g, '')}`
             },*/

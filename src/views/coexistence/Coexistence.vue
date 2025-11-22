@@ -561,15 +561,6 @@ export default {
       let request = {
         id: this.editedItem.id
       };
-      /*axios
-        .post('https://api2.simplifies.cl/api/workplace-destroy', request)
-        .then(() => {
-        }).finally(() => {
-          LocalStorageService.setIsLocked(false);
-          this.showAlert("success", "Puesto de trabajo eliminado correctamente", 3000);
-          this.initialize();
-        });
-      this.closeDelete()*/
     },
     close() {
       this.dialog = false
@@ -591,19 +582,7 @@ export default {
                 return true;
             }
       LocalStorageService.setIsLocked(true);
-      /*if (this.editedIndex > -1) {
-        this.valid = false;
-        this.data.id = this.editedItem.id;
-        this.data.name = this.editedItem.name;
-        /*axios
-          .put('https://api2.simplifies.cl/api/workplace', this.data)
-          .then(() => {
-          }).finally(() => {
-            LocalStorageService.setIsLocked(false);
-            this.showAlert("success", "Puesto de trabajo editado correctamente", 3000);
-            this.initialize();
-          });*/
-      /*} else {*/
+   
       this.valid = false;
       this.editedIndex = 1;
       this.editedItem = Object.assign({}, item);
@@ -641,15 +620,6 @@ export default {
         await this.initialize();
       }
 
-      /*axios
-        .post('https://api2.simplifies.cl/api/workplace', this.data)
-        .then(() => {
-        }).finally(() => {
-          LocalStorageService.setIsLocked(false);
-          this.showAlert("success", "Puesto de trabajo creado correctamente", 3000);
-          this.initialize();
-        });*/
-      //}
       this.close()
     },
     // Método para cancelar cambios

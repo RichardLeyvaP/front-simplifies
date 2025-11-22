@@ -127,18 +127,7 @@
 </template>
 <script>
 
-import axios from "axios";
 import LocalStorageService from "@/LocalStorageService";
-
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
 
@@ -220,8 +209,7 @@ export default {
     this.charge_id = LocalStorageService.getItem('charge_id');
     this.branch_id = LocalStorageService.getItem('branch_id');
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
-    axios
-      .get('https://api2.simplifies.cl/api/show-business', {
+    this.$axios.get('show-business', {
         params: {
           business_id: this.business_id
         }
@@ -265,8 +253,7 @@ export default {
     initialize() {
       this.loadingStore = true;
       LocalStorageService.setIsLocked(true);
-      axios
-        .get('https://api2.simplifies.cl/api/store-show-branch', {
+      this.$axios.get('store-show-branch', {
         params: {
           branch_id: this.branch_id
         }
@@ -295,8 +282,7 @@ export default {
       let request = {
         id: this.editedItem.id
       };
-      axios
-        .post('https://api2.simplifies.cl/api/store-destroy', request)
+      this.$axios.post('store-destroy', request)
         .then(() => {
           LocalStorageService.setIsLocked(false);
           this.initialize();
@@ -328,8 +314,7 @@ export default {
         this.data.reference = this.editedItem.reference;
         this.data.description = this.editedItem.description;
         this.data.address = this.editedItem.address;
-        axios
-          .put('https://api2.simplifies.cl/api/store', this.data)
+        this.$axios.put('store', this.data)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.initialize();
@@ -340,8 +325,7 @@ export default {
         this.data.reference = this.editedItem.reference;
         this.data.description = this.editedItem.description;
         this.data.address = this.editedItem.address;
-        axios
-          .post('https://api2.simplifies.cl/api/store', this.data)
+        this.$axios.post('store', this.data)
           .then(() => {
             LocalStorageService.setIsLocked(false);
             this.initialize();

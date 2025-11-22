@@ -76,7 +76,7 @@
                             <template v-slot:item.name="{ item }">
 
                                 <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                                    <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product"
+                                    <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_product}`"
                                         alt="image"></v-img>
                                 </v-avatar>
                                 {{ item.name }}
@@ -91,20 +91,10 @@
 </template>
 <script>
 
-import axios from "axios";
 import * as XLSX from 'xlsx';
 import { format } from "date-fns";
 import LocalStorageService from "@/LocalStorageService";
 
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
     props: {
@@ -188,8 +178,7 @@ export default {
         this.business_id = parseInt(LocalStorageService.getItem("business_id"));
         this.charge_id = parseInt(LocalStorageService.getItem('charge_id'));
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
-        axios
-            .get('https://api2.simplifies.cl/api/show-business', {
+        this.$axios.get('show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -261,8 +250,7 @@ export default {
     },
     initialize() {
             this.editedIndex = 1;
-            axios
-                .get('https://api2.simplifies.cl/api/product-mostSold', {
+            this.$axios.get('product-mostSold', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -275,8 +263,7 @@ export default {
             this.editedIndex = 2;
             const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
             const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-            axios
-                .get('https://api2.simplifies.cl/api/product-mostSold-periodo', {
+            this.$axios.get('product-mostSold-periodo', {
                     params: {
                         branch_id: this.branch_id,
                         startDate: startDate,

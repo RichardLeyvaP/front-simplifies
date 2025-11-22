@@ -168,7 +168,7 @@
         <template v-slot:item.name="{ item }">
 
         <v-avatar class="mr-1" elevation="3" color="grey-lighten-4" size="large">
-          <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+          <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_url}`" alt="image"></v-img>
         </v-avatar><!--+'?$'+Date.now()-->
         {{ item.name }}
         </template>
@@ -374,21 +374,11 @@
 
 <script>
 
-import axios from "axios";
 import { format } from "date-fns";
 import { useDate } from 'vuetify';
 import * as XLSX from 'xlsx';
 import LocalStorageService from "@/LocalStorageService";
 
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
   data: () => ({
@@ -677,8 +667,7 @@ export default {
     initialize() {
       this.loadingBusiness = true;
       LocalStorageService.setIsLocked(true);
-      axios
-        .get('https://api2.simplifies.cl/api/business')
+      this.$axios.get('business')
         .then((response) => {
           //this.results = response.data.business;
           this.results = response.data.business.map(business => {
@@ -702,24 +691,18 @@ export default {
      this.menu4 = false
      this.imgMiniatura = '';
      this.editedItem = Object.assign({}, this.defaultItem)
-      //LocalStorageService.setIsLocked(true);
-      /*axios
-        .get('https://api2.simplifies.cl/api/professional-show-autocomplete')
-        .then((response) => {
-          this.professionals = response.data.professionals;
-        }).finally(() => {
-            LocalStorageService.setIsLocked(false);
-        });*/
+
       this.dialog = true;
     },
     editItem(item) {
       //LocalStorageService.setIsLocked(true);
       this.editedItem = Object.assign({}, this.defaultItem)
       this.file = null;
+      const imagUrl = `${this.$axios.defaults.baseURL}images/${item.image_url}`
       var img = new Image();
-      img.src = 'https://api2.simplifies.cl/api/images/' + item.image_url;
+      img.src = imagUrl;
       img.onload = () => {
-        this.imgMiniatura = 'https://api2.simplifies.cl/api/images/' + item.image_url;
+        this.imgMiniatura = imagUrl;
       };
       img.onerror = () => {
         this.imgMiniatura = '';
@@ -742,8 +725,7 @@ export default {
       let request = {
         id: this.editedItem.id
       };
-      axios
-        .post('https://api2.simplifies.cl/api/business-destroy', request)
+      this.$axios.post('business-destroy', request)
         .then(() => {
         }).finally(() => {
           LocalStorageService.setIsLocked(false);
@@ -780,8 +762,7 @@ export default {
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
         }
-        axios
-          .post('https://api2.simplifies.cl/api/business-update', formData)
+        this.$axios.post('business-update', formData)
           .then(() => {
           }).finally(() => {
             LocalStorageService.setIsLocked(false);
@@ -799,8 +780,7 @@ export default {
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
         }
-        axios
-          .post('https://api2.simplifies.cl/api/business', formData)
+        this.$axios.post('business', formData)
           .then(() => {
           }).finally(() => {
             LocalStorageService.setIsLocked(false);
@@ -831,8 +811,7 @@ export default {
       LocalStorageService.setIsLocked(true);
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      axios
-        .get('https://api2.simplifies.cl/api/business-winner', {
+      this.$axios.get('business-winner', {
           params: {
             startDate: startDate,
             endDate: endDate
@@ -866,8 +845,7 @@ export default {
       this.editedIndexWin = 2;
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      axios
-        .get('https://api2.simplifies.cl/api/business-winner', {
+      this.$axios.get('business-winner', {
           params: {
             startDate: startDate,
             endDate: endDate
@@ -930,8 +908,7 @@ export default {
     showWinnerBranch() {
       this.loadingWinnerBranch = true;
       LocalStorageService.setIsLocked(true);
-      axios
-        .get('https://api2.simplifies.cl/api/company_winner', {
+      this.$axios.get('company_winner', {
           params: {
             business_id: this.business_id,
           }
@@ -954,8 +931,7 @@ export default {
       this.editedIndex = 2;
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      axios
-        .get('https://api2.simplifies.cl/api/company_winner', {
+      this.$axios.get('company_winner', {
           params: {
             startDate: startDate,
             endDate: endDate,

@@ -117,7 +117,7 @@
                               :title="action.nameProfessional || 'Usuario'">
                               <template v-slot:prepend>
                                 <v-avatar>
-                                  <v-img :src="'https://api2.simplifies.cl/api/images/' + action.image" alt="image"></v-img>
+                                  <v-img :src="`${this.$axios.defaults.baseURL}images/${action.image}`" alt="image"></v-img>
                                 </v-avatar>
                               </template>
                               <template v-slot:append>
@@ -178,7 +178,7 @@
                             <v-list-item :subtitle="formatFecha(registro.timestamp)" :title="registro.nameProfessional">
                               <template v-slot:prepend>
                                 <v-avatar>
-                                  <v-img :src="'https://api2.simplifies.cl/api/images/' + registro.image" alt="image"></v-img>
+                                  <v-img :src="`${this.$axios.defaults.baseURL}images/${registro.image}`" alt="image"></v-img>
                                 </v-avatar>
                               </template>
                               <template v-slot:append>
@@ -234,16 +234,7 @@
 
 import LocalStorageService from "@/LocalStorageService";
 import { handleRequest } from "@/utils/api";
-/*axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
-*/
+
 export default {
   data: () => ({
     loadingrules: false,

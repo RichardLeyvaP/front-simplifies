@@ -48,7 +48,7 @@
                                                     <template v-slot:item="{ props, item }">
                                                     <v-list-item
                                                         v-bind="props"
-                                                        :prepend-avatar="'https://api2.simplifies.cl/api/images/'+item.raw.image_url"
+                                                        :prepend-avatar="`${this.$axios.defaults.baseURL}images/${item.raw.image_url}`"
                                                         :subtitle="'Cargo: '+item.raw.charge"
                                                         :title="item.raw.name"
                                                     ></v-list-item>
@@ -158,7 +158,7 @@
                 <template v-slot:item.name="{ item }">
 
                     <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                        <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_url" alt="image"></v-img>
+                        <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_url}`" alt="image"></v-img>
                     </v-avatar>
                     {{ item.name }}
                 </template>
@@ -169,19 +169,8 @@
 
 <script >
 
-import axios from "axios";
 import { useDate } from 'vuetify';
 import LocalStorageService from "@/LocalStorageService";
-
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
     data: () => ({
@@ -371,8 +360,7 @@ export default {
             this.loadingVacation = true;
             LocalStorageService.setIsLocked(true);
             if (this.charge == 'Administrador') {
-                axios
-                    .get('https://api2.simplifies.cl/api/vacation')
+                this.$axios.get('vacation')
                     .then((response) => {
                         this.results = response.data.vacations;
                         this.professionals = response.data.professionals;
@@ -382,8 +370,7 @@ export default {
         });
             } else {
                 console.log('No es administrador');
-                axios
-                    .get('https://api2.simplifies.cl/api/vacation-show', {
+                this.$axios.get('vacation-show', {
                         params: {
                             branch_id: this.branch_id
                         }
@@ -420,8 +407,7 @@ export default {
             let request = {
                 id: this.id
             };
-            axios
-                .post('https://api2.simplifies.cl/api/vacation-destroy', request)
+            this.$axios.post('vacation-destroy', request)
                 .then(() => {
                     LocalStorageService.setIsLocked(false);
                     this.showAlert("success", "Días de permisos eliminados correctamente", 3000)
@@ -455,8 +441,7 @@ export default {
                     this.data.startDate = this.formattedStartDate;
                 this.data.endDate = this.formattedEndDate;
                 console.log(this.data);
-                axios
-                    .put('https://api2.simplifies.cl/api/vacation', this.data)
+                this.$axios.put('vacation', this.data)
                     .then(() => {
                         LocalStorageService.setIsLocked(false);
                         this.initialize();
@@ -474,8 +459,7 @@ export default {
                 this.data.startDate = this.formattedStartDate;
                 this.data.endDate = this.formattedEndDate;
                 console.log(this.data);
-                axios
-                    .post('https://api2.simplifies.cl/api/vacation', this.data)
+                this.$axios.post('vacation', this.data)
                     .then(() => {
                         LocalStorageService.setIsLocked(false);
                         this.professional_id = '',

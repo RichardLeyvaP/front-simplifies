@@ -270,8 +270,7 @@
                       loading-text="Cargando datos...">
                       <template v-slot:item.name="{ item }">
                         <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-                          <v-img :src="'https://api2.simplifies.cl/api/images/' + item.image_product
-                            " alt="image"></v-img>
+                          <v-img :src="`${this.$axios.defaults.baseURL}images/${item.image_product}`" alt="image"></v-img>
                         </v-avatar>
                         {{ item.name }}
                       </template>
@@ -295,21 +294,11 @@
   </v-container>
 </template>
 <script>
-import axios from "axios";
+
 import { format } from "date-fns";
 import * as XLSX from "xlsx";
 import LocalStorageService from "@/LocalStorageService";
 import { handleRequest } from "@/utils/api"; // Ruta al archivo
-
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
   data: () => ({
@@ -502,14 +491,6 @@ export default {
     if (this.charge === 'Administrador') {
           this.mostrarFila = true;
     }
-    /*axios
-      .get("https://api2.simplifies.cl/api/product-category")
-      .then((response) => {
-        this.productCategories = response.data.productcategories;
-      })
-      .finally(() => {
-        LocalStorageService.setIsLocked(false);
-      });*/
         this.initialize();
   },
 
@@ -583,7 +564,7 @@ export default {
     initialize() {
       this.loading = true;
       LocalStorageService.setIsLocked(true);
-      axios.get("https://api2.simplifies.cl/api/product").then((response) => {
+      this.$axios.get("product").then((response) => {
         this.results = response.data.products;
       }).finally(() => {  
         LocalStorageService.setIsLocked(false);      
@@ -682,7 +663,7 @@ export default {
       let request = {
         id: this.editedItem.id,
       };
-      axios.post("https://api2.simplifies.cl/api/product-destroy", request).then(() => {
+      this.$axios.post("product-destroy", request).then(() => {
         LocalStorageService.setIsLocked(false);
         this.initialize();
         this.message_delete = true;
@@ -720,7 +701,7 @@ export default {
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
         }
-        axios.post("https://api2.simplifies.cl/api/product-update", formData).then(() => {
+        this.$axios.post("product-update", formData).then(() => {
           LocalStorageService.setIsLocked(false);
           this.initialize();
           this.showAlert("success", "Producto editado correctamente", 3000);
@@ -734,7 +715,7 @@ export default {
         for (let key in this.editedItem) {
           formData.append(key, this.editedItem[key]);
         }
-        axios.post("https://api2.simplifies.cl/api/product", formData).then(() => {
+        this.$axios.post("product", formData).then(() => {
           LocalStorageService.setIsLocked(false);
           this.initialize();
           this.showAlert("success", "Producto registrado correctamente", 3000);
@@ -752,8 +733,7 @@ export default {
       LocalStorageService.setIsLocked(true);
       console.log('Entra aqui a mejores aisitencias');
       this.editedIndex1 = 1;
-      axios
-        .get('https://api2.simplifies.cl/api/product-mostSold', {
+      this.$axios.get('product-mostSold', {
           params: {
             branch_id: this.branch_id
           }
@@ -778,8 +758,7 @@ export default {
       this.editedIndex1 = 2;
       const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
       const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      axios
-        .get('https://api2.simplifies.cl/api/product-mostSold-periodo', {
+      this.$axios.get('product-mostSold-periodo', {
           params: {
             branch_id: this.branch_id,
             startDate: startDate,

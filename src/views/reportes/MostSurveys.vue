@@ -101,19 +101,9 @@
 </template>
 <script>
 
-import axios from "axios";
 import * as XLSX from 'xlsx';
 import LocalStorageService from "@/LocalStorageService";
 
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
   props: {
@@ -138,59 +128,6 @@ export default {
     data: {},
   }),
   computed: {
-    /*formTitle() {
-      if (this.editedIndex === 2) {
-        //this.input = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
-        //return 'Monto generado por Sucursales en el período ' + this.fecha;
-        const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        //this.fecha = (this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")) + '-' + (this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"));
-        return `Monto generado por Sucursales en el período [<strong>${startDate}</strong> - <strong>${endDate}</strong>]`;		
-      }
-      /*else if (this.editedIndex === 3) {
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.fecha = format(this.input3, "yyyy-MM");
-        return 'Monto generado por Sucursales en el mes ' + format(this.input3, "yyyy-MM");
-      }*/
-    /*else {
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      this.fecha = format(new Date(), "yyyy-MM-dd");
-      return `Monto generado por Sucursales en el día  <strong>${this.fecha}</strong>`;
-      //return 'Monto generado por Sucursales en el día ' + format(new Date(), "yyyy-MM-dd");
-    }
-  },
-  dateFormatted() {
-    const date = this.input ? new Date(this.input) : new Date();
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
-    return `${year}-${month}-${day}`;
-  },
-  dateFormatted2() {
-    const date = this.input2 ? new Date(this.input2) : new Date();
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
-    return `${year}-${month}-${day}`;
-  },*/
-    /*dateFormatted3() {
-      const date = this.input3 ? new Date(this.input3) : new Date();
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const year = date.getFullYear();
-      return `${year}-${month}`;
-    },*/
-    /*getDate() {
-      return this.input ? new Date(this.input) : new Date();
-    },
-    getDate2() {
-      return this.input2 ? new Date(this.input2) : new Date();
-    },*/
-    /*getDate3() {
-      return this.input3 ? new Date(this.input3) : new Date();
-    },*/
   },
 
   watch: {
@@ -206,8 +143,7 @@ export default {
     this.business_id = parseInt(LocalStorageService.getItem("business_id"));
     this.branch_id = parseInt(LocalStorageService.getItem('branch_id'));
     this.charge = JSON.parse(LocalStorageService.getItem("charge"));
-    axios
-      .get('https://api2.simplifies.cl/api/show-business', {
+    this.$axios.get('show-business', {
         params: {
           business_id: this.business_id
         }
@@ -277,60 +213,10 @@ export default {
       //XLSX.writeFile(wb, "report.xlsx");
       XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
     },
-    /*updateDate(val) {
-      this.input = val;
-      this.menu = false;
-    },
-    updateDate1(val) {
-      this.input2 = val;
-      this.menu2 = false;
-    },
-    updateDate2() {
-      this.editedIndex = 2;
-      //this.input2 = val;
-      const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      const endDate = this.input2 ? format(this.input2, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-      axios
-        .get('https://api2.simplifies.cl/api/company_winner', {
-          params: {
-            startDate: startDate,
-            endDate: endDate,
-            business_id: this.business_id,
-          }
-        })
-        .then((response) => {
-          this.results = response.data;
-          //this.input2 = new Date();
-          //this.input = new Date()
-        })
-      //this.menu2 = false;
-    },*/
-    /*updateDate3(val) {
-      this.editedIndex = 3;
-      this.input3 = val;
-      const month = (val.getMonth() + 1).toString().padStart(2, '0');
-      const year = val.getFullYear();
-      const mes = `${month}`;
-      const ano = `${year}`;
-      axios
-        .get('https://api2.simplifies.cl/api/company_winner', {
-          params: {
-            business_id: this.business_id,
-            mes: mes,
-            year: ano
-          }
-        })
-        .then((response) => {
-          this.results = response.data;
-          //this.input3 = new Date();
-        })
-      this.menu3 = false;
-    },*/
     initialize() {
       this.loadingSurveyMost = true;
       this.editedIndex = 1;
-      axios
-        .get('https://api2.simplifies.cl/api/surveyCounts', {
+      this.$axios.get('surveyCounts', {
           params: {
             branch_id: this.branch_id
           }

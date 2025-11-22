@@ -231,17 +231,7 @@
 <script>
 
 import LocalStorageService from "@/LocalStorageService";
-import axios from "axios";
 
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
 
@@ -357,8 +347,7 @@ export default {
     initialize() {
       this.loadingCharge = true;
       LocalStorageService.setIsLocked(true);
-      axios
-        .get('https://api2.simplifies.cl/api/charge')
+      this.$axios.get('charge')
         .then((response) => {
           console.log("entra a Buscar cargos")
           this.results = response.data.charges;
@@ -383,8 +372,7 @@ export default {
       let request = {
         id: this.editedItem.id
       };
-      axios
-        .post('https://api2.simplifies.cl/api/charge-destroy', request)
+      this.$axios.post('charge-destroy', request)
         .then(() => {
           LocalStorageService.setIsLocked(false);
           this.initialize();
@@ -417,8 +405,7 @@ export default {
         this.data.name = this.editedItem.name;
         this.data.description = this.editedItem.description;
 
-        axios
-          .put('https://api2.simplifies.cl/api/charge', this.data)
+        this.$axios.put('charge', this.data)
           .then(() => {
           }).finally(() => {
             LocalStorageService.setIsLocked(false);
@@ -429,8 +416,7 @@ export default {
         this.valid = false;
         this.data.name = this.editedItem.name;
         this.data.description = this.editedItem.description;
-        axios
-          .post('https://api2.simplifies.cl/api/charge', this.data)
+        this.$axios.post('charge', this.data)
           .then(() => {
           }).finally(() => {
             LocalStorageService.setIsLocked(false);
@@ -452,8 +438,7 @@ export default {
       console.log(this.chargeSelect);
       this.charge_id = item.id;
       console.log(item.id);
-      axios
-        .get('https://api2.simplifies.cl/api/charge-permission-show', {
+      this.$axios.get('charge-permission-show', {
           params: {
             charge_id: item.id
           }
@@ -469,8 +454,7 @@ export default {
     },
     showAddPermission() {
       LocalStorageService.setIsLocked(true);
-      axios
-        .get('https://api2.simplifies.cl/api/charge-permission-NOTIN', {
+      this.$axios.get('charge-permission-NOTIN', {
           params: {
             charge_id: this.chargeSelect.id
           }
@@ -487,8 +471,7 @@ export default {
       this.valid = false,
         this.data.charge_id = this.charge_id;
       this.data.permission_id = this.permission_id;
-      axios
-        .post('https://api2.simplifies.cl/api/charge-permission', this.data)
+      this.$axios.post('charge-permission', this.data)
         .then(() => {
           this.charge_id = '',
             this.permission_id = '',
@@ -512,8 +495,7 @@ export default {
         charge_id: this.charge_id,
         permission_id: this.permission_id
       };
-      axios
-        .post('https://api2.simplifies.cl/api/charge-permission-destroy', request)
+      this.$axios.post('charge-permission-destroy', request)
         .then(() => {
           this.dialogDeletePermission = false
           this.charge_id = '',

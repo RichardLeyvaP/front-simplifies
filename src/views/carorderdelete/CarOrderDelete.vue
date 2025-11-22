@@ -380,18 +380,9 @@
 
 <script>
 
-import axios from "axios";
+
 import LocalStorageService from "@/LocalStorageService";
 
-axios.interceptors.request.use(config => {
-    const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-    if (token) {
-        config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-    }
-    return config;
-}, error => {
-    return Promise.reject(error);
-});
 
 export default {
     data: () => ({
@@ -645,8 +636,7 @@ export default {
             this.loadingOrder = true;
             this.loadingProduct = true;
             LocalStorageService.setIsLocked(true);
-            axios
-                .get('https://api2.simplifies.cl/api/branch-cars-delete', {
+            this.$axios.get('api/branch-cars-delete', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -671,8 +661,7 @@ export default {
                 id: item.id,
                 professional_id: this.professional_id
             };
-            axios
-                .post('https://api2.simplifies.cl/api/car-destroy', request)
+            this.$axios.post('api/car-destroy', request)
                 .then(() => {
                 }).finally(() => {
                     LocalStorageService.setIsLocked(false);
@@ -687,8 +676,7 @@ export default {
                 id: item.id,
                 professional_id: this.professional_id
             };
-            axios
-                .post('https://api2.simplifies.cl/api/car-denegada', request)
+            this.$axios.post('api/car-denegada', request)
                 .then(() => {
                 }).finally(() => {
                     LocalStorageService.setIsLocked(false);
@@ -706,8 +694,7 @@ export default {
                 id: item.id,
                 professional_id: this.professional_id
             };
-            axios
-                .post('https://api2.simplifies.cl/api/order-destroy-web', request)
+            this.$axios.post('api/order-destroy-web', request)
                 .then(() => {
                     //this.initialize();
                 }).finally(() => {
@@ -723,8 +710,7 @@ export default {
                 id: item.id,
                 professional_id: this.professional_id
             };
-            axios
-                .post('https://api2.simplifies.cl/api/order-denegar', request)
+            this.$axios.post('api/order-denegar', request)
                 .then(() => {
                 }).finally(() => {
                     LocalStorageService.setIsLocked(false);
@@ -740,8 +726,7 @@ export default {
                 id: item.id,
                 professional_id: this.professional_id
             };
-            axios
-                .post('https://api2.simplifies.cl/api/cashiersale-destroy', request)
+            this.$axios.post('api/cashiersale-destroy', request)
                 .then(() => {
                     //this.initialize();
                 }).finally(() => {
@@ -757,8 +742,7 @@ export default {
                 id: item.id,
                 professional_id: this.professional_id
             };
-            axios
-                .post('https://api2.simplifies.cl/api/cashiersale-denegar', request)
+            this.$axios.post('api/cashiersale-denegar', request)
                 .then(() => {
                 }).finally(() => {
                     LocalStorageService.setIsLocked(false);

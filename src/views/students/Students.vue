@@ -139,7 +139,7 @@
    <template v-slot:item.name="{ item }">
 
    <v-avatar class="mr-5" elevation="3" color="grey-lighten-4">
-     <v-img :src="'https://api2.simplifies.cl/api/images/'+item.student_image" alt="image"></v-img>
+     <v-img :src="`${this.$axios.defaults.baseURL}images/${item.student_image}`" alt="image"></v-img>
    </v-avatar>
    {{ item.name }}
    </template>
@@ -194,18 +194,7 @@
 </template>
 <script>
 
-import axios from "axios";
 import LocalStorageService from "@/LocalStorageService";
-
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
 data: () => ({
@@ -302,11 +291,12 @@ methods: {
   openModal(imageUrl) {
     this.dialogPhoto = true;
     this.loadingImage = true;
+    const imagUrl = `${this.$axios.defaults.baseURL}images/${imageUrl}`
   var img = new Image();
-  img.src = 'https://api2.simplifies.cl/api/images/' + imageUrl;
+  img.src = imagUrl;
   
   img.onload = () => {
-    this.selectedImageUrl = 'https://api2.simplifies.cl/api/images/' + imageUrl;
+    this.selectedImageUrl = imagUrl;
     this.loadingImage = false;
     //this.dialogPhoto = true; // Abre el modal solo después de que la imagen esté cargada
   };
@@ -356,8 +346,7 @@ showAlert(sb_type,sb_message, sb_timeout)
 initialize() {
   this.loadingStudent = true;
   LocalStorageService.setIsLocked(true);
- axios
-   .get('https://api2.simplifies.cl/api/student')
+ this.$axios.get('student')
    .then((response) => {
      this.results = response.data.clients;
    }).finally(() => {
@@ -379,10 +368,11 @@ onFileSelected(event) {
     },
 editItem(item) {
   this.file = null;
+  const imagUrl = `${this.$axios.defaults.baseURL}images/${item.student_image}`
       var img = new Image();
-      img.src = 'https://api2.simplifies.cl/api/images/' + item.student_image;
+      img.src = imagUrl;
       img.onload = () => {
-        this.imgMiniatura = 'https://api2.simplifies.cl/api/images/' + item.student_image;
+        this.imgMiniatura = imagUrl;
       };
       img.onerror = () => {
         this.imgMiniatura = '';
@@ -404,8 +394,7 @@ deleteItemConfirm() {
  let request = {
    id: this.editedItem.id
  };
- axios
-   .post('https://api2.simplifies.cl/api/student-destroy', request)
+ this.$axios.post('student-destroy', request)
    .then(() => {
     LocalStorageService.setIsLocked(false);
      this.initialize();
@@ -438,8 +427,7 @@ save() {
      for (let key in this.editedItem) {
        formData.append(key, this.editedItem[key]);
      }  
-   axios
-     .post('https://api2.simplifies.cl/api/student-update', formData)
+   this.$axios.post('student-update', formData)
      .then(() => {
       LocalStorageService.setIsLocked(false);
        this.initialize();
@@ -457,8 +445,7 @@ save() {
      for (let key in this.editedItem) {
        formData.append(key, this.editedItem[key]);
      } 
-   axios
-     .post('https://api2.simplifies.cl/api/student', formData)
+   this.$axios.post('student', formData)
      .then(() => {
       LocalStorageService.setIsLocked(false);
        this.initialize();

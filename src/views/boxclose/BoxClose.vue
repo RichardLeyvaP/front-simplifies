@@ -289,16 +289,7 @@
 import LocalStorageService from "@/LocalStorageService";
 import { handleRequest } from "@/utils/api";
 import { format, parseISO } from 'date-fns';
-/*axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
-*/
+
 export default {
     data: () => ({
         loadingrules: true,
@@ -545,42 +536,12 @@ export default {
 
             return formattedValue;
         },
-        /*showAddRules() {
-            LocalStorageService.setIsLocked(true);
-            axios
-                .get('https://api2.simplifies.cl/api/branch-rules-noIn', {
-                    params: {
-                        branch_id: this.branch_id
-                    }
-                })
-                .then((response) => {
-                    this.rules = response.data.rules;
-                }).finally(() => {
-                    LocalStorageService.setIsLocked(false);
-                });
-            this.dialog = true;
-        },*/
         deleteItem(item) {
             this.editedItem.rule_id = item.rule_id;
             this.dialogDelete = true;
             console.log('item');
             console.log(this.editedItem);
         },
-        /*deleteItemConfirm() {
-            LocalStorageService.setIsLocked(true);
-            this.data.branch_id = this.branch_id;
-            this.data.rule_id = this.editedItem.rule_id;
-            axios
-                .post('https://api2.simplifies.cl/api/branchrule-destroy', this.data)
-                .then(() => {
-                    this.message_delete = true;
-                }).finally(() => {
-                    LocalStorageService.setIsLocked(false);
-                    this.showAlert("success", "Asignación eliminada correctamente", 3000);
-                    this.initialize();
-                });
-            this.closeDelete()
-        },*/
         close() {
             this.dialog = false
             this.$nextTick(() => {
@@ -597,25 +558,6 @@ export default {
                 this.editedIndex = -1
             })
         },
-        /*save() {
-            LocalStorageService.setIsLocked(true);
-            if (this.editedIndex === -1) {
-                console.log('insertar');
-                this.valid = false;
-                this.data.branch_id = this.branch_id;
-                this.data.rule_id = this.editedItem.rule_id;
-                axios
-                    .post('https://api2.simplifies.cl/api/branchrule', this.data)
-                    .then(() => {
-                    }).finally(() => {
-                        LocalStorageService.setIsLocked(false);
-                        this.showAlert("success", "Regla de convivencia asignada correctamente", 3000);
-                        this.initialize();
-                    });
-            }
-            this.close();
-
-        },*/
     },
 }
 </script>

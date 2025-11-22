@@ -112,7 +112,6 @@
 </template>
 <script>
 
-import axios from "axios";
 import { Bar } from 'vue-chartjs';
 
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js'
@@ -121,15 +120,6 @@ import { format } from "date-fns";
 import * as XLSX from 'xlsx';
 import LocalStorageService from "@/LocalStorageService";
 
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
     name: 'LoginPage',
@@ -217,8 +207,7 @@ export default {
         this.charge = JSON.parse(LocalStorageService.getItem("charge"));
         console.log('this.charge')
         console.log(this.charge)
-        axios
-            .get('https://api2.simplifies.cl/api/show-business', {
+        this.$axios.get('show-business', {
                 params: {
                     business_id: this.business_id
                 }
@@ -327,55 +316,12 @@ export default {
             //XLSX.writeFile(wb, "report.xlsx");
             XLSX.writeFile(wb, `report_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
         },
-        /*updateDate(val) {
-          this.input = val;
-          this.menu = false;
-        },
-        updateDate2(val) {
-          this.editedIndex = 2;
-          this.input2 = val;
-          const startDate = this.input ? format(this.input, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd");
-          const endDate = format(val, "yyyy-MM-dd");
-          axios
-            .get('https://api2.simplifies.cl/api/business-winner', {
-              params: {
-                startDate: startDate,
-                endDate: endDate
-              }
-            })
-            .then((response) => {
-              this.results = response.data;
-              this.input2 = new Date();
-              this.input = new Date()
-            })
-          this.menu2 = false;
-        },
-        updateDate3(val) {
-          this.editedIndex = 3;
-          this.input3 = val;
-          const month = (val.getMonth() + 1).toString().padStart(2, '0');
-          const year = val.getFullYear();
-          const mes = `${month}`;
-          const ano = `${year}`;
-          axios
-            .get('https://api2.simplifies.cl/api/business-winner', {
-              params: {
-                mes: mes,
-                year: ano
-              }
-            })
-            .then((response) => {
-              this.results = response.data;
-              this.input3 = new Date();
-            })
-          this.menu3 = false;
-        },*/
+        
         initialize() {
             this.editedIndex = 1;
             console.log('this.branch_id');
             console.log(this.branch_id);
-            axios
-                .get('https://api2.simplifies.cl/api/revenue-expense-analysis', {
+            this.$axios.get('revenue-expense-analysis', {
                     params: {
                         branch_id: this.branch_id,
                         year: this.selectedYear

@@ -107,17 +107,6 @@
 <script>
 
 import LocalStorageService from "@/LocalStorageService";
-import axios from "axios";
-
-axios.interceptors.request.use(config => {
-  const token = LocalStorageService.getItem('token'); // Suponiendo que guardaste el token en localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replace(/['"]+/g, '')}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
 
 export default {
 
@@ -213,8 +202,7 @@ export default {
     initialize() {
       this.loadingType = true;
       LocalStorageService.setIsLocked(true);
-      axios
-        .get('https://api2.simplifies.cl/api/business-type')
+      this.$axios.get('business-type')
         .then((response) => {
           this.results = response.data.businessTypes;
         }).finally(() => {
@@ -238,8 +226,7 @@ export default {
       let request = {
         id: this.editedItem.id
       };
-      axios
-        .post('https://api2.simplifies.cl/api/business-type-destroy', request)
+      this.$axios.post('business-type-destroy', request)
         .then(() => {
           LocalStorageService.setIsLocked(false);
           this.initialize();
@@ -269,8 +256,7 @@ export default {
           this.valid = false,
           this.data.id = this.editedItem.id;
           this.data.name = this.editedItem.name;
-          axios
-            .put('https://api2.simplifies.cl/api/business-type', this.data)
+          this.$axios.put('business-type', this.data)
             .then(() => {
             }).finally(() => {
               LocalStorageService.setIsLocked(false);
@@ -280,8 +266,7 @@ export default {
         } else {
           this.valid = false,
           this.data.name = this.editedItem.name;
-          axios
-            .post('https://api2.simplifies.cl/api/business-type', this.data)
+          this.$axios.post('business-type', this.data)
             .then(() => {
             }).finally(() => {
               LocalStorageService.setIsLocked(false);
