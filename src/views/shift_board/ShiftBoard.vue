@@ -6,7 +6,7 @@
           <v-col cols="12" md="5"></v-col>
           <v-col cols="12" md="1">
             <v-avatar size="80">
-              <v-img src="@/assets/hernandez_big.png" alt="John"></v-img>
+              <v-img :src="`${this.$axios.defaults.baseURL}images/${imageBusiness}`" alt="John" style="width: 100%; height: 100%; object-fit: contain;"></v-img>
             </v-avatar>
           </v-col>
           <v-col cols="12" md="6"></v-col>
@@ -165,7 +165,7 @@ export default {
 
   data: () => ({
     currentIndex: 0,
-   
+    imageBusiness: null,
     clientes: [],
     items: [],
 
@@ -193,6 +193,9 @@ export default {
     this.fetchItems(this.clientes);
     // Establecer un intervalo para mostrar duplas cada 5 segundos    
     this.branch_id = LocalStorageService.getItem("branch_id");
+      const image = LocalStorageService.getItem('imageBusiness');
+      const cleanedImage = image.replace(/"/g, '');
+     this.imageBusiness = cleanedImage;
     console.log('ESTOY ENTRANDO AL mounted()');
     this.callForTime();
     setInterval(this.callForTime, 9000);

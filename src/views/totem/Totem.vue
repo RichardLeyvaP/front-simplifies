@@ -22,14 +22,14 @@
 
           <v-col cols="12" md="12" style="text-align: center;">
             <v-avatar size="120">
-              <v-img src="@/assets/hernandez_big.png" alt="John"></v-img>
+              <v-img :src="`${this.$axios.defaults.baseURL}images/${imageBusiness}`" style="width: 100%; height: 100%; object-fit: contain;"></v-img>
             </v-avatar>
           </v-col>
         </v-row>
         <v-row class="mt-6">
           <v-col cols="12" md="12">
             <p class="text-h6 white-text text-uppercase" color="white" style="text-align: center;">
-              Bienvenido a Barberías Hernández
+              {{ nameBusiness }}
             </p>
             <br>
           </v-col>
@@ -160,6 +160,8 @@ export default {
     email: "",
     loading: false,
     showAlert: false,
+    nameBusiness: '',
+    imageBusiness: null,
     qrCode: '',
     qrCodeBase64: '',
     showQR: false,
@@ -170,6 +172,10 @@ export default {
     //this.business_id = LocalStorageService.getItem('business_id');
     //this.charge_id = LocalStorageService.getItem('charge_id');
   this.branch_id = LocalStorageService.getItem('branch_id');
+  this.nameBusiness = LocalStorageService.getItem('nameBusiness');
+  const image = LocalStorageService.getItem('imageBusiness');
+    const cleanedImage = image.replace(/"/g, '');
+  this.imageBusiness = cleanedImage;
   console.log(this.branch_id);
     // Establecer un intervalo para mostrar duplas cada 5 segundos
     setInterval(this.mostrarDupla, 5000);
