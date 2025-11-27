@@ -1353,7 +1353,7 @@ export default {
       this.nameProfessional = item.name;*/
       this.dialogAddProf = true;
       this.editando = true;
-      if (item.charge === 'Barbero' || item.charge === 'Barbero y Encargado') {
+      if (item.charge === 'Profesional' || item.charge === 'Profesional y Encargado') {
         this.bonus = true;
       }
       this.commission = this.shouldReceiveCommission(item.charge);

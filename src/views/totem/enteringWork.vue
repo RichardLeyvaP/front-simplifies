@@ -626,10 +626,10 @@ prevStep() {
         this.tipoProfessional = 'Tecnico';
         this.chargepuestoTs();
       } else if (puestoTId2 === 2) {//es barbero
-        this.tipoProfessional = 'Barbero';
+        this.tipoProfessional = 'Profesional';
         this.chargepuestoTs();
       }else if (puestoTId2 === 3) {//es barbero
-        this.tipoProfessional = 'Barbero y Encargado';
+        this.tipoProfessional = 'Profesional y Encargado';
         this.chargepuestoTs();
       }
       else {
@@ -670,15 +670,13 @@ prevStep() {
       if (this.tipoProfessional == 'Tecnico') {
         url = `${this.$axios.defaults.baseURL}branch_workplaces_select?branch_id=${this.branch_id}`;
       }
-      else if (this.tipoProfessional == 'Barbero' || this.tipoProfessional == 'Barbero y Encargado') {
+      else if (this.tipoProfessional == 'Profesional' || this.tipoProfessional == 'Profesional y Encargado') {
         url = `${this.$axios.defaults.baseURL}branch_workplaces_busy?branch_id=${this.branch_id}`;
       }
 
 
 
-      axios
-        .get(url)
-        .then((response) => {
+      this.$axios.get(url).then((response) => {
           console.log(response.data)
           this.puestoTs = response.data.workplaces;
 

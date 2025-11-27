@@ -46,7 +46,7 @@
                         {{ item.name }}
                     </template>
                     <template v-slot:item.actions="{ item }">
-                        <!--<v-btn density="comfortable" icon="mdi-pencil" @click="(item.charge === 'Barbero' || item.charge === 'Barbero y Encargado') ? '' :editItem(item)" :color="(item.charge === 'Barbero' || item.charge === 'Barbero y Encargado') ? 'grey' : 'primary'"
+                        <!--<v-btn density="comfortable" icon="mdi-pencil" @click="(item.charge === 'Profesional' || item.charge === 'Profesional y Encargado') ? '' :editItem(item)" :color="(item.charge === 'Profesional' || item.charge === 'Profesional y Encargado') ? 'grey' : 'primary'"
                         variant="tonal" elevation="1" class="mr-1 mt-1 mb-1" title="Editar Pago a profesional"></v-btn>-->
                         <v-btn density="comfortable" icon="mdi-account-cash" @click="pagoProfessional(item)"
                             color="primary" variant="tonal" elevation="1" title="Pago a profesional"></v-btn>
@@ -1756,7 +1756,7 @@ export default {
         }
         },
         async showAddPago() {
-            if (this.charge == 'Barbero' || this.charge == 'Barbero y Encargado') {
+            if (this.charge == 'Profesional' || this.charge == 'Profesional y Encargado') {
                 this.loadingProfessPay = true;
                 this.loadingCoursePay = true;
                 this.loadingSale = true;

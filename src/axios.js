@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'https://api2.simplifies.cl/api/',
+  baseURL: 'https://api3.simplifies.cl/api/',
   //baseURL: 'http://127.0.0.1:8000/api/',
   timeout: 30000,
 });

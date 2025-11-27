@@ -927,7 +927,7 @@ export default {
     this.formattedDateAnt = today.getDate() + '-' + (today.getMonth()) + '-' + today.getFullYear();
     this.formattedDateMonth = (today.getMonth() + 1) + '-' + today.getFullYear();
     this.formattedDateMonthAnt = (today.getMonth()) + '-' + today.getFullYear();
-    if (this.charge !== 'Totem' && this.charge !== 'Pizarra' && this.charge !== 'Cajero (a)'  && this.charge !== 'Barbero'  && this.charge !== 'Barbero y Encargado') {        
+    if (this.charge !== 'Totem' && this.charge !== 'Pizarra' && this.charge !== 'Cajero (a)'  && this.charge !== 'Profesional'  && this.charge !== 'Profesional y Encargado') {        
       this.initialize();    
     }
     if(this.charge === 'Cajero (a)'){

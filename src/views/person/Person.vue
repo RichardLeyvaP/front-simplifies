@@ -1409,7 +1409,7 @@ onCalendarMonthChange(newDate) {
                 }).then((response) => {
         this.results = response.data.professionals;
         // Definimos los cargos que queremos filtrar
-          const cargosDeseados = ['Barbero', 'Tecnico', 'Barbero y Encargado'];
+          const cargosDeseados = ['Profesional', 'Tecnico', 'Profesional y Encargado'];
 
         // Filtramos los profesionales con los cargos deseados y los asignamos a `professRules`
         this.professRules = this.results.filter(professional => {
