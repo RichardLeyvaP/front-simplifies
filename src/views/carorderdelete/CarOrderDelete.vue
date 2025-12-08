@@ -636,7 +636,7 @@ export default {
             this.loadingOrder = true;
             this.loadingProduct = true;
             LocalStorageService.setIsLocked(true);
-            this.$axios.get('api/branch-cars-delete', {
+            this.$axios.get('branch-cars-delete', {
                     params: {
                         branch_id: this.branch_id
                     }
@@ -661,7 +661,7 @@ export default {
                 id: item.id,
                 professional_id: this.professional_id
             };
-            this.$axios.post('api/car-destroy', request)
+            this.$axios.post('car-destroy', request)
                 .then(() => {
                 }).finally(() => {
                     LocalStorageService.setIsLocked(false);
@@ -676,7 +676,7 @@ export default {
                 id: item.id,
                 professional_id: this.professional_id
             };
-            this.$axios.post('api/car-denegada', request)
+            this.$axios.post('car-denegada', request)
                 .then(() => {
                 }).finally(() => {
                     LocalStorageService.setIsLocked(false);
@@ -694,7 +694,7 @@ export default {
                 id: item.id,
                 professional_id: this.professional_id
             };
-            this.$axios.post('api/order-destroy-web', request)
+            this.$axios.post('order-destroy-web', request)
                 .then(() => {
                     //this.initialize();
                 }).finally(() => {
@@ -710,7 +710,7 @@ export default {
                 id: item.id,
                 professional_id: this.professional_id
             };
-            this.$axios.post('api/order-denegar', request)
+            this.$axios.post('order-denegar', request)
                 .then(() => {
                 }).finally(() => {
                     LocalStorageService.setIsLocked(false);
@@ -726,7 +726,7 @@ export default {
                 id: item.id,
                 professional_id: this.professional_id
             };
-            this.$axios.post('api/cashiersale-destroy', request)
+            this.$axios.post('cashiersale-destroy', request)
                 .then(() => {
                     //this.initialize();
                 }).finally(() => {
@@ -742,7 +742,7 @@ export default {
                 id: item.id,
                 professional_id: this.professional_id
             };
-            this.$axios.post('api/cashiersale-denegar', request)
+            this.$axios.post('cashiersale-denegar', request)
                 .then(() => {
                 }).finally(() => {
                     LocalStorageService.setIsLocked(false);
